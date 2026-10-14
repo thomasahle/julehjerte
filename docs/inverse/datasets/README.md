@@ -76,7 +76,9 @@ identical final curves across 47 frozen accepted exports, reducing their total
 alignment time from 29.44 to 26.52 seconds; 110 focused tests pass. Fresh full
 QA on runtime `b8e20f2` passes 853 inverse tests, 857 application tests (one
 existing skip), type checking, lint and build; all 848 pinned source files
-remain unchanged. End-to-end photo/Hunodan and browser replays are running.
+remain unchanged. Fresh Hunodan fitting passes 22/22 within ten seconds
+(maximum 8.149 seconds), with all 22 image errors unchanged from `c000d30`.
+End-to-end photo and browser replays are running.
 This changes validation order, not the acceptance rules, and is not yet a
 whole-pipeline speed claim.
 

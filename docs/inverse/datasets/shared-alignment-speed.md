@@ -57,8 +57,11 @@ All **110 focused sharing tests** and the diagnostic's ESLint check pass.
 Fresh full QA on runtime `b8e20f2` also passes **853 inverse tests**, **857
 application tests** (one existing skip), type checking, lint and build. All 848
 pinned source files remain unchanged. The inverse suite takes 850.94 seconds;
-this is test-suite duration, not a solver timing. Photo/Hunodan fitting and
-browser replays are still running. Runtime `c000d30` remains the latest fully
+this is test-suite duration, not a solver timing. The fresh Hunodan replay
+passes **22/22 within ten seconds**, maximum **8.149 seconds**, with all 22
+independent mask errors exactly unchanged from `c000d30`. Input crop catalog,
+settings and baseline criteria are unchanged. Photo and browser replays are
+still running. Runtime `c000d30` remains the latest fully
 validated release until those checks finish:
 reordering rejection work can change which candidate a bounded search reaches,
 even though unlimited-pass outputs match exactly.
