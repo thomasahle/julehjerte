@@ -103,6 +103,11 @@ No production code, acceptance threshold, source annotation or training split
 changes in this study. It adds no neural training. The previously completed
 test suites are not presented as newly rerun tests.
 
+The later [source-coverage check](remaining-photo-coverage.md) rules out white
+outside-image padding as the origin of the star's and ribbon's lost fragments.
+Their complete sampling footprints lie inside the photograph. This separates
+partial-image coverage from uncertain paper/background classification at the crop.
+
 The next useful directions are distinct: physical foreground/edge coverage
 for crop candidates, photographic classification that retains the bauble's
 pale frame, and routing initialization that can tolerate missing or noisy
