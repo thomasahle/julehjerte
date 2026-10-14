@@ -29,7 +29,8 @@ function visibleReturn(){
 
 test('a visible outline return across two sheets contracts its real shared junction',()=>{
   const before=visibleReturn(),graph=new CurveGraph(before.paths.map((f,k)=>f.map((_,i)=>curvesOf(before,k,i).map(c=>c.p)))),points=graph.points.slice();
-  const proposal=shortReturnProposal(graph,points,settings(visibleFixture.settings));
+  assert.equal(shortReturnProposal(graph,points,settings(visibleFixture.settings)),null,'Paper paths alone do not expose the visible return.');
+  const proposal=shortReturnProposal(graph,points,settings(visibleFixture.settings),{source:before.graph.target.sourceImage});
   assert.ok(proposal);assert.equal(proposal.visibleBoundaryContractions,2);
   assert.equal(proposal.removedOccurrences,2);assert.equal(proposal.segmentsAfter,proposal.segmentsBefore-2);
   assert.deepEqual(graph.points,points,'Proposing a contraction must not move the incumbent.');
@@ -52,6 +53,23 @@ test('visible return cleanup retains a notch that the source actually requests',
   before.graph.target.sourceImage={resolution,mask};
   const after=finalizeShortReturns(before,cfg);
   assert.deepEqual(sampleWeave(after,resolution),mask,'A cross-sheet shortcut receives no allowance to erase the source drawing.');
+});
+
+test('one-pixel source shifts do not turn a requested shared-junction corner into a return proposal',()=>{
+  const before=visibleReturn(),cfg=settings(visibleFixture.settings),resolution=400,mask=sampleWeave(before,resolution);
+  const graph=new CurveGraph(before.paths.map((f,k)=>f.map((_,i)=>curvesOf(before,k,i).map(c=>c.p))));
+  for(const [dx,dy]of [[0,0],[-1,0],[1,0],[0,-1],[0,1]]){
+    const shifted=Uint8Array.from(mask,(_,i)=>mask[Math.max(0,Math.min(resolution-1,Math.floor(i/resolution)+dy))*resolution+Math.max(0,Math.min(resolution-1,i%resolution+dx))]);
+    assert.equal(shortReturnProposal(graph,graph.points,cfg,{source:{mask:shifted,resolution}}),null,`${dx},${dy}`);
+  }
+});
+
+test('unobserved source pixels cannot justify a cross-sheet boundary contraction',()=>{
+  const before=visibleReturn(),cfg=settings(visibleFixture.settings),source=before.graph.target.sourceImage;
+  const graph=new CurveGraph(before.paths.map((f,k)=>f.map((_,i)=>curvesOf(before,k,i).map(c=>c.p))));
+  for(const field of ['weights','validMask']){
+    assert.equal(shortReturnProposal(graph,graph.points,cfg,{source:{...source,[field]:new Uint8Array(source.mask.length)}}),null);
+  }
 });
 
 test('a short return becomes a span while matching sheets stay identical',()=>{

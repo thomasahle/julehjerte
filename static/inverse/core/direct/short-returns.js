@@ -32,17 +32,39 @@ function visibleBoundaryJoins(graph){
   return joins;
 }
 
-export function shortReturnProposal(graph,points,cfg){
+/** A visible boundary deep inside one observed colour is unsupported. Keep
+ * near-boundary joins: their apparent returns can be real corners or pixel
+ * fringes. Use the same quarter-strip scale as outline-detail selection,
+ * with at least 1.5 source pixels to avoid reacting to raster phase alone.
+ */
+function unsupportedVisibleJoint(source,point,width,cfg){
+  const {mask,resolution:n,validMask,weights}=source;
+  const x=point[0]*n/width,y=point[1]*n/width,r=Math.max(1.5,cfg.minWidth*n/(4*width));
+  const cx=Math.floor(x),cy=Math.floor(y);
+  if(cx<0||cy<0||cx>=n||cy>=n)return false;
+  const value=mask[cy*n+cx];
+  for(let yy=Math.floor(y-r);yy<=Math.floor(y+r);yy++)for(let xx=Math.floor(x-r);xx<=Math.floor(x+r);xx++){
+    const dx=Math.max(0,xx-x,x-xx-1),dy=Math.max(0,yy-y,y-yy-1);
+    if(dx*dx+dy*dy>=r*r)continue;
+    if(xx<0||yy<0||xx>=n||yy>=n)return false;
+    const i=yy*n+xx;
+    if(validMask&&!validMask[i]||weights&&!(weights[i]>0)||mask[i]!==value)return false;
+  }
+  return true;
+}
+
+export function shortReturnProposal(graph,points,cfg,{source=null}={}){
   const controls=graph.controls(points),curves=controls.map(c=>new Cubic(c)),vertices=new Map(),plans=new Map(),cuts=new Map(),blocked=new Set(),removed=new Set(),boundaryPlans=new Set();
   const endpoint=(entry,start)=>graph.edges[entry[0]][start?(entry[1]===1?0:3):(entry[1]===1?3:0)];
   for(const ids of graph.edges)for(const id of [ids[0],ids[3]]){
     const key=pointKey([points[2*id],points[2*id+1]]);
     if(!vertices.has(key))vertices.set(key,new Set());vertices.get(key).add(id);
   }
-  for(const [a,b,visibleBoundary]of [...graph.joins,...visibleBoundaryJoins(graph)]){
+  for(const [a,b,visibleBoundary]of [...graph.joins,...(source?visibleBoundaryJoins(graph):[])]){
     const joint=endpoint(a,false);
     if(blocked.has(joint))continue;
     if(joint!==endpoint(b,true)||graph.fixed[2*joint]||graph.fixed[2*joint+1])continue;
+    if(visibleBoundary&&!unsupportedVisibleJoint(source,[points[2*joint],points[2*joint+1]],graph.width,cfg))continue;
     // Coincident independent paths are not necessarily connected. Moving a
     // real shared junction moves its adjacent controls together, but cannot
     // silently detach another path that only meets it geometrically.
@@ -61,6 +83,10 @@ export function shortReturnProposal(graph,points,cfg){
     if(la+lb>6*cfg.nominalWidth||la+lb<=2*chord||chord<=cfg.geometryTolerance||chord>(visibleBoundary?1.5:1)*cfg.nominalWidth)continue;
     const cut=la<lb?a:b,target=la<lb?endpoint(a,true):endpoint(b,false);
     if(Math.min(la,lb)>(visibleBoundary?2:1.5)*cfg.nominalWidth||distance([points[2*joint],points[2*joint+1]],[points[2*target],points[2*target+1]])<=cfg.geometryTolerance)continue;
+    // A real sharp tip can extend past its first sampled source pixel. Its
+    // neighbouring boundary must also lack support; testing only the tip
+    // would mistake subpixel corner coverage for an unwanted spur.
+    if(visibleBoundary&&!unsupportedVisibleJoint(source,(la<lb?A:B).point(.5),graph.width,cfg))continue;
     // Multiple incident branches can suggest different contractions at one
     // junction. That junction is ambiguous, but unrelated proposals remain
     // safe to apply. Drop only the competing plan instead of abandoning every
@@ -106,7 +132,7 @@ export function finalizeShortReturns(solution,cfg,{deadline=Infinity,completionD
   const input=solution.graph.target,source=input.sourceImage;
   if(!source?.mask||input.metadata?.originalCubicsPreserved||performance.now()>=deadline)return solution;
   const start=performance.now(),graph=new CurveGraph(solution.paths.map((f,k)=>f.map((_,i)=>curvesOf(solution,k,i).map(c=>c.p))),input.width);
-  const proposal=shortReturnProposal(graph,graph.points,cfg);if(!proposal||performance.now()>=deadline)return solution;
+  const proposal=shortReturnProposal(graph,graph.points,cfg,{source});if(!proposal||performance.now()>=deadline)return solution;
   const phase=input.phase?-1:1,n=source.resolution,weights=sourceWeights(source),beforeMatching=matchingSummary(solution);
   const before=sampleWeave(solution,n);
   const report={segmentsBefore:proposal.segmentsBefore,segmentsAfter:proposal.segmentsAfter,removedOccurrences:proposal.removedOccurrences,conflictingJunctions:proposal.conflictingJunctions,visibleBoundaryContractions:proposal.visibleBoundaryContractions,sourceErrorBefore:referenceError(source,before).mismatchFraction,applied:false};

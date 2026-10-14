@@ -73,9 +73,38 @@ updated fresh blue-star regression also passes. Type checking and lint pass
 with the existing unrelated warnings. All eight fixed crop variants in the
 new broader replay pass below ten seconds and survive editable conversion.
 
-The full Hunodan/photo benchmarks, application and inverse suites, build and
-eleven rebuilt browser flows are running serially under
-`tmp/heart-learning/visible-return-v1/`. Their results must be inspected before
-claiming release-wide validation. The controlled proxy browser results above
-do not mean the ordinary preview has already been rebuilt with this change.
-Nothing is pushed or deployed; the neural models remain offline.
+The first broader replay under `tmp/heart-learning/visible-return-v1/` stopped
+after Hunodan. All 22 cases passed their frozen quality gates below ten seconds
+(maximum 8.171 seconds), but two had slightly higher independent errors than
+the immediately preceding release: one pixel for `hjhih-01`, and roughly eleven
+pixels for `hjstr-03`. The stricter comparison correctly stopped the driver;
+its later photo, application, inverse, build and browser stages did not run.
+`hjstr-03` used no short-return repair; its candidate already differed before
+cleanup. Fresh paired runs are needed to distinguish timing variation from a
+change-induced regression. These measurements remain in the original run.
+
+### Source support guard
+
+The one-pixel `hjhih-01` regression did involve the new proposal: its internal
+pixel-centre score improved while the independent exported raster worsened.
+The contracted joins lie only 1.20–1.33 source pixels from a mask boundary,
+compared with over ten pixels for the unwanted star tips. Merely having a
+geometric return is therefore insufficient evidence to simplify a visible join.
+
+The follow-up requires an observed, single-colour neighbourhood around both
+the junction and the shorter curve's midpoint. The radius is a quarter of the
+minimum strip width, with a floor of 1.5 source pixels; intersecting pixel cells
+are checked, not only their centres. Unknown or zero-weight pixels cannot
+justify a contraction. Existing single-sheet proposals and all final acceptance
+checks are unchanged. A tip-only version failed even on an exact desired
+notch because of raster phase; the midpoint check fixes that regression.
+
+All nineteen short-return tests now pass, including one-pixel source shifts
+and unknown-image regions. The fresh blue-star solve regression also passes.
+The tip-only intermediate replay restored `hjhih-01`'s previous independent
+score exactly; it is not evidence for the final midpoint variant. Those logs
+are preserved under `visible-return-probe-v1/` and
+`visible-return-v1/hunodan-source-support/`. Broader validation of the guarded
+variant remains outstanding. The controlled browser numbers above describe
+`86901fd`, not this follow-up or the ordinary preview. Nothing is pushed or
+deployed; the neural models remain offline.

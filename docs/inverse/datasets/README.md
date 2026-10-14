@@ -91,7 +91,11 @@ contraction/refinement stage now considers these real shared junctions with
 unchanged final image and physical checks. A controlled Chromium pair improves
 editable disagreement from 0.545% to 0.446% in 9.23 seconds; a fresh native solve
 takes 8.70 seconds. The large spikes shrink, but smaller bumps remain. Focused
-tests and all eight fixed crop variants pass; broader release QA is running.
+tests and all eight fixed crop variants pass. Broader QA stopped after all 22
+Hunodan cases passed their frozen quality and speed gates, because two scores
+were slightly higher than the immediately previous release. A source-support
+guard now preserves real corners under one-pixel shifts; its broader validation
+and the separate timing diagnosis remain in progress.
 
 A [fresh neural fallback replay](neural-fallback-current.md) now passes the two
 frozen foreground models through the current binary-mask fitter on the three
