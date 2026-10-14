@@ -33,11 +33,11 @@ existing QA or connected source groups; the rest still need family, instance
 and usage review before allocation. See the [real audit](real-validation.json)
 and [synthetic asset checks](synthetic-batch.json).
 
-The [latest completed fitter release](interior-palette.md) passes all 22
-regular Hunodan designs below ten seconds (maximum 8.05 seconds, unchanged
-errors) and improves hard-photo recovery from 24/31 to **25/31**. All 25 pairs
+The [latest completed fitter release](junction-recovery.md) passes all 22
+regular Hunodan designs below ten seconds (maximum 8.07 seconds, unchanged
+errors) and retains hard-photo recovery at **25/31**. All 25 pairs
 also pass production editable conversion and independent geometry/paper checks.
-Verification includes 789 inverse tests, 855 application tests, ten Chromium
+Verification includes 791 inverse tests, 855 application tests, ten Chromium
 flows, type checking, lint and build. These
 31 photographs are a fixed reconstruction benchmark, not the full collected
 573-file photographic corpus.
@@ -57,8 +57,8 @@ physical-paper registration mask resolves that failure, and the complete replay
 now passes original, JPEG and half-resolution uploads through the browser and
 editable export. Original and JPEG exports retain all 28 reviewed star points.
 The preview at `http://127.0.0.1:5232/editor/mal/` serves the checked build.
-Visible contour defects remain, and the browser's longer search allowance takes
-21.88 seconds for the original star and 28.01 seconds for the Viking; native
+Visible contour defects remain. The latest junction-recovery release takes
+8.65 seconds for the original star and 28.14 seconds for the Viking; native
 ten-second benchmarks are not browser latency guarantees. Nothing is pushed or
 deployed.
 
@@ -66,14 +66,18 @@ An offline [star input intervention](star-input-factorial.md) separates JPEG
 pixel changes from crop changes. A stronger provisional trace followed by longer
 common Bézier refinement reduces the original fixed-mask error from 1.3063% to
 1.1556%, with fewer curves; editable export and all 28 source observations pass.
-This is one controlled case, not a deployed strategy or a whole-pipeline speed
-result. It exposes sensitivity in routing topology and refinement scheduling.
+This was one controlled case, not a whole-pipeline speed result. It exposed
+sensitivity in routing topology and refinement scheduling and motivated the
+bounded fallback below.
 
 The [bounded junction-recovery follow-up](junction-recovery.md) implements that
 alternative in the main fitter. Focused tests, all 22 Hunodan cases and all 25
 previous hard-photo passes hold, including editable conversion. Full inverse,
-application and rebuilt-browser release checks are still running; the preview
-continues to serve the preceding checked release until those stages advance.
+application and ten rebuilt-browser flows pass; the preview serves the checked
+build. The original star's browser editable error is 1.153125%, while the
+half-resolution variant retains visible contour defects. Five passing native
+photo cases have slightly higher errors, by at most 0.068125 percentage points;
+pass retention does not imply uniform error reduction.
 
 All neural models remain offline. [Balanced corner training and broader angle
 coverage](boundary-localization.md) improve synthetic junction proposals, but

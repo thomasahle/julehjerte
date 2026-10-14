@@ -50,13 +50,33 @@ has completed these stages:
 - JPEG quality 75 and half-resolution automatic uploads pass the native
   photo-to-template replay. Actual browser interaction is a later stage.
 
-## Verification still running
+## Completed release verification
 
-The full inverse suite is running, followed serially by application tests, type
-checking, lint, build and ten browser flows. This document does not claim those
-stages have passed. The preview continues to serve the preceding fully checked
-release until the driver finishes the native tests and rebuilds it. No push or
-deployment has occurred. Physical assembly remains untested.
+The serial release replay completed on runtime commit `fedd63e`. All 791 inverse
+tests and 855 application tests pass, with one application test skipped. Type
+checking reports zero errors and seven existing warnings; lint reports zero
+errors and one warning. The build and all ten Chromium flows pass. All accepted
+browser outputs pass editable conversion and independent geometry/paper checks;
+five PDF downloads have valid PDF signatures.
+
+The original star takes 8.65 seconds from clicking Find to a ready browser
+result, with 1.153125% disagreement in the editable export. JPEG quality 75 takes
+4.42 seconds at 1.764375%; half resolution takes 9.33 seconds at 1.3525%. Original
+and JPEG exports retain all 28 reviewed source-photo observations. These browser
+runs use the recorded 180-second search setting; they do not establish a general
+ten-second browser bound. The puppy and Viking still take 17.95 and 28.14 seconds.
+
+Actual screenshot inspection confirms cleaner bands on the original star, but
+its upper crossing tip remains overly rounded. The half-resolution result still
+has small notches and complicated hidden routing around two inner bends. The
+Viking's bottom routing remains complex. Passing the checks does not establish
+the original cutting paths, a simple pattern, or physical assembly suitability.
+
+The [release record](junction-retry-release.json) preserves all scores, timings,
+visual observations, 464 source hashes and 990 artifact hashes. An independent
+replay verified those hashes, and all 153 built assets were compared with their
+HTTP-served bytes. The preview at `http://127.0.0.1:5232/editor/mal/` now serves
+this checked build. No push or deployment has occurred.
 
 The new focused regression can be rerun with:
 
