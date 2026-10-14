@@ -77,8 +77,12 @@ an omitted finer-paper check on retained final-polish alternatives. A controlled
 Chromium pair improves the same blue-star mask from 0.596% to 0.545% editable
 disagreement, taking 8.36 seconds instead of 7.62 seconds. Geometry and paper
 checks remain mandatory; the photographed border loss and visible notches remain.
-The focused tests pass; broader release QA is still running. This is a fitter
-change, not deployment of the neural cropper or a new full-corpus result.
+The completed release retains 22/22 regular Hunodan designs below ten seconds,
+with four improved errors, and 24/31 hard photographs. All 774 inverse tests,
+855 application tests and eleven rebuilt Chromium flows pass. Paired replays
+investigate two small broad-photo score increases without replacing the original
+measurements. This is a fitter change, not deployment of the neural cropper or
+an increase in the full-corpus success count.
 
 A [fresh neural fallback replay](neural-fallback-current.md) now passes the two
 frozen foreground models through the current binary-mask fitter on the three

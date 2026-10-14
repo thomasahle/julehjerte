@@ -69,14 +69,55 @@ checkpoint-selection omission addressed by this change.
 The [completed probe record](polishing-alternative-probe.json) pins 152 artifacts
 from the controlled experiments and browser comparison.
 
-The browser comparison and focused tests above are complete. All eight fixed
-crop perturbations pass within ten seconds and survive editable conversion.
-All 22 regular Hunodan designs pass within ten seconds (maximum 8.91 seconds).
-Four errors improve and the other eighteen are unchanged.
-The full hard-photo benchmark, application/inverse tests, production build and
-eleven rebuilt browser flows are still running serially under
-`tmp/heart-learning/polishing-alternative-v1/`. Their results must be inspected
-before claiming release-wide validation.
+The [completed release record](polishing-alternative.json) verifies 106 source
+hashes and 1,078 retained artifacts. All eight fixed crop perturbations pass
+within ten seconds and survive editable conversion. All 22 regular Hunodan
+designs pass within ten seconds (maximum 8.91 seconds). Four errors improve and
+the other eighteen are unchanged.
+
+The full automatic-photo benchmark retains 24/31 eligible successes. Its 47
+inventory entries have the same source identities, proposed corners, classified
+masks and fitting masks as the previous release; sixteen incomplete or obscured
+entries remain excluded. Seven measured errors improve, including one case that
+still fails, and two increase slightly. These are mask-based quality gates, not
+a claim that all photographed details or intended cutting paths are recovered.
+
+All 774 inverse tests and 855 application tests pass, with one application test
+skipped. Type checking, lint and the production build pass. All eleven rebuilt
+Chromium flows pass the template, source-feature, editable geometry and paper
+checks; nine also verify PDF download signatures. The blue-star flow reproduces
+0.545% editable disagreement in 8.65 seconds from click to ready. The shifted
+sloth retains two cuts per sheet, 1.48125% disagreement and an 8.78-second
+click-to-ready time. These browser timings are separate from the native benchmark.
+All eleven result screenshots were inspected; the star's notches remain visible.
+
+### Investigating the two small error increases
+
+The broad run changes gingerbread from 1.4425% to 1.476875% disagreement and
+maple leaf from 1.34125% to 1.346875%. Both already use the 700-pixel paper grid,
+so they skip the new final-polish alternative branch. Gingerbread's fit differs
+before final polishing, including its number of added curves and refinement
+steps. Maple leaf also differs before final cleanup.
+
+Eight fresh-process replays compare the two engine snapshots using the same
+frozen crop coordinates, source bytes and masks, the same ten-second search
+allowance, and no saved cutting seeds. Only `direct/fit.js` differs between the
+snapshots. Old/new execution order alternates between repeats.
+
+| Fixed crop | Repeat | Prior error | New error |
+| --- | ---: | ---: | ---: |
+| Gingerbread | 1 | 1.663125% | 1.598750% |
+| Gingerbread | 2 | 1.617500% | 1.668125% |
+| Maple leaf | 1 | 1.389375% | 1.389375% |
+| Maple leaf | 2 | 1.389375% | 1.363750% |
+
+All eight pairs pass the unchanged checks. The gingerbread ordering reverses;
+maple leaf is equal or better with the new version. All eight still skip the new
+branch. This supports variation in the time-limited search rather than a
+systematic quality regression from checkpoint selection. Two repeats are not
+a statistical guarantee. These fresh-process results also differ from the
+long-running corpus process, so they are preserved as diagnostics rather than
+substituted into the benchmark.
 
 The first baseline browser attempt failed before fitting because an existing
 preview process still referenced bundles removed by the preceding build. Its
