@@ -1,7 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {CurveGraph} from '../../static/inverse/core/direct/curves.js';
-import {featureDetailPlan,smallInteriorFeatures} from '../../static/inverse/core/direct/feature-details.js';
+import {featureDetailPlan,featurePolishPlan,smallInteriorFeatures} from '../../static/inverse/core/direct/feature-details.js';
+import {refineCurves} from '../../static/inverse/core/direct/refine.js';
 import {imageFeatures,auditImageFeatures} from '../../static/inverse/core/image-features.js';
 import {settings} from '../../static/inverse/core/settings.js';
 import {solutionJSON} from '../../static/inverse/core/graph.js';
@@ -45,4 +46,26 @@ test('component overlap exposes an unwanted connection that pixel retention cann
   assert.equal(eye.retention,1);assert.equal(eye.touchesBorder,true);assert.ok(eye.componentIoU<.3);
   const exact=featureComponentMetrics(source,source.mask).find(f=>f.centerMm[0]===50);
   assert.equal(exact.componentIoU,1);assert.equal(exact.touchesBorder,false);
+});
+
+test('scoped feature polishing fixes distant controls and keeps shared cuts and source pixels intact',()=>{
+  const source=artwork(),features=imageFeatures(source),shared=line([45,45],[55,55]);
+  const graph=new CurveGraph([[[line([45,0],[45,45]),shared,line([55,55],[55,100])]],[[line([0,55],[55,55]),shared.toReversed(),line([45,45],[100,45])]]]);
+  const before=graph.points.slice(),fixed=graph.fixed.slice(),mask=source.mask.slice(),probability=source.probability.slice();
+  const plan=featurePolishPlan(graph,before,source,features,cfg,n);
+  assert.ok(plan);assert.ok(plan.report.freeControls>0);
+  assert.deepEqual(plan.graph.nested(),graph.nested());
+  assert.deepEqual(plan.graph.visible,graph.visible,'Scoping must not turn an invisible shared cut into two independent paths');
+  assert.equal(plan.objective.weights[100*n+104],1,'Both colours near the small region receive equal weight');
+  assert.equal(plan.objective.weights[100*n+115],1/16);
+  const steps=[];
+  refineCurves(plan.graph,plan.objective.probability,n,1,cfg,{steps:6,checkpointEvery:4,weights:plan.objective.weights,input:{sourceImage:source},onProgress:(row,solution)=>{
+    steps.push(row.step);
+    plan.graph.edges.forEach((ids,e)=>ids.forEach((id,k)=>{
+      for(let axis=0;axis<2;axis++)if(plan.graph.fixed[2*id+axis])assert.equal(solution.graph.edges[e].curve.p[k][axis],plan.graph.points[2*id+axis]);
+    }));
+  }});
+  assert.ok(steps.includes(4)&&steps.includes(5),'Short passes retain intermediate and final checked candidates');
+  assert.deepEqual(graph.points,before);assert.deepEqual(graph.fixed,fixed);
+  assert.deepEqual(source.mask,mask);assert.deepEqual(source.probability,probability);
 });

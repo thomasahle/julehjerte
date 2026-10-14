@@ -1,0 +1,777 @@
+{
+  "baseCommit": "d872d7b",
+  "sourceMaskSha256": "bc122e4659773ece5abab69eae4934c528c8eba8feda8c0aa92d5e6ba86afe91",
+  "scope": "Fixed crop and unchanged mask. Offline interventions, followed by fresh source-only solves and production regressions. Not a fresh full-corpus release.",
+  "baseline": {
+    "measurements": {
+      "400": {
+        "error": 0.02530625,
+        "features": [
+          {
+            "centerMm": [
+              62.31207611152977,
+              50.64873775433309
+            ],
+            "sourceAreaMm2": 82.9375,
+            "intersectionPixels": 1327,
+            "retention": 1,
+            "predictedComponentAreaMm2": 98.125,
+            "touchesBorder": false,
+            "componentIoU": 0.8452229299363058
+          },
+          {
+            "centerMm": [
+              23.10141509433962,
+              46.09198113207547
+            ],
+            "sourceAreaMm2": 3.3125,
+            "intersectionPixels": 49,
+            "retention": 0.9245283018867925,
+            "predictedComponentAreaMm2": 3.5,
+            "touchesBorder": false,
+            "componentIoU": 0.8166666666666667
+          },
+          {
+            "centerMm": [
+              70.70108695652173,
+              97.93478260869566
+            ],
+            "sourceAreaMm2": 5.75,
+            "intersectionPixels": 92,
+            "retention": 1,
+            "predictedComponentAreaMm2": 5611.8125,
+            "touchesBorder": true,
+            "componentIoU": 0.001024624397197875
+          }
+        ]
+      },
+      "800": {
+        "error": 0.026328125,
+        "features": [
+          {
+            "centerMm": [
+              62.31207611152977,
+              50.64873775433309
+            ],
+            "sourceAreaMm2": 82.9375,
+            "intersectionPixels": 5308,
+            "retention": 1,
+            "predictedComponentAreaMm2": 98,
+            "touchesBorder": false,
+            "componentIoU": 0.8463010204081632
+          },
+          {
+            "centerMm": [
+              23.10141509433962,
+              46.09198113207547
+            ],
+            "sourceAreaMm2": 3.3125,
+            "intersectionPixels": 185,
+            "retention": 0.8726415094339622,
+            "predictedComponentAreaMm2": 2.953125,
+            "touchesBorder": false,
+            "componentIoU": 0.8564814814814815
+          },
+          {
+            "centerMm": [
+              70.70108695652173,
+              97.93478260869566
+            ],
+            "sourceAreaMm2": 5.75,
+            "intersectionPixels": 368,
+            "retention": 1,
+            "predictedComponentAreaMm2": 5610.09375,
+            "touchesBorder": true,
+            "componentIoU": 0.0010249383087403841
+          }
+        ]
+      }
+    },
+    "solverSeconds": 9.001052625
+  },
+  "routingComparison": [
+    {
+      "name": "first-1.5",
+      "objective": 2148.270961,
+      "gap": 0.26424965943426676,
+      "routingSeconds": 0.9489213750000001,
+      "raw": {
+        "geometryPassed": true,
+        "paperPassed": true,
+        "scores": {
+          "400": {
+            "error": 0.02529375,
+            "eye": {
+              "centerMm": [
+                23.10141509433962,
+                46.09198113207547
+              ],
+              "sourceAreaMm2": 3.3125,
+              "intersectionPixels": 49,
+              "retention": 0.9245283018867925,
+              "predictedComponentAreaMm2": 3.5,
+              "touchesBorder": false,
+              "componentIoU": 0.8166666666666667
+            }
+          },
+          "800": {
+            "error": 0.026321875,
+            "eye": {
+              "centerMm": [
+                23.10141509433962,
+                46.09198113207547
+              ],
+              "sourceAreaMm2": 3.3125,
+              "intersectionPixels": 185,
+              "retention": 0.8726415094339622,
+              "predictedComponentAreaMm2": 2.953125,
+              "touchesBorder": false,
+              "componentIoU": 0.8564814814814815
+            }
+          }
+        }
+      },
+      "refined": {
+        "geometryPassed": true,
+        "paperPassed": true,
+        "scores": {
+          "400": {
+            "error": 0.025025,
+            "eye": {
+              "centerMm": [
+                23.10141509433962,
+                46.09198113207547
+              ],
+              "sourceAreaMm2": 3.3125,
+              "intersectionPixels": 50,
+              "retention": 0.9433962264150944,
+              "predictedComponentAreaMm2": 3.5,
+              "touchesBorder": false,
+              "componentIoU": 0.847457627118644
+            }
+          },
+          "800": {
+            "error": 0.0262234375,
+            "eye": {
+              "centerMm": [
+                23.10141509433962,
+                46.09198113207547
+              ],
+              "sourceAreaMm2": 3.3125,
+              "intersectionPixels": 190,
+              "retention": 0.8962264150943396,
+              "predictedComponentAreaMm2": 3.078125,
+              "touchesBorder": false,
+              "componentIoU": 0.867579908675799
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "optimized-1.5",
+      "objective": 1645.4308644,
+      "gap": 0.0063698613859431066,
+      "routingSeconds": 0.8922468329999997,
+      "raw": {
+        "geometryPassed": true,
+        "paperPassed": true,
+        "scores": {
+          "400": {
+            "error": 0.02529375,
+            "eye": {
+              "centerMm": [
+                23.10141509433962,
+                46.09198113207547
+              ],
+              "sourceAreaMm2": 3.3125,
+              "intersectionPixels": 49,
+              "retention": 0.9245283018867925,
+              "predictedComponentAreaMm2": 3.5,
+              "touchesBorder": false,
+              "componentIoU": 0.8166666666666667
+            }
+          },
+          "800": {
+            "error": 0.026321875,
+            "eye": {
+              "centerMm": [
+                23.10141509433962,
+                46.09198113207547
+              ],
+              "sourceAreaMm2": 3.3125,
+              "intersectionPixels": 185,
+              "retention": 0.8726415094339622,
+              "predictedComponentAreaMm2": 2.953125,
+              "touchesBorder": false,
+              "componentIoU": 0.8564814814814815
+            }
+          }
+        }
+      },
+      "refined": {
+        "geometryPassed": true,
+        "paperPassed": true,
+        "scores": {
+          "400": {
+            "error": 0.025025,
+            "eye": {
+              "centerMm": [
+                23.10141509433962,
+                46.09198113207547
+              ],
+              "sourceAreaMm2": 3.3125,
+              "intersectionPixels": 50,
+              "retention": 0.9433962264150944,
+              "predictedComponentAreaMm2": 3.5,
+              "touchesBorder": false,
+              "componentIoU": 0.847457627118644
+            }
+          },
+          "800": {
+            "error": 0.0262234375,
+            "eye": {
+              "centerMm": [
+                23.10141509433962,
+                46.09198113207547
+              ],
+              "sourceAreaMm2": 3.3125,
+              "intersectionPixels": 190,
+              "retention": 0.8962264150943396,
+              "predictedComponentAreaMm2": 3.078125,
+              "touchesBorder": false,
+              "componentIoU": 0.867579908675799
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "optimized-3",
+      "objective": 1645.4308644,
+      "gap": 0.0063698613859431066,
+      "routingSeconds": 0.7892863750000005,
+      "raw": {
+        "geometryPassed": true,
+        "paperPassed": true,
+        "scores": {
+          "400": {
+            "error": 0.02529375,
+            "eye": {
+              "centerMm": [
+                23.10141509433962,
+                46.09198113207547
+              ],
+              "sourceAreaMm2": 3.3125,
+              "intersectionPixels": 49,
+              "retention": 0.9245283018867925,
+              "predictedComponentAreaMm2": 3.5,
+              "touchesBorder": false,
+              "componentIoU": 0.8166666666666667
+            }
+          },
+          "800": {
+            "error": 0.026321875,
+            "eye": {
+              "centerMm": [
+                23.10141509433962,
+                46.09198113207547
+              ],
+              "sourceAreaMm2": 3.3125,
+              "intersectionPixels": 185,
+              "retention": 0.8726415094339622,
+              "predictedComponentAreaMm2": 2.953125,
+              "touchesBorder": false,
+              "componentIoU": 0.8564814814814815
+            }
+          }
+        }
+      },
+      "refined": {
+        "geometryPassed": true,
+        "paperPassed": true,
+        "scores": {
+          "400": {
+            "error": 0.025025,
+            "eye": {
+              "centerMm": [
+                23.10141509433962,
+                46.09198113207547
+              ],
+              "sourceAreaMm2": 3.3125,
+              "intersectionPixels": 50,
+              "retention": 0.9433962264150944,
+              "predictedComponentAreaMm2": 3.5,
+              "touchesBorder": false,
+              "componentIoU": 0.847457627118644
+            }
+          },
+          "800": {
+            "error": 0.0262234375,
+            "eye": {
+              "centerMm": [
+                23.10141509433962,
+                46.09198113207547
+              ],
+              "sourceAreaMm2": 3.3125,
+              "intersectionPixels": 190,
+              "retention": 0.8962264150943396,
+              "predictedComponentAreaMm2": 3.078125,
+              "touchesBorder": false,
+              "componentIoU": 0.867579908675799
+            }
+          }
+        }
+      }
+    }
+  ],
+  "backtracking": {
+    "validPartialStep": {
+      "checkpoint": 0,
+      "step": 40,
+      "alpha": 0.03125,
+      "geometryPassed": true,
+      "paperPassed": true,
+      "issues": [],
+      "scores": {
+        "400": {
+          "error": 0.02493125,
+          "eye": {
+            "centerMm": [
+              23.10141509433962,
+              46.09198113207547
+            ],
+            "sourceAreaMm2": 3.3125,
+            "intersectionPixels": 51,
+            "retention": 0.9622641509433962,
+            "predictedComponentAreaMm2": 3.5625,
+            "touchesBorder": false,
+            "componentIoU": 0.864406779661017
+          }
+        },
+        "800": {
+          "error": 0.026146875,
+          "eye": {
+            "centerMm": [
+              23.10141509433962,
+              46.09198113207547
+            ],
+            "sourceAreaMm2": 3.3125,
+            "intersectionPixels": 193,
+            "retention": 0.910377358490566,
+            "predictedComponentAreaMm2": 3.125,
+            "touchesBorder": false,
+            "componentIoU": 0.8812785388127854
+          }
+        }
+      }
+    },
+    "productionChange": false,
+    "reason": "Complete backtracking audits did not reach this fraction reliably inside a short deadline; localized refinement with more frequent checkpoints was tested instead."
+  },
+  "freshHaloRuns": {
+    "10": {
+      "solverSeconds": 9.013392333,
+      "templateChecksPassed": true,
+      "measurements": {
+        "400": {
+          "error": 0.0252375,
+          "features": [
+            {
+              "centerMm": [
+                62.31207611152977,
+                50.64873775433309
+              ],
+              "sourceAreaMm2": 82.9375,
+              "intersectionPixels": 1327,
+              "retention": 1,
+              "predictedComponentAreaMm2": 98.125,
+              "touchesBorder": false,
+              "componentIoU": 0.8452229299363058
+            },
+            {
+              "centerMm": [
+                23.10141509433962,
+                46.09198113207547
+              ],
+              "sourceAreaMm2": 3.3125,
+              "intersectionPixels": 52,
+              "retention": 0.9811320754716981,
+              "predictedComponentAreaMm2": 3.25,
+              "touchesBorder": false,
+              "componentIoU": 0.9811320754716981
+            },
+            {
+              "centerMm": [
+                70.70108695652173,
+                97.93478260869566
+              ],
+              "sourceAreaMm2": 5.75,
+              "intersectionPixels": 92,
+              "retention": 1,
+              "predictedComponentAreaMm2": 5611.6875,
+              "touchesBorder": true,
+              "componentIoU": 0.001024647220644414
+            }
+          ]
+        },
+        "800": {
+          "error": 0.0262453125,
+          "features": [
+            {
+              "centerMm": [
+                62.31207611152977,
+                50.64873775433309
+              ],
+              "sourceAreaMm2": 82.9375,
+              "intersectionPixels": 5308,
+              "retention": 1,
+              "predictedComponentAreaMm2": 98,
+              "touchesBorder": false,
+              "componentIoU": 0.8463010204081632
+            },
+            {
+              "centerMm": [
+                23.10141509433962,
+                46.09198113207547
+              ],
+              "sourceAreaMm2": 3.3125,
+              "intersectionPixels": 200,
+              "retention": 0.9433962264150944,
+              "predictedComponentAreaMm2": 3.234375,
+              "touchesBorder": false,
+              "componentIoU": 0.91324200913242
+            },
+            {
+              "centerMm": [
+                70.70108695652173,
+                97.93478260869566
+              ],
+              "sourceAreaMm2": 5.75,
+              "intersectionPixels": 368,
+              "retention": 1,
+              "predictedComponentAreaMm2": 5609.765625,
+              "touchesBorder": true,
+              "componentIoU": 0.0010249982591741522
+            }
+          ]
+        }
+      }
+    },
+    "180": {
+      "solverSeconds": 13.869506625,
+      "templateChecksPassed": true,
+      "measurements": {
+        "400": {
+          "error": 0.0248625,
+          "features": [
+            {
+              "centerMm": [
+                62.31207611152977,
+                50.64873775433309
+              ],
+              "sourceAreaMm2": 82.9375,
+              "intersectionPixels": 1327,
+              "retention": 1,
+              "predictedComponentAreaMm2": 97.375,
+              "touchesBorder": false,
+              "componentIoU": 0.8517329910141207
+            },
+            {
+              "centerMm": [
+                23.10141509433962,
+                46.09198113207547
+              ],
+              "sourceAreaMm2": 3.3125,
+              "intersectionPixels": 52,
+              "retention": 0.9811320754716981,
+              "predictedComponentAreaMm2": 3.25,
+              "touchesBorder": false,
+              "componentIoU": 0.9811320754716981
+            },
+            {
+              "centerMm": [
+                70.70108695652173,
+                97.93478260869566
+              ],
+              "sourceAreaMm2": 5.75,
+              "intersectionPixels": 92,
+              "retention": 1,
+              "predictedComponentAreaMm2": 5611.75,
+              "touchesBorder": true,
+              "componentIoU": 0.001024635808794048
+            }
+          ]
+        },
+        "800": {
+          "error": 0.0259796875,
+          "features": [
+            {
+              "centerMm": [
+                62.31207611152977,
+                50.64873775433309
+              ],
+              "sourceAreaMm2": 82.9375,
+              "intersectionPixels": 5307,
+              "retention": 0.9998116051243406,
+              "predictedComponentAreaMm2": 97.359375,
+              "touchesBorder": false,
+              "componentIoU": 0.8515725288831836
+            },
+            {
+              "centerMm": [
+                23.10141509433962,
+                46.09198113207547
+              ],
+              "sourceAreaMm2": 3.3125,
+              "intersectionPixels": 200,
+              "retention": 0.9433962264150944,
+              "predictedComponentAreaMm2": 3.25,
+              "touchesBorder": false,
+              "componentIoU": 0.9090909090909091
+            },
+            {
+              "centerMm": [
+                70.70108695652173,
+                97.93478260869566
+              ],
+              "sourceAreaMm2": 5.75,
+              "intersectionPixels": 368,
+              "retention": 1,
+              "predictedComponentAreaMm2": 5609.921875,
+              "touchesBorder": true,
+              "componentIoU": 0.0010249697104739092
+            }
+          ]
+        }
+      }
+    }
+  },
+  "productionFocused": {
+    "tests": 7,
+    "passed": 7,
+    "failed": 0,
+    "log": "tmp/heart-learning/eye-routing-v1/production-focused.log"
+  },
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/compare.mjs",
+      "sha256": "74617dc4efce6d8267ddfa084c20c4fe1cdd2adf5e1a42f4533c637f8c7d3548",
+      "bytes": 4323
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/backtrack.mjs",
+      "sha256": "dbb0c44b2b56c3e8e8b7d473cb89f682a331d0f0f1dfa76908cc4379cae0ecd4",
+      "bytes": 3700
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/backtrack-more.mjs",
+      "sha256": "3b253451a11499a34059b2f0564cf90b7ba0aa03b2d88574f6d2b845cbaeffbb",
+      "bytes": 3283
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/local.mjs",
+      "sha256": "9e6606a4a198a19af780ada666660408b8831d434c57821eb54d44a2f873ab2e",
+      "bytes": 4714
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/local-short.mjs",
+      "sha256": "d3bd2a4dbb34c9e330c31db4dc36ab8da60447b8360be4703684074b8bbbbc2a",
+      "bytes": 4782
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/local-initial.mjs",
+      "sha256": "541a0cd82a52977a1b65555309de1ebaeb30f6a221caefbe9a9c053035b91936",
+      "bytes": 4834
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/comparison.json",
+      "sha256": "3930042b23b84f1312ea57b5b6a62134b4cc06e23b29dc07c4a0c49eb1a0ecc2",
+      "bytes": 81653
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/backtrack-results.json",
+      "sha256": "4d691c9267623ba454dff8151370359d556c4fe8c432d603066434f7a2fa7fd0",
+      "bytes": 25320
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/backtrack-more-results.json",
+      "sha256": "d2b90c654ccd98a93a90f14cc379be097bd60ea4583e58f46ec388d7858767aa",
+      "bytes": 9864
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/local-results.json",
+      "sha256": "75cff068bc6474b1c812cad35cbe757b265e6191c9a3fcbf3eb24d128371fe57",
+      "bytes": 35736
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/local-short-results.json",
+      "sha256": "b7c01f107cd4c5d7340de1bbacae6cfd5d2e2d0521847328d29f482172038b1b",
+      "bytes": 34601
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/local-initial-results.json",
+      "sha256": "6551af9eeddf37b251809e198006b25a1d58e019ed89c5bbdeb5003438417a10",
+      "bytes": 28149
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/fresh-local-10/measurements.json",
+      "sha256": "3a2ee414f60f7ea374b376d8803acdf637cc92f5ba87717e0edf123ffb903676",
+      "bytes": 2077
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/fresh-local-halo-10/measurements.json",
+      "sha256": "59371517d05f9797df8321fc2323c6d89f196a7be23e7aab790a0a78f20f3e3b",
+      "bytes": 2082
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/fresh-local-halo-180/measurements.json",
+      "sha256": "b1c28de53cf5ce63d538d8a96135855d8ccb299005ae9f23182b26a5ade79353",
+      "bytes": 2102
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/production-focused.log",
+      "sha256": "d768c6e480c358f915888ab805435f275c2961908a4a36c8d9f0ff41214670ee",
+      "bytes": 872
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/comparison.png",
+      "sha256": "b0264c2cac3cc0707ce19577ccd17486cbad6a907951f5a30f482915e1080630",
+      "bytes": 19125
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/capture.mjs",
+      "sha256": "522b7a87edd6983842eb7e403dd042497dc26e4e03459ed6c6a9b8e70eacd6c4",
+      "bytes": 2527
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/input.json",
+      "sha256": "b91c97a98b5339c807e3dfe9d7f8914e346b51d1dfa1a89d3736087ed4c928ea",
+      "bytes": 640043
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/rejected.json",
+      "sha256": "d4ef25b6bbcc305d21f43375e5f7671916353cbe3ac1e86208ce5422c12363cd",
+      "bytes": 33681
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/inverse/core/direct/fit.js",
+      "sha256": "2b8b39caddc4fd61d07cf8e965a81c3eced841d87d38c157807ab0b9983be732",
+      "bytes": 62089
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/inverse/core/direct/refine.js",
+      "sha256": "d3020fff836da449d0525b8cc9a45dd9a5bfef0152db339c114599a399a0d36c",
+      "bytes": 18511
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/inverse/core/direct/polish.js",
+      "sha256": "a0f8535cfb387969e45d1e401b4db959b2c906f2f907b410da81ec8a92de42fb",
+      "bytes": 2187
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/inverse-backtrack/core/direct/fit.js",
+      "sha256": "2b8b39caddc4fd61d07cf8e965a81c3eced841d87d38c157807ab0b9983be732",
+      "bytes": 62089
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/inverse-backtrack/core/direct/refine.js",
+      "sha256": "27838b26921456ad5653d828a780eee7914f0ed9e8dea6176036de77152ee875",
+      "bytes": 19893
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/inverse-backtrack/core/direct/polish.js",
+      "sha256": "a0f8535cfb387969e45d1e401b4db959b2c906f2f907b410da81ec8a92de42fb",
+      "bytes": 2187
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/inverse-backtrack-fast/core/direct/fit.js",
+      "sha256": "2b8b39caddc4fd61d07cf8e965a81c3eced841d87d38c157807ab0b9983be732",
+      "bytes": 62089
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/inverse-backtrack-fast/core/direct/refine.js",
+      "sha256": "ce9d3800e1c71607a1813a291e22e45940486eb1c5e7742b07d980374de376a0",
+      "bytes": 19894
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/inverse-backtrack-fast/core/direct/polish.js",
+      "sha256": "a0f8535cfb387969e45d1e401b4db959b2c906f2f907b410da81ec8a92de42fb",
+      "bytes": 2187
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/inverse-local/core/direct/fit.js",
+      "sha256": "44b4badf98bc7ca32f924e7cbd3ac75c47fee789c17d5dc1787de34e1f7164ac",
+      "bytes": 62137
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/inverse-local/core/direct/refine.js",
+      "sha256": "0eed2d025410b9a9ea90697c0fbb88aa9cc3cfd459b7ab24be1c7c1c21306bbe",
+      "bytes": 18582
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/inverse-local/core/direct/polish.js",
+      "sha256": "f0f007c10ac82756ffb897738278e615afb5c666467151ff2128c55a5250ab99",
+      "bytes": 3472
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/inverse-local-halo/core/direct/fit.js",
+      "sha256": "44b4badf98bc7ca32f924e7cbd3ac75c47fee789c17d5dc1787de34e1f7164ac",
+      "bytes": 62137
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/inverse-local-halo/core/direct/refine.js",
+      "sha256": "0eed2d025410b9a9ea90697c0fbb88aa9cc3cfd459b7ab24be1c7c1c21306bbe",
+      "bytes": 18582
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/inverse-local-halo/core/direct/polish.js",
+      "sha256": "4393c52d9d3bcd1e3c6878938ac9c13cd99ebfc8f99acd4ba6694ce2331a199b",
+      "bytes": 4063
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/fresh-local-halo-10/report.json",
+      "sha256": "74b2b4f94d69428b19b2ea8fe5f56786541445f0bb03d933bb429c79197d07fe",
+      "bytes": 88966
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/fresh-local-halo-10/cut_geometry.json",
+      "sha256": "54036562a1ab67cd3aebec5e89624d487bd5de56c5fc37c90bc934d577f3fd94",
+      "bytes": 167488
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/fresh-local-halo-10/capture.log",
+      "sha256": "21f0218b5370650bf4442d504e2190003f8c0f340d812689c499ed3a0032f085",
+      "bytes": 1432
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/fresh-local-halo-180/report.json",
+      "sha256": "172819079231541ed44e18295e8e7a23400b1e207f65ac0ed92c873b041a16f7",
+      "bytes": 102681
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/fresh-local-halo-180/cut_geometry.json",
+      "sha256": "eb4767cd4b3892bb37f4e86bb78e505f9a7bfb9398b21c1f240b60fa2de83efb",
+      "bytes": 119457
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/fresh-local-halo-180/capture.log",
+      "sha256": "f0c2c301f446d92622e27661951dad4256d82e611d9c340995eaba371e2e68b4",
+      "bytes": 1453
+    }
+  ],
+  "productionSources": {
+    "static/inverse/core/direct/feature-details.js": "b4c07ebd50fe821c37cd61ca1404c70370f50120a4c2058f7c11e743b4cfcb49",
+    "static/inverse/core/direct/fit.js": "fe2aca0ad9068a6425e19f34c43c9a5bd398aa9e76c852b684f09fbd9029cbf1",
+    "static/inverse/core/direct/polish.js": "4d96c771f4c4dcb0a4b4cba1ad422fe3d5b73c8fc928848ba03417ba2685980a",
+    "static/inverse/core/direct/refine.js": "39105b04e208a53d16d3990a57584d73b33536b27885d2e0048ddb0a717f9502",
+    "scripts/inverse/feature-details.test.mjs": "471496951a651b11bc65525455592b60060cd76b52ddd762dd9c5861c6c2e40f",
+    "scripts/inverse/fitted-rerouting.test.mjs": "8d89b1c36bdd545c3566b2915637eaa1d5db06e75b874b3b818a1d2ffad8760b"
+  },
+  "limitations": [
+    "The head outline still contains a visible step and tiny false seams; the improved eye is not a complete visual reconstruction.",
+    "Full inverse/app/build and fresh 22/31 benchmark and editable/browser QA are pending for this change.",
+    "Timing samples are native runs with process startup and independent rendering excluded from solverSeconds.",
+    "No physical cutting or assembly validation."
+  ]
+}

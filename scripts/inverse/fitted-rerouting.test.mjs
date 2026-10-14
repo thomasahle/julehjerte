@@ -73,7 +73,7 @@ for(const timeLimit of [10,180])test(`a fresh shifted bird fit reroutes its reje
     assert.ok(error<.027,'The legal routing must retain the original-image quality.');
     const eye=featureComponentMetrics({mask:expected,resolution},rendered.mask).find(f=>f.centerMm[0]<30);
     assert.equal(eye.touchesBorder,false);assert.ok(eye.retention>=.9);
-    assert.ok(eye.componentIoU>.45,'The enclosed eye remains imperfect, but cannot become a large unrelated region.');
+    assert.ok(eye.componentIoU>.85,'Retaining the eye must also preserve its shape, without inflating it into surrounding paper.');
   }
   assert.deepEqual(source.mask,mask);assert.deepEqual(source.probability,probability);
 });

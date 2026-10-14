@@ -98,7 +98,8 @@ export function curvePenalty(graph,points,cfg,{separationWeight=12}={}){
   return{loss,gradient,minRadius};
 }
 
-export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity,onProgress=()=>{},input={},rate=.035,identicalSheets=false,stopWhen=null,selection='boundary',weights=null,preferCheckpoint=null,skipRepeatedRollbacks=false,finalGeometry=true}={}){
+export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=40,deadline=Infinity,onProgress=()=>{},input={},rate=.035,identicalSheets=false,stopWhen=null,selection='boundary',weights=null,preferCheckpoint=null,skipRepeatedRollbacks=false,finalGeometry=true}={}){
+  if(!Number.isInteger(checkpointEvery)||checkpointEvery<1)throw new RangeError('Checkpoint interval must be a positive integer.');
   // Compile the weighted force field once, not on every optimization step.
   const objective=boundaryObjective(prob,weights),force=objective.target;
   const imageValue=createBoundaryEvaluator(graph,force,n),transposedImageValue=createBoundaryEvaluator(graph,force,n,{transpose:true,rows:193});
@@ -189,10 +190,10 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity
     let repeatedRollback=false;
     if(!accepted&&safe){
       points.set(safe);adam.reset();adam.rate=Math.max(.004*graph.width/100,adam.rate*.65);
-      // Equal reset coordinates and rate give the same next 40-step block.
+      // Equal reset coordinates and rate give the same next checkpoint block.
       // Require exact equality and consecutive full checkpoints; a smaller
       // rate, a new safe point or a partial block cannot establish a cycle.
-      repeatedRollback=!!lastRollback&&step-lastRollback.step===40&&adam.rate===lastRollback.rate&&safe.every((v,i)=>Object.is(v,lastRollback.points[i]));
+      repeatedRollback=!!lastRollback&&step-lastRollback.step===checkpointEvery&&adam.rate===lastRollback.rate&&safe.every((v,i)=>Object.is(v,lastRollback.points[i]));
       lastRollback={step,rate:adam.rate,points:safe};
     }else lastRollback=null;
     return repeatedRollback;
@@ -216,13 +217,13 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,deadline=Infinity
       if(!recovered){points.set(previous);adam.reset();adam.rate=Math.max(.004*graph.width/100,adam.rate*.5);}
     }
     completed++;
-    if(step%40===0||step===steps-1){
+    if(step%checkpointEvery===0||step===steps-1){
       const repeated=checkpoint(step);
       if(skipRepeatedRollbacks&&repeated){
         // Preserve the final (possibly partial) block: its last checkpoint can
-        // be better than the repeated 40-step endpoint. Only skip full copies
+        // be better than the repeated block's endpoint. Only skip full copies
         // of a block already computed from exactly the same optimizer state.
-        const skip=Math.max(0,40*Math.floor((steps-2-step)/40));
+        const skip=Math.max(0,checkpointEvery*Math.floor((steps-2-step)/checkpointEvery));
         if(skip){
           step+=skip;completed+=skip;skippedSteps+=skip;lastRollback.step=step;
           history.push({...history.at(-1),step,skippedSteps:skip});
