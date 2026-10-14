@@ -31,8 +31,10 @@ The 2026-10-14 snapshot contains:
 The [final-export integration](final-return-integration.md) now connects the
 shared whole-cut checker and bounded repair to the engine and editor. Its
 frozen-output replay retains all 47 accepted outputs without increasing image
-error. Fresh solving, speed and browser QA remain pending; the benchmark figures
-below describe the earlier completed releases.
+error. Full inverse QA subsequently finds seven photographic regressions
+(837/844 passing), so this integration is not release-ready. Consistent geometry
+checks throughout fitting are under evaluation. The benchmark figures below
+describe the earlier completed releases; fresh release and browser QA are pending.
 
 The [row-initialization and scheduling release](row-initialization.md) now
 passes all 22 regular Hunodan designs below ten seconds (maximum 7.827 seconds,

@@ -1,5 +1,5 @@
 {
-  "scope": "Integrated complete-cut return checks and bounded final repair with optional image recovery. Frozen 51-output replay against 70b6fc5; two anchor regressions resolved. Fresh speed/quality and full repository/browser QA pending.",
+  "scope": "Integrated complete-cut return checks and bounded final repair with optional image recovery. Frozen 51-output replay against 70b6fc5; two anchor regressions resolved. Full inverse QA finds seven photographic regressions (837/844 passing); integration is not release-ready. Fresh speed/quality and browser QA pending.",
   "baselineCommit": "70b6fc5",
   "sourceHashes": {
     "src/lib/editor/curveIssues.ts": "fa07e5071f6efb87a21630abc0cdc2dfa5a6fd537eea2e46999fe362fb695b38",
@@ -831,5 +831,527 @@
     "tmp/heart-learning/final-integration-v1/anchor/returns.png": "63564737b53b9d803655699e481a323fe4d5157b38a191101de56fc609cc4ce7",
     "tmp/heart-learning/final-integration-v1/anchor/regressions.log": "3dd4054cc180bebc80f958b321b7f5d74d3ace4066bd339ad5a1ce7c4b122302",
     "tmp/heart-learning/final-integration-v1/anchor/focused-node.log": "c87c5246b71d0152955af0da77074d705160713359db8d80ffa9aaf8c194d513"
+  },
+  "fullQa": {
+    "checks": [
+      {
+        "stage": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 9.067353125
+      },
+      {
+        "stage": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 6.394405667000001
+      },
+      {
+        "stage": "app",
+        "command": [
+          "npx",
+          "vitest",
+          "run",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 0,
+        "seconds": 34.465954542
+      },
+      {
+        "stage": "build",
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 13.408133083000003
+      },
+      {
+        "stage": "inverse",
+        "command": [
+          "npm",
+          "run",
+          "test:inverse"
+        ],
+        "exitCode": 1,
+        "seconds": 866.460945292
+      }
+    ],
+    "application": {
+      "passed": 857,
+      "skipped": 1
+    },
+    "inverse": {
+      "total": 844,
+      "passed": 837,
+      "failed": 7
+    },
+    "failureFamilies": {
+      "nearMissClock": 4,
+      "halfResolutionPuppy": 1,
+      "shiftedBird": 2
+    },
+    "capturedRegressions": [
+      {
+        "name": "near-miss-original",
+        "sourceMaskSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890",
+        "resolution": 400,
+        "solveMilliseconds": 8608.636291,
+        "remainingFinalizationMilliseconds": 1391.3637089999993,
+        "baselinePassed": true,
+        "candidatePassed": false,
+        "repair": {
+          "attempted": true,
+          "accepted": false,
+          "attempts": [
+            {
+              "hiddenOnly": true,
+              "projection": {
+                "attempted": true,
+                "iterations": 1,
+                "displacements": 0,
+                "initialReturns": 2,
+                "finalReturns": 2,
+                "accepted": false,
+                "policy": "hidden-controls-only",
+                "maxIterations": 64,
+                "maxMilliseconds": 2000,
+                "preservedSymmetry": []
+              },
+              "accepted": false,
+              "milliseconds": 36.78229100000135
+            },
+            {
+              "hiddenOnly": false,
+              "projection": {
+                "attempted": true,
+                "iterations": 4,
+                "displacements": 5,
+                "initialReturns": 2,
+                "finalReturns": 0,
+                "accepted": true,
+                "policy": "all-free-controls",
+                "maxIterations": 64,
+                "maxMilliseconds": 2000,
+                "preservedSymmetry": []
+              },
+              "accepted": false,
+              "error": {
+                "mismatchPixels": 2233,
+                "observedPixels": 160000,
+                "observedFraction": 1,
+                "mismatchFraction": 0.01395625
+              },
+              "errorBefore": {
+                "mismatchPixels": 2229,
+                "observedPixels": 160000,
+                "observedFraction": 1,
+                "mismatchFraction": 0.01393125
+              },
+              "gates": {
+                "geometry": true,
+                "fixedPreserved": true,
+                "displacementBounded": true,
+                "matchingPreserved": true,
+                "symmetryPreserved": true,
+                "paper": true,
+                "features": true,
+                "imageNotWorse": false
+              },
+              "milliseconds": 1302.4153750000005
+            }
+          ]
+        },
+        "issues": [
+          {
+            "type": "short_self_clearance",
+            "family": 0,
+            "slit": 1,
+            "distanceUpper": 1.4771325193828064,
+            "required": 1.5
+          },
+          {
+            "type": "short_self_clearance",
+            "family": 1,
+            "slit": 1,
+            "distanceUpper": 1.4979026877632995,
+            "required": 1.5
+          }
+        ],
+        "extraRepair": {
+          "attempted": true,
+          "accepted": false,
+          "attempts": [
+            {
+              "hiddenOnly": true,
+              "projection": {
+                "attempted": true,
+                "iterations": 1,
+                "displacements": 0,
+                "initialReturns": 2,
+                "finalReturns": 2,
+                "accepted": false,
+                "policy": "hidden-controls-only",
+                "maxIterations": 64,
+                "maxMilliseconds": 5000,
+                "preservedSymmetry": []
+              },
+              "accepted": false,
+              "milliseconds": 28.228041000000303
+            },
+            {
+              "hiddenOnly": false,
+              "projection": {
+                "attempted": true,
+                "iterations": 4,
+                "displacements": 5,
+                "initialReturns": 2,
+                "finalReturns": 0,
+                "accepted": true,
+                "policy": "all-free-controls",
+                "maxIterations": 64,
+                "maxMilliseconds": 5000,
+                "preservedSymmetry": []
+              },
+              "accepted": false,
+              "error": {
+                "mismatchPixels": 2233,
+                "observedPixels": 160000,
+                "observedFraction": 1,
+                "mismatchFraction": 0.01395625
+              },
+              "errorBefore": {
+                "mismatchPixels": 2229,
+                "observedPixels": 160000,
+                "observedFraction": 1,
+                "mismatchFraction": 0.01393125
+              },
+              "gates": {
+                "geometry": true,
+                "fixedPreserved": true,
+                "displacementBounded": true,
+                "matchingPreserved": true,
+                "symmetryPreserved": true,
+                "paper": true,
+                "features": true,
+                "imageNotWorse": false
+              },
+              "milliseconds": 1470.6705829999992
+            }
+          ]
+        },
+        "extraMilliseconds": 1700.9727500000008,
+        "extraPassed": false,
+        "errors": {
+          "baseline": 0.01399375,
+          "candidate": 0.01399375,
+          "extra": 0.01399375
+        }
+      },
+      {
+        "name": "shifted-bird",
+        "sourceMaskSha256": "bc122e4659773ece5abab69eae4934c528c8eba8feda8c0aa92d5e6ba86afe91",
+        "resolution": 400,
+        "solveMilliseconds": 13647.272875,
+        "remainingFinalizationMilliseconds": 166352.727125,
+        "baselinePassed": true,
+        "candidatePassed": false,
+        "repair": {
+          "attempted": true,
+          "accepted": false,
+          "attempts": [
+            {
+              "hiddenOnly": true,
+              "projection": {
+                "attempted": true,
+                "iterations": 3,
+                "displacements": 2,
+                "initialReturns": 6,
+                "finalReturns": 6,
+                "accepted": false,
+                "policy": "hidden-controls-only",
+                "maxIterations": 64,
+                "maxMilliseconds": 2000,
+                "preservedSymmetry": []
+              },
+              "accepted": false,
+              "milliseconds": 111.75354199999856
+            },
+            {
+              "hiddenOnly": false,
+              "projection": {
+                "attempted": true,
+                "iterations": 20,
+                "displacements": 97,
+                "initialReturns": 6,
+                "finalReturns": 4,
+                "accepted": false,
+                "policy": "all-free-controls",
+                "maxIterations": 64,
+                "maxMilliseconds": 2000,
+                "preservedSymmetry": []
+              },
+              "accepted": false,
+              "milliseconds": 737.8850419999981
+            }
+          ]
+        },
+        "issues": [
+          {
+            "type": "short_self_clearance",
+            "family": 0,
+            "slit": 1,
+            "distanceUpper": 1.4929028836323357,
+            "required": 1.5
+          },
+          {
+            "type": "short_self_clearance",
+            "family": 0,
+            "slit": 1,
+            "distanceUpper": 1.4036767514985466,
+            "required": 1.5
+          },
+          {
+            "type": "short_self_clearance",
+            "family": 0,
+            "slit": 1,
+            "distanceUpper": 1.4036767514985466,
+            "required": 1.5
+          },
+          {
+            "type": "short_self_clearance",
+            "family": 1,
+            "slit": 2,
+            "distanceUpper": 1.4367956977946523,
+            "required": 1.5
+          },
+          {
+            "type": "short_self_clearance",
+            "family": 1,
+            "slit": 2,
+            "distanceUpper": 1.4367956977946523,
+            "required": 1.5
+          },
+          {
+            "type": "short_self_clearance",
+            "family": 1,
+            "slit": 2,
+            "distanceUpper": 1.4394202009343018,
+            "required": 1.5
+          }
+        ],
+        "extraRepair": {
+          "attempted": true,
+          "accepted": false,
+          "attempts": [
+            {
+              "hiddenOnly": true,
+              "projection": {
+                "attempted": true,
+                "iterations": 3,
+                "displacements": 2,
+                "initialReturns": 6,
+                "finalReturns": 6,
+                "accepted": false,
+                "policy": "hidden-controls-only",
+                "maxIterations": 64,
+                "maxMilliseconds": 5000,
+                "preservedSymmetry": []
+              },
+              "accepted": false,
+              "milliseconds": 112.65483299999687
+            },
+            {
+              "hiddenOnly": false,
+              "projection": {
+                "attempted": true,
+                "iterations": 20,
+                "displacements": 97,
+                "initialReturns": 6,
+                "finalReturns": 4,
+                "accepted": false,
+                "policy": "all-free-controls",
+                "maxIterations": 64,
+                "maxMilliseconds": 5000,
+                "preservedSymmetry": []
+              },
+              "accepted": false,
+              "milliseconds": 751.5237909999996
+            }
+          ]
+        },
+        "extraMilliseconds": 1267.0943340000013,
+        "extraPassed": false,
+        "errors": {
+          "baseline": 0.0217375,
+          "candidate": 0.0217375,
+          "extra": 0.0217375
+        }
+      },
+      {
+        "name": "half-puppy",
+        "sourceMaskSha256": "892ade9f2353db4be42a7c22ddec818734930e100a1ab6b63837e1d9b07076b5",
+        "resolution": 390,
+        "solveMilliseconds": 9119.854958,
+        "remainingFinalizationMilliseconds": 880.1450420000001,
+        "baselinePassed": true,
+        "candidatePassed": false,
+        "repair": {
+          "attempted": true,
+          "accepted": false,
+          "attempts": [
+            {
+              "hiddenOnly": true,
+              "projection": {
+                "attempted": true,
+                "iterations": 1,
+                "displacements": 0,
+                "initialReturns": 1,
+                "finalReturns": 1,
+                "accepted": false,
+                "policy": "hidden-controls-only",
+                "maxIterations": 64,
+                "maxMilliseconds": 2000,
+                "preservedSymmetry": []
+              },
+              "accepted": false,
+              "milliseconds": 23.999958000000333
+            },
+            {
+              "hiddenOnly": false,
+              "projection": {
+                "attempted": true,
+                "iterations": 11,
+                "displacements": 11,
+                "initialReturns": 1,
+                "finalReturns": 0,
+                "accepted": true,
+                "policy": "all-free-controls",
+                "maxIterations": 64,
+                "maxMilliseconds": 2000,
+                "preservedSymmetry": []
+              },
+              "accepted": false,
+              "error": {
+                "mismatchPixels": 1277,
+                "observedPixels": 152100,
+                "observedFraction": 1,
+                "mismatchFraction": 0.008395792241946087
+              },
+              "errorBefore": {
+                "mismatchPixels": 1268,
+                "observedPixels": 152100,
+                "observedFraction": 1,
+                "mismatchFraction": 0.008336620644312951
+              },
+              "gates": {
+                "geometry": true,
+                "fixedPreserved": true,
+                "displacementBounded": true,
+                "matchingPreserved": true,
+                "symmetryPreserved": true,
+                "paper": true,
+                "features": true,
+                "imageNotWorse": false
+              },
+              "milliseconds": 896.3446669999976
+            }
+          ]
+        },
+        "issues": [
+          {
+            "type": "short_self_clearance",
+            "family": 0,
+            "slit": 1,
+            "distanceUpper": 1.4955940938855974,
+            "required": 1.5
+          }
+        ],
+        "extraRepair": {
+          "attempted": true,
+          "accepted": false,
+          "attempts": [
+            {
+              "hiddenOnly": true,
+              "projection": {
+                "attempted": true,
+                "iterations": 1,
+                "displacements": 0,
+                "initialReturns": 1,
+                "finalReturns": 1,
+                "accepted": false,
+                "policy": "hidden-controls-only",
+                "maxIterations": 64,
+                "maxMilliseconds": 5000,
+                "preservedSymmetry": []
+              },
+              "accepted": false,
+              "milliseconds": 23.965250000001106
+            },
+            {
+              "hiddenOnly": false,
+              "projection": {
+                "attempted": true,
+                "iterations": 11,
+                "displacements": 11,
+                "initialReturns": 1,
+                "finalReturns": 0,
+                "accepted": true,
+                "policy": "all-free-controls",
+                "maxIterations": 64,
+                "maxMilliseconds": 5000,
+                "preservedSymmetry": []
+              },
+              "accepted": false,
+              "error": {
+                "mismatchPixels": 1277,
+                "observedPixels": 152100,
+                "observedFraction": 1,
+                "mismatchFraction": 0.008395792241946087
+              },
+              "errorBefore": {
+                "mismatchPixels": 1268,
+                "observedPixels": 152100,
+                "observedFraction": 1,
+                "mismatchFraction": 0.008336620644312951
+              },
+              "gates": {
+                "geometry": true,
+                "fixedPreserved": true,
+                "displacementBounded": true,
+                "matchingPreserved": true,
+                "symmetryPreserved": true,
+                "paper": true,
+                "features": true,
+                "imageNotWorse": false
+              },
+              "milliseconds": 2379.9807500000024
+            }
+          ]
+        },
+        "extraMilliseconds": 2725.070749999999,
+        "extraPassed": false,
+        "errors": {
+          "baseline": 0.008382642998027613,
+          "candidate": 0.008382642998027613,
+          "extra": 0.008382642998027613
+        }
+      }
+    ],
+    "artifacts": {
+      "tmp/heart-learning/final-integration-v1/qa-v2/checks.json": "5d9928234d8adba487df8da6b884e18d15119e93bc690cd0230d468ac5062674",
+      "tmp/heart-learning/final-integration-v1/qa-v2/source.json": "cc421eeb1ca1b7bc1ad783ee861dbf21e3da886d5b287efae4a8db60d81ece35",
+      "tmp/heart-learning/final-integration-v1/regressions/results.json": "0fcb2e4f0c64e586fea81e740e0b387576aa3c0c9032fadc90d58c2fbfab7e80",
+      "tmp/heart-learning/final-integration-v1/regressions/source.json": "fc36c257836237b1f92f59b5eeee7ed73ec05354490c5c2419cd3ae14a739473"
+    }
   }
 }

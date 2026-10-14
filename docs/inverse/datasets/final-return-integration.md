@@ -99,7 +99,20 @@ repair allowance includes image recovery, and the original solve deadline can
 shorten it; lack of time never permits an invalid export to claim a passed check.
 
 Type checking, lint, production build and all 857 application tests pass (one
-existing skip), along with 14 focused inverse regressions. Fresh full-corpus
-solving, actual editable SVG replay, the full inverse suite and browser QA remain
-pending. Earlier complete QA for the standalone shared module is recorded
+existing skip), along with 14 focused inverse regressions. The subsequent full
+inverse run passes **837 of 844 tests** and fails seven photographic regression
+cases: four clock crop/clock-pressure variants, a half-resolution puppy, and
+two shifted-bird searches. All seven fail the final template-check assertion.
+The final-export integration is therefore **not release-ready**. Fresh full-corpus
+solving, actual editable SVG replay and browser QA are still pending. Earlier
+complete QA for the standalone shared module is recorded
 [separately](shared-return-geometry-validation.json).
+
+Fresh captures reproduce three representative failures with the original
+classified-mask hashes. Giving final repair five seconds does not recover them:
+the clock and puppy can be projected into valid geometry but their image error
+increases, while widening the bird returns exceeds the unchanged maximum-turn
+constraint. These are not simply exhausted-time failures. Intermediate fitting
+and routing still use weaker geometry rules than final export; applying the
+complete rule throughout those stages is under isolated evaluation. Saved-output
+replay is insufficient evidence for fresh fitting.
