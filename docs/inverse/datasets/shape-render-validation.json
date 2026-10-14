@@ -1,0 +1,1889 @@
+{
+  "scope": "Same text-free weave SVGs with/without system-font loading. Rendering dimensions, cubic paths and fill rules are identical.",
+  "sourceHashes": {
+    "src/lib/data/heart-designs.json": "5f6efb0d7af8387d44134d41f7549c50b41d84679f1b83794592dc5ca559a9ab",
+    "src/lib/rendering/heartPaint.ts": "d8068059984944c548539323f132395956b96a741cf55bd58b26b009779baecd",
+    "src/lib/rendering/heartPaint.test.ts": "c8e058caf755c750a88cd394acaa6f43aa9b5196f57b7f9e34d18e8a0f60cb26",
+    "src/lib/rendering/svgWeave.ts": "79dac646c5fbfb998c7c85917b365b4e0c01b885d40795d0ee5eae7884ef34d1",
+    "src/lib/geometry/clipBezierLoop.ts": "d89a40c36eab8e05b4971689b380b801d150186e64b86aea9d5fa7cc1fa8b18f",
+    "src/lib/inverse/conversionFidelity.test.ts": "a1600fb6cead411effaa2115ed3d246e8c6622f2894aef2ffb67a70a6b271cee"
+  },
+  "rows": [
+    {
+      "id": "classic-3x3",
+      "phase": 0,
+      "joined": false,
+      "svgSha256": "56ade6a9ea1a9c1b6d6114ae5ba7f6981f779c58795c9c703d58bd30e2797a84",
+      "milliseconds": {
+        "systemFonts": 1479.547334,
+        "noSystemFonts": 0.5222079999998641
+      },
+      "pixelSha256": "04c83b11a841d3774f4b148c7eb9ba3172c0b030b9c2b2f154eefe6d1121d689",
+      "identicalPixels": true
+    },
+    {
+      "id": "classic-3x3",
+      "phase": 0,
+      "joined": true,
+      "svgSha256": "d8ff0fd1827777ee4bec0d0b4568d5ba0bc230d393938462f1be9b40eeff5838",
+      "milliseconds": {
+        "noSystemFonts": 1.4832080000001042,
+        "systemFonts": 1273.096125
+      },
+      "pixelSha256": "04c83b11a841d3774f4b148c7eb9ba3172c0b030b9c2b2f154eefe6d1121d689",
+      "identicalPixels": true
+    },
+    {
+      "id": "classic-3x3",
+      "phase": 1,
+      "joined": false,
+      "svgSha256": "eaa9c7d524ff8ae9f34c09fc975611bcee99b941e2257caa21389ff5c64c3a22",
+      "milliseconds": {
+        "systemFonts": 614.391791,
+        "noSystemFonts": 0.18095900000025722
+      },
+      "pixelSha256": "f31dfb6f8afa1f214b4306678a5a8e0d964c054e939c248da1b93770a26462d6",
+      "identicalPixels": true
+    },
+    {
+      "id": "classic-3x3",
+      "phase": 1,
+      "joined": true,
+      "svgSha256": "8d08329103e049d6121d7c1f2b19e7cbca05ef18d7679916a3b3a992ce80c935",
+      "milliseconds": {
+        "noSystemFonts": 0.20454099999960818,
+        "systemFonts": 128.38754100000006
+      },
+      "pixelSha256": "f31dfb6f8afa1f214b4306678a5a8e0d964c054e939c248da1b93770a26462d6",
+      "identicalPixels": true
+    },
+    {
+      "id": "ramme",
+      "phase": 0,
+      "joined": false,
+      "svgSha256": "6d74336624ad93dab8f02fda3267e5fb1b0d778e288774558d7830e76bcbc3b0",
+      "milliseconds": {
+        "systemFonts": 122.6436249999997,
+        "noSystemFonts": 0.4069159999999101
+      },
+      "pixelSha256": "488de987b7422b83c43bed371cc7e9e1f3af6ba2500cc5dc8d21177289b95560",
+      "identicalPixels": true
+    },
+    {
+      "id": "ramme",
+      "phase": 0,
+      "joined": true,
+      "svgSha256": "7a33445b37c20b933409641a3e7c4ba65c569f039c46746632b12c9c2041a069",
+      "milliseconds": {
+        "noSystemFonts": 0.4108750000004875,
+        "systemFonts": 101.36349999999948
+      },
+      "pixelSha256": "a06ef45878c43fe8c30df94faa1e713d45c1f8b92800f89a9bf5ec1d26d1e1a6",
+      "identicalPixels": true
+    },
+    {
+      "id": "ramme",
+      "phase": 1,
+      "joined": false,
+      "svgSha256": "4fc74b6f12e4022dd29684ed9e743db83856c91784ac1c7c893e11922f585ecf",
+      "milliseconds": {
+        "systemFonts": 112.50233299999945,
+        "noSystemFonts": 0.38462499999968713
+      },
+      "pixelSha256": "a26d1e203c4a8e5b94b1eaff5fd1bb339971b583dee8d980e19fc36383ef0a35",
+      "identicalPixels": true
+    },
+    {
+      "id": "ramme",
+      "phase": 1,
+      "joined": true,
+      "svgSha256": "8635bef376fb09960b1a85397ce0083bac991d3948ce292b130af7d8cde5f3fb",
+      "milliseconds": {
+        "noSystemFonts": 0.3495419999999285,
+        "systemFonts": 113.10620800000015
+      },
+      "pixelSha256": "ae02e8e392f9ed5d7fa05558d5f4710eaa79a55e2eee1eae7167bcac1a33e513",
+      "identicalPixels": true
+    },
+    {
+      "id": "gaver",
+      "phase": 0,
+      "joined": false,
+      "svgSha256": "55157c2ae40c6d0a8b4e42a65a69af9fca4a1af408a20f19efc1d06b6db5a878",
+      "milliseconds": {
+        "systemFonts": 117.46629099999973,
+        "noSystemFonts": 0.29054200000064156
+      },
+      "pixelSha256": "cae7da7c01d0e72d20bd624af73aa3fff068750e7d7b818a1e7cf8c2fdc4b032",
+      "identicalPixels": true
+    },
+    {
+      "id": "gaver",
+      "phase": 0,
+      "joined": true,
+      "svgSha256": "34fa86cc8cb934c2f98c7a42f86247773d8e5619a63eaa9c7b7a2a7e5ee927e6",
+      "milliseconds": {
+        "noSystemFonts": 0.2946249999995416,
+        "systemFonts": 117.26745800000026
+      },
+      "pixelSha256": "cae7da7c01d0e72d20bd624af73aa3fff068750e7d7b818a1e7cf8c2fdc4b032",
+      "identicalPixels": true
+    },
+    {
+      "id": "gaver",
+      "phase": 1,
+      "joined": false,
+      "svgSha256": "686c9b49783893948e496dc482623eae5bfa0394fde1e06f258db397a2430ac5",
+      "milliseconds": {
+        "systemFonts": 125.62041600000066,
+        "noSystemFonts": 0.26424999999926513
+      },
+      "pixelSha256": "8487bf049dae69a80dbcf48cdf4b50bc0244ef84b2f4cba8d9e836e710f83d67",
+      "identicalPixels": true
+    },
+    {
+      "id": "gaver",
+      "phase": 1,
+      "joined": true,
+      "svgSha256": "ee27be4fa69348c63ccb263d92286b9d4ab76918348d516bd2dcff22d6f49e8c",
+      "milliseconds": {
+        "noSystemFonts": 0.2682089999998425,
+        "systemFonts": 110.84099999999944
+      },
+      "pixelSha256": "8487bf049dae69a80dbcf48cdf4b50bc0244ef84b2f4cba8d9e836e710f83d67",
+      "identicalPixels": true
+    },
+    {
+      "id": "jul",
+      "phase": 0,
+      "joined": false,
+      "svgSha256": "920861391285754c76bd9beb4d4df5b9e13ae5dd89f557f71f363b2fac772c91",
+      "milliseconds": {
+        "systemFonts": 107.85358400000041,
+        "noSystemFonts": 0.4238340000001699
+      },
+      "pixelSha256": "31f294c7ff6108f26a1b4a96dae351cda494e84fdd8a9c2825b5d951ceb89efe",
+      "identicalPixels": true
+    },
+    {
+      "id": "jul",
+      "phase": 0,
+      "joined": true,
+      "svgSha256": "c0987f4ee511a906a8a0e92bc8d86ca70298e6c9cfde9ff5bfc61ed1e6a74bb6",
+      "milliseconds": {
+        "noSystemFonts": 0.37837500000023283,
+        "systemFonts": 122.80670800000007
+      },
+      "pixelSha256": "31f294c7ff6108f26a1b4a96dae351cda494e84fdd8a9c2825b5d951ceb89efe",
+      "identicalPixels": true
+    },
+    {
+      "id": "jul",
+      "phase": 1,
+      "joined": false,
+      "svgSha256": "a81978fa6138ba3e6584a231d5ed2519cd8d768041b86e7b5eb4bff7fcbdf4f2",
+      "milliseconds": {
+        "systemFonts": 110.81058400000074,
+        "noSystemFonts": 0.3767920000000231
+      },
+      "pixelSha256": "363b02acf9e1d6d944c2d8723fd51d53def7d7a9c9c4fbaba5c05975cd7974a7",
+      "identicalPixels": true
+    },
+    {
+      "id": "jul",
+      "phase": 1,
+      "joined": true,
+      "svgSha256": "f41aa26022e97dfed389c3bfa158c06fbcc4a84842f6c36c48a9f3321cc10cee",
+      "milliseconds": {
+        "noSystemFonts": 0.35912499999994907,
+        "systemFonts": 126.41183300000012
+      },
+      "pixelSha256": "363b02acf9e1d6d944c2d8723fd51d53def7d7a9c9c4fbaba5c05975cd7974a7",
+      "identicalPixels": true
+    },
+    {
+      "id": "stjerne",
+      "phase": 0,
+      "joined": false,
+      "svgSha256": "0554753e8631d2c9bca43a399d0346d71d793c30cd8d87aa4a6467b8551ab832",
+      "milliseconds": {
+        "systemFonts": 115.43708400000014,
+        "noSystemFonts": 0.29737500000010186
+      },
+      "pixelSha256": "9e65772dd09af63f71ce9ea097d484ba573dcd307027274f0d1b7a62c29b5fe5",
+      "identicalPixels": true
+    },
+    {
+      "id": "stjerne",
+      "phase": 0,
+      "joined": true,
+      "svgSha256": "5daffee51908272bce97d2e0c37138d4e7ecd3e7233ae7681a96539aac35a643",
+      "milliseconds": {
+        "noSystemFonts": 0.3057090000002063,
+        "systemFonts": 112.68724999999995
+      },
+      "pixelSha256": "9e65772dd09af63f71ce9ea097d484ba573dcd307027274f0d1b7a62c29b5fe5",
+      "identicalPixels": true
+    },
+    {
+      "id": "stjerne",
+      "phase": 1,
+      "joined": false,
+      "svgSha256": "2952685f27bc70c0ab7fffb3fc4f61946f76c304c4fbf1fbc657dc27635c47af",
+      "milliseconds": {
+        "systemFonts": 117.68141699999978,
+        "noSystemFonts": 0.27599999999983993
+      },
+      "pixelSha256": "c1302987b81eb7ea952ea03e027dc019d53f9df2134a3e2bed828f56e3a585ca",
+      "identicalPixels": true
+    },
+    {
+      "id": "stjerne",
+      "phase": 1,
+      "joined": true,
+      "svgSha256": "c8ae9dd15b03061945bba681a94d38c5e72643567aa77dbb2f1e714dcb96b2d7",
+      "milliseconds": {
+        "noSystemFonts": 0.24654200000077253,
+        "systemFonts": 122.37920899999972
+      },
+      "pixelSha256": "c1302987b81eb7ea952ea03e027dc019d53f9df2134a3e2bed828f56e3a585ca",
+      "identicalPixels": true
+    },
+    {
+      "id": "stjerne-ramme",
+      "phase": 0,
+      "joined": false,
+      "svgSha256": "d0845b9d6bf10ab319a91f8b0c211dbfbcadc9fd639129de3b6555cf66571c68",
+      "milliseconds": {
+        "systemFonts": 107.35758400000032,
+        "noSystemFonts": 0.5349580000001879
+      },
+      "pixelSha256": "a394312699bbafcb6f22dbd40275e682c5f1caa8179d4cce01659434672b1d5c",
+      "identicalPixels": true
+    },
+    {
+      "id": "stjerne-ramme",
+      "phase": 0,
+      "joined": true,
+      "svgSha256": "3bdd0015d4058d4982117193a7e1145d1168607d6c9bb8d20ebf5b8442086d10",
+      "milliseconds": {
+        "noSystemFonts": 0.49037500000031287,
+        "systemFonts": 116.22333400000025
+      },
+      "pixelSha256": "272e6e65e6d91391f614ceb8bab661bb763073d06b1267386bbe387e6d098b3c",
+      "identicalPixels": true
+    },
+    {
+      "id": "stjerne-ramme",
+      "phase": 1,
+      "joined": false,
+      "svgSha256": "295c312c1b00a188cd8d3b508d7e60b2797308ba019c7fe7a76ad688c75f7134",
+      "milliseconds": {
+        "systemFonts": 110.62529100000029,
+        "noSystemFonts": 0.6208749999996144
+      },
+      "pixelSha256": "37a1e4bb8ab2b74f2b21dae5c4641263a5928557ef2a041b2d4a144a824f65da",
+      "identicalPixels": true
+    },
+    {
+      "id": "stjerne-ramme",
+      "phase": 1,
+      "joined": true,
+      "svgSha256": "b0f403ce63d8b1396b0c7911a8db6f5fafbda92441485a4ea585b9c99069489b",
+      "milliseconds": {
+        "noSystemFonts": 0.5246669999996811,
+        "systemFonts": 110.02020799999991
+      },
+      "pixelSha256": "c043bad51ff10ab44c196e4c64f997cfb82619540ac101dbd947545d75b804a3",
+      "identicalPixels": true
+    },
+    {
+      "id": "5star",
+      "phase": 0,
+      "joined": false,
+      "svgSha256": "821dcdc85f9ecfd6a28334eefd19e64e951db270486e02c0168afca6f0514361",
+      "milliseconds": {
+        "systemFonts": 108.33570799999961,
+        "noSystemFonts": 0.3569999999999709
+      },
+      "pixelSha256": "4c7d5233bc70f8145582451d494be22b2c2c6c50988b3114323af635ccd786d0",
+      "identicalPixels": true
+    },
+    {
+      "id": "5star",
+      "phase": 0,
+      "joined": true,
+      "svgSha256": "16282871491ae7c55ca8acf199180f95918787aae9e9d0b205c6422c8c36b127",
+      "milliseconds": {
+        "noSystemFonts": 0.33400000000074215,
+        "systemFonts": 132.69620899999973
+      },
+      "pixelSha256": "4c7d5233bc70f8145582451d494be22b2c2c6c50988b3114323af635ccd786d0",
+      "identicalPixels": true
+    },
+    {
+      "id": "5star",
+      "phase": 1,
+      "joined": false,
+      "svgSha256": "b002debbaf1a78f9c94ff8ddf3e0450be054e8de6628a931be79f11dd06ad7aa",
+      "milliseconds": {
+        "systemFonts": 118.16333299999951,
+        "noSystemFonts": 0.4118749999997817
+      },
+      "pixelSha256": "df8eab724d8f9a2a620910561842b784517a87c2c2a793ef2df8a1d045e5d74a",
+      "identicalPixels": true
+    },
+    {
+      "id": "5star",
+      "phase": 1,
+      "joined": true,
+      "svgSha256": "f75b93a8ed7f471073054758ee4f12e141de977d3ba9c802cbda5d746aa9f961",
+      "milliseconds": {
+        "noSystemFonts": 0.41866699999991397,
+        "systemFonts": 101.70079199999964
+      },
+      "pixelSha256": "df8eab724d8f9a2a620910561842b784517a87c2c2a793ef2df8a1d045e5d74a",
+      "identicalPixels": true
+    },
+    {
+      "id": "simple-5star",
+      "phase": 0,
+      "joined": false,
+      "svgSha256": "47cc14e8f79b5c9907cf1b12e6dfd44e8629c3f2e64daeccbd33750a44561bd0",
+      "milliseconds": {
+        "systemFonts": 99.61383300000034,
+        "noSystemFonts": 0.27549999999973807
+      },
+      "pixelSha256": "c92f44da9306f5818a112d66c248ee43d2be216944713e2c5ce32f83b992c243",
+      "identicalPixels": true
+    },
+    {
+      "id": "simple-5star",
+      "phase": 0,
+      "joined": true,
+      "svgSha256": "2fd3ef747f1d99d48452af458fa7e952d92ed7dd8eb830d9fbd4538f4a30f8b9",
+      "milliseconds": {
+        "noSystemFonts": 0.2656669999996666,
+        "systemFonts": 94.87562500000058
+      },
+      "pixelSha256": "c92f44da9306f5818a112d66c248ee43d2be216944713e2c5ce32f83b992c243",
+      "identicalPixels": true
+    },
+    {
+      "id": "simple-5star",
+      "phase": 1,
+      "joined": false,
+      "svgSha256": "a9f48086932b7edfadd55f6c13590eb464718bc4add8a6c99778d2569166bdff",
+      "milliseconds": {
+        "systemFonts": 96.88833299999988,
+        "noSystemFonts": 0.244792000000416
+      },
+      "pixelSha256": "82ed1765b76cbfd204801c0f729ea4b3b2b4a8b2c0b785d79ce93f4c5d3ec5a5",
+      "identicalPixels": true
+    },
+    {
+      "id": "simple-5star",
+      "phase": 1,
+      "joined": true,
+      "svgSha256": "e3ccd6ae7b6199c7306790dd6ecb7a9f51e505529200d11b1c04c1f4feeb5914",
+      "milliseconds": {
+        "noSystemFonts": 0.22470800000064628,
+        "systemFonts": 97.73041699999976
+      },
+      "pixelSha256": "82ed1765b76cbfd204801c0f729ea4b3b2b4a8b2c0b785d79ce93f4c5d3ec5a5",
+      "identicalPixels": true
+    },
+    {
+      "id": "sun",
+      "phase": 0,
+      "joined": false,
+      "svgSha256": "f0430902a441b8a6f9b3584952272182c417a9f63dde6fd1d2bd280aa3446524",
+      "milliseconds": {
+        "systemFonts": 96.68345800000043,
+        "noSystemFonts": 0.31520799999998417
+      },
+      "pixelSha256": "185fa48000c5aaf8cb466ae7729e8f1c83a31fb08e7fce5833dc62fada5f5620",
+      "identicalPixels": true
+    },
+    {
+      "id": "sun",
+      "phase": 0,
+      "joined": true,
+      "svgSha256": "d433e9804b32282f004a3e7078d74f80b164ad6a9d3ad7f9006f4cf90fd228a7",
+      "milliseconds": {
+        "noSystemFonts": 0.34162500000002183,
+        "systemFonts": 101.49029099999916
+      },
+      "pixelSha256": "185fa48000c5aaf8cb466ae7729e8f1c83a31fb08e7fce5833dc62fada5f5620",
+      "identicalPixels": true
+    },
+    {
+      "id": "sun",
+      "phase": 1,
+      "joined": false,
+      "svgSha256": "df57237210fb5767541299a6cfbc4bf124a04e696149f703df8ec2a8d0110f09",
+      "milliseconds": {
+        "systemFonts": 114.80841599999985,
+        "noSystemFonts": 0.3350829999999405
+      },
+      "pixelSha256": "ce11b72bb6f71f19c65f89704ebc15f4b7cd890adf2ec00a643eaae7eb38a29a",
+      "identicalPixels": true
+    },
+    {
+      "id": "sun",
+      "phase": 1,
+      "joined": true,
+      "svgSha256": "5d46bb19e2f716e25b24acd668ba6425b05fc2d5c5ea8cc208333a6efb429965",
+      "milliseconds": {
+        "noSystemFonts": 0.292250000000422,
+        "systemFonts": 112.38516600000003
+      },
+      "pixelSha256": "ce11b72bb6f71f19c65f89704ebc15f4b7cd890adf2ec00a643eaae7eb38a29a",
+      "identicalPixels": true
+    },
+    {
+      "id": "explosion",
+      "phase": 0,
+      "joined": false,
+      "svgSha256": "586193180b96d9b916dc3dc3ab23004ca289afb0fa06a2c02253c22043cddcd8",
+      "milliseconds": {
+        "systemFonts": 100.06883299999936,
+        "noSystemFonts": 0.37775000000056025
+      },
+      "pixelSha256": "10a421484a41d17068fc1d5d0b7ca07d3a428bf7f9d3a4dee15ef55ab02dd738",
+      "identicalPixels": true
+    },
+    {
+      "id": "explosion",
+      "phase": 0,
+      "joined": true,
+      "svgSha256": "92c8d414841019c9979386bc49895a8cb38295cca41e922129f5f839edc587f0",
+      "milliseconds": {
+        "noSystemFonts": 0.3273749999998472,
+        "systemFonts": 107.72825000000012
+      },
+      "pixelSha256": "10a421484a41d17068fc1d5d0b7ca07d3a428bf7f9d3a4dee15ef55ab02dd738",
+      "identicalPixels": true
+    },
+    {
+      "id": "explosion",
+      "phase": 1,
+      "joined": false,
+      "svgSha256": "df21127cef634fb7f1001ab6a5e5e7cda07b27ce98e82eb72fbeb3c496ced90a",
+      "milliseconds": {
+        "systemFonts": 105.06245899999976,
+        "noSystemFonts": 0.6447079999998095
+      },
+      "pixelSha256": "198693812206f967a44d1e431854b930a362f7c28a12489f2600ddb0a802fe3d",
+      "identicalPixels": true
+    },
+    {
+      "id": "explosion",
+      "phase": 1,
+      "joined": true,
+      "svgSha256": "f4c655fe676c06c607da03bd3e9dd5ff5d1accfe2c7f78e9275d25d06b8150b6",
+      "milliseconds": {
+        "noSystemFonts": 0.714125000000422,
+        "systemFonts": 194.28287499999988
+      },
+      "pixelSha256": "198693812206f967a44d1e431854b930a362f7c28a12489f2600ddb0a802fe3d",
+      "identicalPixels": true
+    },
+    {
+      "id": "nihon",
+      "phase": 0,
+      "joined": false,
+      "svgSha256": "b79fbe26735ee80afeb3c2915b91a3d663ee9f4498c2b2f566af1bde0ca67f08",
+      "milliseconds": {
+        "systemFonts": 118.38650000000052,
+        "noSystemFonts": 0.2736249999998108
+      },
+      "pixelSha256": "2928f7daa8476a2188ad46c6e0cbb391b773f6f6e93f4e1e77a8607612ebe076",
+      "identicalPixels": true
+    },
+    {
+      "id": "nihon",
+      "phase": 0,
+      "joined": true,
+      "svgSha256": "63bcc6df5ec00e4ab4adebaa05e68d3c1842129e639572eab52f71c12572959d",
+      "milliseconds": {
+        "noSystemFonts": 0.27137500000026193,
+        "systemFonts": 109.7711249999993
+      },
+      "pixelSha256": "ed07c52cab2166500dd8ad4486528dc69276457430d4e4752b367a3a310e9623",
+      "identicalPixels": true
+    },
+    {
+      "id": "nihon",
+      "phase": 1,
+      "joined": false,
+      "svgSha256": "5ca19f53bd47518f9434b4fc5a486ce4d17acbd34dde6deb1082990a7f4ca657",
+      "milliseconds": {
+        "systemFonts": 117.37333300000137,
+        "noSystemFonts": 0.2491250000002765
+      },
+      "pixelSha256": "1e7639b612f814baf6d7740e0ecd81711ba30354f762cc04ebc84bd5ae244cea",
+      "identicalPixels": true
+    },
+    {
+      "id": "nihon",
+      "phase": 1,
+      "joined": true,
+      "svgSha256": "7908e6f7d4409343e7e8b5c1a2e56656d3693b4acc8b812e745c642d629fb0fd",
+      "milliseconds": {
+        "noSystemFonts": 0.23945899999853282,
+        "systemFonts": 123.33141700000124
+      },
+      "pixelSha256": "0964267b8e85635769ffc791b210a2bb307e3bf43527637befcd35db5471af2e",
+      "identicalPixels": true
+    },
+    {
+      "id": "davidsstjerne-circ",
+      "phase": 0,
+      "joined": false,
+      "svgSha256": "5155c83b27b2f10f374fe1e1c21a9b09f1749285c6fabc048b762aa61182908e",
+      "milliseconds": {
+        "systemFonts": 122.44083300000057,
+        "noSystemFonts": 0.5261250000003201
+      },
+      "pixelSha256": "6bf9113fb060ccf5c833a32a65d4413eb82bdb91e08212d568c644627631966d",
+      "identicalPixels": true
+    },
+    {
+      "id": "davidsstjerne-circ",
+      "phase": 0,
+      "joined": true,
+      "svgSha256": "b6edf74e71d776dac6cf839a25ca097157a6f9bdc5e0e8ae97b7cccd2eaed270",
+      "milliseconds": {
+        "noSystemFonts": 0.5055000000011205,
+        "systemFonts": 115.31066699999974
+      },
+      "pixelSha256": "2114caacc4604011ce92a99f69a056a3b35cc83bc2c67f258412cc73805fb5d4",
+      "identicalPixels": true
+    },
+    {
+      "id": "davidsstjerne-circ",
+      "phase": 1,
+      "joined": false,
+      "svgSha256": "57e92c1719f6f401bb7df6941d4d29e7c1650b7169a9773d83dd3242d7b15c86",
+      "milliseconds": {
+        "systemFonts": 107.33170899999823,
+        "noSystemFonts": 0.5726660000000265
+      },
+      "pixelSha256": "ad46296c2d65cbd5905bbed4a844791b533cb99576ead71dc305772f91d10f8e",
+      "identicalPixels": true
+    },
+    {
+      "id": "davidsstjerne-circ",
+      "phase": 1,
+      "joined": true,
+      "svgSha256": "1eed5ece8bf2679b1902483f6fb6b6c7356b9906ec9b4d65963a200870a9bc44",
+      "milliseconds": {
+        "noSystemFonts": 0.5260840000009921,
+        "systemFonts": 132.37058400000024
+      },
+      "pixelSha256": "a8ec5df07f8cf764fcdb56f289826f218438d6e5e8324c14431b8513b676ef5c",
+      "identicalPixels": true
+    },
+    {
+      "id": "david4",
+      "phase": 0,
+      "joined": false,
+      "svgSha256": "299a6750c4e1bfd48c18f423db1918e7b1d75b3bae796a6aa02efb5efba27606",
+      "milliseconds": {
+        "systemFonts": 96.67945900000086,
+        "noSystemFonts": 0.4304580000007263
+      },
+      "pixelSha256": "cf0dfa5d0e6a0f98949f61836dcc767371e3727aeaeb3575ebe8925bddfc6ecf",
+      "identicalPixels": true
+    },
+    {
+      "id": "david4",
+      "phase": 0,
+      "joined": true,
+      "svgSha256": "3b79f2b368b3c5c575b4ad2e3c002851c5fdba7abbfc03d8b846a4ce610e62cf",
+      "milliseconds": {
+        "noSystemFonts": 0.3894579999996495,
+        "systemFonts": 99.68420799999876
+      },
+      "pixelSha256": "5f99f2a428157b97502ae05bb83da227ad052c552196f163d5efeb69df708c6e",
+      "identicalPixels": true
+    },
+    {
+      "id": "david4",
+      "phase": 1,
+      "joined": false,
+      "svgSha256": "343519b6b2858a4250af1ff3813c1ae56c8de680d53ecbb1fbe26fe4784bb070",
+      "milliseconds": {
+        "systemFonts": 102.43837499999972,
+        "noSystemFonts": 0.4081669999995938
+      },
+      "pixelSha256": "df4e9549a1435bfcaf0ef609effc19e5563d1c54151e4b49361d6793d27af2e7",
+      "identicalPixels": true
+    },
+    {
+      "id": "david4",
+      "phase": 1,
+      "joined": true,
+      "svgSha256": "8673f1a2fbad8b845add6db7a29b1d601fd83ddc387823c072aece27f8075f5f",
+      "milliseconds": {
+        "noSystemFonts": 0.4046669999988808,
+        "systemFonts": 115.73549999999886
+      },
+      "pixelSha256": "df4e9549a1435bfcaf0ef609effc19e5563d1c54151e4b49361d6793d27af2e7",
+      "identicalPixels": true
+    },
+    {
+      "id": "khatam",
+      "phase": 0,
+      "joined": false,
+      "svgSha256": "2144925bc366546c8f13b33724b03888eb7e12a29f2e8607b2863530e1ca2934",
+      "milliseconds": {
+        "systemFonts": 105.67783299999974,
+        "noSystemFonts": 0.5274160000008123
+      },
+      "pixelSha256": "4644b9bb0d66680cccbd4700c853032dc74302b01e2a30173636deb041d2cd1e",
+      "identicalPixels": true
+    },
+    {
+      "id": "khatam",
+      "phase": 0,
+      "joined": true,
+      "svgSha256": "20f8b693b98b759abc0e010c212f2624ac4a35f5160255c90180ef07749707d5",
+      "milliseconds": {
+        "noSystemFonts": 0.4915419999997539,
+        "systemFonts": 110.48574999999983
+      },
+      "pixelSha256": "4644b9bb0d66680cccbd4700c853032dc74302b01e2a30173636deb041d2cd1e",
+      "identicalPixels": true
+    },
+    {
+      "id": "khatam",
+      "phase": 1,
+      "joined": false,
+      "svgSha256": "abbc2ac7f1749525bd35dbeacf6ec18cb3f85e1e8c0ada56734d254b6b9b63df",
+      "milliseconds": {
+        "systemFonts": 101.90533300000061,
+        "noSystemFonts": 0.5817499999993743
+      },
+      "pixelSha256": "cc32f749a28b5f5351db917317d608481e51a8739503dd3ce69a88eb9718d5b6",
+      "identicalPixels": true
+    },
+    {
+      "id": "khatam",
+      "phase": 1,
+      "joined": true,
+      "svgSha256": "5b4d16923e819e068978da15b7c4d8174550c4220fcf8bdd77b79f7418b6f4cb",
+      "milliseconds": {
+        "noSystemFonts": 0.5174590000005992,
+        "systemFonts": 100.50545799999963
+      },
+      "pixelSha256": "a9202fc8f8135c1f707f451d42bb0a02387d7c10d2ec631b28aee1fa34a844db",
+      "identicalPixels": true
+    },
+    {
+      "id": "circle",
+      "phase": 0,
+      "joined": false,
+      "svgSha256": "696f62e170af49b7439b3266753f427728385334efe43ea87047eccca2b21efd",
+      "milliseconds": {
+        "systemFonts": 106.67324999999983,
+        "noSystemFonts": 0.47554200000013225
+      },
+      "pixelSha256": "cf179d14e2ea69892501f2f23d2cd4704794237370abc228677466cc3670b1a9",
+      "identicalPixels": true
+    },
+    {
+      "id": "circle",
+      "phase": 0,
+      "joined": true,
+      "svgSha256": "2c1c8753837f6a67278954b05c98285ea6b87d7267a3d4772acac4187a7eae1a",
+      "milliseconds": {
+        "noSystemFonts": 0.3919999999998254,
+        "systemFonts": 114.72500000000036
+      },
+      "pixelSha256": "0b4115cacbb9aba94649f264273d974958d6d395898c4ec18449832d29403a86",
+      "identicalPixels": true
+    },
+    {
+      "id": "circle",
+      "phase": 1,
+      "joined": false,
+      "svgSha256": "913761de26780d9799b581539856263324d9e7e16b4f58fa6741c7e2177e5368",
+      "milliseconds": {
+        "systemFonts": 124.65229200000067,
+        "noSystemFonts": 0.4730420000014419
+      },
+      "pixelSha256": "6c837f2ad212674abc04d9af8c485cf60862b84c37bb7fbf0414177c40d8a1d6",
+      "identicalPixels": true
+    },
+    {
+      "id": "circle",
+      "phase": 1,
+      "joined": true,
+      "svgSha256": "15b5de68a273ed836c4eeaff4e1d5dd855ee476b14d4963ef6403e62f102d93f",
+      "milliseconds": {
+        "noSystemFonts": 0.45600000000013097,
+        "systemFonts": 121.38724999999977
+      },
+      "pixelSha256": "c1a05cbfb51e933d23cb372b0319a319e5d5f7b310d6fdb05f1eb4e88266ac58",
+      "identicalPixels": true
+    },
+    {
+      "id": "balls",
+      "phase": 0,
+      "joined": false,
+      "svgSha256": "6f3d704684654d5cc30176f82155d221f86091c61f9179bd1001d5bcd5fbbb5e",
+      "milliseconds": {
+        "systemFonts": 112.70083300000078,
+        "noSystemFonts": 0.615458000000217
+      },
+      "pixelSha256": "12717e86c3d7d9ba6f69e9b2cb21c2fa9488701022d83b53198632e730cad0d0",
+      "identicalPixels": true
+    },
+    {
+      "id": "balls",
+      "phase": 0,
+      "joined": true,
+      "svgSha256": "8c6e4e11b80f9046fe1fdac604a572befc0e742378daab4f756a1b419948b81f",
+      "milliseconds": {
+        "noSystemFonts": 0.641749999998865,
+        "systemFonts": 132.03541600000062
+      },
+      "pixelSha256": "12717e86c3d7d9ba6f69e9b2cb21c2fa9488701022d83b53198632e730cad0d0",
+      "identicalPixels": true
+    },
+    {
+      "id": "balls",
+      "phase": 1,
+      "joined": false,
+      "svgSha256": "93edd2e7a8116e55c6f4c840b1777e773fa26d8629464dcd566d8eb0a1c1fa54",
+      "milliseconds": {
+        "systemFonts": 141.3962909999991,
+        "noSystemFonts": 0.6125000000010914
+      },
+      "pixelSha256": "293ed0fc4a003fbfccc9355949a14dcf17dbbdab85a98caf97720d28cfedee07",
+      "identicalPixels": true
+    },
+    {
+      "id": "balls",
+      "phase": 1,
+      "joined": true,
+      "svgSha256": "34973c5ffa8be180d7198ffdb051828243a6f296442e8ec92a4232bae2728418",
+      "milliseconds": {
+        "noSystemFonts": 0.5807920000006561,
+        "systemFonts": 114.6728750000002
+      },
+      "pixelSha256": "293ed0fc4a003fbfccc9355949a14dcf17dbbdab85a98caf97720d28cfedee07",
+      "identicalPixels": true
+    },
+    {
+      "id": "kogle",
+      "phase": 0,
+      "joined": false,
+      "svgSha256": "3a50ca5d26b3e4cd33d2bbba9baaf3e02da22da26ec7e27f5c7e53054a0c526d",
+      "milliseconds": {
+        "systemFonts": 112.54458300000078,
+        "noSystemFonts": 0.5950410000004922
+      },
+      "pixelSha256": "9ac56466648a86f50b3725d1e030b16d83aa0f3186802f8ea7d012a669c0b08e",
+      "identicalPixels": true
+    },
+    {
+      "id": "kogle",
+      "phase": 0,
+      "joined": true,
+      "svgSha256": "0d3c169dcd2fbc6d78869e4a3164a68662ebf2bb491bd1f8999aa3921cda278f",
+      "milliseconds": {
+        "noSystemFonts": 0.44737500000155705,
+        "systemFonts": 131.7311669999999
+      },
+      "pixelSha256": "94a1bf55292b9182aa38629a0caf50bdf0e9b3bcd786bcc893cb80159075d2b5",
+      "identicalPixels": true
+    },
+    {
+      "id": "kogle",
+      "phase": 1,
+      "joined": false,
+      "svgSha256": "301477bdc461e812e4f68e8f1f3d93e7bf4a7802da211e5b63b418de6094aabf",
+      "milliseconds": {
+        "systemFonts": 115.45345799999996,
+        "noSystemFonts": 0.5817090000000462
+      },
+      "pixelSha256": "b7da761701216d1391e85ceb97ce7774e485a7804f13d6d8c15f5ccd68ffc4b1",
+      "identicalPixels": true
+    },
+    {
+      "id": "kogle",
+      "phase": 1,
+      "joined": true,
+      "svgSha256": "47a7bd29cdb52f9e3b93d07eb1d50bbcc523adf396c4e8606a1c53d5dbbc742d",
+      "milliseconds": {
+        "noSystemFonts": 0.43433399999958056,
+        "systemFonts": 117.60349999999926
+      },
+      "pixelSha256": "15c8f77673838b94be49d144e79a56e52a609753a0e0376fd6a8ced56f428fee",
+      "identicalPixels": true
+    },
+    {
+      "id": "plus",
+      "phase": 0,
+      "joined": false,
+      "svgSha256": "6f8f5807d454da08cfc09bfe847bc682461be8b5869c9680fbe39d7c0d2e8cbe",
+      "milliseconds": {
+        "systemFonts": 122.11966699999903,
+        "noSystemFonts": 0.24266700000043784
+      },
+      "pixelSha256": "6bd4e88ff53ad1c663e9fe9ab6680445e00e2a72b3da251c973dd823117bb386",
+      "identicalPixels": true
+    },
+    {
+      "id": "plus",
+      "phase": 0,
+      "joined": true,
+      "svgSha256": "f6f87e547cc042f2cd2554d963a51acb4a81b2ad0c55d74845f34a3c25acad63",
+      "milliseconds": {
+        "noSystemFonts": 0.19766700000036508,
+        "systemFonts": 125.12608300000102
+      },
+      "pixelSha256": "6bd4e88ff53ad1c663e9fe9ab6680445e00e2a72b3da251c973dd823117bb386",
+      "identicalPixels": true
+    },
+    {
+      "id": "plus",
+      "phase": 1,
+      "joined": false,
+      "svgSha256": "87a80339b40c7193ee093b154c610bfcca656f9c0d0e8a2c0127e9617a67dd6f",
+      "milliseconds": {
+        "systemFonts": 123.04691700000149,
+        "noSystemFonts": 0.24675000000024738
+      },
+      "pixelSha256": "6c75853e53023203eb4432b6150aa55a856238cb9845371c8cedd5afe1f34f28",
+      "identicalPixels": true
+    },
+    {
+      "id": "plus",
+      "phase": 1,
+      "joined": true,
+      "svgSha256": "c2522b2bd62d88db689aa8aa77b249a189b02267a7cb14c266c2157922ccd359",
+      "milliseconds": {
+        "noSystemFonts": 0.2266670000008162,
+        "systemFonts": 128.0171250000003
+      },
+      "pixelSha256": "6c75853e53023203eb4432b6150aa55a856238cb9845371c8cedd5afe1f34f28",
+      "identicalPixels": true
+    },
+    {
+      "id": "plus3",
+      "phase": 0,
+      "joined": false,
+      "svgSha256": "1afbf07ba5ba7336520edacfe50aafeb540d02850969562a8c36474c4de4559e",
+      "milliseconds": {
+        "systemFonts": 103.1916250000013,
+        "noSystemFonts": 0.4697089999990567
+      },
+      "pixelSha256": "405dc24d3cebe24d8abec3f254ee3a960cfe6080c59cf333d8be0f7bd5756815",
+      "identicalPixels": true
+    },
+    {
+      "id": "plus3",
+      "phase": 0,
+      "joined": true,
+      "svgSha256": "52db55eace74c962a629f71174e39fc38c07c5714ba2a02ba362e8ed402e6619",
+      "milliseconds": {
+        "noSystemFonts": 0.39966699999968114,
+        "systemFonts": 121.29399999999987
+      },
+      "pixelSha256": "405dc24d3cebe24d8abec3f254ee3a960cfe6080c59cf333d8be0f7bd5756815",
+      "identicalPixels": true
+    },
+    {
+      "id": "plus3",
+      "phase": 1,
+      "joined": false,
+      "svgSha256": "1164219a1a6ab04ad1bdc852f265586d45185f098f352ada04176c5c2e157b04",
+      "milliseconds": {
+        "systemFonts": 117.40433400000074,
+        "noSystemFonts": 0.43316699999923003
+      },
+      "pixelSha256": "9bbe66988dd7c191332d0781cf97539ff565e67eb9a5f7054888f3e9520afe7b",
+      "identicalPixels": true
+    },
+    {
+      "id": "plus3",
+      "phase": 1,
+      "joined": true,
+      "svgSha256": "bd549a1cdfce19e1d818bd6c354cf9f84b46c431b6af3d3c92d56bd5e8f68ea4",
+      "milliseconds": {
+        "noSystemFonts": 0.4113340000003518,
+        "systemFonts": 122.01675000000068
+      },
+      "pixelSha256": "9bbe66988dd7c191332d0781cf97539ff565e67eb9a5f7054888f3e9520afe7b",
+      "identicalPixels": true
+    },
+    {
+      "id": "amy-weave-1",
+      "phase": 0,
+      "joined": false,
+      "svgSha256": "c4319022b7e875de85b8445ddf516829ee68337ceb53107fc319233e52352be4",
+      "milliseconds": {
+        "systemFonts": 116.26920800000153,
+        "noSystemFonts": 0.2834579999998823
+      },
+      "pixelSha256": "a27d3d731f451653438ec2d16255ea8580dd83dd8e7f70bd1df206f5fa2f219e",
+      "identicalPixels": true
+    },
+    {
+      "id": "amy-weave-1",
+      "phase": 0,
+      "joined": true,
+      "svgSha256": "6c6b9ee21be5092f36cec9b989a1244635d53fa82c3e28c59865829471e09c29",
+      "milliseconds": {
+        "noSystemFonts": 0.28308300000026065,
+        "systemFonts": 116.85658299999886
+      },
+      "pixelSha256": "4005626098d0e72cd2bbaf710e14b9d1cab92af70d8858365a6e0f4fa92aec77",
+      "identicalPixels": true
+    },
+    {
+      "id": "amy-weave-1",
+      "phase": 1,
+      "joined": false,
+      "svgSha256": "2f935994fd8990cc20a4cbbaeab5f9b5f96a6c27e881f29cc73f948f0e979862",
+      "milliseconds": {
+        "systemFonts": 112.82166700000016,
+        "noSystemFonts": 0.30216699999982666
+      },
+      "pixelSha256": "4542bbeb84d3f701902c0157973c469c916512e40fcb8ea15dbc4455914fa12d",
+      "identicalPixels": true
+    },
+    {
+      "id": "amy-weave-1",
+      "phase": 1,
+      "joined": true,
+      "svgSha256": "e5ae0b9fe0656b96b6342c2e9bcc8321bdb67bcdc0127b03014034643684ace9",
+      "milliseconds": {
+        "noSystemFonts": 0.3145409999997355,
+        "systemFonts": 114.41270900000018
+      },
+      "pixelSha256": "8b70772d48583f9b4ddd1bc0bfa03380ee74bab0a22828febf3d5571e84de91f",
+      "identicalPixels": true
+    },
+    {
+      "id": "amy-weave-2",
+      "phase": 0,
+      "joined": false,
+      "svgSha256": "c2ce234d4800419f3fbdcf15a10cd1823dcd2763b6656deae2e0d7e170431699",
+      "milliseconds": {
+        "systemFonts": 100.35750000000007,
+        "noSystemFonts": 0.4737089999998716
+      },
+      "pixelSha256": "c67a1579f0f3ef1e2e44d64a2b08954970e7d59682a371f848049bf47ec5edb8",
+      "identicalPixels": true
+    },
+    {
+      "id": "amy-weave-2",
+      "phase": 0,
+      "joined": true,
+      "svgSha256": "09142686672e7cde0e62f8ba090604bed0ff680cf1544f0a0a7fc039e71c22d0",
+      "milliseconds": {
+        "noSystemFonts": 0.33395800000107556,
+        "systemFonts": 97.46245900000031
+      },
+      "pixelSha256": "9cd720688ee769f67a2db749fcceebd71404dcceddf4c512de5b89b4fccc6609",
+      "identicalPixels": true
+    },
+    {
+      "id": "amy-weave-2",
+      "phase": 1,
+      "joined": false,
+      "svgSha256": "f75a0860d8ce998bd67164ff6e733f9f4f3cf8ba535636c3a6e4060a4ca3da63",
+      "milliseconds": {
+        "systemFonts": 120.2520829999994,
+        "noSystemFonts": 0.3482090000015887
+      },
+      "pixelSha256": "a3d702cc7943bacf67560e75d28c8816d73761667e09f670f5c2de540fb31026",
+      "identicalPixels": true
+    },
+    {
+      "id": "amy-weave-2",
+      "phase": 1,
+      "joined": true,
+      "svgSha256": "fd9bd9a44419978c7e73fa81aebabe157edb3cad7a7ac306eaa9d179af74baa2",
+      "milliseconds": {
+        "noSystemFonts": 0.3412499999994907,
+        "systemFonts": 125.58745900000031
+      },
+      "pixelSha256": "a809b85dff66363fdc15c9d0e296933388a28a229ef7324f5f816f7162b34a73",
+      "identicalPixels": true
+    },
+    {
+      "id": "amy-rosette",
+      "phase": 0,
+      "joined": false,
+      "svgSha256": "174e851dcf9229458ef2fa54016136b12c059dce00ccc1ef6f669ee575f7b053",
+      "milliseconds": {
+        "systemFonts": 126.60754199999974,
+        "noSystemFonts": 0.3840829999990092
+      },
+      "pixelSha256": "177bc0ac8e1d1a42160c834f03141a7f7b42c44431d73735ccae4227350571b6",
+      "identicalPixels": true
+    },
+    {
+      "id": "amy-rosette",
+      "phase": 0,
+      "joined": true,
+      "svgSha256": "5004fc88801433fccf7d30cfcefd46c634bb9fe78bb8fa0198beff399027aa44",
+      "milliseconds": {
+        "noSystemFonts": 0.3561250000002474,
+        "systemFonts": 128.6088749999999
+      },
+      "pixelSha256": "99a0df46817286c995948d1e25d668a10a0d00dadc1e098e8fd2c7ad5669c314",
+      "identicalPixels": true
+    },
+    {
+      "id": "amy-rosette",
+      "phase": 1,
+      "joined": false,
+      "svgSha256": "53353a629f60a96a2f17b0c6b3c4f6e51429fada4844eca96f1899e74159e0fc",
+      "milliseconds": {
+        "systemFonts": 121.02537500000108,
+        "noSystemFonts": 0.35883300000023155
+      },
+      "pixelSha256": "5b61d30af8b300146d867b8484e8d2b56b449c95d66d80fb29283a84b272fa75",
+      "identicalPixels": true
+    },
+    {
+      "id": "amy-rosette",
+      "phase": 1,
+      "joined": true,
+      "svgSha256": "9e39e164c202a7d3a10fb21a36a46281611e37354a33aa20d21bf22cc8ad0b6a",
+      "milliseconds": {
+        "noSystemFonts": 0.33404200000040873,
+        "systemFonts": 119.16395799999918
+      },
+      "pixelSha256": "8be96ce15c3f9c054745165292e796ac30c376ec28e97bcac9a6301b8f516439",
+      "identicalPixels": true
+    },
+    {
+      "id": "amy-pattern",
+      "phase": 0,
+      "joined": false,
+      "svgSha256": "57f7786e381be3ea071d1956cb1f05b1829bc4b1afa0d081760dba20dccc8a75",
+      "milliseconds": {
+        "systemFonts": 123.23449999999866,
+        "noSystemFonts": 0.7065409999995609
+      },
+      "pixelSha256": "21e39f5c899a33e4668910d24152e737b2117f2787fd3a8418c2fd10b7e9dace",
+      "identicalPixels": true
+    },
+    {
+      "id": "amy-pattern",
+      "phase": 0,
+      "joined": true,
+      "svgSha256": "f42d317ff18bd1145e6734bb2c0312a4f4fe2624212de2164002d732c164616a",
+      "milliseconds": {
+        "noSystemFonts": 0.7737080000006245,
+        "systemFonts": 115.81912499999999
+      },
+      "pixelSha256": "f6c1e1a0bdb548e3224f70fecace834330600c35b57143c9b4374eabd6e1f8fc",
+      "identicalPixels": true
+    },
+    {
+      "id": "amy-pattern",
+      "phase": 1,
+      "joined": false,
+      "svgSha256": "639cb7cf93dcf0fec44b88fe67e8b321e40793fb34753c1ec3753464c05a22ce",
+      "milliseconds": {
+        "systemFonts": 127.54233299999942,
+        "noSystemFonts": 0.5007499999992433
+      },
+      "pixelSha256": "6af8b3f0a064c7f835bebe9c392b2444d6efe294a6775c8e0c47afa6a06e69ef",
+      "identicalPixels": true
+    },
+    {
+      "id": "amy-pattern",
+      "phase": 1,
+      "joined": true,
+      "svgSha256": "f783aea3c09777842b40fa7cc70b124f9bab2ee9961a6be5873f46af37c28aeb",
+      "milliseconds": {
+        "noSystemFonts": 0.5114169999997102,
+        "systemFonts": 125.82204100000126
+      },
+      "pixelSha256": "b85755b420036002662d0b39edba8d5ae0536b34f89d15206c7103c023faf3e4",
+      "identicalPixels": true
+    },
+    {
+      "id": "amy-flowering",
+      "phase": 0,
+      "joined": false,
+      "svgSha256": "a569263ac486053d29c880ea2f198807f2b49d0bd3c6fb9598906ea2a36a23e3",
+      "milliseconds": {
+        "systemFonts": 127.63470899999993,
+        "noSystemFonts": 0.5643749999999272
+      },
+      "pixelSha256": "2c0cc5c5ec03898a6642e6dfb9b23fe3cde585ab22d48893eced94f0bc06e749",
+      "identicalPixels": true
+    },
+    {
+      "id": "amy-flowering",
+      "phase": 0,
+      "joined": true,
+      "svgSha256": "af2799c7f393811c27da79abc0df5da7a06cfb23cc040e0075db5fd544d7cc0a",
+      "milliseconds": {
+        "noSystemFonts": 0.4883750000008149,
+        "systemFonts": 107.95179199999984
+      },
+      "pixelSha256": "d73b98fe20d195782bbb4db9c8c10d11c5f896d1e0c007bd4b0b3fcf9177bc2a",
+      "identicalPixels": true
+    },
+    {
+      "id": "amy-flowering",
+      "phase": 1,
+      "joined": false,
+      "svgSha256": "10790bef659e445d7de6899fa26aabe60b6f939dbc96e0d929ef3d58658f00ff",
+      "milliseconds": {
+        "systemFonts": 127.46516700000029,
+        "noSystemFonts": 0.5363340000003518
+      },
+      "pixelSha256": "a189942a80d298430bd21155be619659c4f5f2860e132c8fe4263a8eaf452390",
+      "identicalPixels": true
+    },
+    {
+      "id": "amy-flowering",
+      "phase": 1,
+      "joined": true,
+      "svgSha256": "c8867f533c14940f44f95aba407aed8557817886c60b5f122cf97502a0717841",
+      "milliseconds": {
+        "noSystemFonts": 0.5010830000010174,
+        "systemFonts": 118.28370799999902
+      },
+      "pixelSha256": "8a513646d251de1f3feeab2fa45ab58be2ebcb83a9735f6f36a4c02ad22211d5",
+      "identicalPixels": true
+    },
+    {
+      "id": "amy-pinecone",
+      "phase": 0,
+      "joined": false,
+      "svgSha256": "fd66836824b5b2e58ff64d92468a5b33d0f62d30bf75974fe20e53411f4eb9b4",
+      "milliseconds": {
+        "systemFonts": 165.92833400000018,
+        "noSystemFonts": 0.6002920000009908
+      },
+      "pixelSha256": "3c013206b99e8ef45a52209336d11413dbb7ac3161a0fdf6bcc7dbfda7034549",
+      "identicalPixels": true
+    },
+    {
+      "id": "amy-pinecone",
+      "phase": 0,
+      "joined": true,
+      "svgSha256": "7ea47461b748cf5bd93c7258737a11cc366d5c7240d45ec855c36926bcadfaaf",
+      "milliseconds": {
+        "noSystemFonts": 1.1332920000004378,
+        "systemFonts": 195.22254099999918
+      },
+      "pixelSha256": "0cc53240c6d6aeed97b70ac2d00466246cfc29d2bdc00c6ff1a0f967d254dee1",
+      "identicalPixels": true
+    },
+    {
+      "id": "amy-pinecone",
+      "phase": 1,
+      "joined": false,
+      "svgSha256": "2d45d3d052d0f20d543e37dc6b5b19a6d2bba9d7ac40f4672c305100e170e217",
+      "milliseconds": {
+        "systemFonts": 132.85220900000058,
+        "noSystemFonts": 0.5042910000011034
+      },
+      "pixelSha256": "3dd6a616eadb909ecb2650a5d39df109ec3b9b02174af9c7013c91fe3304a377",
+      "identicalPixels": true
+    },
+    {
+      "id": "amy-pinecone",
+      "phase": 1,
+      "joined": true,
+      "svgSha256": "2d0df9335b7b65c1205e390fb6d018a56c84d6dee9feaf134c91bba47fcbd109",
+      "milliseconds": {
+        "noSystemFonts": 0.4766669999989972,
+        "systemFonts": 118.67045800000051
+      },
+      "pixelSha256": "0f5e8433fa45fd0b11510ea80e5c8980a7be100e31a8912176dcf9a5c592210c",
+      "identicalPixels": true
+    },
+    {
+      "id": "alhambra",
+      "phase": 0,
+      "joined": false,
+      "svgSha256": "77ff827d43fbf4ec28177db93371b9b786c2ebdd1694fb381e9a61d9843c2f5d",
+      "milliseconds": {
+        "systemFonts": 115.2999579999996,
+        "noSystemFonts": 0.546875
+      },
+      "pixelSha256": "6f1aefc6b29f26638127f5f07c054118420b3eeb8106dfb7b0ae787ee75b64df",
+      "identicalPixels": true
+    },
+    {
+      "id": "alhambra",
+      "phase": 0,
+      "joined": true,
+      "svgSha256": "029cbec3ba1f14e8cdbccdec32db7a90ad09d5c1fa6ab263eeb56e743a410a6b",
+      "milliseconds": {
+        "noSystemFonts": 0.5796250000003056,
+        "systemFonts": 107.43695800000023
+      },
+      "pixelSha256": "6f1aefc6b29f26638127f5f07c054118420b3eeb8106dfb7b0ae787ee75b64df",
+      "identicalPixels": true
+    },
+    {
+      "id": "alhambra",
+      "phase": 1,
+      "joined": false,
+      "svgSha256": "8414a59bb39bdbebb0c736162aeb36fa214f9d7e3276d0a1086613046e2b9a07",
+      "milliseconds": {
+        "systemFonts": 137.60841699999946,
+        "noSystemFonts": 0.5884160000005068
+      },
+      "pixelSha256": "5e9aa3ddcf649123313a129c769cdd15c9dc66c3cfb142f848f764cb46c5e8ec",
+      "identicalPixels": true
+    },
+    {
+      "id": "alhambra",
+      "phase": 1,
+      "joined": true,
+      "svgSha256": "8fe3397d87e7b78965a43698e8c5314911e5e2e2f32b490df9b76f96ba759e19",
+      "milliseconds": {
+        "noSystemFonts": 0.5045829999999114,
+        "systemFonts": 117.68379199999981
+      },
+      "pixelSha256": "5e9aa3ddcf649123313a129c769cdd15c9dc66c3cfb142f848f764cb46c5e8ec",
+      "identicalPixels": true
+    },
+    {
+      "id": "squares",
+      "phase": 0,
+      "joined": false,
+      "svgSha256": "21c90f4686d06cfa0dbbee715eb271f8a3f1870dfb0cdee069444d57cd9aa8e9",
+      "milliseconds": {
+        "systemFonts": 137.49775000000045,
+        "noSystemFonts": 0.2744170000005397
+      },
+      "pixelSha256": "d33047f469ee2f6c3a3c6197895dd3357162349cf600a450411ed2897777699a",
+      "identicalPixels": true
+    },
+    {
+      "id": "squares",
+      "phase": 0,
+      "joined": true,
+      "svgSha256": "db35e54610f23b6024ded4130d1609b0ada52feab8b9f25920edccd97f2e40be",
+      "milliseconds": {
+        "noSystemFonts": 0.24649999999928696,
+        "systemFonts": 132.6461670000008
+      },
+      "pixelSha256": "d33047f469ee2f6c3a3c6197895dd3357162349cf600a450411ed2897777699a",
+      "identicalPixels": true
+    },
+    {
+      "id": "squares",
+      "phase": 1,
+      "joined": false,
+      "svgSha256": "150525f4ca4381da8e4eecb5982343b72ce00d8badf8c2e284c2460885322949",
+      "milliseconds": {
+        "systemFonts": 120.63124999999854,
+        "noSystemFonts": 0.20337499999914144
+      },
+      "pixelSha256": "3f4069b069f9546557df50c9ea2e9379550a34cfe5a35805da4d6961e1b9624c",
+      "identicalPixels": true
+    },
+    {
+      "id": "squares",
+      "phase": 1,
+      "joined": true,
+      "svgSha256": "ddbfacb3a8ec8c7ae932b5daa5c76d8b8789da03e581be5bbb19bd17acc3099e",
+      "milliseconds": {
+        "noSystemFonts": 0.18758299999899464,
+        "systemFonts": 123.01504199999908
+      },
+      "pixelSha256": "3f4069b069f9546557df50c9ea2e9379550a34cfe5a35805da4d6961e1b9624c",
+      "identicalPixels": true
+    },
+    {
+      "id": "juletrae",
+      "phase": 0,
+      "joined": false,
+      "svgSha256": "9c9321c52d4dc6917fb30daba22514bee99ac64017b19a63d31f7a4ca2b825ab",
+      "milliseconds": {
+        "systemFonts": 127.81395799999882,
+        "noSystemFonts": 0.3459580000017013
+      },
+      "pixelSha256": "5602c35cc94a2c86a52bcaff3f738b88e8a70acd0fd9686fe0b6bbc0828f28d9",
+      "identicalPixels": true
+    },
+    {
+      "id": "juletrae",
+      "phase": 0,
+      "joined": true,
+      "svgSha256": "ffdd4f638dc115cc5ecbb48d2be5f8ba4f335383c4b8fcdce369c7d1a8945d5d",
+      "milliseconds": {
+        "noSystemFonts": 0.3057919999992009,
+        "systemFonts": 120.64358300000094
+      },
+      "pixelSha256": "7ca0a354e79ea0947ca023b2bf9ffbb9b14cec59570425d1595c704bcae55b9a",
+      "identicalPixels": true
+    },
+    {
+      "id": "juletrae",
+      "phase": 1,
+      "joined": false,
+      "svgSha256": "b2216f108d7bb0c52589d86469f9b529dde89b93311a5632b712b23c62175135",
+      "milliseconds": {
+        "systemFonts": 140.5771249999998,
+        "noSystemFonts": 0.38016699999934644
+      },
+      "pixelSha256": "cdf7d57d0ad3f38a140d7e152445fb6a4fe8f06d7a79a5a6a04ec60912efa36e",
+      "identicalPixels": true
+    },
+    {
+      "id": "juletrae",
+      "phase": 1,
+      "joined": true,
+      "svgSha256": "da42eab8dbc16a7cc313b193108c30e874329baaf6d5449415467f633d02aa17",
+      "milliseconds": {
+        "noSystemFonts": 0.3337909999972908,
+        "systemFonts": 119.38604199999827
+      },
+      "pixelSha256": "566c2535c7236ce7ad3a220599a6f49e257ff6c50d6cd79268e85d0f79c07e65",
+      "identicalPixels": true
+    },
+    {
+      "id": "flower",
+      "phase": 0,
+      "joined": false,
+      "svgSha256": "7aaed626ae897b2319d404771b6a11ded374523ca3492a64e60f244e74f5e5d6",
+      "milliseconds": {
+        "systemFonts": 111.62833300000057,
+        "noSystemFonts": 0.43433400000139954
+      },
+      "pixelSha256": "375fd542fbe48011ef8360b1a0f46b69541c2cebedb9a098deb4a69bd8ed1cf8",
+      "identicalPixels": true
+    },
+    {
+      "id": "flower",
+      "phase": 0,
+      "joined": true,
+      "svgSha256": "005e82b666564e4a302416ecc33c151d305712e9e7050732692dd9ece65ed4d2",
+      "milliseconds": {
+        "noSystemFonts": 0.40004100000078324,
+        "systemFonts": 123.87125000000015
+      },
+      "pixelSha256": "8af4754c55dc494731b28e843f35a80fc647e588cb3f41aa1f08d7f2a65f8d25",
+      "identicalPixels": true
+    },
+    {
+      "id": "flower",
+      "phase": 1,
+      "joined": false,
+      "svgSha256": "510cf2bcc3ef29b907693d03ad028bb1a4dcf6128bfe24cf292ff18d61146e71",
+      "milliseconds": {
+        "systemFonts": 121.89424999999756,
+        "noSystemFonts": 0.36837500000183354
+      },
+      "pixelSha256": "11a5aa920b94525641a69f9061d576836838e862598dc378097f2305e4a03fd1",
+      "identicalPixels": true
+    },
+    {
+      "id": "flower",
+      "phase": 1,
+      "joined": true,
+      "svgSha256": "8e6e496b348877f72325c883f5374619d0eef80e779b08ab4cad5d3aab5e15c0",
+      "milliseconds": {
+        "noSystemFonts": 0.34841700000106357,
+        "systemFonts": 124.85383399999773
+      },
+      "pixelSha256": "34f152e9118986833dc2ab7a11db8916a0b2fbdab77e5407fc1503353069a559",
+      "identicalPixels": true
+    },
+    {
+      "id": "venus",
+      "phase": 0,
+      "joined": false,
+      "svgSha256": "5b85e64b2ab0df61abebe54746208bc85726ed3cc51f8c7a37ae71e95d9a1e6e",
+      "milliseconds": {
+        "systemFonts": 114.09804200000144,
+        "noSystemFonts": 0.4602500000000873
+      },
+      "pixelSha256": "ecf35161876ccf1655c28597df007893b6f903cd3daa03d10dfd4c79f34ce926",
+      "identicalPixels": true
+    },
+    {
+      "id": "venus",
+      "phase": 0,
+      "joined": true,
+      "svgSha256": "acce3972587edef6a143821fec62a18c8d7f7f75162c228f94f51bf8fb3c248e",
+      "milliseconds": {
+        "noSystemFonts": 0.4384159999972326,
+        "systemFonts": 129.5147500000021
+      },
+      "pixelSha256": "c8e21b7f40e1aec0b6d5d908218c243790989eaa19cb6cf456b7043e81e5ee6a",
+      "identicalPixels": true
+    },
+    {
+      "id": "venus",
+      "phase": 1,
+      "joined": false,
+      "svgSha256": "f27c7b598569f9501723059f9af8d76dc4d75a3532de88ca9394d77b38392655",
+      "milliseconds": {
+        "systemFonts": 125.94791699999769,
+        "noSystemFonts": 0.5300829999978305
+      },
+      "pixelSha256": "577d0d94757fffa19c99619900e92f86815f224159b19ac29a20b6923dfbafba",
+      "identicalPixels": true
+    },
+    {
+      "id": "venus",
+      "phase": 1,
+      "joined": true,
+      "svgSha256": "5ab0800cf5f41d3e0b5cbbfeea6bca60d2641d5cd12b95895868a48181ec2c73",
+      "milliseconds": {
+        "noSystemFonts": 0.4850829999995767,
+        "systemFonts": 124.50579099999959
+      },
+      "pixelSha256": "c1fe024ff8c86ecaa9af14ca529f446a6efab69d0a3e853119e5dcb52a643bd8",
+      "identicalPixels": true
+    },
+    {
+      "id": "angel",
+      "phase": 0,
+      "joined": false,
+      "svgSha256": "18b126e85c977da2762af1fc916fc80269614fc37b58cbe856e06b33c7ffb8a0",
+      "milliseconds": {
+        "systemFonts": 128.101541,
+        "noSystemFonts": 0.3172080000003916
+      },
+      "pixelSha256": "032160711a3431d77d75ca3e2c3dc2a3f6f7a4566f592ae8a29660f9ca13e28c",
+      "identicalPixels": true
+    },
+    {
+      "id": "angel",
+      "phase": 0,
+      "joined": true,
+      "svgSha256": "20d1cd452e2ea61d24e621e2c21a90ea845cc31ad0825c0d1f7d52c0f0582508",
+      "milliseconds": {
+        "noSystemFonts": 0.28879199999937555,
+        "systemFonts": 134.95324999999866
+      },
+      "pixelSha256": "032160711a3431d77d75ca3e2c3dc2a3f6f7a4566f592ae8a29660f9ca13e28c",
+      "identicalPixels": true
+    },
+    {
+      "id": "angel",
+      "phase": 1,
+      "joined": false,
+      "svgSha256": "9147a5a07101241d12b6964cab92abb7192675dd020eed27842a54236171b065",
+      "milliseconds": {
+        "systemFonts": 126.14070899999933,
+        "noSystemFonts": 0.3079169999982696
+      },
+      "pixelSha256": "9379442edee38730202f872e2f59ca1f46a0c0a0fc3344a89aa7697f03e3372e",
+      "identicalPixels": true
+    },
+    {
+      "id": "angel",
+      "phase": 1,
+      "joined": true,
+      "svgSha256": "436ff8bef267b34452c6801f9511debbdb5291d402307c1387a4fa881a16aa38",
+      "milliseconds": {
+        "noSystemFonts": 0.28329200000007404,
+        "systemFonts": 138.08858300000065
+      },
+      "pixelSha256": "9379442edee38730202f872e2f59ca1f46a0c0a0fc3344a89aa7697f03e3372e",
+      "identicalPixels": true
+    },
+    {
+      "id": "snowflake",
+      "phase": 0,
+      "joined": false,
+      "svgSha256": "72a94d467cfdd4dfc6b8ec05b33eadbeb44eff2e42e663852ae93496b96188ca",
+      "milliseconds": {
+        "systemFonts": 123.51258299999972,
+        "noSystemFonts": 0.4770420000022568
+      },
+      "pixelSha256": "277de5dab337b063cbc4e0e14a72836226af71749e359cf5e51cc4adb6deb113",
+      "identicalPixels": true
+    },
+    {
+      "id": "snowflake",
+      "phase": 0,
+      "joined": true,
+      "svgSha256": "60a4b6c11c4b584caccb6361a23af043d93e845e5c6e6d6fa029a9ec1b86241e",
+      "milliseconds": {
+        "noSystemFonts": 0.4915830000027199,
+        "systemFonts": 118.15174999999726
+      },
+      "pixelSha256": "277de5dab337b063cbc4e0e14a72836226af71749e359cf5e51cc4adb6deb113",
+      "identicalPixels": true
+    },
+    {
+      "id": "snowflake",
+      "phase": 1,
+      "joined": false,
+      "svgSha256": "7d521d8435c0d0bd0f21b194b7577ec8744afc4b53b0000613c21cd8e7d3eb1d",
+      "milliseconds": {
+        "systemFonts": 108.53870800000004,
+        "noSystemFonts": 0.4376250000022992
+      },
+      "pixelSha256": "9b21d7490b7da48fe580b14e232e98d711e301d549b956d7fc9c1fbd4ef784ca",
+      "identicalPixels": true
+    },
+    {
+      "id": "snowflake",
+      "phase": 1,
+      "joined": true,
+      "svgSha256": "ab19fbfea1d6627fdf600197b9f5f85612cf70255050781eb3c58bfd41bc2c86",
+      "milliseconds": {
+        "noSystemFonts": 0.40020799999911105,
+        "systemFonts": 129.84987499999988
+      },
+      "pixelSha256": "9b21d7490b7da48fe580b14e232e98d711e301d549b956d7fc9c1fbd4ef784ca",
+      "identicalPixels": true
+    },
+    {
+      "id": "santa",
+      "phase": 0,
+      "joined": false,
+      "svgSha256": "8ee506d4b86349fa5290eb1ec1ae2f0067a17cac646d03aa9a7cab76be02b38b",
+      "milliseconds": {
+        "systemFonts": 120.7780419999981,
+        "noSystemFonts": 0.5029999999969732
+      },
+      "pixelSha256": "783254111c221250e3a22d7c54211a67c5c7327506da10965c94eeb13da225d3",
+      "identicalPixels": true
+    },
+    {
+      "id": "santa",
+      "phase": 0,
+      "joined": true,
+      "svgSha256": "28eddd5b1dd6ee9759a89593456ae3836c2716800602a89ed6fb4762b2c263c3",
+      "milliseconds": {
+        "noSystemFonts": 0.46141699999861885,
+        "systemFonts": 124.96195799999987
+      },
+      "pixelSha256": "40a419d5cb2b58aaaf5ff7f38f01c7d1790449d723daca163bba4811503d461d",
+      "identicalPixels": true
+    },
+    {
+      "id": "santa",
+      "phase": 1,
+      "joined": false,
+      "svgSha256": "f077c794748fa44bcc6aa6e85d52efd1c835494e57f8a500d744a2ba8e130ab7",
+      "milliseconds": {
+        "systemFonts": 124.37420800000109,
+        "noSystemFonts": 0.471666000001278
+      },
+      "pixelSha256": "d8904a195488983b4d2a70d1ce14fa95e5c6a6c5f9b480747fac26fcaf0c8fb2",
+      "identicalPixels": true
+    },
+    {
+      "id": "santa",
+      "phase": 1,
+      "joined": true,
+      "svgSha256": "d8d1bd500b16b351a1c14f5df07a789dfd4617ba9821659a96aedeecaf5ec35a",
+      "milliseconds": {
+        "noSystemFonts": 0.45379200000024866,
+        "systemFonts": 124.47500000000218
+      },
+      "pixelSha256": "1318f6a56d7769e01f0cfdd54c39d81061a6041e7bc27a5e59afead0e67ebcdd",
+      "identicalPixels": true
+    },
+    {
+      "id": "triple-heart",
+      "phase": 0,
+      "joined": false,
+      "svgSha256": "66399774d398430a6ed18c9afc3db0f1579b1a3af4d539f9db2444d067434e40",
+      "milliseconds": {
+        "systemFonts": 115.68229200000133,
+        "noSystemFonts": 0.35183300000062445
+      },
+      "pixelSha256": "31f0b6b05db78af55caff446372f1492e6332633adc3f0a2d41c0d814fadcbc8",
+      "identicalPixels": true
+    },
+    {
+      "id": "triple-heart",
+      "phase": 0,
+      "joined": true,
+      "svgSha256": "f199dfabcca373a85a55041c3f45b4728d71b6e673a1f31276585df289783852",
+      "milliseconds": {
+        "noSystemFonts": 0.3233330000002752,
+        "systemFonts": 120.11658299999908
+      },
+      "pixelSha256": "31f0b6b05db78af55caff446372f1492e6332633adc3f0a2d41c0d814fadcbc8",
+      "identicalPixels": true
+    },
+    {
+      "id": "triple-heart",
+      "phase": 1,
+      "joined": false,
+      "svgSha256": "66bbea0234e24ce499b39687f9b64483e006313e620038e435052f89e0cfc23a",
+      "milliseconds": {
+        "systemFonts": 137.51216600000043,
+        "noSystemFonts": 0.40116699999998673
+      },
+      "pixelSha256": "a75123efbb60d394d387672ff40cfe59dc345afce0a6bd0584d37cce59f4c811",
+      "identicalPixels": true
+    },
+    {
+      "id": "triple-heart",
+      "phase": 1,
+      "joined": true,
+      "svgSha256": "c1ed795da3cc424fb574ea9a0e101bd922a41a1c77ec79a84c147fdc865d5efb",
+      "milliseconds": {
+        "noSystemFonts": 0.3667920000007143,
+        "systemFonts": 106.35295899999983
+      },
+      "pixelSha256": "a75123efbb60d394d387672ff40cfe59dc345afce0a6bd0584d37cce59f4c811",
+      "identicalPixels": true
+    },
+    {
+      "id": "h4h2",
+      "phase": 0,
+      "joined": false,
+      "svgSha256": "cdacedc151ed24f0535d2de01c4cb38a1853de8f4b8ff317b2692742bfe7456f",
+      "milliseconds": {
+        "systemFonts": 96.46949999999924,
+        "noSystemFonts": 0.3146249999990687
+      },
+      "pixelSha256": "4141e4247321a797d37b7b853fc5757db64505019221caaa0ac16e8327525f9e",
+      "identicalPixels": true
+    },
+    {
+      "id": "h4h2",
+      "phase": 0,
+      "joined": true,
+      "svgSha256": "bb8b2cb7781223caa9c62a43f0fd969c7484f2f79d755caac50b2659da7de9c8",
+      "milliseconds": {
+        "noSystemFonts": 0.2474999999976717,
+        "systemFonts": 93.89095799999996
+      },
+      "pixelSha256": "4141e4247321a797d37b7b853fc5757db64505019221caaa0ac16e8327525f9e",
+      "identicalPixels": true
+    },
+    {
+      "id": "h4h2",
+      "phase": 1,
+      "joined": false,
+      "svgSha256": "e7d8475471d668e075586f3d4019c0beeb14c731d051a6f11fdd646d4f118817",
+      "milliseconds": {
+        "systemFonts": 117.34441599999991,
+        "noSystemFonts": 0.28245800000149757
+      },
+      "pixelSha256": "b7be331e824a9066b28d39d2b38ab6bc92ac792ffeb3a47da65a944f5e9b963f",
+      "identicalPixels": true
+    },
+    {
+      "id": "h4h2",
+      "phase": 1,
+      "joined": true,
+      "svgSha256": "2bda287e6853171c705f69a44a2ae633e796b968d959e783cdf299fb9308da52",
+      "milliseconds": {
+        "noSystemFonts": 0.24991699999736738,
+        "systemFonts": 122.06933299999946
+      },
+      "pixelSha256": "b7be331e824a9066b28d39d2b38ab6bc92ac792ffeb3a47da65a944f5e9b963f",
+      "identicalPixels": true
+    },
+    {
+      "id": "nemt-hjerte",
+      "phase": 0,
+      "joined": false,
+      "svgSha256": "ff98e4f59874f373a6f5ef61e26cec452f9a09b763861d00d3d2ee1c789cf913",
+      "milliseconds": {
+        "systemFonts": 132.9238750000004,
+        "noSystemFonts": 0.2511670000021695
+      },
+      "pixelSha256": "a13f55381133a14fdae12829080648e00640d2f3a79c68f9a1fb9532b0b2c9be",
+      "identicalPixels": true
+    },
+    {
+      "id": "nemt-hjerte",
+      "phase": 0,
+      "joined": true,
+      "svgSha256": "4e0b4c5b0b6ea1a3a5bc6e30b8d7599bfbf56362d965698f1c3a8c4e66c3ffc3",
+      "milliseconds": {
+        "noSystemFonts": 0.1949159999967378,
+        "systemFonts": 110.65266699999847
+      },
+      "pixelSha256": "a13f55381133a14fdae12829080648e00640d2f3a79c68f9a1fb9532b0b2c9be",
+      "identicalPixels": true
+    },
+    {
+      "id": "nemt-hjerte",
+      "phase": 1,
+      "joined": false,
+      "svgSha256": "26a9e39bcb787ac81a7fe9dfd28834756fa4b865ca71f0c326c0ac0235378a81",
+      "milliseconds": {
+        "systemFonts": 117.26095800000257,
+        "noSystemFonts": 0.21333299999969313
+      },
+      "pixelSha256": "40d6992c8dfbe5ba324e4f73159274e21434c181e4126ec152af72ea5ca27610",
+      "identicalPixels": true
+    },
+    {
+      "id": "nemt-hjerte",
+      "phase": 1,
+      "joined": true,
+      "svgSha256": "646e29fedfec97578259f04a8f7ef89e7ecb6fb6d0e572bd446a9c90ed4aeeef",
+      "milliseconds": {
+        "noSystemFonts": 0.20425000000250293,
+        "systemFonts": 118.36470900000131
+      },
+      "pixelSha256": "40d6992c8dfbe5ba324e4f73159274e21434c181e4126ec152af72ea5ca27610",
+      "identicalPixels": true
+    },
+    {
+      "id": "lilje1",
+      "phase": 0,
+      "joined": false,
+      "svgSha256": "bd926a9beac26448cb8c1d47931e3094a81d3047ab51cd0e27f2ba95567e3bc3",
+      "milliseconds": {
+        "systemFonts": 104.92625000000044,
+        "noSystemFonts": 0.4937500000014552
+      },
+      "pixelSha256": "6441c91f3c4e9787bcd0fbcd221d1a0632cd5370d549e85cb59623dd412a8dc9",
+      "identicalPixels": true
+    },
+    {
+      "id": "lilje1",
+      "phase": 0,
+      "joined": true,
+      "svgSha256": "4864191bfba8abbad63c3eb2f6d571c2864881a6286aaa3b9ca1e579eb80af29",
+      "milliseconds": {
+        "noSystemFonts": 0.43162499999743886,
+        "systemFonts": 118.09300000000076
+      },
+      "pixelSha256": "a6c17ae49f72bb955dde6eae816d8274a4a7d6ecffa6843abaa080a329d2e9a9",
+      "identicalPixels": true
+    },
+    {
+      "id": "lilje1",
+      "phase": 1,
+      "joined": false,
+      "svgSha256": "5f0de2f3e0b4c7faebdc4223021af3aa4f21c061924c39caddf4b8c9537c5ab1",
+      "milliseconds": {
+        "systemFonts": 125.37679199999911,
+        "noSystemFonts": 0.38637500000186265
+      },
+      "pixelSha256": "8c995c2f2632289dc366a9d9b28155f3cd237e4a19f3c36455db3bc26a7088a5",
+      "identicalPixels": true
+    },
+    {
+      "id": "lilje1",
+      "phase": 1,
+      "joined": true,
+      "svgSha256": "c4b3976b4eba13ed9ab9d9f0455f0fb1408122bf4990b37fc5dafd02ddcd2812",
+      "milliseconds": {
+        "noSystemFonts": 0.4226250000028813,
+        "systemFonts": 123.26929199999722
+      },
+      "pixelSha256": "61d37f56cd862d993cedf2213337d2d342d4c4f92fe5b4b76002519c08124a39",
+      "identicalPixels": true
+    },
+    {
+      "id": "lilje2",
+      "phase": 0,
+      "joined": false,
+      "svgSha256": "1d8126827b3385b4402745bedee2521867d264c2c9caadbe6a519a1beb109a6a",
+      "milliseconds": {
+        "systemFonts": 123.6117919999997,
+        "noSystemFonts": 0.4553750000013679
+      },
+      "pixelSha256": "4c25e35503e052ce58b0afc46188921f89c761fad5558f3b04d47f9853a6cfa1",
+      "identicalPixels": true
+    },
+    {
+      "id": "lilje2",
+      "phase": 0,
+      "joined": true,
+      "svgSha256": "b89032680dee1c642eb3c9f49ac56c2648b0ef8723e39d7b90681c611e968289",
+      "milliseconds": {
+        "noSystemFonts": 0.42525000000023283,
+        "systemFonts": 124.00083300000188
+      },
+      "pixelSha256": "4c25e35503e052ce58b0afc46188921f89c761fad5558f3b04d47f9853a6cfa1",
+      "identicalPixels": true
+    },
+    {
+      "id": "lilje2",
+      "phase": 1,
+      "joined": false,
+      "svgSha256": "1f0167ccbd237bfaa219fed735197b76728d43ac626f1dce9bf6787d6504da80",
+      "milliseconds": {
+        "systemFonts": 117.89649999999892,
+        "noSystemFonts": 0.44270899999901303
+      },
+      "pixelSha256": "3537e7d9494b5ebff5fe3d6c46f5ed49c0d02d4eb93e041a79f28c8de2fd8ec2",
+      "identicalPixels": true
+    },
+    {
+      "id": "lilje2",
+      "phase": 1,
+      "joined": true,
+      "svgSha256": "96c65688926c26848827c086ae386ddf89a8527695446854024dba28221ee5c0",
+      "milliseconds": {
+        "noSystemFonts": 0.4037500000013097,
+        "systemFonts": 126.83125000000291
+      },
+      "pixelSha256": "3537e7d9494b5ebff5fe3d6c46f5ed49c0d02d4eb93e041a79f28c8de2fd8ec2",
+      "identicalPixels": true
+    }
+  ],
+  "summary": {
+    "designs": 38,
+    "comparedSVGs": 152,
+    "identical": true,
+    "systemFontMilliseconds": 21083.241081999993,
+    "noSystemFontMilliseconds": 62.752463000012995
+  },
+  "artifacts": {
+    "tmp/heart-learning/shape-render-fonts-v1/probe.mjs": {
+      "sha256": "bb7412c23e00084a8d586444a3c6356ae7da68372adcd1898710c8a2c89350ea",
+      "bytes": 3008
+    },
+    "tmp/heart-learning/shape-render-fonts-v1/results.json": {
+      "sha256": "d2cd394c58141e3e0a147c1df66c6ca055e10ca4b7849df0570d6f946d4fd924",
+      "bytes": 62304
+    },
+    "tmp/heart-learning/shape-render-fonts-v1/probe.log": {
+      "sha256": "c3f015a4d122bd30101f4d5ad9683ac24bad9ec1eea176ea040423d6103223ac",
+      "bytes": 141
+    },
+    "tmp/heart-learning/shape-render-fonts-v1/focused.log": {
+      "sha256": "806bed172b42e6d2b5854b09a63d0fd77a4863371925ced979736dd94578732c",
+      "bytes": 239
+    },
+    "tmp/heart-learning/routing-budget-blend-v2/heart-paint-isolated.log": {
+      "sha256": "0c36d8b6ef8881a6c90f078be69b5e3728cab04b6547266c2d7a43c7ab7987c7",
+      "bytes": 241
+    },
+    "tmp/heart-learning/routing-budget-blend-v2/production-qa/app.log": {
+      "sha256": "694d9809da54c6b535adcf7622b7abe28a17a48af96a451f83e699af3cecade2",
+      "bytes": 1158
+    }
+  },
+  "afterSourceHashes": {
+    "src/lib/rendering/heartPaint.test.ts": "e5a931299274cf60f9001de05d5a4c495a0d885f1929fdb618292c8b6561924f",
+    "src/lib/inverse/conversionFidelity.test.ts": "1f77592021a408058f4debc6d4f4e8a9fb2c4d4434735a58025d114b4b0f977a"
+  },
+  "focusedTests": {
+    "command": [
+      "npx",
+      "vitest",
+      "run",
+      "--maxWorkers=2",
+      "src/lib/rendering/heartPaint.test.ts",
+      "src/lib/inverse/conversionFidelity.test.ts"
+    ],
+    "passed": 46,
+    "failed": 0,
+    "wallSeconds": 2.17,
+    "testSeconds": 1.29
+  },
+  "qualification": "The previous full application run failed one 5-second rendering timeout, with 856 passes and one existing skip. An unchanged isolated 42-test replay passed. This correction removes unnecessary system-font work; it does not increase the timeout or change SVG paths, dimensions, pixels or fidelity assertions. Full repository validation is pending."
+}

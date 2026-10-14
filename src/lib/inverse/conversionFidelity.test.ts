@@ -29,7 +29,7 @@ function coverageError(design: HeartDesign): number {
   const b = weave.overlap, size = target.size * 4;
   const paths = [...weave.rightOnTopStrips, ...weave.leftOnTopStrips].map(s => s.pathData).join(' ');
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${b.left} ${b.top} ${b.width} ${b.height}"><rect x="${b.left}" y="${b.top}" width="${b.width}" height="${b.height}" fill="white"/><path d="${paths}" fill="black" fill-rule="evenodd"/></svg>`;
-  const pixels = new Resvg(svg, { fitTo: { mode: 'width', value: size } }).render().pixels;
+  const pixels = new Resvg(svg, { fitTo: { mode: 'width', value: size }, font: { loadSystemFonts: false } }).render().pixels;
   let error = 0, mass = 0;
   for (let y = 0; y < target.size; y++) for (let x = 0; x < target.size; x++) {
     const i = y * target.size + x;

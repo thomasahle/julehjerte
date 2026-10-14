@@ -921,6 +921,42 @@
         "static/inverse/core/direct/rejected-routing.js",
         "static/inverse/core/feature-recovery.js"
       ]
+    },
+    "repositoryFollowup": {
+      "checks": [
+        {
+          "stage": "check",
+          "command": [
+            "npm",
+            "run",
+            "check"
+          ],
+          "exitCode": 0,
+          "seconds": 10.23452175
+        },
+        {
+          "stage": "lint",
+          "command": [
+            "npm",
+            "run",
+            "lint"
+          ],
+          "exitCode": 0,
+          "seconds": 7.215043708
+        },
+        {
+          "stage": "app",
+          "command": [
+            "npx",
+            "vitest",
+            "run",
+            "--maxWorkers=2"
+          ],
+          "exitCode": 1,
+          "seconds": 54.106322417
+        }
+      ],
+      "status": "Stopped before build/inverse after an unrelated shape-rendering timeout. The queued corpus/browser jobs did not execute. See shape-render-validation.json for the root cause, byte-identical rendering comparison and correction."
     }
   },
   "visualReview": {

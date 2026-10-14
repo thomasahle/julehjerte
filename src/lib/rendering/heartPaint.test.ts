@@ -14,7 +14,8 @@ const paintOf = (d: HeartDesign) => heartPaintPaths(d.fingers, weaveOf(d));
 function overlapPixels(d: HeartDesign, joined: boolean) {
 	const weave = weaveOf(d), o = weave.overlap;
 	const path = joined ? paintOf(d).right : [...weave.rightOnTopStrips, ...weave.leftOnTopStrips].map(s => s.pathData).join(' ');
-	return new Resvg(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${o.left} ${o.top} ${o.width} ${o.height}"><rect x="${o.left}" y="${o.top}" width="${o.width}" height="${o.height}" fill="white"/><path d="${path}" fill="black" fill-rule="evenodd"/></svg>`, { fitTo: { mode: 'width', value: 384 } }).render().pixels;
+	// These SVGs contain only shapes; avoid scanning installed fonts per render.
+	return new Resvg(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${o.left} ${o.top} ${o.width} ${o.height}"><rect x="${o.left}" y="${o.top}" width="${o.width}" height="${o.height}" fill="white"/><path d="${path}" fill="black" fill-rule="evenodd"/></svg>`, { fitTo: { mode: 'width', value: 384 }, font: { loadSystemFonts: false } }).render().pixels;
 }
 
 function expectSameWeave(d: HeartDesign) {
