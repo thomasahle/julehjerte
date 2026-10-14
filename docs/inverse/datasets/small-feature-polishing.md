@@ -81,13 +81,14 @@ A new regression runs the ordinary refiner through the scoped graph, checking
 fixed controls at every checkpoint, shared-cut identity, intermediate/final
 checkpoint coverage and unchanged input geometry and pixels. Type checking,
 lint, all 857 application tests (one existing skip) and the production build
-also pass at `99399ff`. The complete inverse suite is running against recorded
-source hashes; its outcome is not yet known.
+also pass at `99399ff`. The complete inverse suite passes **849/849 tests** in
+846.96 seconds. All 840 recorded source-file hashes remain unchanged through
+the serial verification run.
 
 The [measurements and artifact hashes](small-feature-polishing.json) preserve
 the negative trials, captured boundary, runtime variants, fresh exports and
-focused test log. Full inverse, fresh corpus, editable SVG and browser validation
-remain pending. No changes have been pushed or deployed.
+focused test log. Fresh corpus, editable SVG and browser validation are now in
+progress. No changes have been pushed or deployed.
 
 ```sh
 node --test --test-concurrency=1 scripts/inverse/feature-details.test.mjs \

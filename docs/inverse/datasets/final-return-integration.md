@@ -1,5 +1,11 @@
 # Final export and the editor share the complete-cut return rule
 
+**Latest verification:** the subsequent [small-feature polishing correction](small-feature-polishing.md)
+resolves the two shifted-eye regressions. Repository QA now passes 849/849 inverse
+tests and all 857 application tests, with type checking, lint and build passing.
+Fresh full-corpus, editable-export and browser validation are in progress; the
+historical intermediate failures below remain part of the diagnostic record.
+
 Final engine validation and the editor now use the same normalized return
 search. Before export, a bounded repair can move cutting controls to resolve a
 return while retaining image fidelity, paper checks, requested symmetries and

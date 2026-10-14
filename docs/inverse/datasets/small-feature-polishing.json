@@ -783,6 +783,21 @@
       "path": "tmp/heart-learning/eye-routing-v1/qa/build.log",
       "sha256": "bf0694859378121101e30b1fb68e2dc26667c88f1c89d39ca94ff29a0fc41bac",
       "bytes": 26053
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/qa/inverse.log",
+      "sha256": "15840419f866553c82cc08ba6535628cdf6a5081cb408eb535ca58c650550f49",
+      "bytes": 80230
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/qa/checks.json",
+      "sha256": "9585ee687fc6a64eae1f279a953e0d16412b5222a2e6c0e59093316323d2a5d1",
+      "bytes": 760
+    },
+    {
+      "path": "tmp/heart-learning/eye-routing-v1/qa/running.json",
+      "sha256": "b3d6e5c0e20ba1e4c213d2cb1026675ed78883037615e4d2214d5e09dd285a5c",
+      "bytes": 51
     }
   ],
   "productionSources": {
@@ -795,7 +810,7 @@
   },
   "limitations": [
     "The head outline still contains a visible step and tiny false seams; the improved eye is not a complete visual reconstruction.",
-    "Full inverse run is in progress; fresh 22/31 benchmark and editable/browser QA are pending for this change.",
+    "Repository QA passes; the fresh 22/31 benchmark, editable SVG replay and browser QA are in progress.",
     "Timing samples are native runs with process startup and independent rendering excluded from solverSeconds.",
     "No physical cutting or assembly validation."
   ],
@@ -842,14 +857,30 @@
         ],
         "exitCode": 0,
         "seconds": 12.317328249999996
+      },
+      {
+        "stage": "inverse",
+        "command": [
+          "npm",
+          "run",
+          "test:inverse"
+        ],
+        "exitCode": 0,
+        "seconds": 847.215286458
       }
     ],
     "applicationTests": {
       "passed": 857,
       "skipped": 1
     },
-    "fullInverseStatus": "running",
+    "fullInverseStatus": "complete",
     "fullInverseLog": "tmp/heart-learning/eye-routing-v1/qa/inverse.log",
-    "sourceRecord": "tmp/heart-learning/eye-routing-v1/qa/source.json"
+    "sourceRecord": "tmp/heart-learning/eye-routing-v1/qa/source.json",
+    "inverseTests": {
+      "passed": 849,
+      "failed": 0,
+      "seconds": 846.958478167
+    },
+    "sourceFilesVerified": 840
   }
 }
