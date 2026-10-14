@@ -51,6 +51,13 @@ a reliable replacement. Santa's tracing path stops on inconsistent border
 endpoint counts before MILP search, while the bauble loses pale frame detail
 before fitting. These interventions do not increase the automatic 25/31 result.
 
+An offline [joint-border investigation](joint-border-profiles.md) now balances
+both inconsistent endpoint pairs in Santa, but its proposals still fail margin
+or routing checks. Slanted guides, coarser traces and relaxed initialization
+have not recovered a valid pair. The experiment remains outside the app; the
+automatic benchmark is unchanged. The latest completed QA passes 805 inverse
+tests, 855 application tests and three refreshed Chromium flows.
+
 The [shared-return follow-up](visible-shared-returns.md) reduces two star notches
 and protects real corners against one-pixel source shifts. Its latest scheduling
 fix, `fa7774c`, reserves time for shared-cut alignment after speculative repairs.
