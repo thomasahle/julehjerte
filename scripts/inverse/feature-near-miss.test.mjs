@@ -59,7 +59,12 @@ test('alternate sampling retains a vertical-shift opening without changing the c
   assert.deepEqual(source.mask,mask);assert.deepEqual(source.probability,probability);
 });
 
-for(const translation of [null,'horizontal','vertical','negative-diagonal'])test(`the ${translation||'original'} near-miss layout produces checked exports within the original short search`,async()=>{
+for(const clockScale of [1,1.5])for(const translation of [null,'horizontal','vertical','negative-diagonal'])test(`the ${translation||'original'} near-miss layout produces checked exports within the original short search (${clockScale}x clock)`,async t=>{
+  // Counterfactual scheduling pressure, not a browser speed measurement. Keep
+  // every source pixel and the ten-second request fixed while advancing the
+  // monotonic clock faster; the original image/detail criteria stay unchanged.
+  const wallNow=performance.now.bind(performance),clockStart=wallNow();
+  if(clockScale!==1)t.mock.method(performance,'now',()=>clockStart+(wallNow()-clockStart)*clockScale);
   const {prepared,cfg}=await nearMiss(translation),source=prepared.target.sourceImage,mask=source.mask.slice(),probability=source.probability.slice();
   const answer=await design(prepared.target,cfg);
   const initialization=answer.report.solver.earlyFeatureInitialization;

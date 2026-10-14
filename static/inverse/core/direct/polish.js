@@ -10,7 +10,12 @@ export function polishCandidate(candidate,prob,n,cfg,options={}){
   // A coarser lattice has a larger numerical margin. Reverting to it pulls
   // a fine-verified boundary inward before optimization even starts.
   const polishingCfg=verifiedPaperSettings({report:{paperVerification:verification}},cfg);
-  const detail=candidate.imagePassed&&!options.weights&&!options.identicalSheets&&!requestedSymmetry(cfg.symmetry).length
+  // A valid coarse fit can sit just outside the image limit because its spans
+  // cannot follow the outline yet. Subdivision only proposes extra parameters;
+  // the caller still requires the unchanged source, feature and paper gates.
+  const closeFeatureFit=candidate.geometryPassed&&candidate.paperPassed&&candidate.originalFeatures?.passed
+    &&Number.isFinite(candidate.originalImageError)&&candidate.originalImageError<=cfg.maxImageError+.01;
+  const detail=(candidate.imagePassed||closeFeatureFit)&&!options.weights&&!options.identicalSheets&&!requestedSymmetry(cfg.symmetry).length
     ?outlineDetailPlan(candidate.graph,candidate.points,candidate.phase,options.input?.sourceImage,polishingCfg):null;
   const graph=detail?.graph||new CurveGraph(candidate.graph.nested(candidate.points),cfg.width);
   const polished=refineCurves(graph,prob,n,candidate.phase,polishingCfg,{...options,...(detail?{rate:.035}:{}),onProgress:(r,solution)=>{

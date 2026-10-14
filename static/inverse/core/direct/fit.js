@@ -227,7 +227,10 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       }
     }
   };
-  const featureTimeAvailable=()=>!symmetryRequested&&!weights&&refinementTimeLeft(deadline)>3500;
+  // This is time remaining AFTER clearance and polishing reserves. Requiring
+  // another 3.5 seconds here skipped useful starts after modest initialization
+  // delays and spent the remaining budget on unsuccessful traced recovery.
+  const featureTimeAvailable=()=>!symmetryRequested&&!weights&&refinementTimeLeft(deadline)>2500;
   if(missingFeature&&featureTimeAvailable())initializeEarlyFeature(features.regions.flatMap((r,j)=>(r.retainedFraction<features.minimumRetention||r.enclosureLost)?[j]:[]));
   // Retaining a large region does not mean a coarse grid keeps its branches.
   // Only shorten routing when colour protection selected a better-fitting
@@ -482,7 +485,9 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     // Spend the unsuccessful layout's ordinary polishing window on the fresh
     // shape; the overall deadline and final cleanup/export reserve stay fixed.
     const selected=fine[i],remaining=deadline-performance.now(),allocation=remaining;
-    const polishingReserve=samplingRetry?0:1700,end=Math.min(deadline-polishingReserve,performance.now()+allocation);
+    // A sampling start promoted by preflight is the primary candidate, not a
+    // last-chance retry. It needs the ordinary outline-polishing reserve too.
+    const polishingReserve=samplingRetry&&!samplingRecovery?.preflight?.preferred?0:1700,end=Math.min(deadline-polishingReserve,performance.now()+allocation);
     const {clear,graph,protectedObjective,objectiveProb,objectiveWeights,refinementCfg,verification}=prepareRefinement(selected,allocation);
     // The unconstrained grid can look best only because its strips are too
     // narrow. If preparation reverses that ranking, give one existing

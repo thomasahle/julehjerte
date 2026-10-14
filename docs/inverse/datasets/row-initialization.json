@@ -1,0 +1,1046 @@
+{
+  "scope": "Row initializer optimization plus unchanged-target timing diagnostics. Accelerated clock experiments are counterfactual scheduling tests, not browser latency measurements. Prototype snapshots remain offline unless separately committed. Full repository and corpus validation pending.",
+  "initializerBenchmark": {
+    "scope": "Paired real-image initializers. No deadline, same count/phase options, complete returned seeds and diagnostic reports exactly equal. Three repeats with alternating order; this is not full-pipeline timing.",
+    "controlSourceManifest": "tmp/heart-learning/clearance-order-v2/control-source.json",
+    "controlSourceManifestSha256": "981f59f909a024f5bedbca173e3790b5cb7de955b3856a00c8b417799e3a365a",
+    "sourceHashes": {
+      "static/inverse/core/direct/native/boundary.c": "ce50bd3ae08511e672b6e24075ce4f2e9b1fc23675e147dd2c7faa71e131d5c9",
+      "static/inverse/core/direct/native/boundary.wasm": "52152e812fb055451635f4897b2a6c0b92156084bd272575200300263bd31ba9",
+      "static/inverse/core/numerical-kernel.js": "2468505a2fd9613a4674630d77e939c0877d4b66f67452af6e5342012ec5a777",
+      "static/inverse/core/direct/initialize.js": "097ae2b72608930c5337097b253328cd316123e45eaf56e0eaaaa3de3a3ad5d3",
+      "static/inverse/core/direct/counts.js": "f4fbb0e06b54a738f6e669593e2be84b7d4311a91f5a81604b5a55d1193bce9e",
+      "static/inverse/core/direct/feature-seeds.js": "dc92e710a54afcc94334f7ceacbb56e92584837daf30983881e8750f683f1908",
+      "tmp/heart-learning/row-kernel-v1/initializer-benchmark.mjs": "3d4ffc10be43ebef57cd35751fe40726a2746cf361ebc8f94df8958ed0a242ce"
+    },
+    "results": [
+      {
+        "variant": "original",
+        "method": "initializeFeatureSeeds",
+        "maskSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890",
+        "times": {
+          "control": [
+            0.888141,
+            0.7868740419999999,
+            0.7913394589999998
+          ],
+          "current": [
+            0.6331787909999999,
+            0.528803375,
+            0.5331129579999997
+          ]
+        },
+        "controlMedian": 0.7913394589999998,
+        "currentMedian": 0.5331129579999997,
+        "ratio": 1.4843748348731758,
+        "checkedCoordinates": 128,
+        "seeds": 1,
+        "exactSeedAndReportEquality": true
+      },
+      {
+        "variant": "original",
+        "method": "initializeFeatureSampling",
+        "maskSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890",
+        "times": {
+          "control": [
+            0.21822729100000016,
+            0.19987079100000027,
+            0.18845804099999985
+          ],
+          "current": [
+            0.13810241599999973,
+            0.12493025000000034,
+            0.15555195800000002
+          ]
+        },
+        "controlMedian": 0.19987079100000027,
+        "currentMedian": 0.13810241599999973,
+        "ratio": 1.447264984850089,
+        "checkedCoordinates": 0,
+        "seeds": 0,
+        "exactSeedAndReportEquality": true
+      },
+      {
+        "variant": "horizontal",
+        "method": "initializeFeatureSeeds",
+        "maskSha256": "34c9b902b787f4b934b50fdea0238277932d70d1f1d58391c0323c30a80dcd16",
+        "times": {
+          "control": [
+            0.9615209160000004,
+            0.9744055840000001,
+            0.9596300419999989
+          ],
+          "current": [
+            0.7336530839999996,
+            0.7123559999999989,
+            0.7236045410000006
+          ]
+        },
+        "controlMedian": 0.9615209160000004,
+        "currentMedian": 0.7236045410000006,
+        "ratio": 1.328793369194735,
+        "checkedCoordinates": 128,
+        "seeds": 1,
+        "exactSeedAndReportEquality": true
+      },
+      {
+        "variant": "horizontal",
+        "method": "initializeFeatureSampling",
+        "maskSha256": "34c9b902b787f4b934b50fdea0238277932d70d1f1d58391c0323c30a80dcd16",
+        "times": {
+          "control": [
+            0.16500091600000086,
+            0.15288033300000098,
+            0.15990379199999916
+          ],
+          "current": [
+            0.12131062500000007,
+            0.1131708749999998,
+            0.11321112499999982
+          ]
+        },
+        "controlMedian": 0.15990379199999916,
+        "currentMedian": 0.11321112499999982,
+        "ratio": 1.4124388570469502,
+        "checkedCoordinates": 0,
+        "seeds": 0,
+        "exactSeedAndReportEquality": true
+      },
+      {
+        "variant": "vertical",
+        "method": "initializeFeatureSeeds",
+        "maskSha256": "5366729f963fe8255091b1ed9fae26d734fdd6def020b4effc87c1965ac9aaea",
+        "times": {
+          "control": [
+            0.7717457910000012,
+            0.7572537080000001,
+            0.7459321249999994
+          ],
+          "current": [
+            0.5079461670000001,
+            0.5114866669999992,
+            0.5055318750000006
+          ]
+        },
+        "controlMedian": 0.7572537080000001,
+        "currentMedian": 0.5079461670000001,
+        "ratio": 1.4908148878698007,
+        "checkedCoordinates": 128,
+        "seeds": 1,
+        "exactSeedAndReportEquality": true
+      },
+      {
+        "variant": "vertical",
+        "method": "initializeFeatureSampling",
+        "maskSha256": "5366729f963fe8255091b1ed9fae26d734fdd6def020b4effc87c1965ac9aaea",
+        "times": {
+          "control": [
+            0.1688216250000005,
+            0.15758812499999839,
+            0.15881870799999886
+          ],
+          "current": [
+            0.12159825000000274,
+            0.11826850000000196,
+            0.1232098330000008
+          ]
+        },
+        "controlMedian": 0.15881870799999886,
+        "currentMedian": 0.12159825000000274,
+        "ratio": 1.3060936978944622,
+        "checkedCoordinates": 128,
+        "seeds": 1,
+        "exactSeedAndReportEquality": true
+      },
+      {
+        "variant": "negative-diagonal",
+        "method": "initializeFeatureSeeds",
+        "maskSha256": "52b62e8802e974e4f2bea0142e10bbd94e42213083cb0f01f089c94093c4419c",
+        "times": {
+          "control": [
+            0.5953830000000017,
+            0.5683590000000004,
+            0.5763736669999998
+          ],
+          "current": [
+            0.34212425000000074,
+            0.3475434999999998,
+            0.33579516599999987
+          ]
+        },
+        "controlMedian": 0.5763736669999998,
+        "currentMedian": 0.34212425000000074,
+        "ratio": 1.6846910647228268,
+        "checkedCoordinates": 288,
+        "seeds": 2,
+        "exactSeedAndReportEquality": true
+      },
+      {
+        "variant": "negative-diagonal",
+        "method": "initializeFeatureSampling",
+        "maskSha256": "52b62e8802e974e4f2bea0142e10bbd94e42213083cb0f01f089c94093c4419c",
+        "times": {
+          "control": [
+            0.16512575000000287,
+            0.1571345419999998,
+            0.15790108300000066
+          ],
+          "current": [
+            0.11942150000000037,
+            0.1115711659999979,
+            0.11028362500000002
+          ]
+        },
+        "controlMedian": 0.15790108300000066,
+        "currentMedian": 0.1115711659999979,
+        "ratio": 1.4152499132258207,
+        "checkedCoordinates": 128,
+        "seeds": 1,
+        "exactSeedAndReportEquality": true
+      }
+    ]
+  },
+  "replays": [
+    {
+      "file": "tmp/heart-learning/row-kernel-v1/near-miss-clock-budget-1.5/results.json",
+      "sha256": "dbc747e277489bae2cc2f9e1b40e0420b6c6edb8d5bd3257faa25ee67aa60557",
+      "engine": "budget",
+      "clockScale": 1.5,
+      "cases": [
+        {
+          "name": "original",
+          "templateChecksPassed": true,
+          "solverSeconds": 8.8797410625,
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.02954375,
+              "featuresPassed": true
+            },
+            {
+              "scale": 2,
+              "error": 0.0302078125,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixturePassed": false
+        },
+        {
+          "name": "horizontal",
+          "templateChecksPassed": true,
+          "solverSeconds": 9.007814812499998,
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.0100875,
+              "featuresPassed": true
+            },
+            {
+              "scale": 2,
+              "error": 0.011346875,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixturePassed": true
+        },
+        {
+          "name": "vertical",
+          "templateChecksPassed": true,
+          "solverSeconds": 9.071223438,
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.01730625,
+              "featuresPassed": true,
+              "sunWindowError": 0.03922689075630252
+            },
+            {
+              "scale": 2,
+              "error": 0.0185515625,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixturePassed": true
+        },
+        {
+          "name": "negative-diagonal",
+          "templateChecksPassed": true,
+          "solverSeconds": 9.089768312999997,
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.02109375,
+              "featuresPassed": true
+            },
+            {
+              "scale": 2,
+              "error": 0.0221109375,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixturePassed": true
+        }
+      ]
+    },
+    {
+      "file": "tmp/heart-learning/row-kernel-v1/near-miss-clock-budget-detail-1.5/results.json",
+      "sha256": "f6ac30f921a3ff7b8f4578b2da69699cf13e8632ba5a8adc572610c03415bc70",
+      "engine": "budget-detail",
+      "clockScale": 1.5,
+      "cases": [
+        {
+          "name": "original",
+          "templateChecksPassed": true,
+          "solverSeconds": 9.095055250500002,
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.027425,
+              "featuresPassed": true
+            },
+            {
+              "scale": 2,
+              "error": 0.028653125,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixturePassed": true
+        },
+        {
+          "name": "horizontal",
+          "templateChecksPassed": true,
+          "solverSeconds": 9.003527499000002,
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.0097125,
+              "featuresPassed": true
+            },
+            {
+              "scale": 2,
+              "error": 0.01109375,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixturePassed": true
+        },
+        {
+          "name": "vertical",
+          "templateChecksPassed": true,
+          "solverSeconds": 9.038184625499998,
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.018125,
+              "featuresPassed": true,
+              "sunWindowError": 0.042756302521008406
+            },
+            {
+              "scale": 2,
+              "error": 0.0191484375,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixturePassed": false
+        },
+        {
+          "name": "negative-diagonal",
+          "templateChecksPassed": true,
+          "solverSeconds": 9.027900250499998,
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.0150625,
+              "featuresPassed": true
+            },
+            {
+              "scale": 2,
+              "error": 0.016190625,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixturePassed": true
+        }
+      ]
+    },
+    {
+      "file": "tmp/heart-learning/row-kernel-v1/near-miss-clock-current-1/results.json",
+      "sha256": "31d01e932d51824f02736878aa06b94d99d0cdb7a8c2644b534ac0078b55e28c",
+      "engine": "current",
+      "clockScale": 1,
+      "cases": [
+        {
+          "name": "original",
+          "templateChecksPassed": true,
+          "solverSeconds": 8.529515625,
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.01399375,
+              "featuresPassed": true
+            },
+            {
+              "scale": 2,
+              "error": 0.01526875,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixturePassed": true
+        },
+        {
+          "name": "horizontal",
+          "templateChecksPassed": true,
+          "solverSeconds": 7.938312833,
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.01876875,
+              "featuresPassed": true
+            },
+            {
+              "scale": 2,
+              "error": 0.019690625,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixturePassed": true
+        },
+        {
+          "name": "vertical",
+          "templateChecksPassed": true,
+          "solverSeconds": 7.114590916000001,
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.0114375,
+              "featuresPassed": true,
+              "sunWindowError": 0.02215126050420168
+            },
+            {
+              "scale": 2,
+              "error": 0.013278125,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixturePassed": true
+        },
+        {
+          "name": "negative-diagonal",
+          "templateChecksPassed": true,
+          "solverSeconds": 7.420998582999997,
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.00998125,
+              "featuresPassed": true
+            },
+            {
+              "scale": 2,
+              "error": 0.011575,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixturePassed": true
+        }
+      ]
+    },
+    {
+      "file": "tmp/heart-learning/row-kernel-v1/near-miss-clock-current-1.5/results.json",
+      "sha256": "1bdccacf4db63e277e3c9f81d844a2501201968f2384d942fd8a0cea1894c4bc",
+      "engine": "current",
+      "clockScale": 1.5,
+      "cases": [
+        {
+          "name": "original",
+          "templateChecksPassed": false,
+          "solverSeconds": 9.669409562999999,
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.05249375,
+              "featuresPassed": false
+            },
+            {
+              "scale": 2,
+              "error": 0.053340625,
+              "featuresPassed": false
+            }
+          ],
+          "strictFixturePassed": false
+        },
+        {
+          "name": "horizontal",
+          "templateChecksPassed": true,
+          "solverSeconds": 9.039224499,
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.01330625,
+              "featuresPassed": true
+            },
+            {
+              "scale": 2,
+              "error": 0.0144859375,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixturePassed": true
+        },
+        {
+          "name": "vertical",
+          "templateChecksPassed": true,
+          "solverSeconds": 8.877287812499999,
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.02894375,
+              "featuresPassed": true,
+              "sunWindowError": 0.07663865546218487
+            },
+            {
+              "scale": 2,
+              "error": 0.0299515625,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixturePassed": false
+        },
+        {
+          "name": "negative-diagonal",
+          "templateChecksPassed": true,
+          "solverSeconds": 8.868324999000004,
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.0250875,
+              "featuresPassed": true
+            },
+            {
+              "scale": 2,
+              "error": 0.0261234375,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixturePassed": true
+        }
+      ]
+    },
+    {
+      "file": "tmp/heart-learning/row-kernel-v1/near-miss-clock-handoff-1/results.json",
+      "sha256": "6fc4167e0509ff9e036b13eadf8fb6568a9cbf74ca9e3f51bd6b54acf5b0a5c7",
+      "engine": "handoff",
+      "clockScale": 1,
+      "cases": [
+        {
+          "name": "original",
+          "templateChecksPassed": true,
+          "solverSeconds": 6.967994875,
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.02456875,
+              "featuresPassed": true
+            },
+            {
+              "scale": 2,
+              "error": 0.0258015625,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixturePassed": true
+        },
+        {
+          "name": "horizontal",
+          "templateChecksPassed": true,
+          "solverSeconds": 5.216868958000001,
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.030075,
+              "featuresPassed": true
+            },
+            {
+              "scale": 2,
+              "error": 0.0309296875,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixturePassed": false
+        },
+        {
+          "name": "vertical",
+          "templateChecksPassed": true,
+          "solverSeconds": 6.303455542,
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.01184375,
+              "featuresPassed": true,
+              "sunWindowError": 0.021848739495798318
+            },
+            {
+              "scale": 2,
+              "error": 0.0135390625,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixturePassed": true
+        },
+        {
+          "name": "negative-diagonal",
+          "templateChecksPassed": true,
+          "solverSeconds": 6.029584416000001,
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.012675,
+              "featuresPassed": true
+            },
+            {
+              "scale": 2,
+              "error": 0.0140953125,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixturePassed": true
+        }
+      ]
+    },
+    {
+      "file": "tmp/heart-learning/row-kernel-v1/near-miss-clock-handoff-1.5/results.json",
+      "sha256": "cf5d50784446b094aa4b3bf8b621b69605b20684c34b9c00fa7b875e00e0a74b",
+      "engine": "handoff",
+      "clockScale": 1.5,
+      "cases": [
+        {
+          "name": "original",
+          "templateChecksPassed": true,
+          "solverSeconds": 9.0153831255,
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.026,
+              "featuresPassed": true
+            },
+            {
+              "scale": 2,
+              "error": 0.026878125,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixturePassed": true
+        },
+        {
+          "name": "horizontal",
+          "templateChecksPassed": true,
+          "solverSeconds": 7.3088914365000015,
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.030075,
+              "featuresPassed": true
+            },
+            {
+              "scale": 2,
+              "error": 0.0309296875,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixturePassed": false
+        },
+        {
+          "name": "vertical",
+          "templateChecksPassed": true,
+          "solverSeconds": 9.007758937500002,
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.01184375,
+              "featuresPassed": true,
+              "sunWindowError": 0.021848739495798318
+            },
+            {
+              "scale": 2,
+              "error": 0.0135390625,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixturePassed": true
+        },
+        {
+          "name": "negative-diagonal",
+          "templateChecksPassed": true,
+          "solverSeconds": 8.391612250500001,
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.012675,
+              "featuresPassed": true
+            },
+            {
+              "scale": 2,
+              "error": 0.0140953125,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixturePassed": true
+        }
+      ]
+    },
+    {
+      "file": "tmp/heart-learning/row-kernel-v1/near-miss-clock-handoff-probe-1/results.json",
+      "sha256": "cdfbe815f5a02fa0bf65b95ffcd2c63d4616c3ce60a7e826f7480000f8843963",
+      "engine": "handoff-probe",
+      "clockScale": 1,
+      "cases": [
+        {
+          "name": "horizontal",
+          "templateChecksPassed": true,
+          "solverSeconds": 5.873110125,
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.030075,
+              "featuresPassed": true
+            },
+            {
+              "scale": 2,
+              "error": 0.0309296875,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixturePassed": false
+        }
+      ]
+    },
+    {
+      "file": "tmp/heart-learning/row-kernel-v1/near-miss-clock-reserve-1/results.json",
+      "sha256": "ca56b5f5a593468ac905444b643994886fecfefeb66a86dd75959bec21c8b8fc",
+      "engine": "reserve",
+      "clockScale": 1,
+      "cases": [
+        {
+          "name": "original",
+          "templateChecksPassed": true,
+          "solverSeconds": 8.206378208,
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.01399375,
+              "featuresPassed": true
+            },
+            {
+              "scale": 2,
+              "error": 0.01526875,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixturePassed": true
+        },
+        {
+          "name": "horizontal",
+          "templateChecksPassed": true,
+          "solverSeconds": 7.772796249999997,
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.01876875,
+              "featuresPassed": true
+            },
+            {
+              "scale": 2,
+              "error": 0.019690625,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixturePassed": true
+        },
+        {
+          "name": "vertical",
+          "templateChecksPassed": true,
+          "solverSeconds": 7.017858040999999,
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.0114375,
+              "featuresPassed": true,
+              "sunWindowError": 0.02215126050420168
+            },
+            {
+              "scale": 2,
+              "error": 0.013278125,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixturePassed": true
+        },
+        {
+          "name": "negative-diagonal",
+          "templateChecksPassed": true,
+          "solverSeconds": 6.976309249999998,
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.00998125,
+              "featuresPassed": true
+            },
+            {
+              "scale": 2,
+              "error": 0.011575,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixturePassed": true
+        }
+      ]
+    },
+    {
+      "file": "tmp/heart-learning/row-kernel-v1/near-miss-clock-reserve-1.5/results.json",
+      "sha256": "d78609158ceebf34e115928ea1d36634a70ce4ebca5ebb7757ce4115d119aaf2",
+      "engine": "reserve",
+      "clockScale": 1.5,
+      "cases": [
+        {
+          "name": "original",
+          "templateChecksPassed": true,
+          "solverSeconds": 9.021141312,
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.0263625,
+              "featuresPassed": true
+            },
+            {
+              "scale": 2,
+              "error": 0.027296875,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixturePassed": true
+        },
+        {
+          "name": "horizontal",
+          "templateChecksPassed": true,
+          "solverSeconds": 9.100378687500001,
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.00975625,
+              "featuresPassed": true
+            },
+            {
+              "scale": 2,
+              "error": 0.01118125,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixturePassed": true
+        },
+        {
+          "name": "vertical",
+          "templateChecksPassed": true,
+          "solverSeconds": 9.013441750500002,
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.011925,
+              "featuresPassed": true,
+              "sunWindowError": 0.02289075630252101
+            },
+            {
+              "scale": 2,
+              "error": 0.0136546875,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixturePassed": true
+        },
+        {
+          "name": "negative-diagonal",
+          "templateChecksPassed": true,
+          "solverSeconds": 8.899992749999994,
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.01420625,
+              "featuresPassed": true
+            },
+            {
+              "scale": 2,
+              "error": 0.0155125,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixturePassed": true
+        }
+      ]
+    },
+    {
+      "file": "tmp/heart-learning/row-kernel-v1/near-miss-clock-stall-1/results.json",
+      "sha256": "db32a95522274c4debbfedb19f3602fbf092b9721584af7220edfa35ad6e30f4",
+      "engine": "stall",
+      "clockScale": 1,
+      "cases": [
+        {
+          "name": "original",
+          "templateChecksPassed": true,
+          "solverSeconds": 8.380196666,
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.01399375,
+              "featuresPassed": true
+            },
+            {
+              "scale": 2,
+              "error": 0.01526875,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixturePassed": true
+        },
+        {
+          "name": "horizontal",
+          "templateChecksPassed": true,
+          "solverSeconds": 7.595466375,
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.01876875,
+              "featuresPassed": true
+            },
+            {
+              "scale": 2,
+              "error": 0.019690625,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixturePassed": true
+        },
+        {
+          "name": "vertical",
+          "templateChecksPassed": true,
+          "solverSeconds": 6.8471705,
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.0114375,
+              "featuresPassed": true,
+              "sunWindowError": 0.02215126050420168
+            },
+            {
+              "scale": 2,
+              "error": 0.013278125,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixturePassed": true
+        },
+        {
+          "name": "negative-diagonal",
+          "templateChecksPassed": true,
+          "solverSeconds": 7.010559208999999,
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.00998125,
+              "featuresPassed": true
+            },
+            {
+              "scale": 2,
+              "error": 0.011575,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixturePassed": true
+        }
+      ]
+    },
+    {
+      "file": "tmp/heart-learning/row-kernel-v1/near-miss-clock-stall-1.5/results.json",
+      "sha256": "4fe0cacd4435493e756ea1e21bd088a45dd4bfa0028cacf08bd828219c0c0146",
+      "engine": "stall",
+      "clockScale": 1.5,
+      "cases": [
+        {
+          "name": "original",
+          "templateChecksPassed": true,
+          "solverSeconds": 9.087031249499999,
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.027425,
+              "featuresPassed": true
+            },
+            {
+              "scale": 2,
+              "error": 0.028653125,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixturePassed": true
+        },
+        {
+          "name": "horizontal",
+          "templateChecksPassed": true,
+          "solverSeconds": 9.093040249500001,
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.00976875,
+              "featuresPassed": true
+            },
+            {
+              "scale": 2,
+              "error": 0.0111375,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixturePassed": true
+        },
+        {
+          "name": "vertical",
+          "templateChecksPassed": true,
+          "solverSeconds": 9.097557499499999,
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.018125,
+              "featuresPassed": true,
+              "sunWindowError": 0.042756302521008406
+            },
+            {
+              "scale": 2,
+              "error": 0.0191484375,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixturePassed": false
+        },
+        {
+          "name": "negative-diagonal",
+          "templateChecksPassed": true,
+          "solverSeconds": 9.004881624000001,
+          "scales": [
+            {
+              "scale": 1,
+              "error": 0.0150625,
+              "featuresPassed": true
+            },
+            {
+              "scale": 2,
+              "error": 0.016190625,
+              "featuresPassed": true
+            }
+          ],
+          "strictFixturePassed": true
+        }
+      ]
+    }
+  ],
+  "geometryDiagnostic": {
+    "artifact": "tmp/heart-learning/row-kernel-v1/near-miss-clock-handoff-probe-1/horizontal-probe.json",
+    "sha256": "0c1931a7a8ad17aff8267a6fe80670763bc79269689661e4087e65aebd0494be",
+    "finding": "Exact subdivision exposes short-return checks skipped on adjacent original cubics. No geometry gate was changed. Immediate-handoff and stall prototypes are not promoted."
+  }
+}
