@@ -32,7 +32,7 @@ for(const borrowed of [true,false])test(borrowed?'a late routing candidate uses 
  if(borrowed){
   assert.equal(observation.reason,'repair_attempted');
   assert.ok(observation.repairBudgetSeconds>.75&&observation.repairBudgetSeconds<1.2);
-  assert.equal(attempt.continuousRepair.additionalBudgetSeconds,.5,'The existing half-second cap remains in force.');
+  assert.ok(Math.abs(attempt.continuousRepair.additionalBudgetSeconds-.5)<1e-12,'The existing half-second cap remains in force, allowing only arithmetic roundoff.');
   assert.equal(attempt.continuousRepair.accepted,true,JSON.stringify({reason:attempt.continuousRepair.reason,steps:attempt.continuousRepair.steps}));
   assert.ok(result.solution);
   const checked=verifiedPaperSettings(result.solution,cfg);

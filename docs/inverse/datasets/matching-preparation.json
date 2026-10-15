@@ -351,7 +351,55 @@
     "failure": "Existing matching-seeds regression: matching_budget_exhausted instead of matched; independent template and paper assertions pass. The micro-optimizations do not establish a fix for this scheduling failure.",
     "lint": "passed for all modified runtime/test files",
     "newUnitTests": 4,
-    "fullRepositoryAndCorpusQa": "pending"
+    "fullRepositoryAndCorpusQa": {
+      "runtimeRevision": "09c0461",
+      "sourceFilesVerified": 739,
+      "status": "test_assertion_failed",
+      "inverseTests": {
+        "total": 901,
+        "passed": 900,
+        "failed": 1,
+        "seconds": 1022.020147
+      },
+      "failure": {
+        "test": "a late routing candidate uses the repair time already provided by its caller",
+        "file": "scripts/inverse/late-routing-repair.test.mjs",
+        "actualAdditionalBudgetSeconds": 0.4999999999999991,
+        "expectedAdditionalBudgetSeconds": 0.5,
+        "classification": "Exact floating-point comparison of a subtracted and scaled duration; subsequent repair-success assertions were not reached in this run."
+      },
+      "matchingSeedsRegression": "passed in this full run; previous timed failures remain part of the record",
+      "otherChecks": [
+        {
+          "stage": "core-lint",
+          "exitCode": 0,
+          "seconds": 1.9662408329999999
+        },
+        {
+          "stage": "check",
+          "exitCode": 0,
+          "seconds": 9.53525475
+        },
+        {
+          "stage": "lint",
+          "exitCode": 0,
+          "seconds": 6.524262083
+        },
+        {
+          "stage": "app",
+          "exitCode": 0,
+          "seconds": 26.217318959000004
+        },
+        {
+          "stage": "build",
+          "exitCode": 0,
+          "seconds": 14.779648000000002
+        }
+      ],
+      "native": "not_started",
+      "browser": "not_started",
+      "testCorrection": "The real-MILP borrowed-budget and no-borrow tests pass with a 1e-12-second comparison tolerance. All geometry and paper assertions remain. The other 899 full-suite tests were unchanged at the correction; subsequent runtime improvements require new full QA."
+    }
   },
   "artifacts": [
     {
@@ -417,6 +465,46 @@
     {
       "path": "tmp/heart-learning/matching-budget-v1/scored-probe/result.json",
       "sha256": "56b68a440bbd4e721cf40693f587b1d08bfd351877df89a43e28b3df154a3d0b"
+    },
+    {
+      "path": "tmp/heart-learning/matching-preparation-release-v1/source.json",
+      "sha256": "c0b89fb3418fcbd26bcf3cdee890a439ed323e43134066e20749da21c058c051"
+    },
+    {
+      "path": "tmp/heart-learning/matching-preparation-release-v1/checks.json",
+      "sha256": "f088ac03ed2a1a458cdc5fe980fca0c354cce73f1042fbda31df16a1ef792d1d"
+    },
+    {
+      "path": "tmp/heart-learning/matching-preparation-release-v1/state.json",
+      "sha256": "1f8f9347ef767e22673e31ed51f5a4ddfae173efb6e1f95d404090bfebcc4eab"
+    },
+    {
+      "path": "tmp/heart-learning/matching-preparation-release-v1/qa/checks.json",
+      "sha256": "f785f54bc7f89d317cff490bee2f38e246ade9041e575bf048a3e4db132d21bd"
+    },
+    {
+      "path": "tmp/heart-learning/matching-preparation-release-v1/qa/inverse.log",
+      "sha256": "4349e652a24754a2cc9e5062e2be41f79eb31cefaac3a2311e0928d392bf9c88"
+    },
+    {
+      "path": "tmp/heart-learning/matching-preparation-release-v1/qa/running.json",
+      "sha256": "d4fbbae5ba35f408cca166c81f2a7356c490734cfb99d733ccf0ab9bcb8f2b3b"
+    },
+    {
+      "path": "tmp/heart-learning/matching-preparation-release-v1/harness-source.json",
+      "sha256": "da4c6b32c51fafeef382031165b95b775c87d2e13f0a075610af932b9620bb1e"
+    },
+    {
+      "path": "tmp/heart-learning/matching-preparation-release-v1/late-repair-failure.txt",
+      "sha256": "c128229b9d75c9dbe1b7c48c449a1c38515bc3a0060fc0fc4b264719b000baed"
+    },
+    {
+      "path": "tmp/heart-learning/matching-tree-integration-v1/checks.json",
+      "sha256": "8bfb1b408ae4fe0c6c143a6e8d244c67c325c0b530c0a0111dfb6cadd83d9c60"
+    },
+    {
+      "path": "tmp/heart-learning/matching-tree-integration-v1/focused.log",
+      "sha256": "38ee9b7997d7475754841e266baf26c90a714840c89ce53d71afc38879291b4e"
     }
   ]
 }
