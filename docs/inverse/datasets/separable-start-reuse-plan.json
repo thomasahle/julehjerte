@@ -1,5 +1,5 @@
 {
-  "status": "planned-offline",
+  "status": "complete-offline-not-integrated",
   "scope": "Compare complete image-only count initialization on all 29 available fixed photographic crops. Candidate skips an exactly repeated initial profile inside the four-start separable initializer. No hypotheses, color phases, fitting rounds, tolerances or acceptance checks change.",
   "sourceResults": "tmp/heart-learning/initializer-perturbation-v1/qa-continuation/native/photos/results.json",
   "rounds": 4,
@@ -35,6 +35,46 @@
       "path": "tmp/heart-learning/separable-reuse-v1/candidate/core/direct/initialize.js",
       "sha256": "e498c6f21f0e30cf1817593f00655b9225c5c434192adfd7cd72ccf6fbf93aee",
       "bytes": 12924
+    },
+    {
+      "path": "tmp/heart-learning/separable-reuse-v1/results/report.json",
+      "sha256": "13adaf3c56e305d70f3fd8557fa345d8251e13adf07526ec836c765531d3f68f",
+      "bytes": 40450
+    },
+    {
+      "path": "tmp/heart-learning/separable-reuse-v1/state.json",
+      "sha256": "4529088f1dd5680880abf69d8cb8f030957904d7d4de4722505311c3819153d9",
+      "bytes": 81
+    },
+    {
+      "path": "tmp/heart-learning/separable-reuse-v1/compare.log",
+      "sha256": "ddff2292fe80b921811912fb617dc55d4e5e22030870402bb1decab92e1c910d",
+      "bytes": 343
     }
-  ]
+  ],
+  "results": {
+    "ordinary-counts": {
+      "cases": 29,
+      "referenceMilliseconds": 51908.32374800001,
+      "candidateMilliseconds": 51679.741462000195,
+      "ratio": 0.9955964232805992,
+      "medianCaseRatio": 0.9922321980676232
+    },
+    "feature-weighted": {
+      "cases": 26,
+      "referenceMilliseconds": 40063.93154499993,
+      "candidateMilliseconds": 39650.761129999984,
+      "ratio": 0.9896872224200995,
+      "medianCaseRatio": 0.990597309869251
+    }
+  },
+  "exactComparisons": {
+    "ordinaryCountCases": 29,
+    "featureWeightedCases": 26,
+    "timingPairsPerCase": 4,
+    "allSeedsAndReportsEqual": true,
+    "sourceMasksUnchanged": true,
+    "bothRuntimeTreesUnchanged": true
+  },
+  "decision": "Keep this optimization offline. The full initialization gain is only 0.44% ordinary / 1.03% feature-weighted in this controlled run, with no whole-solver gain demonstrated. It does not address the skipped-initializer scheduling cliff."
 }
