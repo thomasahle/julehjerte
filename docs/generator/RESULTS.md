@@ -1,6 +1,48 @@
 # Generator robustness results
 
-## Current coverage: compound relief cuts and divided medallions
+## Current coverage: more attachment choices for difficult contours
+
+A fresh audit of all **3,150 configurations** finished with **2,572 accepted /
+578 refused / zero invalid accepted results**, with no regressions. This adds
+85 verified combinations without removing any previous acceptance pins.
+
+| Corpus | Configurations | Accepted | Refused | Invalid accepted output |
+|---|---:|---:|---:|---:|
+| Text: 34 inputs, six fonts, ten frames | 2028 | 1584 | 444 | 0 |
+| Figures: 51 motifs, 22 templates | 1122 | 988 | 134 | 0 |
+
+The combined record is `tmp/generator/balanced-current.json`. All 2,572 accepted
+IDs are pinned in `scripts/generator/expected.json`. The repeat frame accepts
+135/198 configurations; checkerboard repeat accepts 108/198.
+
+- The final contour-routing fallback distributes its fixed 256-candidate budget
+  across more outer attachments, considering at most four internal counter
+  variants per attachment. Text retries only when the earlier pass actually
+  considered more variants there. Visible artwork and minimum clearance stay
+  unchanged; no solver or detached cutouts are introduced.
+- Repeated text repairs only failed local cells and reuses completed cells.
+  New successes include Kalam ANNA, OSCAR and mixed-line text, Bree Serif Anna,
+  2026 and M&M, plus Righteous SØREN. A regression test verifies cache reuse.
+- Other recovered text includes Bree Serif William and accented Danish words,
+  Oswald ÆØÅ, numerous Kalam names and multiline arrangements, and Kalam B in
+  the alternating checkerboard. The prior ANNA cut-tip optimization remains.
+- Tabler gift now works in hexagon and oval frames in all three styles; Tabler
+  palette works in all three scalloped styles. Only failed designs reach the
+  bounded additional figure pass.
+
+All **971 unit tests and 177 inverse tests** pass, along with type checking,
+lint and the production build. Rendered inspection covered eight representative
+recoveries. Browser verification covered the Kalam ANNA repeat preview and
+matching thumbnail, its 8×4 editor handoff, and the Tabler gift hexagon preview
+and matching selected thumbnail. These are digital geometry, fidelity and
+JSON/SVG export checks, not physical weaving trials.
+
+The goal remains unfinished: 578 tested combinations are refused, and the rest
+of the searchable icon catalog and non-default scales remain outside this
+matrix. Difficult cases still take too long; concurrent audit timings are not
+used as latency claims. Historical totals below describe earlier audits.
+
+## Previous coverage: compound relief cuts and divided medallions
 
 The expanded matrix covers every bundled font in every text frame. Its current
 status is **2,487 accepted / 663 refused / zero invalid accepted results**:

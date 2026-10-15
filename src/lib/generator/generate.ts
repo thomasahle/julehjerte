@@ -23,6 +23,7 @@ import {
 	generateFourPortFigure,
 	fourPortMotif,
 	originalFourPortMotif,
+	balancedFourPortMotif,
 	generateCheckedText,
 	inside,
 	distance,
@@ -311,6 +312,7 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 			const text = request.text ?? '';
 			let best: GeneratorResult | undefined;
 			let rawTips: [number, number] | undefined;
+			let crowded = false;
 			let last: unknown;
 			// Keep the established layout (including the detached-accent fallback),
 			// then try slightly wider connections only when they improve its cuts.
@@ -321,7 +323,7 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 				// topology should still return promptly instead of trying it twice.
 				if (inset === .4 && !best) break;
 				try {
-					const construction = generateCheckeredGrid(text, request.font, .82, inset);
+					const construction = generateCheckeredGrid(text, request.font, .82, inset, { onCrowded: () => { crowded = true; } });
 					const tips = cutTipCounts(construction.geometry);
 					// Reject worse candidates before the more expensive curve fitting.
 					if (rawTips && !fewerCutTips(tips, rawTips)) continue;
@@ -338,6 +340,14 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 				}
 			}
 			if (best) return best;
+			if (crowded) for (const inset of small ? [.35, .25] : [.35]) {
+				try {
+					return finish(generateCheckeredGrid(text, request.font, .82, inset, { balanced: true }), 'letters');
+				} catch (error) {
+					if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+					last = error;
+				}
+			}
 			throw last;
 		}
 		if (frame === 'repeat') {
@@ -349,7 +359,7 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 				// Reuse completed cells, and don't repeat a global failure when all
 				// local routes already existed. Only failed cells need new cuts.
 				if (!cache.failed.size) throw error;
-				return finish(generateRepeatedGrid(request.text ?? '', request.font, true, cache), 'letters');
+				return finish(generateRepeatedGrid(request.text ?? '', request.font, true, cache, true), 'letters');
 			}
 		}
 		const text = request.text ?? '';
@@ -370,14 +380,18 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		for (const [columns, slices] of [[2, 1], [1, 2], [2, 2], [1, 3]])
 			recipes.push(() => generateTextGrid(text, font, frame === 'air', shape, { columns, slices, spread: true }));
 		let usedCompound = false;
+		let crowded = false;
 		recipes.push(() => generateTextGrid(text, font, frame === 'air', shape, {
-			spread: true, practical: true, compound: true, onCompound: () => { usedCompound = true; }
+			spread: true, practical: true, compound: true, onCompound: () => { usedCompound = true; }, onCrowded: () => { crowded = true; }
 		}));
 		// A locally improved route can still conflict with a neighbouring cell.
 		// Retain the established recipe, but only rerun it if a chord changed.
 		recipes.push(() => usedCompound
-			? generateTextGrid(text, font, frame === 'air', shape, { spread: true, practical: true })
+			? generateTextGrid(text, font, frame === 'air', shape, { spread: true, practical: true, onCrowded: () => { crowded = true; } })
 			: undefined);
+		recipes.push(() => crowded ? generateTextGrid(text, font, frame === 'air', shape, {
+			spread: true, practical: true, compound: true, balanced: true
+		}) : undefined);
 		let last: unknown;
 		for (const construct of recipes) {
 			try {
@@ -475,7 +489,11 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 	// A local construction failure cannot improve by disabling its extra route.
 	// Retry only pieces that existed but failed joining or full-sheet validation.
 	const retryOriginal = new Set<(typeof recipes)[number]>();
-	for (const route of [fourPortMotif, originalFourPortMotif]) for (const construct of recipes) {
+	// Only failed designs reach the wider attachment pass. Bound that extra
+	// work to the initial panel/four-port layouts; keep the exact chosen frame.
+	const balancedRecipes = recipes.slice(0, 4).filter(recipe => recipe !== baseFigure);
+	for (const route of [fourPortMotif, originalFourPortMotif, balancedFourPortMotif])
+	for (const construct of route === balancedFourPortMotif ? balancedRecipes : recipes) {
 		if (route === originalFourPortMotif && (!retryOriginal.has(construct) || construct === baseFigure)) continue;
 		let constructed = false;
 		try {

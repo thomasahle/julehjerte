@@ -474,6 +474,14 @@ may combine two invisible relief chords. Bound this to 128 local pairs and
 retain the original port pairings, artwork and full-sheet spacing checks.
 If a compound route fails after joining neighbouring cells, keep the earlier
 recipe available. Do not rerun it when no compound route was used.
+If difficult counters exhaust the attachment choices, a final pass may spread
+the same 256-candidate budget across more outer attachments, considering at most
+four valid internal bridge variants per attachment. Retain existing successful
+recipes. Framed and checkerboard text only repeat this search when the earlier
+pass actually considered a fifth internal variant at some attachment; otherwise
+the extra pass cannot help. Repeated text retries failed cells individually and
+keeps completed cells intact. Failed figure layouts may use the wider search on
+their initial panel and four-port constructions, retaining the selected frame.
 Identical glyphs in the same position within a four-cell group reuse their cuts.
 This frame uses an n×n cut grid with a square physical overlap, up to the shared
 20-strip limit. Its thumbnail, shared link, editor and PDF use the same design.

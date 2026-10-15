@@ -712,7 +712,7 @@ function contourMotif(
 	margin = 1.5,
 	bridgePorts: readonly number[] = [0, 1, 2, 3],
 	acceptRoutes?: (routes: Ring[]) => boolean,
-	options: { root?: Ring; visibleIslands?: boolean; strict?: boolean; practical?: boolean; originalOnly?: boolean; compound?: boolean; onCompound?: () => void } = {}
+	options: { root?: Ring; visibleIslands?: boolean; strict?: boolean; practical?: boolean; originalOnly?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void } = {}
 ) {
 	const count = gates.length;
 	// Candidate routes reuse the same immutable outline points. Keep their
@@ -809,6 +809,7 @@ function contourMotif(
 			continue;
 		}
 		if (!clearSharedCuts(exterior, contours)) continue;
+		let attachmentAttempts = 0;
 		for (const interior of perforatedOutline(base, ports, bridgePorts, options.practical)) {
 			const local = [...interior, ...exterior];
 			try {
@@ -819,7 +820,12 @@ function contourMotif(
 					alternatives.set(portKey, { edges: local, ports });
 				if (options.practical) {
 					ranked.push({ edges: local, routes, score: cuttingCost(routes, margin) });
+					if (++attachmentAttempts === 5) options.onCrowded?.();
 					if (++attempts >= 256) break routing;
+					// A hole offers many internal bridge variants at the same outer
+					// attachments. Share the fixed budget across more attachments
+					// before spending it all on one unsuccessful approach.
+					if (options.balanced && attachmentAttempts >= 4) break;
 					continue;
 				}
 				if (acceptRoutes ? acceptRoutes(routes) : usableRoutes(routes, margin)) {
@@ -917,12 +923,20 @@ export function originalFourPortMotif(...args: Parameters<typeof contourMotif>) 
 	return contourMotif(...args);
 }
 
+/** Keep the same contour construction, but distribute the bounded candidate
+ * budget across more outer attachments for difficult counters and shoulders. */
+export function balancedFourPortMotif(...args: Parameters<typeof contourMotif>) {
+	args[7] = { ...args[7], practical: true, balanced: true };
+	return contourMotif(...args);
+}
+
 /** A checkerboard junction can feed one letter through two shared bridges.
  * Counters may bracket either bridge; they are never removed from the sheet. */
-export function twoPortMotif(edges: Edge[], contours: Ring[], gates: Point[], margin: number) {
+export function twoPortMotif(edges: Edge[], contours: Ring[], gates: Point[], margin: number,
+	options: { balanced?: boolean; onCrowded?: () => void } = {}) {
 	const center = centroid(contours.flat());
 	try {
-		contourMotif(edges, contours, gates, gates.map(p => Math.atan2(center[1] - p[1], center[0] - p[0])), margin, [0, 1], undefined, { practical: true });
+		contourMotif(edges, contours, gates, gates.map(p => Math.atan2(center[1] - p[1], center[0] - p[0])), margin, [0, 1], undefined, { practical: true, ...options });
 	} catch (error) {
 		if (!(error instanceof ConstructionError)) throw error;
 		contourChain(edges, forest(contours), Math.atan2(gates[1][1] - gates[0][1], gates[1][0] - gates[0][0]), gates[0], gates[1], 'A', true);

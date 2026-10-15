@@ -1,12 +1,13 @@
 import { describe, it, expect } from 'vitest';
 import { repeatedText } from './repeatedText';
-import { generateRepeatedGrid } from './repeatedGrid';
+import { generateRepeatedGrid, repeatedGridCache } from './repeatedGrid';
 import { generate } from './generate';
 import { defaults, readGeneratorState } from './state';
 import { geometryKey } from './cache';
 import { templateVariants } from './templates';
 import type { Font } from './geometry';
 import nunito from '../../../static/generator/fonts/nunito.json';
+import kalam from '../../../static/generator/fonts/kalam.json';
 import { normalizeHeartDesign, serializeHeartDesign, serializeHeartToSVG, parseHeartFromSVG } from '$lib/utils/heartDesign';
 import { rasterizeDesign } from '$lib/paint/rasterize';
 import { intersectionMarginPx, findFingersWithIssues } from '$lib/editor/curveIssues';
@@ -59,6 +60,17 @@ describe('repeated text frame', () => {
   expect(templateVariants(state).find(v => v.id === 'repeat')?.state).toEqual(state);
   expect(geometryKey(state)).not.toBe(geometryKey({...state, textFrame: 'woven'}));
  });
+ it('preserves completed cells while repairing a failed handwritten letter', () => {
+  const cache = repeatedGridCache(), handwriting = kalam as unknown as Font;
+  expect(() => generateRepeatedGrid('NANA', handwriting, false, cache)).toThrow();
+  const completed = new Map(cache.cells);
+  expect(completed.size).toBeGreaterThan(0);
+  const result = generateRepeatedGrid('NANA', handwriting, true, cache, true);
+  expect(result.geometry.A_overlap_paths).toHaveLength(7);
+  expect(result.geometry.B_overlap_paths).toHaveLength(3);
+  expect(cache.crowded.size).toBeGreaterThan(0);
+  for (const [key, cell] of completed) expect(cache.cells.get(key)).toBe(cell);
+ }, 20000);
  for (const text of ['LOVE','JUL','ANNA','JULE\nMAND','AN','O'])
   it(`constructs ${JSON.stringify(text)} using open, spaced cuts`, () => {
    const { design } = make(text);

@@ -100,15 +100,16 @@ function openBoundary(local: Edge[], gates: Point[], active: number[]) {
 	return local.flatMap((e, i): Edge[] => kept[i].size ? [{ ...e, family: kept[i].size === 2 ? 'AB' : [...kept[i]][0] }] : []);
 }
 
-/** Shared only by the two construction passes for the same text and font. */
+/** Shared only by construction passes for the same text and font. */
 export function repeatedGridCache() {
 	return {
 		cells: new Map<string, { center: Point; edges: Edge[]; artwork: Ring[] }>(),
-		failed: new Set<string>()
+		failed: new Set<string>(),
+		crowded: new Set<string>()
 	};
 }
 
-export function generateRepeatedGrid(text: string, font: Font, practical = false, cache = repeatedGridCache()) {
+export function generateRepeatedGrid(text: string, font: Font, practical = false, cache = repeatedGridCache(), balanced = false) {
 	let repeated = repeatedText(text);
 	if (!repeated)
 		throw new ConstructionError('empty', 'Empty text');
@@ -167,7 +168,13 @@ export function generateRepeatedGrid(text: string, font: Font, practical = false
 					} catch (error) {
 						if (error instanceof ConstructionError) cache.failed.add(key);
 						if (!practical || !(error instanceof ConstructionError)) throw error;
-						fourPortMotif(edges, contours, gates, angles, margin, active, routes => spacedRoutes(routes, gates, active, boundary, margin, 2 * n * STRIP_WIDTH / 100), { practical: true });
+						const accept = (routes: Ring[]) => spacedRoutes(routes, gates, active, boundary, margin, 2 * n * STRIP_WIDTH / 100);
+						try {
+							fourPortMotif(edges, contours, gates, angles, margin, active, accept, { practical: true, onCrowded: () => cache.crowded.add(key) });
+						} catch (error) {
+							if (!balanced || !cache.crowded.has(key) || !(error instanceof ConstructionError)) throw error;
+							fourPortMotif(edges, contours, gates, angles, margin, active, accept, { practical: true, balanced: true });
+						}
 					}
 				} catch (error) {
 					if (!(error instanceof ConstructionError)) throw error;
@@ -194,53 +201,56 @@ export function generateRepeatedGrid(text: string, font: Font, practical = false
 			// corner-routing pass; sample caps across the full exposed stroke so
 			// intricate fonts cannot trigger hundreds of expensive route rankings.
 			construction: for (const improve of practical ? cache.failed.has(key) ? [true] : [false, true] : [false])
-			for (const { base, a, b } of improve && choices.length > 24
-				? Array.from({ length: 24 }, (_, i) => choices[Math.round(i * (choices.length - 1) / 23)]) : choices) {
-				const baseIndex = contours.findIndex(r => r.includes(base.ring[0]));
-				const ports = gates.slice();
-				let corner: number | undefined;
-				if (sides.length === 1) {
-					const s = sides[0];
-					ports[s] = a.point;
-					ports[(s + 1) % 4] = b.point;
-				} else {
-					corner = [0, 1, 2, 3].find(i => boundary[i] && boundary[(i + 3) % 4]);
-					if (corner === undefined)
-						throw new ConstructionError('topology', 'Unsupported boundary cell');
-					ports[(corner + 3) % 4] = a.point;
-					ports[(corner + 1) % 4] = b.point;
-					const index = (a.index + ((b.index - a.index + base.ring.length) % base.ring.length) / 2) % base.ring.length;
-					ports[corner] = mix(base.ring[Math.floor(index)], base.ring[(Math.floor(index) + 1) % base.ring.length], index % 1);
-				}
-				try {
-					const local: Edge[] = [];
-					fourPortMotif(local, contours, ports, angles, margin, active, routes => spacedRoutes(routes, ports, active, boundary, margin, 2 * n * STRIP_WIDTH / 100), { root: base.ring, practical: improve });
-					const opened = openBoundary(local, ports, active);
-					const ends = new Map<string, Point>();
-					for (const i of [0, 1, 2, 3].filter(i => !active.includes(i))) {
-						const at = opened.filter(e => distance(e.from, ports[i]) < 1e-7 || distance(e.to, ports[i]) < 1e-7);
-						if (!at.length)
-							continue;
-						const family = at[0].family;
-						if (family === 'AB')
-							throw new ConstructionError('topology', 'Unopened boundary gate');
-						const point: Point = family === 'A' ? [ports[i][0], boundary[0] ? 0 : 100] : [boundary[3] ? 0 : 100, ports[i][1]];
-						add(opened, [ports[i], point], family, 'outline');
-						ends.set(pointKey(ports[i]), point);
+			for (const balancedRouting of improve && balanced ? [false, true] : [false]) {
+				if (balancedRouting && !cache.crowded.has(key)) continue;
+				for (const { base, a, b } of improve && choices.length > 24
+					? Array.from({ length: 24 }, (_, i) => choices[Math.round(i * (choices.length - 1) / 23)]) : choices) {
+					const baseIndex = contours.findIndex(r => r.includes(base.ring[0]));
+					const ports = gates.slice();
+					let corner: number | undefined;
+					if (sides.length === 1) {
+						const s = sides[0];
+						ports[s] = a.point;
+						ports[(s + 1) % 4] = b.point;
+					} else {
+						corner = [0, 1, 2, 3].find(i => boundary[i] && boundary[(i + 3) % 4]);
+						if (corner === undefined)
+							throw new ConstructionError('topology', 'Unsupported boundary cell');
+						ports[(corner + 3) % 4] = a.point;
+						ports[(corner + 1) % 4] = b.point;
+						const index = (a.index + ((b.index - a.index + base.ring.length) % base.ring.length) / 2) % base.ring.length;
+						ports[corner] = mix(base.ring[Math.floor(index)], base.ring[(Math.floor(index) + 1) % base.ring.length], index % 1);
 					}
-					const pa = ends.get(pointKey(a.point)), pb = ends.get(pointKey(b.point));
-					if (!pa || !pb)
-						throw new ConstructionError('topology', 'Missing letter edge');
-					const edgeClosure: Ring = corner === undefined ? [pa, pb] : [pa, gates[corner], pb];
-					const outline = [...arc(base.ring, b, a), ...edgeClosure];
-					artwork.push(...contours.filter((_, i) => i !== baseIndex));
-					artwork.push(outline);
-					edges.push(...opened);
-					built = true;
-					break construction;
-				} catch (error) {
-					if (!(error instanceof ConstructionError))
-						throw error;
+					try {
+						const local: Edge[] = [];
+						fourPortMotif(local, contours, ports, angles, margin, active, routes => spacedRoutes(routes, ports, active, boundary, margin, 2 * n * STRIP_WIDTH / 100), { root: base.ring, practical: improve, balanced: balancedRouting, onCrowded: () => cache.crowded.add(key) });
+						const opened = openBoundary(local, ports, active);
+						const ends = new Map<string, Point>();
+						for (const i of [0, 1, 2, 3].filter(i => !active.includes(i))) {
+							const at = opened.filter(e => distance(e.from, ports[i]) < 1e-7 || distance(e.to, ports[i]) < 1e-7);
+							if (!at.length)
+								continue;
+							const family = at[0].family;
+							if (family === 'AB')
+								throw new ConstructionError('topology', 'Unopened boundary gate');
+							const point: Point = family === 'A' ? [ports[i][0], boundary[0] ? 0 : 100] : [boundary[3] ? 0 : 100, ports[i][1]];
+							add(opened, [ports[i], point], family, 'outline');
+							ends.set(pointKey(ports[i]), point);
+						}
+						const pa = ends.get(pointKey(a.point)), pb = ends.get(pointKey(b.point));
+						if (!pa || !pb)
+							throw new ConstructionError('topology', 'Missing letter edge');
+						const edgeClosure: Ring = corner === undefined ? [pa, pb] : [pa, gates[corner], pb];
+						const outline = [...arc(base.ring, b, a), ...edgeClosure];
+						artwork.push(...contours.filter((_, i) => i !== baseIndex));
+						artwork.push(outline);
+						edges.push(...opened);
+						built = true;
+						break construction;
+					} catch (error) {
+						if (!(error instanceof ConstructionError))
+							throw error;
+					}
 				}
 			}
 			if (!built) {

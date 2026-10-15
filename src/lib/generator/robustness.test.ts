@@ -24,6 +24,7 @@ import tablerGift from '../../../static/generator/motifs/tb-gift.json';
 import angel from '../../../static/generator/motifs/angel.json';
 import snow from '../../../static/generator/motifs/snow.json';
 import smiley from '../../../static/generator/motifs/ph-smiley.json';
+import palette from '../../../static/generator/motifs/tb-palette.json';
 const colors = { left: '#fffdf5', right: '#b72f2b' };
 const fonts = { nunito, breeserif, oswald, kalam, cinzel, righteous } as unknown as Record<string, Font>;
 function validateHandoffs(design: HeartDesign) {
@@ -70,7 +71,10 @@ describe('generator robustness regressions', () => {
 		['kalam', 'i', 'repeat'], ['righteous', 'i', 'repeat'],
 		['kalam', 'anna', 'woven'], ['kalam', 'BO', 'woven'],
 		['kalam', 'i', 'woven'], ['kalam', 'i', 'air'],
-		['kalam', 'juleman', 'air'], ['kalam', 'amy', 'circle']
+		['kalam', 'juleman', 'air'], ['kalam', 'amy', 'circle'],
+		['kalam', 'ANNA', 'circle'], ['kalam', 'ANNA', 'diamond'],
+		['kalam', 'ANNA', 'oval'], ['kalam', 'ANNA', 'rounded'],
+		['kalam', 'ANNA', 'repeat'], ['kalam', 'B', 'repeat-check']
 	] as [string, string, TextFrame][])
 		it(`keeps ${text} in ${fontId} through the ${textFrame} frame`, () => {
 			validateHandoffs(generate({ mode: 'text', name: text, text, font: fonts[fontId], textFrame, colors }).design);
@@ -106,4 +110,9 @@ describe('generator robustness regressions', () => {
 			expect(Math.min(design.gridSize.x, design.gridSize.y)).toBeGreaterThanOrEqual(8);
 			validateHandoffs(design);
 		}, 20000);
+	for (const [name, motif, frame] of [['Gift', tablerGift, 'hexagon'], ['Gift', tablerGift, 'oval'], ['Palette', palette, 'scalloped']] as const)
+		for (const style of ['rays', 'check', 'plain'] as const)
+			it(`uses a wider choice of attachments for ${name} in ${frame}-${style}`, () => {
+				validateHandoffs(generate({ mode: 'figure', name, contours: motif.contours as Ring[], frame, style, colors }).design);
+			}, 20000);
 });
