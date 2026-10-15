@@ -717,7 +717,7 @@ function contourMotif(
 	margin = 1.5,
 	bridgePorts: readonly number[] = [0, 1, 2, 3],
 	acceptRoutes?: (routes: Ring[]) => boolean,
-	options: { root?: Ring; visibleIslands?: boolean; strict?: boolean; practical?: boolean; originalOnly?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; touching?: boolean } = {}
+	options: { root?: Ring; visibleIslands?: boolean; strict?: boolean; practical?: boolean; originalOnly?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; touching?: boolean; bentSpokes?: boolean } = {}
 ) {
 	const count = gates.length;
 	// Candidate routes reuse the same immutable outline points. Keep their
@@ -766,6 +766,8 @@ function contourMotif(
 		if (options.practical) result.push(notches[1] ?? null, support(base.ring, angles[j] + Math.PI - .7), support(base.ring, angles[j] + Math.PI + .7));
 		return result;
 	});
+	const spokes = options.bentSpokes ? candidates.map((choices, j) =>
+		choices.map(port => port ? bentSpoke(base.ring, port, gates[j], margin) : [])) : undefined;
 	let fallback: Edge[] | null = null;
 	const alternatives = new Map<string, { edges: Edge[]; ports: Port[] }>();
 	const ranked: { edges: Edge[]; routes: Ring[]; score: number }[] = [];
@@ -802,7 +804,7 @@ function contourMotif(
 					const angle = options.visibleIslands ? Math.atan2(b[1] - c[1], b[0] - c[0]) : angles[j];
 					contourChain(exterior, extras[j], angle, gates[j], ports[j].point, 'A', options.visibleIslands);
 				}
-				else add(exterior, [gates[j], ports[j].point], 'AB', 'shared');
+				else add(exterior, spokes?.[j][indices[j]] ?? [gates[j], ports[j].point], 'AB', 'shared');
 			}
 		} catch (error) {
 			if (!(error instanceof ConstructionError)) throw error;
@@ -915,6 +917,32 @@ function contourMotif(
 }
 
 export const fourPortMotif = contourMotif;
+
+/** Approach an outline along its outward normal, or the bisector at a corner.
+ * A direct gate-to-outline connection can graze a serif and leave a narrow
+ * hook. This short bend changes only the shared cut. The caller still checks
+ * it against every contour, other shared cuts and the full paper paths. */
+function bentSpoke(ring: Ring, port: Port, gate: Point, margin: number): Ring {
+	const p = port.point, n = ring.length;
+	const unit = (v: Point): Point => {
+		const length = Math.hypot(...v);
+		return length > EPS ? [v[0] / length, v[1] / length] : [0, 0];
+	};
+	let tangent: Point;
+	const vertex = Math.round(port.index);
+	if (Math.abs(port.index - vertex) < EPS) {
+		const a = unit(sub(p, ring[(vertex + n - 1) % n])),
+			b = unit(sub(ring[(vertex + 1) % n], p));
+		tangent = unit([a[0] + b[0], a[1] + b[1]]);
+	} else {
+		const index = Math.floor(port.index);
+		tangent = unit(sub(ring[(index + 1) % n], ring[index]));
+	}
+	const length = Math.min(margin * 2, distance(gate, p) * .35),
+		bend: Point = [p[0] + tangent[1] * length, p[1] - tangent[0] * length];
+	return length > margin * .5 && !inside(bend, ring)
+		? [gate, bend, p] : [gate, p];
+}
 
 /** Keep the original attachment recipe available when a locally valid visible
  * island route fails after neighbouring cells are joined and curves fitted. */

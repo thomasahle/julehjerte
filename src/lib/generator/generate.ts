@@ -369,15 +369,27 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		}
 		if (frame === 'repeat') {
 			const cache = repeatedGridCache();
-			try { return finish(generateRepeatedGrid(request.text ?? '', request.font, false, cache), 'letters'); }
-			catch (error) {
-				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
-				if (error instanceof ConstructionError && ['empty', 'character'].includes(error.code)) throw error;
-				// Reuse completed cells, and don't repeat a global failure when all
-				// local routes already existed. Only failed cells need new cuts.
-				if (!cache.failed.size) throw error;
-				return finish(generateRepeatedGrid(request.text ?? '', request.font, true, cache, true), 'letters');
+			let last: unknown;
+			for (const bentSpokes of [false, true]) {
+				if (bentSpokes) {
+					// Keep completed cells when one local route failed. If all cells
+					// existed but joining them failed, their connections need rebuilding.
+					if (!cache.failed.size) cache.cells.clear();
+					cache.failed.clear();
+					cache.crowded.clear();
+				}
+				for (const practical of [false, true]) {
+					if (practical && !cache.failed.size) break;
+					try {
+						return finish(generateRepeatedGrid(request.text ?? '', request.font, practical, cache, practical, bentSpokes), 'letters');
+					} catch (error) {
+						if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+						if (error instanceof ConstructionError && ['empty', 'character'].includes(error.code)) throw error;
+						last = error;
+					}
+				}
 			}
+			throw last;
 		}
 		const text = request.text ?? '';
 		const font = request.font;
@@ -436,6 +448,14 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 			recipes.push(() => generateTextGrid(text, font, frame === 'air', shape, {
 				columns: 2, slices: 5, spread: true, filled: true, inkPanels: true
 			}));
+		// A serif can need a more square approach than a straight shared spoke.
+		// Try bent connections only after the established constructions fail.
+		let bentCrowded = false;
+		for (const balanced of [false, true]) recipes.push(() => !balanced || bentCrowded
+			? generateTextGrid(text, font, frame === 'air', shape, {
+				spread: true, practical: true, compound: true, adaptGates: true,
+				bentSpokes: true, balanced, onCrowded: () => { bentCrowded = true; }
+			}) : undefined);
 		let last: unknown;
 		for (const construct of recipes) {
 			try {

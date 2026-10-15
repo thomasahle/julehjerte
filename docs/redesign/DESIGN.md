@@ -523,6 +523,16 @@ Use this only for whole-letter cells, since clipped neighbouring panels must
 agree on their seam contacts. Repeated glyphs reuse both the chosen routes and
 their shifted gates. Keep the full-sheet spacing check; skip it if no contacts
 moved, and only widen the attachment search when its earlier budget was crowded.
+If those constructions still fail, shared connections may approach the glyph
+along its outward normal (the outward angle bisector at a corner). Place a short
+bend at most twice the grid clearance from the outline and at most 35% of the
+gate distance away. This avoids grazing a serif without moving its visible
+boundary. Precompute these bends for the fixed attachment candidates; retain
+all contour-crossing, open-path, fidelity and full-sheet clearance checks.
+Framed text combines this with the existing bounded contact shifts. Repeated
+text first reuses completed cells and rebuilds its failed cells with bent
+connections; if the failure was in joining completed cells, rebuild their
+connections too. These are fallback constructions, preserving earlier successes.
 If those whole-letter routes still fail, divide letters into three horizontal
 panels, with either one or two columns. Place each internal contact in the
 widest solid interval of its seam, so it cannot land inside a counter; both

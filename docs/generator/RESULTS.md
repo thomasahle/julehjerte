@@ -1,6 +1,67 @@
 # Generator robustness results
 
-## Current coverage: checked-tip routing and border space
+## Current coverage: bent shared connections
+
+The current default-size matrix has **2,747 accepted / 403 refused / zero invalid
+accepted results**. This batch freshly tested 93 previously refused text cases:
+all 63 ordinary-repeat refusals and all 30 non-repeating refusals outside Cinzel.
+Two now pass, 91 remain refused, and none produced invalid accepted output. The
+other 3,057 records retain their preceding audit results; this was not a fresh
+full-matrix run.
+
+| Corpus | Configurations | Accepted | Refused | Invalid accepted output |
+|---|---:|---:|---:|---:|
+| Text: 34 inputs, six fonts, ten frames | 2028 | 1711 | 317 | 0 |
+| Figures: 51 motifs, 22 templates | 1122 | 1036 | 86 | 0 |
+
+The combined report is `tmp/generator/bent-current.json`; the fresh reports are
+`bent-final-repeat.json` and `bent-final-framed.json`. All 2,747 accepted IDs are
+pinned in `scripts/generator/expected.json`; none were removed. Ordinary repeat
+now accepts 137/198 configurations; checkerboard repeat remains at 128/198.
+
+- Shared connections can approach a letter along its outward normal or corner
+  bisector, with a short bend before returning to the cell gate. This avoids a
+  grazing approach that leaves a narrow hook. The outline, counter and visible
+  background remain unchanged. Bends are precomputed for the fixed attachment
+  candidates, and the existing crossing, topology, fidelity and spacing checks
+  still apply.
+- These constructions run only after the established recipes fail. Repeated
+  text reuses completed cells when a local cell fails. A failure after joining
+  completed cells instead rebuilds their connections. The existing practical
+  and balanced routing budgets are retained.
+- Nunito `William` and `ÆØÅ` now work in the ordinary repeating frame, using
+  14×7 and 6×3 strip grids. Their editor and SVG round trips pass independently.
+  This does not change the checkerboard ANNA design or its 4×4 letter field.
+- A separate probe outside the matrix recovers standalone Cinzel `P` in the air
+  frame, using a 3×3 grid with its counter connected by coincident cuts. The seven
+  other non-repeating frames still refuse P. Eight additional P-containing words
+  or multiline inputs also remain refused, so this is not general P support.
+
+All three finished hearts and both templates for each were rendered and inspected
+in `tmp/generator/bent-hearts-and-cuts.png`. The repeated layouts remain intricate;
+there has been no physical cutting or weaving trial. Browser inventory again
+returned no available app or browser, so no live interface check was possible.
+
+All **1,039 unit tests and 177 inverse tests** pass, along with type checking,
+lint and the production build. Type checking reports the seven existing
+warnings. Logs are `tmp/generator/bent-{tests,check,lint,build}.log`.
+
+The goal remains unfinished: 403 default-size matrix cases are refused, and the
+rest of the searchable catalog and most non-default sizes remain unverified.
+Difficult-case latency and the earlier browser slowdown remain unresolved.
+
+### Additional probes, not shipped
+
+- Applying bent connections throughout every recipe rather than as a fallback
+  did not recover the 20 Cinzel/air refusals. An exploratory 95-case mixed text
+  audit was stopped after 51 saved results once the production fallback audits
+  superseded it; it is not a completed coverage report.
+- Applying bends to the four remaining checked-tip figure failures recovered
+  Phosphor sailboat, with no invalid accepted output in that four-case prototype.
+  The figure routing API does not yet expose this option; this is a candidate
+  for the next integration and regression audit, not part of the matrix above.
+
+## Previous coverage: checked-tip routing and border space
 
 The current default-size matrix has **2,745 accepted / 405 refused / zero invalid
 accepted results**. This batch freshly tested all 51 figures in the checked-tip
