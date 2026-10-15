@@ -1,0 +1,67 @@
+{
+  "schema": "boundary-trace-reuse-1",
+  "status": "focused-validation-passed-full-qa-pending",
+  "scope": "Reuse cleanup, raster adjacency, repaired pixel chains and source component count across tracing tolerances. Curve fitting, noding, sampled pixels, acceptance gates and solver scheduling remain unchanged.",
+  "baselineCoreCommit": "1f05224",
+  "changes": [
+    "A local prepared tracer creates independent curves and sampled masks for every tolerance. No global cache is introduced.",
+    "Topology initialization reuses that tracer and its already-computed sample when comparing simplified boundaries."
+  ],
+  "equivalence": {
+    "cases": 29,
+    "targets": 145,
+    "baselineMilliseconds": 38132.73288299999,
+    "currentMilliseconds": 29485.443207000004,
+    "ratio": 0.7732318398859095,
+    "medianCaseRatio": 0.7768255691082696
+  },
+  "validation": {
+    "exactPhotographicTargets": 145,
+    "photographs": 29,
+    "comparison": "All control coordinates and preprocessing metadata match the pre-change runtime exactly at five border radii; four alternating-order timing pairs per target.",
+    "frozenFixtures": "48 pre-change trace/sampling outputs across four photographic masks, four straight/curved/strict-symmetry configurations and three tolerances.",
+    "remaining": "Full check/lint/build/test, private star/hat browser QA and fresh native Hunodan/photo/editable benchmarks.",
+    "focusedTests": {
+      "passed": 33,
+      "total": 33,
+      "seconds": 19.682733667
+    }
+  },
+  "limitations": [
+    "Measured speed gain is boundary preparation only, not whole-solve throughput.",
+    "The known full-QA MILP timeout and photographic score regressions remain unresolved until independently tested.",
+    "A faster preparation does not repair a bad crop or mask or guarantee faithful motif connectivity."
+  ],
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/trace-reuse-v1/compare.mjs",
+      "sha256": "7349fa78e16b9a81d0a2cb9bda23d604e8cc6a57b8ae5e14a723cb452ce3470d",
+      "bytes": 2874
+    },
+    {
+      "path": "tmp/heart-learning/trace-reuse-v1/comparison.json",
+      "sha256": "60ac627f3145601ece42b330a7b07bcd225abfc1b05849b8d7ad1b8abe5b5549",
+      "bytes": 100992
+    },
+    {
+      "path": "tmp/heart-learning/trace-reuse-v1/freeze.mjs",
+      "sha256": "180e003c5f7f872dd0a2a492b086a7ecbbc1ca671eb43f904c497fdf29ecc3bd",
+      "bytes": 2140
+    },
+    {
+      "path": "scripts/inverse/fixtures/trace-reuse.json",
+      "sha256": "41d2ee883c2832043c52720c33c119107bfe897741c5db585f8d81a1f394efd5",
+      "bytes": 22593
+    },
+    {
+      "path": "scripts/inverse/trace-reuse.test.mjs",
+      "sha256": "c4463a405673f759fbaa707fb2a2a48912f5c98639be419e4ad6f6593e15ba11",
+      "bytes": 2199
+    },
+    {
+      "path": "tmp/heart-learning/trace-reuse-v1/focused.log",
+      "sha256": "2a649396c21a7004363b0cb5b14e7237ee562ba1a7f1bafabd308e4c4dd7b524",
+      "bytes": 3243
+    }
+  ]
+}

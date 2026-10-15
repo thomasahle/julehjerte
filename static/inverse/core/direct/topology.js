@@ -1,7 +1,7 @@
 /** Optional topology initialization for the common Bézier optimizer.
  * Curves and straight spans coexist in one boundary graph; no image-style gate.
  */
-import {preprocessMask,sampleTarget} from '../input.js';
+import {preprocessMask,prepareMaskTrace,sampleTarget} from '../input.js';
 import {transposeTarget} from '../symmetry.js';
 import {buildGraph,curvesOf,reindex,inspectBoundaryEndpoints} from '../graph.js';
 import {solveBoundary} from '../routing.js';
@@ -20,8 +20,8 @@ export function prepareBoundary(input,cfg,{useInitializationGuide=true,guidePhas
   if(useInitializationGuide&&guidePhase===0&&borderRadius===0&&input.boundarySeed?.width===cfg.width)return input.boundarySeed;
   const source=input.sourceImage,tolerance=Math.max(.35,1.2*cfg.width/source.resolution);
   const mask=useInitializationGuide?initializationMask(source,guidePhase):source.mask;
-  const trace=fitTolerance=>preprocessMask(mask,source.resolution,{...cfg,fitTolerance,maxSpan:40,smoothRadius:0,snapRadius:0,borderRadius,polygonal:false,mixedBoundaries:true},input.metadata.preprocessing);
-  let target=trace(tolerance);
+  const trace=prepareMaskTrace(mask,source.resolution,{...cfg,maxSpan:40,smoothRadius:0,snapRadius:0,borderRadius,polygonal:false,mixedBoundaries:true},input.metadata.preprocessing);
+  let target=trace(tolerance).target;
   // Upsampling a binary mask makes its old pixel stairs look like deliberate
   // tiny corners. Try a smaller graph before handing hundreds of redundant
   // turns to the MILP. This changes only the initialization, and every proposal
@@ -34,7 +34,7 @@ export function prepareBoundary(input,cfg,{useInitializationGuide=true,guidePhas
     const attempts=[],maximumError=source.weights?.some(w=>w===0)?.005:.002;
     for(const fitTolerance of [.005*cfg.width,.006*cfg.width,.0075*cfg.width]){
       if(fitTolerance<=tolerance)continue;
-      const candidate=trace(fitTolerance),woven=sampleTarget(candidate,source.resolution),error=maskDisagreement(source,woven);
+      const {target:candidate,sampled:woven}=trace(fitTolerance),error=maskDisagreement(source,woven);
       const accepted=candidate.curves.length<target.curves.length&&error<=maximumError&&auditImageFeatures(source,woven,cfg.width).passed;
       attempts.push({fitTolerance,segments:candidate.curves.length,imageError:error,maximumError,accepted});
       if(accepted)target=candidate;

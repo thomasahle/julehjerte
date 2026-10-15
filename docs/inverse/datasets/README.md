@@ -30,6 +30,14 @@ The inventory, with material annotations updated on 2026-10-15, contains:
 
 ## Current results and limits
 
+A [boundary preparation refactor](boundary-trace-reuse.json) reuses cleanup and
+pixel chains when trying several tracing tolerances. Across 29 photographic
+masks and five border radii, all 145 resulting boundaries retain every control
+coordinate and preprocessing field. Alternating before/after measurements show
+22.7% less time in boundary preparation; this is not a whole-solve speed claim.
+All 33 focused checks pass, including frozen pre-change outputs and mutation
+isolation. Full QA and fresh corpus fitting remain pending.
+
 A [fixed-crop material diagnosis](fixed-crop-material-diagnosis.json) separates
 the learned mask from crop placement on the stacked-heart photograph. With
 identical corners and source RGB, red coverage is 47.82% in the resampled neural

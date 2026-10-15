@@ -91,7 +91,7 @@ export function cleanupMask(mask,n,width,{removeSpecks=0,fillHoles=0,smoothRadiu
   for(let i=0;i<n;i++){out[i]=mask[i];out[(n-1)*n+i]=mask[(n-1)*n+i];out[i*n]=mask[i*n];out[i*n+n-1]=mask[i*n+n-1];}
   let changes=0;for(let i=0;i<out.length;i++)changes+=out[i]!==mask[i];return{mask:out,changes,fraction:changes/out.length};
 }
-export function traceMask(mask,n,{width=100,fitTolerance=.25,maxSpan=12,cornerDegrees=65,polygonal=false,snapRadius=0,identicalSheets=false,mixedBoundaries=false}={}){
+function maskChains(mask,n,{width=100,snapRadius=0}={}){
   if(mask.length!==n*n)throw new Error('Square mask required.');const edges=[],adj=new Map(),point=id=>[id%(n+1),Math.floor(id/(n+1))];const edge=(a,b)=>{const id=edges.length;edges.push([a,b]);if(!adj.has(a))adj.set(a,[]);if(!adj.has(b))adj.set(b,[]);adj.get(a).push(id);adj.get(b).push(id);};
   for(let y=0;y<n;y++)for(let x=0;x<n;x++){if(x<n-1&&mask[y*n+x]!==mask[y*n+x+1])edge(y*(n+1)+x+1,(y+1)*(n+1)+x+1);if(y<n-1&&mask[y*n+x]!==mask[(y+1)*n+x])edge((y+1)*(n+1)+x,(y+1)*(n+1)+x+1);}
   if(edges.length>80000)throw new Error('Artwork is too detailed. Reduce resolution or simplify the two-colour mask.');
@@ -99,12 +99,18 @@ export function traceMask(mask,n,{width=100,fitTolerance=.25,maxSpan=12,cornerDe
   function walk(v,e){const ps=[point(v)];while(!used[e]){used[e]=1;const [a,b]=edges[e];v=v===a?b:a;ps.push(point(v));if(anchors.has(v))break;const next=adj.get(v).find(i=>!used[i]);if(next===undefined)break;e=next;}return ps.map(p=>mul(p,width/n));}
   for(const v of [...anchors].sort((a,b)=>a-b))for(const e of adj.get(v))if(!used[e])chains.push(walk(v,e));edges.forEach(([v],e)=>{if(!used[e])chains.push(walk(v,e));});
   const repaired=repairJunctions(chains,snapRadius,width),fitChains=repaired.chains;
+  return{width,n,phase:mask[0],fitChains,sourceBoundarySegments:edges.length,tracedChains:chains.length,junctionRepairs:repaired.moves};
+}
+function fitMaskChains({width,n,phase,fitChains,sourceBoundarySegments,tracedChains,junctionRepairs},{fitTolerance=.25,maxSpan=12,cornerDegrees=65,polygonal=false,identicalSheets=false,mixedBoundaries=false}={}){
   // Strict mirror routing is sensitive to small changes in guide incidence.
   // Retain its established RDP geometry; refine line positions only when the
   // routing graph may use independent sheets (matching is still tried later).
   const polygonFit=identicalSheets?rdp:fitPolygonal;
   const boundaryFit=mixedBoundaries?fitBoundary:fitPolyline;
-  const curves=polygonal?fitChains.flatMap(p=>{const q=polygonFit(p,fitTolerance);return q.slice(1).flatMap((b,i)=>splitLong(Cubic.line(q[i],b),maxSpan));}):fitChains.flatMap(p=>boundaryFit(p,fitTolerance,maxSpan,cornerDegrees,Math.max(2*fitTolerance,2*width/n)));return{width,phase:mask[0],curves,metadata:{input:'raster',traceResolution:n,fitTolerance,polygonal,straightSpanRefinement:mixedBoundaries||polygonal&&!identicalSheets,sourceBoundarySegments:edges.length,tracedChains:chains.length,junctionRepairs:repaired.moves,vectorizationChangesArtwork:true,paperColors:['#bd1111','#ffffff']}};
+  const curves=polygonal?fitChains.flatMap(p=>{const q=polygonFit(p,fitTolerance);return q.slice(1).flatMap((b,i)=>splitLong(Cubic.line(q[i],b),maxSpan));}):fitChains.flatMap(p=>boundaryFit(p,fitTolerance,maxSpan,cornerDegrees,Math.max(2*fitTolerance,2*width/n)));return{width,phase,curves,metadata:{input:'raster',traceResolution:n,fitTolerance,polygonal,straightSpanRefinement:mixedBoundaries||polygonal&&!identicalSheets,sourceBoundarySegments,tracedChains,junctionRepairs,vectorizationChangesArtwork:true,paperColors:['#bd1111','#ffffff']}};
+}
+export function traceMask(mask,n,settings={}){
+  return fitMaskChains(maskChains(mask,n,settings),settings);
 }
 // Left-edge transitions include their lower endpoint (v <= y), matching the
 // half-open interior crossing test. Using v < y inverted whole rows at corners.
@@ -143,15 +149,28 @@ export function preprocessBinaryMask(input,settings={}){
 }
 /** Reuse classification while exploring bounded geometric interpretations. */
 export function preprocessMask(mask,n,settings={},classification={}){
+  return prepareMaskTrace(mask,n,settings,classification)().target;
+}
+
+/** Fit several tolerances to the same prepared mask without rebuilding its
+ * pixel-edge graph, junctions or cleanup. The caller keeps the input mask and
+ * settings unchanged during this local search. Each call owns its curves and
+ * sampled mask; graph noding or metadata edits cannot poison the next attempt.
+ */
+export function prepareMaskTrace(mask,n,settings={},classification={}){
   const width=settings.width||100;
   const border=stabilizeBorder(mask,n,width,settings.borderRadius??1,settings.nominalWidth??2.5);
-  const clean=cleanupMask(border.mask,n,width,settings),target=traceMask(clean.mask,n,{...settings,width});
+  const clean=cleanupMask(border.mask,n,width,settings),chains=maskChains(clean.mask,n,{...settings,width});
+  const sourceMaskComponents=components(mask,n,1).length;
+  return(fitTolerance=settings.fitTolerance)=>{
+  const target=fitMaskChains(chains,{...settings,fitTolerance});
   target.curves=nodeCurves(target.curves,settings.geometryTolerance||.01);
   target.metadata.paperColors=colorsSafe(settings.paperColors);
   // Retain the unedited classified crop for forward-image error measurement.
   target.sourceImage={mask,resolution:n};
   const sampled=sampleTarget(target,n);let changes=0,totalChanges=0;
   for(let i=0;i<sampled.length;i++){changes+=sampled[i]!==clean.mask[i];totalChanges+=sampled[i]!==mask[i];}
-  target.metadata.preprocessing={...classification,requestedResolution:settings.resolution??n,actualResolution:n,border: border.metadata,cleanupChangedPixels:clean.changes,cleanupChangeFraction:clean.fraction,traceChangedPixels:changes,traceChangeFraction:changes/sampled.length,totalChangedPixels:totalChanges,totalChangeFraction:totalChanges/sampled.length,sourceMaskComponents:components(mask,n,1).length,vectorSampleComponents:components(sampled,n,1).length};
-  return target;
+  target.metadata.preprocessing={...classification,requestedResolution:settings.resolution??n,actualResolution:n,border:structuredClone(border.metadata),cleanupChangedPixels:clean.changes,cleanupChangeFraction:clean.fraction,traceChangedPixels:changes,traceChangeFraction:changes/sampled.length,totalChangedPixels:totalChanges,totalChangeFraction:totalChanges/sampled.length,sourceMaskComponents,vectorSampleComponents:components(sampled,n,1).length};
+  return{target,sampled};
+  };
 }
