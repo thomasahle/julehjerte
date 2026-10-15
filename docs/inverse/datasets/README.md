@@ -109,8 +109,13 @@ The first full inverse run passes 857/859; its two failures require now-obsolete
 search histories. [Paired output checks](shortlist-regression-review.md) retain
 maple fidelity and improve the checker before updating those assertions. A
 separate guard prevents a new reservation from evicting an already simpler
-finalist. Fourteen focused tests pass; full QA, corpus and browser replays are
-pending.
+finalist. Fourteen focused tests pass. The [fresh release comparison](clearance-repair-release.md)
+passes all 860 inverse tests, 857 application tests (one existing skip), check,
+lint and build. Hunodan remains 22/22 below ten seconds (maximum 8.034 s),
+with unchanged errors; photographs remain 25/31 and all 47 editable pairs pass.
+Five accepted photo errors decrease, but floral checker and Viking increase
+slightly, failing the strict no-higher-error gate. Browser QA is still running;
+`c000d30` remains the latest fully validated runtime.
 
 The [short-search scheduling correction](photo-feature-stability.md) reserves
 curve-refinement time for nearly fitting grids while retaining routing priority
