@@ -717,7 +717,7 @@ function contourMotif(
 	margin = 1.5,
 	bridgePorts: readonly number[] = [0, 1, 2, 3],
 	acceptRoutes?: (routes: Ring[]) => boolean,
-	options: { root?: Ring; visibleIslands?: boolean; strict?: boolean; practical?: boolean; originalOnly?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; touching?: boolean; bentSpokes?: boolean } = {}
+	options: { root?: Ring; visibleIslands?: boolean; strict?: boolean; practical?: boolean; originalOnly?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; touching?: boolean; bentSpokes?: boolean; strokeTips?: boolean } = {}
 ) {
 	const count = gates.length;
 	// Candidate routes reuse the same immutable outline points. Keep their
@@ -762,8 +762,23 @@ function contourMotif(
 			})
 			.sort((a, b) => distance(a.point, p) - distance(b.point, p));
 		result.splice(1, 0, notches[0] ?? null);
-		result.push(support(base.ring, angles[j] + Math.PI));
-		if (options.practical) result.push(notches[1] ?? null, support(base.ring, angles[j] + Math.PI - .7), support(base.ring, angles[j] + Math.PI + .7));
+		if (options.strokeTips) {
+			// A letter such as m has several stroke ends facing the same gate.
+			// The global support point sees only one. Local projection maxima
+			// offer the other ends without moving or simplifying the outline.
+			const direction: Point = [Math.cos(angles[j] + Math.PI), Math.sin(angles[j] + Math.PI)];
+			const tips = base.ring.flatMap((point, index) => {
+				const previous = base.ring[(index + base.ring.length - 1) % base.ring.length],
+					next = base.ring[(index + 1) % base.ring.length];
+				return dot(sub(point, previous), direction) >= 0 && dot(sub(next, point), direction) < 0
+					? [{ point, index }] : [];
+			}).sort((a, b) => distance(a.point, p) - distance(b.point, p));
+			result.push(tips[0] ?? support(base.ring, angles[j] + Math.PI));
+			if (options.practical) result.push(notches[1] ?? null, tips[1] ?? null, tips[2] ?? null);
+		} else {
+			result.push(support(base.ring, angles[j] + Math.PI));
+			if (options.practical) result.push(notches[1] ?? null, support(base.ring, angles[j] + Math.PI - .7), support(base.ring, angles[j] + Math.PI + .7));
+		}
 		return result;
 	});
 	const spokes = options.bentSpokes ? candidates.map((choices, j) =>
@@ -981,7 +996,7 @@ export function hasCounterContact(rings: Ring[]): boolean {
 /** A checkerboard junction can feed one letter through two shared bridges.
  * Counters may bracket either bridge; they are never removed from the sheet. */
 export function twoPortMotif(edges: Edge[], contours: Ring[], gates: Point[], margin: number,
-	options: { balanced?: boolean; compound?: boolean; onCrowded?: () => void; bentSpokes?: boolean } = {}) {
+	options: { balanced?: boolean; compound?: boolean; onCrowded?: () => void; bentSpokes?: boolean; strokeTips?: boolean } = {}) {
 	const center = centroid(contours.flat());
 	try {
 		contourMotif(edges, contours, gates, gates.map(p => Math.atan2(center[1] - p[1], center[0] - p[0])), margin, [0, 1], undefined, { practical: true, ...options });

@@ -1,6 +1,92 @@
 # Generator robustness results
 
-## Current coverage: mixed two- and four-connection checkerboard letters
+## Current coverage: attach to individual stroke tips
+
+The combined default-size matrix now has **2,794 accepted / 356 refused / zero
+invalid accepted output**. Text is **1,719 accepted / 309 refused**; figures remain
+**1,075 accepted / 47 refused**. The checkerboard is **134 accepted / 64 refused**,
+and ordinary repeat is **139 accepted / 59 refused**.
+
+The repeating-text constructors can now attach to local maxima of the outline's
+projection toward a gate. The former support point picks only the furthest
+stroke in that direction; a letter such as m needs access to its separate legs.
+The alternate candidate set uses the same bounded routing budget, exact font
+outlines and coincident cuts. It runs only after the established constructions
+fail, and reuses clear earlier cells. Successful existing designs retain their
+cuts. The complete sheet still passes the unchanged topology, artwork-fidelity
+and editor-spacing checks.
+
+Three production recoveries have been rendered with both paper templates:
+
+| Font | Text | Frame | Paper strips | Tips below 30° / below 45° |
+|---|---|---|---|---|
+| Nunito | amy | Checkerboard | 6×6 | 3 / 12 |
+| Bree Serif | jul | Ordinary repeat | 6×3 | 0 / 3 |
+| Bree Serif | Sofie | Ordinary repeat | 10×5 | 0 / 5 |
+
+The ordinary repeats retain the intended 3×3 and 5×5 cyclic letter fields;
+their paper-strip counts differ from their numbers of letter cells. The renders
+are `tmp/generator/stroke-tip-gallery-{0,1,2}.png` with corresponding SVGs. They
+remain digital validations, with no physical weaving trial. Browser inventory
+returned no browsers and the same native-pipe startup failure. Construction
+times in one run alongside audits were 13 seconds for amy, 0.77 seconds for jul
+and 0.90 seconds for Sofie. Difficult-case latency remains unresolved.
+
+A separate stage profile of amy took 12.8 seconds: the two rejected two-port
+layouts spent **3.30 and 3.17 seconds** in conversion/validation, while the
+successful mixed layout's conversion took **0.89 seconds**. Routing accounts for
+about 5.4 seconds; the edge audit and artwork checks are small here. The evidence
+is `stroke-profile-detail.json`, with two further totals in `stroke-profile.json`.
+This identifies rejected conversions as a useful next performance target; none
+of their final validation checks has been weakened or skipped in this change.
+
+All **396 repeating-text configurations** were freshly audited on the final
+production source, including JSON/SVG handoffs, artwork fidelity and the editor's
+spacing check. There are no regressions or invalid outputs. The reports are
+`stroke-tip-checker-final.json` and `stroke-tip-repeat-final.json`; the combined
+matrix is `stroke-tip-current.json`. Other frames retain their preceding results.
+All 2,794 success IDs are pinned in `scripts/generator/expected.json`; none were
+removed.
+
+All **1,083 unit tests and 177 inverse tests** pass, together with type checking,
+lint and the production build. Type checking reports seven existing warnings.
+The new complex amy regression uses the same 30-second allowance as the earlier
+mixed-topology cases. The final suite log is `stroke-tip-tests-complete.log`,
+alongside `stroke-tip-{check,lint,build}.log`.
+
+The broad prototype audit of other previously refused text cases remains in
+progress (`peak-text-probe.json`). Its unfinished results are not included in
+the production totals. The goal remains unfinished: 356 corpus configurations
+still refuse, and most other sizes and the remaining searchable catalog are
+unverified. These three recoveries do not imply universal support.
+
+### Additional investigations, not shipped
+
+- Using the actual editor scale for local checkerboard checks recovered none of
+  eight difficult cases. Extending local routes along their actual grid
+  continuations instead of the spoke tangent also recovered none of eight.
+  These are `scaled-checker-probe.json` and `context-checker-probe.json`.
+- Compound relief cuts in the mixed two-/four-port construction recovered none
+  of eight probes (`compound-mixed-probe.json`).
+- Independent exterior visibility routes cached per attachment, a larger
+  attachment budget, and tighter visibility vertices did not recover the
+  targeted refusals. Local stroke-tip candidates combined with exterior routes
+  let amy complete its local construction but left a cut only **2.24 px** from a
+  grid cut, below the **4.5 px** margin. Direct stroke-tip connections pass the
+  complete checks; the exterior detours are not shipped. The full-sheet witness
+  is `peak-full-witness.json`; `local-checker-witness.png` and
+  `ranked-m3-witness.png` show the original shoulder bottlenecks.
+- A broad prototype applying the new attachment choices to all constructions
+  recovered none of the **47** previous figure refusals. The result is
+  `peak-figure-probe.json`. Figure routing remains unchanged.
+- Deeper component grids tried two/three columns and at least three/four rows,
+  splitting the largest island either vertically or along its longer axis.
+  The 56 combinations recovered none. Sixteen single-island cases initially
+  hit the component-count guard and were rerun with that guard removed; they
+  still failed local construction or the joined topology. These are
+  `deeper-components-probe.json` and `deeper-single-components-probe.json`.
+
+## Previous coverage: mixed two- and four-connection checkerboard letters
 
 The combined default-size matrix now has **2,791 accepted / 359 refused / zero
 invalid accepted output**, recovering five checkerboard configurations. Text is

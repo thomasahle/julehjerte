@@ -543,6 +543,16 @@ the same letter field and checker colours. Reuse the earlier two-port geometry
 where positions match, cache local failures, and reroute only four-port cells in
 the balanced retry. Validate the complete fitted result and both editor handoffs.
 
+When established repeating-text connections fail, consider the individual stroke
+tips facing each gate. Local maxima of the outline's projection find ends that
+the global support point misses, such as the separate legs of lowercase m.
+Keep the same bounded attachment budget and exact outline. Reuse clear existing
+cells, and give the alternate candidate set its own cache entries. This is a
+final fallback for both repeating frames; successful earlier constructions keep
+their cuts. Every completed sheet still needs the full spacing, topology and
+artwork checks. Routing around the outside of a letter is not part of this
+fallback: the tested detours left narrow gaps beside the unchanged grid lines.
+
 For the checkerboard construction, compare a bounded set of invisible-cut
 routes before choosing one. After a valid layout exists, one additional pair of
 connections near the cell midpoint can remove further sharp paper tips. Accept

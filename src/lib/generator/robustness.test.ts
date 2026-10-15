@@ -50,6 +50,16 @@ function validateHandoffs(design: HeartDesign) {
 // These are expected successes, never a test that passes by accepting a refusal.
 // The larger offline corpus covers 2,028 text and 1,122 figure configurations.
 describe('generator robustness regressions', () => {
+	it('connects the separate strokes of lowercase m in a checkerboard', () => {
+		const { design } = generate({ mode: 'text', name: 'amy', text: 'amy', font: fonts.nunito, textFrame: 'repeat-check', colors });
+		expect(design.gridSize).toEqual({ x: 6, y: 6 });
+		validateHandoffs(design);
+	}, 30000);
+	it('uses stroke-tip attachments for Bree Serif jul in the repeating letter field', () => {
+		const { design } = generate({ mode: 'text', name: 'jul', text: 'jul', font: fonts.breeserif, textFrame: 'repeat', colors });
+		expect(design.gridSize).toEqual({ x: 6, y: 3 });
+		validateHandoffs(design);
+	}, 20000);
 	for (const [fontId, text, tips] of [
 		['kalam', 'Anna', [0, 0]], ['kalam', 'ANNA', [0, 4]], ['oswald', 'A-B', [6, 9]]
 	] as const) it(`retains the simpler existing ${fontId} ${text} checkerboard cuts`, () => {

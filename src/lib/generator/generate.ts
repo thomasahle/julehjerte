@@ -438,9 +438,11 @@ function generateUsingRecipes(request: GeneratorRequest,
 			// Keep the existing successful cuts: a four-port layout can be more
 			// intricate. Add connections only after the two-port repairs fail.
 			const mixed = mixedCheckeredGridCache();
-			for (const balanced of [false, true]) {
+			// Individual stroke ends can separate several legs that a single
+			// support point leaves on the same paper. Reuse clear earlier cells.
+			for (const strokeTips of [false, true]) for (const balanced of [false, true]) {
 				try {
-					return finish(generateMixedCheckeredGrid(text, request.font, { cache: mixed, previous: cache, balanced }), 'letters');
+					return finish(generateMixedCheckeredGrid(text, request.font, { cache: mixed, previous: cache, balanced, strokeTips }), 'letters');
 				} catch (error) {
 					if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 					last = error;
@@ -451,8 +453,9 @@ function generateUsingRecipes(request: GeneratorRequest,
 		if (frame === 'repeat') {
 			const cache = repeatedGridCache();
 			let last: unknown;
-			for (const bentSpokes of [false, true]) {
-				if (bentSpokes) {
+			// Keep both established layouts before changing attachment candidates.
+			for (const [bentSpokes, strokeTips] of [[false, false], [true, false], [false, true], [true, true]]) {
+				if (bentSpokes || strokeTips) {
 					// Keep completed cells when one local route failed. If all cells
 					// existed but joining them failed, their connections need rebuilding.
 					if (!cache.failed.size) cache.cells.clear();
@@ -462,7 +465,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 				for (const practical of [false, true]) {
 					if (practical && !cache.failed.size) break;
 					try {
-						return finish(generateRepeatedGrid(request.text ?? '', request.font, practical, cache, practical, bentSpokes), 'letters');
+						return finish(generateRepeatedGrid(request.text ?? '', request.font, practical, cache, practical, bentSpokes, strokeTips), 'letters');
 					} catch (error) {
 						if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 						if (error instanceof ConstructionError && ['empty', 'character'].includes(error.code)) throw error;

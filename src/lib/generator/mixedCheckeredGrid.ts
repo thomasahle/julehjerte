@@ -30,6 +30,7 @@ function contacts(quadrant: number, side: number, four: number): number[] {
 
 export function generateMixedCheckeredGrid(text: string, font: Font, options: {
 	balanced?: boolean;
+	strokeTips?: boolean;
 	cache?: ReturnType<typeof mixedCheckeredGridCache>;
 	previous?: ReturnType<typeof checkeredGridCache>;
 } = {}) {
@@ -70,19 +71,25 @@ export function generateMixedCheckeredGrid(text: string, font: Font, options: {
 		];
 		const first = contacts(q, 0, four), second = contacts(q, 1, four), char = matrix[row][col];
 		const hasFour = first.length === 2;
-		const key = `${char}:${q}:${first}:${second}:${Number(hasFour && !!options.balanced)}`;
+		const baseKey = `${char}:${q}:${first}:${second}:${Number(hasFour && !!options.balanced)}`;
+		const key = baseKey + (options.strokeTips ? ':tips' : '');
 		if (cache.has(key)) return cache.get(key)!;
+		if (options.strokeTips) {
+			const prior = cache.get(baseKey);
+			if (prior && (prior.usable ??= usableMotif(prior.edges, prior.gates, margin))) return prior;
+		}
 		const gates = [...first.map(d => contact(q, d)), ...second.slice().reverse().map(d => contact((q + 1) % 4, d))];
 		// Reuse the original two-port pass where its connection positions match.
 		// The alternate pass changes only four-port routing; two-port cells and
 		// failed local routes stay cached across all group-layout choices.
-		const previous = !hasFour ? options.previous?.get(`${char}:${q}:${first[0]},${second[0]}:0:0`) : undefined;
+		const previous = !hasFour && !options.strokeTips ? options.previous?.get(`${char}:${q}:${first[0]},${second[0]}:0:0`) : undefined;
 		if (previous) { cache.set(key, previous); return previous; }
 		const contours = placements[row][col], local: Edge[] = [], center = centroid(contours.flat());
 		try {
 			if (hasFour) (options.balanced ? balancedFourPortMotif : fourPortMotif)(local, contours, gates,
-				gates.map(p => Math.atan2(center[1] - p[1], center[0] - p[0])), margin);
-			else twoPortMotif(local, contours, gates, margin);
+				gates.map(p => Math.atan2(center[1] - p[1], center[0] - p[0])), margin, undefined, undefined,
+				{ strokeTips: options.strokeTips });
+			else twoPortMotif(local, contours, gates, margin, { strokeTips: options.strokeTips });
 			const result = { origin, edges: local, gates };
 			cache.set(key, result);
 			return result;
