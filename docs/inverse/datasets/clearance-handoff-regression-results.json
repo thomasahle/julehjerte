@@ -1,0 +1,359 @@
+{
+  "schema": 1,
+  "status": "initializer_deadline_fix_implemented; focused_checks_pass; broader_QA_pending; uncertain_routing_failure_unresolved",
+  "rootCause": "repairClearanceInitializer discarded a geometry-valid, feature-retaining and independently paper-verified continuation after its final audit crossed the 1.2-second local cap, despite the original caller having time left. The observed full-suite run completed at 1.248 seconds.",
+  "change": "Keep the same refinement budget and pre-audit local checks. After a completed successful paper audit, compare time with the original caller deadline. This is still only a continuation when source error exceeds the final limit.",
+  "deterministicRegression": {
+    "before": {
+      "passed": 1,
+      "failed": 1,
+      "failure": "The 10-second caller loses its completed verified continuation."
+    },
+    "after": {
+      "focusedTests": 11,
+      "passed": 11,
+      "failed": 0
+    },
+    "clock": "45 ordinary refinement steps; after the real final audit, simulate 1250 ms. A 10000 ms caller retains the continuation; a 1200 ms caller still rejects it.",
+    "imageErrorAboveAcceptance": true,
+    "actualPaperAuditRequired": true,
+    "sourceAndInitializerUnchanged": true
+  },
+  "freshBeforeFix": [
+    {
+      "artifact": "tmp/heart-learning/clearance-handoff-regression-v1/fresh-0-clearance-feature-handoff-before.json",
+      "arm": "before",
+      "case": "clearance-feature-handoff",
+      "seconds": 9.454695083,
+      "passed": true,
+      "independentError": 0.01366875,
+      "featuresPassed": true,
+      "initializerRepair": {
+        "steps": 45,
+        "reason": "continue_refinement",
+        "continued": true,
+        "seconds": 1.1411794170000011,
+        "imageError": 0.03305625
+      },
+      "routingRepairs": []
+    },
+    {
+      "artifact": "tmp/heart-learning/clearance-handoff-regression-v1/fresh-0-clearance-feature-handoff-current.json",
+      "arm": "current",
+      "case": "clearance-feature-handoff",
+      "seconds": 9.427670417,
+      "passed": true,
+      "independentError": 0.01366875,
+      "featuresPassed": true,
+      "initializerRepair": {
+        "steps": 45,
+        "reason": "continue_refinement",
+        "continued": true,
+        "seconds": 1.1425224579999995,
+        "imageError": 0.03305625
+      },
+      "routingRepairs": []
+    },
+    {
+      "artifact": "tmp/heart-learning/clearance-handoff-regression-v1/fresh-0-sloth-y-minus-1-before.json",
+      "arm": "before",
+      "case": "sloth-y-minus-1",
+      "seconds": 9.376330666,
+      "passed": true,
+      "independentError": 0.013312,
+      "featuresPassed": true,
+      "initializerRepair": {
+        "steps": null,
+        "reason": null,
+        "continued": null,
+        "seconds": null,
+        "imageError": null
+      },
+      "routingRepairs": [
+        {
+          "accepted": true,
+          "steps": 160,
+          "reason": null,
+          "seconds": 1.3543904999999996,
+          "integerCandidateSeconds": 3.1983427079999998,
+          "imageError": 0.012912,
+          "paperVerification": {
+            "requestedResolution": 360,
+            "initialStatus": "uncertain",
+            "resolution": 700,
+            "status": "pass"
+          }
+        }
+      ]
+    },
+    {
+      "artifact": "tmp/heart-learning/clearance-handoff-regression-v1/fresh-0-sloth-y-minus-1-current.json",
+      "arm": "current",
+      "case": "sloth-y-minus-1",
+      "seconds": 9.257646667,
+      "passed": false,
+      "independentError": 0.05664,
+      "featuresPassed": false,
+      "initializerRepair": {
+        "steps": null,
+        "reason": null,
+        "continued": null,
+        "seconds": null,
+        "imageError": null
+      },
+      "routingRepairs": [
+        {
+          "accepted": false,
+          "steps": 105,
+          "reason": "paper_rejected",
+          "seconds": 1.3423577080000004,
+          "integerCandidateSeconds": 3.3452205000000004,
+          "imageError": 0.014448,
+          "paperVerification": {
+            "requestedResolution": 360,
+            "initialStatus": "uncertain",
+            "resolution": 700,
+            "status": "uncertain"
+          }
+        }
+      ]
+    },
+    {
+      "artifact": "tmp/heart-learning/clearance-handoff-regression-v1/fresh-1-clearance-feature-handoff-before.json",
+      "arm": "before",
+      "case": "clearance-feature-handoff",
+      "seconds": 9.601993708,
+      "passed": true,
+      "independentError": 0.01463125,
+      "featuresPassed": true,
+      "initializerRepair": {
+        "steps": 45,
+        "reason": "continue_refinement",
+        "continued": true,
+        "seconds": 1.1630879589999994,
+        "imageError": 0.03305625
+      },
+      "routingRepairs": []
+    },
+    {
+      "artifact": "tmp/heart-learning/clearance-handoff-regression-v1/fresh-1-clearance-feature-handoff-current.json",
+      "arm": "current",
+      "case": "clearance-feature-handoff",
+      "seconds": 9.605562000000003,
+      "passed": true,
+      "independentError": 0.01444375,
+      "featuresPassed": true,
+      "initializerRepair": {
+        "steps": 45,
+        "reason": "continue_refinement",
+        "continued": true,
+        "seconds": 1.1575087499999999,
+        "imageError": 0.03305625
+      },
+      "routingRepairs": []
+    },
+    {
+      "artifact": "tmp/heart-learning/clearance-handoff-regression-v1/fresh-1-sloth-y-minus-1-before.json",
+      "arm": "before",
+      "case": "sloth-y-minus-1",
+      "seconds": 9.309017166,
+      "passed": true,
+      "independentError": 0.013312,
+      "featuresPassed": true,
+      "initializerRepair": {
+        "steps": null,
+        "reason": null,
+        "continued": null,
+        "seconds": null,
+        "imageError": null
+      },
+      "routingRepairs": [
+        {
+          "accepted": true,
+          "steps": 160,
+          "reason": null,
+          "seconds": 1.3152580419999995,
+          "integerCandidateSeconds": 3.1840625,
+          "imageError": 0.012912,
+          "paperVerification": {
+            "requestedResolution": 360,
+            "initialStatus": "uncertain",
+            "resolution": 700,
+            "status": "pass"
+          }
+        }
+      ]
+    },
+    {
+      "artifact": "tmp/heart-learning/clearance-handoff-regression-v1/fresh-1-sloth-y-minus-1-current.json",
+      "arm": "current",
+      "case": "sloth-y-minus-1",
+      "seconds": 9.231030208,
+      "passed": false,
+      "independentError": 0.05664,
+      "featuresPassed": false,
+      "initializerRepair": {
+        "steps": null,
+        "reason": null,
+        "continued": null,
+        "seconds": null,
+        "imageError": null
+      },
+      "routingRepairs": [
+        {
+          "accepted": false,
+          "steps": 105,
+          "reason": "paper_rejected",
+          "seconds": 1.274616083,
+          "integerCandidateSeconds": 3.382422042,
+          "imageError": 0.014448,
+          "paperVerification": {
+            "requestedResolution": 360,
+            "initialStatus": "uncertain",
+            "resolution": 700,
+            "status": "uncertain"
+          }
+        }
+      ]
+    },
+    {
+      "artifact": "tmp/heart-learning/clearance-handoff-regression-v1/fresh-2-clearance-feature-handoff-before.json",
+      "arm": "before",
+      "case": "clearance-feature-handoff",
+      "seconds": 9.589237542000001,
+      "passed": true,
+      "independentError": 0.01366875,
+      "featuresPassed": true,
+      "initializerRepair": {
+        "steps": 45,
+        "reason": "continue_refinement",
+        "continued": true,
+        "seconds": 1.147812167,
+        "imageError": 0.03305625
+      },
+      "routingRepairs": []
+    },
+    {
+      "artifact": "tmp/heart-learning/clearance-handoff-regression-v1/fresh-2-clearance-feature-handoff-current.json",
+      "arm": "current",
+      "case": "clearance-feature-handoff",
+      "seconds": 9.487565,
+      "passed": false,
+      "independentError": 0.03549375,
+      "featuresPassed": true,
+      "initializerRepair": {
+        "steps": 45,
+        "reason": "deadline",
+        "continued": null,
+        "seconds": 1.2173388749999994,
+        "imageError": 0.03305625
+      },
+      "routingRepairs": []
+    },
+    {
+      "artifact": "tmp/heart-learning/clearance-handoff-regression-v1/fresh-2-sloth-y-minus-1-before.json",
+      "arm": "before",
+      "case": "sloth-y-minus-1",
+      "seconds": 9.369523625,
+      "passed": true,
+      "independentError": 0.013312,
+      "featuresPassed": true,
+      "initializerRepair": {
+        "steps": null,
+        "reason": null,
+        "continued": null,
+        "seconds": null,
+        "imageError": null
+      },
+      "routingRepairs": [
+        {
+          "accepted": true,
+          "steps": 160,
+          "reason": null,
+          "seconds": 1.3598104579999999,
+          "integerCandidateSeconds": 3.2043382080000002,
+          "imageError": 0.012912,
+          "paperVerification": {
+            "requestedResolution": 360,
+            "initialStatus": "uncertain",
+            "resolution": 700,
+            "status": "pass"
+          }
+        }
+      ]
+    },
+    {
+      "artifact": "tmp/heart-learning/clearance-handoff-regression-v1/fresh-2-sloth-y-minus-1-current.json",
+      "arm": "current",
+      "case": "sloth-y-minus-1",
+      "seconds": 9.415120292,
+      "passed": true,
+      "independentError": 0.013312,
+      "featuresPassed": true,
+      "initializerRepair": {
+        "steps": null,
+        "reason": null,
+        "continued": null,
+        "seconds": null,
+        "imageError": null
+      },
+      "routingRepairs": [
+        {
+          "accepted": true,
+          "steps": 160,
+          "reason": null,
+          "seconds": 1.3583209580000002,
+          "integerCandidateSeconds": 3.1918700420000006,
+          "imageError": 0.012912,
+          "paperVerification": {
+            "requestedResolution": 360,
+            "initialStatus": "uncertain",
+            "resolution": 700,
+            "status": "pass"
+          }
+        }
+      ]
+    }
+  ],
+  "interpretation": [
+    "The pre-retention runtime passes all six paired fresh trials; the current pre-fix runtime passes three of six. This sample does not establish the candidate-retention change is harmless.",
+    "The failing fresh initializer again ends with reason deadline. The deterministic audit wrapper isolates that discard independently of clock throughput.",
+    "The y-minus-1 failures stop at 105 steps and retain the step-80 geometry with paper uncertainty even at 700 pixels. Successful trials finish 160 steps. Their earlier integer candidates leave approximately 0.15-0.26 seconds more repair time.",
+    "The local handoff fix does not certify those uncertain routing candidates or claim to resolve that second failure."
+  ],
+  "discardedClockPrototype": "The first six copied-runtime clock probes advanced time inside the final refinement checkpoint, before the intended final-audit boundary; all six stopped early. They do not isolate the observed bug and remain recorded. The regression instead wraps the actual final paper audit and advances the clock only after it returns.",
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/clearance-handoff-regression-v1/plan.json",
+      "sha256": "05153e8e4e79ab665e5cecfbd3cc5c8181c8c077c14724cfaf4bce3198bd67d3"
+    },
+    {
+      "path": "tmp/heart-learning/clearance-handoff-regression-v1/source.json",
+      "sha256": "c582e0ad2090b3a17e01cd63dafcb74ec7726fd4cb09ee0c0e53d30b48ea64bf"
+    },
+    {
+      "path": "tmp/heart-learning/clearance-handoff-regression-v1/checks.json",
+      "sha256": "c343ff25b71f143f627ec1a5fc07fde45f011484dcace1e737348136bee23b66"
+    },
+    {
+      "path": "tmp/heart-learning/clearance-handoff-regression-v1/state.json",
+      "sha256": "9919b0d9e2ec2016f48f54bbbad1653ccd1e12af07ee2cde5bfd6ce52049c31e"
+    },
+    {
+      "path": "tmp/heart-learning/clearance-handoff-regression-v1/diagnostic-0.json",
+      "sha256": "59bbee0207ff27a7cd2b460b29e801f9be14c7b4fa526c441587a4c45676a363"
+    },
+    {
+      "path": "tmp/heart-learning/clearance-handoff-regression-v1/diagnostic-1.json",
+      "sha256": "8c985553ea63fe9cc326c6d294f8d9456e323a64dca5db6ba38f4222163c2a27"
+    },
+    {
+      "path": "tmp/heart-learning/clearance-handoff-regression-v1/regression-before.log",
+      "sha256": "18c25470b7fd52f0b5fd15e8a9daa79262405a3ef727b3b10b40e1d63be78440"
+    },
+    {
+      "path": "tmp/heart-learning/clearance-handoff-regression-v1/focused-after.log",
+      "sha256": "2d57cf39ec8aaa1c27cd0b92da07a945576309af5c6da98d123d2a213bd9493c"
+    }
+  ]
+}

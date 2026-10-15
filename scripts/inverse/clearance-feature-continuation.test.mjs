@@ -47,3 +47,39 @@ test('a short verified improvement continues fitting without becoming an accepte
   assert.deepEqual(prepared.graph.points,before);
   assert.deepEqual(source.sourceImage.mask,mask);
 });
+
+for(const deadline of [10000,1200])test(`completed initializer checks retain the caller's ${deadline}ms deadline`,async t=>{
+  await loadBoundaryKernel();
+  const source=input(),prepared=initializer(source),before=prepared.graph.points.slice();
+  let clock=0,audits=0,result;
+  const now=t.mock.method(performance,'now',()=>clock);
+  try{
+    result=repairClearanceInitializer(prepared,source,cfg,{deadline,recoverFeatures:true,onProgress:r=>{
+      if(r.step>=40)clock=800;
+      if(r.step===44)clock=1100;
+    },paperAudit:(solution,settings)=>{
+      // Perform the real independent paper audit, then model its completion
+      // beyond the local 1200ms cap. The caller may still have search time.
+      const checked=materialAudit(solution,settings);audits++;clock=1250;return checked;
+    }});
+  }finally{now.mock.restore();}
+  assert.equal(result.report.steps,45);
+  assert.ok(audits>0);
+  assert.equal(result.report.geometry.passed,true);
+  assert.equal(result.report.features.passed,true);
+  assert.equal(result.report.paper.status,'pass');
+  assert.equal(result.report.accepted,false);
+  assert.ok(result.report.imageError>cfg.maxImageError);
+  assert.ok(result.report.imageError<result.report.initialImageError);
+  assert.equal(result.candidate,null,'A useful initializer still does not meet the final image limit.');
+  if(deadline>clock){
+    assert.ok(result.continuation,'Do not discard completed verification solely because the local refinement cap elapsed.');
+    assert.equal(result.report.continued,true);
+    assert.equal(result.report.reason,'continue_refinement');
+  }else{
+    assert.equal(result.continuation,undefined,'Never extend the caller deadline.');
+    assert.equal(result.report.reason,'deadline');
+  }
+  assert.deepEqual(prepared.graph.points,before);
+  assert.deepEqual(source.sourceImage.mask,mask);
+});

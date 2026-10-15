@@ -8,7 +8,7 @@ import {auditFeatureFidelity} from '../feature-shapes.js';
 import {maskDisagreement} from './prefer-matching.js';
 import {requestedSymmetry} from '../settings.js';
 
-export function repairClearanceInitializer(prepared,input,cfg,{deadline=Infinity,geometry=null,recoverFeatures=false,onProgress=()=>{}}={}){
+export function repairClearanceInitializer(prepared,input,cfg,{deadline=Infinity,geometry=null,recoverFeatures=false,onProgress=()=>{},paperAudit=materialAudit}={}){
   const started=performance.now(),until=Math.min(deadline,started+1200),report={accepted:false,method:'clearance-initializer-refinement'};
   const finish=reason=>({candidate:null,report:{...report,reason,seconds:(performance.now()-started)/1000}});
   if(until-started<900)return finish('insufficient_time');
@@ -45,16 +45,19 @@ export function repairClearanceInitializer(prepared,input,cfg,{deadline=Infinity
     // image limit. Keep that handoff separate from an accepted template.
     if(!geometry.passed||!features.passed||!imagePassed&&!(recoverFeatures&&imageError<report.initialImageError))continue;
     const resolution=Math.max(cfg.materialResolution,candidate.paperVerification?.resolution||0,candidate!==fitted?700:0);
-    let paper=materialAudit(solution,{...cfg,materialResolution:resolution}),verification=null;
+    let paper=paperAudit(solution,{...cfg,materialResolution:resolution}),verification=null;
     report.initialPaper=paper.summary;
     if(resolution>cfg.materialResolution)verification={requestedResolution:cfg.materialResolution,initialStatus:'uncertain',resolution,status:paper.status,source:'clearance-initializer-refinement'};
     if(paper.status==='uncertain'&&resolution<700&&until-performance.now()>200){
-      paper=materialAudit(solution,{...cfg,materialResolution:700});
+      paper=paperAudit(solution,{...cfg,materialResolution:700});
       verification={requestedResolution:cfg.materialResolution,initialStatus:'uncertain',resolution:700,status:paper.status,source:'clearance-initializer-refinement'};
     }
     report.paper=paper.summary;check.paper=paper.status;
     if(!paper.passed){reason='paper_rejected';continue;}
-    if(performance.now()>until)return finish('deadline');
+    // The local cap stops new repair work. Once these checks have finished,
+    // keep the verified shape if the caller still has time to use it. A slow
+    // final audit must not erase useful work at the smaller local cutoff.
+    if(performance.now()>deadline)return finish('deadline');
     report.paperVerification=verification;report.usedPaperAlternative=candidate!==fitted;
     const repaired={...fitted,...candidate,paperAlternative:null,counts:clear.model.counts.slice(),seed:'clearance-repair',geometryPassed:true,validation:geometry,paperPassed:paper.passed,paper:paper.summary,paperVerification:verification};
     report.accepted=imagePassed;report.seconds=(performance.now()-started)/1000;

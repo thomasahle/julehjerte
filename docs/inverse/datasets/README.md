@@ -204,6 +204,18 @@ checker-contact defects and thin seams remain. The twelve earlier uncapped fresh
 trials also contain paired error increases. Prior failed runs remain recorded;
 the current candidate is not a clean release result.
 
+The [initializer handoff regression](clearance-handoff-regression-results.json)
+isolates one of those failures: a completed, independently verified repair was
+discarded at 1.248 seconds because its local cap was 1.2 seconds, even though the
+caller still had search time. Final verification now retains that continuation
+within the original caller deadline; it is not an accepted template above the
+image limit. The deterministic regression fails before the fix, and all eleven
+focused checks pass afterwards, including the strict caller-deadline rejection.
+The second routing failure remains open: a later integer proposal leaves only
+enough repair time for an uncertain paper checkpoint. Paired fresh trials before
+this fix pass 6/6 on the pre-retention runtime and 3/6 on the current runtime, so
+the small candidate-retention change is not declared free of timing regressions.
+
 A [controlled photo-border experiment](border-fragment-perturbation-results.json)
 replays 228 crop/resolution combinations with both re-estimated and frozen colour
 clusters. All four original 400-pixel masks reproduce exactly. The outline-star
