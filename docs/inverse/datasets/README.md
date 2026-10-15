@@ -46,7 +46,14 @@ masks and five border radii, all 145 resulting boundaries retain every control
 coordinate and preprocessing field. Alternating before/after measurements show
 22.7% less time in boundary preparation; this is not a whole-solve speed claim.
 All 33 focused checks pass, including frozen pre-change outputs and mutation
-isolation. Full QA and fresh corpus fitting remain pending.
+isolation. Full QA passes 940 inverse and 857 application tests (one skip),
+type checking, lint, build and private star/hat browser workflows. Fresh fitting
+retains 22/22 Hunodan below ten seconds (maximum 9.591 s), 26/31 photographic
+acceptances and 48/48 editable exports. The strict no-regression gate still
+fails: one Hunodan and eight accepted photo errors increase. All eighteen
+changed photo render pairs and the changed Hunodan output were visually reviewed.
+The jigsaw recovers its puzzle tabs and 0.9744% disagreement in this run, but
+the controlled delay study still reproduces its skipped-initializer failure.
 
 A [fixed-crop material diagnosis](fixed-crop-material-diagnosis.json) separates
 the learned mask from crop placement on the stacked-heart photograph. With
