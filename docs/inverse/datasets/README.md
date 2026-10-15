@@ -53,9 +53,12 @@ at 2.15% disagreement in 9.86 seconds; full QA of this revision is running.
 
 The stacked-heart fit still needs improvement despite its lower mask error.
 One heart remains connected to the border; another is split, with only 67% of
-its source region in the largest piece. A separate border-only probe restores
-consistent endpoints using different inset depths per side, within the existing
-0.5% edit allowance. It has not yet produced a traced or fitted template.
+its source region in the largest piece. The earlier border-only probe has
+consistent endpoint counts but an undersized eight-pixel strip; it is rejected.
+The [independent-edge proposal study](independent-border-proposals.json) preserves
+healthy bent edges in synthetic tests and gives wider photographed proposals
+without changing the original scoring reference. Those proposals exceed the
+0.5% heuristic allowance and remain offline; no traced or fitted result is claimed.
 
 The [guided-field experiment](guided-material-fields.json) is complete and
 remains offline. Across seventeen development photos, RGB-guided sharpening

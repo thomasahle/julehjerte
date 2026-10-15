@@ -1,0 +1,186 @@
+{
+  "schema": "independent-border-proposals-1",
+  "status": "offline-proposals-routing-pending",
+  "scope": "One previously investigated learned development mask and a constructed bent-edge checker. No application integration and no new reconstructed-template result.",
+  "method": "Combine separately inferred edge profiles from the existing 0, 0.5, 1, 2 and 3mm inward bands. Require opposite counts, compatible corner phases and configured minimum edge-strip spacing. Rank bounded combinations by estimated per-edge edits, then accept only exact combined changes within the explicit allowance. Original pixels remain the fitting and scoring reference.",
+  "bounds": {
+    "maximumCandidates": 4,
+    "maximumCombinations": 64,
+    "defaultMaximumChangeFraction": 0.005,
+    "diagnosticMaximumChangeFraction": 0.01
+  },
+  "earlierProbeCorrection": {
+    "candidateChangeFraction": 0.004625,
+    "counts": [
+      3,
+      3,
+      3,
+      3
+    ],
+    "narrowRightEdgeRunPixels": 8,
+    "minimumPixels": 10.02004008016032,
+    "decision": "Reject. Consistent counts do not make the candidate a usable boundary; the restored right-edge run is below the configured strip width. The prior 740-pixel probe is not promoted."
+  },
+  "tests": {
+    "initial": "Three tests passed; the photographic expected-success test failed because the count-only probe was not actually spacing-valid. The failed log is retained.",
+    "currentPassed": 5,
+    "coverage": [
+      "Preserve bent healthy edges while recovering the damaged side of a constructed checker, in both colours and four rotations.",
+      "Reject the photographed too-narrow edge fragment rather than relax its strip-width rule.",
+      "Preserve every photographed source feature and all six source-stable enclosures in wider diagnostic proposals.",
+      "Retain consistent inputs and enforce a zero edit allowance.",
+      "Reject invalid dimensions, labels and unbounded settings."
+    ]
+  },
+  "proposals": [
+    {
+      "name": "uniform",
+      "metadata": {
+        "radiusMm": 2,
+        "depthPixels": 8,
+        "profileNoiseRadiusMm": 1.25,
+        "profilePixelsChanged": 0,
+        "editedBandWidthMm": 2,
+        "changedPixels": 1541,
+        "changeFraction": 0.00963125,
+        "transitionsBefore": [
+          6,
+          0,
+          4,
+          6
+        ],
+        "transitionsAfter": [
+          3,
+          3,
+          3,
+          3
+        ],
+        "method": "Majority across and along inward edge profiles; suppress sub-strip noise before bounded border extension."
+      },
+      "maskSha256": "8fa99c4a18a5a5eb3c6a21308718cbd2f7e9db6a8ede3d94dde917e33efea76b",
+      "stableEnclosuresRetained": 6
+    },
+    {
+      "name": "independent",
+      "metadata": {
+        "method": "independent-edge-profiles",
+        "initializationOnly": true,
+        "radiiMm": [
+          0.5,
+          2,
+          0.5,
+          0.5
+        ],
+        "depthPixels": [
+          2,
+          8,
+          2,
+          2
+        ],
+        "transitionsBefore": [
+          6,
+          0,
+          4,
+          6
+        ],
+        "transitionsAfter": [
+          3,
+          3,
+          3,
+          3
+        ],
+        "changedPixels": 1402,
+        "changeFraction": 0.0087625
+      },
+      "maskSha256": "f96fc9056f8b95324cec3d5f3dd0dccb9407c1d28c917434b2154772b413a007",
+      "stableEnclosuresRetained": 6
+    }
+  ],
+  "interpretation": "The automatic independent-edge proposal changes 1402 pixels (0.87625%) versus 1541 (0.963125%) for the first uniform band with sufficiently wide edge runs. Both exceed the original 0.5% heuristic allowance. Neither is a validated tracing/MILP/template result.",
+  "nextExperiment": {
+    "status": "planned-not-run",
+    "scope": "Fresh routing and common curve refinement from one fixed learned development mask. Original source pixels remain the scoring reference; no saved cutting paths initialize a fit. Source crop and labels are estimated, not original-artwork ground truth.",
+    "inputReportSha256": "d965e7b836957b1cf83e66bb3205f611b44fdd4c623f3a20ca642d779ceb7e4f",
+    "seeds": [
+      "uniform",
+      "independent"
+    ],
+    "fitTolerancesMm": [
+      0.35,
+      0.75,
+      1,
+      1.5
+    ],
+    "otherTracing": {
+      "maxSpan": 40,
+      "smoothRadius": 0.3,
+      "snapRadius": 0.75,
+      "borderRadius": 0,
+      "polygonal": false,
+      "mixedBoundaries": true
+    },
+    "routingSeconds": 3,
+    "maximumProjectionSeconds": 3,
+    "maximumRefinementSeconds": 1.5,
+    "finalPaperResolution": 700,
+    "scopeLimits": "Stage budgets are separate and exclude process startup and independent replay. Record total elapsed time; no ten-second claim unless measured. Every outcome and every seed/tolerance combination is retained. No final feature, geometry, paper or image threshold is relaxed.",
+    "deferredUntil": "The current serial full QA run finishes."
+  },
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/independent-border-v1/seeds.mjs",
+      "sha256": "1ccb3503e4f9633774b460e72ae116f580608444ed88fb880ece5d1d1f48bd9a",
+      "bytes": 5941
+    },
+    {
+      "path": "tmp/heart-learning/independent-border-v1/seeds.test.mjs",
+      "sha256": "70b9ec75172d33d94609b6e7b3278fc3884c5b34da0ab821acc3905c53faef66",
+      "bytes": 4159
+    },
+    {
+      "path": "tmp/heart-learning/independent-border-v1/prepare.mjs",
+      "sha256": "b4a48ce05447b402286a9145678ff951233e6b18b7e8257aa1cc3c2691f9f7f2",
+      "bytes": 3298
+    },
+    {
+      "path": "tmp/heart-learning/independent-border-v1/unit.log",
+      "sha256": "3ec124c9b3a5c0aef7248f736f10eac10513295fdddc24deb701fe8413ac58be",
+      "bytes": 1605
+    },
+    {
+      "path": "tmp/heart-learning/independent-border-v1/unit-v2.log",
+      "sha256": "ca6c6daf4e63bb3abe43a53c8bfea5bd95f45f6465460ece5ce730a54ce748b4",
+      "bytes": 564
+    },
+    {
+      "path": "tmp/heart-learning/independent-border-v1/profile-diagnosis.json",
+      "sha256": "a6745768494b78540362fcf2a75e8923bd8c9e0b05d98e4bbb223f4dfb9508a4",
+      "bytes": 10173
+    },
+    {
+      "path": "tmp/heart-learning/independent-border-v1/inputs/report.json",
+      "sha256": "d965e7b836957b1cf83e66bb3205f611b44fdd4c623f3a20ca642d779ceb7e4f",
+      "bytes": 7498
+    },
+    {
+      "path": "tmp/heart-learning/independent-border-v1/inputs/source.u8",
+      "sha256": "88a77851c564c157375f2c319f9a62b49799a7dfc710d7dde256afcb0d095ce7",
+      "bytes": 160000
+    },
+    {
+      "path": "tmp/heart-learning/independent-border-v1/inputs/uniform.u8",
+      "sha256": "8fa99c4a18a5a5eb3c6a21308718cbd2f7e9db6a8ede3d94dde917e33efea76b",
+      "bytes": 160000
+    },
+    {
+      "path": "tmp/heart-learning/independent-border-v1/inputs/independent.u8",
+      "sha256": "f96fc9056f8b95324cec3d5f3dd0dccb9407c1d28c917434b2154772b413a007",
+      "bytes": 160000
+    },
+    {
+      "path": "tmp/heart-learning/independent-border-v1/plan.json",
+      "sha256": "9e05d4b9b276bb7d81aadc2beccc76cede169e5e2f988fc85829a9528cb493f8",
+      "bytes": 1148
+    }
+  ]
+}

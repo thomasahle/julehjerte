@@ -1466,7 +1466,7 @@
     "interpretation": "At both 400 and 800 pixels, the integrated output keeps 5 of 6 source-stable regions enclosed, up from 3 in the rejected resampled control. These six include two checker regions and four hearts. One heart remains open to the border, and another is split: its largest component retains only 67.2% (400px) / 67.0% (800px) of the source heart. The production fidelity check still passes. This is not complete motif recovery."
   },
   "borderFollowup": {
-    "status": "diagnostic-only-not-integrated",
+    "status": "diagnostic-rejected-for-edge-spacing",
     "artifacts": [
       {
         "path": "tmp/heart-learning/initializer-perturbation-v1/routing-preflight.json",
@@ -1499,7 +1499,12 @@
       "A uniform 1mm border interpretation restores [3,3,3,3] but changes 822/160000 pixels (0.51375%), just above the existing 0.5% topology-initialization allowance. A 0.75mm interpretation still misses two right-edge endpoints.",
       "Combining already measured 0.5mm top/bottom/left interpretations with the 1mm right interpretation changes 740 pixels (0.4625%), restores [3,3,3,3] and retains every source feature and all six stable enclosures.",
       "These side radii were selected after inspecting this case. No general selector, traced-curve error, new MILP result or template success is claimed. The input reference remains unchanged; the combined mask is only a possible initialization."
-    ]
+    ],
+    "edgeSpacingFollowup": {
+      "minimumPixels": 10.02004008016032,
+      "rightEdgeRunPixels": 8,
+      "conclusion": "The earlier 740-pixel combined proposal has consistent counts but an undersized edge strip. It is rejected; see independent-border-proposals.json for the bounded general selector and wider offline controls."
+    }
   },
   "editableFocused": {
     "artifact": {
