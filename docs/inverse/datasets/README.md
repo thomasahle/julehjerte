@@ -97,6 +97,10 @@ A [repeated clearance-window study](clearance-window.md) recovers the downward
 leaf shift in both repeats; the upward shift exposes a separate shortlist
 cutoff. A [best-source-prefix sharing experiment](shared-prefix.md) gives
 mixed independent-render results and is rejected for adoption.
+A [36-run shortlist follow-up](clearance-candidate-repair.md) improves the
+right-shifted leaf and exposes a genuinely invalid clearance initializer in
+the upward shift. Standalone bounded refinement repairs that seed and passes
+the finer paper audit, but fresh end-to-end integration remains to be tested.
 
 The [short-search scheduling correction](photo-feature-stability.md) reserves
 curve-refinement time for nearly fitting grids while retaining routing priority
