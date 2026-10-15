@@ -6,7 +6,7 @@ import tempfile
 import unittest
 
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageCms
 import torch
 
 from real_foreground import masked_foreground_loss
@@ -15,8 +15,8 @@ from real_materials import build, checked_materials, rasterize_materials, verify
 from real_materials_learning import MaterialNet, joint_material_loss, load_material_labels
 
 
-def fixture(root):
-    Image.new('RGB', (80, 40), '#98a1c2').save(root/'photo.png')
+def fixture(root, *, icc_profile=None):
+    Image.new('RGB', (80, 40), '#98a1c2').save(root/'photo.png', icc_profile=icc_profile)
     source = {'id': 'source', 'sha256': digest((root/'photo.png').read_bytes()), 'width': 80, 'height': 40,
               'localPath': 'photo.png', 'kind': 'photo', 'splitStatus': 'unassigned', 'sourceGroups': ['publisher'],
               'nearDuplicateGroup': 'duplicate', 'splitGroupId': 'group', 'trainingRightsStatus': 'not-cleared'}
@@ -82,6 +82,19 @@ class MaterialLabelTests(unittest.TestCase):
             items, _ = load_material_labels(root/'materials', mp, ap, root)
             self.assertEqual(items[0]['materials'].shape, (80, 80))
             with self.assertRaises(FileExistsError): build(mp, ap, root/'materials', 80, root)
+
+    def test_rgb_preserves_source_color_profile_and_parent_png_bytes(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            profile = ImageCms.ImageCmsProfile(ImageCms.createProfile('sRGB')).tobytes()
+            *_, mp, ap = fixture(root, icc_profile=profile)
+            build(mp, ap, root/'materials', 80, root)
+            build_body(mp, root/'body.json', root/'original', 80, root)
+            actual, expected = root/'materials/body-rgb.png', root/'original/body-rgb.png'
+            with Image.open(actual) as a, Image.open(expected) as b:
+                np.testing.assert_array_equal(np.asarray(a), np.asarray(b))
+                self.assertEqual(a.info.get('icc_profile'), profile)
+            self.assertEqual(actual.read_bytes(), expected.read_bytes())
 
     def test_forged_asset_is_rejected_even_with_a_matching_checksum(self):
         with tempfile.TemporaryDirectory() as tmp:

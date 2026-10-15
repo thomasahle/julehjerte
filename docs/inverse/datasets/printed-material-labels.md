@@ -1,11 +1,11 @@
 # Material identity across printing and shading
 
-Two existing body-labelled photographs now have proposed partial material
-annotations. Their original photographs and polygon-outline previews have been
-visually inspected. Compiled label verification and overlay review are pending;
-the admitted inventory remains seven material-labelled instances.
+Two existing body-labelled photographs now have admitted partial material
+annotations. Source photographs, polygon outlines and compiled overlays were
+inspected at 256 and 768 pixels. The admitted inventory increases from seven
+to **nine material-labelled instances**, without adding source photographs.
 
-| Existing photograph | Proposed distinction | What stays unknown |
+| Existing photograph | Reviewed distinction | What stays unknown |
 | --- | --- | --- |
 | Floral and striped three-by-three heart | Every floral print colour belongs to one material; every horizontal stripe colour belongs to the other | Joins, outer margins and unlabelled interiors; physical paper/fabric composition is not asserted |
 | Bowed red/pale-pink basket | Each identity continues across illumination changes and bowing | Seam margins, uncertain body and hidden portions; tabletop, chocolates and cast shadows are not selected material |
@@ -14,7 +14,7 @@ The annotations use conservative interiors and inherit the original body labels
 without changing them. They are intended to distinguish material from printed
 ink or brightness. They provide neither cutting paths nor exact overlap corners.
 The existing source groups and global allocations remain unchanged; neither
-proposal has been used to train a material model.
+annotation has been used to train a material model.
 
 A third reviewed image, `real-f4b397c381357dfa`, shows a dark decorative heart
 held in two hands. Two distinct material identities cannot be established
@@ -31,7 +31,20 @@ outlines remain preserved, and its waiting compiler was stopped before any
 labels were generated. The correction is recorded explicitly rather than
 silently replacing the earlier review.
 
-The proposals are outside the admitted training sidecars. Compilation at 256 and
-768 pixels is queued after the current solver/browser checks. It will recheck
-source identity, existing body supervision, material conflicts and generated
-pixels. Final overlays must then be inspected before promotion.
+The [admitted sidecar](../../../scripts/inverse/datasets/real-materials-printed.json)
+passes source, grouping, polygon-conflict and generated-pixel checks at both
+resolutions. Unknown boundaries remain excluded from supervision. These are
+assistant-reviewed annotations, not an independent human review.
+
+Final identity checks also exposed an exporter bug: rebuilding RGB through a
+NumPy array stripped the floral photograph’s embedded ICC color profile. Its
+pixels were unchanged, but the PNG no longer matched the earlier body-training
+export. The compiler now saves the original transformed RGB image object. A
+regression test reproduces the lost profile before the fix and verifies profile
+and complete PNG identity afterward. Both new RGB inputs and body-label PNGs
+are now byte-identical to the previous 256-pixel body exports. All final label
+and overlay pixels match the inspected proposals.
+
+The full offline learning suite passes 90 tests across fifteen modules, including
+the new profile-preservation regression and eight material-evaluation checks.
+No model was trained or added to the application.

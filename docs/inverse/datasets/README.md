@@ -24,7 +24,7 @@ The inventory, with material annotations updated on 2026-10-15, contains:
 | Training scene variants | 2,448 | Neighbours and handles paired with all six backgrounds for the same 408 training views; no new geometry families. |
 | Source-photo material QA samples | 78 | Three hearts in two reserved photographs; sparse assistant-reviewed development observations, not dense labels or training data. |
 | Real visible-body annotations | 18 | Seventeen instances in fifteen groups outside source QA, plus one reserved gold-angel instance. Uncertain pixels are excluded; the eight additions to the original ten-instance pilot have not entered training. |
-| Real partial paper-material annotations | 7 existing heart instances | Five earlier paper pairs plus red/green boar and pale/green rabbit silhouettes. Separate body and material uncertainty; no additional photographs and no material-trained checkpoint. |
+| Real partial paper-material annotations | 9 existing heart instances | Five earlier paper pairs, boar/rabbit silhouettes, and printed floral/stripe and shaded red/pink hearts. Separate body and material uncertainty; no additional photographs and no material-trained checkpoint. |
 
 ## Current results and limits
 

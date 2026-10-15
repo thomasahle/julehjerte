@@ -82,7 +82,8 @@ def rasterize_materials(item, body_row, resolution=256):
 
 def render(item, body_row, source, resolution, root):
     body, materials, transform = rasterize_materials(item, body_row, resolution)
-    rgb = np.asarray(photo_tensor(read_source(root, source), transform))
+    photo = photo_tensor(read_source(root, source), transform)
+    rgb = np.asarray(photo)
     overlay = rgb.astype(float)
     overlay[body == 0] *= .5
     overlay[body == 255] = .5*overlay[body == 255]+.5*np.array([140, 140, 140])
@@ -94,7 +95,7 @@ def render(item, body_row, source, resolution, root):
                 'allocation': body_row['allocation'], 'motif': body_row['motif'], 'transform': transform,
                 'bodyPixelCounts': {str(v): int((body == v).sum()) for v in [0, 1, 255]},
                 'materialPixelCounts': {str(v): int((materials == v).sum()) for v in [0, 1, 255]}}
-    return arrays, metadata
+    return arrays, metadata, photo
 
 
 def build(manifest_path, annotations_path, output, resolution=256, root=ROOT, *, purpose='training-candidate'):
@@ -111,11 +112,13 @@ def build(manifest_path, annotations_path, output, resolution=256, root=ROOT, *,
         (output/'manifest.json').write_text(json.dumps(result, indent=2)+'\n')
     save(); panels = []
     for item, body_row, source in rows:
-        arrays, metadata = render(item, body_row, source, resolution, root)
+        arrays, metadata, photo = render(item, body_row, source, resolution, root)
         assets = {}
         for kind, array in arrays.items():
             name = item['id']+'-'+kind+'.png'
-            Image.fromarray(array).save(output/name)
+            # Retain the source profile and PNG metadata just as body-only exports
+            # do. Rebuilding RGB through NumPy silently discards that metadata.
+            (photo if kind == 'rgb' else Image.fromarray(array)).save(output/name)
             assets[kind] = {'path': name, 'sha256': digest((output/name).read_bytes())}
         result['instances'].append({**metadata, 'assets': assets})
         panels.append('<article><h2>'+html.escape(item['id'])+'</h2><p>'+html.escape(item['review']['note'])+'</p>'+''.join(
@@ -141,7 +144,7 @@ def verify(manifest_path, annotations_path, output, root=ROOT, *, purpose='train
     if len(ids) != len(set(ids)) or set(ids) != set(rows):
         raise ValueError('Missing or duplicate material instance')
     for row in report['instances']:
-        arrays, metadata = render(*rows[row['id']], row['transform']['resolution'], root)
+        arrays, metadata, _ = render(*rows[row['id']], row['transform']['resolution'], root)
         if any(row.get(k) != v for k, v in metadata.items()) or set(row['assets']) != set(arrays):
             raise ValueError('Changed material metadata, source grouping or assets')
         for kind, expected in arrays.items():
