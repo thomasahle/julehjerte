@@ -1,25 +1,25 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-15T19:56:02.566063+00:00",
+  "generatedAt": "2026-10-15T21:52:11.605899+00:00",
   "assetRoot": "tmp/heart-training-real",
   "description": "Original public-source files and existing fixtures; photographs are individually visually reviewed. Not a count of independent designs or labeled heart instances.",
   "counts": {
     "uniqueFileHashes": 1034,
     "kinds": {
-      "photo": 408,
+      "photo": 403,
       "photo-multiple": 104,
       "mixed-photo-template": 41,
       "photo-collage": 20,
       "template-render": 202,
-      "unrelated": 119,
-      "photo-process": 91,
-      "photo-other-material": 47,
+      "unrelated": 122,
+      "photo-process": 92,
+      "photo-other-material": 48,
       "unknown": 2
     },
     "sourcePages": 134,
     "visuallyReviewedFiles": 1034,
-    "reviewedPhotoFileHashes": 573,
-    "photoNearDuplicateGroups": 461,
+    "reviewedPhotoFileHashes": 568,
+    "photoNearDuplicateGroups": 456,
     "qaReservedFiles": 476
   },
   "splitPolicy": "Keep all files/crops from a source photo, near-duplicate group and motif family together. SourceGroups conservatively include publishers and UNVERIFIED source links observed in pin JSON; these possible connections can over-reserve QA and do not establish motif families, authorship or image origin. No random image-level split; family annotation remains pending.",
@@ -38846,8 +38846,8 @@
       "format": "JPEG",
       "decodedPixelsSha256": "431690445c2622410e6db93cffacf4220f79c2cbc2e1b62a70d03c56058f5b19",
       "dhash256": "03000300030003000380c7c0d284d2e6607c6038c0709ae49eb40c1c0c000e00",
-      "kind": "photo",
-      "reviewStatus": "visually-reviewed-contact-sheet",
+      "kind": "unrelated",
+      "reviewStatus": "visually-reviewed-source-recheck",
       "origins": [
         {
           "imageUrl": "https://i.pinimg.com/736x/35/a6/36/35a6369a42d60c692ae5188b86b5ce2d.jpg",
@@ -38879,8 +38879,9 @@
         }
       ],
       "reviewIndex": 627,
-      "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+      "reviewMethod": "Full-source image inspected in 500-pixel review panels; star photograph additionally inspected at its native 980 x 585 resolution. No template or material labels inferred.",
       "tags": [],
+      "reviewNote": "Six-point woven star with six rounded outer tabs; no assembled heart visible.",
       "localPath": "tmp/heart-training-real/assets/62d029c56147176cd3e56f75b06e7e405c5fa3e518da3b6e03118dfae7f71638.jpg",
       "exactDuplicateGroup": "62d029c56147176cd3e56f75b06e7e405c5fa3e518da3b6e03118dfae7f71638",
       "nearDuplicateGroup": "real-62d029c56147176c",
@@ -43464,8 +43465,8 @@
       "format": "JPEG",
       "decodedPixelsSha256": "6c95dc0147fda3c5fc9718fc3358f414becfa795bf8ef09be094c3f77e3d3e36",
       "dhash256": "0fcf182f0033122d33c7338337593c9b3993393234862e5c0d83f2072e038c33",
-      "kind": "photo",
-      "reviewStatus": "visually-reviewed-contact-sheet",
+      "kind": "photo-process",
+      "reviewStatus": "visually-reviewed-source-recheck",
       "origins": [
         {
           "imageUrl": "https://i.pinimg.com/736x/b6/d0/9e/b6d09ede036bca2e55b45d0caad5f1b9.jpg",
@@ -43533,7 +43534,8 @@
         }
       ],
       "reviewIndex": 695,
-      "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+      "reviewMethod": "Full-source image inspected in 500-pixel review panels; star photograph additionally inspected at its native 980 x 585 resolution. No template or material labels inferred.",
+      "reviewNote": "Cut and partly interwoven dark/gold paper pieces on a table; no complete assembled-heart silhouette visible.",
       "localPath": "tmp/heart-training-real/assets/a43719f61c71b69f824f779243409487f4a24642d7fcbd6b475f25ca7086e7ba.jpg",
       "exactDuplicateGroup": "a43719f61c71b69f824f779243409487f4a24642d7fcbd6b475f25ca7086e7ba",
       "nearDuplicateGroup": "real-a43719f61c71b69f",
@@ -51538,8 +51540,8 @@
       "format": "JPEG",
       "decodedPixelsSha256": "98e9bf059126e00d0564bc3bcb2f48a35f0bcdf259ee0d7b141232842aff2d42",
       "dhash256": "9f81968192c89aed994d9b029f039a87dcc4dc44dd86db02df41c6606f106799",
-      "kind": "photo",
-      "reviewStatus": "visually-reviewed-contact-sheet",
+      "kind": "unrelated",
+      "reviewStatus": "visually-reviewed-source-recheck",
       "origins": [
         {
           "imageUrl": "https://i.pinimg.com/originals/51/ff/39/51ff399a57dffd057d271508cb6e6a38.jpg",
@@ -51583,7 +51585,8 @@
         }
       ],
       "reviewIndex": 792,
-      "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+      "reviewMethod": "Full-source image inspected in 500-pixel review panels; star photograph additionally inspected at its native 980 x 585 resolution. No template or material labels inferred.",
+      "reviewNote": "Folded woven star ornaments, including the clipped objects at the right and bottom; no heart visible.",
       "localPath": "tmp/heart-training-real/assets/cda1cd38e225d1de31eb2e49d9a746eaf29675fdf0d51ae8f75fd0694fd97153.jpg",
       "exactDuplicateGroup": "cda1cd38e225d1de31eb2e49d9a746eaf29675fdf0d51ae8f75fd0694fd97153",
       "nearDuplicateGroup": "real-cda1cd38e225d1de",
@@ -54557,8 +54560,8 @@
       "format": "JPEG",
       "decodedPixelsSha256": "16e73f31a2cdb7558ae3611fdd50e1bd9dac687cf6c607a010fa7962c0f1bf58",
       "dhash256": "7027e70d831c0b0f0e4308b310b394f38af3c3178dbd9ce7867906df0c1b1c3b",
-      "kind": "photo",
-      "reviewStatus": "visually-reviewed-contact-sheet",
+      "kind": "unrelated",
+      "reviewStatus": "visually-reviewed-source-recheck",
       "origins": [
         {
           "imageUrl": "https://i.pinimg.com/originals/c6/cf/75/c6cf757e4d7909e8dc8a9c2fe971acb2.jpg",
@@ -54600,7 +54603,8 @@
         }
       ],
       "reviewIndex": 826,
-      "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+      "reviewMethod": "Full-source image inspected in 500-pixel review panels; star photograph additionally inspected at its native 980 x 585 resolution. No template or material labels inferred.",
+      "reviewNote": "Hand-held open square assembled from folded printed wrapping-paper pieces; no heart visible.",
       "localPath": "tmp/heart-training-real/assets/6bf033091cdd0605d0dff5f798ce20b75be0832a4f4c1a53b292fa100b738f98.jpg",
       "exactDuplicateGroup": "6bf033091cdd0605d0dff5f798ce20b75be0832a4f4c1a53b292fa100b738f98",
       "nearDuplicateGroup": "real-6bf033091cdd0605",
@@ -61602,8 +61606,8 @@
       "format": "JPEG",
       "decodedPixelsSha256": "d970d7a514e1e0efd1a7f1a27a1f38a04e5bcb1a9d45c9b5cf3897bf1fd3f7e2",
       "dhash256": "7fe07fc07f807f303f207f00272007e097809cf0dcc06cd870b0c2801b910197",
-      "kind": "photo",
-      "reviewStatus": "visually-reviewed-contact-sheet",
+      "kind": "photo-other-material",
+      "reviewStatus": "visually-reviewed-source-recheck",
       "origins": [
         {
           "imageUrl": "https://i.pinimg.com/originals/90/0a/95/900a95fce9e51fd9ffb8232419b238e8.jpg",
@@ -61653,7 +61657,8 @@
         }
       ],
       "reviewIndex": 920,
-      "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+      "reviewMethod": "Full-source image inspected in 500-pixel review panels; star photograph additionally inspected at its native 980 x 585 resolution. No template or material labels inferred.",
+      "reviewNote": "Heart-shaped fused-bead ornament with a tree motif; bead holes are visible throughout, not woven paper.",
       "localPath": "tmp/heart-training-real/assets/41bda0ea77cabd27a00ab56300343095d51602f4e4a1c60653052500df64982a.jpg",
       "exactDuplicateGroup": "41bda0ea77cabd27a00ab56300343095d51602f4e4a1c60653052500df64982a",
       "nearDuplicateGroup": "real-41bda0ea77cabd27",

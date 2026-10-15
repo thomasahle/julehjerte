@@ -1,0 +1,329 @@
+{
+  "schema": 1,
+  "status": "applied_and_verified",
+  "sourceManifestSha256": "eac852442cc4fb220ed3a8e8cc7b55397a9006775d38edf685801ea6897f7604",
+  "reviewFileSha256": "1e58b4a9c73f4482337fa41edb6de843d22277ee7d338088e93f764c197c8c3b",
+  "scope": "Correct five positive-heart classifications. Keep every original file and provenance record. None of these groups is annotated or allocated to a completed training study. Do not change previous study inputs or historical benchmark denominators.",
+  "rows": [
+    {
+      "id": "real-62d029c56147176c",
+      "sha256": "62d029c56147176cd3e56f75b06e7e405c5fa3e518da3b6e03118dfae7f71638",
+      "localPath": "tmp/heart-training-real/assets/62d029c56147176cd3e56f75b06e7e405c5fa3e518da3b6e03118dfae7f71638.jpg",
+      "oldKind": "photo",
+      "kind": "unrelated",
+      "reviewStatus": "visually-reviewed-source-recheck",
+      "reviewMethod": "Full-source image inspected in 500-pixel review panels; star photograph additionally inspected at its native 980 x 585 resolution. No template or material labels inferred.",
+      "reviewNote": "Six-point woven star with six rounded outer tabs; no assembled heart visible.",
+      "splitGroupId": "real-split-59e591037b9328ae",
+      "nearDuplicateGroup": "real-62d029c56147176c"
+    },
+    {
+      "id": "real-a43719f61c71b69f",
+      "sha256": "a43719f61c71b69f824f779243409487f4a24642d7fcbd6b475f25ca7086e7ba",
+      "localPath": "tmp/heart-training-real/assets/a43719f61c71b69f824f779243409487f4a24642d7fcbd6b475f25ca7086e7ba.jpg",
+      "oldKind": "photo",
+      "kind": "photo-process",
+      "reviewStatus": "visually-reviewed-source-recheck",
+      "reviewMethod": "Full-source image inspected in 500-pixel review panels; star photograph additionally inspected at its native 980 x 585 resolution. No template or material labels inferred.",
+      "reviewNote": "Cut and partly interwoven dark/gold paper pieces on a table; no complete assembled-heart silhouette visible.",
+      "splitGroupId": "real-split-bf9e355e11cfde52",
+      "nearDuplicateGroup": "real-a43719f61c71b69f"
+    },
+    {
+      "id": "real-cda1cd38e225d1de",
+      "sha256": "cda1cd38e225d1de31eb2e49d9a746eaf29675fdf0d51ae8f75fd0694fd97153",
+      "localPath": "tmp/heart-training-real/assets/cda1cd38e225d1de31eb2e49d9a746eaf29675fdf0d51ae8f75fd0694fd97153.jpg",
+      "oldKind": "photo",
+      "kind": "unrelated",
+      "reviewStatus": "visually-reviewed-source-recheck",
+      "reviewMethod": "Full-source image inspected in 500-pixel review panels; star photograph additionally inspected at its native 980 x 585 resolution. No template or material labels inferred.",
+      "reviewNote": "Folded woven star ornaments, including the clipped objects at the right and bottom; no heart visible.",
+      "splitGroupId": "real-split-6659576e7cd45da1",
+      "nearDuplicateGroup": "real-cda1cd38e225d1de"
+    },
+    {
+      "id": "real-6bf033091cdd0605",
+      "sha256": "6bf033091cdd0605d0dff5f798ce20b75be0832a4f4c1a53b292fa100b738f98",
+      "localPath": "tmp/heart-training-real/assets/6bf033091cdd0605d0dff5f798ce20b75be0832a4f4c1a53b292fa100b738f98.jpg",
+      "oldKind": "photo",
+      "kind": "unrelated",
+      "reviewStatus": "visually-reviewed-source-recheck",
+      "reviewMethod": "Full-source image inspected in 500-pixel review panels; star photograph additionally inspected at its native 980 x 585 resolution. No template or material labels inferred.",
+      "reviewNote": "Hand-held open square assembled from folded printed wrapping-paper pieces; no heart visible.",
+      "splitGroupId": "real-split-94583a3c33685654",
+      "nearDuplicateGroup": "real-6bf033091cdd0605"
+    },
+    {
+      "id": "real-41bda0ea77cabd27",
+      "sha256": "41bda0ea77cabd27a00ab56300343095d51602f4e4a1c60653052500df64982a",
+      "localPath": "tmp/heart-training-real/assets/41bda0ea77cabd27a00ab56300343095d51602f4e4a1c60653052500df64982a.jpg",
+      "oldKind": "photo",
+      "kind": "photo-other-material",
+      "reviewStatus": "visually-reviewed-source-recheck",
+      "reviewMethod": "Full-source image inspected in 500-pixel review panels; star photograph additionally inspected at its native 980 x 585 resolution. No template or material labels inferred.",
+      "reviewNote": "Heart-shaped fused-bead ornament with a tree motif; bead holes are visible throughout, not woven paper.",
+      "splitGroupId": "real-split-0185493f569b92a6",
+      "nearDuplicateGroup": "real-41bda0ea77cabd27"
+    }
+  ],
+  "reviewBoard": {
+    "path": "tmp/heart-learning/boundary-annotation-candidates-v1/classification-review.png",
+    "sha256": "11f0ffc8c901e804efa7e8d70d7f1139f15917a1709a23393c4d3f4f48feb47f"
+  },
+  "expectedPhotoFileCount": 568,
+  "expectedPhotoNearDuplicateGroups": 456,
+  "currentManifestSha256": "d3b02c4fcb1ce82ab984303419ad90bd3dc130727b8d08d30daca2f66d100364",
+  "comparison": {
+    "assetCount": 1034,
+    "allOtherAssetFieldsIdentical": true,
+    "changes": [
+      {
+        "id": "real-62d029c56147176c",
+        "changedFields": [
+          "kind",
+          "reviewMethod",
+          "reviewNote",
+          "reviewStatus"
+        ],
+        "oldKind": "photo",
+        "kind": "unrelated"
+      },
+      {
+        "id": "real-a43719f61c71b69f",
+        "changedFields": [
+          "kind",
+          "reviewMethod",
+          "reviewNote",
+          "reviewStatus"
+        ],
+        "oldKind": "photo",
+        "kind": "photo-process"
+      },
+      {
+        "id": "real-cda1cd38e225d1de",
+        "changedFields": [
+          "kind",
+          "reviewMethod",
+          "reviewNote",
+          "reviewStatus"
+        ],
+        "oldKind": "photo",
+        "kind": "unrelated"
+      },
+      {
+        "id": "real-6bf033091cdd0605",
+        "changedFields": [
+          "kind",
+          "reviewMethod",
+          "reviewNote",
+          "reviewStatus"
+        ],
+        "oldKind": "photo",
+        "kind": "unrelated"
+      },
+      {
+        "id": "real-41bda0ea77cabd27",
+        "changedFields": [
+          "kind",
+          "reviewMethod",
+          "reviewNote",
+          "reviewStatus"
+        ],
+        "oldKind": "photo",
+        "kind": "photo-other-material"
+      }
+    ],
+    "countsBefore": {
+      "uniqueFileHashes": 1034,
+      "kinds": {
+        "photo": 408,
+        "photo-multiple": 104,
+        "mixed-photo-template": 41,
+        "photo-collage": 20,
+        "template-render": 202,
+        "unrelated": 119,
+        "photo-process": 91,
+        "photo-other-material": 47,
+        "unknown": 2
+      },
+      "sourcePages": 134,
+      "visuallyReviewedFiles": 1034,
+      "reviewedPhotoFileHashes": 573,
+      "photoNearDuplicateGroups": 461,
+      "qaReservedFiles": 476
+    },
+    "countsAfter": {
+      "uniqueFileHashes": 1034,
+      "kinds": {
+        "photo": 403,
+        "photo-multiple": 104,
+        "mixed-photo-template": 41,
+        "photo-collage": 20,
+        "template-render": 202,
+        "unrelated": 122,
+        "photo-process": 92,
+        "photo-other-material": 48,
+        "unknown": 2
+      },
+      "sourcePages": 134,
+      "visuallyReviewedFiles": 1034,
+      "reviewedPhotoFileHashes": 568,
+      "photoNearDuplicateGroups": 456,
+      "qaReservedFiles": 476
+    }
+  },
+  "validation": {
+    "manifestSha256": "d3b02c4fcb1ce82ab984303419ad90bd3dc130727b8d08d30daca2f66d100364",
+    "verifiedAssetFiles": 1034,
+    "verifiedBytes": 199381046,
+    "verifiedDecodedPixelGroups": 1033,
+    "kinds": {
+      "photo": 403,
+      "photo-multiple": 104,
+      "mixed-photo-template": 41,
+      "photo-collage": 20,
+      "template-render": 202,
+      "unrelated": 122,
+      "photo-process": 92,
+      "photo-other-material": 48,
+      "unknown": 2
+    },
+    "reviewedAssembledHeartPhotoFiles": 568,
+    "reviewedPhotoNearDuplicateGroups": 456,
+    "qaReservedFiles": 476,
+    "pinterestSelectedPins": 487,
+    "pinterestDownloadedPins": 470,
+    "pinterestPhotoFiles": 193
+  },
+  "checks": [
+    {
+      "stage": "export",
+      "command": [
+        "python3",
+        "scripts/inverse/datasets/real-collect.py",
+        "export",
+        "--offline"
+      ],
+      "exitCode": 0,
+      "seconds": 10.05501770899997
+    },
+    {
+      "stage": "audit",
+      "command": [
+        "python3",
+        "scripts/inverse/datasets/real-audit.py"
+      ],
+      "exitCode": 0,
+      "seconds": 7.518835166999963
+    },
+    {
+      "stage": "tests",
+      "command": [
+        "python3",
+        "scripts/inverse/datasets/real-collect.test.py"
+      ],
+      "exitCode": 0,
+      "seconds": 0.17947870900002272
+    },
+    {
+      "stage": "gallery",
+      "command": [
+        "node",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/boundary-annotation-candidates-v1/gallery.mjs"
+      ],
+      "exitCode": 1,
+      "seconds": 0.08016020799999524
+    },
+    {
+      "stage": "gallery-replay",
+      "command": [
+        "node",
+        "tmp/heart-learning/boundary-annotation-candidates-v1/gallery.mjs"
+      ],
+      "exitCode": 0,
+      "seconds": null,
+      "note": "Corrected the diagnostic import to use the already installed private Playwright module; all seven filters and image decode checks pass. Timing was not captured on this manual replay."
+    }
+  ],
+  "gallery": {
+    "rows": [
+      {
+        "kind": "all",
+        "expected": 1034,
+        "visible": 1034
+      },
+      {
+        "kind": "photo",
+        "expected": 568,
+        "visible": 568
+      },
+      {
+        "kind": "photo-process",
+        "expected": 92,
+        "visible": 92
+      },
+      {
+        "kind": "template-render",
+        "expected": 202,
+        "visible": 202
+      },
+      {
+        "kind": "unrelated",
+        "expected": 122,
+        "visible": 122
+      },
+      {
+        "kind": "photo-other-material",
+        "expected": 48,
+        "visible": 48
+      },
+      {
+        "kind": "unknown",
+        "expected": 2,
+        "visible": 2
+      }
+    ],
+    "errors": [],
+    "scope": "All seven gallery filters and first visible image decode; source byte integrity checked separately."
+  },
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/boundary-annotation-candidates-v1/classification-review.png",
+      "sha256": "11f0ffc8c901e804efa7e8d70d7f1139f15917a1709a23393c4d3f4f48feb47f"
+    },
+    {
+      "path": "tmp/heart-learning/boundary-annotation-candidates-v1/classification-corrections.json",
+      "sha256": "efcb87953bd76f8dc573665a7601a16e5e20ead40d5aa16b97e847e7c01c0d25"
+    },
+    {
+      "path": "tmp/heart-learning/boundary-annotation-candidates-v1/apply-corrections.py",
+      "sha256": "b86acc03c2521f81786c1ef1a7954038949d09e039b2e40dc4b4365054346ef8"
+    },
+    {
+      "path": "tmp/heart-learning/boundary-annotation-candidates-v1/gallery.mjs",
+      "sha256": "33c107fadc5c47de764e0746e3e9b0cab385c911bd35463d45d567dce8ac2595"
+    },
+    {
+      "path": "tmp/heart-learning/boundary-annotation-candidates-v1/application/original-manifest.json",
+      "sha256": "eac852442cc4fb220ed3a8e8cc7b55397a9006775d38edf685801ea6897f7604"
+    },
+    {
+      "path": "tmp/heart-learning/boundary-annotation-candidates-v1/application/original-review.json",
+      "sha256": "1e58b4a9c73f4482337fa41edb6de843d22277ee7d338088e93f764c197c8c3b"
+    },
+    {
+      "path": "tmp/heart-learning/boundary-annotation-candidates-v1/application/manifest-comparison.json",
+      "sha256": "4f547fd6af2fa0c5bbf84a1bdfebff83198544120ab97edeb751d8bee244e5dc"
+    },
+    {
+      "path": "tmp/heart-learning/boundary-annotation-candidates-v1/application/checks.json",
+      "sha256": "a8f2c3538c265397e68a169226a3294485a12e79dd97b01849b0756bcc72f403"
+    },
+    {
+      "path": "tmp/heart-learning/boundary-annotation-candidates-v1/application/gallery.json",
+      "sha256": "12e3bd82878b1793d8a9966b8f1981aca90f721b7963642d3889246bc5d1ba88"
+    }
+  ],
+  "collectionTests": 14,
+  "diagnosticSetupFailure": "First gallery replay could not resolve playwright. It was rerun successfully using the existing private module; the original failed command remains in checks."
+}

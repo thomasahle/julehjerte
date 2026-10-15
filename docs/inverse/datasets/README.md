@@ -11,8 +11,8 @@ The inventory, with material annotations updated on 2026-10-15, contains:
 | Asset | Verified count | Meaning |
 | --- | ---: | --- |
 | Real-source image files | 1,034 | Includes templates, process shots and rejected/uncertain material. |
-| Files containing assembled-heart photographs | 573 | Includes multi-heart scenes and mixed photo/template pages; 461 reviewed near-duplicate groups. |
-| Public Pinterest imports | 470 of 487 selected pins | 198 image files contain assembled-heart photographs; these are a subset of the real-source totals. |
+| Files containing assembled-heart photographs | 568 | Includes multi-heart scenes and mixed photo/template pages; 456 reviewed near-duplicate groups after five source-kind corrections. |
+| Public Pinterest imports | 470 of 487 selected pins | 193 image files contain assembled-heart photographs; these are a subset of the real-source totals. |
 | Synthetic cutting geometries in existing experiments | 192 | Original 128 plus 64 mixed-angle lattices; color phase is excluded from geometry identity; still only three recipe groups. |
 | Synthetic photographic views in existing experiments | 768 | Original 512 plus 256 supplementary views; all 5,952 referenced assets verified. |
 | Unassigned radial-motif candidates | 64 geometries / 256 views | One additional recipe group with exact shared approaches; not used in training. All 1,984 referenced assets verified. |
@@ -29,6 +29,16 @@ The inventory, with material annotations updated on 2026-10-15, contains:
 | Real partial paper-material annotations | 19 heart instances | All enter the completed corrected-family study, with whole real motif families kept apart. Separate body and material uncertainty; all are reviewed development examples. |
 
 ## Current results and limits
+
+**Source-kind correction:** a larger-pixel review removed five false positive
+heart classifications: two star photographs, one process photograph, one folded
+square object and one bead heart. The [recorded correction](real-source-kind-correction.json)
+keeps all 1,034 source files and changes only those five kind/review records.
+The current inventory has 568 photograph-containing files in 456 near-duplicate
+groups; Pinterest contributes 193 such files. These sources were unassigned and
+absent from the body-annotation sets. Completed training studies and historical
+573-file collection reports retain their original inputs and counts. No new
+training data or benchmark exclusions are introduced by this correction.
 
 **Source correction:** the four little hearts in Pinterest source
 `real-8c875dd0f298b5a4` are printed on white paper. The

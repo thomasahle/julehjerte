@@ -4089,10 +4089,11 @@
     "tags": []
   },
   "real-62d029c56147176c": {
-    "kind": "photo",
-    "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
-    "tags": []
+    "kind": "unrelated",
+    "reviewStatus": "visually-reviewed-source-recheck",
+    "reviewMethod": "Full-source image inspected in 500-pixel review panels; star photograph additionally inspected at its native 980 x 585 resolution. No template or material labels inferred.",
+    "tags": [],
+    "reviewNote": "Six-point woven star with six rounded outer tabs; no assembled heart visible."
   },
   "real-68d8f25d8891df62": {
     "kind": "photo",
@@ -4400,9 +4401,10 @@
     "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
   },
   "real-a43719f61c71b69f": {
-    "kind": "photo",
-    "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "kind": "photo-process",
+    "reviewStatus": "visually-reviewed-source-recheck",
+    "reviewMethod": "Full-source image inspected in 500-pixel review panels; star photograph additionally inspected at its native 980 x 585 resolution. No template or material labels inferred.",
+    "reviewNote": "Cut and partly interwoven dark/gold paper pieces on a table; no complete assembled-heart silhouette visible."
   },
   "real-009b06de359dbabe": {
     "kind": "photo",
@@ -4863,9 +4865,10 @@
     "nearDuplicateGroup": "real-3d9558d1fa590589"
   },
   "real-cda1cd38e225d1de": {
-    "kind": "photo",
-    "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "kind": "unrelated",
+    "reviewStatus": "visually-reviewed-source-recheck",
+    "reviewMethod": "Full-source image inspected in 500-pixel review panels; star photograph additionally inspected at its native 980 x 585 resolution. No template or material labels inferred.",
+    "reviewNote": "Folded woven star ornaments, including the clipped objects at the right and bottom; no heart visible."
   },
   "real-710703159f609111": {
     "kind": "photo",
@@ -4949,9 +4952,10 @@
     "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
   },
   "real-6bf033091cdd0605": {
-    "kind": "photo",
-    "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "kind": "unrelated",
+    "reviewStatus": "visually-reviewed-source-recheck",
+    "reviewMethod": "Full-source image inspected in 500-pixel review panels; star photograph additionally inspected at its native 980 x 585 resolution. No template or material labels inferred.",
+    "reviewNote": "Hand-held open square assembled from folded printed wrapping-paper pieces; no heart visible."
   },
   "real-39387bb6fee13819": {
     "kind": "photo",
@@ -5543,9 +5547,10 @@
     "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
   },
   "real-41bda0ea77cabd27": {
-    "kind": "photo",
-    "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "kind": "photo-other-material",
+    "reviewStatus": "visually-reviewed-source-recheck",
+    "reviewMethod": "Full-source image inspected in 500-pixel review panels; star photograph additionally inspected at its native 980 x 585 resolution. No template or material labels inferred.",
+    "reviewNote": "Heart-shaped fused-bead ornament with a tree motif; bead holes are visible throughout, not woven paper."
   },
   "real-a5fc72dd9e776a86": {
     "kind": "photo",
