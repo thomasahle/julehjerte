@@ -97,6 +97,16 @@ and 857 application tests, type checking, lint and build. Eleven browser
 workflows and fresh entry-loading checks pass. The historical error gate still
 fails, so this is not a validated release replacement.
 
+The following [feature-analysis reuse experiment](feature-analysis-reuse.json)
+avoids recomputing unchanged interior components. It verifies source bytes and
+returns independent arrays; weighted and partially observed inputs keep the
+original computation. All 112 semantic comparisons and 24 focused tests pass.
+Sixteen paired ten-second fixed-mask fits retain checked outputs, with average
+fit time decreasing from 9.442 to 9.361 seconds. The dense-checker pair also
+improves its error, but two repetitions per condition do not establish broad
+speed or quality gains. The change is committed as `3997441`; full repository,
+native-corpus and browser verification are pending.
+
 The latest validated solver revision is `c000d30`. Its
 [release record](return-projection-speed.json) passes **22/22 regular Hunodan
 designs below ten seconds**, with a maximum of **8.100 seconds**. Automatic

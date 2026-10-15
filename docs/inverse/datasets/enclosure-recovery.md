@@ -217,3 +217,14 @@ This is a source-coordinate projection check, with no new solver run or changed
 input. The 25 observations remain separate from the common benchmark's existing
 78 samples while release QA runs on its pinned files. No production crop or
 acceptance gate has changed.
+
+A [review of the recorded edge samples](jigsaw-edge-diagnosis.json) identifies
+why the current shape refinement cannot fix this crop. The left scanline edge
+follows background outside the visible paper. Three reviewed background pixels
+have raw paper probabilities of 0.937, 0.677 and 0.798; the colour model admits
+them before the 0.5 threshold and morphological closing. The initial lower-line
+intersection is at `(755.89,874.98)`. Local RGB adjustment moves it to
+`(764.81,864.05)`, still below the visible tip. Every subsequent shape candidate
+uses that same intersection and those same lower lines. More lobe optimization
+therefore cannot correct the underlying edge choice. This is a read-only
+diagnosis from saved evidence, not a repaired crop or a new benchmark pass.
