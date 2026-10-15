@@ -334,7 +334,7 @@
       "notes": "Each solve runs in a fresh process, including cold higher-resolution kernel calibration. One repetition per condition; timed searches can choose different geometries."
     }
   ],
-  "productionIntegration": "Integrated in the worktree after fixed-work replay: final ordinary polishing can recheck uncertain 700-resolution checkpoints at 1000 within its existing time reserve. Full repository QA and actual browser/export checks remain pending. Physical tolerances and the default requested resolution remain unchanged.",
+  "productionIntegration": "Committed as dfcd6e5. Repository QA covers all 891 inverse tests after a controlled-clock repair-test correction, plus 857 application tests, type checking, lint and build. Initial full-run failure is retained. Actual browser workflows remain pending.",
   "result": "Fixed-work experiments support the polishing change: crown and fine-checker improve, while four other captured cases have identical selected coordinates. The isolated native corpus retains all acceptances and checked editable pairs, but its strict historical error gate still fails on three timed fits. Production integration is undergoing full QA; no global no-regression claim is established.",
   "fixedWorkFixture": {
     "path": "tmp/heart-learning/polish-fine-audit-v2/crown-refinement-checkpoint.json",
@@ -554,6 +554,58 @@
     {
       "path": "tmp/heart-learning/finer-polishing-browser-v1/timed-stage-diagnosis.json",
       "sha256": "2e7afc915623fcd2af26e7af3518872752bbf7955068a27b5feff12120b046cf"
+    },
+    {
+      "path": "tmp/heart-learning/clearance-fixed-work-v1/probe.mjs",
+      "sha256": "a81a8715e679822575fed6041f83cde7e6d61ed38175f791dc4c1107a0871b8f"
+    },
+    {
+      "path": "tmp/heart-learning/clearance-fixed-work-v1/source.json",
+      "sha256": "4f542f6f6b570b75ea3e4528c41c91664101252d6a016da354d72821dfe00774"
+    },
+    {
+      "path": "tmp/heart-learning/clearance-fixed-work-v1/state.json",
+      "sha256": "44cefe2d325d436b9058b3443569121ee44bdd9f98a79f2f6558cd31f07a26de"
+    },
+    {
+      "path": "tmp/heart-learning/clearance-fixed-work-v1/results.json",
+      "sha256": "36fa3c3517dcbfc24727dbabe0504188e1dbe80e7fb36772c38f733aabd3e7da"
+    },
+    {
+      "path": "tmp/heart-learning/clearance-fixed-work-v1/fixed-100.json",
+      "sha256": "4c11033bf105a2be26d3c3d5477cca6a52dbf3aa9724b22e343056b87cabcad7"
+    },
+    {
+      "path": "tmp/heart-learning/finer-polishing-qa-v1/inverse.log",
+      "sha256": "2aecf04620c2ed0f9021ebf7de37951d29692706f6237ca9c58bfcd74be0af76"
+    },
+    {
+      "path": "tmp/heart-learning/finer-polishing-qa-v1/checks.json",
+      "sha256": "f75427effb24517e8e5132cbf3ce676dc5a986e37783958776aed49fb6b86572"
+    },
+    {
+      "path": "tmp/heart-learning/finer-polishing-qa-v1/source.json",
+      "sha256": "dda206bd375a2b7d2e9e50f26354e90ac8318519333feda1b1cfa71967fcc5b0"
+    },
+    {
+      "path": "tmp/heart-learning/finer-polishing-qa-v2/verification.json",
+      "sha256": "e208e1dad2e5119fb66166307f0d24346159f8acbfeaaf8ccb96840f04c93322"
+    },
+    {
+      "path": "tmp/heart-learning/finer-polishing-qa-v2/source.json",
+      "sha256": "8716a0daf73915f00dbc9260f2ad777820eb85fe1e62b29f5228128af34b615a"
+    },
+    {
+      "path": "tmp/heart-learning/finer-polishing-qa-v2/checks.json",
+      "sha256": "d6e6e508172db8627425abb253d23bd3e6d1e8014c047959bc151bcd4b5a9f42"
+    },
+    {
+      "path": "tmp/heart-learning/finer-polishing-qa-v2/running.json",
+      "sha256": "2cb7e1f06c25a8c0a162b15e04e4ed108ac5ee7480fdec7ae6db72e768759831"
+    },
+    {
+      "path": "tmp/heart-learning/finer-polishing-qa-v2/changed-test.log",
+      "sha256": "cc72e7b06a18e7bc92a2ccf76d7d765f10442535cc5170fc81fe7d05f47b48b7"
     }
   ],
   "fixedWorkInterpretation": "The same 41-step crown trajectory yields 2.454375% exported mask error under the 700-resolution policy and 2.241875% when the uncertain checkpoint is rechecked at 1000. Both geometries pass the nominal validator; the latter is uncertain at 700 and passes 1000 and 1400. This isolates a useful verification change from timed-search variation. The paper rechecks use the same auditor at different resolutions, not independent implementations.",
@@ -715,5 +767,244 @@
       "flettede-viking": "The pre-polishing candidate already differs: source error 2.43125% versus 2.5475%. Both end polishing at step 84 and retain resolution 700. These records and identical fixed-work controls separate the finer decision from earlier timed-search variation.",
       "crown": "The selected coarse candidate metrics agree. An uncertain polishing checkpoint is now verified at 1000 and retained. Fixed-work regression separately demonstrates this benefit from identical starting controls."
     }
+  },
+  "clearanceTestDiagnosis": {
+    "initialFullRun": {
+      "tests": 891,
+      "passed": 890,
+      "failed": 1,
+      "seconds": 1010.797520541,
+      "sourceFilesVerified": 735
+    },
+    "failure": "clearance-initializer.test.mjs expected a checked repair within a cold-process 500 ms refinement allowance. The run reached 100 steps; its 700-resolution paper audit remained uncertain.",
+    "fixed100": [
+      {
+        "variant": "before",
+        "steps": 100,
+        "error": 0.01519375,
+        "geometry": true,
+        "coordinatesSha256": "3d67269d69e694f5d451f5f72676ddc9ab39db6f1a4917d160398698db5acd98",
+        "paper": [
+          {
+            "resolution": 360,
+            "status": "uncertain"
+          },
+          {
+            "resolution": 700,
+            "status": "uncertain"
+          },
+          {
+            "resolution": 1000,
+            "status": "pass"
+          },
+          {
+            "resolution": 1400,
+            "status": "pass"
+          }
+        ]
+      },
+      {
+        "variant": "after",
+        "steps": 100,
+        "error": 0.01519375,
+        "geometry": true,
+        "coordinatesSha256": "3d67269d69e694f5d451f5f72676ddc9ab39db6f1a4917d160398698db5acd98",
+        "paper": [
+          {
+            "resolution": 360,
+            "status": "uncertain"
+          },
+          {
+            "resolution": 700,
+            "status": "uncertain"
+          },
+          {
+            "resolution": 1000,
+            "status": "pass"
+          },
+          {
+            "resolution": 1400,
+            "status": "pass"
+          }
+        ]
+      }
+    ],
+    "controlledReplays": [
+      {
+        "variant": "before",
+        "last": 80,
+        "steps": 85,
+        "accepted": false,
+        "reason": "paper_rejected",
+        "paper": "uncertain",
+        "verification": {
+          "requestedResolution": 360,
+          "initialStatus": "uncertain",
+          "resolution": 700,
+          "status": "uncertain",
+          "source": "clearance-initializer-refinement"
+        },
+        "error": 0.01676875,
+        "coordinatesSha256": null
+      },
+      {
+        "variant": "before",
+        "last": 120,
+        "steps": 125,
+        "accepted": true,
+        "paper": "pass",
+        "verification": {
+          "requestedResolution": 360,
+          "initialStatus": "uncertain",
+          "resolution": 700,
+          "status": "pass",
+          "source": "clearance-initializer-refinement"
+        },
+        "error": 0.0135625,
+        "coordinatesSha256": "85c56f375edde70108c454811cd22b04c43dd865a943cc39a4ed7ac13c08f220"
+      },
+      {
+        "variant": "before",
+        "last": 160,
+        "steps": 165,
+        "accepted": true,
+        "paper": "pass",
+        "verification": {
+          "requestedResolution": 360,
+          "initialStatus": "uncertain",
+          "resolution": 700,
+          "status": "pass",
+          "source": "clearance-initializer-refinement"
+        },
+        "error": 0.01253125,
+        "coordinatesSha256": "9bce337b1aa0b04a361106548bca19d6083d9f7e95760d87ea33d1caf4623d43"
+      },
+      {
+        "variant": "after",
+        "last": 80,
+        "steps": 85,
+        "accepted": false,
+        "reason": "paper_rejected",
+        "paper": "uncertain",
+        "verification": {
+          "requestedResolution": 360,
+          "initialStatus": "uncertain",
+          "resolution": 700,
+          "status": "uncertain",
+          "source": "clearance-initializer-refinement"
+        },
+        "error": 0.01676875,
+        "coordinatesSha256": null
+      },
+      {
+        "variant": "after",
+        "last": 120,
+        "steps": 125,
+        "accepted": true,
+        "paper": "pass",
+        "verification": {
+          "requestedResolution": 360,
+          "initialStatus": "uncertain",
+          "resolution": 700,
+          "status": "pass",
+          "source": "clearance-initializer-refinement"
+        },
+        "error": 0.0135625,
+        "coordinatesSha256": "85c56f375edde70108c454811cd22b04c43dd865a943cc39a4ed7ac13c08f220"
+      },
+      {
+        "variant": "after",
+        "last": 160,
+        "steps": 165,
+        "accepted": true,
+        "paper": "pass",
+        "verification": {
+          "requestedResolution": 360,
+          "initialStatus": "uncertain",
+          "resolution": 700,
+          "status": "pass",
+          "source": "clearance-initializer-refinement"
+        },
+        "error": 0.01253125,
+        "coordinatesSha256": "9bce337b1aa0b04a361106548bca19d6083d9f7e95760d87ea33d1caf4623d43"
+      }
+    ],
+    "sourceFilesVerified": 216,
+    "interpretation": "Before and after polishing runtimes produce identical 100-step coordinates and identical controlled-clock repair decisions. At 100 steps, the nominal geometry passes and the unchanged curves pass paper audits at 1000 and 1400, while 360 and 700 remain uncertain. At 125 and 165 steps, both runtimes produce identical accepted 700-resolution repairs.",
+    "testCorrection": "The geometry/provenance unit test now advances a controlled clock after checkpoint 120, resulting in exactly 125 refinement steps. Real deadlines remain in both fresh full-fitting tests and the exhausted-allowance regression. The stronger polishing assertion reaudits the actual returned controls at their reported resolution.",
+    "remainingLimitation": "The production clearance helper still rejects the 100-step geometry at its 700-resolution ceiling. This test correction does not fix that real scheduling/verification limitation or make timed search deterministic."
+  },
+  "repositoryQA": {
+    "passed": true,
+    "inverseTestsCovered": 891,
+    "fullRunPassed": 890,
+    "fullRunFailed": 1,
+    "rerunPassed": 6,
+    "uniqueAdditionalPasses": 1,
+    "changedSource": [
+      "scripts/inverse/clearance-initializer.test.mjs"
+    ],
+    "reusedChecks": [
+      {
+        "stage": "core-lint",
+        "command": [
+          "npx",
+          "eslint",
+          "--no-ignore",
+          "static/inverse/core/direct/polish.js",
+          "static/inverse/core/direct/refine.js",
+          "static/inverse/core/material.js",
+          "static/inverse/core/settings.js",
+          "scripts/inverse/polishing-paper.test.mjs",
+          "scripts/inverse/paper-verification.test.mjs",
+          "scripts/inverse/paint-browser-test.mjs"
+        ],
+        "exitCode": 0,
+        "seconds": 2.005973375
+      },
+      {
+        "stage": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 12.623492708999999
+      },
+      {
+        "stage": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 6.961732709
+      },
+      {
+        "stage": "app",
+        "command": [
+          "npx",
+          "vitest",
+          "run",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 0,
+        "seconds": 24.940287959
+      },
+      {
+        "stage": "build",
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 15.665390125000002
+      }
+    ],
+    "sourceFilesVerified": 735,
+    "scope": "Full 891-test run had one pre-existing clock-dependent unit assertion. Only that test file changed; all six tests in it pass on rerun. The other 885 passing tests and unchanged application/runtime checks are reused. No claim of a second full run."
   }
 }

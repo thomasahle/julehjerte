@@ -128,9 +128,16 @@ checked editable pairs, but the strict historical error gate fails on three
 photos (two by one or two pixels, Viking by 102 at 400 squared). Fixed 160-step
 comparisons produce identical coordinates for dense checker, round checker,
 warped checker and Viking; fine checker improves from 1.5775% to 1.553125%.
-The bounded finer polishing check is now integrated in the worktree with
-progress, Stop and export regressions; full repository and browser QA remain
-pending. Default resolution and physical tolerances are unchanged. The timed
+The bounded finer polishing check is committed as `dfcd6e5`, with progress,
+Stop and export regressions. Repository QA covers all 891 inverse tests after
+a controlled-clock correction to one clearance-repair test: the initial full
+run passed 890/891, and all six tests in the corrected file pass on rerun.
+The other 885 results and unchanged application/runtime checks are reused.
+Type checking, lint, 857 application tests and build pass; browser QA remains
+pending. The repair failure also reproduces with the old runtime: its exact
+100-step geometry passes at 1000 but not 700, while 125 steps pass at 700.
+That production repair limitation remains; fixing the unit test does not cure
+it. Default resolution and physical tolerances are unchanged. The timed
 historical error regressions remain recorded, not explained away by this test.
 
 The latest validated solver revision is `c000d30`. Its

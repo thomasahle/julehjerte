@@ -34,8 +34,16 @@ test('the common fitter repairs a rejected initializer and preserves its finer p
   const initial=validate(prepared.graph.solution(before,prepared.clear.phase,source),cfg,{checkImage:false});
   assert.equal(initial.passed,false);
   assert.ok(initial.issues.some(i=>i.type==='inter_slit_clearance'&&i.distanceLower<1.1));
-  const repair=repairClearanceInitializer(prepared,source,cfg,{geometry:initial});
+  // This checks repair geometry and audit propagation, not how many gradient
+  // steps a cold process completes in 500 ms. Advance the clock after the
+  // same complete checkpoint; the fresh-fit tests below keep real deadlines.
+  let clock=0,repair;
+  const now=t.mock.method(performance,'now',()=>clock);
+  try{
+    repair=repairClearanceInitializer(prepared,source,cfg,{geometry:initial,onProgress:r=>{if(r.step>=120)clock=600;}});
+  }finally{now.mock.restore();}
   if(!repair.candidate)t.diagnostic(JSON.stringify(repair.report));
+  assert.equal(repair.report.steps,125);
   assert.ok(repair.candidate);
   assert.equal(repair.report.accepted,true);
   assert.equal(repair.candidate.paperVerification.resolution,700);
@@ -46,8 +54,14 @@ test('the common fitter repairs a rejected initializer and preserves its finer p
   assert.equal(validate(solution,verified,{checkImage:false,finalGeometry:true}).passed,true);
   assert.equal(materialAudit(solution,verified).passed,true);
   const polished=polishCandidate(candidate,prepared.objectiveProb,256,cfg,{input:source,steps:10});
-  assert.equal(polished.paperVerification.resolution,700);
+  assert.ok(polished.paperVerification.resolution>=700);
   assert.equal(polished.paperVerification.status,'pass');
+  const polishedSolution=polished.graph.solution(polished.points,polished.phase,source);
+  polishedSolution.report.paperVerification=polished.paperVerification;
+  const polishedCfg=verifiedPaperSettings(polishedSolution,cfg);
+  assert.equal(polishedCfg.materialResolution,polished.paperVerification.resolution);
+  assert.deepEqual({...polishedCfg,materialResolution:cfg.materialResolution},cfg);
+  assert.equal(materialAudit(polishedSolution,polishedCfg).passed,true);
   const exported=await renderExportedWeave(solutionJSON(solution),resolution);
   assert.ok(exported.mask.reduce((sum,v,i)=>sum+Number(v!==mask[i]),0)/mask.length<.02);
   assert.deepEqual(prepared.graph.points,before);
