@@ -1,0 +1,536 @@
+{
+  "schema": 1,
+  "status": "implemented; focused_tests_pass; full_QA_running",
+  "plan": "docs/inverse/datasets/anchor-projection-clock-plan.json",
+  "scope": "Fixed saved anchor geometry, fixed 160-step cleanup, original image and validity rules; no overall refinement deadline. Clock multiplication affects local timing decisions. This is not a fresh-image benchmark or an under-ten-second speed result.",
+  "findings": {
+    "currentApplied": 4,
+    "currentTotal": 8,
+    "fixedWorkApplied": 8,
+    "fixedWorkTotal": 8,
+    "allFixedWorkGeometryHashesIdentical": true,
+    "currentFailureScales": [
+      4,
+      8
+    ],
+    "originalMaskError": 0.0090375,
+    "fixedWorkMaskError": 0.00844375,
+    "mechanism": "Hidden-control-only and all-free-control projections share a 400 ms window even when the caller requested untimed fixed-step refinement. At faster clocks, the hidden attempt consumes most or all of that window; visible-control repairs are skipped or truncated. The same bounded-iteration sequence succeeds when this local wall-time cutoff is removed.",
+    "originalApplicationFailure": "The full application suite earlier reported applied:false; its isolated replay passed. This experiment reproduces the symptom and isolates a mechanism, but the original failure did not retain enough internal history to prove it took exactly this path."
+  },
+  "rows": [
+    {
+      "arm": "runtime",
+      "scale": 1,
+      "repeat": 0,
+      "seconds": 1.6791744170000003,
+      "cpuSeconds": 2.731315,
+      "errorBefore": 0.0090375,
+      "errorAfter": 0.00844375,
+      "geometrySha256": "d2174f3764d745203b5e4f96d0f6a6941ce2044c56cdc150da4f4f259225ebbc",
+      "applied": true,
+      "rejection": null,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "refinementSteps": 160,
+      "projectionTimeouts": 0
+    },
+    {
+      "arm": "bounded-work",
+      "scale": 1,
+      "repeat": 0,
+      "seconds": 1.821142875,
+      "cpuSeconds": 2.999005,
+      "errorBefore": 0.0090375,
+      "errorAfter": 0.00844375,
+      "geometrySha256": "d2174f3764d745203b5e4f96d0f6a6941ce2044c56cdc150da4f4f259225ebbc",
+      "applied": true,
+      "rejection": null,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "refinementSteps": 160,
+      "projectionTimeouts": 0
+    },
+    {
+      "arm": "runtime",
+      "scale": 2,
+      "repeat": 0,
+      "seconds": 1.871667291,
+      "cpuSeconds": 3.036639,
+      "errorBefore": 0.0090375,
+      "errorAfter": 0.008425,
+      "geometrySha256": "bf019eb6d4bfdf87cf4a890e5a73fff1ae5e8c8fb035fe35034f9821075239ad",
+      "applied": true,
+      "rejection": null,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "refinementSteps": 160,
+      "projectionTimeouts": 1
+    },
+    {
+      "arm": "bounded-work",
+      "scale": 2,
+      "repeat": 0,
+      "seconds": 1.78223775,
+      "cpuSeconds": 2.848213,
+      "errorBefore": 0.0090375,
+      "errorAfter": 0.00844375,
+      "geometrySha256": "d2174f3764d745203b5e4f96d0f6a6941ce2044c56cdc150da4f4f259225ebbc",
+      "applied": true,
+      "rejection": null,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "refinementSteps": 160,
+      "projectionTimeouts": 0
+    },
+    {
+      "arm": "runtime",
+      "scale": 4,
+      "repeat": 0,
+      "seconds": 1.2279294579999998,
+      "cpuSeconds": 2.063508,
+      "errorBefore": 0.0090375,
+      "errorAfter": 0.0090375,
+      "geometrySha256": "8978dd14e5c5f6478d11f6f0b4f1f00e2460217fe1bc3d04a62b8f1d5a1f24e2",
+      "applied": false,
+      "rejection": "refinement_geometry",
+      "geometryPassed": false,
+      "paperStatus": "pass",
+      "refinementSteps": 160,
+      "projectionTimeouts": 5
+    },
+    {
+      "arm": "bounded-work",
+      "scale": 4,
+      "repeat": 0,
+      "seconds": 1.7378908749999997,
+      "cpuSeconds": 2.872796,
+      "errorBefore": 0.0090375,
+      "errorAfter": 0.00844375,
+      "geometrySha256": "d2174f3764d745203b5e4f96d0f6a6941ce2044c56cdc150da4f4f259225ebbc",
+      "applied": true,
+      "rejection": null,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "refinementSteps": 160,
+      "projectionTimeouts": 0
+    },
+    {
+      "arm": "runtime",
+      "scale": 8,
+      "repeat": 0,
+      "seconds": 0.937482417,
+      "cpuSeconds": 1.738577,
+      "errorBefore": 0.0090375,
+      "errorAfter": 0.0090375,
+      "geometrySha256": "8978dd14e5c5f6478d11f6f0b4f1f00e2460217fe1bc3d04a62b8f1d5a1f24e2",
+      "applied": false,
+      "rejection": "refinement_geometry",
+      "geometryPassed": false,
+      "paperStatus": "pass",
+      "refinementSteps": 160,
+      "projectionTimeouts": 6
+    },
+    {
+      "arm": "bounded-work",
+      "scale": 8,
+      "repeat": 0,
+      "seconds": 1.797189333,
+      "cpuSeconds": 2.983843,
+      "errorBefore": 0.0090375,
+      "errorAfter": 0.00844375,
+      "geometrySha256": "d2174f3764d745203b5e4f96d0f6a6941ce2044c56cdc150da4f4f259225ebbc",
+      "applied": true,
+      "rejection": null,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "refinementSteps": 160,
+      "projectionTimeouts": 0
+    },
+    {
+      "arm": "runtime",
+      "scale": 1,
+      "repeat": 1,
+      "seconds": 1.714752625,
+      "cpuSeconds": 2.772243,
+      "errorBefore": 0.0090375,
+      "errorAfter": 0.00844375,
+      "geometrySha256": "d2174f3764d745203b5e4f96d0f6a6941ce2044c56cdc150da4f4f259225ebbc",
+      "applied": true,
+      "rejection": null,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "refinementSteps": 160,
+      "projectionTimeouts": 0
+    },
+    {
+      "arm": "bounded-work",
+      "scale": 1,
+      "repeat": 1,
+      "seconds": 1.837770375,
+      "cpuSeconds": 3.048296,
+      "errorBefore": 0.0090375,
+      "errorAfter": 0.00844375,
+      "geometrySha256": "d2174f3764d745203b5e4f96d0f6a6941ce2044c56cdc150da4f4f259225ebbc",
+      "applied": true,
+      "rejection": null,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "refinementSteps": 160,
+      "projectionTimeouts": 0
+    },
+    {
+      "arm": "runtime",
+      "scale": 2,
+      "repeat": 1,
+      "seconds": 1.814546041,
+      "cpuSeconds": 2.875802,
+      "errorBefore": 0.0090375,
+      "errorAfter": 0.008425,
+      "geometrySha256": "bf019eb6d4bfdf87cf4a890e5a73fff1ae5e8c8fb035fe35034f9821075239ad",
+      "applied": true,
+      "rejection": null,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "refinementSteps": 160,
+      "projectionTimeouts": 1
+    },
+    {
+      "arm": "bounded-work",
+      "scale": 2,
+      "repeat": 1,
+      "seconds": 1.7286557500000002,
+      "cpuSeconds": 2.888234,
+      "errorBefore": 0.0090375,
+      "errorAfter": 0.00844375,
+      "geometrySha256": "d2174f3764d745203b5e4f96d0f6a6941ce2044c56cdc150da4f4f259225ebbc",
+      "applied": true,
+      "rejection": null,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "refinementSteps": 160,
+      "projectionTimeouts": 0
+    },
+    {
+      "arm": "runtime",
+      "scale": 4,
+      "repeat": 1,
+      "seconds": 1.2567976250000001,
+      "cpuSeconds": 2.125473,
+      "errorBefore": 0.0090375,
+      "errorAfter": 0.0090375,
+      "geometrySha256": "8978dd14e5c5f6478d11f6f0b4f1f00e2460217fe1bc3d04a62b8f1d5a1f24e2",
+      "applied": false,
+      "rejection": "refinement_geometry",
+      "geometryPassed": false,
+      "paperStatus": "pass",
+      "refinementSteps": 160,
+      "projectionTimeouts": 6
+    },
+    {
+      "arm": "bounded-work",
+      "scale": 4,
+      "repeat": 1,
+      "seconds": 1.826299125,
+      "cpuSeconds": 3.023325,
+      "errorBefore": 0.0090375,
+      "errorAfter": 0.00844375,
+      "geometrySha256": "d2174f3764d745203b5e4f96d0f6a6941ce2044c56cdc150da4f4f259225ebbc",
+      "applied": true,
+      "rejection": null,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "refinementSteps": 160,
+      "projectionTimeouts": 0
+    },
+    {
+      "arm": "runtime",
+      "scale": 8,
+      "repeat": 1,
+      "seconds": 0.921822292,
+      "cpuSeconds": 1.565584,
+      "errorBefore": 0.0090375,
+      "errorAfter": 0.0090375,
+      "geometrySha256": "8978dd14e5c5f6478d11f6f0b4f1f00e2460217fe1bc3d04a62b8f1d5a1f24e2",
+      "applied": false,
+      "rejection": "refinement_geometry",
+      "geometryPassed": false,
+      "paperStatus": "pass",
+      "refinementSteps": 160,
+      "projectionTimeouts": 6
+    },
+    {
+      "arm": "bounded-work",
+      "scale": 8,
+      "repeat": 1,
+      "seconds": 1.7609635839999997,
+      "cpuSeconds": 2.830985,
+      "errorBefore": 0.0090375,
+      "errorAfter": 0.00844375,
+      "geometrySha256": "d2174f3764d745203b5e4f96d0f6a6941ce2044c56cdc150da4f4f259225ebbc",
+      "applied": true,
+      "rejection": null,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "refinementSteps": 160,
+      "projectionTimeouts": 0
+    }
+  ],
+  "implementation": {
+    "files": [
+      "static/inverse/core/direct/refine.js",
+      "static/inverse/core/direct/short-return-project.js"
+    ],
+    "untimed": "When the refinement deadline is infinite, retain 64 repair iterations per attempt and permit an infinite local time allowance. The projection API still enforces a finite 1\u2013128 iteration bound.",
+    "timed": "Finite-deadline refinement retains the existing shared 400 ms projection allowance, finite deadlines and all final checks. This change does not claim to fix timed fitting variability.",
+    "rulesUnchanged": [
+      "image-error acceptance",
+      "source-feature acceptance",
+      "geometry clearance",
+      "paper checks",
+      "symmetry and fixed controls"
+    ]
+  },
+  "regression": {
+    "file": "scripts/inverse/short-returns.test.mjs",
+    "name": "fixed-step anchor cleanup is independent of clock speed without an overall deadline",
+    "before": "Fails on the original runtime: delayed result reports applied:false.",
+    "after": "Passes: 200 ms virtual clock advances between calls leave the exported control geometry identical to the fixed-clock reference.",
+    "focusedTests": 29,
+    "focusedPassed": 29,
+    "boundedWorkAndExplicitDeadlineChecks": true
+  },
+  "qa": {
+    "controller": "tmp/heart-learning/anchor-projection-clock-v1/qa/run.py",
+    "state": "tmp/heart-learning/anchor-projection-clock-v1/qa/state.json",
+    "sourcePins": "tmp/heart-learning/anchor-projection-clock-v1/qa/source.json",
+    "status": "full_inverse_suite_running; application_and_build_checks_pass",
+    "completedChecks": [
+      {
+        "stage": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 10.346118833
+      },
+      {
+        "stage": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 7.0832004170000005
+      },
+      {
+        "stage": "build",
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 15.700764249999999
+      },
+      {
+        "stage": "preview",
+        "command": [
+          "python3",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/anchor-projection-clock-v1/qa/restart-preview.py"
+        ],
+        "exitCode": 0,
+        "seconds": 1.0852372499999987
+      },
+      {
+        "stage": "browser",
+        "command": [
+          "node",
+          "scripts/inverse/paint-browser-test.mjs"
+        ],
+        "exitCode": 0,
+        "seconds": 19.135201917000003
+      }
+    ],
+    "applicationTests": {
+      "passed": 857,
+      "skipped": 1,
+      "failed": 0
+    },
+    "preview": "http://127.0.0.1:5232/editor/mal/"
+  },
+  "limitations": [
+    "Fixed-work refinement can take longer on a slower machine; callers that need a time limit must supply a finite deadline.",
+    "The diagnostic long-time arm was not copied literally: production now explicitly accepts Infinity only alongside the always-bounded iteration count.",
+    "No learned model or new training data is introduced."
+  ],
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/anchor-projection-clock-v1/bounded-work-1-0-geometry.json",
+      "sha256": "fa0451a8557f9376004d103ceec6b5012cb205deb0ec12b36df15c1dc9e6ea02"
+    },
+    {
+      "path": "tmp/heart-learning/anchor-projection-clock-v1/bounded-work-1-0.json",
+      "sha256": "c3db61950e749ac273af086345592520a80735de0ecbce6a665c4e392b9b067e"
+    },
+    {
+      "path": "tmp/heart-learning/anchor-projection-clock-v1/bounded-work-1-1-geometry.json",
+      "sha256": "fa0451a8557f9376004d103ceec6b5012cb205deb0ec12b36df15c1dc9e6ea02"
+    },
+    {
+      "path": "tmp/heart-learning/anchor-projection-clock-v1/bounded-work-1-1.json",
+      "sha256": "7dbd2ad3d9dd5a9a7d5f6d527b95cecf0961231951f1b0f103a8bf568c814754"
+    },
+    {
+      "path": "tmp/heart-learning/anchor-projection-clock-v1/bounded-work-2-0-geometry.json",
+      "sha256": "fa0451a8557f9376004d103ceec6b5012cb205deb0ec12b36df15c1dc9e6ea02"
+    },
+    {
+      "path": "tmp/heart-learning/anchor-projection-clock-v1/bounded-work-2-0.json",
+      "sha256": "e70532fcdd688742f81489558b9eaea5d2fd44ed9750b3536218d497e5c240f4"
+    },
+    {
+      "path": "tmp/heart-learning/anchor-projection-clock-v1/bounded-work-2-1-geometry.json",
+      "sha256": "fa0451a8557f9376004d103ceec6b5012cb205deb0ec12b36df15c1dc9e6ea02"
+    },
+    {
+      "path": "tmp/heart-learning/anchor-projection-clock-v1/bounded-work-2-1.json",
+      "sha256": "ac807b2701d06653698b99004be9ab0f86e00c6ff6e80b146bdbf02b6309e175"
+    },
+    {
+      "path": "tmp/heart-learning/anchor-projection-clock-v1/bounded-work-4-0-geometry.json",
+      "sha256": "fa0451a8557f9376004d103ceec6b5012cb205deb0ec12b36df15c1dc9e6ea02"
+    },
+    {
+      "path": "tmp/heart-learning/anchor-projection-clock-v1/bounded-work-4-0.json",
+      "sha256": "f9cd8b264b81a1291a4defb5a8f0131e2f1b3811819899d4f137b4791f7b4a40"
+    },
+    {
+      "path": "tmp/heart-learning/anchor-projection-clock-v1/bounded-work-4-1-geometry.json",
+      "sha256": "fa0451a8557f9376004d103ceec6b5012cb205deb0ec12b36df15c1dc9e6ea02"
+    },
+    {
+      "path": "tmp/heart-learning/anchor-projection-clock-v1/bounded-work-4-1.json",
+      "sha256": "d97fa8e266e8df63f3b0154d552f4de7723f8d6f6ba5f05dc15051795cf173e7"
+    },
+    {
+      "path": "tmp/heart-learning/anchor-projection-clock-v1/bounded-work-8-0-geometry.json",
+      "sha256": "fa0451a8557f9376004d103ceec6b5012cb205deb0ec12b36df15c1dc9e6ea02"
+    },
+    {
+      "path": "tmp/heart-learning/anchor-projection-clock-v1/bounded-work-8-0.json",
+      "sha256": "78df04631fe7ada66b6d678094fd3ee5add01053232463bc3d07f560beee999b"
+    },
+    {
+      "path": "tmp/heart-learning/anchor-projection-clock-v1/bounded-work-8-1-geometry.json",
+      "sha256": "fa0451a8557f9376004d103ceec6b5012cb205deb0ec12b36df15c1dc9e6ea02"
+    },
+    {
+      "path": "tmp/heart-learning/anchor-projection-clock-v1/bounded-work-8-1.json",
+      "sha256": "e0ee8ca3e318ce4503baeca37aa12ac79eeab15651170a8cfad0a49bb703d617"
+    },
+    {
+      "path": "tmp/heart-learning/anchor-projection-clock-v1/focused-after.log",
+      "sha256": "516d833379abd393e1548a28e49dca6dd12b3f10e670a066c71207747dd854a5"
+    },
+    {
+      "path": "tmp/heart-learning/anchor-projection-clock-v1/initial-audit.json",
+      "sha256": "43c5d4763f4073bfcaad48292664343d243288e8835d526b168bcf2768876093"
+    },
+    {
+      "path": "tmp/heart-learning/anchor-projection-clock-v1/qa/source.json",
+      "sha256": "afe057ef0175b04fc893f314855364e35cb934af4e7d626125853cc5bfaf31f6"
+    },
+    {
+      "path": "tmp/heart-learning/anchor-projection-clock-v1/regression-before.log",
+      "sha256": "c137458fd70ab2b3bbae0a55337107c28059f95e1e256a85bdfc0bc5de7443b4"
+    },
+    {
+      "path": "tmp/heart-learning/anchor-projection-clock-v1/replay.mjs",
+      "sha256": "1187c88f38dd89109f18dbb16485a5a3bffdaa24a40cbf9b701522da02f607ed"
+    },
+    {
+      "path": "tmp/heart-learning/anchor-projection-clock-v1/run.py",
+      "sha256": "ac5b6f4efa4c1092c0ee64b5ed63cbbaa0b4b484d13baef85253551f2cfdc478"
+    },
+    {
+      "path": "tmp/heart-learning/anchor-projection-clock-v1/runtime-1-0-geometry.json",
+      "sha256": "fa0451a8557f9376004d103ceec6b5012cb205deb0ec12b36df15c1dc9e6ea02"
+    },
+    {
+      "path": "tmp/heart-learning/anchor-projection-clock-v1/runtime-1-0.json",
+      "sha256": "45778795490308f40656a07eb547864df56637a0cc3b5dd750d2ebe62b483cdc"
+    },
+    {
+      "path": "tmp/heart-learning/anchor-projection-clock-v1/runtime-1-1-geometry.json",
+      "sha256": "fa0451a8557f9376004d103ceec6b5012cb205deb0ec12b36df15c1dc9e6ea02"
+    },
+    {
+      "path": "tmp/heart-learning/anchor-projection-clock-v1/runtime-1-1.json",
+      "sha256": "8a4eb0fb72e9422a70292f182f6004281e944bbd9d0e61d66da8a2c9ccb2ff10"
+    },
+    {
+      "path": "tmp/heart-learning/anchor-projection-clock-v1/runtime-2-0-geometry.json",
+      "sha256": "a73e027bf91fac392f92217a34b6cf5604304acdf8294c58a67794125821346a"
+    },
+    {
+      "path": "tmp/heart-learning/anchor-projection-clock-v1/runtime-2-0.json",
+      "sha256": "98dfdc03d76870e47ee54a55442b29045a1cded8ac77ed8014011ede276811e8"
+    },
+    {
+      "path": "tmp/heart-learning/anchor-projection-clock-v1/runtime-2-1-geometry.json",
+      "sha256": "a73e027bf91fac392f92217a34b6cf5604304acdf8294c58a67794125821346a"
+    },
+    {
+      "path": "tmp/heart-learning/anchor-projection-clock-v1/runtime-2-1.json",
+      "sha256": "22648b2fe7d75971060d75ab2c87db5562b9d5bc1777c338b4b2017f05a66bbd"
+    },
+    {
+      "path": "tmp/heart-learning/anchor-projection-clock-v1/runtime-4-0-geometry.json",
+      "sha256": "27f615952ddc5a2d07b8605630f8a12dbda118b8b62ed1012fc0def5d56658d1"
+    },
+    {
+      "path": "tmp/heart-learning/anchor-projection-clock-v1/runtime-4-0.json",
+      "sha256": "ddf5a385a341e855643cac9adeda1c23da1b9447baa1d10c0c9cf0001a3aede4"
+    },
+    {
+      "path": "tmp/heart-learning/anchor-projection-clock-v1/runtime-4-1-geometry.json",
+      "sha256": "27f615952ddc5a2d07b8605630f8a12dbda118b8b62ed1012fc0def5d56658d1"
+    },
+    {
+      "path": "tmp/heart-learning/anchor-projection-clock-v1/runtime-4-1.json",
+      "sha256": "1be95ceed7d6c930860c88484c983b17c9bbb80406b1b95ea1b0c7e29c70a0e4"
+    },
+    {
+      "path": "tmp/heart-learning/anchor-projection-clock-v1/runtime-8-0-geometry.json",
+      "sha256": "27f615952ddc5a2d07b8605630f8a12dbda118b8b62ed1012fc0def5d56658d1"
+    },
+    {
+      "path": "tmp/heart-learning/anchor-projection-clock-v1/runtime-8-0.json",
+      "sha256": "886f66598efb90e523255536e9bad9f4b96948bd69320a73687b5f3c0edaa227"
+    },
+    {
+      "path": "tmp/heart-learning/anchor-projection-clock-v1/runtime-8-1-geometry.json",
+      "sha256": "27f615952ddc5a2d07b8605630f8a12dbda118b8b62ed1012fc0def5d56658d1"
+    },
+    {
+      "path": "tmp/heart-learning/anchor-projection-clock-v1/runtime-8-1.json",
+      "sha256": "47ca187a4536688ff9b701c5eaeba89eedac25ca65f35d4df3199319f67a68fa"
+    },
+    {
+      "path": "tmp/heart-learning/anchor-projection-clock-v1/source.json",
+      "sha256": "d4ac37a2bc8170a69d11e2e736f74b5509894e559dac0c7110619bad8b01993b"
+    },
+    {
+      "path": "tmp/heart-learning/anchor-projection-clock-v1/qa/checks.json",
+      "sha256": "1d195fa71277040612f3a8ac91ab39a0994fe07190e670094ba973197b952831"
+    },
+    {
+      "path": "tmp/heart-learning/anchor-projection-clock-v1/qa/served-assets.json",
+      "sha256": "92ebde644a6c5247ad952944453c1f4fc344f7cef67cbb7ffbd107e90d90e811"
+    }
+  ]
+}

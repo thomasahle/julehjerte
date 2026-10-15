@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "status": "not_ready_for_promotion; corpus_QA_failed; inverse_verification_running",
+  "status": "not_adopted; original_polishing_source_restored_after_failed_corpus_QA",
   "sourceCommit": "177dd2c",
   "implementation": "Only polishCandidate requests native paper audits, including ordinary, local and detailed polishing. Earlier coarse fitting and kernel calibration are unchanged. Explicit ordinary caller audits are preserved. Native fallbacks, threshold ties and all paper/geometry rules stay unchanged.",
   "developmentCorrection": "The first polishing-only prototype passed its custom audit only for detailed polishing. Its fixed ordinary crown run did not exercise the change. v2 passes the audit in both paths; the recorded v2 crown test exercises it.",
@@ -312,7 +312,7 @@
     ]
   },
   "qa": {
-    "status": "main_controller_complete_with_failures; inverse_followup_running",
+    "status": "complete_with_corpus_and_original_application_failures",
     "controller": "tmp/heart-learning/polish-native-v2/qa/run.py",
     "state": "tmp/heart-learning/polish-native-v2/qa/state.json",
     "sourcePins": "tmp/heart-learning/polish-native-v2/qa/source.json",
@@ -421,8 +421,8 @@
       "inverseSuiteStartedByNpmTest": false
     },
     "followupController": "tmp/heart-learning/polish-native-v2/qa/followup.py",
-    "followupScope": "Main corpus controller is complete. The explicitly launched inverse suite is now running; isolated anchor replay follows. Preserve the original full application-suite failure.",
-    "preview": "http://127.0.0.1:5232/editor/mal/",
+    "followupScope": "Completed: all 945 inverse tests and the isolated anchor replay pass. Original application and corpus failures remain recorded.",
+    "preview": "The separate anchor-repair QA rebuild replaces this rejected candidate on port 5232; consult its served-assets record.",
     "concurrentLoadObservation": "tmp/heart-learning/polish-native-v2/qa/concurrent-load.json",
     "provisionalTimingFailures": "Final Hunodan result: 20/22 combined speed and quality; hjcur-05 11.026681 s and hjhih-01 11.250253 s also exceed their source-error bounds. Observed concurrent CPU load is a confound, not a proven cause or exemption.",
     "corpusChecks": [
@@ -674,7 +674,40 @@
         "tmp/heart-learning/polish-native-v2/qa/native/photos-comparison-2.png",
         "tmp/heart-learning/polish-native-v2/qa/native/photos-equal-error-comparison.png"
       ]
-    }
+    },
+    "followupChecks": [
+      {
+        "stage": "inverse",
+        "command": [
+          "npm",
+          "run",
+          "test:inverse"
+        ],
+        "exitCode": 0,
+        "seconds": 1115.618143292
+      },
+      {
+        "stage": "anchor-diagnostic",
+        "command": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "src/lib/inverse/shortReturns.test.ts"
+        ],
+        "exitCode": 0,
+        "seconds": 4.40873908399999
+      }
+    ],
+    "inverseTests": {
+      "passed": 945,
+      "failed": 0,
+      "qualification": "Explicit inverse run after the application suite stopped before starting it."
+    },
+    "isolatedAnchorReplay": {
+      "passed": 1,
+      "qualification": "Does not replace the original full application-suite failure; the subsequent clock study isolates a reproducing mechanism."
+    },
+    "withdrawnSource": "tmp/heart-learning/polish-native-v2/rejected-production-polish.js"
   },
   "limitations": [
     "Current full-solve evidence does not satisfy the no-regression requirement. Candidate is under evaluation, not a demonstrated robustness fix.",

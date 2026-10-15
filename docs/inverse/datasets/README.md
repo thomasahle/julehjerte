@@ -135,10 +135,23 @@ Hunodan source-error failures retained. Visual comparison of all 17 changed
 photo renders and six changed Hunodan renders finds extra faint star seams and
 more distorted floral-checker contacts. Observed concurrent CPU load is a
 confound, not an established explanation or exemption. The application suite
-also has one anchor-return failure (856 pass, one skip), which prevented its
-chained inverse suite from starting; the separately launched inverse suite is
-running. A [fixed-geometry clock replay](anchor-projection-clock-plan.json) is
-queued to isolate the local repair timeout. No acceptance rule is relaxed.
+also had one anchor-return failure (856 pass, one skip), which prevented its
+chained inverse suite from starting. The separate run passes all 945 inverse
+tests, and the anchor passes in isolation. Neither replaces the original failed
+suite. The experimental polishing policy has been removed from the runtime.
+
+A [fixed-geometry clock replay](anchor-projection-clock-results.json) reproduces
+the anchor failure at 4x and 8x virtual clock speed: local repairs exhaust their
+400 ms allowance despite an infinite overall refinement deadline. The diagnostic
+fixed-work policy repairs all eight cases with identical exported coordinates;
+the current policy repairs four. A regression test reproduces this before the
+fix. Untimed refinement now keeps a finite repair-iteration cap without adding a
+wall-time cutoff. Finite-deadline website fitting keeps the existing 400 ms
+allowance and all quality rules. All 29 focused regressions pass, including
+explicit deadlines. All 857 application tests pass (one skipped), together with
+type checking, lint, build and private Chromium star/hat workflows. The full
+inverse suite is running. This fixes fixed-work repeatability, not the broader
+timed fitting problem or the ten-second speed goal.
 
 A [boundary preparation refactor](boundary-trace-reuse.json) reuses cleanup and
 pixel chains when trying several tracing tolerances. Across 29 photographic

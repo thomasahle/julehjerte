@@ -187,11 +187,16 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=4
       if(base){
         // Preserve the visible artwork when a shared hidden connector alone
         // can resolve the return. Both attempts share one bounded allowance.
-        const projectionDeadline=Math.min(deadline,performance.now()+400);
-        let repair=projectShortReturns(graph,base.points,phase,input,cfg,{deadline:projectionDeadline,initialAudit:base.validation,hiddenOnly:true,maxIterations:64,maxMilliseconds:400});
+        // Untimed refinement is bounded by its requested steps. Keep its
+        // checkpoint repairs bounded by iterations too, so CPU load cannot
+        // silently change the result of the same fixed-work operation. Timed
+        // fitting retains the shared 400 ms allowance and caller deadline.
+        const maxMilliseconds=Number.isFinite(deadline)?400:Infinity;
+        const projectionDeadline=Math.min(deadline,performance.now()+maxMilliseconds);
+        let repair=projectShortReturns(graph,base.points,phase,input,cfg,{deadline:projectionDeadline,initialAudit:base.validation,hiddenOnly:true,maxIterations:64,maxMilliseconds});
         if(!repair.points&&performance.now()<projectionDeadline){
           const hiddenAttempt=repair.report;
-          repair=projectShortReturns(graph,base.points,phase,input,cfg,{deadline:projectionDeadline,initialAudit:base.validation,maxIterations:64,maxMilliseconds:400});
+          repair=projectShortReturns(graph,base.points,phase,input,cfg,{deadline:projectionDeadline,initialAudit:base.validation,maxIterations:64,maxMilliseconds});
           repair.report.hiddenAttempt=hiddenAttempt;
         }
         if(step===-1)initialReturnProjectionFailed=!repair.points;

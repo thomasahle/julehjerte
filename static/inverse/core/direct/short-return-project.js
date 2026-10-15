@@ -1,4 +1,7 @@
-/** Bounded local constraint projection; never changes final validity rules. */
+/** Bounded local constraint projection; never changes final validity rules.
+ * A fixed-work caller may use an infinite time allowance. The iteration cap
+ * remains mandatory, and any finite caller deadline still stops the search.
+ */
 import {bernstein} from './math.js';
 import {validate} from '../validate.js';
 import {completeSelfReturns} from '../complete-self-returns.js';
@@ -8,7 +11,7 @@ import {clearanceWitnesses} from './clearance-witnesses.js';
 import {shortLinearControls,reduceLinearCoefficients,restoreLinearControls} from './linear-controls.js';
 
 export function projectShortReturns(graph,original,phase,input,cfg,{deadline=Infinity,hiddenOnly=false,initialAudit=null,maxIterations=8,maxMilliseconds=180,clearanceMargin=null}={}){
-  if(!Number.isInteger(maxIterations)||maxIterations<1||maxIterations>128||!Number.isFinite(maxMilliseconds)||maxMilliseconds<=0)throw new RangeError('Projection needs bounded positive iteration and time allowances.');
+  if(!Number.isInteger(maxIterations)||maxIterations<1||maxIterations>128||typeof maxMilliseconds!=='number'||Number.isNaN(maxMilliseconds)||maxMilliseconds<=0)throw new RangeError('Projection needs a bounded positive iteration count and a positive time allowance.');
   if(clearanceMargin!==null&&(!Number.isFinite(clearanceMargin)||clearanceMargin<cfg.nominalWidth||clearanceMargin<=0))throw new RangeError('A clearance proposal margin must be finite and at least the nominal width.');
   const points=original.slice(),report={fullGeometryAudits:0,returnConstraintAudits:0,attempted:false,iterations:0,displacements:0,initialReturns:0,finalReturns:null,accepted:false,termination:'iteration_limit',policy:hiddenOnly?'hidden-controls-only':'all-free-controls',maxIterations,maxMilliseconds};
   const visibleControls=new Set(graph.edges.flatMap((ids,e)=>graph.visible[e]?ids:[]));

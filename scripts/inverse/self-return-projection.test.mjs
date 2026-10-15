@@ -30,6 +30,13 @@ test('experimental constraint projection widens a short return without mutating 
     const subdivided=new CurveGraph(divided);
     assert.equal(validate(subdivided.solution(subdivided.points,1),entry.cfg,{checkImage:false}).passed,true);
     assert.equal(projectShortReturns(graph,before,1,{},entry.cfg,{deadline:-Infinity}).points,null);
+    const fixedWork=projectShortReturns(graph,before,1,{},entry.cfg,{maxMilliseconds:Infinity,maxIterations:1});
+    assert.ok(fixedWork.report.iterations<=1,'An untimed repair still has a finite work cap.');
+    const expired=projectShortReturns(graph,before,1,{},entry.cfg,{deadline:-Infinity,maxMilliseconds:Infinity});
+    assert.equal(expired.points,null);assert.equal(expired.report.termination,'time_limit');
+    assert.equal(expired.report.iterations,0);
+    for(const allowance of [NaN,0,-1,-Infinity,'400'])assert.throws(()=>projectShortReturns(graph,before,1,{},entry.cfg,{maxMilliseconds:allowance}),RangeError);
+    assert.throws(()=>projectShortReturns(graph,before,1,{},entry.cfg,{maxMilliseconds:Infinity,maxIterations:Infinity}),RangeError);
     assert.equal(projectShortReturns(graph,before,1,{},entry.cfg,{hiddenOnly:true}).points,null,'This fixture has no shared hidden controls.');
     graph.fixed.fill(1);
     assert.equal(projectShortReturns(graph,before,1,{},entry.cfg).points,null,'An immovable return must not be certified.');

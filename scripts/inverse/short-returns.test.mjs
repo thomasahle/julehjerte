@@ -163,6 +163,28 @@ for(const mode of ['sym','anti'])test(`paired return contractions retain Within 
   assert.ok(matchingSummary(result).identical);assert.ok(validate(result,cfg).passed);
 });
 
+test('fixed-step anchor cleanup is independent of clock speed without an overall deadline',async t=>{
+  const geometry=JSON.parse(await fs.readFile('scripts/inverse/fixtures/editor-anchor-return.json'));
+  const source=JSON.parse(await fs.readFile('scripts/inverse/fixtures/anchor-upload-mask.json'));
+  const seed=loadSolutionJSON({...geometry,schema:'heartcurves-2',units:'mm'}),mask=new Uint8Array(source.resolution**2);
+  for(const[start,length]of source.maskRuns)mask.fill(1,start,start+length);
+  seed.graph.target.sourceImage={mask,resolution:source.resolution};
+  const saved=solutionJSON(seed);let clock=0,tick=0;
+  t.mock.method(performance,'now',()=>clock+=tick);
+  const reference=finalizeShortReturns(seed,cfg);
+  assert.equal(reference.report.shortReturnRepair.applied,true);
+  // A suspended tab or busy test runner can advance wall time between local
+  // repair checks. An explicitly untimed, fixed-step operation must still do
+  // the same bounded work, including its constrained checkpoint repairs.
+  tick=200;
+  const delayed=finalizeShortReturns(seed,cfg);
+  assert.equal(delayed.report.shortReturnRepair.applied,true);
+  assert.deepEqual(solutionJSON(delayed),solutionJSON(reference));
+  assert.ok(validate(delayed,cfg,{checkImage:false,finalGeometry:true}).passed);
+  assert.ok(delayed.report.shortReturnRepair.sourceErrorAfter<delayed.report.shortReturnRepair.sourceErrorBefore);
+  assert.deepEqual(solutionJSON(seed),saved);
+});
+
 for(const overallExpired of [false,true])test(`a late repair checkpoint ${overallExpired?'respects the overall deadline':'survives the phase cutoff'}`,async t=>{
   const geometry=JSON.parse(await fs.readFile('scripts/inverse/fixtures/editor-anchor-return.json'));
   const source=JSON.parse(await fs.readFile('scripts/inverse/fixtures/anchor-upload-mask.json'));
