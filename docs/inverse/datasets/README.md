@@ -121,8 +121,13 @@ resolution. Its unchanged curves pass post-fit 1000- and 1400-cell rechecks
 at 2.241875% mask disagreement. An isolated fresh solve that verifies such a
 checkpoint and carries the finer resolution through finalization reaches
 2.273125% in 9.60 seconds, versus 2.333125% in its paired run. This is one
-cold-start comparison. The proposal is not integrated; broader corpus and
-editable-export checks are running, and the normal resolution cap remains 700.
+cold-start comparison. A fixed 41-step replay now isolates the verification
+benefit: 2.454375% becomes 2.241875% from identical initial controls. Full isolated
+replay retains 22/22 Hunodan below ten seconds, 26/31 photo acceptances and 48/48
+checked editable pairs, but the strict historical error gate fails on three
+photos (two by one or two pixels, Viking by 102 at 400 squared). Fixed-work
+comparisons are investigating the cause. The proposal is not integrated, and
+the normal resolution cap remains 700.
 
 The latest validated solver revision is `c000d30`. Its
 [release record](return-projection-speed.json) passes **22/22 regular Hunodan

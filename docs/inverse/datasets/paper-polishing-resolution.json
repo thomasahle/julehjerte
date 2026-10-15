@@ -334,11 +334,65 @@
       "notes": "Each solve runs in a fresh process, including cold higher-resolution kernel calibration. One repetition per condition; timed searches can choose different geometries."
     }
   ],
-  "productionIntegration": "Not integrated. Full isolated corpus and editable-export checks are running before deciding whether to change the 700-resolution cap or polishing policy.",
-  "result": "The 500 ms reserve never verifies the crown checkpoint in this replay. With the existing 250 ms checkpoint reserve inside the global finalization reserve, a fresh crown solve carries a 1000-resolution verification to its final result: 2.273125% independent error in 9.600533167 seconds. Its paired baseline is 2.333125% in 9.459069833 seconds. This is one cold-start pair, not a general ten-second guarantee.",
+  "productionIntegration": "Not integrated. Full isolated corpus and editable-export checks completed; strict historical no-error-regression gate fails on dense-checker, round-checker and flettede-viking. The normal resolution cap remains 700.",
+  "result": "Fixed-work evidence confirms the crown benefit. Full isolated native replay passes 22/22 Hunodan in at most 9.282888875 seconds, retains 26/31 photographic acceptances and passes 48/48 editable exports, but fails the strict historical no-error-regression gate: dense-checker +2 source pixels, round-checker +1 and Viking +102 at 400x400. Separate fixed-work replays of the regressing cases are required before deciding on integration.",
   "fixedWorkFixture": {
     "path": "tmp/heart-learning/polish-fine-audit-v2/crown-refinement-checkpoint.json",
-    "status": "Captured and frozen; fixed-step replay not yet run."
+    "status": "Completed: identical initial controls, source mask, 41 steps and no wall-clock deadline.",
+    "results": [
+      {
+        "variant": "before",
+        "steps": 41,
+        "initialError": 0.02474375,
+        "error": 0.02454375,
+        "paperVerification": null,
+        "paper": [
+          {
+            "resolution": 700,
+            "status": "pass"
+          },
+          {
+            "resolution": 1000,
+            "status": "pass"
+          },
+          {
+            "resolution": 1400,
+            "status": "pass"
+          }
+        ]
+      },
+      {
+        "variant": "after",
+        "steps": 41,
+        "initialError": 0.02474375,
+        "error": 0.02241875,
+        "paperVerification": {
+          "requestedResolution": 700,
+          "initialStatus": "uncertain",
+          "resolution": 1000,
+          "status": "pass",
+          "source": "rollback-checkpoint"
+        },
+        "paper": [
+          {
+            "resolution": 700,
+            "status": "uncertain"
+          },
+          {
+            "resolution": 1000,
+            "status": "pass"
+          },
+          {
+            "resolution": 1400,
+            "status": "pass"
+          }
+        ]
+      }
+    ],
+    "geometryPassed": [
+      true,
+      true
+    ]
   },
   "artifacts": [
     {
@@ -436,6 +490,107 @@
     {
       "path": "tmp/heart-learning/polish-fine-audit-v2/crown-refinement-checkpoint.json",
       "sha256": "fb371facc1c735b6e598be4c76b0d4074e3f6b4a4e07ada3c6989536efb20e87"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v2/fixed-work.json",
+      "sha256": "660d42ce902ac323af98ccb767832ef5490635ea4a0867302929ba7c7f897fec"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v2/fixed-work-source.json",
+      "sha256": "96b0e29a09b448fa078db70475573c3d28f340c7b2884bf0820aeaecf3e2748e"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v2/fixed-work-state.json",
+      "sha256": "417a85951a237456ad142731cc4a7fe497cebde75adf82cfb180de70828e6708"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v2/fixed-work.mjs",
+      "sha256": "422ed4b3c8117566c4cd64cd28b7d49ec4db00a09ab64e1c769c03474f53685c"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-release-v1/source.json",
+      "sha256": "292a32cc875e6808c3d284ae244a7c2dc2c6e3e0689bdfacb1672afe917dd4c3"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-release-v1/running.json",
+      "sha256": "31df93d232ed5a5d979974e219a1f14cd2440945bb368dfe832c1b0a20919cde"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-release-v1/checks.json",
+      "sha256": "28e76265fd3ac35c75afa3eda3a31bf5cfd6e72bb378ddd08e5c595f792e608e"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-release-v1/native-gates.json",
+      "sha256": "b947ff90ac96a483fba4aa8eff9566940af8fdd136b7140b73a68babf2fb2fb7"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-release-v1/hunodan-comparison.json",
+      "sha256": "5ed62443e3a929e7d8ed7139371ac081a1d411f94f537ee1dcac23a24877040c"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-release-v1/photo-comparison.json",
+      "sha256": "5480ee920a8074b6d686da37d5bddce1037197c12986d84742a317e4d6f0e7d8"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-release-v1/parent-photo-comparison.json",
+      "sha256": "b51ecdd9dda701584586d463226ffe029c5cd4227012220243fce0444e9e090b"
     }
-  ]
+  ],
+  "fixedWorkInterpretation": "The same 41-step crown trajectory yields 2.454375% exported mask error under the 700-resolution policy and 2.241875% when the uncertain checkpoint is rechecked at 1000. Both geometries pass the nominal validator; the latter is uncertain at 700 and passes 1000 and 1400. This isolates a useful verification change from timed-search variation. The paper rechecks use the same auditor at different resolutions, not independent implementations.",
+  "isolatedCorpus": {
+    "run": "tmp/heart-learning/polish-fine-release-v1",
+    "sourceFilesVerified": 844,
+    "gates": {
+      "hunodanPassed": 22,
+      "hunodanTotal": 22,
+      "hunodanErrorRegressions": [],
+      "photoPassed": 26,
+      "photoPassRegressions": [],
+      "photoErrorRegressions": [
+        {
+          "id": "dense-checker",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.00699375,
+          "error": 0.00700625,
+          "errorDelta": 1.2500000000000358e-05
+        },
+        {
+          "id": "round-checker",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.0121375,
+          "error": 0.01214375,
+          "errorDelta": 6.249999999999312e-06
+        },
+        {
+          "id": "flettede-viking",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.02024375,
+          "error": 0.02088125,
+          "errorDelta": 0.0006374999999999992
+        }
+      ],
+      "editablePassed": 48,
+      "editableTotal": 48,
+      "passed": false
+    },
+    "hunodanMaximumSeconds": 9.282888875000001,
+    "crown": {
+      "id": "crown",
+      "before": 0.02454375,
+      "after": 0.022725,
+      "beforePassed": true,
+      "afterPassed": true,
+      "delta": -0.001818750000000001
+    },
+    "comparisonScope": "Same photographs, crop coordinates and target hashes; errors compare independent exported rendering. Strict historical reference c000d30 and immediate runtime 3997441 comparisons both retained. Runtime difference alone is not a causal explanation for timed-optimizer variation."
+  }
 }
