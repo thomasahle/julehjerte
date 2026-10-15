@@ -105,9 +105,12 @@ most refinement time to geometry and paper checks. In particular, the first
 finer paper audit repeats JavaScript and WebAssembly to calibrate the new lattice
 size. An offline native-first prototype reduces first-audit time by roughly 60%
 on the large saved cases in both Node and Chromium; all 336 timed complete
-audits preserve every non-time field and paper-map pixel. Finite-deadline solve
-comparisons are running. No production backend policy has changed, and these
-validator timings do not yet establish a reconstruction improvement.
+audits preserve every non-time field and paper-map pixel. Twelve fresh solves
+retain six checked pairs per arm, but the native-first policy worsens the
+stacked and diagonal image errors in both repetitions. Visual review confirms
+less complete sun rays in the diagonal case. It remains offline. A follow-up
+limits the native preference to polishing, preserving the earlier search policy;
+no production backend policy has changed.
 
 A [boundary preparation refactor](boundary-trace-reuse.json) reuses cleanup and
 pixel chains when trying several tracing tolerances. Across 29 photographic

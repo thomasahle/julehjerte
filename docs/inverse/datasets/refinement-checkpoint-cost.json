@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "status": "profile_and_fixed_audit_comparison_complete; full_solve_comparison_running",
+  "status": "native_first_comparison_complete; narrower_polishing_comparison_running",
   "sourceCommit": "47d6f72",
   "question": "Which refinement work consumes the deadline, and can native paper kernels avoid redundant startup audits without changing results?",
   "scope": "Offline copied runtimes only. No production engine, mask, geometry, resolution, clearance or acceptance rule changed.",
@@ -705,7 +705,278 @@
         "firstSaving": 0.6133278487230932,
         "fourAuditSaving": 0.33097910953739895
       }
-    ]
+    ],
+    "completeSolves": {
+      "count": 12,
+      "checkedBefore": 6,
+      "checkedAfter": 6,
+      "pairs": [
+        {
+          "name": "stacked",
+          "repeat": 0,
+          "before": 0.012375,
+          "after": 0.01368125,
+          "errorDelta": 0.0013062500000000001,
+          "beforePassed": true,
+          "afterPassed": true,
+          "beforeLocalSunError": null,
+          "afterLocalSunError": null,
+          "beforeSeconds": 9.791050791,
+          "afterSeconds": 9.618847625,
+          "beforeDetail": {
+            "residualCoreFraction": 0.00205625,
+            "addedCurves": 37,
+            "fixedBorderMm": 8,
+            "maximumLengthMm": 4,
+            "frozenCoordinates": 140,
+            "paperSeparationRetry": {
+              "step": 40,
+              "previousLocalFactor": 8,
+              "localFactor": 3
+            },
+            "applied": true,
+            "errorBefore": 0.01440625,
+            "errorAfter": 0.0124375,
+            "steps": 85,
+            "geometryPassed": true,
+            "paperStatus": "pass"
+          },
+          "afterDetail": {
+            "residualCoreFraction": 0.00180625,
+            "addedCurves": 33,
+            "fixedBorderMm": 8,
+            "maximumLengthMm": 4,
+            "frozenCoordinates": 148,
+            "applied": false,
+            "errorBefore": 0.01388125,
+            "errorAfter": 0.01388125,
+            "steps": 75,
+            "geometryPassed": true,
+            "paperStatus": "pass"
+          }
+        },
+        {
+          "name": "stacked",
+          "repeat": 1,
+          "before": 0.012375,
+          "after": 0.01365625,
+          "errorDelta": 0.0012812499999999994,
+          "beforePassed": true,
+          "afterPassed": true,
+          "beforeLocalSunError": null,
+          "afterLocalSunError": null,
+          "beforeSeconds": 9.761582084,
+          "afterSeconds": 9.623721000000002,
+          "beforeDetail": {
+            "residualCoreFraction": 0.00205625,
+            "addedCurves": 37,
+            "fixedBorderMm": 8,
+            "maximumLengthMm": 4,
+            "frozenCoordinates": 140,
+            "paperSeparationRetry": {
+              "step": 40,
+              "previousLocalFactor": 8,
+              "localFactor": 3
+            },
+            "applied": true,
+            "errorBefore": 0.01440625,
+            "errorAfter": 0.0124375,
+            "steps": 85,
+            "geometryPassed": true,
+            "paperStatus": "pass"
+          },
+          "afterDetail": {
+            "residualCoreFraction": 0.00176875,
+            "addedCurves": 35,
+            "fixedBorderMm": 8,
+            "maximumLengthMm": 4,
+            "frozenCoordinates": 146,
+            "applied": true,
+            "errorBefore": 0.0136875,
+            "errorAfter": 0.01368125,
+            "steps": 80,
+            "geometryPassed": true,
+            "paperStatus": "pass"
+          }
+        },
+        {
+          "name": "vertical",
+          "repeat": 0,
+          "before": 0.0160125,
+          "after": 0.01564375,
+          "errorDelta": -0.00036874999999999755,
+          "beforePassed": true,
+          "afterPassed": true,
+          "beforeLocalSunError": 0.0334453781512605,
+          "afterLocalSunError": 0.029378151260504203,
+          "beforeSeconds": 6.988249958,
+          "afterSeconds": 7.047993583999999,
+          "beforeDetail": {
+            "residualCoreFraction": 0.00611875,
+            "addedCurves": 70,
+            "fixedBorderMm": 8,
+            "maximumLengthMm": 4,
+            "frozenCoordinates": 86,
+            "applied": true,
+            "errorBefore": 0.03075,
+            "errorAfter": 0.0159125,
+            "steps": 85,
+            "geometryPassed": true,
+            "paperStatus": "pass"
+          },
+          "afterDetail": {
+            "residualCoreFraction": 0.00539375,
+            "addedCurves": 67,
+            "fixedBorderMm": 8,
+            "maximumLengthMm": 4,
+            "frozenCoordinates": 86,
+            "paperRecovery": {
+              "foldFamilies": [
+                0
+              ],
+              "localFamilies": [],
+              "releasedCoordinates": 19
+            },
+            "applied": true,
+            "errorBefore": 0.0291875,
+            "errorAfter": 0.0155125,
+            "steps": 85,
+            "geometryPassed": true,
+            "paperStatus": "pass"
+          }
+        },
+        {
+          "name": "vertical",
+          "repeat": 1,
+          "before": 0.0160125,
+          "after": 0.014925,
+          "errorDelta": -0.0010874999999999982,
+          "beforePassed": true,
+          "afterPassed": true,
+          "beforeLocalSunError": 0.0334453781512605,
+          "afterLocalSunError": 0.02934453781512605,
+          "beforeSeconds": 7.010535792,
+          "afterSeconds": 7.114887833,
+          "beforeDetail": {
+            "residualCoreFraction": 0.00611875,
+            "addedCurves": 70,
+            "fixedBorderMm": 8,
+            "maximumLengthMm": 4,
+            "frozenCoordinates": 86,
+            "applied": true,
+            "errorBefore": 0.03075,
+            "errorAfter": 0.0159125,
+            "steps": 85,
+            "geometryPassed": true,
+            "paperStatus": "pass"
+          },
+          "afterDetail": {
+            "residualCoreFraction": 0.00541875,
+            "addedCurves": 66,
+            "fixedBorderMm": 8,
+            "maximumLengthMm": 4,
+            "frozenCoordinates": 88,
+            "applied": true,
+            "errorBefore": 0.02940625,
+            "errorAfter": 0.0148625,
+            "steps": 85,
+            "geometryPassed": true,
+            "paperStatus": "pass"
+          }
+        },
+        {
+          "name": "negative-diagonal",
+          "repeat": 0,
+          "before": 0.0128625,
+          "after": 0.01645625,
+          "errorDelta": 0.003593749999999998,
+          "beforePassed": true,
+          "afterPassed": true,
+          "beforeLocalSunError": null,
+          "afterLocalSunError": null,
+          "beforeSeconds": 6.957029084,
+          "afterSeconds": 7.020800584,
+          "beforeDetail": {
+            "residualCoreFraction": 0.00533125,
+            "addedCurves": 64,
+            "fixedBorderMm": 8,
+            "maximumLengthMm": 4,
+            "frozenCoordinates": 78,
+            "applied": true,
+            "errorBefore": 0.02703125,
+            "errorAfter": 0.01259375,
+            "steps": 85,
+            "geometryPassed": true,
+            "paperStatus": "pass"
+          },
+          "afterDetail": {
+            "residualCoreFraction": 0.00505,
+            "addedCurves": 66,
+            "fixedBorderMm": 8,
+            "maximumLengthMm": 4,
+            "frozenCoordinates": 78,
+            "applied": true,
+            "errorBefore": 0.02601875,
+            "errorAfter": 0.01641875,
+            "steps": 85,
+            "geometryPassed": true,
+            "paperStatus": "pass"
+          }
+        },
+        {
+          "name": "negative-diagonal",
+          "repeat": 1,
+          "before": 0.01296875,
+          "after": 0.01576875,
+          "errorDelta": 0.002800000000000002,
+          "beforePassed": true,
+          "afterPassed": true,
+          "beforeLocalSunError": null,
+          "afterLocalSunError": null,
+          "beforeSeconds": 6.949827917,
+          "afterSeconds": 6.88310975,
+          "beforeDetail": {
+            "residualCoreFraction": 0.0053,
+            "addedCurves": 64,
+            "fixedBorderMm": 8,
+            "maximumLengthMm": 4,
+            "frozenCoordinates": 78,
+            "applied": true,
+            "errorBefore": 0.02665625,
+            "errorAfter": 0.01283125,
+            "steps": 115,
+            "geometryPassed": true,
+            "paperStatus": "pass"
+          },
+          "afterDetail": {
+            "residualCoreFraction": 0.0048625,
+            "addedCurves": 71,
+            "fixedBorderMm": 8,
+            "maximumLengthMm": 4,
+            "frozenCoordinates": 76,
+            "applied": true,
+            "errorBefore": 0.025425,
+            "errorAfter": 0.01559375,
+            "steps": 95,
+            "geometryPassed": true,
+            "paperStatus": "pass"
+          }
+        }
+      ],
+      "visualReview": {
+        "reviewed": [
+          "comparison-0.png",
+          "comparison-1.png"
+        ],
+        "outputsReviewed": 12,
+        "findings": [
+          "The negative-diagonal candidate loses several clear sun rays compared with the current policy in both repetitions. The regression is visible, not only a numerical score difference.",
+          "Vertical rays are fuller in the candidate, especially the second repetition, although local irregularities and border bends remain.",
+          "Both stacked reconstructions retain thin false seams and imperfect joins. The faster backend does not establish better motif recovery. This fixture is a photographic appearance target, not proof of the publisher's original paths."
+        ]
+      },
+      "decision": "Not integrated: stacked and negative-diagonal image errors worsen in both repetitions. Faster complete audits do not establish better finite-deadline fitting."
+    }
   },
   "findings": [
     "Checkpoint processing consumed 57.5\u201373.7% of refinement time in the first three diagnostic runs. Fully fixed visible edges accounted for at most 11 of 147, so skipping their gradients would address little of the measured cost.",
@@ -834,6 +1105,34 @@
     {
       "path": "tmp/heart-learning/refinement-cost-v2/stacked-replay.json",
       "sha256": "43d40ac42574528eac2414477be9ff9b93d50088a40c81965df7c7167716c6dd"
+    },
+    {
+      "path": "tmp/heart-learning/paper-native-first-v1/solve-results.json",
+      "sha256": "a0737d16db7a9c50633357249a1cac0b066445249658257df3fff7b4efbcf40c"
+    },
+    {
+      "path": "tmp/heart-learning/paper-native-first-v1/solve-state.json",
+      "sha256": "7ec22950cfb21d833f8ec6e0de66726bb9b3abacdbdfaed2f8dd9a377b202f10"
+    },
+    {
+      "path": "tmp/heart-learning/paper-native-first-v1/visual-review.json",
+      "sha256": "33dd03a9376c40f566c2a713504c9cec6f42c4c9e227163db1736f1c665ccee9"
+    },
+    {
+      "path": "tmp/heart-learning/paper-native-first-v1/comparison-0.png",
+      "sha256": "af295b03ed3f030b7a6df14377cf6492d3d9b8f0c6734ef5c70073e454d3d175"
+    },
+    {
+      "path": "tmp/heart-learning/paper-native-first-v1/comparison-1.png",
+      "sha256": "59e348e37bae9d13d1fecf7d2e5e624ea354dbadd96d544b49b62097036f610e"
+    },
+    {
+      "path": "tmp/heart-learning/polish-native-v1/plan.json",
+      "sha256": "2d50d6d0f46ff9ac76664971e3058ae89cb7e7730e8b4365958a6c1667084742"
     }
-  ]
+  ],
+  "nextExperiment": {
+    "plan": "tmp/heart-learning/polish-native-v1/plan.json",
+    "scope": "Use existing native:true option only inside polishing paper audits; preserve earlier coarse search backend policy."
+  }
 }
