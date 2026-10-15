@@ -1,0 +1,283 @@
+{
+  "schema": 1,
+  "status": "implemented; focused_tests_pass; full_QA_and_corpus_pending",
+  "mechanism": "At fixed refinement step395 the normal incumbent is the older step160 geometry (3.240625% source error). The best discarded coarse-paper-failed checkpoint has 2.715625% error and passes independent geometric, feature and paper checks at both 700px and 1000px. Retain that candidate separately; only after ordinary candidates fail, assess its original mask/features and run the actual finer paper audit. Preserve finer validation through export.",
+  "fixed": {
+    "incumbentAndHistoryUnchanged": true,
+    "alternativeError": 0.02715625,
+    "incumbentError": 0.03240625,
+    "coarsePaper": "fail",
+    "paper700": "pass",
+    "paper1000": "pass"
+  },
+  "fresh": {
+    "rows": [
+      {
+        "arm": "before",
+        "id": "crown",
+        "repeat": 0,
+        "solveSeconds": 10.327639209,
+        "passed": true,
+        "error": 0.02241875,
+        "paperVerification": {
+          "requestedResolution": 700,
+          "initialStatus": "uncertain",
+          "resolution": 1000,
+          "status": "pass",
+          "source": "rollback-checkpoint"
+        }
+      },
+      {
+        "arm": "before",
+        "id": "crown",
+        "repeat": 1,
+        "solveSeconds": 9.954264208,
+        "passed": true,
+        "error": 0.02241875,
+        "paperVerification": {
+          "requestedResolution": 700,
+          "initialStatus": "uncertain",
+          "resolution": 1000,
+          "status": "pass",
+          "source": "rollback-checkpoint"
+        }
+      },
+      {
+        "arm": "before",
+        "id": "flettede-viking",
+        "repeat": 0,
+        "solveSeconds": 9.884851958,
+        "passed": true,
+        "error": 0.0215125,
+        "paperVerification": {
+          "requestedResolution": 360,
+          "initialStatus": "uncertain",
+          "resolution": 700,
+          "status": "pass"
+        }
+      },
+      {
+        "arm": "before",
+        "id": "flettede-viking",
+        "repeat": 1,
+        "solveSeconds": 9.902637708,
+        "passed": true,
+        "error": 0.0217625,
+        "paperVerification": {
+          "requestedResolution": 360,
+          "initialStatus": "uncertain",
+          "resolution": 700,
+          "status": "pass"
+        }
+      },
+      {
+        "arm": "before",
+        "id": "jigsaw",
+        "repeat": 0,
+        "solveSeconds": 9.821691000000001,
+        "passed": true,
+        "error": 0.0100375,
+        "paperVerification": {
+          "requestedResolution": 360,
+          "initialStatus": "uncertain",
+          "resolution": 700,
+          "status": "pass",
+          "source": "rollback-checkpoint"
+        }
+      },
+      {
+        "arm": "before",
+        "id": "jigsaw",
+        "repeat": 1,
+        "solveSeconds": 9.764352040999999,
+        "passed": true,
+        "error": 0.00981875,
+        "paperVerification": {
+          "requestedResolution": 360,
+          "initialStatus": "uncertain",
+          "resolution": 700,
+          "status": "pass",
+          "source": "rollback-checkpoint"
+        }
+      },
+      {
+        "arm": "cap-before",
+        "id": "flettede-viking",
+        "repeat": 0,
+        "solveSeconds": 9.603832624999999,
+        "passed": false,
+        "error": 0.03209375,
+        "paperVerification": null
+      },
+      {
+        "arm": "cap-before",
+        "id": "flettede-viking",
+        "repeat": 1,
+        "solveSeconds": 9.649374208,
+        "passed": false,
+        "error": 0.03209375,
+        "paperVerification": null
+      },
+      {
+        "arm": "cap-retained-failure",
+        "id": "flettede-viking",
+        "repeat": 0,
+        "solveSeconds": 9.805163792,
+        "passed": true,
+        "error": 0.02226875,
+        "paperVerification": {
+          "requestedResolution": 360,
+          "initialStatus": "fail",
+          "resolution": 700,
+          "status": "pass",
+          "source": "retained-refinement-alternative",
+          "incumbentImageError": 0.03240625
+        }
+      },
+      {
+        "arm": "cap-retained-failure",
+        "id": "flettede-viking",
+        "repeat": 1,
+        "solveSeconds": 9.843911792,
+        "passed": true,
+        "error": 0.022775,
+        "paperVerification": {
+          "requestedResolution": 360,
+          "initialStatus": "fail",
+          "resolution": 700,
+          "status": "pass",
+          "source": "retained-refinement-alternative",
+          "incumbentImageError": 0.03240625
+        }
+      },
+      {
+        "arm": "retained-failure",
+        "id": "crown",
+        "repeat": 0,
+        "solveSeconds": 10.264914625,
+        "passed": true,
+        "error": 0.022725,
+        "paperVerification": {
+          "requestedResolution": 700,
+          "initialStatus": "uncertain",
+          "resolution": 1000,
+          "status": "pass",
+          "source": "rollback-checkpoint"
+        }
+      },
+      {
+        "arm": "retained-failure",
+        "id": "crown",
+        "repeat": 1,
+        "solveSeconds": 9.918166458000002,
+        "passed": true,
+        "error": 0.02273125,
+        "paperVerification": {
+          "requestedResolution": 700,
+          "initialStatus": "uncertain",
+          "resolution": 1000,
+          "status": "pass",
+          "source": "rollback-checkpoint"
+        }
+      },
+      {
+        "arm": "retained-failure",
+        "id": "flettede-viking",
+        "repeat": 0,
+        "solveSeconds": 9.911789166999998,
+        "passed": true,
+        "error": 0.0217625,
+        "paperVerification": {
+          "requestedResolution": 360,
+          "initialStatus": "uncertain",
+          "resolution": 700,
+          "status": "pass"
+        }
+      },
+      {
+        "arm": "retained-failure",
+        "id": "flettede-viking",
+        "repeat": 1,
+        "solveSeconds": 9.946382208,
+        "passed": true,
+        "error": 0.0217625,
+        "paperVerification": {
+          "requestedResolution": 360,
+          "initialStatus": "uncertain",
+          "resolution": 700,
+          "status": "pass"
+        }
+      },
+      {
+        "arm": "retained-failure",
+        "id": "jigsaw",
+        "repeat": 0,
+        "solveSeconds": 9.884943875000001,
+        "passed": true,
+        "error": 0.00988125,
+        "paperVerification": {
+          "requestedResolution": 360,
+          "initialStatus": "uncertain",
+          "resolution": 700,
+          "status": "pass",
+          "source": "rollback-checkpoint"
+        }
+      },
+      {
+        "arm": "retained-failure",
+        "id": "jigsaw",
+        "repeat": 1,
+        "solveSeconds": 9.767276249999998,
+        "passed": true,
+        "error": 0.00970625,
+        "paperVerification": {
+          "requestedResolution": 360,
+          "initialStatus": "uncertain",
+          "resolution": 700,
+          "status": "pass",
+          "source": "rollback-checkpoint"
+        }
+      }
+    ],
+    "uncapped": "All twelve normal fresh replays pass. They reach later checkpoints and do not exercise the new retention branch. Some paired errors increase, so these do not establish no-regression.",
+    "controlled": "Same 395-step ceiling in both runtime arms, retaining the finite ten-second deadline. Baseline fails both repetitions; the candidate passes both with original source, geometry and features and an actual finer paper audit. The ceiling is experimental only and is not in production."
+  },
+  "regression": {
+    "before": "New fixed-input test fails because the alternative is not retained.",
+    "after": "Six focused tests pass, including independent exported SVG replay, the original ten-second Viking test, finer-paper export and polishing tests. This initial multi-file node run used the runner default concurrency; it is not a timing measurement. The full suite uses the repository serial inverse runner.",
+    "fixture": "scripts/inverse/fixtures/viking-initial-refinement.json",
+    "log": "tmp/heart-learning/coarse-paper-recheck-v1/focused-after.log"
+  },
+  "limits": [
+    "No claim of a completed whole-corpus speed or quality goal.",
+    "No failed coarse candidate is accepted without actual finer validation.",
+    "Original source pixels, physical tolerances, geometry checks and image-error limits are unchanged.",
+    "The prior 945/946 inverse suite remains recorded; upcoming QA does not rewrite it."
+  ],
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/coarse-paper-recheck-v1/source.json",
+      "sha256": "fa1b05f874375c95562c6f00ef2a724d2dac24115220a049aa6c0a47ff5eb18b"
+    },
+    {
+      "path": "tmp/heart-learning/coarse-paper-recheck-v1/capped-source.json",
+      "sha256": "6439a0dfd3fa6cda9142ae4d9c57d13195239b473939c6623b0345c7d43e066f"
+    },
+    {
+      "path": "tmp/heart-learning/coarse-paper-recheck-v1/fixed-before.json",
+      "sha256": "be8bd0fb484ff38e6adf5e0a0d35d7b66e4e118c88791ddeddec1b692f6e4289"
+    },
+    {
+      "path": "tmp/heart-learning/coarse-paper-recheck-v1/fixed-retained-failure.json",
+      "sha256": "05c3de351012f4f8ff57e9235f2eeb2d947108082e126d3e18af41fe0241282a"
+    },
+    {
+      "path": "tmp/heart-learning/coarse-paper-recheck-v1/regression-before.log",
+      "sha256": "c78f05fb1790c2408fabec0f52d716140007938d7d9c3ceb6f80e86ec65afa93"
+    },
+    {
+      "path": "tmp/heart-learning/coarse-paper-recheck-v1/focused-after.log",
+      "sha256": "24fadd5e1f48b4568f4745a1b716fa9973a9b0ad00399afcd0e64ded72c40d01"
+    }
+  ]
+}

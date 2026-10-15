@@ -173,10 +173,18 @@ candidate with 3.2406% mask error; after 401 steps it retains one at 2.6938%.
 Both pass the independent finer paper check. More significantly, checkpoints
 280/320/360 already pass the 700-pixel paper audit and have errors below 3%, yet
 are discarded because the 360-pixel audit calls them failed. A
-[bounded alternative-retention prototype](coarse-paper-recheck-plan.json) now
-checks whether retaining one such candidate can recover the result without
-changing the original trajectory, rollback position, image rules or physical
-clearance. The existing failed suite remains recorded.
+[bounded alternative-retention change](coarse-paper-recheck-results.json) retains
+one such checkpoint separately, checks the original image and features, and then
+requires an actual finer paper audit. At a controlled 395-step ceiling the baseline
+fails twice at 3.2094%; the candidate passes twice at 2.2269–2.2775%, below ten
+seconds in this limited experiment. The ceiling is not a production change. The
+original optimization trajectory and incumbent remain identical in fixed work,
+and the retained alternative passes both 700- and 1000-pixel paper audits. The new
+regression fails before the change and passes afterwards, including independent
+SVG replay. All six focused checks pass; full QA and the unchanged complete
+corpora are next. The twelve uncapped fresh trials all pass, but contain paired
+error increases and do not establish no-regression. The prior failed suite remains
+recorded.
 
 A [controlled photo-border experiment](border-fragment-perturbation-results.json)
 replays 228 crop/resolution combinations with both re-estimated and frozen colour

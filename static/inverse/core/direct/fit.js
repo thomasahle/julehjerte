@@ -351,17 +351,20 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   // when nothing fits; it must not force a usable result through every seed.
   const searchSeconds=()=>verifiedAlternative?Math.min(cfg.timeLimit,25):cfg.timeLimit;
   const searchDeadline=()=>start+searchSeconds()*1000;
-  const assess=c=>{
+  const assess=(c,{recheckFailed=false}={})=>{
     if(!c.geometryPassed)return false;
     const s=c.graph.solution(c.points,c.phase,input),woven=sampleWeave(s,source.resolution);
     c.originalImageError=maskDisagreement(source,woven);c.originalFeatures=auditFeatureFidelity(source,woven,cfg,sourceFeatures);
     if(c.originalImageError>cfg.maxImageError||!c.originalFeatures.passed)return false;
-    // An uncertain coarse lattice is not a failed geometric construction.
-    // Spend one finer audit only on an otherwise acceptable candidate. Keep
-    // that resolution through final cleanup/export, which recheck all edits.
-    if(!c.paperPassed&&c.paper?.status==='uncertain'&&cfg.materialResolution<700&&searchDeadline()-performance.now()>500){
+    // A coarse lattice may be inconclusive or miss a narrow connection that
+    // finer sampling resolves. Recheck a failed lattice only when the caller
+    // explicitly offers its retained geometric alternative. Image and feature
+    // gates above remain mandatory, and final export rechecks the actual finer
+    // resolution after every edit.
+    if(!c.paperPassed&&(c.paper?.status==='uncertain'||recheckFailed&&c.paper?.status==='fail')&&cfg.materialResolution<700&&searchDeadline()-performance.now()>500){
+      const initialStatus=c.paper.status;
       const paper=materialAudit(s,{...cfg,materialResolution:700});
-      c.paperVerification={requestedResolution:cfg.materialResolution,initialStatus:'uncertain',resolution:700,status:paper.status};
+      c.paperVerification={requestedResolution:cfg.materialResolution,initialStatus,resolution:700,status:paper.status};
       c.paperPassed=paper.passed;c.paper=paper.summary;
     }
     return c.paperPassed;
@@ -409,6 +412,19 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
         alternative.paperVerification={...alternative.paperVerification,source:'retained-refinement-alternative',incumbentImageError:c.originalImageError};
         proposals.push(alternative);
         verifiedAlternative=true;
+      }
+    }
+    // Refinement can cross a coarse-paper-failed interval just before its
+    // deadline. Recover a useful checkpoint only after all ordinary retained
+    // candidates fail, without changing rollback or certifying that failure.
+    if(!proposals.some(proposal=>proposal.imagePassed)&&c.rejectedPaperAlternative){
+      const alternative={...c,...c.rejectedPaperAlternative,paperAlternative:null,rejectedPaperAlternative:null,paperVerification:null};
+      alternative.error=mismatch(renderCurves(alternative.graph,alternative.points,alternative.phase,n,32),prob,fitWeights);
+      if(assess(alternative,{recheckFailed:true})){
+        alternative.imagePassed=true;
+        alternative.matching=matchingSummary(alternative.graph.solution(alternative.points,alternative.phase,input));
+        alternative.paperVerification={...alternative.paperVerification,source:'retained-refinement-alternative',incumbentImageError:c.originalImageError};
+        proposals.push(alternative);verifiedAlternative=true;
       }
     }
     if(!proposals.some(proposal=>proposal.imagePassed)){

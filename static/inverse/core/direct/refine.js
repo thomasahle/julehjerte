@@ -117,7 +117,7 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=4
   const clampAxes=new Uint8Array(points.length);
   graph.paths.forEach((p,pi)=>{for(const[e]of p)for(const id of graph.edges[e])clampAxes[2*id+graph.family[pi]]=1;});
   const clampPoints=()=>{for(let i=0;i<points.length;i++)points[i]=graph.fixed[i]?initial[i]:clamp(points[i],clampAxes[i]?fittingMargin(cfg,graph.width):0,clampAxes[i]?graph.width-fittingMargin(cfg,graph.width):graph.width);const projected=!ties||applyTies(ties,points,points,{fixed:graph.fixed,original:initial});if(groups)projectMatching(points,groups,graph.fixed,initial);return projected;};
-  clampPoints();let safe=null,best=null,bestUncertain=null,bestInvalid=null,completed=0,skippedSteps=0,lastRollback=null,initialReturnProjectionFailed=false;
+  clampPoints();let safe=null,best=null,bestUncertain=null,bestRejectedPaper=null,bestInvalid=null,completed=0,skippedSteps=0,lastRollback=null,initialReturnProjectionFailed=false;
   // A preferred image checkpoint competes only within the same physical
   // validity class. Preference never certifies paper, changes rollback safety,
   // or substitutes weighted errors for the caller's original-source checks.
@@ -164,6 +164,10 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=4
       // lower. Retain it for the caller's independent finer paper audit. It
       // remains unaccepted here and never becomes a safe rollback position.
       if(check.passed&&paper?.status==='uncertain'&&better(value,bestUncertain))bestUncertain=value;
+      // A failed coarse lattice can pass an actual finer audit. Keep one
+      // geometric alternative without changing this trajectory's incumbent
+      // or rollback point; the caller must independently verify its paper.
+      if(check.passed&&paper?.status==='fail'&&better(value,bestRejectedPaper))bestRejectedPaper=value;
       if(check.passed&&(!cfg.requireMaterialCore||paper?.passed)){
         safe=value.points.slice();accepted=true;
         if(better(value,best))best=value;
@@ -269,5 +273,8 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=4
   // audit by the caller, without treating it as accepted or using it for
   // rollback here. Ordinary callers still receive the verified incumbent.
   const paperAlternative=bestUncertain&&bestUncertain!==selected?{...bestUncertain,geometryPassed:true,paperPassed:false}:null;
-  return{...selected,geometryPassed:selected.validation.passed,paperPassed:!!best,history,steps:completed,computedSteps:completed-skippedSteps,skippedSteps,stoppedEarly,paperAlternative,paperSeparationRetry};
+  // Keep this separate: a failed alternative must not hide an uncertain one
+  // that existing callers already know how to verify. Neither is a pass.
+  const rejectedPaperAlternative=bestRejectedPaper&&bestRejectedPaper!==selected?{...bestRejectedPaper,geometryPassed:true,paperPassed:false}:null;
+  return{...selected,geometryPassed:selected.validation.passed,paperPassed:!!best,history,steps:completed,computedSteps:completed-skippedSteps,skippedSteps,stoppedEarly,paperAlternative,rejectedPaperAlternative,paperSeparationRetry};
 }
