@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "status": "candidate_under_local_QA; not_committed_to_production_source_yet",
+  "status": "not_ready_for_promotion; corpus_QA_failed; inverse_verification_running",
   "sourceCommit": "177dd2c",
   "implementation": "Only polishCandidate requests native paper audits, including ordinary, local and detailed polishing. Earlier coarse fitting and kernel calibration are unchanged. Explicit ordinary caller audits are preserved. Native fallbacks, threshold ties and all paper/geometry rules stay unchanged.",
   "developmentCorrection": "The first polishing-only prototype passed its custom audit only for detailed polishing. Its fixed ordinary crown run did not exercise the change. v2 passes the audit in both paths; the recorded v2 crown test exercises it.",
@@ -312,7 +312,7 @@
     ]
   },
   "qa": {
-    "status": "running",
+    "status": "main_controller_complete_with_failures; inverse_followup_running",
     "controller": "tmp/heart-learning/polish-native-v2/qa/run.py",
     "state": "tmp/heart-learning/polish-native-v2/qa/state.json",
     "sourcePins": "tmp/heart-learning/polish-native-v2/qa/source.json",
@@ -401,6 +401,15 @@
         ],
         "exitCode": 1,
         "seconds": 13.443118749999982
+      },
+      {
+        "stage": "native",
+        "command": [
+          "python3",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/polish-native-v2/qa/native/run.py"
+        ],
+        "exitCode": 0,
+        "seconds": 560.6507892080001
       }
     ],
     "focusedTests": 29,
@@ -412,10 +421,260 @@
       "inverseSuiteStartedByNpmTest": false
     },
     "followupController": "tmp/heart-learning/polish-native-v2/qa/followup.py",
-    "followupScope": "After the current corpus/editor controller ends, run the inverse suite explicitly and replay the failing anchor test in isolation. Preserve the original full-suite failure.",
+    "followupScope": "Main corpus controller is complete. The explicitly launched inverse suite is now running; isolated anchor replay follows. Preserve the original full application-suite failure.",
     "preview": "http://127.0.0.1:5232/editor/mal/",
     "concurrentLoadObservation": "tmp/heart-learning/polish-native-v2/qa/concurrent-load.json",
-    "provisionalTimingFailures": "The in-progress Hunodan run already contains cases over 10 seconds. Preserve them; no speed-goal success is claimed."
+    "provisionalTimingFailures": "Final Hunodan result: 20/22 combined speed and quality; hjcur-05 11.026681 s and hjhih-01 11.250253 s also exceed their source-error bounds. Observed concurrent CPU load is a confound, not a proven cause or exemption.",
+    "corpusChecks": [
+      {
+        "stage": "hunodan",
+        "command": [
+          "node",
+          "scripts/inverse/hunodan-speed-benchmark.mjs"
+        ],
+        "environment": {
+          "INVERSE_SPEED_OUT": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/polish-native-v2/qa/native/hunodan",
+          "INVERSE_SPEED_MODULE": "",
+          "INVERSE_SPEED_SECONDS": "10",
+          "INVERSE_SPEED_SETTINGS": "{}",
+          "INVERSE_SPEED_RETAIN_CANDIDATES": "0",
+          "INVERSE_HUNODAN_IDS": ""
+        },
+        "exitCode": 1,
+        "seconds": 161.363998042
+      },
+      {
+        "stage": "photos",
+        "command": [
+          "node",
+          "scripts/inverse/hard-photo-benchmark.mjs",
+          "--crop=automatic",
+          "--target=mask",
+          "--seconds=10",
+          "--output=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/polish-native-v2/qa/native/photos"
+        ],
+        "environment": {},
+        "exitCode": 0,
+        "seconds": 339.317021667
+      },
+      {
+        "stage": "hunodan-editor-input",
+        "command": [
+          "node",
+          "scripts/inverse/diagnostics/hunodan-editor-input.mjs",
+          "--run=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/polish-native-v2/qa/native/hunodan",
+          "--runtime=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/polish-native-v2/qa/native/runtime",
+          "--output=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/polish-native-v2/qa/native/hunodan-editor-input"
+        ],
+        "environment": {},
+        "exitCode": 0,
+        "seconds": 6.616067417000011
+      },
+      {
+        "stage": "hunodan-editor",
+        "command": [
+          "node",
+          "scripts/inverse/hard-photo-editor-replay.mjs",
+          "--run=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/polish-native-v2/qa/native/hunodan-editor-input",
+          "--output=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/polish-native-v2/qa/native/hunodan-editor"
+        ],
+        "environment": {},
+        "exitCode": 0,
+        "seconds": 19.260662749999995
+      },
+      {
+        "stage": "photo-editor",
+        "command": [
+          "node",
+          "scripts/inverse/hard-photo-editor-replay.mjs",
+          "--run=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/polish-native-v2/qa/native/photo-editor-input",
+          "--output=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/polish-native-v2/qa/native/photo-editor"
+        ],
+        "environment": {},
+        "exitCode": 0,
+        "seconds": 32.949120125000036
+      }
+    ],
+    "nativeGate": {
+      "hunodanPassed": 20,
+      "hunodanTotal": 22,
+      "hunodanErrorRegressions": [
+        {
+          "id": "hjcur-05",
+          "passed": false,
+          "qualityPassed": false,
+          "seconds": 11.026680958000004,
+          "previousSeconds": 3.809227082999998,
+          "error": 0.010517333333333333,
+          "previousError": 0.00933688888888889,
+          "errorDelta": 0.001180444444444444
+        },
+        {
+          "id": "hjhih-01",
+          "passed": false,
+          "qualityPassed": false,
+          "seconds": 11.250253125000002,
+          "previousSeconds": 6.39366758300001,
+          "error": 0.008349217428655803,
+          "previousError": 0.006040430615586996,
+          "errorDelta": 0.002308786813068807
+        },
+        {
+          "id": "hjhih-04",
+          "passed": true,
+          "qualityPassed": true,
+          "seconds": 9.952522417,
+          "previousSeconds": 8.024211208000008,
+          "error": 0.008138608861177477,
+          "previousError": 0.007776029627903062,
+          "errorDelta": 0.00036257923327441457
+        },
+        {
+          "id": "hjstr-03",
+          "passed": true,
+          "qualityPassed": true,
+          "seconds": 9.340306207999994,
+          "previousSeconds": 8.554992041999999,
+          "error": 0.00566611754702944,
+          "previousError": 0.0056129769369752365,
+          "errorDelta": 5.3140610054203466e-05
+        }
+      ],
+      "photoPassed": 26,
+      "photoPassRegressions": [],
+      "photoErrorRegressions": [
+        {
+          "id": "floral-checker",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.01360625,
+          "error": 0.01925625,
+          "errorDelta": 0.005649999999999999
+        },
+        {
+          "id": "gift",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.01665,
+          "error": 0.0167125,
+          "errorDelta": 6.250000000000006e-05
+        },
+        {
+          "id": "gingerbread",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.010875,
+          "error": 0.01094375,
+          "errorDelta": 6.87500000000011e-05
+        },
+        {
+          "id": "warped-checker",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.01424375,
+          "error": 0.01441875,
+          "errorDelta": 0.0001749999999999998
+        },
+        {
+          "id": "fine-checker",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.0179125,
+          "error": 0.01815625,
+          "errorDelta": 0.00024374999999999744
+        },
+        {
+          "id": "orb",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.0118875,
+          "error": 0.01358125,
+          "errorDelta": 0.001693749999999999
+        },
+        {
+          "id": "stacked-hearts",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.00566875,
+          "error": 0.00591875,
+          "errorDelta": 0.0002500000000000002
+        },
+        {
+          "id": "jigsaw",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.00974375,
+          "error": 0.009825,
+          "errorDelta": 8.124999999999973e-05
+        },
+        {
+          "id": "maple-leaf",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.00869375,
+          "error": 0.00876875,
+          "errorDelta": 7.500000000000041e-05
+        },
+        {
+          "id": "flettede-viking",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.02091875,
+          "error": 0.02154375,
+          "errorDelta": 0.0006250000000000006
+        }
+      ],
+      "editablePassed": 46,
+      "editableTotal": 48,
+      "passed": false
+    },
+    "editorScope": {
+      "geometryAndConversionPassed": 48,
+      "total": 48,
+      "completeCandidatePassed": 46,
+      "qualification": "The two Hunodan source-error failures remain failures even though their editable geometry is preserved and legal."
+    },
+    "corpusVisualReview": {
+      "scope": "All 17 changed photographic independent render pairs and all 6 changed Hunodan pairs viewed side by side. The photographic boards include the unchanged input mask. Hunodan boards compare only the two reconstructions; they do not provide new ground-truth observations.",
+      "findings": {
+        "outline-star": "Candidate has more visible faint seams across the white star; both remain rejected by source-feature checks.",
+        "floral-checker": "Candidate has more distorted cell contacts, with pointed protrusions around central contacts. Error rises from 1.360625% to 1.925625%.",
+        "bauble": "Candidate retains the main central object but alters the surrounding dark border fragments; both runs fail.",
+        "orb": "Candidate removes some small exterior protrusions but changes the frame and has higher mask error; not a clear visual improvement.",
+        "faceted-star": "Candidate retains the four main star shapes and improves overall mask error; narrow seam artifacts remain.",
+        "other_photos": "Fine changes in most paired outputs; inspection does not establish a broad visual gain. Bird and leaf have different rendered bytes despite equal overall mask error.",
+        "hunodan": "All six retain their main motifs. Local boundary placement changes remain; the two higher-error speed failures are not excused by recognizability."
+      },
+      "promotionDecision": "Do not adopt this policy based on the local microbenchmark. The complete pipeline has no demonstrated no-regression gain. Keep the source frozen until the already running inverse verification completes.",
+      "boards": [
+        "tmp/heart-learning/polish-native-v2/qa/native/hunodan-comparison-0.png",
+        "tmp/heart-learning/polish-native-v2/qa/native/hunodan-comparison-1.png",
+        "tmp/heart-learning/polish-native-v2/qa/native/photos-comparison-0.png",
+        "tmp/heart-learning/polish-native-v2/qa/native/photos-comparison-1.png",
+        "tmp/heart-learning/polish-native-v2/qa/native/photos-comparison-2.png",
+        "tmp/heart-learning/polish-native-v2/qa/native/photos-equal-error-comparison.png"
+      ]
+    }
   },
   "limitations": [
     "Current full-solve evidence does not satisfy the no-regression requirement. Candidate is under evaluation, not a demonstrated robustness fix.",
@@ -498,6 +757,66 @@
     {
       "path": "tmp/heart-learning/polish-native-v2/qa/browser/results.json",
       "sha256": "047a74ed257b1e3f4b02f453c9c007bf9cc77eb43eb40509c74275020bb95be7"
+    },
+    {
+      "path": "tmp/heart-learning/polish-native-v2/qa/state.json",
+      "sha256": "3507462d35bfa8e6d5ebf57032adc8fd039537b1cf62f9c4d255d4b6c86e35ef"
+    },
+    {
+      "path": "tmp/heart-learning/polish-native-v2/qa/checks.json",
+      "sha256": "e90617ab8a8fd4f16479fc51bc9fe4c565b0a4fa838ebba00a6bad7992207757"
+    },
+    {
+      "path": "tmp/heart-learning/polish-native-v2/qa/native/native-gates.json",
+      "sha256": "78bce230e59f3edc4676d64a0d79434e3ef5839a9365f6eb4184a643a14c7212"
+    },
+    {
+      "path": "tmp/heart-learning/polish-native-v2/qa/native/running.json",
+      "sha256": "49f8376bfd9e2e94ea2c5c8fb22bd7c037e443b7dc5c11187098fd166301dee5"
+    },
+    {
+      "path": "tmp/heart-learning/polish-native-v2/qa/native/checks.json",
+      "sha256": "4727eb826a91a15385ed71f3dba6a901f35c8e5281c05006ce4c3a1e71384338"
+    },
+    {
+      "path": "tmp/heart-learning/polish-native-v2/qa/native/photo-comparison.json",
+      "sha256": "3065cdd39b1cdaf48667bb27be22252498ee0e828baff5f2fc40b9bd6e9494b2"
+    },
+    {
+      "path": "tmp/heart-learning/polish-native-v2/qa/native/hunodan-comparison.json",
+      "sha256": "edabe7f7a7c505d0c9089744ffdb43c41734ae759168bee14a277fed74bfe68a"
+    },
+    {
+      "path": "tmp/heart-learning/polish-native-v2/qa/native/image-comparison-index.json",
+      "sha256": "400cca82f6110546b1ae99063177cc0cb8318a43af783373ee6f805dcf910223"
+    },
+    {
+      "path": "tmp/heart-learning/polish-native-v2/qa/native/visual-review.json",
+      "sha256": "e67f3f8785feb41f087fd9ed0bc31c3142f1199c36241ebcf4ada8d98057b41a"
+    },
+    {
+      "path": "tmp/heart-learning/polish-native-v2/qa/native/hunodan-comparison-0.png",
+      "sha256": "c5f5922c82a145ff8d93609fb77024c11dfe73346fab32ef08ed1eb1e368de87"
+    },
+    {
+      "path": "tmp/heart-learning/polish-native-v2/qa/native/hunodan-comparison-1.png",
+      "sha256": "34a2216b9f827bd0792e41d9b8409049e8a5575bc7f888b9a643fd0e0209386e"
+    },
+    {
+      "path": "tmp/heart-learning/polish-native-v2/qa/native/photos-comparison-0.png",
+      "sha256": "0c01548baac53070a49bbd5176f102b249387785d95dcc1bdde7470af4a66eda"
+    },
+    {
+      "path": "tmp/heart-learning/polish-native-v2/qa/native/photos-comparison-1.png",
+      "sha256": "8d839d7f1ab426ddae52d7876daa90a2cc88fd1f495088fbd7c76fd6f5ab2374"
+    },
+    {
+      "path": "tmp/heart-learning/polish-native-v2/qa/native/photos-comparison-2.png",
+      "sha256": "ffbbdf1ac61a70b0b39d47aa3e224a216e16712ced83c6d50fd9fe7c0689446b"
+    },
+    {
+      "path": "tmp/heart-learning/polish-native-v2/qa/native/photos-equal-error-comparison.png",
+      "sha256": "5785bc99271f3856ffae57921fb3b100ffe23a7993f77b674166d09f44d387b4"
     }
   ]
 }

@@ -114,14 +114,21 @@ A fixed 41-step crown replay preserves all 874 coordinates, checkpoint history
 and audit decisions while taking 1.07 s rather than 1.66 s. Twelve fresh solves
 improve five paired errors but worsen one vertical result, which loses sun rays
 and exceeds the unchanged 4% local-detail criterion. Earlier fitting states also
-vary, so those full runs do not isolate the change. The candidate is under local
-full-suite and corpus QA. All 29 focused regressions, type checking, lint, build
-and private Chromium star/hat workflows pass. The application suite has one
-anchor-return failure (856 pass, one skip), which prevented its chained inverse
-suite from starting; a separate inverse run is queued after the corpus. Some
-Hunodan cases already exceed ten seconds under observed concurrent external
-CPU load. These outcomes remain failures; no robustness, speed-goal or
-no-regression claim is established.
+vary, so those full runs do not isolate the change. The candidate is not ready for
+promotion. All 29 focused regressions, type checking, lint, build and private
+Chromium star/hat workflows pass, but completed corpus QA has only 20/22 Hunodan
+speed-and-quality passes. The two failures take 11.03 and 11.25 seconds and also
+exceed their source-error bounds. Hard-photo acceptance stays at 26/31, with ten
+accepted-photo errors higher than the previous run. All 48 editable conversions
+preserve legal geometry; 46 pass all candidate criteria, with the same two
+Hunodan source-error failures retained. Visual comparison of all 17 changed
+photo renders and six changed Hunodan renders finds extra faint star seams and
+more distorted floral-checker contacts. Observed concurrent CPU load is a
+confound, not an established explanation or exemption. The application suite
+also has one anchor-return failure (856 pass, one skip), which prevented its
+chained inverse suite from starting; the separately launched inverse suite is
+running. A [fixed-geometry clock replay](anchor-projection-clock-plan.json) is
+queued to isolate the local repair timeout. No acceptance rule is relaxed.
 
 A [boundary preparation refactor](boundary-trace-reuse.json) reuses cleanup and
 pixel chains when trying several tracing tolerances. Across 29 photographic
