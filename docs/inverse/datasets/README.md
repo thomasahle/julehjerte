@@ -109,8 +109,13 @@ audits preserve every non-time field and paper-map pixel. Twelve fresh solves
 retain six checked pairs per arm, but the native-first policy worsens the
 stacked and diagonal image errors in both repetitions. Visual review confirms
 less complete sun rays in the diagonal case. It remains offline. A follow-up
-limits the native preference to polishing, preserving the earlier search policy;
-no production backend policy has changed.
+[limits the native preference to polishing](polishing-native-kernels.json).
+A fixed 41-step crown replay preserves all 874 coordinates, checkpoint history
+and audit decisions while taking 1.07 s rather than 1.66 s. Twelve fresh solves
+improve five paired errors but worsen one vertical result, which loses sun rays
+and exceeds the unchanged 4% local-detail criterion. Earlier fitting states also
+vary, so those full runs do not isolate the change. The candidate is under local
+full-suite and corpus QA; no robustness or no-regression claim is established.
 
 A [boundary preparation refactor](boundary-trace-reuse.json) reuses cleanup and
 pixel chains when trying several tracing tolerances. Across 29 photographic

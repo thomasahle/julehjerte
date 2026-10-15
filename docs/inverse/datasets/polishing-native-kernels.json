@@ -1,0 +1,391 @@
+{
+  "schema": 1,
+  "status": "candidate_under_local_QA; not_committed_to_production_source_yet",
+  "sourceCommit": "177dd2c",
+  "implementation": "Only polishCandidate requests native paper audits, including ordinary, local and detailed polishing. Earlier coarse fitting and kernel calibration are unchanged. Explicit ordinary caller audits are preserved. Native fallbacks, threshold ties and all paper/geometry rules stay unchanged.",
+  "developmentCorrection": "The first polishing-only prototype passed its custom audit only for detailed polishing. Its fixed ordinary crown run did not exercise the change. v2 passes the audit in both paths; the recorded v2 crown test exercises it.",
+  "fixedEntry": {
+    "fixture": "scripts/inverse/fixtures/crown-polishing-checkpoint.json",
+    "steps": 41,
+    "scalarCoordinates": 874,
+    "allCoordinatesGeometryHistoryAndDecisionsIdentical": true,
+    "independentError": 0.02241875,
+    "beforeMilliseconds": 1664.6585,
+    "afterMilliseconds": 1066.935917,
+    "saving": 0.3590661886507053,
+    "paperVerification": {
+      "requestedResolution": 700,
+      "initialStatus": "uncertain",
+      "resolution": 1000,
+      "status": "pass",
+      "source": "rollback-checkpoint"
+    },
+    "qualification": "One timed replay per policy; a fixed saved starting geometry isolates polishing. This is not a fresh-image solve or a broad speed estimate."
+  },
+  "fullSolves": {
+    "protocol": "Three cases, two repetitions, alternating before/after order in fresh Node processes. Original settings and inputs, 10s request, 1.5x clock for two near-misses; original stacked mask has real clock. Compare checks, independent image error, local sun error and selected polish entry diagnostics. No quality gate relaxed.",
+    "pairs": [
+      {
+        "case": "stacked",
+        "repeat": 0,
+        "beforeError": 0.01340625,
+        "afterError": 0.01273125,
+        "delta": -0.0006750000000000003,
+        "beforeTemplateChecks": true,
+        "afterTemplateChecks": true,
+        "beforeLocalSunError": null,
+        "afterLocalSunError": null,
+        "beforeOutputAndLocalDetailPassed": true,
+        "afterOutputAndLocalDetailPassed": true,
+        "beforePolish": {
+          "residualCoreFraction": 0.0020375,
+          "addedCurves": 37,
+          "fixedBorderMm": 8,
+          "maximumLengthMm": 4,
+          "frozenCoordinates": 140,
+          "paperSeparationRetry": {
+            "step": 40,
+            "previousLocalFactor": 8,
+            "localFactor": 3
+          },
+          "applied": true,
+          "errorBefore": 0.01453125,
+          "errorAfter": 0.01348125,
+          "steps": 95,
+          "geometryPassed": true,
+          "paperStatus": "pass"
+        },
+        "afterPolish": {
+          "residualCoreFraction": 0.002325,
+          "addedCurves": 50,
+          "fixedBorderMm": 8,
+          "maximumLengthMm": 4,
+          "frozenCoordinates": 136,
+          "paperRecovery": {
+            "foldFamilies": [],
+            "localFamilies": [
+              0
+            ],
+            "releasedCoordinates": 0
+          },
+          "applied": true,
+          "errorBefore": 0.0150375,
+          "errorAfter": 0.0127375,
+          "steps": 85,
+          "geometryPassed": true,
+          "paperStatus": "pass"
+        },
+        "beforeSeconds": 9.657615374999999,
+        "afterSeconds": 9.795713249999999
+      },
+      {
+        "case": "stacked",
+        "repeat": 1,
+        "beforeError": 0.01805,
+        "afterError": 0.01375625,
+        "delta": -0.004293750000000001,
+        "beforeTemplateChecks": true,
+        "afterTemplateChecks": true,
+        "beforeLocalSunError": null,
+        "afterLocalSunError": null,
+        "beforeOutputAndLocalDetailPassed": true,
+        "afterOutputAndLocalDetailPassed": true,
+        "beforePolish": {
+          "residualCoreFraction": 0.0033875,
+          "addedCurves": 60,
+          "fixedBorderMm": 8,
+          "maximumLengthMm": 4,
+          "frozenCoordinates": 140,
+          "applied": true,
+          "errorBefore": 0.0184125,
+          "errorAfter": 0.01833125,
+          "steps": 85,
+          "geometryPassed": true,
+          "paperStatus": "pass"
+        },
+        "afterPolish": {
+          "residualCoreFraction": 0.0020375,
+          "addedCurves": 37,
+          "fixedBorderMm": 8,
+          "maximumLengthMm": 4,
+          "frozenCoordinates": 140,
+          "paperSeparationRetry": {
+            "step": 40,
+            "previousLocalFactor": 8,
+            "localFactor": 3
+          },
+          "applied": true,
+          "errorBefore": 0.01453125,
+          "errorAfter": 0.01401875,
+          "steps": 85,
+          "geometryPassed": true,
+          "paperStatus": "pass"
+        },
+        "beforeSeconds": 9.608792458,
+        "afterSeconds": 9.797255833
+      },
+      {
+        "case": "vertical",
+        "repeat": 0,
+        "beforeError": 0.01965625,
+        "afterError": 0.01956875,
+        "delta": -8.750000000000077e-05,
+        "beforeTemplateChecks": true,
+        "afterTemplateChecks": true,
+        "beforeLocalSunError": 0.04645378151260504,
+        "afterLocalSunError": 0.04638655462184874,
+        "beforeOutputAndLocalDetailPassed": false,
+        "afterOutputAndLocalDetailPassed": false,
+        "beforePolish": {
+          "residualCoreFraction": 0.00625625,
+          "addedCurves": 70,
+          "fixedBorderMm": 8,
+          "maximumLengthMm": 4,
+          "frozenCoordinates": 88,
+          "applied": true,
+          "errorBefore": 0.03100625,
+          "errorAfter": 0.019475,
+          "steps": 85,
+          "geometryPassed": true,
+          "paperStatus": "pass"
+        },
+        "afterPolish": {
+          "residualCoreFraction": 0.0060875,
+          "addedCurves": 70,
+          "fixedBorderMm": 8,
+          "maximumLengthMm": 4,
+          "frozenCoordinates": 88,
+          "applied": true,
+          "errorBefore": 0.0308125,
+          "errorAfter": 0.01945,
+          "steps": 85,
+          "geometryPassed": true,
+          "paperStatus": "pass"
+        },
+        "beforeSeconds": 6.918793541,
+        "afterSeconds": 6.967183333
+      },
+      {
+        "case": "vertical",
+        "repeat": 1,
+        "beforeError": 0.0160125,
+        "afterError": 0.01956875,
+        "delta": 0.0035562500000000004,
+        "beforeTemplateChecks": true,
+        "afterTemplateChecks": true,
+        "beforeLocalSunError": 0.0334453781512605,
+        "afterLocalSunError": 0.04638655462184874,
+        "beforeOutputAndLocalDetailPassed": true,
+        "afterOutputAndLocalDetailPassed": false,
+        "beforePolish": {
+          "residualCoreFraction": 0.00611875,
+          "addedCurves": 70,
+          "fixedBorderMm": 8,
+          "maximumLengthMm": 4,
+          "frozenCoordinates": 86,
+          "applied": true,
+          "errorBefore": 0.03075,
+          "errorAfter": 0.0159125,
+          "steps": 85,
+          "geometryPassed": true,
+          "paperStatus": "pass"
+        },
+        "afterPolish": {
+          "residualCoreFraction": 0.0060875,
+          "addedCurves": 70,
+          "fixedBorderMm": 8,
+          "maximumLengthMm": 4,
+          "frozenCoordinates": 88,
+          "applied": true,
+          "errorBefore": 0.0308125,
+          "errorAfter": 0.01945,
+          "steps": 85,
+          "geometryPassed": true,
+          "paperStatus": "pass"
+        },
+        "beforeSeconds": 7.0048530829999995,
+        "afterSeconds": 6.951502417
+      },
+      {
+        "case": "negative-diagonal",
+        "repeat": 0,
+        "beforeError": 0.01693125,
+        "afterError": 0.01525625,
+        "delta": -0.0016749999999999977,
+        "beforeTemplateChecks": true,
+        "afterTemplateChecks": true,
+        "beforeLocalSunError": null,
+        "afterLocalSunError": null,
+        "beforeOutputAndLocalDetailPassed": true,
+        "afterOutputAndLocalDetailPassed": true,
+        "beforePolish": {
+          "residualCoreFraction": 0.005175,
+          "addedCurves": 64,
+          "fixedBorderMm": 8,
+          "maximumLengthMm": 4,
+          "frozenCoordinates": 78,
+          "applied": true,
+          "errorBefore": 0.02636875,
+          "errorAfter": 0.01669375,
+          "steps": 85,
+          "geometryPassed": true,
+          "paperStatus": "pass"
+        },
+        "afterPolish": {
+          "residualCoreFraction": 0.00514375,
+          "addedCurves": 63,
+          "fixedBorderMm": 8,
+          "maximumLengthMm": 4,
+          "frozenCoordinates": 78,
+          "applied": true,
+          "errorBefore": 0.0264625,
+          "errorAfter": 0.01523125,
+          "steps": 115,
+          "geometryPassed": true,
+          "paperStatus": "pass"
+        },
+        "beforeSeconds": 6.857892667,
+        "afterSeconds": 6.878267333
+      },
+      {
+        "case": "negative-diagonal",
+        "repeat": 1,
+        "beforeError": 0.01655625,
+        "afterError": 0.01426875,
+        "delta": -0.0022875000000000013,
+        "beforeTemplateChecks": true,
+        "afterTemplateChecks": true,
+        "beforeLocalSunError": null,
+        "afterLocalSunError": null,
+        "beforeOutputAndLocalDetailPassed": true,
+        "afterOutputAndLocalDetailPassed": true,
+        "beforePolish": {
+          "residualCoreFraction": 0.00509375,
+          "addedCurves": 63,
+          "fixedBorderMm": 8,
+          "maximumLengthMm": 4,
+          "frozenCoordinates": 78,
+          "applied": true,
+          "errorBefore": 0.0263625,
+          "errorAfter": 0.0165875,
+          "steps": 85,
+          "geometryPassed": true,
+          "paperStatus": "pass"
+        },
+        "afterPolish": {
+          "residualCoreFraction": 0.00505,
+          "addedCurves": 64,
+          "fixedBorderMm": 8,
+          "maximumLengthMm": 4,
+          "frozenCoordinates": 78,
+          "applied": true,
+          "errorBefore": 0.02628125,
+          "errorAfter": 0.01426875,
+          "steps": 125,
+          "geometryPassed": true,
+          "paperStatus": "pass"
+        },
+        "beforeSeconds": 7.0668445,
+        "afterSeconds": 6.978043250000001
+      }
+    ],
+    "checkedPairsPerArm": 6,
+    "outputAndLocalDetailPasses": {
+      "before": 5,
+      "after": 4
+    },
+    "errorImprovements": 5,
+    "errorRegressions": 1,
+    "noRegressionGatePassed": false
+  },
+  "visualReview": {
+    "reviewed": [
+      "comparison-0.png",
+      "comparison-1.png"
+    ],
+    "outputsReviewed": 12,
+    "findings": [
+      "The second vertical pair is visibly worse: several right/lower sun rays disappear in the candidate. Its local sun disagreement rises from 3.3445% to 4.6387%, exceeding the unchanged 4% fixture criterion.",
+      "Both first-round vertical outputs have incomplete rays. Passing the ordinary whole-mask feature gate does not establish good sun recovery.",
+      "The stacked second-round candidate reduces broad boundary distortion and the diagonal candidates retain more sun rays, but false seams and irregular corners remain.",
+      "All pairs began from the same source pixels and settings. Their recorded errors before polishing differ in several pairs, including the vertical regression, so elapsed-time variation before the changed stage prevents attributing all changes to the native preference."
+    ]
+  },
+  "qa": {
+    "status": "running",
+    "controller": "tmp/heart-learning/polish-native-v2/qa/run.py",
+    "state": "tmp/heart-learning/polish-native-v2/qa/state.json",
+    "sourcePins": "tmp/heart-learning/polish-native-v2/qa/source.json",
+    "plannedChecks": [
+      "focused paper/refinement regressions",
+      "type checking",
+      "lint",
+      "production build",
+      "private Chromium star/hat workflows",
+      "full npm test",
+      "22 Hunodan speed/accuracy cases",
+      "31 photographic cases",
+      "editable SVG conversion and paper checks"
+    ],
+    "noReleaseClaim": true
+  },
+  "limitations": [
+    "Current full-solve evidence does not satisfy the no-regression requirement. Candidate is under evaluation, not a demonstrated robustness fix.",
+    "Current inverse-suite timing failures are not treated as resolved by the fixed-entry equivalence or ordinary template-check count.",
+    "Earlier active studies and source data remain unchanged. No push or deployment."
+  ],
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/polish-native-v2/after/inverse/core/direct/polish.js",
+      "sha256": "dddfb7fce27e8b10a92cfe95e3fb991ae4ea77384b39a4d9a51ead36121f7eef"
+    },
+    {
+      "path": "tmp/heart-learning/polish-native-v2/before/inverse/core/direct/polish.js",
+      "sha256": "f7d6b7e6430490775964e4ff571007f61a675ea0b57943f7dba662d6d71af858"
+    },
+    {
+      "path": "tmp/heart-learning/polish-native-v2/comparison-0.png",
+      "sha256": "de24a02392cdbeb60f7e27dfde7f283a8a7b233762b5bfe11495b5a62118d9c2"
+    },
+    {
+      "path": "tmp/heart-learning/polish-native-v2/comparison-1.png",
+      "sha256": "ad32e2f971bcdec8bef1fb5142b839c35e9a32d291be3fbfc25307c9695d880b"
+    },
+    {
+      "path": "tmp/heart-learning/polish-native-v2/fixed-crown-after.json",
+      "sha256": "8d43aa3215b77d2ef7bca04f6c4429407057e6af04d7aec744cbd01b33d8ba2d"
+    },
+    {
+      "path": "tmp/heart-learning/polish-native-v2/fixed-crown-before.json",
+      "sha256": "64b1b4a072de48974dd653dac3a0e189cdf7429c9046d3e5851867a0087c9c2f"
+    },
+    {
+      "path": "tmp/heart-learning/polish-native-v2/fixed-crown.mjs",
+      "sha256": "df1c68707cc3121c31e658ad33ec677dd659468bf8a0605c26bae2b47cc297ba"
+    },
+    {
+      "path": "tmp/heart-learning/polish-native-v2/plan.json",
+      "sha256": "3e9ea197c697f98e07afc0569646e954deee84cf68a3e2e41ea08636219a279a"
+    },
+    {
+      "path": "tmp/heart-learning/polish-native-v2/solve-batch.py",
+      "sha256": "2fd5d7a040e884adc71057ab6235774839fe577a46bac80f5084ce7c7f53e33f"
+    },
+    {
+      "path": "tmp/heart-learning/polish-native-v2/solve-results.json",
+      "sha256": "421a60d9552ef682ee61a5e1e2c652a705597a353d2b1dc2f105d9e60c90f417"
+    },
+    {
+      "path": "tmp/heart-learning/polish-native-v2/solve-state.json",
+      "sha256": "7ec22950cfb21d833f8ec6e0de66726bb9b3abacdbdfaed2f8dd9a377b202f10"
+    },
+    {
+      "path": "tmp/heart-learning/polish-native-v2/solve.mjs",
+      "sha256": "b181e75503e4d3dc37be36a5c91137c95873c38c74499fe5e08514f600ca35d6"
+    },
+    {
+      "path": "tmp/heart-learning/polish-native-v2/visual-review.json",
+      "sha256": "4fffdacf739c392d29891c686855158dc87ef9748421d2fda681b0219df78089"
+    }
+  ]
+}

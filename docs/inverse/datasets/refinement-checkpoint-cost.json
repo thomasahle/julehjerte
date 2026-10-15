@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "status": "native_first_comparison_complete; narrower_polishing_comparison_running",
+  "status": "native_first_comparison_complete; followed_by_polishing_only_candidate",
   "sourceCommit": "47d6f72",
   "question": "Which refinement work consumes the deadline, and can native paper kernels avoid redundant startup audits without changing results?",
   "scope": "Offline copied runtimes only. No production engine, mask, geometry, resolution, clearance or acceptance rule changed.",
@@ -1132,7 +1132,8 @@
     }
   ],
   "nextExperiment": {
-    "plan": "tmp/heart-learning/polish-native-v1/plan.json",
+    "plan": "tmp/heart-learning/polish-native-v2/plan.json",
+    "results": "docs/inverse/datasets/polishing-native-kernels.json",
     "scope": "Use existing native:true option only inside polishing paper audits; preserve earlier coarse search backend policy."
   }
 }
