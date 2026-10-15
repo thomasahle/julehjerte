@@ -1,6 +1,6 @@
 {
   "schema": "woven-heart-corner-clearance-study-1",
-  "status": "fresh_replay_verified_repository_qa_running",
+  "status": "verified",
   "scope": "One frozen photographic mask; fresh corner-seed routing with fixed 0.75 mm tracing tolerance, then at most five seconds of clearance projection. Original mask remains the reference. No pretrained cuts, production scheduling, or ten-second claim.",
   "measurements": {
     "maskSha256": "e0cb651b0b2212c08cd6fddc87de9c897e5f520379aefff3dbfe9b14841ec51b",
@@ -533,19 +533,388 @@
     "tmp/heart-learning/nonlocal-projection-v2/report.json": "0665c395b0dba78256e7bbf842e86c3f91713bddcf16a28d116ccf610059f270",
     "tmp/heart-learning/nonlocal-projection-v5/report.json": "0ba1ef4f30bf53b62a6f530fa037b03c0afed081d95c939e869ac9765b0fbfb9",
     "tmp/heart-learning/nonlocal-linear-v1/report.json": "35ef2581d8cd52befa89b65bfafd1a18ccc44ab99db0b78e1a8cf7dc56d7966c",
-    "scripts/inverse/fixtures/stacked-hearts-corner-routing.json": "51ca787ca1c337c2a4b62cb2496fd672e8cca7aa8ec4e9b27573651db41c878d"
+    "scripts/inverse/fixtures/stacked-hearts-corner-routing.json": "51ca787ca1c337c2a4b62cb2496fd672e8cca7aa8ec4e9b27573651db41c878d",
+    "tmp/heart-learning/corner-clearance-refined-v1/report.json": "c799d8cf0328616fe31bdf9c611cefcb181d9fa8985ec3a3b5dac763d524a3fc",
+    "tmp/heart-learning/corner-clearance-refined-v1/independent-multiscale.json": "f294947e03cad4b8c48299ff5be50709a7decff65484c39d113512f91c8cf724",
+    "tmp/heart-learning/corner-clearance-refined-v1/comparison.png": "8fd04ec9691cf28beec04e9aa54fc532d97f2df78cad715349ebee57e916c43d",
+    "tmp/heart-learning/corner-clearance-refined-v1/editable.svg": "a34102e360c0de154d3f3cc9fed062aebdadf7ea85d210231d9dcaaba9556638",
+    "tmp/heart-learning/valid-corner-refine-v1/report.json": "eafa6c604bdd525aaacde9ec5614f890f5ebd16a3a03f6296259cdf3c8161727",
+    "tmp/heart-learning/valid-corner-refine-v1/run.mjs": "8f33e3527f1a7b2eabd64a09eb3cfeea08fbc3c5933f16a2fa0d3e65504fb7c9",
+    "tmp/heart-learning/corner-clearance-fresh-v1/independent-multiscale.json": "e59cdca4fa3eaaec297af7acb91b346bcb4cef98e124428bd47128d4cf92e75e",
+    "tmp/heart-learning/corner-clearance-qa-v1/source.json": "5b0395ac395f3d76d49e5797ea2993087d2085d73b7ea137df0b8212aad82341",
+    "tmp/heart-learning/corner-clearance-qa-v1/checks.json": "5368518a872502f3ed68af82581210b2ba935688a322f6819192c683d089ae60",
+    "tmp/heart-learning/corner-clearance-qa-v1/running.json": "8a650db1c07e3cd2aa03e72eb044505402717bc97d565b10ad878f693a404784",
+    "tmp/heart-learning/corner-clearance-qa-v2/source.json": "4859480bef76e1c55510706157368d78e7316bdb807a0a64dd4b9dabb8deb255",
+    "tmp/heart-learning/corner-clearance-qa-v2/checks.json": "e138bb73baa57b4a6553b41a4c191935c319b64dad69f3b86dc9c4c907cc189b",
+    "tmp/heart-learning/corner-clearance-qa-v2/running.json": "8a650db1c07e3cd2aa03e72eb044505402717bc97d565b10ad878f693a404784"
   },
   "verification": {
     "focusedTests": 22,
     "coreLint": "pass",
-    "repositoryQA": "tmp/heart-learning/corner-clearance-qa-v1",
-    "status": "running"
+    "inverseTests": 876,
+    "inversePassed": 876,
+    "applicationPassed": 857,
+    "applicationSkipped": 1,
+    "fullChecks": [
+      {
+        "stage": "core-lint",
+        "command": [
+          "npx",
+          "eslint",
+          "--no-ignore",
+          "static/inverse/core/direct/short-return-project.js",
+          "static/inverse/core/direct/clearance-witnesses.js",
+          "static/inverse/core/direct/linear-controls.js"
+        ],
+        "exitCode": 0,
+        "seconds": 1.591955833
+      },
+      {
+        "stage": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 8.689248542000001
+      },
+      {
+        "stage": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 6.031564790999999
+      },
+      {
+        "stage": "app",
+        "command": [
+          "npx",
+          "vitest",
+          "run",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 0,
+        "seconds": 22.20408875
+      },
+      {
+        "stage": "build",
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 12.220143708999998
+      },
+      {
+        "stage": "inverse",
+        "command": [
+          "npm",
+          "run",
+          "test:inverse"
+        ],
+        "exitCode": 0,
+        "seconds": 861.3941216659999
+      }
+    ],
+    "fullRun": {
+      "status": "complete",
+      "sourceFilesVerified": 728
+    },
+    "postReplayExtensionChecks": [
+      {
+        "stage": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 8.990999542
+      },
+      {
+        "stage": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 6.2781125410000005
+      },
+      {
+        "stage": "app",
+        "command": [
+          "npx",
+          "vitest",
+          "run",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 0,
+        "seconds": 22.238395542000003
+      },
+      {
+        "stage": "build",
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 11.591888124999997
+      }
+    ],
+    "postReplayExtensionRun": {
+      "status": "complete",
+      "sourceFilesVerified": 728
+    },
+    "onlyChangedSourceAfterInverseRun": [
+      "scripts/inverse/diagnostics/corner-clearance-repair.mjs"
+    ],
+    "status": "complete"
   },
   "limitations": [
     "Frozen estimated neural mask, not original artwork or a raw-photo benchmark pass.",
     "Not integrated into automatic search.",
     "11.45 seconds excludes downstream independent and editable checks.",
     "Four enclosed hearts verified; checker junction connectivity differs with rasterization.",
-    "Physical assembly untested."
-  ]
+    "Physical assembly untested.",
+    "Refined fresh total is 14.91 seconds before independent/export audits; the ten-second target remains unmet for this development mask."
+  ],
+  "refinedReplay": {
+    "maskSha256": "e0cb651b0b2212c08cd6fddc87de9c897e5f520379aefff3dbfe9b14841ec51b",
+    "initialGeometrySha256": "8c55de8c9c9fae7e2be92f4e363ffa71d6edbd4d5b9d32a15d8e2a151f4848ec",
+    "routingSeconds": 8.900012917,
+    "repairSeconds": 2.122141458,
+    "fitAndFinishSeconds": 14.913337958,
+    "independentImageError": 0.0176125,
+    "independentFiner": {
+      "resolution": 800,
+      "reference": "Each original mask cell repeated 2 x 2; no extra photo information.",
+      "imageError": 0.01848125,
+      "components": [
+        {
+          "centerMm": [
+            14.105950736648248,
+            14.743669429097606
+          ],
+          "sourceAreaMm2": 271.5,
+          "intersectionPixels": 17195,
+          "retention": 0.9895833333333334,
+          "predictedComponentAreaMm2": 273.75,
+          "touchesBorder": false,
+          "componentIoU": 0.9714140444042709
+        },
+        {
+          "centerMm": [
+            38.96996221662469,
+            40.24773299748111
+          ],
+          "sourceAreaMm2": 248.125,
+          "intersectionPixels": 15084,
+          "retention": 0.9498740554156171,
+          "predictedComponentAreaMm2": 237.4375,
+          "touchesBorder": false,
+          "componentIoU": 0.9432216108054027
+        },
+        {
+          "centerMm": [
+            37.09396305256213,
+            63.97888717835936
+          ],
+          "sourceAreaMm2": 568.375,
+          "intersectionPixels": 35551,
+          "retention": 0.9773202111282164,
+          "predictedComponentAreaMm2": 562.796875,
+          "touchesBorder": false,
+          "componentIoU": 0.9649060905439149
+        },
+        {
+          "centerMm": [
+            62.52816560685651,
+            65.49623306607685
+          ],
+          "sourceAreaMm2": 226.0625,
+          "intersectionPixels": 14296,
+          "retention": 0.9881116947746752,
+          "predictedComponentAreaMm2": 225.484375,
+          "touchesBorder": false,
+          "componentIoU": 0.9789769225501609
+        },
+        {
+          "centerMm": [
+            85.27692091979809,
+            89.84885025238364
+          ],
+          "sourceAreaMm2": 222.875,
+          "intersectionPixels": 13855,
+          "retention": 0.9713264161525519,
+          "predictedComponentAreaMm2": 218.625,
+          "touchesBorder": false,
+          "componentIoU": 0.9620859662523435
+        }
+      ]
+    },
+    "enginePassed": true,
+    "editablePassed": true,
+    "components": [
+      {
+        "centerMm": [
+          14.105950736648248,
+          14.743669429097606
+        ],
+        "sourceAreaMm2": 271.5,
+        "intersectionPixels": 4312,
+        "retention": 0.992633517495396,
+        "predictedComponentAreaMm2": 274.5625,
+        "touchesBorder": false,
+        "componentIoU": 0.9744632768361582
+      },
+      {
+        "centerMm": [
+          38.96996221662469,
+          40.24773299748111
+        ],
+        "sourceAreaMm2": 248.125,
+        "intersectionPixels": 3780,
+        "retention": 0.9521410579345088,
+        "predictedComponentAreaMm2": 237.4375,
+        "touchesBorder": false,
+        "componentIoU": 0.9476059162697418
+      },
+      {
+        "centerMm": [
+          37.09396305256213,
+          63.97888717835936
+        ],
+        "sourceAreaMm2": 568.375,
+        "intersectionPixels": 8898,
+        "retention": 0.9784473279085111,
+        "predictedComponentAreaMm2": 563.4375,
+        "touchesBorder": false,
+        "componentIoU": 0.9660188904570622
+      },
+      {
+        "centerMm": [
+          62.52816560685651,
+          65.49623306607685
+        ],
+        "sourceAreaMm2": 226.0625,
+        "intersectionPixels": 3586,
+        "retention": 0.9914293613491844,
+        "predictedComponentAreaMm2": 225.8125,
+        "touchesBorder": false,
+        "componentIoU": 0.9840834248079035
+      },
+      {
+        "centerMm": [
+          85.27692091979809,
+          89.84885025238364
+        ],
+        "sourceAreaMm2": 222.875,
+        "intersectionPixels": 3475,
+        "retention": 0.9744812114413909,
+        "predictedComponentAreaMm2": 219.1875,
+        "touchesBorder": false,
+        "componentIoU": 0.9658143413007226
+      }
+    ],
+    "refinement": {
+      "seconds": 3.3575560409999996,
+      "steps": 800,
+      "skippedSteps": 700
+    },
+    "editable": {
+      "imageError": 0.0174625,
+      "components": [
+        {
+          "centerMm": [
+            14.105950736648248,
+            14.743669429097606
+          ],
+          "sourceAreaMm2": 271.5,
+          "intersectionPixels": 4304,
+          "retention": 0.990791896869245,
+          "predictedComponentAreaMm2": 273.375,
+          "touchesBorder": false,
+          "componentIoU": 0.9750792931581332
+        },
+        {
+          "centerMm": [
+            38.96996221662469,
+            40.24773299748111
+          ],
+          "sourceAreaMm2": 248.125,
+          "intersectionPixels": 3773,
+          "retention": 0.9503778337531487,
+          "predictedComponentAreaMm2": 236.75,
+          "touchesBorder": false,
+          "componentIoU": 0.9468005018820577
+        },
+        {
+          "centerMm": [
+            37.09396305256213,
+            63.97888717835936
+          ],
+          "sourceAreaMm2": 568.375,
+          "intersectionPixels": 8893,
+          "retention": 0.9778975148449527,
+          "predictedComponentAreaMm2": 563.125,
+          "touchesBorder": false,
+          "componentIoU": 0.9654760612311367
+        },
+        {
+          "centerMm": [
+            62.52816560685651,
+            65.49623306607685
+          ],
+          "sourceAreaMm2": 226.0625,
+          "intersectionPixels": 3582,
+          "retention": 0.9903234724910146,
+          "predictedComponentAreaMm2": 225.0625,
+          "touchesBorder": false,
+          "componentIoU": 0.9851485148514851
+        },
+        {
+          "centerMm": [
+            85.27692091979809,
+            89.84885025238364
+          ],
+          "sourceAreaMm2": 222.875,
+          "intersectionPixels": 3471,
+          "retention": 0.9733595064498037,
+          "predictedComponentAreaMm2": 218.3125,
+          "touchesBorder": false,
+          "componentIoU": 0.967391304347826
+        }
+      ],
+      "fidelity": {
+        "passed": true,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 400,
+            "mismatch": 0
+          },
+          {
+            "resolution": 800,
+            "mismatch": 0
+          }
+        ],
+        "originalSourceError": 0.0174625,
+        "sourceError": 0.0174625
+      },
+      "issues": []
+    },
+    "geometryPassed": true,
+    "paperStatus": "pass",
+    "editablePaperStatus": "pass",
+    "sourceHashChanges": {
+      "scripts/inverse/diagnostics/corner-clearance-repair.mjs": "b6f76e7923ba1c98b74e774b368efb845ae965d9b020a6b3c6150c9e6f0975a6"
+    }
+  }
 }

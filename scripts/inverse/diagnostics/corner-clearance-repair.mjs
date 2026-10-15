@@ -15,7 +15,7 @@ import {buildGraph,curvesOf,solutionJSON} from '../../../static/inverse/core/gra
 import {solveBoundary} from '../../../static/inverse/core/routing.js';
 import {CurveGraph} from '../../../static/inverse/core/direct/curves.js';
 import {projectShortReturns} from '../../../static/inverse/core/direct/short-return-project.js';
-import {fittingMargin} from '../../../static/inverse/core/direct/refine.js';
+import {fittingMargin,refineCurves} from '../../../static/inverse/core/direct/refine.js';
 import {validate} from '../../../static/inverse/core/validate.js';
 import {materialAudit} from '../../../static/inverse/core/material.js';
 import {featureComponentMetrics,auditFeatureFidelity} from '../../../static/inverse/core/feature-shapes.js';
@@ -23,9 +23,10 @@ import {renderExportedWeave} from '../export-renderer.mjs';
 import {auditEditablePaper} from '../editable-paper-audit.mjs';
 
 const args=Object.fromEntries(process.argv.slice(2).map(s=>s.replace(/^--/,'').split('=')));
-if(!args.output||Object.keys(args).some(k=>!['output','seconds'].includes(k)))throw new Error('Use --output=<new directory> [--seconds=20]');
-const seconds=Number(args.seconds??20);
+if(!args.output||Object.keys(args).some(k=>!['output','seconds','refine-seconds'].includes(k)))throw new Error('Use --output=<new directory> [--seconds=20] [--refine-seconds=0]');
+const seconds=Number(args.seconds??20),refineSeconds=Number(args['refine-seconds']??0);
 if(!Number.isFinite(seconds)||seconds<=0||seconds>60)throw new RangeError('The routing budget must be in (0,60] seconds.');
+if(!Number.isFinite(refineSeconds)||refineSeconds<0||refineSeconds>10)throw new RangeError('The optional refinement budget must be in [0,10] seconds.');
 const hash=b=>createHash('sha256').update(b).digest('hex'),fixtureFile='scripts/inverse/fixtures/stacked-hearts-corner-mask.json';
 const fixtureBytes=await fs.readFile(fixtureFile),fixture=JSON.parse(fixtureBytes),n=fixture.resolution,mask=new Uint8Array(n*n);
 let at=0,value=fixture.first;
@@ -37,7 +38,7 @@ for(const file of [fixtureFile,'scripts/inverse/diagnostics/corner-clearance-rep
   ...(await fs.readdir('static/inverse',{recursive:true})).filter(f=>/\.(js|wasm)$/.test(f)).map(f=>'static/inverse/'+f),
   ...(await fs.readdir('src/lib',{recursive:true})).filter(f=>f.endsWith('.ts')).map(f=>'src/lib/'+f)])sourceHashes[file]=hash(await fs.readFile(file));
 const report={schema:'woven-heart-corner-clearance-repair-1',status:'running',fixtureSha256:hash(fixtureBytes),maskSha256:hash(mask),sourceHashes,
-  scope:'One frozen photographic mask; fresh corner-seed routing with fixed 0.75 mm tracing tolerance, then at most five seconds of clearance projection. Original mask remains the reference. No pretrained cuts, production scheduling, or ten-second claim.',routingBudgetSeconds:seconds,events:[]};
+  scope:'One frozen photographic mask; fresh corner-seed routing with fixed 0.75 mm tracing tolerance, then at most five seconds of clearance projection and optional ordinary refinement. Original mask remains the reference. No pretrained cuts, production scheduling, or ten-second claim.',routingBudgetSeconds:seconds,refinementBudgetSeconds:refineSeconds,events:[]};
 const save=()=>fs.writeFile(path.join(args.output,'report.json'),JSON.stringify(report,null,2)+'\n');
 await save();let loader=null;
 try{
@@ -61,7 +62,14 @@ try{
   const repairStart=performance.now(),projected=projectShortReturns(graph,before,phase,input,cfg,{initialAudit:report.initialGeometry,clearanceMargin:fittingMargin(cfg,cfg.width),maxIterations:128,maxMilliseconds:5000});
   report.repairSeconds=(performance.now()-repairStart)/1000;report.projection=projected.report;assert.deepEqual(graph.points,before);
   if(projected.points){
-    const solution=graph.solution(projected.points,phase,input),checkedCfg={...cfg,materialResolution:700};
+    const checkedCfg={...cfg,materialResolution:700};let solution=graph.solution(projected.points,phase,input);
+    if(refineSeconds){
+      const refinementStart=performance.now(),refinementGraph=new CurveGraph(graph.nested(projected.points),cfg.width);
+      const refined=refineCurves(refinementGraph,input.sourceImage.probability,n,phase,checkedCfg,{input,steps:800,rate:.008,
+        checkpointEvery:20,selection:'mask',skipRepeatedRollbacks:true,deadline:refinementStart+1000*refineSeconds});
+      report.refinement={seconds:(performance.now()-refinementStart)/1000,steps:refined.steps,skippedSteps:refined.skippedSteps,history:refined.history};
+      solution=refinementGraph.solution(refined.points,phase,input);
+    }
     solution.report={algorithm:'diagnostic-clearance-projection',paperVerification:{requestedResolution:cfg.materialResolution,resolution:700},physicalAssemblyTested:false};
     const done=finish(solution,checkedCfg,()=>{},{refine:false});report.finish=done.report;
     report.fitAndFinishSeconds=(performance.now()-started)/1000;
@@ -71,6 +79,9 @@ try{
     report.independentImageError=rendered.mask.reduce((sum,v,i)=>sum+Number(v!==mask[i]),0)/mask.length;
     report.features=auditFeatureFidelity(input.sourceImage,rendered.mask,cfg);
     report.components=featureComponentMetrics(input.sourceImage,rendered.mask);
+    const finer=await renderExportedWeave(geometry,2*n),finerMask=Uint8Array.from({length:4*n*n},(_,i)=>mask[Math.floor(Math.floor(i/(2*n))/2)*n+Math.floor(i%(2*n)/2)]);
+    report.independentFiner={resolution:2*n,reference:'Each original mask cell repeated 2 x 2; no extra photo information.',
+      imageError:finer.mask.reduce((sum,v,i)=>sum+Number(v!==finerMask[i]),0)/finerMask.length,components:featureComponentMetrics({mask:finerMask,resolution:2*n},finer.mask)};
     report.geometry=validate(solution,checkedCfg);report.paper=materialAudit(solution,checkedCfg).summary;
     report.enginePassed=done.report.templateChecksPassed&&report.independentImageError<=cfg.maxImageError&&report.features.passed&&report.paper.status==='pass';
     loader=await createServer({configFile:false,optimizeDeps:{noDiscovery:true},cacheDir:path.resolve(args.output,'vite-cache'),server:{middlewareMode:true,hmr:false,ws:false},resolve:{alias:{$lib:path.resolve('src/lib')}}});

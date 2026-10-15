@@ -82,8 +82,8 @@ The earlier invalid route agrees more closely with the mask (1.855625%). The
 repair pays image error to achieve the geometric clearance. The earlier direct
 fit's approximately 1.2% error is lower too, but its opened heart motifs are a
 different visible defect. Pixel error alone cannot rank these as equally usable.
-The repaired motifs still follow the polygonal trace rather than recovering
-smooth original artwork.
+The projection-only motifs still follow the polygonal trace rather than
+recovering smooth original artwork.
 
 The fifth source component is a checkerboard region with ambiguous point
 contacts. It touches the border in the independent exported renderer and remains
@@ -92,11 +92,41 @@ both. This supports the earlier finding that exact raster connectivity at a
 checker junction is unsuitable as a universal enclosure rule. No physical paper
 assembly or tear-strength claim is made.
 
+## Ordinary refinement from the valid routing
+
+A follow-up uses the existing common Bézier refiner after projection, with
+the same original mask, 20-step checkpoints, and its existing exact repeated-
+rollback skipping. A second fresh solve reproduces the same rejected routing;
+no saved template enters this replay either.
+
+The refiner smooths the polygonal motifs and reduces independent disagreement
+to **1.76125% at 400 pixels** and **1.848125% at 800 pixels**. The 800-pixel
+reference repeats each original mask cell twice per axis; it adds no new photo
+information. All four hearts remain enclosed at both resolutions. Their
+minimum component IoU is 94.76% at 400 pixels and 94.32% at 800 pixels. The
+actual editable SVG also passes geometry, source-fidelity and 700-resolution
+paper checks, with 1.74625% source disagreement and all four hearts enclosed.
+
+The selected improvement occurs at step 20. Later lower-error updates violate
+short-return clearance and are correctly rejected. Skipping exact rollback
+repeats avoids 700 redundant iterations and returns the same exported image
+bytes as the earlier ten-second diagnostic. The refinement takes 3.358 seconds;
+the fresh preparation/routing/repair/refinement/finalization total is
+**14.913 seconds**, excluding the subsequent independent and editable audits.
+This improves quality without a new loss, fitter, acceptance threshold, or
+feature-specific drawing rule, but does not meet the ten-second goal.
+
+The comparison with the earlier three-by-three direct fit is also checked at
+400 and 800 pixels. That earlier fit retains only one of the four enclosures
+at both resolutions, despite its lower 1.225% and 1.37875% mask errors.
+
 ## Reproduction and checks
 
 ```sh
 node scripts/inverse/diagnostics/corner-clearance-repair.mjs \
   --output=tmp/corner-clearance-replay --seconds=20
+node scripts/inverse/diagnostics/corner-clearance-repair.mjs \
+  --output=tmp/corner-clearance-refined --seconds=20 --refine-seconds=10
 node --test --test-concurrency=1 \
   scripts/inverse/clearance-projection.test.mjs \
   scripts/inverse/clearance-witnesses.test.mjs \
@@ -104,7 +134,8 @@ node --test --test-concurrency=1 \
 ```
 
 The output directory must be new. The trace tolerance and five-second repair
-allowance are fixed; `--seconds` controls the routing allowance. A saved invalid
+allowance are fixed; `--seconds` controls the routing allowance, while optional
+`--refine-seconds` allows up to ten seconds of ordinary refinement. A saved invalid
 routing fixture is used only by regression tests, never by the fresh replay.
 The replay exports both template SVGs, the woven preview, an independently
 rendered image, and an editable SVG only after its full checks pass. It pins
@@ -115,8 +146,13 @@ symmetry and rejected-routing regressions. New coverage checks the photographic
 repair, exact straight-control derivatives, exclusions for curved or reversing
 handles, parameterized nonlocal witnesses under subdivision/reflection, and
 refusal of pre-existing crossings or pinned/unavailable repairs. Explicit core
-lint passes. Full repository QA is recorded separately in the
-[measurement record](corner-clearance-repair.json).
+lint passes. Full repository QA passes all **876 inverse tests**, **857
+application tests** (one existing skip), type checking, lint and build, with
+728 pinned source files verified. The later optional refinement/multiscale
+extension changes only the offline replay CLI; its fresh solve and editable
+audit pass. Post-extension application checks are recorded separately in the
+[measurement record](corner-clearance-repair.json); no engine or inverse-test
+source changed after the full inverse run.
 
 Next work is automatic scheduling within the common search budget, followed by
 the full fixed-photo/Hunodan comparison. The broader option is deliberately not

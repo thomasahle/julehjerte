@@ -69,7 +69,10 @@ heart motifs enclosed. The repair adds nonlocal clearance witnesses to the
 existing projector and preserves endpoint-based parameters on short straight
 spans, preventing a newly diagnosed handle-overshoot crossing. Preparation,
 routing, repair and engine finalization take 11.45 seconds; independent mask
-disagreement is 2.4525%. This remains an offline, fixed-mask experiment. The
+disagreement is 2.4525%. A second fresh replay with ordinary Bézier refinement
+reduces disagreement to 1.76125% while retaining all four enclosures, including
+at the finer independent render scale. It passes editable-SVG checks and takes
+14.91 seconds before independent audits. This remains an offline, fixed-mask experiment. The
 automatic fitter does not yet schedule the corner proposal or broader repair;
 neither the 25/31 photo result nor website behavior changes.
 
