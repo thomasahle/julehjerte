@@ -63,6 +63,16 @@ consistent counts without changing the image reference, but later narrow-return
 failures remain. The proposals and new photographic regression fixture are
 offline; this is not an additional accepted-photo result.
 
+A [fresh clearance-repair replay](corner-clearance-repair.md) now constructs a
+checked three-by-three editable pair from that frozen mask, keeping all four
+heart motifs enclosed. The repair adds nonlocal clearance witnesses to the
+existing projector and preserves endpoint-based parameters on short straight
+spans, preventing a newly diagnosed handle-overshoot crossing. Preparation,
+routing, repair and engine finalization take 11.45 seconds; independent mask
+disagreement is 2.4525%. This remains an offline, fixed-mask experiment. The
+automatic fitter does not yet schedule the corner proposal or broader repair;
+neither the 25/31 photo result nor website behavior changes.
+
 The latest validated solver revision is `c000d30`. Its
 [release record](return-projection-speed.json) passes **22/22 regular Hunodan
 designs below ten seconds**, with a maximum of **8.100 seconds**. Automatic

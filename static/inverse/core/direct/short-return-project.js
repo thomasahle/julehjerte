@@ -4,9 +4,12 @@ import {validate} from '../validate.js';
 import {completeSelfReturns} from '../complete-self-returns.js';
 import {symmetryTies,applyTies,symmetryReport} from './symmetry.js';
 import {matchingSummary} from './matching.js';
+import {clearanceWitnesses} from './clearance-witnesses.js';
+import {shortLinearControls,reduceLinearCoefficients,restoreLinearControls} from './linear-controls.js';
 
-export function projectShortReturns(graph,original,phase,input,cfg,{deadline=Infinity,hiddenOnly=false,initialAudit=null,maxIterations=8,maxMilliseconds=180}={}){
+export function projectShortReturns(graph,original,phase,input,cfg,{deadline=Infinity,hiddenOnly=false,initialAudit=null,maxIterations=8,maxMilliseconds=180,clearanceMargin=null}={}){
   if(!Number.isInteger(maxIterations)||maxIterations<1||maxIterations>128||!Number.isFinite(maxMilliseconds)||maxMilliseconds<=0)throw new RangeError('Projection needs bounded positive iteration and time allowances.');
+  if(clearanceMargin!==null&&(!Number.isFinite(clearanceMargin)||clearanceMargin<cfg.nominalWidth||clearanceMargin<=0))throw new RangeError('A clearance proposal margin must be finite and at least the nominal width.');
   const points=original.slice(),report={fullGeometryAudits:0,returnConstraintAudits:0,attempted:false,iterations:0,displacements:0,initialReturns:0,finalReturns:null,accepted:false,termination:'iteration_limit',policy:hiddenOnly?'hidden-controls-only':'all-free-controls',maxIterations,maxMilliseconds};
   const visibleControls=new Set(graph.edges.flatMap((ids,e)=>graph.visible[e]?ids:[]));
   const limit=Math.min(deadline,performance.now()+maxMilliseconds),cushion=2*cfg.geometryTolerance;
@@ -19,6 +22,14 @@ export function projectShortReturns(graph,original,phase,input,cfg,{deadline=Inf
   report.preservedSymmetry=symmetry.requested;
   if(symmetry.honoured.length!==symmetry.requested.length||ties?.skipped.length||ties?.conflicts.length){report.termination=report.rejected='initial_symmetry';return{points:null,report};}
   const fixed=Uint8Array.from(graph.fixed,(v,i)=>Number(v||hiddenOnly&&visibleControls.has(Math.floor(i/2))));
+  // Optional broader clearance repair is still the same projection, with
+  // additional witnesses and linear parameters for short straight spans.
+  const linear=clearanceMargin===null?null:shortLinearControls(graph,original,cfg.nominalWidth);
+  if(linear){
+    report.clearanceMargin=clearanceMargin;report.linearHandles=linear.size;
+    for(const [id,partners]of linear)for(let axis=0;axis<2;axis++)if(fixed[2*id+axis])for(const [other]of partners)fixed[2*other+axis]=1;
+  }
+  const displacementLimit=hiddenOnly?cfg.nominalWidth:Math.min(cfg.nominalWidth,.015*graph.width);
   for(let iteration=0;iteration<maxIterations;iteration++){
     if(performance.now()>limit){report.termination='time_limit';break;}
     const candidate=graph.solution(points,phase,input);
@@ -30,11 +41,12 @@ export function projectShortReturns(graph,original,phase,input,cfg,{deadline=Inf
     // Intermediate points are proposals only. Check the constraints being
     // projected here; a complete independent audit still gates every result.
     let issues;
-    if(audit)issues=audit.issues.filter(i=>i.type==='short_self_clearance');
+    if(clearanceMargin!==null){if(!audit)report.returnConstraintAudits++;issues=clearanceWitnesses(candidate,cfg,clearanceMargin);}
+    else if(audit)issues=audit.issues.filter(i=>i.type==='short_self_clearance');
     else{report.returnConstraintAudits++;issues=completeSelfReturns(candidate).map(i=>({type:'short_self_clearance',...i}));}
     if(!iteration)report.initialReturns=issues.length;
     report.finalReturns=issues.length;
-    if(audit&&audit.issues.length!==issues.length){report.termination='other_geometry';break;}
+    if(audit&&(clearanceMargin===null?audit.issues.length!==issues.length:audit.issues.some(i=>!['short_self_clearance','nonlocal_self_clearance'].includes(i.type)))){report.termination='other_geometry';break;}
     if(!issues.length){
       if(!audit){report.fullGeometryAudits++;audit=validate(candidate,cfg,{checkImage:false,finalGeometry:true});}
       if(!audit.passed){report.termination=report.rejected='final_geometry';break;}
@@ -52,6 +64,7 @@ export function projectShortReturns(graph,original,phase,input,cfg,{deadline=Inf
         const [edge,direction]=path[order],t=direction===1?issue.parameters[side]:1-issue.parameters[side],basis=bernstein(t),sign=side===0?1:-1;
         graph.edges[edge].forEach((id,k)=>coefficients.set(id,(coefficients.get(id)||0)+sign*basis[k]));
       });
+      if(linear)reduceLinearCoefficients(coefficients,linear);
       const delta=[0,0];for(const [id,c]of coefficients)for(let axis=0;axis<2;axis++)delta[axis]+=c*points[2*id+axis];
       const distance=Math.hypot(...delta),deficit=issue.required+cushion-distance;
       if(deficit<=0||distance<1e-8)continue;
@@ -72,7 +85,11 @@ export function projectShortReturns(graph,original,phase,input,cfg,{deadline=Inf
       if(square<1e-12)continue;
       const largest=Math.max(...gradient.map(([,value])=>Math.abs(value)));
       const step=Math.min(deficit/square,issue.required/(3*Math.max(1e-12,largest)));
-      for(const [coordinate,value]of gradient)points[coordinate]+=step*value;
+      for(const [coordinate,value]of gradient){
+        const proposed=points[coordinate]+step*value;
+        points[coordinate]=linear?Math.max(original[coordinate]-displacementLimit,Math.min(original[coordinate]+displacementLimit,proposed)):proposed;
+      }
+      if(linear)restoreLinearControls(points,original,linear);
       if(ties&&!applyTies(ties,points,points,{fixed,original})){report.termination=report.rejected='symmetry_projection';return{points:null,report};}
       // Affine reflection can turn a pinned +0 into -0; keep caller values exact.
       if(ties)for(let i=0;i<points.length;i++)if(fixed[i])points[i]=original[i];
@@ -82,8 +99,7 @@ export function projectShortReturns(graph,original,phase,input,cfg,{deadline=Inf
     // Fully hidden controls can use one nominal strip width: changing shared
     // geometry preserves the weave, and the complete geometry/paper gates still
     // apply. Visible controls retain the smaller local displacement allowance.
-    const displacementLimit=hiddenOnly?cfg.nominalWidth:Math.min(cfg.nominalWidth,.015*graph.width);
-    if(points.some((v,i)=>!Number.isFinite(v)||fixed[i]&&v!==original[i]||Math.abs(v-original[i])>displacementLimit)){report.termination='displacement_limit';break;}
+    if(points.some((v,i)=>!Number.isFinite(v)||fixed[i]&&v!==original[i]||(linear?v<original[i]-displacementLimit||v>original[i]+displacementLimit:Math.abs(v-original[i])>displacementLimit))){report.termination='displacement_limit';break;}
   }
   return{points:null,report};
 }
