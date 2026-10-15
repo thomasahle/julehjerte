@@ -20,11 +20,16 @@
     "photographs": 29,
     "comparison": "All control coordinates and preprocessing metadata match the pre-change runtime exactly at five border radii; four alternating-order timing pairs per target.",
     "frozenFixtures": "48 pre-change trace/sampling outputs across four photographic masks, four straight/curved/strict-symmetry configurations and three tolerances.",
-    "remaining": "Full check/lint/build/test, private star/hat browser QA and fresh native Hunodan/photo/editable benchmarks.",
+    "remaining": "Complete inverse suite and fresh native Hunodan/photo/editable benchmarks. Type check, lint, build and private star/hat browser workflows have passed; current screenshots reviewed.",
     "focusedTests": {
       "passed": 33,
       "total": 33,
       "seconds": 19.682733667
+    },
+    "interimQa": {
+      "path": "tmp/heart-learning/trace-reuse-v1/qa/interim-qa.json",
+      "sha256": "7ca4fba60f1997cdfd1cbc93b58e3d232bdf9b2c9a11ecf5a257eaadeec36e01",
+      "bytes": 1723
     }
   },
   "limitations": [
