@@ -280,8 +280,11 @@ rules nor deadlines change, and a changed force resets rollback-cycle detection.
 The 24-fit comparison also exposes existing fine-resolution paper failures:
 20/24 pass at 1000 cells, and one failed output is byte-identical to an earlier
 unmodified baseline export. The retry never ran on that output. This remains
-an unresolved validation limitation. Full repository, corpus and browser QA
-are pending; the change is committed locally without a release claim.
+an unresolved validation limitation. Full repository QA now passes all 907
+inverse tests, 857 application tests (one existing skip), type checking, lint
+and build; all 747 pinned source files remain unchanged. Native corpus and
+browser checks are still running. The change remains local without a completed
+release claim.
 
 The latest validated solver revision is `c000d30`. Its
 [release record](return-projection-speed.json) passes **22/22 regular Hunodan

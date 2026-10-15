@@ -1,6 +1,6 @@
 {
   "schema": "conditional-paper-separation-retry-1",
-  "status": "integrated locally; all 23 focused tests pass; full validation pending",
+  "status": "integrated locally; 907/907 inverse tests and full application checks pass; native/browser validation running",
   "baselineRuntime": "fc7957e",
   "trigger": "During outline polishing, a complete refinement block has no accepted candidate, a safe rollback exists, and a geometry-valid proposal fails paper support. Initial step-zero failures and successful blocks do not trigger it.",
   "change": "Use a three-nominal-width same-slit exclusion for subsequent separation forces if the requested factor was larger. Keep the requested validation settings, source objective, fixed controls, learning-rate rollback and original deadline. Clear rollback-cycle detection because the force changed.",
@@ -345,14 +345,19 @@
     "scripts/inverse/paper-neck-retry.test.mjs",
     "scripts/inverse/fixtures/photographic-paper-neck-retry.json"
   ],
-  "releaseClaim": "None. Full repository, native corpus and browser checks remain outstanding; no push or deployment.",
+  "releaseClaim": "Full repository QA passes; no complete native-corpus or browser claim yet. No push or deployment.",
   "artifactSha256": {
     "tmp/heart-learning/outline-paper-retry-v1/checks.json": "90afb32759de53e29646286e5b83c49bc57be7ff2e978949d1ca7040f60c4fd0",
     "tmp/heart-learning/outline-paper-retry-v1/source.json": "323543a0f4fc9d8760d6ab9e9c2d477384d1da4519c4b9eefdadc6a7af05cd08",
     "tmp/heart-learning/outline-paper-retry-v1/state.json": "e618f762531b937ff7324d0506ba078697fedba5568d57084773e189b1241e5d",
     "tmp/heart-learning/outline-paper-retry-v1/fine-audits.json": "8721cd89a74d475338697489f48a6cbfa3bfbf8dd70d61dcefbf41fa44cba89f",
     "tmp/heart-learning/outline-paper-retry-v1/unit-old.log": "84ec43818fb6672b18bad50e52b6a327231a3fc08e52bfe140671015c71e81f3",
-    "tmp/heart-learning/outline-paper-retry-v1/integrated-tests.log": "efcb7c25ca171a335d12011a364fade1128d0e3d922fca38a94bfeec5fdaca1a"
+    "tmp/heart-learning/outline-paper-retry-v1/integrated-tests.log": "efcb7c25ca171a335d12011a364fade1128d0e3d922fca38a94bfeec5fdaca1a",
+    "tmp/heart-learning/paper-neck-retry-release-v1/qa/checks.json": "39d39b71a6220345285194d64f1a4cf9a79692768b7128c6a1646428d246e73c",
+    "tmp/heart-learning/paper-neck-retry-release-v1/qa/inverse.log": "b54be666c192d1bc05c46417f49adf724c5decf0760956a4e94dfed5b923f623",
+    "tmp/heart-learning/paper-neck-retry-release-v1/qa/app.log": "b866949a576974a9ff21d2c6823c034c43751263afa97ae278b970ba264bb29d",
+    "tmp/heart-learning/paper-neck-retry-release-v1/qa/running.json": "99ac01282f22108c2e91785514372dbbe1a77c81a6167c458d409633a472df35",
+    "tmp/heart-learning/paper-neck-retry-release-v1/source.json": "1f72dd0fbd01cddcaa852bf8fc5210017d64fda6fc87a89a49c2808bc06a4f06"
   },
   "integratedVerification": {
     "tests": 23,
@@ -368,5 +373,57 @@
     "static/inverse/core/direct/polish.js": "8bdc58c0769ff71d1a1940e64c39cfdef2206651032462f204807776175ec38c",
     "scripts/inverse/paper-neck-retry.test.mjs": "d7f0017e797c5f98dec183b93fc4915e2516c64be005da4b190f9aaef1b748b5",
     "scripts/inverse/fixtures/photographic-paper-neck-retry.json": "2b79275bac2283dafad2e39d290860a6b757df4a7b79bb59ec0ea7a4590b03aa"
+  },
+  "fullRepositoryValidation": {
+    "runtimeCommit": "1b05738",
+    "inverse": {
+      "tests": 907,
+      "passed": 907,
+      "failed": 0,
+      "seconds": 1026.934745583
+    },
+    "application": {
+      "passed": 857,
+      "skipped": 1,
+      "filesPassed": 58
+    },
+    "typeCheck": "pass",
+    "lint": "pass (existing warnings retained)",
+    "build": "pass",
+    "sourceFilesVerified": 747,
+    "stages": [
+      {
+        "stage": "core-lint",
+        "exitCode": 0,
+        "seconds": 2.2149020000000004
+      },
+      {
+        "stage": "check",
+        "exitCode": 0,
+        "seconds": 10.412007709000001
+      },
+      {
+        "stage": "lint",
+        "exitCode": 0,
+        "seconds": 7.333661541999998
+      },
+      {
+        "stage": "app",
+        "exitCode": 0,
+        "seconds": 25.62701025
+      },
+      {
+        "stage": "build",
+        "exitCode": 0,
+        "seconds": 16.304417334
+      },
+      {
+        "stage": "inverse",
+        "exitCode": 0,
+        "seconds": 1027.019456125
+      }
+    ],
+    "root": "tmp/heart-learning/paper-neck-retry-release-v1",
+    "corpusAndBrowser": "not yet complete"
   }
 }
