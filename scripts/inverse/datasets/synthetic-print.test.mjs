@@ -29,7 +29,7 @@ test('print validation copies arrays and rejects malformed or ambiguous definiti
   const input = [structuredClone(stripe), null], result = checkedPaperPrints(input);
   input[0].ink[0] = 250; input[0].phase[0] = .5;
   assert.deepEqual(result, [stripe, null]);
-  for (const value of [null, [], [stripe], [stripe, ,], [{ ...stripe, kind: 'text' }, null], [{ ...stripe, period: 0 }, null], [{ ...stripe, opacity: NaN }, null], [{ ...stripe, ink: [1, 2, 999] }, null], [{ ...stripe, phase: [1, 0] }, null], [{ ...stripe, unknown: true }, null]]) {
+  for (const value of [null, [], [stripe], Object.assign(Array(2), { 0: stripe }), [{ ...stripe, kind: 'text' }, null], [{ ...stripe, period: 0 }, null], [{ ...stripe, opacity: NaN }, null], [{ ...stripe, ink: [1, 2, 999] }, null], [{ ...stripe, phase: [1, 0] }, null], [{ ...stripe, unknown: true }, null]]) {
     assert.throws(() => checkedPaperPrints(value), /print/i);
   }
 });
