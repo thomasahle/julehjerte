@@ -121,6 +121,13 @@ deferred; a generated build-identifier length change adds four raw initial
 script bytes and fails the strict size comparison. `c000d30` remains the latest
 fully validated runtime.
 
+The newer [robust-search comparison](robust-search-release.md), including exact
+rollback skipping and long-budget grid comparisons, passes all 861 inverse tests
+and the full application checks. Hunodan remains 22/22 below ten seconds
+(maximum 8.113 s), photos remain 25/31 and all 47 editable pairs pass. Floral
+checker improves to 1.896250%, but warped checker and Viking increase slightly;
+the strict no-higher-error gate remains failed. Browser comparisons are pending.
+
 The [short-search scheduling correction](photo-feature-stability.md) reserves
 curve-refinement time for nearly fitting grids while retaining routing priority
 when a grid loses a protected feature. Its fixed shifted-star prototype improves

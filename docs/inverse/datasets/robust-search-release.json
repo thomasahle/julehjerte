@@ -1,0 +1,223 @@
+{
+  "schema": "woven-heart-robust-search-release-1",
+  "status": "native-comparison-failed-browser-pending",
+  "runtimeCommit": "660958188a8ce619928d08fcf532194c551ed5c6",
+  "latestFullyValidatedRuntime": "c000d30",
+  "sourceFilesVerified": 858,
+  "qa": [
+    {
+      "stage": "core-lint",
+      "command": [
+        "npx",
+        "eslint",
+        "--no-ignore",
+        "static/inverse/core/direct/counts.js",
+        "static/inverse/core/direct/fit.js",
+        "static/inverse/core/direct/clearance-repair.js"
+      ],
+      "exitCode": 0,
+      "seconds": 0.9905026670000001
+    },
+    {
+      "stage": "check",
+      "command": [
+        "npm",
+        "run",
+        "check"
+      ],
+      "exitCode": 0,
+      "seconds": 8.818754167
+    },
+    {
+      "stage": "lint",
+      "command": [
+        "npm",
+        "run",
+        "lint"
+      ],
+      "exitCode": 0,
+      "seconds": 5.826649416
+    },
+    {
+      "stage": "app",
+      "command": [
+        "npx",
+        "vitest",
+        "run",
+        "--maxWorkers=2"
+      ],
+      "exitCode": 0,
+      "seconds": 22.502727874999998
+    },
+    {
+      "stage": "build",
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "exitCode": 0,
+      "seconds": 12.056742625000005
+    },
+    {
+      "stage": "inverse",
+      "command": [
+        "npm",
+        "run",
+        "test:inverse"
+      ],
+      "exitCode": 0,
+      "seconds": 861.19049175,
+      "tests": 861,
+      "pass": 861,
+      "fail": 0,
+      "skipped": 0
+    }
+  ],
+  "nativeGate": {
+    "hunodanPassed": 22,
+    "hunodanTotal": 22,
+    "hunodanErrorRegressions": [],
+    "photoPassed": 25,
+    "photoPassRegressions": [],
+    "photoErrorRegressions": [
+      {
+        "id": "warped-checker",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.01755,
+        "error": 0.0178875,
+        "errorDelta": 0.000337500000000001
+      },
+      {
+        "id": "flettede-viking",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.02024375,
+        "error": 0.02055,
+        "errorDelta": 0.0003062499999999975
+      }
+    ],
+    "editablePassed": 47,
+    "editableTotal": 47,
+    "passed": false
+  },
+  "hunodanMaximumSeconds": 8.112644499999995,
+  "photoChanges": [
+    {
+      "id": "floral-checker",
+      "previousStatus": "validated",
+      "status": "validated",
+      "previousPassed": true,
+      "passed": true,
+      "previousError": 0.01940625,
+      "error": 0.0189625,
+      "errorDelta": -0.0004437499999999997
+    },
+    {
+      "id": "gift",
+      "previousStatus": "validated",
+      "status": "validated",
+      "previousPassed": true,
+      "passed": true,
+      "previousError": 0.02303125,
+      "error": 0.02300625,
+      "errorDelta": -2.5000000000000716e-05
+    },
+    {
+      "id": "gingerbread",
+      "previousStatus": "validated",
+      "status": "validated",
+      "previousPassed": true,
+      "passed": true,
+      "previousError": 0.014825,
+      "error": 0.01468125,
+      "errorDelta": -0.00014374999999999978
+    },
+    {
+      "id": "warped-checker",
+      "previousStatus": "validated",
+      "status": "validated",
+      "previousPassed": true,
+      "passed": true,
+      "previousError": 0.01755,
+      "error": 0.0178875,
+      "errorDelta": 0.000337500000000001
+    },
+    {
+      "id": "maple-leaf",
+      "previousStatus": "validated",
+      "status": "validated",
+      "previousPassed": true,
+      "passed": true,
+      "previousError": 0.013325,
+      "error": 0.01135,
+      "errorDelta": -0.0019749999999999993
+    },
+    {
+      "id": "flettede-viking",
+      "previousStatus": "validated",
+      "status": "validated",
+      "previousPassed": true,
+      "passed": true,
+      "previousError": 0.02024375,
+      "error": 0.02055,
+      "errorDelta": 0.0003062499999999975
+    }
+  ],
+  "inputCheck": "The release runner asserts identical original input records, selected crop coordinates, classified/fitting masks and fitting probabilities for all cases before comparison.",
+  "observations": {
+    "warped-checker": {
+      "polishingSteps": {
+        "c000d30": 74,
+        "9ee6f49": 79,
+        "6609581": 64
+      },
+      "explanation": "Reported polishing errors agree through step 40; the run ends earlier under the wall-clock deadline. The saved summaries do not establish identical starting coordinates or isolate the timing cause.",
+      "sameReportedInitialAndStep40Errors": true
+    },
+    "flettede-viking": {
+      "polishingFinalStep": 84,
+      "polishingInitialPrimitives": {
+        "c000d30": {
+          "curved": 206,
+          "straight": 1
+        },
+        "9ee6f49": {
+          "curved": 211,
+          "straight": 1
+        },
+        "6609581": {
+          "curved": 208,
+          "straight": 2
+        }
+      },
+      "explanation": "The refinement entering polishing already differs. Equal final polishing step counts do not identify its cause."
+    }
+  },
+  "artifacts": {
+    "tmp/heart-learning/robust-search-release-v1/production-qa/source.json": "d22e0b46956140246c5dda35ac4fe5dfcb4653d7911fdae7e16af283aaea925d",
+    "tmp/heart-learning/robust-search-release-v1/production-qa/checks.json": "fdadb00bd0c7b53fbee906ca9e44178570ecad5cedd73cbc61b0db68bc2ecae6",
+    "tmp/heart-learning/robust-search-release-v1/production-qa/inverse.log": "0576960114b4747861a573f7533319bc2802a3b2aa5234f5433f1b04564cb147",
+    "tmp/heart-learning/robust-search-release-v1/production-qa/app.log": "53c39aaab95fbeb926efef6f4a64120b765c9f1320efe8c4b61278e7e9dc4ec1",
+    "tmp/heart-learning/robust-search-release-v1/production-release/checks.json": "66196b7ffaee82e8697e8ae0bd48a1d7510fbd92290f7b3d0c303be417f17c91",
+    "tmp/heart-learning/robust-search-release-v1/production-release/native-gates.json": "003d61876f11d362c56eba660d60863b2e60fc2e5439cb9b771c44ba94977514",
+    "tmp/heart-learning/robust-search-release-v1/production-release/hunodan/results.json": "1d2fe61d877679d6064262a524fc997ca6f04b37b7a19149f92a9b08faa78b7d",
+    "tmp/heart-learning/robust-search-release-v1/production-release/photos/results.json": "61d32ab81b6abc08a632b52fc52de76bf9027920886e159904f1bcd5e46b3251",
+    "tmp/heart-learning/robust-search-release-v1/production-release/hunodan-comparison.json": "c895cbdad30ac25a1a7f44a3082708e64262ca3e68ebf32029dba3f99d47290d",
+    "tmp/heart-learning/robust-search-release-v1/production-release/photo-comparison.json": "f7faadeae05ea4a1bd388a36830ea7eb6bef9e317be915807df8ae77ed2c8f75",
+    "tmp/heart-learning/robust-search-release-v1/production-release/hunodan-editor/results.json": "ec5578e733117924294ad4d6c28f1776fdc4f0d36ebc870d03502a2920c2982f",
+    "tmp/heart-learning/robust-search-release-v1/production-release/photo-editor/results.json": "37940d5b4db2e6ed8a303128df821d346eb1a65ac86cd944aaf8f6a8ba14265b"
+  },
+  "browser": "Running independently on owned port 5232 after the failed native comparison; results are not yet claimed.",
+  "limits": [
+    "No automatic-photo success-count gain; the same six cases remain failures.",
+    "No unchanged-or-lower-error release claim: two accepted photo errors increased.",
+    "Native Hunodan timing is not browser interaction latency.",
+    "No neural model, push or deployment."
+  ]
+}
