@@ -1,0 +1,46 @@
+{
+  "schema": "late-weak-feature-budget-study-1",
+  "status": "prepared-not-run",
+  "baselineCoreCommit": "545ea85",
+  "sourceMetadataCommit": "72f2d30",
+  "delaysMilliseconds": [
+    0,
+    2000
+  ],
+  "question": "Can a useful weak-region start still earn refinement with 1.5 rather than 2.5 seconds remaining after existing clearance/polish reserves? Only the speculative after-recovery weak-region branch changes; early missing-feature scheduling and every acceptance rule remain unchanged.",
+  "caseSelection": "Jigsaw has a proven skipped-start cliff. Fine-checker and orb are photo error regressions in the last replay. Viking previously regressed when speculative feature work consumed refinement time.",
+  "protocol": "Fresh processes, grids and original photo crop/mask each run. Four cases x two clock advances x two frozen runtimes. Alternate runtime order by case/delay. Advance global performance.now once at first directFitting, preserving all later deadlines. This is a scheduling counterfactual, not a CPU speedup claim. No saved templates enter fitting.",
+  "criteria": [
+    "Compare independent exported-mask error, selected counts, final paper/geometry checks and actual real elapsed time.",
+    "No adoption based on the jigsaw alone. Any lost accepted case or delayed ordinary-fit regression requires investigation.",
+    "Keep the production fitter unchanged and preserve failed outcomes. A useful result requires broader corpus and browser QA before integration."
+  ],
+  "caseIds": [
+    "jigsaw",
+    "fine-checker",
+    "orb",
+    "flettede-viking"
+  ],
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/late-feature-budget-v1/plan.json",
+      "sha256": "94992a6a5608c98c6e91f4c6cf09da8251a22a69151ce1b8a74edd1bb4baeded",
+      "bytes": 887997
+    },
+    {
+      "path": "tmp/heart-learning/late-feature-budget-v1/run-one.mjs",
+      "sha256": "5e00cf52d588e0092c9c2cc6505b4be6e08584331eedf07255b0294d069fd578",
+      "bytes": 3387
+    },
+    {
+      "path": "tmp/heart-learning/late-feature-budget-v1/candidate/core/direct/fit.js",
+      "sha256": "02abf458f8bec894f1ec63b840fa3e8e78677b2774591410f74650b1fef813eb",
+      "bytes": 68812
+    },
+    {
+      "path": "tmp/heart-learning/late-feature-budget-v1/run.py",
+      "sha256": "d22f6d391feba42ac3e0cdfc5e04d63bef8e4999e3a1eff2f5a5776ed73b3a48",
+      "bytes": 1953
+    }
+  ]
+}
