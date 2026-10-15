@@ -77,5 +77,6 @@ Rates 0.001 and 0.003 reduce synthetic training material disagreement to **4.09%
 and **3.63%**, with body IoU 96.86% and 97.12%. This is evidence that the initial
 setup underfits the task; it does not establish generalization. The smaller
 successful rate, 0.001, is fixed for the [next grouped photo pilot](material-pilot-v2-plan.json),
-which is running. No new-rate real-photo scores selected that rate. No ONNX model
+whose [completed results](material-pilot-v2-results.md) improve material separation
+but not complete reconstruction reliably. No new-rate real-photo scores selected that rate. No ONNX model
 or website inference has been added, and nothing has been pushed or deployed.

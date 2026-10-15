@@ -1,0 +1,89 @@
+{
+  "schema": "woven-heart-material-pilot-results-2",
+  "scope": "Previously inspected nine-photo grouped development evaluation; source/motif groups separated, not unseen or topology-disjoint testing.",
+  "evidence": {
+    "tmp/heart-learning/material-pilot-v2/run-v1/report.json": "c8cb474d4e70970a22b13afab350173ce734a3e912faa6bb09a0a1ba9febf211",
+    "tmp/heart-learning/material-pilot-v2/review-v1/audit.json": "b1bd1840096767c6324012edc1cfe145f7ecf98394f5a23df2a3196fd557dad0",
+    "tmp/heart-learning/material-pilot-v2/checks.json": "797586ccf040256a97e42d2bc255506c8058ba17acfd8679caacd9cc47c7728a",
+    "tmp/heart-learning/material-pilot-v2/pipeline-v1/report.json": "0cf384b7d7fc8281d67ebcc69afa7299b2e383181105070cbfd23e422387b1a7",
+    "tmp/heart-learning/material-pilot-v2/editable-v1/results.json": "b2ddee587ee6e0a8fad2628df309fb85921ededeb6b4d6356a2a4cb0d9af66ed",
+    "tmp/heart-learning/material-pilot-v2/visual-review.json": "d601f53b26731d8069d4e1c9fb4e057d95b53df757d23fa73f0ff40bd04998d7",
+    "tmp/heart-learning/material-body-isolation-v1/plan.json": "1423f1d3065f899e1e2f1057c3bc49763d8a5c59d9806af7c6521abb67e3280f",
+    "tmp/heart-learning/material-body-isolation-v1/replay/report.json": "07a5ad81ce03acea685a49e66d65ea64dfca61910625ed4a944a03e8c659d2e8",
+    "tmp/heart-learning/material-body-isolation-v1/editable/results.json": "02be8ac5b88309afb7474b6641b6dbd0da1a6b8b57cc064858b93cba343d0189"
+  },
+  "metrics": {
+    "neutral": {
+      "bodyIoU": 0.8658223781426478,
+      "bodyPixelError": 0.0499981215692644,
+      "bodyFalseNegative": 0.05262898226793817,
+      "backgroundFalsePositive": 0.03555732549404603,
+      "materialPixelError": 0.45130357521126385,
+      "materialJointError": 0.4677591751113945,
+      "jointRegionPixelError": 0.16208521030472434,
+      "balancedMaterialJointError": 0.5140584615830016
+    },
+    "synthetic-control": {
+      "bodyIoU": 0.8409320605223077,
+      "bodyPixelError": 0.06129702344050757,
+      "bodyFalseNegative": 0.06789937126734752,
+      "backgroundFalsePositive": 0.045242482856391916,
+      "materialPixelError": 0.2440187658931607,
+      "materialJointError": 0.2698436368952064,
+      "jointRegionPixelError": 0.12390452761778101,
+      "balancedMaterialJointError": 0.279327313721754
+    },
+    "mixed-out-of-fold": {
+      "bodyIoU": 0.8123531420636435,
+      "bodyPixelError": 0.07823000957056073,
+      "bodyFalseNegative": 0.05604449772859499,
+      "backgroundFalsePositive": 0.07827694140692461,
+      "materialPixelError": 0.17838324355391622,
+      "materialJointError": 0.19510470744896777,
+      "jointRegionPixelError": 0.12058963228864328,
+      "balancedMaterialJointError": 0.19590185984148123
+    }
+  },
+  "pipeline": {
+    "production": {
+      "cases": 9,
+      "crops": 3,
+      "checkedPairs": 2,
+      "editablePasses": 2
+    },
+    "mixed-body": {
+      "cases": 9,
+      "crops": 2,
+      "checkedPairs": 2,
+      "editablePasses": 2
+    },
+    "synthetic-joint": {
+      "cases": 9,
+      "crops": 1,
+      "checkedPairs": 0,
+      "editablePasses": 0
+    },
+    "mixed-joint": {
+      "cases": 9,
+      "crops": 1,
+      "checkedPairs": 1,
+      "editablePasses": 1
+    }
+  },
+  "availableEditableConversions": {
+    "total": 7,
+    "passed": 7
+  },
+  "frozenBodyIntervention": {
+    "cases": 9,
+    "crops": 1,
+    "checkedEditablePairs": 1,
+    "sameOnlySuccess": "boar",
+    "conclusion": "Restoring original body predictions does not by itself recover joint crop proposals."
+  },
+  "reproducibility": {
+    "rateStudyControlCheckpointTensorsIdentical": 254,
+    "independentInferenceMaxAbsoluteDifference": 0.0
+  },
+  "deployment": false
+}
