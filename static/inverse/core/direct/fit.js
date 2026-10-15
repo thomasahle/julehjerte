@@ -563,15 +563,17 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
         // A better coarse routing can start with a narrow neck that the
         // common curve fitter repairs quickly. A geometry-valid start can
         // instead need this bounded refinement to recover missing colours.
-        // Keep every finalist; only a fully checked repair can move ahead.
+        // Keep every finalist. A verified improvement can continue refining
+        // before meeting the final image limit; it is not an accepted result.
         if((competitive&&!geometry.passed||recoverFeatures)&&clear.error>cfg.maxImageError&&!candidates.some(c=>c.imagePassed)){
           repair=stage('directRefining',()=>repairClearanceInitializer(alternate,input,alternate.refinementCfg,{geometry,recoverFeatures,deadline:deadline-1700,onProgress:(r,s)=>onProgress({stage:'directRefining',detail:'clearance-initializer',counts:alternate.clear.model.counts,...r},s)}));
-          if(repair.candidate){
-            addCandidate(repair.candidate);
-            if(repair.candidate.imagePassed){
-              preferred=true;verifiedAlternative=true;
-              const verification=repair.candidate.paperVerification;
-              preparations.set(retry,{...alternate,graph:new CurveGraph(repair.candidate.graph.nested(repair.candidate.points),cfg.width),refinementCfg:verifiedPaperSettings({report:{paperVerification:verification}},alternate.refinementCfg),verification});
+          const repaired=repair.candidate||repair.continuation;
+          if(repaired){
+            addCandidate(repaired);
+            if(repaired.imagePassed||repair.continuation){
+              preferred=true;verifiedAlternative||=repaired.imagePassed;
+              const verification=repaired.paperVerification;
+              preparations.set(retry,{...alternate,graph:new CurveGraph(repaired.graph.nested(repaired.points),cfg.width),refinementCfg:verifiedPaperSettings({report:{paperVerification:verification}},alternate.refinementCfg),verification});
             }
           }
         }

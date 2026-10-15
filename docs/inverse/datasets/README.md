@@ -49,7 +49,20 @@ The follow-up limits this retry to features that the same seed retained before
 clearance preparation. The Viking's alternative never contained its missing
 opening; the stacked-heart seed did. All four focused checks pass, including
 both stacked masks and the Viking at ten seconds. A fresh Viking export passes
-at 2.15% disagreement in 9.86 seconds; full QA of this revision is running.
+at 2.15% disagreement in 9.86 seconds. Full QA nevertheless passes only 933/934
+inverse tests: the perturbed stacked-heart repair stops after 50 updates and
+discards legal intermediate curves above the final 3% image limit. The later
+corpus benchmark was not run after that failure.
+
+A further correction distinguishes a verified starting shape from an accepted
+template. A source-improving, feature-retaining legal repair can continue in the
+main fitter even before meeting the final image limit. Every final gate and the
+overall deadline remain unchanged. Five focused tests and a separate forced
+early-handoff integration test pass. Fresh original/resampled fits reach 1.23%
+and 1.35% disagreement; the forced handoff improves a 3.31% intermediate shape
+to 1.39%. All three editable exports pass. The forced run advances the global
+clock once, so it is a scheduling regression check, not a throughput benchmark.
+Complete QA of this correction is pending.
 
 The stacked-heart fit still needs improvement despite its lower mask error.
 One heart remains connected to the border; another is split, with only 67% of

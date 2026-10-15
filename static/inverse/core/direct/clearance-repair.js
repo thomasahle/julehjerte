@@ -18,6 +18,7 @@ export function repairClearanceInitializer(prepared,input,cfg,{deadline=Infinity
   report.initialGeometry=geometry||validate(graph.solution(graph.points,phase,input),cfg,{checkImage:false});
   report.trigger=recoverFeatures?'missing-source-feature':'inter-slit-clearance';
   if(report.initialGeometry.passed?!recoverFeatures:(!report.initialGeometry.issues.length||report.initialGeometry.issues.some(i=>i.type!=='inter_slit_clearance')))return finish('geometry_not_repairable');
+  if(recoverFeatures)report.initialImageError=maskDisagreement(source,sampleWeave(graph.solution(graph.points,phase,input),source.resolution));
   const n=Math.sqrt(objectiveProb.length);
   // A valid starting grid supplies a rollback position. Resolve uncertain
   // paper checkpoints as in the main fit, so that this incumbent does not
@@ -38,7 +39,11 @@ export function repairClearanceInitializer(prepared,input,cfg,{deadline=Infinity
     const geometry=validate(solution,cfg,{checkImage:false,finalGeometry:true});
     const check={imageError,featuresPassed:features.passed,geometryPassed:geometry.passed,paperAlternative:candidate!==fitted};report.checkpoints.push(check);
     Object.assign(report,{geometry,imageError,features});
-    if(!geometry.passed||imageError>cfg.maxImageError||!features.passed)continue;
+    const imagePassed=imageError<=cfg.maxImageError;
+    // This bounded stage prepares a starting shape. A legal, feature-retaining
+    // improvement may need the main fit's remaining time to meet the final
+    // image limit. Keep that handoff separate from an accepted template.
+    if(!geometry.passed||!features.passed||!imagePassed&&!(recoverFeatures&&imageError<report.initialImageError))continue;
     const resolution=Math.max(cfg.materialResolution,candidate.paperVerification?.resolution||0,candidate!==fitted?700:0);
     let paper=materialAudit(solution,{...cfg,materialResolution:resolution}),verification=null;
     report.initialPaper=paper.summary;
@@ -51,8 +56,10 @@ export function repairClearanceInitializer(prepared,input,cfg,{deadline=Infinity
     if(!paper.passed){reason='paper_rejected';continue;}
     if(performance.now()>until)return finish('deadline');
     report.paperVerification=verification;report.usedPaperAlternative=candidate!==fitted;
-    report.accepted=true;report.seconds=(performance.now()-started)/1000;
-    return{candidate:{...fitted,...candidate,paperAlternative:null,counts:clear.model.counts.slice(),seed:'clearance-repair',geometryPassed:true,validation:geometry,paperPassed:paper.passed,paper:paper.summary,paperVerification:verification},report};
+    const repaired={...fitted,...candidate,paperAlternative:null,counts:clear.model.counts.slice(),seed:'clearance-repair',geometryPassed:true,validation:geometry,paperPassed:paper.passed,paper:paper.summary,paperVerification:verification};
+    report.accepted=imagePassed;report.seconds=(performance.now()-started)/1000;
+    if(!imagePassed)return{candidate:null,continuation:repaired,report:{...report,continued:true,reason:'continue_refinement'}};
+    return{candidate:repaired,report};
   }
   return finish(reason);
 }

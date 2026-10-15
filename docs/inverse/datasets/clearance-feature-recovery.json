@@ -1972,13 +1972,156 @@
     },
     "fullQa": {
       "state": {
-        "status": "running",
+        "status": "failed",
         "stage": "test",
-        "pid": 75020,
-        "controllerPid": 72871
+        "exitCode": 1
       },
-      "root": "tmp/heart-learning/initializer-perturbation-v1/qa-gated"
+      "root": "tmp/heart-learning/initializer-perturbation-v1/qa-gated",
+      "checks": {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/qa-gated/qa-checks.json",
+        "sha256": "37badfe920dec065846d0dc35b4f47d6291004b3ecdea96642bd53ae3dd5aee0",
+        "bytes": 993
+      },
+      "sourceHashes": {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/qa-gated/qa-source.json",
+        "sha256": "418054380d66a2adb1b1c89ccf0c52a830a655ad8b53959700806594ab3c033e",
+        "bytes": 89160
+      },
+      "testLog": {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/qa-gated/test.log",
+        "sha256": "c540cc9ee10ee66d67382754b8ddd7fcbec664270d794c3a6b16ee2a0ae76bdc",
+        "bytes": 94409
+      },
+      "inverseTests": {
+        "total": 934,
+        "passed": 933,
+        "failed": 1
+      },
+      "failure": {
+        "case": "resampled-stacked-hearts",
+        "independentImageError": 0.03549375,
+        "termination": "paper_failure",
+        "repairSteps": 50,
+        "repairAccepted": false,
+        "checkpointErrors": [
+          0.031275,
+          0.0347125
+        ]
+      },
+      "nativeBenchmarkRun": false
     },
     "regressionTest": "scripts/inverse/clearance-feature-budget.test.mjs"
+  },
+  "continuation": {
+    "status": "focused-verified-full-qa-pending",
+    "cause": "The bounded helper required a finished image error before handing a starting shape to the main fit. In the full-suite failure, 50 updates produced legal, colour-retaining checkpoints at 3.13% and 3.47% but both were discarded by the 3% final image limit. The unchanged crop was not responsible for this rejection.",
+    "change": "Feature recovery may return a distinct continuation only after geometry, paper and source-feature checks pass and original-source error improves. It does not return an accepted candidate above the final limit. The main fitter resumes from those verified coordinates within its existing deadline; final source-image, feature, geometry and paper gates remain unchanged. The Viking pre-clearance feature guard remains in force.",
+    "regressions": [
+      "scripts/inverse/clearance-feature-continuation.test.mjs",
+      "scripts/inverse/clearance-feature-handoff.test.mjs"
+    ],
+    "tests": {
+      "priorBehaviorFailure": {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/continuation-before.log",
+        "sha256": "3706253d1ef522aa94ebf07d9076a458f266ac5e4eafd53292516e7b505527e7",
+        "bytes": 983
+      },
+      "focusedFivePassed": {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/continuation-focused.log",
+        "sha256": "640c09e05aecd5154ce8e33cb1b24e484001cfee6dad39c4e5d57723ecc42142",
+        "bytes": 620
+      },
+      "handoffHarnessInitialFailure": {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/continuation-handoff.log",
+        "sha256": "caffc78d031e0edeeb618b597193fd9dc9a82384717a23618a9ba7e8e337ad3e",
+        "bytes": 1371
+      },
+      "handoffPassedAfterCallbackFix": {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/continuation-handoff-v2.log",
+        "sha256": "7dada4cfcc062e3fd7a9ebf327faed759941337ab99fedd10556102efa4d2a83",
+        "bytes": 233
+      }
+    },
+    "runs": [
+      {
+        "name": "original",
+        "report": {
+          "path": "tmp/heart-learning/initializer-perturbation-v1/continuation-v1/original/report.json",
+          "sha256": "b87135137985b4c83fb5498629a83ed24159cfce32f81a3fde368150657bf370",
+          "bytes": 137085
+        },
+        "independentImageError": 0.01233125,
+        "checkedPair": true,
+        "measuredSolveSeconds": 9.844671667,
+        "clockAdvanceMilliseconds": 0,
+        "repairSteps": 85,
+        "repairImageError": 0.02536875,
+        "repairAccepted": true,
+        "continued": false,
+        "preferred": true
+      },
+      {
+        "name": "resampled",
+        "report": {
+          "path": "tmp/heart-learning/initializer-perturbation-v1/continuation-v1/resampled/report.json",
+          "sha256": "254bd82cd53eac327ffc0f2db4f814243864869725196421c6685b465a8e600a",
+          "bytes": 131857
+        },
+        "independentImageError": 0.0134625,
+        "checkedPair": true,
+        "measuredSolveSeconds": 9.681995708,
+        "clockAdvanceMilliseconds": 0,
+        "repairSteps": 85,
+        "repairImageError": 0.02341875,
+        "repairAccepted": true,
+        "continued": false,
+        "preferred": true
+      },
+      {
+        "name": "forced-handoff",
+        "report": {
+          "path": "tmp/heart-learning/initializer-perturbation-v1/continuation-v1/forced-handoff/report.json",
+          "sha256": "1abee1bd2d7bd704bcd109208590ba0cb103c8bfb32035a5c399f3039ff926fb",
+          "bytes": 132164
+        },
+        "independentImageError": 0.01385,
+        "checkedPair": true,
+        "measuredSolveSeconds": 9.477153042,
+        "clockAdvanceMilliseconds": 267.7555419999999,
+        "repairSteps": 45,
+        "repairImageError": 0.03305625,
+        "repairAccepted": false,
+        "continued": true,
+        "preferred": true
+      }
+    ],
+    "editable": {
+      "passed": 3,
+      "total": 3,
+      "report": {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/continuation-v1/editable/results.json",
+        "sha256": "da11a9b296925e9c5c0888672eb095aada9c62dc8153de9bfbbfeaf9787cbda9",
+        "bytes": 69100
+      }
+    },
+    "visualReview": {
+      "image": {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/continuation-v1/comparison.png",
+        "sha256": "8703941102a9fe20ae2b94982742761d6247ce8fd2708424f93bef6d5e04f733",
+        "bytes": 56760
+      },
+      "inspected": true,
+      "notes": "The ordinary and forced-handoff results recover the large checker regions compared with the rejected control. Both still split one small heart and connect another heart to the border. These are remaining fidelity defects despite passing current image/feature and paper checks; this is an initialization robustness fix, not a faithful-reconstruction claim."
+    },
+    "components": {
+      "path": "tmp/heart-learning/initializer-perturbation-v1/continuation-v1/feature-review.json",
+      "sha256": "7ab56850ab7b622151dcde3d8894217dac45e52649940101973c312bede1c86d",
+      "bytes": 18527
+    },
+    "qa": {
+      "status": "pending",
+      "root": "tmp/heart-learning/initializer-perturbation-v1/qa-continuation"
+    },
+    "timingQualification": "The forced-handoff diagnostic advances the global clock once after the first 40-step checkpoint, reducing all later remaining allowances. Its measured runtime and clock advance are separately recorded; the ordinary runs use an unchanged wall clock."
   }
 }

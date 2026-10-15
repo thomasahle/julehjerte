@@ -16,7 +16,7 @@ for(const [name,pixels]of [['resampled',mask],['original',originalMask]]){
     assert.ok(error<.03);
     if(name==='resampled'){
       assert.equal(report.solver.clearanceComparison.alternativeColoursBeforeClearance,true);
-      assert.equal(report.solver.clearanceComparison.repair.accepted,true);
+      assert.ok(report.solver.clearanceComparison.repair.accepted||report.solver.clearanceComparison.repair.continued);
     }
     assert.equal(auditFeatureFidelity(source.sourceImage,rendered.mask,report.settings).passed,true);
     assert.deepEqual(source.sourceImage.mask,pixels);
