@@ -1,0 +1,68 @@
+--- a/static/inverse/core/direct/fit.js
++++ b/static/inverse/core/direct/fit.js
+@@ -190,12 +190,20 @@
+   // reached it. Retain those grids too: a simplified seed must earn its place
+   // against the original image.
+   const coarseTopologySeconds=shortBudget?Math.max(0,shortTopologyBudget-(topology?.report.seconds||0)):2.5;
+-  if(!topology?.graph&&!weights&&requestedSymmetry(cfg.symmetry).every(name=>name==='transpose')&&poorGrid&&coarseTopologySeconds>.25&&deadline-performance.now()>3500){
+-    coarseTopology=await initializeCoarseTopology(input,cfg,{seconds:Math.min(coarseTopologySeconds,(deadline-performance.now()-1700)/1000),onProgress});
++  const coarseTopologyEligible=!topology?.graph&&!weights&&requestedSymmetry(cfg.symmetry).every(name=>name==='transpose')&&poorGrid;
++  let coarseTopologySpent=0;const coarseTopologyStages=[];
++  const attemptCoarse=async(sparse,seconds)=>{
++    coarseTopology=await initializeCoarseTopology(input,cfg,{seconds,sparse,onProgress});
++    coarseTopologySpent+=coarseTopology.report.seconds||0;
++    coarseTopologyStages.push({...coarseTopology.report,routingMode:sparse?'sparse':'guided'});
++    coarseTopology.report={...coarseTopology.report,seconds:coarseTopologySpent,portfolios:[...coarseTopologyStages]};
+     if(coarseTopology.graph){
+       boundaryCandidate=stage('directRefining',()=>refineCurves(coarseTopology.graph,fullProb,source.resolution,coarseTopology.phase,cfg,{input,steps:80,rate:.008,selection:'mask',deadline:Math.min(deadline-1700,performance.now()+500),onProgress:cfg.progressGeometry||hasCandidateObserver(onProgress)?(r,solution)=>onProgress({stage:'directRefining',counts:coarseTopology.graph.families.map(f=>f.length),...r},solution):undefined}));
+       boundaryCandidate.counts=coarseTopology.graph.families.map(f=>f.length);boundaryCandidate.seed='coarse-boundary-topology';
+     }
++  };
++  if(coarseTopologyEligible&&coarseTopologySeconds>.25&&deadline-performance.now()>3500){
++    await attemptCoarse(true,Math.min(1.1,coarseTopologySeconds,(deadline-performance.now()-1700)/1000));
+   }
+   // A local boundary gradient cannot create a remote missing region. Try an
+   // alternate traced routing while there is still time within this search.
+@@ -338,6 +346,12 @@
+     const recovered=await attemptRecovery(recoverySeconds,probeRouting?'probe_before_grid_refinement':reserveRefinement?'reserve_grid_refinement':'prioritize_routing');
+     if(recovered)return recovered;
+   }
++  // The sparse probe and late guided fallback share the old coarse budget.
++  // Detailed recovery gets the intervening opportunity without changing gates.
++  const unusedCoarseSeconds=coarseTopologySeconds-coarseTopologySpent;
++  if(coarseTopologyEligible&&!coarseTopology?.graph&&unusedCoarseSeconds>.25&&deadline-performance.now()>3500){
++    await attemptCoarse(false,Math.min(unusedCoarseSeconds,(deadline-performance.now()-1700)/1000));
++  }
+   if(deferredFeatureRecovery)deferredFeatureRecovery.remainingSeconds=Math.max(0,fullRecoverySeconds-(recovery?.report.seconds||0));
+   // A still-retained region must not shorten a useful traced search. A tree
+   // with hidden border endpoints needs that search to recover its simpler
+--- a/static/inverse/core/direct/topology.js
++++ b/static/inverse/core/direct/topology.js
+@@ -70,7 +70,7 @@
+ /** A small routing portfolio for poor grid fits. Coarsening changes only the
+  * seed; its source pixels and the final geometry/paper gates are unchanged.
+  */
+-export async function initializeCoarseTopology(input,cfg,{maximumError=Math.min(.025,cfg.maxImageError),seconds=2.5,onProgress=()=>{}}={}){
++export async function initializeCoarseTopology(input,cfg,{maximumError=Math.min(.025,cfg.maxImageError),seconds=2.5,sparse=false,onProgress=()=>{}}={}){
+   const started=performance.now(),source=input.sourceImage,report={method:'coarse-boundary-topology',maximumError,accepted:false,attempts:[]},candidates=[];
+   const remaining=()=>seconds-(performance.now()-started)/1000;
+   if(source.weights)return{report};
+@@ -89,7 +89,8 @@
+   candidates.sort((a,b)=>a.attempt.segments-b.attempt.segments||a.attempt.imageError-b.attempt.imageError);
+   for(const {target,attempt}of candidates.slice(0,2)){
+     if(remaining()<.1)break;
+-    const seed=await initializeTopology({...input,boundarySeed:target},cfg,{maximumError,seconds:remaining(),onProgress});
++    const routingCfg=sparse?{...cfg,experimentalSparseTopology:true}:cfg;
++    const seed=await initializeTopology({...input,boundarySeed:target},routingCfg,{maximumError,seconds:Math.min(sparse?.8:Infinity,remaining()),onProgress});
+     attempt.routing=seed.report;
+     if(seed.graph){report.accepted=true;report.seconds=(performance.now()-started)/1000;return{...seed,report};}
+   }
+@@ -148,7 +149,7 @@
+     if(!target.curves.length||target.curves.length>160||report.traceError>maximumError)return{report};
+     const guideSource=source.weights?{mask:initializationMask(source,guidePhase),resolution:source.resolution}:source;
+     if(symmetryEvidence(guideSource).minimumIdenticalImageError<=.005){target=transposeTarget({...target,sourceImage:guideSource});target.sourceImage=source;report.matchingProposal=true;}
+-    const graphCfg=settings({...cfg,...MATCHING_GRID_PRESET,maxTurn:cfg.maxTurn,localNeighborhoodFactor:cfg.localNeighborhoodFactor});
++    const graphCfg=settings({...cfg,...MATCHING_GRID_PRESET,...(cfg.experimentalSparseTopology?{gridPortals:false,neighbors:8}:{}),maxTurn:cfg.maxTurn,localNeighborhoodFactor:cfg.localNeighborhoodFactor});
+     const seed={...target,curves:target.curves.slice()};
+     // Noding and guide portals expand target.curves in place. The cached
+     // boundary is reusable input: a second attempt must not inherit the first

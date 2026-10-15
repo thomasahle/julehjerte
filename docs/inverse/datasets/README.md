@@ -43,6 +43,12 @@ policy is integrated. A saved-mask polarity mismatch stopped one harness attempt
 before fitting; the original hash caught it, the failure is preserved, and the
 remaining cases resumed with the correct original mask. Six cases include related
 perturbations and are not six independent photographs.
+The [combined-policy follow-up](topology-graph-hybrid-plan.json) is running 24
+fresh fits. It gives sparse coarse preparation/routing at most 1.1 seconds, then
+tries detailed recovery, with guided coarse fallback limited to the unused
+original coarse allowance. The [runtime patch](topology-graph-hybrid.patch) is
+recorded for review and is not applied to production. Source pixels, objectives,
+validity checks and the ten-second request remain unchanged.
 
 [A contact-supervision audit](contact-supervision-audit.json) maps the nine reviewed
 orange/yellow checker junctions into the existing material labels. All 97 sampled
