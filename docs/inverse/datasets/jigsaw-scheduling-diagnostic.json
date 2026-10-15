@@ -1,0 +1,183 @@
+{
+  "schema": "jigsaw-scheduling-diagnostic-1",
+  "scope": "Eight fresh fits of one fixed photographic crop, on the baseline and trace-reuse runtimes. A single global-clock advance at the first fine-grid stage reduces all later time allowances. This is a controlled scheduling probe, not a throughput benchmark or new artwork ground truth.",
+  "sourcePlan": {
+    "path": "tmp/heart-learning/jigsaw-scheduling-v1/plan.json",
+    "sha256": "965269ffec87eff7dd8971b6d5b914b44f441d35060cc195a02d386db6bf5067",
+    "bytes": 160256
+  },
+  "rows": [
+    {
+      "runtime": "before",
+      "injectedClockMilliseconds": 0,
+      "realSeconds": 9.781787625000002,
+      "imageError": 0.0098375,
+      "checked": true,
+      "counts": [
+        4,
+        4
+      ],
+      "featureSeedScheduled": 1,
+      "maskSha256": "5c3d1ae064e795a787a92a91d5403bc7bdb0f4780dfeb75606ce1f9531b58788",
+      "report": {
+        "path": "tmp/heart-learning/jigsaw-scheduling-v1/before/0/report.json",
+        "sha256": "73684885b9f0ea980ab660713fb33763e1020d7b5afdc7a2ff50e9d4dcfc8dc7",
+        "bytes": 101777
+      }
+    },
+    {
+      "runtime": "before",
+      "injectedClockMilliseconds": 1000,
+      "realSeconds": 8.851,
+      "imageError": 0.01036875,
+      "checked": true,
+      "counts": [
+        4,
+        4
+      ],
+      "featureSeedScheduled": 1,
+      "maskSha256": "5c3d1ae064e795a787a92a91d5403bc7bdb0f4780dfeb75606ce1f9531b58788",
+      "report": {
+        "path": "tmp/heart-learning/jigsaw-scheduling-v1/before/1000/report.json",
+        "sha256": "a666e645a439f3ddfe8f704a49034e502ee6da19e84a42b1f90c9b130568034a",
+        "bytes": 100932
+      }
+    },
+    {
+      "runtime": "before",
+      "injectedClockMilliseconds": 2000,
+      "realSeconds": 7.725201834000002,
+      "imageError": 0.01314375,
+      "checked": true,
+      "counts": [
+        4,
+        3
+      ],
+      "featureSeedScheduled": 0,
+      "maskSha256": "5c3d1ae064e795a787a92a91d5403bc7bdb0f4780dfeb75606ce1f9531b58788",
+      "report": {
+        "path": "tmp/heart-learning/jigsaw-scheduling-v1/before/2000/report.json",
+        "sha256": "3585bb46a52d2f881a1837475bd37a6669f5d5ecc1661e1b1c33ce2238b0a25f",
+        "bytes": 89548
+      }
+    },
+    {
+      "runtime": "before",
+      "injectedClockMilliseconds": 3000,
+      "realSeconds": 6.668769999999999,
+      "imageError": 0.0195375,
+      "checked": true,
+      "counts": [
+        4,
+        3
+      ],
+      "featureSeedScheduled": 0,
+      "maskSha256": "5c3d1ae064e795a787a92a91d5403bc7bdb0f4780dfeb75606ce1f9531b58788",
+      "report": {
+        "path": "tmp/heart-learning/jigsaw-scheduling-v1/before/3000/report.json",
+        "sha256": "fab886e21e133e4bef9de24a6734a6383168eabac3a9d8d10c11db5cd03b46b7",
+        "bytes": 94043
+      }
+    },
+    {
+      "runtime": "after-trace-reuse",
+      "injectedClockMilliseconds": 0,
+      "realSeconds": 9.826248959,
+      "imageError": 0.00976875,
+      "checked": true,
+      "counts": [
+        4,
+        4
+      ],
+      "featureSeedScheduled": 1,
+      "maskSha256": "5c3d1ae064e795a787a92a91d5403bc7bdb0f4780dfeb75606ce1f9531b58788",
+      "report": {
+        "path": "tmp/heart-learning/jigsaw-scheduling-v1/after-trace-reuse/0/report.json",
+        "sha256": "13e7c1b3d93a0f309ee653c44b39f120fb133641c4cfdfd6a6b7a150dfdc4eea",
+        "bytes": 101049
+      }
+    },
+    {
+      "runtime": "after-trace-reuse",
+      "injectedClockMilliseconds": 1000,
+      "realSeconds": 8.833900791999998,
+      "imageError": 0.01041875,
+      "checked": true,
+      "counts": [
+        4,
+        4
+      ],
+      "featureSeedScheduled": 1,
+      "maskSha256": "5c3d1ae064e795a787a92a91d5403bc7bdb0f4780dfeb75606ce1f9531b58788",
+      "report": {
+        "path": "tmp/heart-learning/jigsaw-scheduling-v1/after-trace-reuse/1000/report.json",
+        "sha256": "49cab886ef273ca4f0e5ba0700a92c3e74f103af9613984b8b9229feb6951027",
+        "bytes": 100957
+      }
+    },
+    {
+      "runtime": "after-trace-reuse",
+      "injectedClockMilliseconds": 2000,
+      "realSeconds": 7.912958165999999,
+      "imageError": 0.01413125,
+      "checked": true,
+      "counts": [
+        4,
+        3
+      ],
+      "featureSeedScheduled": 0,
+      "maskSha256": "5c3d1ae064e795a787a92a91d5403bc7bdb0f4780dfeb75606ce1f9531b58788",
+      "report": {
+        "path": "tmp/heart-learning/jigsaw-scheduling-v1/after-trace-reuse/2000/report.json",
+        "sha256": "ce35c3a87e857bdb165311bfcc0fcf18f7ea373b738cf4f3d5bee9f2125ed56c",
+        "bytes": 89585
+      }
+    },
+    {
+      "runtime": "after-trace-reuse",
+      "injectedClockMilliseconds": 3000,
+      "realSeconds": 6.81308975,
+      "imageError": 0.01650625,
+      "checked": true,
+      "counts": [
+        4,
+        3
+      ],
+      "featureSeedScheduled": 0,
+      "maskSha256": "5c3d1ae064e795a787a92a91d5403bc7bdb0f4780dfeb75606ce1f9531b58788",
+      "report": {
+        "path": "tmp/heart-learning/jigsaw-scheduling-v1/after-trace-reuse/3000/report.json",
+        "sha256": "f81fee6714f99c61ca7d367e03c4f9edfceb31971a46c30dd110c4665c424830",
+        "bytes": 88938
+      }
+    }
+  ],
+  "finding": "Both runtimes retain the useful four-by-four feature-weighted start at zero/one-second delay, and skip it at two/three-second delay. The latter fits use four-by-three cuts and visibly lose boundary puzzle tabs. The native failure has the same skipped-init signature; hardware contention is not established by this experiment.",
+  "visualReview": {
+    "inspected": true,
+    "image": {
+      "path": "tmp/heart-learning/jigsaw-scheduling-v1/comparison.png",
+      "sha256": "368db959bc338771c079765060af195e1f175530651228b028ad0dfe2f7ddb04",
+      "bytes": 128335
+    },
+    "notes": "All eight renderings were inspected side by side. Four-by-four fits retain sharper tabs; four-by-three fits flatten several upper/lower boundary features. Faster tracing is insufficient to remove the layout-selection discontinuity, and error does not improve uniformly across injected delays."
+  },
+  "nextWork": "Bound and measure feature-layout initialization itself so a modest setup delay need not skip the useful proposal entirely. Preserve original-mask, geometry and paper acceptance; evaluate on the full corpus before integration.",
+  "runners": [
+    {
+      "path": "tmp/heart-learning/jigsaw-scheduling-v1/run-one.mjs",
+      "sha256": "ce1e67db0f372075b9a8a741e9652d0ce962fea42552f7851a0e939d3d92a13c",
+      "bytes": 3334
+    },
+    {
+      "path": "tmp/heart-learning/jigsaw-scheduling-v1/run.py",
+      "sha256": "9c1e99d0d2f66eec9b1934c86c624aba5ef46bd2c145bd45ee49b34689bc1292",
+      "bytes": 792
+    },
+    {
+      "path": "tmp/heart-learning/jigsaw-scheduling-v1/run-after.py",
+      "sha256": "d86e760e33fb6bb4eb77b1573f973c85503bca73c913622308a66cb38bdbc1b9",
+      "bytes": 820
+    }
+  ]
+}

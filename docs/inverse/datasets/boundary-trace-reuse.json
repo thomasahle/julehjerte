@@ -1,6 +1,6 @@
 {
   "schema": "boundary-trace-reuse-1",
-  "status": "focused-validation-passed-full-qa-pending",
+  "status": "full-qa-running",
   "scope": "Reuse cleanup, raster adjacency, repaired pixel chains and source component count across tracing tolerances. Curve fitting, noding, sampled pixels, acceptance gates and solver scheduling remain unchanged.",
   "baselineCoreCommit": "1f05224",
   "changes": [
@@ -63,5 +63,10 @@
       "sha256": "2a649396c21a7004363b0cb5b14e7237ee562ba1a7f1bafabd308e4c4dd7b524",
       "bytes": 3243
     }
-  ]
+  ],
+  "schedulingDiagnostic": {
+    "report": "docs/inverse/datasets/jigsaw-scheduling-diagnostic.json",
+    "conclusion": "Both runtimes retain the useful four-by-four feature-weighted start at zero/one-second delay, and skip it at two/three-second delay. The latter fits use four-by-three cuts and visibly lose boundary puzzle tabs. The native failure has the same skipped-init signature; hardware contention is not established by this experiment.",
+    "notFixed": true
+  }
 }
