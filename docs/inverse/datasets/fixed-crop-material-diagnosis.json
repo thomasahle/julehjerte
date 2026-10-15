@@ -174,7 +174,31 @@
     ],
     "sameCrop": true,
     "secondsPerFreshFit": 10,
-    "scoring": "Each fit is scored against its own unmodified classified mask; percentages across the two targets are not directly comparable as artwork accuracy. Inspect both against the photograph, check source-stable enclosure preservation and audit editable exports. No original cutting paths are supplied."
+    "scoring": "Each fit is scored against its own unmodified classified mask; percentages across the two targets are not directly comparable as artwork accuracy. Inspect both against the photograph, check source-stable enclosure preservation and audit editable exports. No original cutting paths are supplied.",
+    "evaluation": {
+      "reference": "Same RGB-classified photograph, explicitly an estimated proxy rather than original artwork.",
+      "visibleMotifs": "Four heart interiors, located before fitting; evaluate their connected-component retention, border contact and separation.",
+      "anchorsPixels": [
+        [
+          50,
+          60
+        ],
+        [
+          150,
+          160
+        ],
+        [
+          250,
+          260
+        ],
+        [
+          350,
+          360
+        ]
+      ],
+      "partialMaterialLabels": "Also score known conservative interiors; report their limited coverage.",
+      "editable": "Convert and audit every exported result, including rejected candidates."
+    }
   },
   "artifacts": [
     {
@@ -231,6 +255,36 @@
       "path": "tmp/heart-learning/fixed-crop-material-v1/rgb-auto.u8",
       "sha256": "8a15961ca2b933c37b72496e5b6aba0172c1bc4eab0cff17affda1568bfad46c",
       "bytes": 160000
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/motifs.mjs",
+      "sha256": "c91a4d9f5b38341f1658f1b4495d6a874c8206a698edc6cb25c5f2fdcbcc3615",
+      "bytes": 1752
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/motifs.log",
+      "sha256": "b05ca0bbbe9f381793ef2634d315523b6d804e4d0bb0161692c177628cee40f2",
+      "bytes": 1358
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/motif-observations.json",
+      "sha256": "eba19885aa13190a2e3d52ffc7ca49320f35268e66ecf2a96ada84d02d10ab0f",
+      "bytes": 1884
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/fit-plan.json",
+      "sha256": "df2d4dca66359bca43f170626279c287117412ca562a67bf392cb0448a852811",
+      "bytes": 1123
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/fit.py",
+      "sha256": "4310308f05ad19d6a840520f88a41aac904f114aaf07da1e0c51bc6fb51255dd",
+      "bytes": 1831
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/audit.mjs",
+      "sha256": "f684fc0395fd93c3e92b7e53d68da0a987f058507867c3563811444eca4adb7c",
+      "bytes": 6056
     }
   ]
 }
