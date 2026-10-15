@@ -1,6 +1,7 @@
 /** Seeded raster simulation. Geometry remains exact in canonical coordinates. */
 import { createCanvas, loadImage } from 'canvas';
 import { random } from './synthetic-geometry.mjs';
+import { checkedPaperPrints, printedPaperColors } from './synthetic-print.mjs';
 
 export function project(h, [x, y]) {
   const z = h[6] * x + h[7] * y + h[8];
@@ -70,11 +71,11 @@ function photoScene(kind, h, seed, resolution, coverage, n) {
     sample(x, y) {
       if (useHandle) {
         const [u, v] = project(inverse, [x, y]), along = (u + v) / Math.SQRT2, across = (u - v) / Math.SQRT2;
-        if (along >= -100 && along <= 20 && Math.abs(across) < handleWidth / 2) return { foreground: true, fractionA: 1, kind: 'handle' };
+        if (along >= -100 && along <= 20 && Math.abs(across) < handleWidth / 2) return { foreground: true, fractionA: 1, kind: 'handle', canonical: [u, v] };
       }
       if (useNeighbours) for (const neighbour of neighbours) {
-        const m = material(project(neighbour.inverse, [x, y]), coverage, n);
-        if (m.foreground) return { ...m, fractionA: neighbour.swapPapers ? 1 - m.fractionA : m.fractionA, kind: 'neighbor' };
+        const canonical = project(neighbour.inverse, [x, y]), m = material(canonical, coverage, n);
+        if (m.foreground) return { ...m, fractionA: neighbour.swapPapers ? 1 - m.fractionA : m.fractionA, kind: 'neighbor', canonical };
       }
       return null;
     }
@@ -109,7 +110,7 @@ function grayPNG(values, n) {
 function checkedInterventions(value, resolution) {
   if (value === undefined) return null;
   if (value === null || typeof value !== 'object' || Array.isArray(value) || ![Object.prototype, null].includes(Object.getPrototypeOf(value))) throw new Error('Photo interventions must be an object.');
-  const keys = Reflect.ownKeys(value), allowed = new Set(['palette', 'background', 'backgroundStyle', 'blurSigmaPixels', 'lowResolution', 'lowResolutionScale', 'jpegQuality', 'cropNoisePixels', 'glare', 'scene']);
+  const keys = Reflect.ownKeys(value), allowed = new Set(['palette', 'paperPrints', 'background', 'backgroundStyle', 'blurSigmaPixels', 'lowResolution', 'lowResolutionScale', 'jpegQuality', 'cropNoisePixels', 'glare', 'scene']);
   if (keys.some(key => !allowed.has(key))) throw new Error('Unknown photo intervention.');
   if (!keys.length) return null;
   if (!Number.isInteger(resolution) || resolution < 16 || resolution > 4096) throw new Error('Intervened photos require an integer resolution from 16 to 4096.');
@@ -117,6 +118,7 @@ function checkedInterventions(value, resolution) {
   const requested = {};
   for (const key of keys) {
     const v = value[key];
+    if (key === 'paperPrints') { requested.paperPrints = checkedPaperPrints(v); continue; }
     if (key === 'scene') {
       if (!['none', 'neighbors', 'handle', 'neighbors-handle'].includes(v)) throw new Error('Invalid scene intervention.');
       requested.scene = v; continue;
@@ -175,8 +177,9 @@ export async function syntheticPhoto({ coverage, canonicalResolution, graph, see
     // coverage/geometry labels and the legacy noise sequence independent of it.
     const glare = requested?.glare;
     const highlight = glare && m.foreground ? glare.amount * Math.exp(-.5 * (((x + .5) / resolution - glare.center[0]) ** 2 / glare.sigma[0] ** 2 + ((y + .5) / resolution - glare.center[1]) ** 2 / glare.sigma[1] ** 2)) : 0;
+    const paperColors = m.foreground || other ? printedPaperColors(m.foreground ? canonical : other.canonical, palette, requested?.paperPrints) : palette;
     for (let k = 0; k < 3; k++) {
-      const base = m.foreground ? palette[0][k] * m.fractionA + palette[1][k] * (1 - m.fractionA) + gaussian() * texture : other ? palette[0][k] * other.fractionA + palette[1][k] * (1 - other.fractionA) + texture * Math.sin(x * .71 + y * .93 + k) : (background[k] + grain) * shadow;
+      const base = m.foreground ? paperColors[0][k] * m.fractionA + paperColors[1][k] * (1 - m.fractionA) + gaussian() * texture : other ? paperColors[0][k] * other.fractionA + paperColors[1][k] * (1 - other.fractionA) + texture * Math.sin(x * .71 + y * .93 + k) : (background[k] + grain) * shadow;
       const value = base * illumination + gaussian() * noiseSigma;
       pixels[4 * index + k] = highlight ? (1 - highlight) * value + highlight * 255 : value;
     }
@@ -218,6 +221,10 @@ export async function syntheticPhoto({ coverage, canonicalResolution, graph, see
     }
   };
   if (requested?.scene !== undefined) result.labels.perturbations.scene = requested.scene;
+  if (requested?.paperPrints) {
+    result.labels.perturbations.paperPrints = requested.paperPrints;
+    result.labels.limitations.push('Decorative prints are planar procedural stripes, dots or flowers; not scanned paper, fibre texture or deformed cut strips. Printed ink never changes material labels.');
+  }
   if (scene) {
     result.files['photo-distractors.png'] = grayPNG(distractors, resolution);
     result.labels.scene = { ...scene.labels, visibleDistractorPixels: visibleDistractors };
@@ -228,6 +235,7 @@ export async function syntheticPhoto({ coverage, canonicalResolution, graph, see
     result.labels.baselinePerturbations = { ...actual, palette: baselinePalette, background: baselineBackground, backgroundStyle: baselineBackgroundStyle, blurSigmaPixels: baselineSigma, lowResolution: baselineLowSize, jpegQuality: baselineJpegQuality, cropNoisePixels: baselineCropNoise };
     delete result.labels.baselinePerturbations.glare;
     delete result.labels.baselinePerturbations.scene;
+    delete result.labels.baselinePerturbations.paperPrints;
     const applied = {};
     for (const key of Object.keys(requested)) {
       const actualKey = key === 'lowResolutionScale' ? 'lowResolution' : key;

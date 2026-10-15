@@ -9,7 +9,7 @@ import { syntheticPhoto } from './synthetic-photo.mjs';
 const root = fileURLToPath(new URL('../../../', import.meta.url));
 const SOURCE_FILES = [
   'scripts/inverse/datasets/synthetic-generate.mjs', 'scripts/inverse/datasets/synthetic-geometry.mjs', 'scripts/inverse/datasets/synthetic-photo.mjs',
-  'scripts/inverse/datasets/synthetic-motif.mjs',
+  'scripts/inverse/datasets/synthetic-motif.mjs', 'scripts/inverse/datasets/synthetic-print.mjs',
   'scripts/inverse/export-renderer.mjs', 'static/inverse/core/direct/curves.js', 'static/inverse/core/direct/curve-topology.js',
   'static/inverse/core/graph.js', 'static/inverse/core/bezier.js', 'static/inverse/core/validate.js', 'static/inverse/core/material.js',
   'static/inverse/core/geometry.js', 'static/inverse/core/settings.js', 'static/inverse/core/self-returns.js', 'package-lock.json'

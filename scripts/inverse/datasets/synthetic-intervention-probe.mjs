@@ -44,10 +44,17 @@ export const SCENE_TRAINING_VARIANTS = [
   ...BACKGROUND_VARIANTS.map(variant => ({ name: `scene-${variant.name}`, pairedBackgroundVariant: variant.name,
     interventions: { ...variant.interventions, scene: 'neighbors-handle' } }))
 ];
+const print = (kind, period, angle, phase, width, ink) => ({ kind, period, angle, phase, width, opacity: .9, ink });
+export const PRINT_VARIANTS = [
+  { name: 'baseline' },
+  { name: 'print-flowers', interventions: { paperPrints: [print('flowers', 15, .2, [.1, .3], .35, [35, 80, 130]), null] } },
+  { name: 'print-stripes-dots', interventions: { paperPrints: [print('stripes', 9, -.4, [.2, .1], .3, [240, 225, 210]), print('dots', 12, .3, [.3, .4], .5, [110, 30, 65])] } },
+  { name: 'print-flowers-stripes', interventions: { paperPrints: [print('flowers', 12, -.3, [.3, .1], .4, [235, 210, 190]), print('stripes', 7, .2, [.2, .2], .25, [30, 60, 100])] } }
+];
 const IMAGE_FILES = ['photo.jpg', 'crop.png', 'photo-paper-a.png', 'photo-overlap-valid.png', 'crop-paper-a.png', 'crop-overlap-valid.png'];
 const TARGET_FILES = IMAGE_FILES.slice(2);
 const root = fileURLToPath(new URL('../../../', import.meta.url));
-const sourceFiles = ['scripts/inverse/datasets/synthetic-intervention-probe.mjs', 'scripts/inverse/datasets/synthetic-photo.mjs', 'scripts/inverse/datasets/synthetic-geometry.mjs', 'scripts/inverse/export-renderer.mjs', 'static/inverse/core/graph.js', 'static/inverse/core/bezier.js', 'package-lock.json'];
+const sourceFiles = ['scripts/inverse/datasets/synthetic-intervention-probe.mjs', 'scripts/inverse/datasets/synthetic-photo.mjs', 'scripts/inverse/datasets/synthetic-print.mjs', 'scripts/inverse/datasets/synthetic-geometry.mjs', 'scripts/inverse/export-renderer.mjs', 'static/inverse/core/graph.js', 'static/inverse/core/bezier.js', 'package-lock.json'];
 
 async function checkedAsset(dataset, asset) {
   const full = path.resolve(dataset, asset.path);
@@ -93,8 +100,8 @@ function assertControlledVariant(result, baseline, variant) {
 }
 
 export async function replayInterventions({ dataset = 'tmp/heart-training-synthetic/batch-v1', selection = 'tmp/heart-learning/localization-corners-v1/worst-distinct-designs.json', output, profile = 'standard' }) {
-  if (!['standard', 'glare', 'background', 'scene', 'scene-training'].includes(profile)) throw new Error('Unknown intervention profile. Use standard, glare, background, scene or scene-training.');
-  const variants = { standard: PROBE_VARIANTS, glare: GLARE_VARIANTS, background: BACKGROUND_VARIANTS, scene: SCENE_VARIANTS, 'scene-training': SCENE_TRAINING_VARIANTS }[profile];
+  if (!['standard', 'glare', 'background', 'scene', 'scene-training', 'printed'].includes(profile)) throw new Error('Unknown intervention profile. Use standard, glare, background, scene, scene-training or printed.');
+  const variants = { standard: PROBE_VARIANTS, glare: GLARE_VARIANTS, background: BACKGROUND_VARIANTS, scene: SCENE_VARIANTS, 'scene-training': SCENE_TRAINING_VARIANTS, printed: PRINT_VARIANTS }[profile];
   if (!output) throw new Error('Provide a fresh --output directory.');
   const started = performance.now(), sourceDataset = path.resolve(dataset), sourceSelection = path.resolve(selection), out = path.resolve(output);
   const sourceBytes = await fs.readFile(path.join(sourceDataset, 'manifest.json')), original = JSON.parse(sourceBytes);
