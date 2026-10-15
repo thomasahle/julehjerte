@@ -133,8 +133,14 @@ Stop and export regressions. Repository QA covers all 891 inverse tests after
 a controlled-clock correction to one clearance-repair test: the initial full
 run passed 890/891, and all six tests in the corrected file pass on rerun.
 The other 885 results and unchanged application/runtime checks are reused.
-Type checking, lint, 857 application tests and build pass; browser QA remains
-pending. The repair failure also reproduces with the old runtime: its exact
+Type checking, lint, 857 application tests and build pass. All twelve actual
+Chromium upload/example-to-editable-export workflows and initial-loading checks
+pass, with 735 source files verified. The ten-second-budget crown exports at
+2.284375% disagreement and retains its actual 1000-resolution paper audit;
+maple also uses 1000 and exports at 0.7975%. Crown click-to-ready time is 10.69
+seconds, including preparation, export and conversion; the solver budget is
+not a UI latency guarantee. All twelve Draw results were visually reviewed.
+The repair failure also reproduces with the old runtime: its exact
 100-step geometry passes at 1000 but not 700, while 125 steps pass at 700.
 That production repair limitation remains; fixing the unit test does not cure
 it. Default resolution and physical tolerances are unchanged. The timed
