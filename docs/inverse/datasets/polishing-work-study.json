@@ -1,0 +1,202 @@
+{
+  "schema": "woven-heart-polishing-work-study-1",
+  "status": "offline-investigation-complete-no-production-change",
+  "scope": "One fresh Viking pre-polishing checkpoint and unchanged classified mask; 160 gradient updates per variant. Previous polisher is commit 68751f5 on otherwise current dependencies, not an entire historical runtime. Local geometric repair time caps remain, but no projection was invoked in these completed runs.",
+  "rows": [
+    {
+      "name": "before-40",
+      "backend": "javascript",
+      "captureSha256": "20f4eaf0c1a4bb04998e16289e930266ec2b4f083746a7fa9d76bb0a0281c321",
+      "seconds": 3.1008465409999997,
+      "steps": 160,
+      "computedSteps": 160,
+      "initialError": 0.0261,
+      "error": 0.02095,
+      "passed": true,
+      "coordinateSha256": "534d419e34620633f39e5f84ba86993812ccf80b164f3013ba61372539795caa",
+      "auditTimes": {
+        "materialAudit": {
+          "calls": 6,
+          "milliseconds": 1294.3664589999996
+        }
+      }
+    },
+    {
+      "name": "current-40",
+      "backend": "javascript",
+      "captureSha256": "20f4eaf0c1a4bb04998e16289e930266ec2b4f083746a7fa9d76bb0a0281c321",
+      "seconds": 3.50790825,
+      "steps": 160,
+      "computedSteps": 160,
+      "initialError": 0.0261,
+      "error": 0.02095,
+      "passed": true,
+      "coordinateSha256": "534d419e34620633f39e5f84ba86993812ccf80b164f3013ba61372539795caa",
+      "auditTimes": {
+        "materialAudit": {
+          "calls": 6,
+          "milliseconds": 1305.9341650000003
+        },
+        "geometricMaterialAudit": {
+          "calls": 6,
+          "milliseconds": 354.72058300000015
+        }
+      }
+    },
+    {
+      "name": "current-20",
+      "backend": "javascript",
+      "captureSha256": "20f4eaf0c1a4bb04998e16289e930266ec2b4f083746a7fa9d76bb0a0281c321",
+      "seconds": 4.8114081660000005,
+      "steps": 160,
+      "computedSteps": 160,
+      "initialError": 0.0261,
+      "error": 0.02095,
+      "passed": true,
+      "coordinateSha256": "534d419e34620633f39e5f84ba86993812ccf80b164f3013ba61372539795caa",
+      "auditTimes": {
+        "materialAudit": {
+          "calls": 10,
+          "milliseconds": 2022.2587930000004
+        },
+        "geometricMaterialAudit": {
+          "calls": 10,
+          "milliseconds": 580.223291000001
+        }
+      }
+    },
+    {
+      "name": "current-10",
+      "backend": "javascript",
+      "captureSha256": "20f4eaf0c1a4bb04998e16289e930266ec2b4f083746a7fa9d76bb0a0281c321",
+      "seconds": 7.687848209000001,
+      "steps": 160,
+      "computedSteps": 160,
+      "initialError": 0.0261,
+      "error": 0.02099375,
+      "passed": true,
+      "coordinateSha256": "9053bd0617d2ccabe3a5ac671f9f9f4a81d7f0a7350bc72051bd2252b2f148f5",
+      "auditTimes": {
+        "materialAudit": {
+          "calls": 18,
+          "milliseconds": 3666.137416999998
+        },
+        "geometricMaterialAudit": {
+          "calls": 18,
+          "milliseconds": 1020.2309589999994
+        }
+      }
+    },
+    {
+      "name": "before-40",
+      "backend": "wasm",
+      "captureSha256": "20f4eaf0c1a4bb04998e16289e930266ec2b4f083746a7fa9d76bb0a0281c321",
+      "seconds": 2.1211257089999997,
+      "steps": 160,
+      "computedSteps": 160,
+      "initialError": 0.0261,
+      "error": 0.02095,
+      "passed": true,
+      "coordinateSha256": "534d419e34620633f39e5f84ba86993812ccf80b164f3013ba61372539795caa",
+      "auditTimes": {
+        "materialAudit": {
+          "calls": 6,
+          "milliseconds": 684.3863329999994
+        }
+      }
+    },
+    {
+      "name": "current-40",
+      "backend": "wasm",
+      "captureSha256": "20f4eaf0c1a4bb04998e16289e930266ec2b4f083746a7fa9d76bb0a0281c321",
+      "seconds": 2.6575762499999995,
+      "steps": 160,
+      "computedSteps": 160,
+      "initialError": 0.0261,
+      "error": 0.02095,
+      "passed": true,
+      "coordinateSha256": "534d419e34620633f39e5f84ba86993812ccf80b164f3013ba61372539795caa",
+      "auditTimes": {
+        "materialAudit": {
+          "calls": 6,
+          "milliseconds": 895.6290409999996
+        },
+        "geometricMaterialAudit": {
+          "calls": 6,
+          "milliseconds": 349.0594580000003
+        }
+      }
+    },
+    {
+      "name": "current-20",
+      "backend": "wasm",
+      "captureSha256": "20f4eaf0c1a4bb04998e16289e930266ec2b4f083746a7fa9d76bb0a0281c321",
+      "seconds": 3.539622875,
+      "steps": 160,
+      "computedSteps": 160,
+      "initialError": 0.0261,
+      "error": 0.02095,
+      "passed": true,
+      "coordinateSha256": "534d419e34620633f39e5f84ba86993812ccf80b164f3013ba61372539795caa",
+      "auditTimes": {
+        "materialAudit": {
+          "calls": 10,
+          "milliseconds": 1308.978376
+        },
+        "geometricMaterialAudit": {
+          "calls": 10,
+          "milliseconds": 573.5014980000004
+        }
+      }
+    },
+    {
+      "name": "current-10",
+      "backend": "wasm",
+      "captureSha256": "20f4eaf0c1a4bb04998e16289e930266ec2b4f083746a7fa9d76bb0a0281c321",
+      "seconds": 5.379234958,
+      "steps": 160,
+      "computedSteps": 160,
+      "initialError": 0.0261,
+      "error": 0.02099375,
+      "passed": true,
+      "coordinateSha256": "9053bd0617d2ccabe3a5ac671f9f9f4a81d7f0a7350bc72051bd2252b2f148f5",
+      "auditTimes": {
+        "materialAudit": {
+          "calls": 18,
+          "milliseconds": 2187.434376000001
+        },
+        "geometricMaterialAudit": {
+          "calls": 18,
+          "milliseconds": 1025.8952490000006
+        }
+      }
+    }
+  ],
+  "findings": [
+    "At the same checkpoint interval and update count, adding geometric paper checks leaves every selected coordinate identical on this case.",
+    "The WASM comparison loads the production numerical kernel and warms the paper lattice outside the measured interval. Initial JavaScript-fallback timings are retained separately.",
+    "Checking every 20 steps gives the same coordinates as every 40, with more audit work. Checking every 10 selects a different sampled checkpoint and slightly worsens the independently rendered error.",
+    "No repeated geometric audit of the same solution object was observed; memoizing a finer lattice retry would not accelerate this case.",
+    "These measurements support profiling the checks themselves rather than increasing checkpoint frequency. They do not establish a universal optimal cadence or remove any final validation rule."
+  ],
+  "visualReview": "Both distinct WASM outputs inspected; Viking motif retained, with visible border irregularities. The extra steps are not a newly accepted photograph or an end-to-end timing result.",
+  "evidence": {
+    "tmp/heart-learning/polish-work-study-v1/source.json": "a9fe3a01cb19aebbd1f03e66a2c15156e26dc66cdcc540fa020287c8aaa377c0",
+    "tmp/heart-learning/polish-work-study-v1/runtime-hashes.json": "0cc6b44cd573e6c165433d215e738ad67af42819a230ac7406e8d34940aa93a5",
+    "tmp/heart-learning/polish-work-study-v1/capture.json": "20f4eaf0c1a4bb04998e16289e930266ec2b4f083746a7fa9d76bb0a0281c321",
+    "tmp/heart-learning/polish-work-study-v1/capture-report.json": "c4a7614e25daea4ff341da64409027cca2a99c29cf2db0812e27631d13c1666f",
+    "tmp/heart-learning/polish-work-study-v1/prepare.py": "cdda2259ae096ca704bc2332bb583f7d100488488ab4a0e1fcc093016fc39da2",
+    "tmp/heart-learning/polish-work-study-v1/capture.mjs": "e69090266d89875361830428370ac44c27e14ae05f9389856bfde3caaf997c3f",
+    "tmp/heart-learning/polish-work-study-v1/compare-javascript.mjs": "55fe729a5093cb1bdcb38da02d49ac783b360750d467f713bb2cc2c281517583",
+    "tmp/heart-learning/polish-work-study-v1/compare.mjs": "b95bbd91f87891b3c45c159ccae0925242c5179a4155c81b5132983a1813b3f3",
+    "tmp/heart-learning/polish-work-study-v1/reviewed-run.py": "d302ff7ffd4efbf232cb45f4ac5c92661a97568c72b824eaf725434b9ba9be12",
+    "tmp/heart-learning/polish-work-study-v1/current-10/results.json": "e8daccd870e5fa7132c1ce3fc19e128a4536512fad361aa09e9edc05eed32f79",
+    "tmp/heart-learning/polish-work-study-v1/before-40-wasm/results.json": "6a2c7129c90d94ef4681e46f13b3b872ad3a1415a97d9b72b419a50749d7a807",
+    "tmp/heart-learning/polish-work-study-v1/current-20/results.json": "d02c513c553221ea2f74cdeb47204211642f3b11e134d6cb543d152bdea6b935",
+    "tmp/heart-learning/polish-work-study-v1/current-40-wasm/results.json": "79e2fbd426ef34625c960b66243665c645a535ebeb0d5a738935bc8bcbb42bcf",
+    "tmp/heart-learning/polish-work-study-v1/before-40/results.json": "679bf09caefe295990bfcd7fc36058f89adf6ef8274ee8d3158a45345d1a003f",
+    "tmp/heart-learning/polish-work-study-v1/current-20-wasm/results.json": "fc7129e9bd508c0a485aff310ba43faae39bd460d3cfa11961664b779e925594",
+    "tmp/heart-learning/polish-work-study-v1/current-40/results.json": "3d0b38e23b8adba75f2b659a0aa83bc291c6c77b610ddd8df5a06e538bec1044",
+    "tmp/heart-learning/polish-work-study-v1/current-10-wasm/results.json": "9f5fddba976e9aa4fa4eed80647f1d14e788b4a0be7defffe56ed7c84b25d555"
+  }
+}

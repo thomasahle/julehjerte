@@ -30,6 +30,19 @@ The inventory, with material annotations updated on 2026-10-15, contains:
 
 ## Current results and limits
 
+A [fixed-input polishing study](polishing-work-study.json) isolates the Viking
+checkpoint from crop and initialization changes. With the production numerical
+WASM backend and 160 updates, the old and strengthened checks choose identical
+coordinates at the existing 40-step interval. Halving that interval adds work
+without improving this fit; checking every ten steps slightly worsens independent
+rendered error. No cadence change is integrated.
+
+The [next material-learning plan](material-expanded-plan.json) expands the
+reviewed real pool from nine to seventeen instances while preserving the two
+whole motif-family groups, synthetic replay, initial model and update budget.
+Results will separate the original nine from the eight additions. This is a
+declared offline experiment, not a trained or deployed model result.
+
 The [latest export-audit QA](editable-paper-qa.json) passes all 60 saved SVGs
 through the stronger paper check, 857 application tests, type checking, lint,
 build and two fresh browser workflows. The full inverse suite is **924/925**:
