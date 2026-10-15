@@ -30,6 +30,14 @@ The inventory, with material annotations updated on 2026-10-15, contains:
 
 ## Current results and limits
 
+The [latest export-audit QA](editable-paper-qa.json) passes all 60 saved SVGs
+through the stronger paper check, 857 application tests, type checking, lint,
+build and two fresh browser workflows. The full inverse suite is **924/925**:
+one ten-second sloth-routing case timed out before HiGHS found an integer
+candidate. A fresh replay in the same two-case order passes, but does not erase
+the failure. Solver sources match the earlier 923-test passing run exactly.
+Short-search timing robustness remains open; no release replacement is claimed.
+
 A [new orange/yellow Pinterest checker](palette-photo-labels.json) adds one
 previously unlabelled photograph with body and partial paper-identity labels.
 Source outlines and overlays at 256 and 768 pixels were reviewed; compilation
@@ -533,9 +541,9 @@ initialization and repair-budget experiments remain unadopted.
 A separate [render-test correction](shape-render-validation.md) avoids system
 font discovery for text-free SVGs. All 152 paired renders are byte-identical;
 it changes test performance, not the application renderer or solver quality.
-The newest reviewed [Pinterest annotations](real-pinterest-annotations.md)
-bring the body-label inventory to eighteen; the original ten-photo training
-pilot remains unchanged.
+The earlier [Pinterest annotations](real-pinterest-annotations.md) brought
+the body-label inventory to eighteen; the additional palette photograph brings
+it to nineteen. The original ten-photo training pilot remains unchanged.
 
 ### Neural experiments
 

@@ -1,0 +1,116 @@
+{
+  "schema": "woven-heart-export-audit-qa-1",
+  "status": "full-suite-fails-one-short-routing-case",
+  "sourceRuntimeUnchangedSince923Pass": true,
+  "changedHarnessFiles": [
+    "scripts/inverse/editable-paper-audit.test.mjs",
+    "scripts/inverse/editable-paper-audit.mjs",
+    "scripts/inverse/hard-photo-editor-replay.mjs",
+    "scripts/inverse/paint-browser-test.mjs"
+  ],
+  "addedFiles": [
+    "scripts/inverse/datasets/real-annotations-palettes.json",
+    "scripts/inverse/datasets/real-materials-palettes.json"
+  ],
+  "application": {
+    "passed": 857,
+    "skipped": 1
+  },
+  "inverse": {
+    "passed": 924,
+    "failed": 1,
+    "total": 925
+  },
+  "failure": {
+    "test": "fresh synthetic-control routing retains time for a valid template without changing the mask",
+    "maskFixture": "scripts/inverse/fixtures/sloth-search-scheduling.json",
+    "nativeFirstRound": {
+      "round": 1,
+      "status": 13,
+      "budgetSeconds": 4.3955473817,
+      "solveSeconds": 4.630047333999999,
+      "elapsedSeconds": 4.6477273750000005
+    },
+    "finalGeometryPassed": false,
+    "finalGeometryIssue": [
+      {
+        "type": "inter_slit_clearance",
+        "family": 1,
+        "slits": [
+          0,
+          1
+        ],
+        "distanceLower": 1.1501423226277063
+      }
+    ],
+    "beforePolishing": true
+  },
+  "freshSameOrderReplay": {
+    "cases": 2,
+    "passed": 2,
+    "nativeFirstRound": {
+      "round": 1,
+      "status": 16,
+      "budgetSeconds": 4.363249320799996,
+      "solveSeconds": 3.3973313750000016,
+      "elapsedSeconds": 3.4190716250000004,
+      "objective": 2660.8158965999996,
+      "selfNeckChains": 5,
+      "shortReturnChains": 5
+    },
+    "syntheticControlSeconds": 9.158014250000003
+  },
+  "inference": "Short routing is sensitive to available compute time: the failing run reaches its time limit before an integer candidate, whereas the fresh replay reaches a candidate then repairs it. This does not prove a specific external-load cause and the replay does not erase the full-suite failure.",
+  "researchDecision": "The unchanged solver remains an imperfect candidate. Further isolated performance and learning experiments may proceed after active QA processes finish; none is a release approval.",
+  "evidence": {
+    "tmp/heart-learning/conditional-paper-repair-v2/release-v1/source.json": "5a28231a37a8b982bf2b4aa60a50d57a7835ebcdd03826dfeb02c501cddc14f1",
+    "tmp/heart-learning/editable-audit-release-v1/source.json": "39cd349030de96a81af18b649171934aaaa4211d45724576f970fe4e7730fc35",
+    "tmp/heart-learning/editable-audit-release-v1/test.log": "3e26644731488978f0334648f72ba98015d97dcdae5d44b8943042996cd545f9",
+    "tmp/heart-learning/editable-audit-release-v1/synthetic-control-failure/diagnostic.json": "c65a4457895fc4108b9e5373bfe16122e326ae8de7526abda28225034b40473e",
+    "tmp/heart-learning/editable-audit-release-v1/routing-replay/results.json": "071ff1970bd821979e16aa0fef7084e9c09866c7e07c11094ba4e88bec4b925a",
+    "tmp/heart-learning/editable-audit-release-v1/routing-replay/synthetic-control/report.json": "8ba1eb3f8746a469f7d9830d0998dff13372880d85cee79d9b1549b20c6fc632",
+    "tmp/heart-learning/editable-audit-release-v1/reproduce-routing.mjs": "1206cb974a425e3a87e6dec1986fd089099fb35e2b6f48f67bcdb2a3676d50e9",
+    "tmp/heart-learning/editable-audit-release-v1/build.log": "686bd4a50c058f2d5b092630605d5a08bd8a33c903e66e2fdc54ebf334c170c0",
+    "tmp/heart-learning/editable-audit-release-v1/browser/results.json": "d95781fc16e9ced1d3b6a43a63031ddbd7dead6cb92eea8cbfe388c89a66dfda",
+    "tmp/heart-learning/editable-audit-release-v1/browser-v2/results.json": "79626007baa83db5a104efd87535d77be61a488c331179d04ccfa75d287a3009",
+    "tmp/heart-learning/editable-audit-release-v1/served-assets.json": "a59d6fc8b9c7e7f7a1509d7dde580dd113d442f7555b387974e1e632a9db883a",
+    "tmp/heart-learning/editable-audit-release-v1/browser-v2/chromium-star/draw.png": "cf4596195e874c9e99b31b293b7a0f400dd271380ceabcd6de16bb05d9e84546",
+    "tmp/heart-learning/editable-audit-release-v1/browser-v2/chromium-top-hat-preferred/draw.png": "1f883bfac585ac0f9fe0dfed633eed6018ceec160b861857d6966f6bbf23ca51"
+  },
+  "typeCheckPassed": true,
+  "lintPassed": true,
+  "buildPassed": true,
+  "browserSetupFailure": "First browser run used a preview process retaining HTML from before the rebuild; both cases failed on a missing hashed entry module. After restarting only this worktree\u2019s preview, 171 served assets matched the fresh build and both workflows passed.",
+  "browserReplay": [
+    {
+      "name": "star",
+      "browser": "chromium",
+      "templateChecksPassed": true,
+      "sourceEditableError": 0.0016,
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.009,
+        "prepareRoundTripSeconds": 0.03760000014305115,
+        "preparedToSolveRequestSeconds": 0.0005,
+        "solveRoundTripSeconds": 1.8348999998569488,
+        "resultToReadySeconds": 0.28230000019073487,
+        "clickToReadySeconds": 2.164300000190735
+      }
+    },
+    {
+      "name": "top-hat-preferred",
+      "browser": "chromium",
+      "templateChecksPassed": true,
+      "sourceEditableError": 0.004118835034013606,
+      "timings": {
+        "clickToPrepareRequestSeconds": 0.02,
+        "prepareRoundTripSeconds": 0.2847000000476837,
+        "preparedToSolveRequestSeconds": 0.00029999995231628417,
+        "solveRoundTripSeconds": 8.788200000047684,
+        "resultToReadySeconds": 0.2745,
+        "clickToReadySeconds": 9.367700000047684
+      }
+    }
+  ],
+  "visualReview": "Both actual Draw screenshots reviewed: star opening and shared approaches retained; free-border hat has shared connectors and editable cuts. This is not physical assembly validation.",
+  "preview": "http://127.0.0.1:5232"
+}
