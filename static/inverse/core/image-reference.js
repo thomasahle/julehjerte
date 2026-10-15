@@ -29,6 +29,24 @@ export function referenceError(source,woven){
       editableChangeFraction:editablePixels?editableErrors/editablePixels:null}:{}),};
 }
 
+/** Snapshot the observed binary objective for one synchronous selection stage.
+ * Repeated scores need neither weight validation nor unused reporting fields.
+ * Ordinary referenceError calls continue to inspect the current source arrays.
+ */
+export function createMaskDisagreement(source){
+  const length=source.mask.length,info=imageWeights(source.weights,length),indices=[],values=[],weights=[];let mass=0;
+  for(let i=0;i<length;i++){
+    if(source.validMask&&!source.validMask[i])continue;
+    const weight=info?info.values[i]:1;if(!weight)continue;
+    indices.push(i);values.push(source.mask[i]);weights.push(weight);mass+=weight;
+  }
+  return woven=>{
+    if(woven.length!==length)throw new Error('The rendered image must match the reference resolution.');
+    let mismatch=0;for(let j=0;j<indices.length;j++)if(woven[indices[j]]!==values[j])mismatch+=weights[j];
+    return mass?mismatch/mass:Infinity;
+  };
+}
+
 /** A deterministic, optional weave proposal outside observed artwork. It is
  * never a scored target. Ignored painted colours cannot change this seed.
  */

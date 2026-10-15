@@ -188,6 +188,17 @@ repeatably resolve the primary failure. The calibration comparison's remaining
 with failures shared across revisions. Those focused runs do not replace the
 failed full-suite record.
 
+A [matching-stage preparation optimization](matching-preparation.json) reuses
+spline interval bases and snapshots the observed image objective once per
+selection stage. All 216 old/new control-coordinate comparisons and 481 image
+score comparisons are exactly equal. A fixed 200-step matching replay returns
+identical exported coordinates and PNG pixels; its one observed run drops from
+2.414 to 2.204 seconds. These are component measurements, not broad speed gains.
+Four new snapshot/weight regressions pass, and focused checks pass 29/30; the
+existing free-border matching test still times out. Neither a simple priority
+budget nor a lower fitting resolution consistently fixes that failure, so those
+experiments remain unintegrated. Full repository and corpus QA remain pending.
+
 The latest validated solver revision is `c000d30`. Its
 [release record](return-projection-speed.json) passes **22/22 regular Hunodan
 designs below ten seconds**, with a maximum of **8.100 seconds**. Automatic

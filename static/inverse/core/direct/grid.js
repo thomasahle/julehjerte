@@ -141,8 +141,13 @@ export function mismatch(mask,prob,weights=null){
 }
 export function gridPaths(model,width=100,floor=.008){
   const controls=gridControls(model,floor),breaks=[...new Set(splineKnots(model.k))];
-  return model.counts.map((count,f)=>Array.from({length:count},(_,i)=>breaks.slice(1).map((hi,j)=>{
-    const lo=breaks[j],b0=splineBasis(lo,model.k),b1=splineBasis(hi,model.k),d0=splineBasis(lo,model.k,true),d1=splineBasis(hi,model.k,true),dot=b=>b.reduce((s,v,k)=>s+v*controls[f].c[k*count+i],0),a=dot(b0),b=dot(b1),xs=[a,a+dot(d0)*(hi-lo)/3,b-dot(d1)*(hi-lo)/3,b],ys=[lo,lo+(hi-lo)/3,hi-(hi-lo)/3,hi];
+  // Every cut uses the same spline intervals. Evaluate their bases once per
+  // conversion; keep each cut's dot products and arithmetic order unchanged.
+  const spans=breaks.slice(1).map((hi,j)=>{
+    const lo=breaks[j];return{lo,hi,b0:splineBasis(lo,model.k),b1:splineBasis(hi,model.k),d0:splineBasis(lo,model.k,true),d1:splineBasis(hi,model.k,true),ys:[lo,lo+(hi-lo)/3,hi-(hi-lo)/3,hi]};
+  });
+  return model.counts.map((count,f)=>Array.from({length:count},(_,i)=>spans.map(({lo,hi,b0,b1,d0,d1,ys})=>{
+    const dot=b=>b.reduce((s,v,k)=>s+v*controls[f].c[k*count+i],0),a=dot(b0),b=dot(b1),xs=[a,a+dot(d0)*(hi-lo)/3,b-dot(d1)*(hi-lo)/3,b];
     return xs.map((x,k)=>(f?[ys[k],x]:[x,ys[k]]).map(v=>v*width));
   })));
 }

@@ -10,7 +10,7 @@ import {CurveGraph} from './curves.js';
 import {refineCurves} from './refine.js';
 import {matchingGrid,matchingPaths,matchingSummary,symmetryEvidence} from './matching.js';
 import {gridPaths} from './grid.js';
-import {referenceError,sourceWeights} from '../image-reference.js';
+import {referenceError,sourceWeights,createMaskDisagreement} from '../image-reference.js';
 
 export function matchingErrorLimit(baseline,cfg){
   // Reusing a template has an absolute accuracy allowance. Crossing the
@@ -36,14 +36,15 @@ export function matchingProposals(solution){
 
 export function preferMatchingSolution(solution,cfg,{deadline=Infinity,steps=200,onProgress=()=>{},gridSeeds=[]}={}){
   const start=performance.now(),source=solution.graph.target.sourceImage;
-  const summary=matchingSummary(solution),baseline=source?maskDisagreement(source,sampleWeave(solution,source.resolution)):null;
+  const score=source?createMaskDisagreement(source):null;
+  const summary=matchingSummary(solution),baseline=source?score(sampleWeave(solution,source.resolution)):null;
   const report={enabled:cfg.preferMatchingSheets,...summary,...(source?symmetryEvidence(source):{}),baselineImageError:baseline,
     baselineCounts:solution.paths.map(f=>f.length),baselinePhase:solution.graph.target.phase,
     maximumAdditionalImageError:cfg.matchingErrorAllowance??.01,maximumMatchingImageError:baseline===null?null:matchingErrorLimit(baseline,cfg),attempts:[]};
   const finish=(selected,status)=>{
     report.status=status;report.seconds=(performance.now()-start)/1000;
     Object.assign(report,matchingSummary(selected));
-    report.selectedImageError=source?maskDisagreement(source,sampleWeave(selected,source.resolution)):null;
+    report.selectedImageError=source?score(sampleWeave(selected,source.resolution)):null;
     report.additionalImageError=source?report.selectedImageError-baseline:null;
     selected.report={...solution.report,selectedCounts:selected.paths.map(f=>f.length),matchingPreference:report};
     return selected;
@@ -56,7 +57,7 @@ export function preferMatchingSolution(solution,cfg,{deadline=Infinity,steps=200
   onProgress({stage:'directMatching'});
   const features=imageFeatures(source,cfg.width),phase=solution.graph.target.phase?-1:1,input=solution.graph.target,before=sampleWeave(solution,source.resolution);
   const inspect=(candidate,attempt)=>{
-    const woven=sampleWeave(candidate,source.resolution),error=maskDisagreement(source,woven);
+    const woven=sampleWeave(candidate,source.resolution),error=score(woven);
     Object.assign(attempt,{imageError:error,withinAllowance:error<=limit});
     if(error>limit)return false;
     attempt.featuresPassed=auditFeatureFidelity(source,woven,cfg,features).passed;
@@ -68,7 +69,7 @@ export function preferMatchingSolution(solution,cfg,{deadline=Infinity,steps=200
   };
   const proposals=matchingProposals(solution).map(({name,paths})=>{
     const graph=new CurveGraph(paths,cfg.width),candidate=graph.solution(graph.points,phase,input);
-    return{name,graph,candidate,phase,error:maskDisagreement(source,sampleWeave(candidate,source.resolution))};
+    return{name,graph,candidate,phase,error:score(sampleWeave(candidate,source.resolution))};
   }).sort((a,b)=>a.error-b.error);
   // Evaluate every exact proposal before checking the remaining gradient budget.
   // A known valid matching pair must never be skipped just because time ran out.
@@ -84,7 +85,7 @@ export function preferMatchingSolution(solution,cfg,{deadline=Infinity,steps=200
     if(performance.now()>=deadline-80)break;
     const model=matchingGrid(seed.model);if(!model)continue;
     const graph=new CurveGraph(gridPaths(model,cfg.width,seed.floor),cfg.width),candidate=graph.solution(graph.points,seed.phase,input);
-    proposals.push({name:'matching-grid',graph,candidate,phase:seed.phase,counts:model.counts,error:maskDisagreement(source,sampleWeave(candidate,source.resolution))});
+    proposals.push({name:'matching-grid',graph,candidate,phase:seed.phase,counts:model.counts,error:score(sampleWeave(candidate,source.resolution))});
   }
   const finalists=proposals.sort((a,b)=>a.error-b.error).slice(0,3);
   for(let i=0;i<finalists.length&&performance.now()<deadline-80;i++){
