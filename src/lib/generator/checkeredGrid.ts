@@ -6,11 +6,24 @@ import { gridClearance } from '$lib/geometry/clearance';
 import { repeatedText } from './repeatedText';
 import {
 	ConstructionError, type Font, type Ring, type Point, type Edge,
-	twoPortMotif, add, compile
+	twoPortMotif, usableMotif, add, compile
 } from './geometry';
 
+type LetterCell = {
+	origin: Point;
+	edges: Edge[];
+	gates: Point[];
+	insets: [number, number];
+	usable?: boolean;
+};
+
+/** Scoped to one text/font/fill request; shared by its construction passes. */
+export function checkeredGridCache() {
+	return new Map<string, LetterCell>();
+}
+
 export function generateCheckeredGrid(text: string, font: Font, fill = .82, contactInset = .35,
-	options: { balanced?: boolean; onCrowded?: () => void } = {}) {
+	options: { balanced?: boolean; onCrowded?: () => void; repair?: boolean; onRepair?: () => void; cache?: ReturnType<typeof checkeredGridCache> } = {}) {
 	const repeated = repeatedText(text);
 	if (!repeated) throw new ConstructionError('empty', 'Empty text');
 	const word = repeated.split('\n')[0];
@@ -26,7 +39,7 @@ export function generateCheckeredGrid(text: string, font: Font, fill = .82, cont
 	const minY = Math.min(...points.map(p => p[1])), maxY = Math.max(...points.map(p => p[1]));
 	const cy = (minY + maxY) / 2, cell = 100 / n;
 	const edges: Edge[] = [], artwork: Ring[] = [];
-	const cache = new Map<string, { origin: Point; edges: Edge[] }>();
+	const cache = options.cache ?? checkeredGridCache();
 	// The combined letter-and-colour period is even. Four neighbouring letters
 	// share each alternate grid junction, so every cut stays an open strip.
 	const owners: { x: number; y: number; cells: [number, number][] }[] = [];
@@ -37,15 +50,11 @@ export function generateCheckeredGrid(text: string, font: Font, fill = .82, cont
 		const quadrants = owner.cells.map(([r, c]) => r >= owner.y ? c >= owner.x ? 0 : 1 : c < owner.x ? 2 : 3);
 		for (const [index, [row, col]] of owner.cells.entries()) {
 			const q = quadrants[index];
-			const contact = (ray: number, start: boolean): Point => {
-				const d = cell * (start ? contactInset : 1 - contactInset);
+			const contact = (ray: number, inset: number): Point => {
+				const d = cell * inset;
 				const origin: Point = [owner.x * cell, owner.y * cell];
-				const p: Point = [origin[0] + [1, 0, -1, 0][ray] * d, origin[1] + [0, 1, 0, -1][ray] * d];
-				const axis = ray % 2 ? 1 : 0;
-				flips.push({ axis, line: origin[1 - axis], from: Math.min(origin[axis], p[axis]), to: Math.max(origin[axis], p[axis]) });
-				return p;
+				return [origin[0] + [1, 0, -1, 0][ray] * d, origin[1] + [0, 1, 0, -1][ray] * d];
 			};
-			const a = contact(q, true), b = contact((q + 1) % 4, false);
 			const glyph = font.glyphs[matrix[row][col]], xs = glyph.contours.flat().map(p => p[0]);
 			const cx = (Math.min(...xs) + Math.max(...xs)) / 2;
 			const scale = cell * fill / ((maxY - minY + Math.max(...xs) - Math.min(...xs)) * Math.SQRT1_2);
@@ -53,16 +62,59 @@ export function generateCheckeredGrid(text: string, font: Font, fill = .82, cont
 				(col + .5) * cell + ((x - cx) + (y - cy)) * Math.SQRT1_2 * scale,
 				(row + .5) * cell + ((y - cy) - (x - cx)) * Math.SQRT1_2 * scale
 			]));
-			const key = matrix[row][col] + ':' + q, prior = cache.get(key);
 			const origin: Point = [col * cell, row * cell];
-			if (prior) {
-				const move = (p: Point): Point => [p[0] + origin[0] - prior.origin[0], p[1] + origin[1] - prior.origin[1]];
-				edges.push(...prior.edges.map(e => ({ ...e, from: move(e.from), to: move(e.to) })));
-			} else {
-				const local: Edge[] = [];
-				twoPortMotif(local, contours, [a, b], gridClearance(n), options);
-				cache.set(key, { origin, edges: local });
-				edges.push(...local);
+			const key = (a: number, b: number, balanced = false, compound = false) =>
+				`${matrix[row][col]}:${q}:${a},${b}:${Number(balanced)}:${Number(compound)}`;
+			const baseKey = key(contactInset, 1 - contactInset, options.balanced);
+			const construct = (a: number, b: number, compound = false): LetterCell => {
+				const id = key(a, b, options.balanced, compound), prior = cache.get(id);
+				if (prior) return prior;
+				const local: Edge[] = [], gates = [contact(q, a), contact((q + 1) % 4, b)];
+				twoPortMotif(local, contours, gates, gridClearance(n), {
+					balanced: options.balanced, onCrowded: options.onCrowded, compound
+				});
+				const result: LetterCell = { origin, edges: local, gates, insets: [a, b] };
+				cache.set(id, result);
+				return result;
+			};
+			const usable = (piece: LetterCell) => piece.usable ??=
+				usableMotif(piece.edges, piece.gates, gridClearance(n));
+			const repairKey = baseKey + ':repair';
+			let piece = cache.get(options.repair ? repairKey : baseKey);
+			if (!piece && options.repair) {
+				// Reuse clear cells from either established pass. Only a failed
+				// letter needs new bridges or different attachment positions.
+				for (const balanced of [options.balanced ?? false, true]) {
+					const prior = cache.get(key(contactInset, 1 - contactInset, balanced));
+					if (prior && usable(prior)) { piece = prior; break; }
+				}
+				if (!piece) for (const [a, b] of [
+					[contactInset, 1 - contactInset], [.2, .65], [.35, .8], [.2, .8],
+					[.45, .65], [.35, .55], [.45, .55], [.2, .55], [.45, .8]
+				]) {
+					try {
+						const candidate = construct(a, b, true);
+						if (usable(candidate)) { piece = candidate; break; }
+					} catch (error) {
+						if (!(error instanceof ConstructionError)) throw error;
+					}
+				}
+				if (!piece) throw new ConstructionError('clearance', 'No clear letter connections');
+				cache.set(repairKey, piece);
+			}
+			piece ??= construct(contactInset, 1 - contactInset);
+			if (options.repair && piece !== cache.get(baseKey)) options.onRepair?.();
+			const selected = piece;
+			const move = (p: Point): Point => [p[0] + origin[0] - selected.origin[0], p[1] + origin[1] - selected.origin[1]];
+			edges.push(...(origin[0] === piece.origin[0] && origin[1] === piece.origin[1] ? piece.edges
+				: piece.edges.map(e => ({ ...e, from: move(e.from), to: move(e.to) }))));
+			// Each start remains before the midpoint and each end after it.
+			// Neighbouring letters keep their cyclic order and a clear gap on
+			// the shared grid edge, even when their preferred positions differ.
+			for (const [i, ray] of [q, (q + 1) % 4].entries()) {
+				const p = contact(ray, piece.insets[i]), axis = ray % 2 ? 1 : 0;
+				const junction: Point = [owner.x * cell, owner.y * cell];
+				flips.push({ axis, line: junction[1 - axis], from: Math.min(junction[axis], p[axis]), to: Math.max(junction[axis], p[axis]) });
 			}
 			artwork.push(...contours);
 			if ((row + col) % 2) artwork.push([[col * cell, row * cell], [(col + 1) * cell, row * cell], [(col + 1) * cell, (row + 1) * cell], [col * cell, (row + 1) * cell]]);

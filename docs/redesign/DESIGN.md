@@ -441,6 +441,9 @@ circle and motif together. Project outer panel gates inward from each panel's
 side instead of attaching two neighbours at the same silhouette extremum.
 Internal gates may move into the widest filled interval of their shared seam,
 avoiding counters. Keep both complete outer bands and validate the joined cuts.
+General framed figures can also use filled seam intervals after their existing
+layouts fail. Try bounded 2×2 and spread 5×2 panel layouts; both neighbours must
+agree on each shared gate. Keep the selected frame and the motif's visible shape.
 
 “Gentag som mønster” is a text frame, not a separate mode or control. It makes one n×n square
 of cyclic letter shifts: ANNA / NNAA / NAAN / AANN, with no surrounding checkerboard cells.
@@ -468,6 +471,13 @@ cutouts. The combined letter-and-colour period is even: ANNA uses a 4×4 field,
 JUL a 6×6 field, and one initial a 2×2 field. Four neighbouring letters connect
 to a common grid junction through paired shared bridges. At each bridge the
 visible grid changes sheet, preserving open strips and the checkerboard.
+If the established checkerboard routes fail, move each failed letter's two
+connections independently along its cell edges. The start stays before the
+midpoint and the end after it, preserving neighbouring connection order. Try at
+most nine offset pairs, retaining the same outline, invisible-cut construction
+and clearance checks. Share the letter cache across construction passes and
+reuse locally clear cells, including those completed by the wider attachment
+search. Do not refit the full design when none of its local routes changed.
 
 For the checkerboard construction, compare a bounded set of invisible-cut
 routes before choosing one. Prefer counter joins at natural corners and avoid

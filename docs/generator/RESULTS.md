@@ -1,6 +1,50 @@
 # Generator robustness results
 
-## Current coverage: shifted panels and touching counters
+## Current coverage: independent letter contacts and filled panel seams
+
+The current 3,150-configuration matrix has **2,626 accepted / 524 refused / zero
+invalid accepted results**, with no regressions. This batch freshly reran all
+198 checkerboard text cases and all 1,122 figures. The other 1,830 text results
+come from the preceding audit; their construction paths are unchanged.
+
+| Corpus | Configurations | Accepted | Refused | Invalid accepted output |
+|---|---:|---:|---:|---:|
+| Text: 34 inputs, six fonts, ten frames | 2028 | 1604 | 424 | 0 |
+| Figures: 51 motifs, 22 templates | 1122 | 1022 | 100 | 0 |
+
+The combined record is `tmp/generator/cell-repair-current.json`. All 2,626 accepted
+IDs are pinned in `scripts/generator/expected.json`; none were removed. This adds
+20 checkerboard configurations and 21 figure configurations. Checkerboard repeat
+now accepts 128/198 cases; ordinary repeat remains 135/198.
+
+- Failed checkerboard cells try independent positions for their two connections.
+  The first remains before its edge midpoint and the second after it, preserving
+  connection order between adjacent letters. The bounded nine-pair search uses
+  the existing clearance and open-cut tests. Completed cells are reused across
+  ordinary, balanced and repair passes; unchanged full designs are not refitted.
+  Recoveries include Nunito `jul` and `Hej!`, Bree Serif `Anna` and `M&M`, Oswald
+  `William` and multiline text, and Kalam `ANNA` and accented initials.
+- Two final figure panel layouts put shared connections in the widest filled
+  interval of a seam. Phosphor moon and stars now works in diamond and oval,
+  in all three styles, with 5×5 grids. The authored snowflake works in circle,
+  diamond, hexagon, rounded and scalloped frames in all three styles, with
+  8×8 grids. Both neighbours use the same connection; counters are not cut out.
+- Existing successful designs retain their routes, fonts, motifs and selected
+  frames. The earlier ANNA cut-tip improvement remains unchanged.
+
+All **1,007 unit tests and 177 inverse tests** pass, along with type checking,
+lint and the production build. Six representative renders were inspected. Browser verification covered the
+Kalam ANNA checkerboard's matching preview and selected thumbnail and 4×4 editor
+handoff, plus the snowflake's matching preview/thumbnail and 8×8 editor handoff.
+The corpus checks artwork fidelity, open cuts, clearance and JSON/SVG roundtrips.
+No physical weaving trial was performed.
+
+The goal remains unfinished: 524 tested configurations are still refused. The
+rest of the searchable icon catalog and non-default figure scales also remain
+outside this matrix. Difficult cases still take too long; the concurrent audit
+is not a latency benchmark. Historical counts below describe earlier audits.
+
+## Previous coverage: shifted panels and touching counters
 
 The current 3,150-configuration matrix has **2,585 accepted / 565 refused / zero
 invalid accepted results**, with no regressions. This batch freshly reran all

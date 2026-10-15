@@ -946,7 +946,7 @@ export function hasCounterContact(rings: Ring[]): boolean {
 /** A checkerboard junction can feed one letter through two shared bridges.
  * Counters may bracket either bridge; they are never removed from the sheet. */
 export function twoPortMotif(edges: Edge[], contours: Ring[], gates: Point[], margin: number,
-	options: { balanced?: boolean; onCrowded?: () => void } = {}) {
+	options: { balanced?: boolean; compound?: boolean; onCrowded?: () => void } = {}) {
 	const center = centroid(contours.flat());
 	try {
 		contourMotif(edges, contours, gates, gates.map(p => Math.atan2(center[1] - p[1], center[0] - p[0])), margin, [0, 1], undefined, { practical: true, ...options });
@@ -1366,6 +1366,14 @@ function usableRoutes(routes: Ring[], margin: number): boolean {
 	return !fingers.some((finger) =>
 		fingerHasIntersectionIssues(finger, fingers, margin * 4)
 	);
+}
+
+/** A completed letter can still contain the legacy fallback route. Check its
+ * open paths before reusing it in a repair pass, with the same port extensions
+ * and physical clearance used when choosing the original construction. */
+export function usableMotif(edges: Edge[], gates: Point[], margin: number): boolean {
+	const routes = localRoutes(edges, gates, new WeakMap());
+	return !!routes && usableRoutes(routes, margin);
 }
 
 /** Each letter keeps its own connections to the frame. Joining a whole word

@@ -4,7 +4,7 @@ import { generateFittedFigure } from './fitted';
 import { sunburstBorder } from './sunburst';
 import { generateTextGrid } from './textGrid';
 import { generateRepeatedGrid, repeatedGridCache } from './repeatedGrid';
-import { generateCheckeredGrid } from './checkeredGrid';
+import { generateCheckeredGrid, checkeredGridCache } from './checkeredGrid';
 import { cutTipCounts, fewerCutTips } from './cutQuality';
 import { normalizeContours } from './contours';
 import { gridClearanceScale } from '$lib/geometry/clearance';
@@ -312,6 +312,7 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		const frame = request.textFrame ?? 'woven';
 		if (frame === 'repeat-check') {
 			const text = request.text ?? '';
+			const cache = checkeredGridCache();
 			let best: GeneratorResult | undefined;
 			let rawTips: [number, number] | undefined;
 			let crowded = false;
@@ -325,7 +326,7 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 				// topology should still return promptly instead of trying it twice.
 				if (inset === .4 && !best) break;
 				try {
-					const construction = generateCheckeredGrid(text, request.font, .82, inset, { onCrowded: () => { crowded = true; } });
+					const construction = generateCheckeredGrid(text, request.font, .82, inset, { cache, onCrowded: () => { crowded = true; } });
 					const tips = cutTipCounts(construction.geometry);
 					// Reject worse candidates before the more expensive curve fitting.
 					if (rawTips && !fewerCutTips(tips, rawTips)) continue;
@@ -344,7 +345,21 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 			if (best) return best;
 			if (crowded) for (const inset of small ? [.35, .25] : [.35]) {
 				try {
-					return finish(generateCheckeredGrid(text, request.font, .82, inset, { balanced: true }), 'letters');
+					return finish(generateCheckeredGrid(text, request.font, .82, inset, { cache, balanced: true }), 'letters');
+				} catch (error) {
+					if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+					last = error;
+				}
+			}
+			for (const inset of small ? [.35, .25] : [.35]) {
+				let repaired = false;
+				try {
+					const construction = generateCheckeredGrid(text, request.font, .82, inset, {
+						cache, repair: true, onRepair: () => { repaired = true; }
+					});
+					// All local cells can be clear while their joined paths fail.
+					// An unchanged construction does not need another global fit.
+					if (repaired) return finish(construction, 'letters');
 				} catch (error) {
 					if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 					last = error;
@@ -521,6 +536,17 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		try {
 			const construction = construct(touchingFourPortMotif);
 			return finish(sunburst ? sunburstBorder(construction, outerSize) : construction, 'nested');
+		} catch (error) {
+			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			errors.push(error);
+		}
+	}
+	// A seam midpoint can sit in a counter or next to a narrow arm. Both
+	// neighbours instead use the same widest filled interval of that seam.
+	for (const [columns, rows, spread] of [[2, 2, false], [5, 2, true]] as const) {
+		try {
+			const construction = generatePanelFigure(rings, shape, size, scale, columns, style, rows, spread, fourPortMotif, 'filled');
+			return finish(sunburst ? sunburstBorder(construction, outerSize) : construction, rings.length === 1 ? 'silhouette' : 'nested');
 		} catch (error) {
 			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 			errors.push(error);

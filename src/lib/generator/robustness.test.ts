@@ -26,6 +26,7 @@ import snow from '../../../static/generator/motifs/snow.json';
 import smiley from '../../../static/generator/motifs/ph-smiley.json';
 import palette from '../../../static/generator/motifs/tb-palette.json';
 import bicycle from '../../../static/generator/motifs/ph-bicycle.json';
+import moonStars from '../../../static/generator/motifs/ph-moon-stars.json';
 const colors = { left: '#fffdf5', right: '#b72f2b' };
 const fonts = { nunito, breeserif, oswald, kalam, cinzel, righteous } as unknown as Record<string, Font>;
 function validateHandoffs(design: HeartDesign) {
@@ -75,7 +76,12 @@ describe('generator robustness regressions', () => {
 		['kalam', 'juleman', 'air'], ['kalam', 'amy', 'circle'],
 		['kalam', 'ANNA', 'circle'], ['kalam', 'ANNA', 'diamond'],
 		['kalam', 'ANNA', 'oval'], ['kalam', 'ANNA', 'rounded'],
-		['kalam', 'ANNA', 'repeat'], ['kalam', 'B', 'repeat-check']
+		['kalam', 'ANNA', 'repeat'], ['kalam', 'B', 'repeat-check'],
+		['nunito', 'jul', 'repeat-check'], ['nunito', 'Hej!', 'repeat-check'],
+		['breeserif', 'Anna', 'repeat-check'], ['breeserif', 'M&M', 'repeat-check'],
+		['oswald', 'William', 'repeat-check'], ['oswald', 'ANNA\nBO', 'repeat-check'],
+		['kalam', 'ANNA', 'repeat-check'], ['kalam', 'A\u030A', 'repeat-check'],
+		['righteous', 'Sofie', 'repeat-check']
 	] as [string, string, TextFrame][])
 		it(`keeps ${text} in ${fontId} through the ${textFrame} frame`, () => {
 			validateHandoffs(generate({ mode: 'text', name: text, text, font: fonts[fontId], textFrame, colors }).design);
@@ -132,6 +138,19 @@ describe('generator robustness regressions', () => {
 		it(`routes the bicycle's touching counter through an oval-${style}`, () => {
 			const { design } = generate({ mode: 'figure', name: 'Bicycle', contours: bicycle.contours as Ring[], frame: 'oval', style, colors });
 			expect(design.gridSize).toEqual({ x: 3, y: 3 });
+			validateHandoffs(design);
+		}, 20000);
+	for (const frame of ['diamond', 'oval'] as const)
+		for (const style of ['rays', 'check', 'plain'] as const)
+			it(`connects moon and stars through filled seams in ${frame}-${style}`, () => {
+				const { design } = generate({ mode: 'figure', name: 'Moon and stars', contours: moonStars.contours as Ring[], frame, style, colors });
+				expect(design.gridSize).toEqual({ x: 5, y: 5 });
+				validateHandoffs(design);
+			}, 20000);
+	for (const frame of ['circle', 'diamond', 'hexagon', 'rounded', 'scalloped'] as const)
+		it(`spreads the snow motif across clear connections in ${frame}`, () => {
+			const { design } = generate({ mode: 'figure', name: 'Snow', contours: snow.contours as Ring[], frame, style: 'check', colors });
+			expect(design.gridSize).toEqual({ x: 8, y: 8 });
 			validateHandoffs(design);
 		}, 20000);
 });

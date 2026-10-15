@@ -1,15 +1,17 @@
 import { describe, it, expect } from 'vitest';
 import { generate } from './generate';
+import { generateCheckeredGrid, checkeredGridCache } from './checkeredGrid';
 import { defaults, readGeneratorState } from './state';
 import { geometryKey } from './cache';
 import { templateVariants } from './templates';
-import type { Font } from './geometry';
+import { usableMotif, type Font } from './geometry';
 import nunito from '../../../static/generator/fonts/nunito.json';
 import { rasterizeDesign } from '$lib/paint/rasterize';
 import { normalizeHeartDesign, serializeHeartDesign, serializeHeartToSVG, parseHeartFromSVG } from '$lib/utils/heartDesign';
 import { findFingersWithIssues, intersectionMarginPx } from '$lib/editor/curveIssues';
-import { gridClearanceScale } from '$lib/geometry/clearance';
+import { gridClearance, gridClearanceScale } from '$lib/geometry/clearance';
 import { inferOverlapRect } from '$lib/utils/overlapRect';
+import { convertValidatedCutGeometry } from '$lib/inverse/toHeartDesign';
 
 const font = nunito as unknown as Font;
 const colors = { left: '#fffdf5', right: '#b72f2b' };
@@ -22,6 +24,25 @@ const cutTurns = (design: ReturnType<typeof make>) => design.fingers.flatMap(fin
 }));
 
 describe('repeated letters with alternating backgrounds', () => {
+	it('reuses clear letters while moving only the connections that need repair', () => {
+		const cache = checkeredGridCache();
+		generateCheckeredGrid('jul', font, .82, .35, { cache });
+		const completed = new Map([...cache].filter(([, piece]) => usableMotif(piece.edges, piece.gates, gridClearance(6))));
+		expect(completed.size).toBeGreaterThan(0);
+		let changed = false;
+		const repaired = generateCheckeredGrid('jul', font, .82, .35, { cache, repair: true, onRepair: () => { changed = true; } });
+		expect(changed).toBe(true);
+		for (const [key, piece] of completed) expect(cache.get(key)).toBe(piece);
+		const cells = [...cache].filter(([key]) => key.endsWith(':repair')).map(([, piece]) => piece);
+		expect(cells.some(piece => piece.insets[0] !== .35 || piece.insets[1] !== .65)).toBe(true);
+		for (const piece of cells) {
+			expect(piece.usable).toBe(true);
+			expect(piece.insets[0]).toBeLessThan(.5);
+			expect(piece.insets[1]).toBeGreaterThan(.5);
+		}
+		const { design } = convertValidatedCutGeometry(repaired.geometry, { name: 'jul', tolerance: .025, clearanceScale: gridClearanceScale(6), overlapAspectRatio: 1 });
+		expect(design.gridSize).toEqual({ x: 6, y: 6 });
+	}, 20000);
 	it('weaves the exact ANNA matrix with opposite letter and background colours', () => {
 		const design = make('ANNA');
 		expect(design.gridSize).toEqual({ x: 4, y: 4 });
