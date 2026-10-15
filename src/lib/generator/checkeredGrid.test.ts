@@ -14,6 +14,12 @@ import { inferOverlapRect } from '$lib/utils/overlapRect';
 const font = nunito as unknown as Font;
 const colors = { left: '#fffdf5', right: '#b72f2b' };
 const make = (text: string) => generate({ mode: 'text', name: text, text, font, colors, textFrame: 'repeat-check' }).design;
+const cutTurns = (design: ReturnType<typeof make>) => design.fingers.flatMap(finger => finger.segments.slice(1).map((next, i) => {
+	const previous = finger.segments[i];
+	const ux = previous.p3.x - previous.p2.x, uy = previous.p3.y - previous.p2.y;
+	const vx = next.p1.x - next.p0.x, vy = next.p1.y - next.p0.y;
+	return Math.atan2(Math.abs(ux * vy - uy * vx), ux * vx + uy * vy) * 180 / Math.PI;
+}));
 
 describe('repeated letters with alternating backgrounds', () => {
 	it('weaves the exact ANNA matrix with opposite letter and background colours', () => {
@@ -32,16 +38,15 @@ describe('repeated letters with alternating backgrounds', () => {
 	}, 20000);
 	it('avoids needle points and reduces sharp tongues in the exported ANNA cuts', () => {
 		const design = make('ANNA');
-		const turns = design.fingers.flatMap(finger => finger.segments.slice(1).map((next, i) => {
-			const previous = finger.segments[i];
-			const ux = previous.p3.x - previous.p2.x, uy = previous.p3.y - previous.p2.y;
-			const vx = next.p1.x - next.p0.x, vy = next.p1.y - next.p0.y;
-			return Math.atan2(Math.abs(ux * vy - uy * vx), ux * vx + uy * vy) * 180 / Math.PI;
-		}));
+		const turns = cutTurns(design);
 		// Before route optimization there were 34 tips narrower than 45°, eight
-		// narrower than 30°. Measure actual cut tangents, not the routing score.
-		expect(turns.filter(turn => turn > 135).length).toBeLessThanOrEqual(16);
+		// narrower than 30°. Comparing connection layouts improves 16 to 10.
+		// Measure actual cut tangents, not the routing score.
+		expect(turns.filter(turn => turn > 135).length).toBeLessThanOrEqual(10);
 		expect(Math.max(...turns)).toBeLessThan(150);
+	}, 20000);
+	it('keeps JUL’s broad connections when the alternate layout creates sharp tips', () => {
+		expect(Math.max(...cutTurns(make('JUL')))).toBeLessThan(135);
 	}, 20000);
 	for (const [text, n] of [['ANNA', 4], ['JUL', 6], ['O', 2], ['anna', 4], ['SØREN', 10], ['M&M', 6], ['A\u030A', 2]] as const)
 		it(`preserves ${text} and its checkerboard through JSON and SVG`, () => {

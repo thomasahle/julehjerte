@@ -5,6 +5,7 @@ import { sunburstBorder } from './sunburst';
 import { generateTextGrid } from './textGrid';
 import { generateRepeatedGrid, repeatedGridCache } from './repeatedGrid';
 import { generateCheckeredGrid } from './checkeredGrid';
+import { cutTipCounts, fewerCutTips } from './cutQuality';
 import { normalizeContours } from './contours';
 import { gridClearanceScale } from '$lib/geometry/clearance';
 import { generatePanelFigure } from './panels';
@@ -308,15 +309,36 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		const frame = request.textFrame ?? 'woven';
 		if (frame === 'repeat-check') {
 			const text = request.text ?? '';
-			try { return finish(generateCheckeredGrid(text, request.font), 'letters'); }
-			catch (error) {
-				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
-				if (error instanceof ConstructionError && ['empty', 'character'].includes(error.code)) throw error;
-				if ([...text.normalize('NFC').replace(/\s/g, '')].length > 2) throw error;
-				// A 2×2 field has room to separate its shared grid attachments.
-				// This gives detached accents a different approach to the letter.
-				return finish(generateCheckeredGrid(text, request.font, .82, .25), 'letters');
+			let best: GeneratorResult | undefined;
+			let rawTips: [number, number] | undefined;
+			let last: unknown;
+			// Keep the established layout (including the detached-accent fallback),
+			// then try slightly wider connections only when they improve its cuts.
+			const small = [...text.normalize('NFC').replace(/\s/g, '')].length <= 2;
+			for (const inset of small ? [.35, .25, .4] : [.35, .4]) {
+				if (inset === .25 && best) continue;
+				// This is a quality improvement for working cuts. Unsupported
+				// topology should still return promptly instead of trying it twice.
+				if (inset === .4 && !best) break;
+				try {
+					const construction = generateCheckeredGrid(text, request.font, .82, inset);
+					const tips = cutTipCounts(construction.geometry);
+					// Reject worse candidates before the more expensive curve fitting.
+					if (rawTips && !fewerCutTips(tips, rawTips)) continue;
+					const candidate = finish(construction, 'letters');
+					if (!best || fewerCutTips(cutTipCounts(candidate.design), cutTipCounts(best.design))) {
+						best = candidate;
+						rawTips = tips;
+					}
+					if (best && !cutTipCounts(best.design)[1]) break;
+				} catch (error) {
+					if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+					if (error instanceof ConstructionError && ['empty', 'character'].includes(error.code)) throw error;
+					last = error;
+				}
 			}
+			if (best) return best;
+			throw last;
 		}
 		if (frame === 'repeat') {
 			const cache = repeatedGridCache();

@@ -25,8 +25,10 @@ in `src/lib/generator/robustness.test.ts` runs with `npm test`.
 These are digital checks, not a physical weaving trial. Figure scale and frame
 size use the product defaults. This is a deliberately varied sample of the icon
 catalog, not a test of every available icon or every historical slider value.
-Earlier reports sampled only four frames for the five additional fonts; those
-results do not prove coverage of the expanded matrix.
+The expanded matrix has now been audited. Some configurations are still refused;
+finishing the sweep does not mean every combination is supported. The accepted
+configurations are pinned in `expected.json`, including the additional shaped
+frames for all six fonts.
 
 Useful focused runs:
 
