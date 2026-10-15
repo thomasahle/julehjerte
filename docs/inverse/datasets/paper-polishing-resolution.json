@@ -550,6 +550,10 @@
     {
       "path": "tmp/heart-learning/polishing-fixed-corpus-v1/probe.mjs",
       "sha256": "f15bf3512ff85879d8cb0a66f0a464b00cc6a36e903b8d72b1ba2e0e5d498251"
+    },
+    {
+      "path": "tmp/heart-learning/finer-polishing-browser-v1/timed-stage-diagnosis.json",
+      "sha256": "2e7afc915623fcd2af26e7af3518872752bbf7955068a27b5feff12120b046cf"
     }
   ],
   "fixedWorkInterpretation": "The same 41-step crown trajectory yields 2.454375% exported mask error under the 700-resolution policy and 2.241875% when the uncertain checkpoint is rechecked at 1000. Both geometries pass the nominal validator; the latter is uncertain at 700 and passes 1000 and 1400. This isolates a useful verification change from timed-search variation. The paper rechecks use the same auditor at different resolutions, not independent implementations.",
@@ -700,5 +704,16 @@
       }
     ],
     "interpretation": "Identical 160-step inputs produce byte-identical selected controls for dense-checker, round-checker, warped-checker and Viking. No finer verification is selected for them; fine-checker improves from 1.5775% to 1.553125% and verifies at 1000. No timed short-return projection occurs in any replay. This isolates the polishing policy on these captured starts; it does not make fresh timed searches deterministic or erase the earlier strict-gate failures."
+  },
+  "timedStageDiagnosis": {
+    "scope": "Read-only comparison of already completed full-pipeline reports; no fresh fitting or timing. Candidate metrics alone do not prove equal coordinates.",
+    "interpretation": {
+      "dense-checker": "Pre-polishing candidate metrics and checkpoints through step 120 agree. The deadline ends polishing at step 159 versus 154, before the new finer policy can apply (material resolution 360).",
+      "round-checker": "Selected pre-polishing candidate metrics and complete polishing checkpoint records agree. The final one-pixel exported difference needs final sharing/cleanup scrutiny; it is not shown to be caused by the finer validity decision.",
+      "fine-checker": "The pre-polishing candidate differs before the finer verification option is used: source error 1.995% versus 2.209375%. Both stop polishing at step 64 without selecting a 1000-resolution audit.",
+      "warped-checker": "The pre-polishing candidate already differs: source error 1.551875% versus 1.63125%; final work also differs, ending at step 44 versus 79.",
+      "flettede-viking": "The pre-polishing candidate already differs: source error 2.43125% versus 2.5475%. Both end polishing at step 84 and retain resolution 700. These records and identical fixed-work controls separate the finer decision from earlier timed-search variation.",
+      "crown": "The selected coarse candidate metrics agree. An uncertain polishing checkpoint is now verified at 1000 and retained. Fixed-work regression separately demonstrates this benefit from identical starting controls."
+    }
   }
 }
