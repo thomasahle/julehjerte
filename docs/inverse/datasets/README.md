@@ -100,6 +100,15 @@ but do not replace the failed suite. The vertical case receives ten outline
 polishing steps in the failing run versus eighty-five in its replay. Timed
 search and refinement variability remains unresolved; no acceptance rule changes.
 
+A [refinement checkpoint profile](refinement-checkpoint-cost.json) localizes
+most refinement time to geometry and paper checks. In particular, the first
+finer paper audit repeats JavaScript and WebAssembly to calibrate the new lattice
+size. An offline native-first prototype reduces first-audit time by roughly 60%
+on the large saved cases in both Node and Chromium; all 336 timed complete
+audits preserve every non-time field and paper-map pixel. Finite-deadline solve
+comparisons are running. No production backend policy has changed, and these
+validator timings do not yet establish a reconstruction improvement.
+
 A [boundary preparation refactor](boundary-trace-reuse.json) reuses cleanup and
 pixel chains when trying several tracing tolerances. Across 29 photographic
 masks and five border radii, all 145 resulting boundaries retain every control

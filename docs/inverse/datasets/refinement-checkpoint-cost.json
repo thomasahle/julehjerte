@@ -1,0 +1,839 @@
+{
+  "schema": 1,
+  "status": "profile_and_fixed_audit_comparison_complete; full_solve_comparison_running",
+  "sourceCommit": "47d6f72",
+  "question": "Which refinement work consumes the deadline, and can native paper kernels avoid redundant startup audits without changing results?",
+  "scope": "Offline copied runtimes only. No production engine, mask, geometry, resolution, clearance or acceptance rule changed.",
+  "profiles": [
+    {
+      "version": 1,
+      "case": "near-miss-vertical",
+      "templateChecksPassed": true,
+      "independentMismatch": 0.01956875,
+      "profiles": [
+        {
+          "resolution": 256,
+          "edges": 78,
+          "visibleEdges": 78,
+          "fixedVisibleEdges": 0,
+          "gradientMs": 306.9402569999929,
+          "penaltyMs": 189.69449999999415,
+          "checkpointMs": 700.7341844999992,
+          "gradientCalls": 245,
+          "checkpointCalls": 9,
+          "preparationMs": 101.33106150000094,
+          "totalMs": 1219.082624999999,
+          "completedSteps": 245,
+          "returnedError": 0.0310211181640625
+        },
+        {
+          "resolution": 400,
+          "edges": 148,
+          "visibleEdges": 148,
+          "fixedVisibleEdges": 6,
+          "gradientMs": 257.94274650001535,
+          "penaltyMs": 170.23350299998674,
+          "checkpointMs": 720.941185499998,
+          "gradientCalls": 85,
+          "checkpointCalls": 5,
+          "preparationMs": 147.07381200000054,
+          "totalMs": 1178.0521245000018,
+          "completedSteps": 85,
+          "returnedError": 0.01935625
+        }
+      ]
+    },
+    {
+      "version": 1,
+      "case": "near-miss-negative-diagonal",
+      "templateChecksPassed": true,
+      "independentMismatch": 0.0162125,
+      "profiles": [
+        {
+          "resolution": 256,
+          "edges": 78,
+          "visibleEdges": 78,
+          "fixedVisibleEdges": 0,
+          "gradientMs": 322.19825249995483,
+          "penaltyMs": 204.0081300000311,
+          "checkpointMs": 1155.1874999999964,
+          "gradientCalls": 290,
+          "checkpointCalls": 10,
+          "preparationMs": 98.84549999999945,
+          "totalMs": 1708.2964379999976,
+          "completedSteps": 290,
+          "returnedError": 0.025909423828125
+        },
+        {
+          "resolution": 400,
+          "edges": 145,
+          "visibleEdges": 143,
+          "fixedVisibleEdges": 4,
+          "gradientMs": 186.18350249998912,
+          "penaltyMs": 114.76893599999676,
+          "checkpointMs": 922.9160610000072,
+          "gradientCalls": 85,
+          "checkpointCalls": 5,
+          "preparationMs": 200.5368135000026,
+          "totalMs": 1251.500376,
+          "completedSteps": 85,
+          "returnedError": 0.0161875
+        }
+      ]
+    },
+    {
+      "version": 1,
+      "case": "stacked-replay",
+      "templateChecksPassed": true,
+      "independentMismatch": 0.01220625,
+      "profiles": [
+        {
+          "resolution": 256,
+          "edges": 104,
+          "visibleEdges": 104,
+          "fixedVisibleEdges": 0,
+          "gradientMs": 121.61562999999933,
+          "penaltyMs": 75.59749400000237,
+          "checkpointMs": 408.6126250000025,
+          "gradientCalls": 85,
+          "checkpointCalls": 5,
+          "preparationMs": 67.03420800000004,
+          "totalMs": 617.8362080000006,
+          "completedSteps": 85,
+          "returnedError": 0.0257568359375
+        },
+        {
+          "resolution": 256,
+          "edges": 104,
+          "visibleEdges": 104,
+          "fixedVisibleEdges": 0,
+          "gradientMs": 217.6606690000017,
+          "penaltyMs": 125.6589109999959,
+          "checkpointMs": 811.5237069999994,
+          "gradientCalls": 175,
+          "checkpointCalls": 7,
+          "preparationMs": 138.7681249999996,
+          "totalMs": 1171.8165420000005,
+          "completedSteps": 175,
+          "returnedError": 0.015411376953125
+        },
+        {
+          "resolution": 400,
+          "edges": 154,
+          "visibleEdges": 147,
+          "fixedVisibleEdges": 11,
+          "gradientMs": 209.53017399999862,
+          "penaltyMs": 120.57003600000007,
+          "checkpointMs": 899.1975829999983,
+          "gradientCalls": 85,
+          "checkpointCalls": 5,
+          "preparationMs": 185.90066699999988,
+          "totalMs": 1248.5244169999996,
+          "completedSteps": 85,
+          "returnedError": 0.01225
+        }
+      ]
+    },
+    {
+      "version": 2,
+      "case": "near-miss-vertical",
+      "templateChecksPassed": false,
+      "independentMismatch": 0.01559375,
+      "profiles": [
+        {
+          "resolution": 256,
+          "edges": 78,
+          "visibleEdges": 78,
+          "fixedVisibleEdges": 0,
+          "gradientMs": 340.76476200000707,
+          "penaltyMs": 203.52645149998443,
+          "checkpointMs": 692.6179364999998,
+          "gradientCalls": 275,
+          "checkpointCalls": 9,
+          "parts": {
+            "straightProposal": {
+              "ms": 0.9649380000000747,
+              "calls": 9
+            },
+            "rasterMismatch": {
+              "ms": 31.834625999999844,
+              "calls": 18
+            },
+            "boundaryScore": {
+              "ms": 110.74581299999772,
+              "calls": 18
+            },
+            "primitiveCost": {
+              "ms": 0.80725199999506,
+              "calls": 18
+            },
+            "primitiveComplexity": {
+              "ms": 0.5440049999997427,
+              "calls": 18
+            },
+            "validate": {
+              "ms": 204.24856199999977,
+              "calls": 9
+            },
+            "paperAudit": {
+              "ms": 279.59668950000014,
+              "calls": 9
+            }
+          },
+          "preparationMs": 103.3049385000013,
+          "totalMs": 1258.4449380000005,
+          "completedSteps": 275,
+          "returnedError": 0.0298004150390625
+        },
+        {
+          "resolution": 400,
+          "edges": 149,
+          "visibleEdges": 147,
+          "fixedVisibleEdges": 6,
+          "gradientMs": 234.04131899998538,
+          "penaltyMs": 142.42668150000463,
+          "checkpointMs": 850.6712505000023,
+          "gradientCalls": 85,
+          "checkpointCalls": 5,
+          "parts": {
+            "straightProposal": {
+              "ms": 0.8818154999971739,
+              "calls": 5
+            },
+            "rasterMismatch": {
+              "ms": 35.05425149999883,
+              "calls": 11
+            },
+            "boundaryScore": {
+              "ms": 62.89999649999936,
+              "calls": 11
+            },
+            "primitiveCost": {
+              "ms": 0.7000649999963571,
+              "calls": 11
+            },
+            "primitiveComplexity": {
+              "ms": 0.6631244999935006,
+              "calls": 11
+            },
+            "validate": {
+              "ms": 207.3326879999995,
+              "calls": 5
+            },
+            "paperAudit": {
+              "ms": 357.081999,
+              "calls": 4
+            },
+            "projectHidden": {
+              "ms": 8.994500999999218,
+              "calls": 1
+            },
+            "projectAll": {
+              "ms": 174.10043700000097,
+              "calls": 1
+            }
+          },
+          "preparationMs": 168.25406250000106,
+          "totalMs": 1254.4631880000006,
+          "completedSteps": 85,
+          "returnedError": 0.01560625
+        }
+      ],
+      "checkpointCount": 15
+    },
+    {
+      "version": 2,
+      "case": "near-miss-negative-diagonal",
+      "templateChecksPassed": true,
+      "independentMismatch": 0.01465625,
+      "profiles": [
+        {
+          "resolution": 256,
+          "edges": 78,
+          "visibleEdges": 78,
+          "fixedVisibleEdges": 0,
+          "gradientMs": 353.5173644999668,
+          "penaltyMs": 231.25208250005016,
+          "checkpointMs": 1214.5531889999947,
+          "gradientCalls": 300,
+          "checkpointCalls": 10,
+          "parts": {
+            "straightProposal": {
+              "ms": 0.9048135000048205,
+              "calls": 10
+            },
+            "rasterMismatch": {
+              "ms": 47.71055699999488,
+              "calls": 20
+            },
+            "boundaryScore": {
+              "ms": 93.02212349999536,
+              "calls": 20
+            },
+            "primitiveCost": {
+              "ms": 1.1404364999871177,
+              "calls": 20
+            },
+            "primitiveComplexity": {
+              "ms": 1.0019384999977774,
+              "calls": 20
+            },
+            "validate": {
+              "ms": 236.68781249999665,
+              "calls": 10
+            },
+            "paperAudit": {
+              "ms": 307.56362400000216,
+              "calls": 10
+            },
+            "paperFine": {
+              "ms": 490.8983745000005,
+              "calls": 1
+            }
+          },
+          "preparationMs": 113.33731199999966,
+          "totalMs": 1825.6456244999972,
+          "completedSteps": 300,
+          "returnedError": 0.0256195068359375
+        },
+        {
+          "resolution": 400,
+          "edges": 143,
+          "visibleEdges": 141,
+          "fixedVisibleEdges": 4,
+          "gradientMs": 265.78130999999485,
+          "penaltyMs": 161.64243600000555,
+          "checkpointMs": 771.9042495000031,
+          "gradientCalls": 125,
+          "checkpointCalls": 6,
+          "parts": {
+            "straightProposal": {
+              "ms": 0.6321255000038946,
+              "calls": 6
+            },
+            "rasterMismatch": {
+              "ms": 37.98799950000466,
+              "calls": 12
+            },
+            "boundaryScore": {
+              "ms": 63.99781350000558,
+              "calls": 12
+            },
+            "primitiveCost": {
+              "ms": 1.1946869999956107,
+              "calls": 12
+            },
+            "primitiveComplexity": {
+              "ms": 1.0559970000031171,
+              "calls": 12
+            },
+            "validate": {
+              "ms": 176.84506199999305,
+              "calls": 6
+            },
+            "paperAudit": {
+              "ms": 487.2626864999984,
+              "calls": 6
+            }
+          },
+          "preparationMs": 129.4131254999993,
+          "totalMs": 1243.3432500000017,
+          "completedSteps": 125,
+          "returnedError": 0.01829375
+        }
+      ],
+      "checkpointCount": 16
+    },
+    {
+      "version": 2,
+      "case": "stacked-replay",
+      "templateChecksPassed": true,
+      "independentMismatch": 0.0177875,
+      "profiles": [
+        {
+          "resolution": 256,
+          "edges": 104,
+          "visibleEdges": 104,
+          "fixedVisibleEdges": 0,
+          "gradientMs": 120.79495699999825,
+          "penaltyMs": 69.19087500000296,
+          "checkpointMs": 388.0753329999998,
+          "gradientCalls": 80,
+          "checkpointCalls": 4,
+          "parts": {
+            "straightProposal": {
+              "ms": 0.7027919999991354,
+              "calls": 4
+            },
+            "rasterMismatch": {
+              "ms": 15.762415999997756,
+              "calls": 8
+            },
+            "boundaryScore": {
+              "ms": 58.25383300000067,
+              "calls": 8
+            },
+            "primitiveCost": {
+              "ms": 0.37695999999959895,
+              "calls": 8
+            },
+            "primitiveComplexity": {
+              "ms": 0.2542089999988093,
+              "calls": 8
+            },
+            "validate": {
+              "ms": 124.64150000000063,
+              "calls": 5
+            },
+            "paperAudit": {
+              "ms": 185.80412499999875,
+              "calls": 2
+            }
+          },
+          "preparationMs": 79.69358299999931,
+          "totalMs": 592.3732919999993,
+          "completedSteps": 80,
+          "returnedError": 0.026702880859375
+        },
+        {
+          "resolution": 256,
+          "edges": 104,
+          "visibleEdges": 104,
+          "fixedVisibleEdges": 0,
+          "gradientMs": 219.7291630000027,
+          "penaltyMs": 152.84451100000388,
+          "checkpointMs": 831.4737069999992,
+          "gradientCalls": 175,
+          "checkpointCalls": 7,
+          "parts": {
+            "straightProposal": {
+              "ms": 0.43691500000022643,
+              "calls": 7
+            },
+            "rasterMismatch": {
+              "ms": 19.352669000000787,
+              "calls": 14
+            },
+            "boundaryScore": {
+              "ms": 57.5056259999983,
+              "calls": 14
+            },
+            "primitiveCost": {
+              "ms": 0.5601240000023608,
+              "calls": 14
+            },
+            "primitiveComplexity": {
+              "ms": 0.4805000000023938,
+              "calls": 14
+            },
+            "validate": {
+              "ms": 198.05545800000073,
+              "calls": 7
+            },
+            "paperAudit": {
+              "ms": 552.3202919999994,
+              "calls": 7
+            }
+          },
+          "preparationMs": 147.21979200000078,
+          "totalMs": 1221.7055420000006,
+          "completedSteps": 175,
+          "returnedError": 0.019439697265625
+        },
+        {
+          "resolution": 400,
+          "edges": 170,
+          "visibleEdges": 163,
+          "fixedVisibleEdges": 10,
+          "gradientMs": 154.05691399999614,
+          "penaltyMs": 90.69708200000059,
+          "checkpointMs": 1367.660166999999,
+          "gradientCalls": 45,
+          "checkpointCalls": 4,
+          "parts": {
+            "straightProposal": {
+              "ms": 0.3234579999998459,
+              "calls": 4
+            },
+            "rasterMismatch": {
+              "ms": 18.810207000000446,
+              "calls": 8
+            },
+            "boundaryScore": {
+              "ms": 35.168751999998676,
+              "calls": 8
+            },
+            "primitiveCost": {
+              "ms": 0.40558300000066083,
+              "calls": 8
+            },
+            "primitiveComplexity": {
+              "ms": 0.38570899999922403,
+              "calls": 8
+            },
+            "validate": {
+              "ms": 119.34791599999971,
+              "calls": 4
+            },
+            "paperAudit": {
+              "ms": 484.4370850000005,
+              "calls": 4
+            },
+            "paperFine": {
+              "ms": 707.164999999999,
+              "calls": 1
+            }
+          },
+          "preparationMs": 181.87383299999965,
+          "totalMs": 1629.8947079999998,
+          "completedSteps": 45,
+          "returnedError": 0.01791875
+        }
+      ],
+      "checkpointCount": 16
+    }
+  ],
+  "nativeFirst": {
+    "protocol": "Fixed-geometry complete audits in fresh Node processes and fresh private Chromium pages. Three rounds alternating arm order. First and three followup audits timed before the JS oracle; verify every map pixel and every non-timing result field, including retained arrays after subsequent calls. All three paper kernels use the candidate policy. Later full solves must still check quality and deadlines.",
+    "runtimeVersions": {
+      "node": [
+        "v25.6.1"
+      ],
+      "chromium": [
+        "145.0.7632.6"
+      ]
+    },
+    "cases": 7,
+    "rounds": 3,
+    "arms": 2,
+    "timedAudits": 336,
+    "allFieldsAndMapPixelsEqual": true,
+    "summary": [
+      {
+        "runtime": "node",
+        "case": "straight-80",
+        "firstMedianMs": {
+          "before": 16.484083,
+          "after": 5.686083999999994
+        },
+        "fourAuditMedianMs": {
+          "before": 21.821958999999993,
+          "after": 8.622417999999996
+        },
+        "firstSaving": 0.655056092595506,
+        "fourAuditSaving": 0.6048742461664418
+      },
+      {
+        "runtime": "node",
+        "case": "neck-180",
+        "firstMedianMs": {
+          "before": 51.426874999999995,
+          "after": 14.020499999999998
+        },
+        "fourAuditMedianMs": {
+          "before": 69.78145899999998,
+          "after": 34.405167000000006
+        },
+        "firstSaving": 0.7273701736689231,
+        "fourAuditSaving": 0.5069583311521186
+      },
+      {
+        "runtime": "node",
+        "case": "thin-80",
+        "firstMedianMs": {
+          "before": 21.512333000000012,
+          "after": 8.636666000000005
+        },
+        "fourAuditMedianMs": {
+          "before": 28.072041000000013,
+          "after": 16.627373000000006
+        },
+        "firstSaving": 0.5985249019713482,
+        "fourAuditSaving": 0.40768920222081473
+      },
+      {
+        "runtime": "node",
+        "case": "matching-hat-360",
+        "firstMedianMs": {
+          "before": 92.538917,
+          "after": 36.86291700000001
+        },
+        "fourAuditMedianMs": {
+          "before": 162.814124,
+          "after": 82.320417
+        },
+        "firstSaving": 0.6016495740921626,
+        "fourAuditSaving": 0.4943901979904396
+      },
+      {
+        "runtime": "node",
+        "case": "near-miss-vertical-360",
+        "firstMedianMs": {
+          "before": 147.982125,
+          "after": 59.90891599999999
+        },
+        "fourAuditMedianMs": {
+          "before": 244.022,
+          "after": 153.40616699999998
+        },
+        "firstSaving": 0.5951611317921,
+        "fourAuditSaving": 0.3713428830187443
+      },
+      {
+        "runtime": "node",
+        "case": "near-miss-negative-diagonal-700",
+        "firstMedianMs": {
+          "before": 372.90029200000004,
+          "after": 152.609333
+        },
+        "fourAuditMedianMs": {
+          "before": 663.436459,
+          "after": 452.970083
+        },
+        "firstSaving": 0.5907502990102245,
+        "fourAuditSaving": 0.3172366745072116
+      },
+      {
+        "runtime": "node",
+        "case": "stacked-replay-1000",
+        "firstMedianMs": {
+          "before": 714.373333,
+          "after": 286.55175
+        },
+        "fourAuditMedianMs": {
+          "before": 1308.2756669999997,
+          "after": 853.3268330000001
+        },
+        "firstSaving": 0.5988767542642861,
+        "fourAuditSaving": 0.3477469202215161
+      },
+      {
+        "runtime": "chromium",
+        "case": "straight-80",
+        "firstMedianMs": {
+          "before": 13.299999952316284,
+          "after": 4.8999998569488525
+        },
+        "fourAuditMedianMs": {
+          "before": 18.09999990463257,
+          "after": 7.799999952316284
+        },
+        "firstSaving": 0.6315789568032679,
+        "fourAuditSaving": 0.5690607738445386
+      },
+      {
+        "runtime": "chromium",
+        "case": "neck-180",
+        "firstMedianMs": {
+          "before": 44.700000047683716,
+          "after": 12.5
+        },
+        "fourAuditMedianMs": {
+          "before": 61.5,
+          "after": 30.0
+        },
+        "firstSaving": 0.7203579421327599,
+        "fourAuditSaving": 0.5121951219512195
+      },
+      {
+        "runtime": "chromium",
+        "case": "thin-80",
+        "firstMedianMs": {
+          "before": 16.40000009536743,
+          "after": 7.199999809265137
+        },
+        "fourAuditMedianMs": {
+          "before": 22.40000009536743,
+          "after": 13.799999952316284
+        },
+        "firstSaving": 0.5609756239392372,
+        "fourAuditSaving": 0.38392857618021725
+      },
+      {
+        "runtime": "chromium",
+        "case": "matching-hat-360",
+        "firstMedianMs": {
+          "before": 82.20000004768372,
+          "after": 33.39999985694885
+        },
+        "fourAuditMedianMs": {
+          "before": 154.20000004768372,
+          "after": 77.70000004768372
+        },
+        "firstSaving": 0.5936739679127285,
+        "fourAuditSaving": 0.49610894926292914
+      },
+      {
+        "runtime": "chromium",
+        "case": "near-miss-vertical-360",
+        "firstMedianMs": {
+          "before": 137.70000004768372,
+          "after": 54.299999952316284
+        },
+        "fourAuditMedianMs": {
+          "before": 230.90000009536743,
+          "after": 149.5
+        },
+        "firstSaving": 0.6056644885002694,
+        "fourAuditSaving": 0.3525335645809754
+      },
+      {
+        "runtime": "chromium",
+        "case": "near-miss-negative-diagonal-700",
+        "firstMedianMs": {
+          "before": 360.7999999523163,
+          "after": 145.5
+        },
+        "fourAuditMedianMs": {
+          "before": 651.0,
+          "after": 440.40000009536743
+        },
+        "firstSaving": 0.5967294899688762,
+        "fourAuditSaving": 0.3235023040009717
+      },
+      {
+        "runtime": "chromium",
+        "case": "stacked-replay-1000",
+        "firstMedianMs": {
+          "before": 729.3000001907349,
+          "after": 282
+        },
+        "fourAuditMedianMs": {
+          "before": 1345.1000001430511,
+          "after": 899.8999998569489
+        },
+        "firstSaving": 0.6133278487230932,
+        "fourAuditSaving": 0.33097910953739895
+      }
+    ]
+  },
+  "findings": [
+    "Checkpoint processing consumed 57.5\u201373.7% of refinement time in the first three diagnostic runs. Fully fixed visible edges accounted for at most 11 of 147, so skipping their gradients would address little of the measured cost.",
+    "The second instrumentation separates geometry, paper, scoring and repairs. First-time finer paper checks cost about 491 and 707 scaled milliseconds in the negative-diagonal and stacked cases.",
+    "An isolated 1000-pixel lattice audit took 660 ms before calibration and about 153 ms once calibrated. The first audit repeats JavaScript alongside WebAssembly to select kernels for the new size.",
+    "A prototype that uses the available native paper kernels directly reduces first-audit cost across all seven saved geometries in Node and Chromium. Existing native input validation and JavaScript near-threshold distance handling stay in place.",
+    "All 336 timed complete audits agree with the JavaScript oracle in every non-time field and map pixel. Retained arrays are checked after later calls.",
+    "Instrumentation changes elapsed-time decisions. The second vertical replay has 1.559375% mask disagreement but fails the final offset-radius probes: a 0.251744 mm\u00b2 island just exceeds the 0.25 mm\u00b2 significance threshold at one probe. No validity rule is relaxed."
+  ],
+  "limitations": [
+    "Seven geometries and one local machine do not establish universal speed or complete solver quality.",
+    "The profiling clocks for near-miss cases are scaled by 1.5; proportions are useful, raw durations are not direct wall-clock measurements.",
+    "Profiling snapshots are audit inputs only, not initialization templates for later fitting.",
+    "The native-first prototype removes runtime paired equality calibration; extensive kernel regression coverage and browser replay are required before considering integration.",
+    "Full finite-deadline solves can change selected geometry even when each audit is identical. The running comparison retains these outcomes rather than treating microbenchmark speed as a release gate."
+  ],
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/paper-cost-v1/measure.mjs",
+      "sha256": "64637662bd96ddfe5da6e435ddd7c9cd3c93420ab8b52eb3485ff45b2fd91a3a"
+    },
+    {
+      "path": "tmp/heart-learning/paper-cost-v1/results.json",
+      "sha256": "73f2fe5d4987ae1d536c77b63e78b4e1fff09f37994afb4becbc24364974f03c"
+    },
+    {
+      "path": "tmp/heart-learning/paper-native-first-v1/after/inverse/core/paper-backend.js",
+      "sha256": "a097e80fa4f0f543ec75e60da2a6877c54dd2929b732b0f0256fb89149b2adb0"
+    },
+    {
+      "path": "tmp/heart-learning/paper-native-first-v1/before/inverse/core/paper-backend.js",
+      "sha256": "f6112c706022d3aa77bd550f0cc3679739d77c90645580ada56531b6d92408df"
+    },
+    {
+      "path": "tmp/heart-learning/paper-native-first-v1/benchmark.mjs",
+      "sha256": "fcfd89e116910ef42dc1a3003aae50243e6708483f0256f7bc46037539be13df"
+    },
+    {
+      "path": "tmp/heart-learning/paper-native-first-v1/cases.json",
+      "sha256": "c5bab9c1cd71467600ca58a759f1ee9b67b82c02face188bea6a0c420f96d631"
+    },
+    {
+      "path": "tmp/heart-learning/paper-native-first-v1/plan.json",
+      "sha256": "945dc9198001b04d0a5c7167c1d828d5c2c2cc6aad7fb72847a0db1fd0871850"
+    },
+    {
+      "path": "tmp/heart-learning/paper-native-first-v1/results.json",
+      "sha256": "174f7adcdbfd37291b58d1bbb741c4b0ce717b6cf823159b279580958558d5fa"
+    },
+    {
+      "path": "tmp/heart-learning/paper-native-first-v1/solve-batch.py",
+      "sha256": "2fd5d7a040e884adc71057ab6235774839fe577a46bac80f5084ce7c7f53e33f"
+    },
+    {
+      "path": "tmp/heart-learning/paper-native-first-v1/solve.mjs",
+      "sha256": "225420567409cdd54c9862495359720f6e08bd196d1abe9d8c5d473888b4e916"
+    },
+    {
+      "path": "tmp/heart-learning/refinement-cost-v1/near-miss-negative-diagonal-cuts.json",
+      "sha256": "f3f66d3f5db4d86fe06c6142af56e1b5496885c9f5d3da06399c52330bc40e05"
+    },
+    {
+      "path": "tmp/heart-learning/refinement-cost-v1/near-miss-negative-diagonal.json",
+      "sha256": "28628b6c06538a9819deae82f3bf5a63a29f2e22ad8b4e79c627e03a44618efa"
+    },
+    {
+      "path": "tmp/heart-learning/refinement-cost-v1/near-miss-vertical-cuts.json",
+      "sha256": "c6135984fad556ebeafcab07973c78de8314b98865079c8170e42ca34af12932"
+    },
+    {
+      "path": "tmp/heart-learning/refinement-cost-v1/near-miss-vertical.json",
+      "sha256": "4214120a7c86df3f935bc6f0534e61be08a60819a613f2e3809256081a8b003d"
+    },
+    {
+      "path": "tmp/heart-learning/refinement-cost-v1/plan.json",
+      "sha256": "9cd61b3ca8116d2e0e47dd6c946e0a6f51cd13387ac7ce4850ed42bd20e7a4d8"
+    },
+    {
+      "path": "tmp/heart-learning/refinement-cost-v1/profile-near-miss.mjs",
+      "sha256": "ed7c0df1adab60d1bee1e148f798f507f203cdb8041c89c856ac41df25e4617c"
+    },
+    {
+      "path": "tmp/heart-learning/refinement-cost-v1/profile-stacked.mjs",
+      "sha256": "4937238b5649d6561b48b90273e4d153152dea3e5f9263f3cbdae4f1a3c5991a"
+    },
+    {
+      "path": "tmp/heart-learning/refinement-cost-v1/stacked-replay-cuts.json",
+      "sha256": "896ce4b63e1f47c33f73e7987c444434551cccaae025abb57a648200b773d787"
+    },
+    {
+      "path": "tmp/heart-learning/refinement-cost-v1/stacked-replay.json",
+      "sha256": "0651b0b0f48486e2ed23b1b60f2bbc390bf61d22ed87c374aca79ae693569940"
+    },
+    {
+      "path": "tmp/heart-learning/refinement-cost-v2/near-miss-negative-diagonal-cuts.json",
+      "sha256": "6b92df55cc4538a78ff5dd0e1bf59fbfe91fca878939f9cf34296248118d5ae9"
+    },
+    {
+      "path": "tmp/heart-learning/refinement-cost-v2/near-miss-negative-diagonal.json",
+      "sha256": "8cab11dca261b40ca88a26b4cfc8374b0d376e38ac650fb6a6efa48dc3d5e65b"
+    },
+    {
+      "path": "tmp/heart-learning/refinement-cost-v2/near-miss-vertical-cuts.json",
+      "sha256": "1aaffff06d95f2ff658b46d48809b08a3f22854e2a4bcc0b40f109564a02c160"
+    },
+    {
+      "path": "tmp/heart-learning/refinement-cost-v2/near-miss-vertical.json",
+      "sha256": "bcc73ff4854920b6b7605e777db7a33980d6d30c83a957cab1ee788959d44ca4"
+    },
+    {
+      "path": "tmp/heart-learning/refinement-cost-v2/plan.json",
+      "sha256": "e1be035a14a1e69db835f82e3186fab13e32ee3662bdafbc99b1891133c272ea"
+    },
+    {
+      "path": "tmp/heart-learning/refinement-cost-v2/profile-near-miss.mjs",
+      "sha256": "fe3f2f573e96cce7ec27c9f3d2fcb6dcfccbab84dca7ace6e40b0e3f01b89acf"
+    },
+    {
+      "path": "tmp/heart-learning/refinement-cost-v2/profile-stacked.mjs",
+      "sha256": "2ece68b69129c0e3d7a76fb9a353e222603a244b0164b8235d718d4a23827068"
+    },
+    {
+      "path": "tmp/heart-learning/refinement-cost-v2/stacked-replay-cuts.json",
+      "sha256": "29c3ed9a26265b23a087c56729fd3121b7a93f9f2820ec4a93fc2e7b364badcc"
+    },
+    {
+      "path": "tmp/heart-learning/refinement-cost-v2/stacked-replay.json",
+      "sha256": "43d40ac42574528eac2414477be9ff9b93d50088a40c81965df7c7167716c6dd"
+    }
+  ]
+}
