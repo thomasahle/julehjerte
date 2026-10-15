@@ -25,10 +25,17 @@ The inventory, with material annotations updated on 2026-10-15, contains:
 | Training background variants | 2,040 | Five changes to each of 408 original training views; geometry labels and split groups unchanged. |
 | Training scene variants | 2,448 | Neighbours and handles paired with all six backgrounds for the same 408 training views; no new geometry families. |
 | Source-photo material QA samples | 78 integrated + 25 new | Four hearts in two reserved photographs; sparse assistant-reviewed development observations, not dense labels or training data. The new jigsaw review is not yet in the common benchmark fixture. |
-| Real visible-body annotations | 18 | Seventeen instances in fifteen groups outside source QA, plus one reserved gold-angel instance. Uncertain pixels are excluded; the eight additions to the original ten-instance pilot have not entered training. |
-| Real partial paper-material annotations | 16 existing heart instances | Nine instances in the existing pilots plus seven additional reviewed instances. Separate body and material uncertainty; no additional photographs. The seven newest annotations have not entered training. |
+| Real visible-body annotations | 19 | Eighteen instances in sixteen groups outside source QA, plus one reserved gold-angel instance. Uncertain pixels are excluded; the nine additions to the original ten-instance pilot have not entered training. |
+| Real partial paper-material annotations | 17 heart instances | Nine instances in the existing pilots plus eight additional reviewed instances. Separate body and material uncertainty; the eight additions have not entered training. |
 
 ## Current results and limits
+
+A [new orange/yellow Pinterest checker](palette-photo-labels.json) adds one
+previously unlabelled photograph with body and partial paper-identity labels.
+Source outlines and overlays at 256 and 768 pixels were reviewed; compilation
+from the admitted sidecars reproduces every reviewed PNG byte. The source group
+remains unassigned, with no training or new model result. A duplicate star draft
+was excluded and a reserved QA photograph was kept out of training admission.
 
 [Five additional material annotations](additional-material-labels.json) cover a
 curved hanging checker, a green/white bicycle medallion, a yellow/purple sloth,
