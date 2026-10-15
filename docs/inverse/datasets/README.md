@@ -25,11 +25,19 @@ The inventory, with material annotations updated on 2026-10-15, contains:
 | Training background variants | 2,040 | Five changes to each of 408 original training views; geometry labels and split groups unchanged. |
 | Training scene variants | 2,448 | Neighbours and handles paired with all six backgrounds for the same 408 training views; no new geometry families. |
 | Source-photo material QA samples | 78 integrated + 25 new | Four hearts in two reserved photographs; sparse assistant-reviewed development observations, not dense labels or training data. The new jigsaw review is not yet in the common benchmark fixture. |
-| Sparse four-sector neighbourhood observations | 16 on one source | Reviewed locations and uncertainty boxes; exact physical joining is unknown. Unassigned development observations, not training labels. |
+| Sparse four-sector neighbourhood observations | 25 on two sources, plus 8 ordinary-edge controls | Reviewed locations and uncertainty boxes; exact physical joining is unknown. Development observations, not training labels. |
 | Real visible-body annotations | 21 | Twenty instances in eighteen groups outside source QA, plus one reserved gold-angel instance. Uncertain pixels are excluded; nineteen enter the corrected-family material study. |
 | Real partial paper-material annotations | 19 heart instances | All enter the completed corrected-family study, with whole real motif families kept apart. Separate body and material uncertainty; all are reviewed development examples. |
 
 ## Current results and limits
+
+[Nine additional four-sector observations and eight ordinary-edge controls](orange-contact-observations.json)
+cover an existing orange/yellow checker photograph. The full source, numbered
+overview and all seventeen local patches were inspected. The controls distinguish
+single material boundaries from candidate junctions; unlisted pixels remain
+unlabelled. Shadows and small offsets prevent claims of exact physical joining.
+These observations add no image, body/material label, split assignment or training
+run, and must inherit this already-studied source's grouped evaluation treatment.
 
 [Sixteen sparse junction observations](curved-contact-observations.json) now mark
 four alternating-colour neighbourhoods on an existing green/cream curved checker.
