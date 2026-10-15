@@ -40,8 +40,10 @@ test('poor grid agreement recovers tree branches without relying on a spurious e
   const cfg={...AUTOMATIC_PRESET,timeLimit:10,trials:0,earlyStop:false};
   const prepared=prepare({...photo,quad:crop.quad},cfg),source=prepared.target.sourceImage,before=source.mask.slice(),probability=source.probability.slice();
   const answer=await design(prepared.target,cfg),report=answer.report,recovery=report.solver.featureRecovery;
-  assert.equal(recovery.accepted,false);
-  assert.equal(recovery.refinementSeedAvailable,true);
+  // The routing can now satisfy the original image limit during its bounded
+  // geometry repair. Keep the provisional route available without requiring
+  // an already valid recovery to be rejected before ordinary refinement.
+  assert.ok(recovery.accepted||recovery.refinementSeedAvailable);
   assert.equal(recovery.trigger.passed,true,'Missing components are no longer the reason to attempt this routing.');
   assert.equal(recovery.gridMismatchTrigger,true);
   assert.equal(report.solver.traceUsed,true);
@@ -183,7 +185,10 @@ test('an actual cropped upload recovers its template when one edge hides slit en
   const before=source.mask.slice(),probability=source.probability.slice();
   const answer=await design(prepared.target,cfg),recovery=answer.report.solver.featureRecovery;
   assert.equal(recovery.borderSeedRetry,true);
-  assert.ok(recovery.attempts.some(a=>a.borderSeed?.initializationOnly&&a.solver?.status==='solved'));
+  // A repaired rejected integer candidate stops the MILP through its observer;
+  // its raw solver status correctly remains "no_validated_solution". The
+  // checked repair is another successful use of the same border proposal.
+  assert.ok(recovery.attempts.some(a=>a.borderSeed?.initializationOnly&&(a.solver?.status==='solved'||a.continuousRepair?.accepted)));
   assert.deepEqual(answer.report.slits,{left:3,right:3});
   assert.equal(answer.report.templateChecksPassed,true);assert.equal(answer.report.validation.passed,true);assert.equal(answer.report.manufacturing.status,'pass');
   assert.equal(answer.report.imageFidelity.features.missing.length,0);
