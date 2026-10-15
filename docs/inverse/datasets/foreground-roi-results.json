@@ -1,0 +1,1047 @@
+{
+  "schema": "body-roi-rgb-result-1",
+  "status": "complete-offline-no-verified-recovery-gain",
+  "plan": "docs/inverse/datasets/foreground-roi-plan.json",
+  "metrics": {
+    "production": {
+      "instances": 19,
+      "statuses": {
+        "crop-unresolved": 11,
+        "checked-derived-mask": 6,
+        "review-required": 2
+      },
+      "withCrop": 8,
+      "withSupportedOutline": 7,
+      "derivedMaskAndSupportedOutline": 5
+    },
+    "body-roi": {
+      "instances": 19,
+      "statuses": {
+        "checked-derived-mask": 6,
+        "crop-unresolved": 9,
+        "review-required": 4
+      },
+      "withCrop": 10,
+      "withSupportedOutline": 6,
+      "derivedMaskAndSupportedOutline": 4
+    },
+    "declared-fallback": {
+      "instances": 19,
+      "statuses": {
+        "checked-derived-mask": 8,
+        "crop-unresolved": 8,
+        "review-required": 3
+      },
+      "withCrop": 11,
+      "withSupportedOutline": 7,
+      "derivedMaskAndSupportedOutline": 5
+    }
+  },
+  "editable": {
+    "exportedPairs": 18,
+    "conversionPassed": 18,
+    "completeCandidatePassed": 12,
+    "fidelityPassed": 18,
+    "editorIssueCount": 0
+  },
+  "verification": {
+    "checks": [
+      {
+        "stage": "pipeline",
+        "command": [
+          "node",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/foreground-roi-v1/replay.mjs",
+          "--probe=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/probe",
+          "--output=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/foreground-roi-v1/pipeline"
+        ],
+        "exitCode": 0,
+        "seconds": 271.52600329200004
+      },
+      {
+        "stage": "editor-input",
+        "command": [
+          "node",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/foreground-roi-v1/editor-input.mjs",
+          "--run=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/foreground-roi-v1/pipeline",
+          "--output=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/foreground-roi-v1/editor-input"
+        ],
+        "exitCode": 0,
+        "seconds": 0.3928742080000234
+      },
+      {
+        "stage": "editable",
+        "command": [
+          "node",
+          "scripts/inverse/hard-photo-editor-replay.mjs",
+          "--run=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/foreground-roi-v1/editor-input",
+          "--output=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/foreground-roi-v1/editable"
+        ],
+        "exitCode": 0,
+        "seconds": 20.226368374999993
+      },
+      {
+        "stage": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 12.047548790999997
+      },
+      {
+        "stage": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 8.212913416000049
+      },
+      {
+        "stage": "test",
+        "command": [
+          "npm",
+          "test"
+        ],
+        "exitCode": 1,
+        "seconds": 1102.713835125
+      }
+    ],
+    "followupChecks": [
+      {
+        "stage": "stacked-diagnostic",
+        "command": [
+          "node",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/foreground-roi-v1/diagnose-stacked.mjs"
+        ],
+        "exitCode": 0,
+        "seconds": 10.014662790999978
+      },
+      {
+        "stage": "build",
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 19.489210833000016
+      }
+    ],
+    "fullTestSuitePassed": false,
+    "inverseTests": {
+      "passed": 942,
+      "failed": 3,
+      "total": 945
+    },
+    "applicationTests": {
+      "passed": 857,
+      "skipped": 1
+    },
+    "isolatedDiagnostics": [
+      {
+        "path": "tmp/heart-learning/foreground-roi-v1/stacked-replay.json",
+        "sha256": "f9e47dbcdadd48729c8117ca3f96412b4c46a611a3a2244815f9a1cd4f824186",
+        "templateChecksPassed": true,
+        "independentImageError": 0.0124875,
+        "localError": null,
+        "solverSeconds": 9.096772458,
+        "outlinePolishingSteps": 85,
+        "scope": "Single isolated diagnostic after the failed suite, not a replacement test result."
+      },
+      {
+        "path": "tmp/heart-learning/foreground-roi-v1/near-miss-vertical.json",
+        "sha256": "2896a1ceca8642f4e058d654dc5e15e10f1e78a140bb52b36f4f8fe956b27910",
+        "templateChecksPassed": true,
+        "independentImageError": 0.01495,
+        "localError": 0.029546218487394957,
+        "solverSeconds": 9.049501249499999,
+        "outlinePolishingSteps": 85,
+        "scope": "Single isolated diagnostic after the failed suite, not a replacement test result."
+      },
+      {
+        "path": "tmp/heart-learning/foreground-roi-v1/near-miss-negative-diagonal.json",
+        "sha256": "d80f49a2ec57a62fc463620f388bccc7b4ae6f444506bc068911953ff8f1b4d5",
+        "templateChecksPassed": true,
+        "independentImageError": 0.0162125,
+        "localError": null,
+        "solverSeconds": 9.071921124,
+        "outlinePolishingSteps": 85,
+        "scope": "Single isolated diagnostic after the failed suite, not a replacement test result."
+      }
+    ],
+    "qaInterpretation": "The full suite remains failed. The three isolated replays pass the relevant output checks. Vertical-shift polishing had ten steps and 6.783% local error in the suite, versus eighty-five steps and 2.955% in the replay; the negative-diagonal suite run skipped sampling recovery. Timing-sensitive scheduling/refinement remains unresolved; no test threshold is relaxed.",
+    "failedTestLines": [
+      "\u2716 fresh fitting retains the stacked motif on the original mask (10602.550042ms)",
+      "\u2716 the negative-diagonal near-miss layout produces checked exports within the original short search (1.5x clock) (7154.909042ms)",
+      "\u2716 the vertical near-miss layout produces checked exports within the original short search (1.5x clock) (7692.7545ms)"
+    ],
+    "sourcePinsVerified": true,
+    "regionImagesReviewed": 19,
+    "reconstructionImagesReviewed": 18
+  },
+  "conclusions": [
+    "Both independent arms produce six checked derived-mask pairs. ROI loses the pink/red checker and printed checker while gaining two misleading results from bad crops.",
+    "The predeclared fallback appears to raise derived-mask count from six to eight, but both additions visibly crop the wrong region. No verified source-reconstruction gain is demonstrated.",
+    "The existing supportedCropOutline predicate rejects both false additions; requiring that predicate in diagnostic reporting leaves production and fallback at the same count. This is not a new application gate and does not disable user exports.",
+    "The bounding rectangles generally contain the selected heart, but often include hands, handles, neighbouring objects or decorative backgrounds. Cropping ambiguity and RGB material/outline inference remain unresolved.",
+    "Using original RGB preserves checker corners substantially better than replacing RGB with the learned material map. This does not by itself make the ROI approach sufficiently reliable for integration.",
+    "The sloth fit is cleaner in the ROI arm, but the crop changes and timed local fitting both vary. This is not isolated evidence of a general fitting improvement.",
+    "Bicycle detail is present in the classified mask and lost in both fitted outputs. Publisher verification subsequently establishes closed cut-outs in both bicycle and sloth ground-truth templates, outside the regular-slit representation. These are not ordinary ground-truth slit-recovery benchmarks. Painted-paper specks cause feature rejection, and printed-heart ink is treated as physical material by both RGB arms."
+  ],
+  "constructionQualification": {
+    "report": "docs/inverse/datasets/krymmel-cutout-source-review.json",
+    "appliesTo": [
+      "real-5330aa8b62176216",
+      "real-abf590088db891f9"
+    ],
+    "policy": "Retain historical counts; separate these published cut-out constructions from future regular-template ground-truth evaluations. Material/body labels remain useful."
+  },
+  "postHocOutlineDiagnostic": {
+    "schema": "saved-outline-source-body-diagnostic-1",
+    "status": "complete",
+    "scope": "Post-hoc raster comparison of saved complete outer-heart model polygons against independently annotated visible body. Source labels never enter detection or fitting. All nineteen photos have labels; unavailable crops have null metrics.",
+    "limitations": [
+      "Known body/background pixels only; uncertain pixels excluded. Polygon rasterization at 256px is approximate.",
+      "Outer-outline agreement does not measure overlap corners directly. Bent paper and occlusion can differ from a flat idealized model.",
+      "No threshold is selected or used to change experiment outcomes."
+    ],
+    "rows": [
+      {
+        "id": "real-2044b1d98ed6f262-body-1",
+        "method": "production",
+        "status": "crop-unresolved",
+        "outlineIoU": null
+      },
+      {
+        "id": "real-2044b1d98ed6f262-body-1",
+        "method": "body-roi",
+        "status": "checked-derived-mask",
+        "outlineIoU": 0.36849338601614845,
+        "knownBodyRecall": 0.42722700791714385,
+        "knownBackgroundFalsePositive": 0.11650591446769791,
+        "knownPixels": 47558
+      },
+      {
+        "id": "real-45744a03afddccb1-body-1",
+        "method": "body-roi",
+        "status": "crop-unresolved",
+        "outlineIoU": null
+      },
+      {
+        "id": "real-45744a03afddccb1-body-1",
+        "method": "production",
+        "status": "crop-unresolved",
+        "outlineIoU": null
+      },
+      {
+        "id": "real-8c875dd0f298b5a4-body-1",
+        "method": "production",
+        "status": "checked-derived-mask",
+        "outlineIoU": 0.98565965583174,
+        "knownBodyRecall": 0.9976389533983588,
+        "knownBackgroundFalsePositive": 0.008480527197104737,
+        "knownPixels": 62862
+      },
+      {
+        "id": "real-8c875dd0f298b5a4-body-1",
+        "method": "body-roi",
+        "status": "review-required",
+        "outlineIoU": 0.9659095175520931,
+        "knownBodyRecall": 0.9957810806626413,
+        "knownBackgroundFalsePositive": 0.02157943067033976,
+        "knownPixels": 62862
+      },
+      {
+        "id": "real-3f7b76e1a98e808f-body-1",
+        "method": "body-roi",
+        "status": "crop-unresolved",
+        "outlineIoU": null
+      },
+      {
+        "id": "real-3f7b76e1a98e808f-body-1",
+        "method": "production",
+        "status": "crop-unresolved",
+        "outlineIoU": null
+      },
+      {
+        "id": "real-995899fe049540ed-body-1",
+        "method": "production",
+        "status": "crop-unresolved",
+        "outlineIoU": null
+      },
+      {
+        "id": "real-995899fe049540ed-body-1",
+        "method": "body-roi",
+        "status": "crop-unresolved",
+        "outlineIoU": null
+      },
+      {
+        "id": "real-b87b0b19f12724f3-body-1",
+        "method": "body-roi",
+        "status": "crop-unresolved",
+        "outlineIoU": null
+      },
+      {
+        "id": "real-b87b0b19f12724f3-body-1",
+        "method": "production",
+        "status": "checked-derived-mask",
+        "outlineIoU": 0.893978258214242,
+        "knownBodyRecall": 0.9984993178717599,
+        "knownBackgroundFalsePositive": 0.024274182127177454,
+        "knownPixels": 42635
+      },
+      {
+        "id": "real-cf2d0fcff65d7386-body-1",
+        "method": "production",
+        "status": "checked-derived-mask",
+        "outlineIoU": 0.9676730923975789,
+        "knownBodyRecall": 0.9995663329839904,
+        "knownBackgroundFalsePositive": 0.03455854490337249,
+        "knownPixels": 54061
+      },
+      {
+        "id": "real-cf2d0fcff65d7386-body-1",
+        "method": "body-roi",
+        "status": "checked-derived-mask",
+        "outlineIoU": 0.9667691662589978,
+        "knownBodyRecall": 0.9998554443279968,
+        "knownBackgroundFalsePositive": 0.03588480485032209,
+        "knownPixels": 54061
+      },
+      {
+        "id": "real-cdae5c890b6933cd-body-1",
+        "method": "body-roi",
+        "status": "review-required",
+        "outlineIoU": 0.7272530094349854,
+        "knownBodyRecall": 0.7636073787292189,
+        "knownBackgroundFalsePositive": 0.01433516196447231,
+        "knownPixels": 39406
+      },
+      {
+        "id": "real-cdae5c890b6933cd-body-1",
+        "method": "production",
+        "status": "crop-unresolved",
+        "outlineIoU": null
+      },
+      {
+        "id": "real-68d8f25d8891df62-body-1",
+        "method": "production",
+        "status": "crop-unresolved",
+        "outlineIoU": null
+      },
+      {
+        "id": "real-68d8f25d8891df62-body-1",
+        "method": "body-roi",
+        "status": "crop-unresolved",
+        "outlineIoU": null
+      },
+      {
+        "id": "real-5330aa8b62176216-body-1",
+        "method": "body-roi",
+        "status": "review-required",
+        "outlineIoU": 0.9996001845302168,
+        "knownBodyRecall": 1.0,
+        "knownBackgroundFalsePositive": 0.00045379969979404477,
+        "knownPixels": 61149
+      },
+      {
+        "id": "real-5330aa8b62176216-body-1",
+        "method": "production",
+        "status": "review-required",
+        "outlineIoU": 0.9992314077535586,
+        "knownBodyRecall": 1.0,
+        "knownBackgroundFalsePositive": 0.000872691730373163,
+        "knownPixels": 61149
+      },
+      {
+        "id": "real-abf590088db891f9-body-1",
+        "method": "production",
+        "status": "checked-derived-mask",
+        "outlineIoU": 0.9966441910325327,
+        "knownBodyRecall": 0.9995014178430089,
+        "knownBackgroundFalsePositive": 0.0031646658181693097,
+        "knownPixels": 61162
+      },
+      {
+        "id": "real-abf590088db891f9-body-1",
+        "method": "body-roi",
+        "status": "checked-derived-mask",
+        "outlineIoU": 0.9972024494109601,
+        "knownBodyRecall": 0.9996883861518806,
+        "knownBackgroundFalsePositive": 0.0027518833201472257,
+        "knownPixels": 61162
+      },
+      {
+        "id": "real-990ac34431be87fe-body-1",
+        "method": "body-roi",
+        "status": "crop-unresolved",
+        "outlineIoU": null
+      },
+      {
+        "id": "real-990ac34431be87fe-body-1",
+        "method": "production",
+        "status": "crop-unresolved",
+        "outlineIoU": null
+      },
+      {
+        "id": "real-12ce3c9180f7f317-body-1",
+        "method": "production",
+        "status": "crop-unresolved",
+        "outlineIoU": null
+      },
+      {
+        "id": "real-12ce3c9180f7f317-body-1",
+        "method": "body-roi",
+        "status": "crop-unresolved",
+        "outlineIoU": null
+      },
+      {
+        "id": "real-d5b0aa8d4d2465ee-body-1",
+        "method": "body-roi",
+        "status": "checked-derived-mask",
+        "outlineIoU": 0.9778850646316773,
+        "knownBodyRecall": 0.9998407643312102,
+        "knownBackgroundFalsePositive": 0.009428600086930356,
+        "knownPixels": 42469
+      },
+      {
+        "id": "real-d5b0aa8d4d2465ee-body-1",
+        "method": "production",
+        "status": "checked-derived-mask",
+        "outlineIoU": 0.9588455371459113,
+        "knownBodyRecall": 0.9998407643312102,
+        "knownBackgroundFalsePositive": 0.01795446186766525,
+        "knownPixels": 42469
+      },
+      {
+        "id": "real-39f3a1ba97852876-body-1",
+        "method": "production",
+        "status": "checked-derived-mask",
+        "outlineIoU": 0.9710994987735949,
+        "knownBodyRecall": 0.9747377435238707,
+        "knownBackgroundFalsePositive": 0.001092896174863388,
+        "knownPixels": 41367
+      },
+      {
+        "id": "real-39f3a1ba97852876-body-1",
+        "method": "body-roi",
+        "status": "checked-derived-mask",
+        "outlineIoU": 0.9628765379719983,
+        "knownBodyRecall": 0.9717405266538215,
+        "knownBackgroundFalsePositive": 0.0026854020296643247,
+        "knownPixels": 41367
+      },
+      {
+        "id": "real-e936e08ac62db19b-body-1",
+        "method": "body-roi",
+        "status": "crop-unresolved",
+        "outlineIoU": null
+      },
+      {
+        "id": "real-e936e08ac62db19b-body-1",
+        "method": "production",
+        "status": "crop-unresolved",
+        "outlineIoU": null
+      },
+      {
+        "id": "real-340f5e5b0f447889-body-1",
+        "method": "production",
+        "status": "crop-unresolved",
+        "outlineIoU": null
+      },
+      {
+        "id": "real-340f5e5b0f447889-body-1",
+        "method": "body-roi",
+        "status": "crop-unresolved",
+        "outlineIoU": null
+      },
+      {
+        "id": "real-710703159f609111-body-1",
+        "method": "body-roi",
+        "status": "checked-derived-mask",
+        "outlineIoU": 0.29585353619796023,
+        "knownBodyRecall": 0.3819751753912574,
+        "knownBackgroundFalsePositive": 0.0799964406478021,
+        "knownPixels": 42979
+      },
+      {
+        "id": "real-710703159f609111-body-1",
+        "method": "production",
+        "status": "crop-unresolved",
+        "outlineIoU": null
+      },
+      {
+        "id": "real-a414dfffbd2362ae-body-1",
+        "method": "production",
+        "status": "review-required",
+        "outlineIoU": 0.9202073646518091,
+        "knownBodyRecall": 0.998318548153302,
+        "knownBackgroundFalsePositive": 0.058700882117080994,
+        "knownPixels": 42187
+      },
+      {
+        "id": "real-a414dfffbd2362ae-body-1",
+        "method": "body-roi",
+        "status": "review-required",
+        "outlineIoU": 0.9202073646518091,
+        "knownBodyRecall": 0.998318548153302,
+        "knownBackgroundFalsePositive": 0.058700882117080994,
+        "knownPixels": 42187
+      }
+    ],
+    "sourceHashes": {
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-motifs/manifest.json": "9caa71574f688a27777fb35d16f8c47125bb0dccfd3681070147047e4f8bb887",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-motifs/real-2044b1d98ed6f262-body-1-body.png": "d95187d0d1c5080784e53e8f2ebf3f610987dc0254912c885668a8378c91377d",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-motifs/real-45744a03afddccb1-body-1-body.png": "705fdd7adcf96c30bd33b541d5e470eaf93afcaa3bc834f1056451682c8adcf8",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-pinterest/manifest.json": "43ad3b146fb44a73afdc9c5f5662adeec18c4819b9bd7d606ab7d8dacb5b7e00",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-pinterest/real-8c875dd0f298b5a4-body-1-body.png": "ae279e37a1acfdbc67831d4a55c4d670f94c0e74d9f69b7c1b378d92508954ef",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-pinterest/real-3f7b76e1a98e808f-body-1-body.png": "c70186e8359cf3a98b6f7531e4380d76e840c69328af607ff807cc5f8666f899",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-printed/manifest.json": "0494aec7d9bce630f1101d422a192a2689e2d42513ffc834bd0650f78b4bfef5",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-printed/real-995899fe049540ed-body-1-body.png": "234fd13a0f837794a148fa57be3f02d469e562dd90840021abcc2bb637479bb5",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-printed/real-b87b0b19f12724f3-body-1-body.png": "fd2cfa99837268779e927d33576f3b32fcd95ab5858bab3e1368c30501b0367b",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials/manifest.json": "1be905bd82bf5f18793ef2d31fa573f7dd976b5218991437d3c8d4902ccc95f6",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials/real-cf2d0fcff65d7386-body-1-body.png": "413c386c6f0e78844f8c2634c409b8dc9eedcdfee3de4ac4b34807fa34e6e8bc",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials/real-cdae5c890b6933cd-body-1-body.png": "82034f178126c4545cfccbea02c829b30aed0e511caf73ebea89c582383c79fe",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials/real-68d8f25d8891df62-body-1-body.png": "6aa4f9d07a61edc50ba71b406bd9363235f09f9c573e101f37a02e870d027e01",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-colors/manifest.json": "0736a30bd8ed05538b74bd3cb9727a540834c6258d1327ae0a61c92cb3f06244",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-colors/real-5330aa8b62176216-body-1-body.png": "73296229e6a361c32b24fd06c3676b92861ed9606b6507c0afde35427cd71759",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-colors/real-abf590088db891f9-body-1-body.png": "e3d5b332886b5878544b21694f26cc45b9d13d85490f4196c287b962dd426c63",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-colors/real-990ac34431be87fe-body-1-body.png": "594c50ab4dd05a002f6d426624b29490bbca9af823dce2c835ba7be025a795f1",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-colors/real-12ce3c9180f7f317-body-1-body.png": "aff3959d94436dedf74028693a33e351209d51d660a31332d33fd373dfda79a4",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-curved/manifest.json": "42780e542336415ca00b72e707a697295f3a4e69720e3538d7685f2c281c1af1",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-curved/real-d5b0aa8d4d2465ee-body-1-body.png": "dd66132bf418490b435fa0a835b2967a0000f1eee661d3748b7726659f8ed7c4",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-hanging/manifest.json": "89ba906f2e8a3c546ab3e7cf77ac49b479ff7411667a68dcb2178ba454f84cc3",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-hanging/real-39f3a1ba97852876-body-1-body.png": "5b91462bffb485040de523dc10446435f402a01bda8837ed845e5d93cc217d50",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-palettes/manifest.json": "578a0eb0f03fe083903640ee2ffe586686c316c2faaaf56b3a792a82ca790ba3",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-palettes/real-e936e08ac62db19b-body-1-body.png": "f04caaaa0be014dd0e2822951e36c1d4be823ef3f53bca64b72f2b8b364ae00a",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-protruding/manifest.json": "d853f81d3f226465e4cbf7e88ad876430b870678c3abbecb07aa5cc8ef65cbb7",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-protruding/real-340f5e5b0f447889-body-1-body.png": "b56842a4050026d4a3d236bfc0dd8f9b51e0323b3669be0a30f8d6014f0bfe1b",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-paper-scenes/manifest.json": "29070754513d7c11fb03bb8088867cb9454b3f06910a32ef5accd451d1d22e0c",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-paper-scenes/real-710703159f609111-body-1-body.png": "a3d355a6d02b2ec8d9f5817ba6191f0f262ecd93e954d8202362daa9cfdcd7ec",
+      "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-paper-scenes/real-a414dfffbd2362ae-body-1-body.png": "d6400b6575f01c3d9b433988e15b15864b56996a77078b524772628bcf983590"
+    }
+  },
+  "postHocSourceDiagnostic": {
+    "referencePhotos": 6,
+    "excludedPhotos": 13,
+    "scope": "Post-hoc diagnostic on six photos with pre-existing approximate overlap references. Score the SAME known source-paper cell centres inside an inset [0.1,0.9] reference square in every arm; never choose evaluation positions from the predicted crop. One phase chosen from classified observations and retained for exported weave. No references enter reconstruction.",
+    "rows": [
+      {
+        "id": "real-8c875dd0f298b5a4-body-1",
+        "method": "production",
+        "status": "checked-derived-mask",
+        "observedSourcePixels": 4005,
+        "knownFractionOfReferenceInterior": 0.42255750158261235,
+        "referenceCornerUncertaintyPixels": 6,
+        "coveredSourcePixels": 4005,
+        "coverage": 1.0,
+        "phaseExchanged": true,
+        "classification": {
+          "observedCoveredError": 0.23820224719101124,
+          "errorIncludingMissingCoverage": 0.23820224719101124,
+          "missingSourcePixels": 0
+        },
+        "exported": {
+          "observedCoveredError": 0.2387016229712859,
+          "errorIncludingMissingCoverage": 0.2387016229712859,
+          "missingSourcePixels": 0
+        }
+      },
+      {
+        "id": "real-8c875dd0f298b5a4-body-1",
+        "method": "body-roi",
+        "status": "review-required",
+        "observedSourcePixels": 4005,
+        "knownFractionOfReferenceInterior": 0.42255750158261235,
+        "referenceCornerUncertaintyPixels": 6,
+        "coveredSourcePixels": 4005,
+        "coverage": 1.0,
+        "phaseExchanged": true,
+        "classification": {
+          "observedCoveredError": 0.23745318352059924,
+          "errorIncludingMissingCoverage": 0.23745318352059924,
+          "missingSourcePixels": 0
+        },
+        "exported": {
+          "observedCoveredError": 0.24269662921348314,
+          "errorIncludingMissingCoverage": 0.24269662921348314,
+          "missingSourcePixels": 0
+        }
+      },
+      {
+        "id": "real-995899fe049540ed-body-1",
+        "method": "production",
+        "status": "crop-unresolved",
+        "observedSourcePixels": 5706,
+        "knownFractionOfReferenceInterior": 0.5710568454763811,
+        "referenceCornerUncertaintyPixels": 15.0,
+        "coveredSourcePixels": 0,
+        "coverage": 0.0,
+        "classification": null,
+        "exported": null
+      },
+      {
+        "id": "real-995899fe049540ed-body-1",
+        "method": "body-roi",
+        "status": "crop-unresolved",
+        "observedSourcePixels": 5706,
+        "knownFractionOfReferenceInterior": 0.5710568454763811,
+        "referenceCornerUncertaintyPixels": 15.0,
+        "coveredSourcePixels": 0,
+        "coverage": 0.0,
+        "classification": null,
+        "exported": null
+      },
+      {
+        "id": "real-5330aa8b62176216-body-1",
+        "method": "body-roi",
+        "status": "review-required",
+        "observedSourcePixels": 296,
+        "knownFractionOfReferenceInterior": 0.022984935548998293,
+        "referenceCornerUncertaintyPixels": 6.0,
+        "coveredSourcePixels": 296,
+        "coverage": 1.0,
+        "phaseExchanged": true,
+        "classification": {
+          "observedCoveredError": 0.0,
+          "errorIncludingMissingCoverage": 0.0,
+          "missingSourcePixels": 0
+        },
+        "exported": {
+          "observedCoveredError": 0.0,
+          "errorIncludingMissingCoverage": 0.0,
+          "missingSourcePixels": 0
+        }
+      },
+      {
+        "id": "real-5330aa8b62176216-body-1",
+        "method": "production",
+        "status": "review-required",
+        "observedSourcePixels": 296,
+        "knownFractionOfReferenceInterior": 0.022984935548998293,
+        "referenceCornerUncertaintyPixels": 6.0,
+        "coveredSourcePixels": 296,
+        "coverage": 1.0,
+        "phaseExchanged": true,
+        "classification": {
+          "observedCoveredError": 0.0,
+          "errorIncludingMissingCoverage": 0.0,
+          "missingSourcePixels": 0
+        },
+        "exported": {
+          "observedCoveredError": 0.0,
+          "errorIncludingMissingCoverage": 0.0,
+          "missingSourcePixels": 0
+        }
+      },
+      {
+        "id": "real-abf590088db891f9-body-1",
+        "method": "production",
+        "status": "checked-derived-mask",
+        "observedSourcePixels": 2034,
+        "knownFractionOfReferenceInterior": 0.15698078258856216,
+        "referenceCornerUncertaintyPixels": 6.0,
+        "coveredSourcePixels": 2034,
+        "coverage": 1.0,
+        "phaseExchanged": false,
+        "classification": {
+          "observedCoveredError": 0.0,
+          "errorIncludingMissingCoverage": 0.0,
+          "missingSourcePixels": 0
+        },
+        "exported": {
+          "observedCoveredError": 0.0,
+          "errorIncludingMissingCoverage": 0.0,
+          "missingSourcePixels": 0
+        }
+      },
+      {
+        "id": "real-abf590088db891f9-body-1",
+        "method": "body-roi",
+        "status": "checked-derived-mask",
+        "observedSourcePixels": 2034,
+        "knownFractionOfReferenceInterior": 0.15698078258856216,
+        "referenceCornerUncertaintyPixels": 6.0,
+        "coveredSourcePixels": 2034,
+        "coverage": 1.0,
+        "phaseExchanged": false,
+        "classification": {
+          "observedCoveredError": 0.0,
+          "errorIncludingMissingCoverage": 0.0,
+          "missingSourcePixels": 0
+        },
+        "exported": {
+          "observedCoveredError": 0.0,
+          "errorIncludingMissingCoverage": 0.0,
+          "missingSourcePixels": 0
+        }
+      },
+      {
+        "id": "real-12ce3c9180f7f317-body-1",
+        "method": "production",
+        "status": "crop-unresolved",
+        "observedSourcePixels": 1662,
+        "knownFractionOfReferenceInterior": 0.14728819567529244,
+        "referenceCornerUncertaintyPixels": 29.0273,
+        "coveredSourcePixels": 0,
+        "coverage": 0.0,
+        "classification": null,
+        "exported": null
+      },
+      {
+        "id": "real-12ce3c9180f7f317-body-1",
+        "method": "body-roi",
+        "status": "crop-unresolved",
+        "observedSourcePixels": 1662,
+        "knownFractionOfReferenceInterior": 0.14728819567529244,
+        "referenceCornerUncertaintyPixels": 29.0273,
+        "coveredSourcePixels": 0,
+        "coverage": 0.0,
+        "classification": null,
+        "exported": null
+      },
+      {
+        "id": "real-d5b0aa8d4d2465ee-body-1",
+        "method": "body-roi",
+        "status": "checked-derived-mask",
+        "observedSourcePixels": 299,
+        "knownFractionOfReferenceInterior": 0.06235662148070907,
+        "referenceCornerUncertaintyPixels": 6.75,
+        "coveredSourcePixels": 299,
+        "coverage": 1.0,
+        "phaseExchanged": true,
+        "classification": {
+          "observedCoveredError": 0.0,
+          "errorIncludingMissingCoverage": 0.0,
+          "missingSourcePixels": 0
+        },
+        "exported": {
+          "observedCoveredError": 0.0,
+          "errorIncludingMissingCoverage": 0.0,
+          "missingSourcePixels": 0
+        }
+      },
+      {
+        "id": "real-d5b0aa8d4d2465ee-body-1",
+        "method": "production",
+        "status": "checked-derived-mask",
+        "observedSourcePixels": 299,
+        "knownFractionOfReferenceInterior": 0.06235662148070907,
+        "referenceCornerUncertaintyPixels": 6.75,
+        "coveredSourcePixels": 299,
+        "coverage": 1.0,
+        "phaseExchanged": true,
+        "classification": {
+          "observedCoveredError": 0.0,
+          "errorIncludingMissingCoverage": 0.0,
+          "missingSourcePixels": 0
+        },
+        "exported": {
+          "observedCoveredError": 0.0,
+          "errorIncludingMissingCoverage": 0.0,
+          "missingSourcePixels": 0
+        }
+      }
+    ],
+    "finding": "The printed checker has about 23.8% disagreement on known central physical-paper observations even where derived-mask error is only about 2.1%. Conversely, the bicycle receives zero error on its sparse known observations despite losing the bicycle: the observations exclude those difficult details. These partial labels cannot certify motif recovery."
+  },
+  "limitations": [
+    "Nineteen previously inspected development photographs; no unseen-test or physical-assembly claim.",
+    "Only held-out body fields are used. No material prediction, annotation coordinates or template hints enter reconstruction.",
+    "Ten-second fitting budgets exclude detection and precomputed model inference.",
+    "Visual diagnosis and fixed-source scores are reported separately from the predeclared numerical derived-mask counts.",
+    "No website integration, ONNX export, push or deployment."
+  ],
+  "visualReview": {
+    "regions": [
+      {
+        "id": "real-2044b1d98ed6f262-body-1",
+        "status": "checked-derived-mask",
+        "note": "ROI encloses the boar heart, but the crop selects a thin internal quadrilateral and extends beyond the image. The motif is unrecognizably stretched. Low mask error is a false source-recovery success."
+      },
+      {
+        "id": "real-45744a03afddccb1-body-1",
+        "status": "crop-unresolved",
+        "note": "ROI surrounds the rabbit and excludes most handle, but photographic corner detection remains unresolved."
+      },
+      {
+        "id": "real-8c875dd0f298b5a4-body-1",
+        "status": "review-required",
+        "note": "ROI surrounds the entire printed checker, including the handle. Selected overlap is broadly plausible; both RGB pipelines treat printed ink as cut motifs. ROI result has more seams and exceeds the mask limit."
+      },
+      {
+        "id": "real-3f7b76e1a98e808f-body-1",
+        "status": "crop-unresolved",
+        "note": "Sideways green/pale star lies inside the ROI, with some background; original-RGB corner detection still fails."
+      },
+      {
+        "id": "real-995899fe049540ed-body-1",
+        "status": "crop-unresolved",
+        "note": "ROI encloses the floral/striped checker but patterned paper prevents a corner result. No template."
+      },
+      {
+        "id": "real-b87b0b19f12724f3-body-1",
+        "status": "crop-unresolved",
+        "note": "ROI includes nearby chocolates and still fails to locate the pink/red heart; full-photo production succeeds with a recognizable checker."
+      },
+      {
+        "id": "real-cf2d0fcff65d7386-body-1",
+        "status": "checked-derived-mask",
+        "note": "ROI and woven square are plausible. Both RGB targets retain checker contact better than the previous learned-material masks. Minor border defects remain; no new solved case."
+      },
+      {
+        "id": "real-cdae5c890b6933cd-body-1",
+        "status": "review-required",
+        "note": "ROI includes fingers/background. Crop is inset and asymmetric relative to the visible square. Mask includes printed texture specks; output is rejected by feature checks despite low aggregate mask error."
+      },
+      {
+        "id": "real-68d8f25d8891df62-body-1",
+        "status": "crop-unresolved",
+        "note": "Body ROI remains broad around a blue/gold patterned heart with floral clutter. Corner detection remains unresolved."
+      },
+      {
+        "id": "real-5330aa8b62176216-body-1",
+        "status": "review-required",
+        "note": "Both crops preserve the bicycle in the mask but fitting removes almost all bicycle detail. Both outputs correctly fail candidate checks."
+      },
+      {
+        "id": "real-abf590088db891f9-body-1",
+        "status": "checked-derived-mask",
+        "note": "Both crops are plausible and sloth remains recognizable. ROI-run fit has fewer visible seams and lower mask error (0.8192% versus 1.6848%); crop and timing effects are not isolated."
+      },
+      {
+        "id": "real-990ac34431be87fe-body-1",
+        "status": "crop-unresolved",
+        "note": "ROI includes pine/handle clutter above the red/white checker; no corners returned."
+      },
+      {
+        "id": "real-12ce3c9180f7f317-body-1",
+        "status": "crop-unresolved",
+        "note": "ROI spans most of the yellow/teal photograph. No corners returned, despite a simple visible checker."
+      },
+      {
+        "id": "real-d5b0aa8d4d2465ee-body-1",
+        "status": "checked-derived-mask",
+        "note": "ROI includes foliage, but selected square and RGB checker remain plausible. Both methods keep checker topology; ROI gives no additional accepted source."
+      },
+      {
+        "id": "real-39f3a1ba97852876-body-1",
+        "status": "checked-derived-mask",
+        "note": "ROI contains both bowed checker and foliage; both fits remain recognizable with similar low errors."
+      },
+      {
+        "id": "real-e936e08ac62db19b-body-1",
+        "status": "crop-unresolved",
+        "note": "ROI includes surrounding decorative frame/background for orange/yellow checker. No corners returned."
+      },
+      {
+        "id": "real-340f5e5b0f447889-body-1",
+        "status": "crop-unresolved",
+        "note": "ROI surrounds the protruding dragonfly heart and part of its handle. No corners returned."
+      },
+      {
+        "id": "real-710703159f609111-body-1",
+        "status": "checked-derived-mask",
+        "note": "ROI includes the hand. Corner finder selects the red lobe and background instead of the checker square, with a corner outside the photograph. Low mask error is another false source-recovery success."
+      },
+      {
+        "id": "real-a414dfffbd2362ae-body-1",
+        "status": "review-required",
+        "note": "Both methods produce the same crop/mask of painted purple paper. Texture specks and broad edge strip remain; both outputs fail feature checks."
+      }
+    ],
+    "reconstructions": [
+      {
+        "id": "real-2044b1d98ed6f262-body-1",
+        "method": "body-roi",
+        "status": "checked-derived-mask",
+        "independentImageError": 0.00645,
+        "note": "ROI encloses the boar heart, but the crop selects a thin internal quadrilateral and extends beyond the image. The motif is unrecognizably stretched. Low mask error is a false source-recovery success."
+      },
+      {
+        "id": "real-8c875dd0f298b5a4-body-1",
+        "method": "production",
+        "status": "checked-derived-mask",
+        "independentImageError": 0.02124375,
+        "note": "ROI surrounds the entire printed checker, including the handle. Selected overlap is broadly plausible; both RGB pipelines treat printed ink as cut motifs. ROI result has more seams and exceeds the mask limit."
+      },
+      {
+        "id": "real-8c875dd0f298b5a4-body-1",
+        "method": "body-roi",
+        "status": "review-required",
+        "independentImageError": 0.0311375,
+        "note": "ROI surrounds the entire printed checker, including the handle. Selected overlap is broadly plausible; both RGB pipelines treat printed ink as cut motifs. ROI result has more seams and exceeds the mask limit."
+      },
+      {
+        "id": "real-b87b0b19f12724f3-body-1",
+        "method": "production",
+        "status": "checked-derived-mask",
+        "independentImageError": 0.00426875,
+        "note": "ROI includes nearby chocolates and still fails to locate the pink/red heart; full-photo production succeeds with a recognizable checker."
+      },
+      {
+        "id": "real-cf2d0fcff65d7386-body-1",
+        "method": "production",
+        "status": "checked-derived-mask",
+        "independentImageError": 0.01171875,
+        "note": "ROI and woven square are plausible. Both RGB targets retain checker contact better than the previous learned-material masks. Minor border defects remain; no new solved case."
+      },
+      {
+        "id": "real-cf2d0fcff65d7386-body-1",
+        "method": "body-roi",
+        "status": "checked-derived-mask",
+        "independentImageError": 0.0134125,
+        "note": "ROI and woven square are plausible. Both RGB targets retain checker contact better than the previous learned-material masks. Minor border defects remain; no new solved case."
+      },
+      {
+        "id": "real-cdae5c890b6933cd-body-1",
+        "method": "body-roi",
+        "status": "review-required",
+        "independentImageError": 0.014575,
+        "note": "ROI includes fingers/background. Crop is inset and asymmetric relative to the visible square. Mask includes printed texture specks; output is rejected by feature checks despite low aggregate mask error."
+      },
+      {
+        "id": "real-5330aa8b62176216-body-1",
+        "method": "body-roi",
+        "status": "review-required",
+        "independentImageError": 0.077168,
+        "note": "Both crops preserve the bicycle in the mask but fitting removes almost all bicycle detail. Both outputs correctly fail candidate checks."
+      },
+      {
+        "id": "real-5330aa8b62176216-body-1",
+        "method": "production",
+        "status": "review-required",
+        "independentImageError": 0.07688,
+        "note": "Both crops preserve the bicycle in the mask but fitting removes almost all bicycle detail. Both outputs correctly fail candidate checks."
+      },
+      {
+        "id": "real-abf590088db891f9-body-1",
+        "method": "production",
+        "status": "checked-derived-mask",
+        "independentImageError": 0.016848,
+        "note": "Both crops are plausible and sloth remains recognizable. ROI-run fit has fewer visible seams and lower mask error (0.8192% versus 1.6848%); crop and timing effects are not isolated."
+      },
+      {
+        "id": "real-abf590088db891f9-body-1",
+        "method": "body-roi",
+        "status": "checked-derived-mask",
+        "independentImageError": 0.008192,
+        "note": "Both crops are plausible and sloth remains recognizable. ROI-run fit has fewer visible seams and lower mask error (0.8192% versus 1.6848%); crop and timing effects are not isolated."
+      },
+      {
+        "id": "real-d5b0aa8d4d2465ee-body-1",
+        "method": "body-roi",
+        "status": "checked-derived-mask",
+        "independentImageError": 0.0076125,
+        "note": "ROI includes foliage, but selected square and RGB checker remain plausible. Both methods keep checker topology; ROI gives no additional accepted source."
+      },
+      {
+        "id": "real-d5b0aa8d4d2465ee-body-1",
+        "method": "production",
+        "status": "checked-derived-mask",
+        "independentImageError": 0.0061875,
+        "note": "ROI includes foliage, but selected square and RGB checker remain plausible. Both methods keep checker topology; ROI gives no additional accepted source."
+      },
+      {
+        "id": "real-39f3a1ba97852876-body-1",
+        "method": "production",
+        "status": "checked-derived-mask",
+        "independentImageError": 0.004588888888888889,
+        "note": "ROI contains both bowed checker and foliage; both fits remain recognizable with similar low errors."
+      },
+      {
+        "id": "real-39f3a1ba97852876-body-1",
+        "method": "body-roi",
+        "status": "checked-derived-mask",
+        "independentImageError": 0.0047,
+        "note": "ROI contains both bowed checker and foliage; both fits remain recognizable with similar low errors."
+      },
+      {
+        "id": "real-710703159f609111-body-1",
+        "method": "body-roi",
+        "status": "checked-derived-mask",
+        "independentImageError": 0.01684375,
+        "note": "ROI includes the hand. Corner finder selects the red lobe and background instead of the checker square, with a corner outside the photograph. Low mask error is another false source-recovery success."
+      },
+      {
+        "id": "real-a414dfffbd2362ae-body-1",
+        "method": "production",
+        "status": "review-required",
+        "independentImageError": 0.014075,
+        "note": "Both methods produce the same crop/mask of painted purple paper. Texture specks and broad edge strip remain; both outputs fail feature checks."
+      },
+      {
+        "id": "real-a414dfffbd2362ae-body-1",
+        "method": "body-roi",
+        "status": "review-required",
+        "independentImageError": 0.014025,
+        "note": "Both methods produce the same crop/mask of painted purple paper. Texture specks and broad edge strip remain; both outputs fail feature checks."
+      }
+    ]
+  },
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/foreground-roi-v1/pipeline/report.json",
+      "sha256": "5aa5de46ce76d126a279a3a816b206e7d94aca30c755cec207c353ee93fd494e"
+    },
+    {
+      "path": "tmp/heart-learning/foreground-roi-v1/editable/results.json",
+      "sha256": "1ab49291ef2d63a0d46086366e129d0af5aa46044e7f0a7ece659fbb7ef01282"
+    },
+    {
+      "path": "tmp/heart-learning/foreground-roi-v1/source-paper-scores.json",
+      "sha256": "49ffd410ccf7d06808e45d9037b179b2f91a1330c141a32915bb2db5266e083d"
+    },
+    {
+      "path": "tmp/heart-learning/foreground-roi-v1/score-source.py",
+      "sha256": "fa4bdd86419bfb67903b43c0df9ff16a36a0a0f7d4a20184466d47199588b0a3"
+    },
+    {
+      "path": "tmp/heart-learning/foreground-roi-v1/source-outline-scores.json",
+      "sha256": "8c801ce107832580fdb9fd2b037f0691a13174873a52bb1b4d6518db343ef9ea"
+    },
+    {
+      "path": "tmp/heart-learning/foreground-roi-v1/score-outline.py",
+      "sha256": "f582321174446e69bf2765b5bc6995a650e4e0fe69e660f7a30602e1acb40e37"
+    },
+    {
+      "path": "tmp/heart-learning/foreground-roi-v1/source-pins.json",
+      "sha256": "0d6e467174f1704e59a616fa8de318d1c5d3a18b956310331097acc5856b8a6b"
+    },
+    {
+      "path": "tmp/heart-learning/foreground-roi-v1/checks.json",
+      "sha256": "eea27dc3bf7b70068a7646a7b2c5c77a41c750c3ad21365ff94af6c6e4110175"
+    },
+    {
+      "path": "tmp/heart-learning/foreground-roi-v1/visual-review.json",
+      "sha256": "71c78fc3c1c852f71e021979fbd66dafd0d2243867cfd206b040c8bafd6c16b8"
+    },
+    {
+      "path": "tmp/heart-learning/foreground-roi-v1/finalize.py",
+      "sha256": "1ab2ce342bd2b93a61b8b130bf84862102dc8d4803d71430d386fd01ddff96a7"
+    },
+    {
+      "path": "tmp/heart-learning/foreground-roi-v1/test.log",
+      "sha256": "a876dfe72705eb37e7269fa1a4d86ed06f1cbba9860f7a8e6f9ea8529db24fd2"
+    },
+    {
+      "path": "tmp/heart-learning/foreground-roi-v1/followup-checks.json",
+      "sha256": "76e5a091646b817612e05a6ef86a1a12041acd38d8110b44f68665c109d0f463"
+    },
+    {
+      "path": "tmp/heart-learning/foreground-roi-v1/diagnostic-state.json",
+      "sha256": "6a4f41ffd8e12f860afbfd3a443e3f4c35ec8b18f80a7b3af43fba864b9ccdff"
+    },
+    {
+      "path": "tmp/heart-learning/foreground-roi-v1/diagnose-stacked.mjs",
+      "sha256": "6a6e960afdf2728dd17fc213419072169b1ec13be1ad5cb9a7e10b3330c0e232"
+    },
+    {
+      "path": "tmp/heart-learning/foreground-roi-v1/diagnose-near-miss.mjs",
+      "sha256": "4df4589f34999ca0256e2a4f0e0f4aec29db6e84b15568d9552416ee0e74a5b3"
+    }
+  ]
+}

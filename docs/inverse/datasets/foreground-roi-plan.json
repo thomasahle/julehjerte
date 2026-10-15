@@ -1,6 +1,6 @@
 {
   "schema": "body-roi-rgb-study-1",
-  "status": "prepared-not-run",
+  "status": "complete-offline-no-verified-recovery-gain",
   "question": "Can a learned body prediction help full-photo localization without replacing photographic boundaries or material identity?",
   "protocol": {
     "photos": 19,
@@ -62,5 +62,6 @@
       "path": "tmp/heart-learning/material-corrected-scenes-v1/probe/manifest.json",
       "sha256": "276db507f6a4ebcf94ec74b80347d450713249205b8cf36509e350cab0f940f5"
     }
-  ]
+  ],
+  "result": "docs/inverse/datasets/foreground-roi-results.json"
 }

@@ -74,10 +74,31 @@ All nineteen prediction pairs and fourteen exported reconstructions were visuall
 reviewed. Learned checker masks erode touching cells into separated islands, so
 low template error against those masks does not establish good reconstruction.
 The rabbit retains frame defects, and the green/pale star's material prediction
-worsens despite a better body outline. No learned model is integrated. The next
-experiment uses predicted body extent only for a rough ROI while retaining RGB
-for the actual crop and pattern. Historical metrics are not replaced or directly
-compared across the different splits.
+worsens despite a better body outline. No learned model is integrated. Historical
+metrics are not replaced or directly compared across the different splits.
+
+The [body-only ROI experiment](foreground-roi-results.json) is also complete.
+It keeps original RGB for the cropper, classifier and fitter, using only the
+largest predicted body component plus fixed padding as a rough rectangle.
+Across 38 fresh attempts, each arm has six checked derived-mask pairs out of
+nineteen. The predeclared fallback appears to produce eight, but its two additions
+crop the wrong part of the boar and hand-held checker. Their outer outlines have
+only 36.85% and 29.59% IoU against independent body annotations. Both also fail
+the existing outline-support predicate. No verified recovery gain is established,
+and the helper remains an offline experiment.
+
+All nineteen ROI overlays and eighteen reconstructions were visually reviewed.
+All eighteen exports preserve editor geometry; twelve pass complete candidate
+checks. Fixed source-paper observations expose about 23.8% material disagreement
+on the printed checker despite its roughly 2.1% derived-mask fit. These partial
+observations cannot certify all detail: they miss the lost bicycle entirely.
+Five ROI coordinate/component tests, type checking, lint, build and all 857
+application tests pass (one skip). The full inverse suite has **942/945 passing**:
+the original stacked mask and two near-miss cases under a faster clock fail.
+All three isolated diagnostics subsequently pass the relevant output checks,
+but do not replace the failed suite. The vertical case receives ten outline
+polishing steps in the failing run versus eighty-five in its replay. Timed
+search and refinement variability remains unresolved; no acceptance rule changes.
 
 A [boundary preparation refactor](boundary-trace-reuse.json) reuses cleanup and
 pixel chains when trying several tracing tolerances. Across 29 photographic
