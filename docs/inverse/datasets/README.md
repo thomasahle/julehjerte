@@ -42,9 +42,12 @@ The partial material annotations cover only 26.25% of this crop, excluding
 apertures, dark rims, seams and boundaries. Neural error on those conservative
 interiors is just 0.057%, despite the visible boundary distortion; RGB has no
 errors on that subset. This exposes a limitation of the annotation coverage and
-metric. Fresh fitting on these two exact-crop targets is queued after a focused
-routing replay and the corpus diagnostics. Full QA terminated with the separately
-recorded failure below; no new reconstruction result is claimed from this diagnosis.
+metric. Fresh fitting and editable conversion now pass on both exact-crop targets.
+The RGB fit retains 98.87--99.39% of each photographed heart in its largest
+component, versus 43.98--70.41% for the neural fit. However, RGB fitting connects
+two hearts to the border, while neural fitting splits one and joins another to
+the border. Both results were visually inspected. Neither is faithful motif
+recovery; the shared RGB reference remains a proxy, not original artwork.
 
 A [clearance-initializer robustness fix](clearance-feature-recovery.json)
 addresses a 116-pixel change in a fixed 400-pixel stacked-heart mask. A valid
@@ -82,8 +85,13 @@ Complete QA passes 935/936 inverse tests. The stacked-heart regressions pass,
 but the synthetic-control sloth times out in both MILP attempts and returns an
 invalid grid fallback. That solve does not enter the changed clearance-handoff
 branch. The failure is retained while its four-case scheduling regression is
-replayed in order and the corpus benchmarks run separately. These diagnostics
-do not turn the failed full-QA result into a pass.
+replayed in order and the corpus benchmarks run separately. The ordered replay
+passes all four scheduling tests. Hunodan remains 22/22 under ten seconds
+(maximum 9.568 seconds), with every error unchanged. Photos remain 26/31, but
+nine accepted-photo errors increase; the jigsaw visibly loses puzzle tabs as
+error rises from 0.97% to 1.78%. All fourteen changed render pairs were inspected,
+and all 48 accepted editable outputs pass. These diagnostics do not clear the
+full-QA timeout or the strict photographic no-regression gate.
 
 The stacked-heart fit still needs improvement despite its lower mask error.
 One heart remains connected to the border; another is split, with only 67% of
@@ -92,7 +100,10 @@ consistent endpoint counts but an undersized eight-pixel strip; it is rejected.
 The [independent-edge proposal study](independent-border-proposals.json) preserves
 healthy bent edges in synthetic tests and gives wider photographed proposals
 without changing the original scoring reference. Those proposals exceed the
-0.5% heuristic allowance and remain offline; no traced or fitted result is claimed.
+0.5% heuristic allowance and remain offline. All eight fresh trace/MILP attempts
+reach routing but time out without an integer candidate, even as simplification
+reduces the graph's visible curves from 124 to 51. Correcting endpoint counts
+alone therefore does not provide a useful fit within this routing allowance.
 
 The [guided-field experiment](guided-material-fields.json) is complete and
 remains offline. Across seventeen development photos, RGB-guided sharpening

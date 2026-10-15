@@ -2167,7 +2167,139 @@
         "bytes": 570
       },
       "interpretation": "The failed solve never entered the changed clearance-handoff branch. Both initial and sparse feature-recovery MILPs reached their limits without an integer candidate. Other-worktree CPU load was observed afterward, but is not telemetry during the failed solve and does not establish causation. The failure remains recorded even if a focused retry passes.",
-      "nativeBenchmark": "Deferred by full-QA driver; now scheduled separately as a diagnostic without changing the failed QA status."
+      "nativeBenchmark": {
+        "status": "completed-separately-after-failed-full-QA",
+        "gates": {
+          "hunodanPassed": 22,
+          "hunodanTotal": 22,
+          "hunodanErrorRegressions": [],
+          "photoPassed": 26,
+          "photoPassRegressions": [],
+          "photoErrorRegressions": [
+            {
+              "id": "floral-checker",
+              "previousStatus": "validated",
+              "status": "validated",
+              "previousPassed": true,
+              "passed": true,
+              "previousError": 0.01315,
+              "error": 0.013425,
+              "errorDelta": 0.0002749999999999992
+            },
+            {
+              "id": "dense-checker",
+              "previousStatus": "validated",
+              "status": "validated",
+              "previousPassed": true,
+              "passed": true,
+              "previousError": 0.00699375,
+              "error": 0.00700625,
+              "errorDelta": 1.2500000000000358e-05
+            },
+            {
+              "id": "gift",
+              "previousStatus": "validated",
+              "status": "validated",
+              "previousPassed": true,
+              "passed": true,
+              "previousError": 0.01665,
+              "error": 0.0166625,
+              "errorDelta": 1.2499999999998623e-05
+            },
+            {
+              "id": "gingerbread",
+              "previousStatus": "validated",
+              "status": "validated",
+              "previousPassed": true,
+              "passed": true,
+              "previousError": 0.010875,
+              "error": 0.01094375,
+              "errorDelta": 6.87500000000011e-05
+            },
+            {
+              "id": "warped-checker",
+              "previousStatus": "validated",
+              "status": "validated",
+              "previousPassed": true,
+              "passed": true,
+              "previousError": 0.013575,
+              "error": 0.0136,
+              "errorDelta": 2.499999999999898e-05
+            },
+            {
+              "id": "stacked-hearts",
+              "previousStatus": "validated",
+              "status": "validated",
+              "previousPassed": true,
+              "passed": true,
+              "previousError": 0.00566875,
+              "error": 0.0059375,
+              "errorDelta": 0.0002687499999999999
+            },
+            {
+              "id": "jigsaw",
+              "previousStatus": "validated",
+              "status": "validated",
+              "previousPassed": true,
+              "passed": true,
+              "previousError": 0.00974375,
+              "error": 0.01780625,
+              "errorDelta": 0.008062499999999998
+            },
+            {
+              "id": "crown",
+              "previousStatus": "validated",
+              "status": "validated",
+              "previousPassed": true,
+              "passed": true,
+              "previousError": 0.02241875,
+              "error": 0.022725,
+              "errorDelta": 0.0003062499999999975
+            },
+            {
+              "id": "flettede-viking",
+              "previousStatus": "validated",
+              "status": "validated",
+              "previousPassed": true,
+              "passed": true,
+              "previousError": 0.02055625,
+              "error": 0.02101875,
+              "errorDelta": 0.00046249999999999764
+            }
+          ],
+          "editablePassed": 48,
+          "editableTotal": 48,
+          "passed": false
+        },
+        "maximumHunodanSeconds": 9.567687625,
+        "visualReview": {
+          "path": "tmp/heart-learning/initializer-perturbation-v1/qa-continuation/photo-visual-review.json",
+          "sha256": "012072e6f4471fe41db38704821442d66d23e3c0574e7356471963e9159e533d",
+          "bytes": 5953
+        },
+        "checks": {
+          "path": "tmp/heart-learning/initializer-perturbation-v1/qa-continuation/native/checks.json",
+          "sha256": "e308af7e8329bd98c129e26fe66242c2889aa8bff6105c6be701ed8afc3b5759",
+          "bytes": 2655
+        },
+        "gateReport": {
+          "path": "tmp/heart-learning/initializer-perturbation-v1/qa-continuation/native/native-gates.json",
+          "sha256": "6901c0dc7a3cb13b269fceebdeb031b0611595ff5ae0b76c537b7f08730c610b",
+          "bytes": 2567
+        },
+        "interpretation": "22/22 Hunodan retain every image error and stay below ten seconds. Photos remain 26/31, but nine accepted-photo errors increase, including visible jigsaw tab loss. All 48 accepted editable outputs pass. Strict no-regression gate fails."
+      },
+      "orderedSchedulingRetry": {
+        "passed": 4,
+        "total": 4,
+        "seconds": 36.840334583,
+        "log": {
+          "path": "tmp/heart-learning/post-continuation-diagnostics-v1/sloth-focused.log",
+          "sha256": "05641053abaa10f42a0ebc45cd4926d908d07f5bb19ac601864dbd496641fce9",
+          "bytes": 537
+        },
+        "interpretation": "Passing ordered replay does not erase the full-run MILP timeout."
+      }
     },
     "timingQualification": "The forced-handoff diagnostic advances the global clock once after the first 40-step checkpoint, reducing all later remaining allowances. Its measured runtime and clock advance are separately recorded; the ordinary runs use an unchanged wall clock."
   }

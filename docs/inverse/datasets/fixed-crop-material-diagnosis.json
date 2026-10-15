@@ -1,7 +1,7 @@
 {
   "schema": "fixed-crop-material-diagnosis-1",
-  "status": "classification-compared-fit-pending",
-  "scope": "Fixed source RGB and exact saved mixed-joint quad. Only material classification differs; no crop optimization, fitting, labels or saved templates are consulted.",
+  "status": "fixed-crop-classification-and-fit-comparison-complete",
+  "scope": "Same source RGB and saved mixed-joint quad; two unmodified classified masks fitted independently from fresh grids. Motif observations were pinned before fitting and used only for evaluation.",
   "source": {
     "id": "real-8c875dd0f298b5a4-body-1",
     "photoSha256": "d5279dae58f85dfeecc3984a8bbb0008759c1f26a226e57576856dddaaa0b1c4",
@@ -164,10 +164,11 @@
     "Every one of the 19,078 differing pixels in the resampled-neural versus RGB comparison is red in RGB and white in the neural mask. This directional disagreement extends well inside the image; it is not explained by changing the crop, which is held identical.",
     "RGB classification is not original-artwork ground truth. Dark outlines, seams and photographic blur remain potential classification errors.",
     "Conservative annotations cover 26.25% of the rectified square and exclude motif apertures, rims, seams and boundaries. Neural error is only 24/42,001 sampled known pixels (0.057%), versus zero for RGB. Good partial-interior scores therefore do not establish correct boundary placement or faithful motifs.",
-    "The source-crop and label comparisons isolate an upstream material-mask defect in addition to the independently demonstrated fitter scheduling issue. Neither explains every remaining solver defect."
+    "The source-crop and label comparisons isolate an upstream material-mask defect in addition to the independently demonstrated fitter scheduling issue. Neither explains every remaining solver defect.",
+    "The RGB fit retains 98.87\u201399.39% of each observed heart in its largest component, yet two touch the border. Neural largest-component retention is 43.98\u201370.41%, including a split heart. Classification repair alone is insufficient; the fitter must preserve motif connectivity as well as pixel agreement."
   ],
   "nextExperiment": {
-    "status": "planned-not-run",
+    "status": "complete",
     "methods": [
       "neural-resampled",
       "rgb-auto"
@@ -283,14 +284,425 @@
     },
     {
       "path": "tmp/heart-learning/fixed-crop-material-v1/audit.mjs",
-      "sha256": "f684fc0395fd93c3e92b7e53d68da0a987f058507867c3563811444eca4adb7c",
-      "bytes": 6056
+      "sha256": "cae2888ce51780b1def947cc0a7c9481998413e8354cd2467f9a196b3825de4d",
+      "bytes": 6073
     },
     {
       "path": "tmp/heart-learning/fixed-crop-material-v1/fit.py",
       "sha256": "24c4a6017d12b831a58ee3b2fa7a7a757bb0f387a4ace1351dffbc51cedea206",
       "bytes": 1844
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/fit-v1/runs.json",
+      "sha256": "d190851b46ff78feb5d6aacfa7f332ebba6279ff80ca1466c503a050a9711b8e",
+      "bytes": 333
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/fit-v1/audit.json",
+      "sha256": "52fb9d1836e76e81d43cb765783040909168bd13f2a13451dfd2bdf3b1c7ac5a",
+      "bytes": 11436
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/fit-v1/report.json",
+      "sha256": "db107ece050e4c4a805cf76d7c388d1660206c8dc9c1ccb74bc27a306279723b",
+      "bytes": 269064
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/fit-v1/audit-stage-0.log",
+      "sha256": "a5eccd814afe2b524ec321bd0a746e2990a0dc2117a8cdef979fbbd7b26974c2",
+      "bytes": 557
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/fit-v1/audit-stage-0-v2.log",
+      "sha256": "1865802cd6bf4581c251eb93bd2f8db057d9e134515a68109ce05c5b6e0f210f",
+      "bytes": 2338
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/fit-v1/editable/results.json",
+      "sha256": "7ec107dce546ad9c63c0621cd0c38e1f9579cc9569aea17889084af887ba10b5",
+      "bytes": 46262
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/fit-v1/neural-resampled/report.json",
+      "sha256": "2fc5bfea5d608984b95df71b9f3f5fee49dc5aa28184cf24dccc1ee83f48ff2d",
+      "bytes": 133030
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/fit-v1/rgb-auto/report.json",
+      "sha256": "812ff3be0504b5c7ac8e3c4429586c5f7cac282a0172085eec3bcb70898a9252",
+      "bytes": 129591
     }
   ],
-  "executionPrerequisite": "The full QA process has terminated with one separately recorded routing failure. Diagnostic fitting may follow terminal QA without implying it passed; the coordinator verifies old process exit and unchanged runtime hashes, and runs all expensive stages serially."
+  "executionPrerequisite": "The full QA process has terminated with one separately recorded routing failure. Diagnostic fitting may follow terminal QA without implying it passed; the coordinator verifies old process exit and unchanged runtime hashes, and runs all expensive stages serially.",
+  "fitComparison": {
+    "rows": [
+      {
+        "method": "neural-resampled",
+        "status": "complete",
+        "sourceReportSha256": "2fc5bfea5d608984b95df71b9f3f5fee49dc5aa28184cf24dccc1ee83f48ff2d",
+        "checkedPair": true,
+        "ownMaskError": 0.013475,
+        "commonRgbProxyError": 0.122,
+        "partialKnownMaterialError": 0.0005952239232399229,
+        "partialKnownMaterialPixels": 42001,
+        "motifMetrics": [
+          {
+            "centerMm": [
+              13.377094804883887,
+              15.307607134306918
+            ],
+            "sourceAreaMm2": 261.0625,
+            "intersectionPixels": 2941,
+            "retention": 0.7040938472587982,
+            "predictedComponentAreaMm2": 183.8125,
+            "touchesBorder": false,
+            "componentIoU": 0.7040938472587982,
+            "dominantComponentId": 1,
+            "totalRetention": 0.7040938472587982,
+            "intersections": [
+              {
+                "id": 1,
+                "intersectionPixels": 2941,
+                "sourceFraction": 0.7040938472587982,
+                "touchesBorder": false,
+                "predictedPixels": 2941
+              }
+            ]
+          },
+          {
+            "centerMm": [
+              39.42662974280621,
+              40.429621848739494
+            ],
+            "sourceAreaMm2": 245.4375,
+            "intersectionPixels": 1727,
+            "retention": 0.43977591036414565,
+            "predictedComponentAreaMm2": 107.9375,
+            "touchesBorder": false,
+            "componentIoU": 0.43977591036414565,
+            "dominantComponentId": 3,
+            "totalRetention": 0.5459638400814871,
+            "intersections": [
+              {
+                "id": 3,
+                "intersectionPixels": 1727,
+                "sourceFraction": 0.43977591036414565,
+                "touchesBorder": false,
+                "predictedPixels": 1727
+              },
+              {
+                "id": 2,
+                "intersectionPixels": 417,
+                "sourceFraction": 0.10618792971734148,
+                "touchesBorder": false,
+                "predictedPixels": 417
+              }
+            ]
+          },
+          {
+            "centerMm": [
+              64.1442926045016,
+              65.15326902465166
+            ],
+            "sourceAreaMm2": 233.25,
+            "intersectionPixels": 2553,
+            "retention": 0.6840836012861736,
+            "predictedComponentAreaMm2": 659.1875,
+            "touchesBorder": true,
+            "componentIoU": 0.21772130308715676,
+            "dominantComponentId": 4,
+            "totalRetention": 0.6840836012861736,
+            "intersections": [
+              {
+                "id": 4,
+                "intersectionPixels": 2553,
+                "sourceFraction": 0.6840836012861736,
+                "touchesBorder": true,
+                "predictedPixels": 10547
+              }
+            ]
+          },
+          {
+            "centerMm": [
+              87.94961266648546,
+              88.75601386246262
+            ],
+            "sourceAreaMm2": 229.9375,
+            "intersectionPixels": 2459,
+            "retention": 0.66838814895352,
+            "predictedComponentAreaMm2": 153.6875,
+            "touchesBorder": false,
+            "componentIoU": 0.66838814895352,
+            "dominantComponentId": 5,
+            "totalRetention": 0.6694754009241642,
+            "intersections": [
+              {
+                "id": 5,
+                "intersectionPixels": 2459,
+                "sourceFraction": 0.66838814895352,
+                "touchesBorder": false,
+                "predictedPixels": 2459
+              },
+              {
+                "id": 7,
+                "intersectionPixels": 3,
+                "sourceFraction": 0.0008154389779831476,
+                "touchesBorder": false,
+                "predictedPixels": 11
+              },
+              {
+                "id": 6,
+                "intersectionPixels": 1,
+                "sourceFraction": 0.0002718129926610492,
+                "touchesBorder": false,
+                "predictedPixels": 1
+              }
+            ]
+          }
+        ],
+        "distinctDominantMotifComponents": 4,
+        "ownStableComponents": [
+          {
+            "centerMm": [
+              13.153552005438478,
+              15.455897348742353
+            ],
+            "sourceAreaMm2": 183.875,
+            "intersectionPixels": 2915,
+            "retention": 0.9908225696804894,
+            "predictedComponentAreaMm2": 183.8125,
+            "touchesBorder": false,
+            "componentIoU": 0.9821428571428571
+          },
+          {
+            "centerMm": [
+              63.5496413015629,
+              39.358986676915194
+            ],
+            "sourceAreaMm2": 487.875,
+            "intersectionPixels": 7778,
+            "retention": 0.9964130156290033,
+            "predictedComponentAreaMm2": 488.1875,
+            "touchesBorder": false,
+            "componentIoU": 0.9922183952034699
+          },
+          {
+            "centerMm": [
+              39.28689167974882,
+              40.34242543171115
+            ],
+            "sourceAreaMm2": 159.25,
+            "intersectionPixels": 1719,
+            "retention": 0.6746467817896389,
+            "predictedComponentAreaMm2": 107.9375,
+            "touchesBorder": false,
+            "componentIoU": 0.6725352112676056
+          },
+          {
+            "centerMm": [
+              37.954389665172684,
+              63.853051674136566
+            ],
+            "sourceAreaMm2": 474.125,
+            "intersectionPixels": 7565,
+            "retention": 0.9972317426838914,
+            "predictedComponentAreaMm2": 473.9375,
+            "touchesBorder": false,
+            "componentIoU": 0.9948711204629143
+          },
+          {
+            "centerMm": [
+              64.1374698310539,
+              65.02041432019308
+            ],
+            "sourceAreaMm2": 155.375,
+            "intersectionPixels": 2459,
+            "retention": 0.9891391794046661,
+            "predictedComponentAreaMm2": 659.1875,
+            "touchesBorder": true,
+            "componentIoU": 0.2325515415169283
+          },
+          {
+            "centerMm": [
+              87.72424366312347,
+              88.87765739983647
+            ],
+            "sourceAreaMm2": 152.875,
+            "intersectionPixels": 2418,
+            "retention": 0.9885527391659853,
+            "predictedComponentAreaMm2": 153.6875,
+            "touchesBorder": false,
+            "componentIoU": 0.9722557297949337
+          }
+        ]
+      },
+      {
+        "method": "rgb-auto",
+        "status": "complete",
+        "sourceReportSha256": "812ff3be0504b5c7ac8e3c4429586c5f7cac282a0172085eec3bcb70898a9252",
+        "checkedPair": true,
+        "ownMaskError": 0.01724375,
+        "commonRgbProxyError": 0.01724375,
+        "partialKnownMaterialError": 0.0011428299326206519,
+        "partialKnownMaterialPixels": 42001,
+        "motifMetrics": [
+          {
+            "centerMm": [
+              13.377094804883887,
+              15.307607134306918
+            ],
+            "sourceAreaMm2": 261.0625,
+            "intersectionPixels": 4130,
+            "retention": 0.9887479051951161,
+            "predictedComponentAreaMm2": 291,
+            "touchesBorder": true,
+            "componentIoU": 0.878162874760791,
+            "dominantComponentId": 1,
+            "totalRetention": 0.9887479051951161,
+            "intersections": [
+              {
+                "id": 1,
+                "intersectionPixels": 4130,
+                "sourceFraction": 0.9887479051951161,
+                "touchesBorder": true,
+                "predictedPixels": 4656
+              }
+            ]
+          },
+          {
+            "centerMm": [
+              39.42662974280621,
+              40.429621848739494
+            ],
+            "sourceAreaMm2": 245.4375,
+            "intersectionPixels": 3903,
+            "retention": 0.9938884644766998,
+            "predictedComponentAreaMm2": 247.875,
+            "touchesBorder": false,
+            "componentIoU": 0.9781954887218045,
+            "dominantComponentId": 2,
+            "totalRetention": 0.9938884644766998,
+            "intersections": [
+              {
+                "id": 2,
+                "intersectionPixels": 3903,
+                "sourceFraction": 0.9938884644766998,
+                "touchesBorder": false,
+                "predictedPixels": 3966
+              }
+            ]
+          },
+          {
+            "centerMm": [
+              64.1442926045016,
+              65.15326902465166
+            ],
+            "sourceAreaMm2": 233.25,
+            "intersectionPixels": 3693,
+            "retention": 0.9895498392282959,
+            "predictedComponentAreaMm2": 236.25,
+            "touchesBorder": false,
+            "componentIoU": 0.96700706991359,
+            "dominantComponentId": 3,
+            "totalRetention": 0.9895498392282959,
+            "intersections": [
+              {
+                "id": 3,
+                "intersectionPixels": 3693,
+                "sourceFraction": 0.9895498392282959,
+                "touchesBorder": false,
+                "predictedPixels": 3780
+              }
+            ]
+          },
+          {
+            "centerMm": [
+              87.94961266648546,
+              88.75601386246262
+            ],
+            "sourceAreaMm2": 229.9375,
+            "intersectionPixels": 3646,
+            "retention": 0.9910301712421854,
+            "predictedComponentAreaMm2": 857.875,
+            "touchesBorder": true,
+            "componentIoU": 0.2649901882404245,
+            "dominantComponentId": 4,
+            "totalRetention": 0.9910301712421854,
+            "intersections": [
+              {
+                "id": 4,
+                "intersectionPixels": 3646,
+                "sourceFraction": 0.9910301712421854,
+                "touchesBorder": true,
+                "predictedPixels": 13726
+              }
+            ]
+          }
+        ],
+        "distinctDominantMotifComponents": 4,
+        "ownStableComponents": [
+          {
+            "centerMm": [
+              13.377094804883887,
+              15.307607134306918
+            ],
+            "sourceAreaMm2": 261.0625,
+            "intersectionPixels": 4130,
+            "retention": 0.9887479051951161,
+            "predictedComponentAreaMm2": 291,
+            "touchesBorder": true,
+            "componentIoU": 0.878162874760791
+          },
+          {
+            "centerMm": [
+              39.42662974280621,
+              40.429621848739494
+            ],
+            "sourceAreaMm2": 245.4375,
+            "intersectionPixels": 3903,
+            "retention": 0.9938884644766998,
+            "predictedComponentAreaMm2": 247.875,
+            "touchesBorder": false,
+            "componentIoU": 0.9781954887218045
+          },
+          {
+            "centerMm": [
+              64.1442926045016,
+              65.15326902465166
+            ],
+            "sourceAreaMm2": 233.25,
+            "intersectionPixels": 3693,
+            "retention": 0.9895498392282959,
+            "predictedComponentAreaMm2": 236.25,
+            "touchesBorder": false,
+            "componentIoU": 0.96700706991359
+          },
+          {
+            "centerMm": [
+              87.94961266648546,
+              88.75601386246262
+            ],
+            "sourceAreaMm2": 229.9375,
+            "intersectionPixels": 3646,
+            "retention": 0.9910301712421854,
+            "predictedComponentAreaMm2": 857.875,
+            "touchesBorder": true,
+            "componentIoU": 0.2649901882404245
+          }
+        ]
+      }
+    ],
+    "editablePassed": 2,
+    "editableTotal": 2,
+    "visualReview": {
+      "inspected": true,
+      "image": {
+        "path": "tmp/heart-learning/fixed-crop-material-v1/fit-v1/comparison.png",
+        "sha256": "de75076f1c7d1ce8161d334164389e555a3049489ea81b28a9c6643ab0fa3492",
+        "bytes": 551630
+      },
+      "notes": "RGB retains much straighter checker cells and almost all four photographed heart interiors. Its final fit joins the first and fourth hearts to the border through narrow necks; neural fitting splits the second heart and joins the third to a checker/border region. Both pass existing checks, so neither is a faithful-motif success. Common RGB disagreement is a shared proxy, not artwork ground truth."
+    },
+    "auditCorrection": "The first audit passed a Buffer to the independent renderer, which accepts JSON text or an object. Converting that Buffer to UTF-8 fixes the audit without rerunning either fit or changing its outputs. The failed log is preserved."
+  }
 }
