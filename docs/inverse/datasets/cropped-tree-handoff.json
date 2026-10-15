@@ -1,0 +1,208 @@
+{
+  "schema": 1,
+  "status": "diagnosed_gate_mismatch_experiment_queued",
+  "runtimeRevision": "09c0461",
+  "source": {
+    "fixture": "scripts/inverse/fixtures/browser-group-tree.json",
+    "maskSha256": "5a60916399cc8036f9a416c3229b971efc28790636f620e765cc10f803d80d5f",
+    "resolution": 400,
+    "scope": "Fixed prepared mask from a real browser upload. No crop or photograph is changed during these solves; this does not certify that the original crop contains every photographed detail."
+  },
+  "observed": {
+    "borderSeed": {
+      "radiiMm": [
+        3,
+        3,
+        3,
+        7
+      ],
+      "changedSide": 3,
+      "transitionsBefore": [
+        3,
+        3,
+        3,
+        1
+      ],
+      "transitionsAfter": [
+        3,
+        3,
+        3,
+        3
+      ],
+      "changedPixels": 3762,
+      "changeFraction": 0.0235125,
+      "initializationOnly": true,
+      "traceImageError": 0.0380125
+    },
+    "firstCandidateImageError": 0.0380125,
+    "repairRejection": "initial_image",
+    "maximumAcceptedImageError": 0.03,
+    "geometry": {
+      "passed": false,
+      "issues": [
+        {
+          "type": "short_self_clearance",
+          "family": 0,
+          "slit": 1,
+          "curves": [
+            5,
+            6
+          ],
+          "parameters": [
+            0.6875,
+            0.25494410108900534
+          ],
+          "points": [
+            [
+              33.171875,
+              47.9375
+            ],
+            [
+              34.65506711218816,
+              47.74287785847711
+            ]
+          ],
+          "distanceUpper": 1.4959066212929693,
+          "required": 1.5,
+          "arcSeparation": 9.220805600783033,
+          "stationary": false,
+          "totalTurning": 186.39484744863933,
+          "edgeChain": [
+            148,
+            52
+          ]
+        },
+        {
+          "type": "short_self_clearance",
+          "family": 0,
+          "slit": 1,
+          "curves": [
+            6,
+            8
+          ],
+          "parameters": [
+            0.9998729590819408,
+            0.22662651687726817
+          ],
+          "points": [
+            [
+              34.500064200211,
+              34.002088566214574
+            ],
+            [
+              34.43978921360566,
+              32.503554157175024
+            ]
+          ],
+          "distanceUpper": 1.4997461282116342,
+          "required": 1.5,
+          "arcSeparation": 3.000000000000006,
+          "stationary": false,
+          "totalTurning": 199.28899705558752,
+          "edgeChain": [
+            52,
+            53,
+            123
+          ]
+        }
+      ],
+      "finalGeometry": true,
+      "editorClearanceRequired": 1.5,
+      "nominalWidthRequired": 2.50501002004008,
+      "minimumInterSlitDistanceLower": 3.3154160160315835,
+      "minimumOuterSideClearance": 6.5,
+      "boundaryParityMatches": true,
+      "forwardSampleMismatchPixels": null,
+      "forwardBoundaryAmbiguousPixels": 0,
+      "forwardSampleResolution": 101,
+      "geometryTolerance": 0.01,
+      "sharedCurvesStoredOnce": true,
+      "physicalAssemblyTested": false,
+      "limitations": [
+        "Floating-point chord-based intersection checks, not exact algebraic predicates.",
+        "Samples on a target cut within twice the geometry tolerance have no unambiguous colour and are counted separately.",
+        "Forward image sampling supplements the edge-parity and path-topology checks; it is not an exact area comparison.",
+        "Cut-error simulation and paper-core analysis are separate from this nominal validator."
+      ]
+    },
+    "repairSeconds": 0.010315625000000182,
+    "solverHistory": [
+      {
+        "round": 1,
+        "status": 16,
+        "budgetSeconds": 4.574505112681805,
+        "solveSeconds": 1.6665200830000004,
+        "elapsedSeconds": 1.680505458,
+        "objective": 3720.8789971,
+        "selfNeckChains": 2,
+        "shortReturnChains": 2
+      },
+      {
+        "round": 2,
+        "status": 16,
+        "budgetSeconds": 2.8155264876818045,
+        "solveSeconds": 1.267943792,
+        "elapsedSeconds": 3.0409249999999997,
+        "objective": 3378.1726572,
+        "selfNeckChains": 4,
+        "shortReturnChains": 2
+      },
+      {
+        "round": 3,
+        "status": 16,
+        "budgetSeconds": 1.524945279681805,
+        "solveSeconds": 0.5890017499999994,
+        "elapsedSeconds": 3.652564666,
+        "objective": 3251.4236487000003,
+        "selfNeckChains": 8,
+        "shortReturnChains": 4
+      },
+      {
+        "round": 4,
+        "status": 13,
+        "budgetSeconds": 0.9116598216818046,
+        "solveSeconds": 0.9131962499999999,
+        "elapsedSeconds": 4.590049416
+      }
+    ]
+  },
+  "rootCause": "The border-seed generator admits this provisional trace at 3.80125% error under its 5% initialization limit. The continuous repair then rejects the first near-valid routing against the final 3% image limit before taking a gradient step. Later MILP rounds retain that visible trace while searching different hidden routing and can exhaust the phase.",
+  "hypothesis": "Use the same bounded provisional image allowance for entry into continuous repair, then retain the existing final image, feature, geometry, paper and caller-deadline checks. This tests whether coarse routing followed by original-mask refinement recovers the case.",
+  "qualification": "Not an established repair or an explanation of every tree failure. The initial feature gate must also pass; a later curve fit may fail its unchanged final constraints. Source-border reinterpretation contributes to the initial mismatch, but its complete division into trace and border effects is not measured.",
+  "experiment": {
+    "root": "tmp/heart-learning/provisional-routing-repair-v1",
+    "variants": [
+      "baseline",
+      "provisional"
+    ],
+    "cases": [
+      "cropped-tree",
+      "synthetic-control",
+      "frozen",
+      "y-plus-1"
+    ],
+    "rounds": 2,
+    "order": "AB/BA, fresh process per fit, ten-second search request",
+    "finalLimitUnchanged": true,
+    "status": "queued after full release validation and the isolated late-matching study",
+    "retainedRejectedRoutes": true
+  },
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/available-repair-tail-v1/0-cropped-tree-repair-tail/report.json",
+      "sha256": "1a8259bb3220e15dbb0230f6a3d5ebbedb159885309402a0ed4ca032149e977a"
+    },
+    {
+      "path": "scripts/inverse/fixtures/browser-group-tree.json",
+      "sha256": "9898b6dded7e634ec91c1104f0e030ed66e4fc2d3cd4679c8d6488fcb6f50301"
+    },
+    {
+      "path": "tmp/heart-learning/provisional-routing-repair-v1/run.py",
+      "sha256": "d64593c2d9ebc60f1e01ba859f0b92868be638dc69eea91e5d76b189655f7d0e"
+    },
+    {
+      "path": "tmp/heart-learning/provisional-routing-repair-v1/solve.mjs",
+      "sha256": "046c5fc10ec10f4ff0145324afe39e63ed57e2fc10bcbfc08b36a104484a6c34"
+    }
+  ]
+}
