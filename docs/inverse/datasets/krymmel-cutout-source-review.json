@@ -1,0 +1,116 @@
+{
+  "schema": "publisher-cutout-template-review-1",
+  "status": "primary-source-visually-verified",
+  "sourcePage": "https://krymmel.dk/pages/krymmels-jul/flettede-julehjerter.php",
+  "scope": "Construction review for two photographed training/development hearts. Does not alter images, material labels, split membership or historical benchmark counts.",
+  "cases": [
+    {
+      "assetId": "real-5330aa8b62176216",
+      "motif": "bicycle in circle",
+      "templateUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=81&id=1710081553",
+      "template": {
+        "path": "tmp/pdfs/krymmel-source-check/bicycle.pdf",
+        "sha256": "65d855a136521474a35f2aa9ca16ae6393cb715291884ec6387f10a119c6e3eb"
+      },
+      "reviewedPages": [
+        1,
+        2
+      ],
+      "construction": "The green sheet has closed interior regions marked for removal inside the bicycle wheels and frame. These are cut-out holes, in addition to the cuts joining the folded boundary and inner part of the paper.",
+      "regularSlitTemplate": false,
+      "trainingUse": "Still useful for visible-body and physical-paper identification; do not use as a regular-slit ground-truth template pair.",
+      "pipelineInterpretation": "The bicycle is present in the photographic mask and absent from the fitted weave. The published construction lies outside the current regular-slit model; this example alone is not evidence that longer regular fitting should recover the original paths."
+    },
+    {
+      "assetId": "real-abf590088db891f9",
+      "motif": "sloth",
+      "templateUrl": "https://krymmel.dk/modules/download_gallery/dlc.php?file=85&id=1733394863",
+      "template": {
+        "path": "tmp/pdfs/krymmel-source-check/animals.pdf",
+        "sha256": "613d1a312e8777ee92c6d94d635071f83ded4228c5201dd3e225ea45d7396aa2"
+      },
+      "reviewedPages": [
+        3,
+        4
+      ],
+      "construction": "The purple sheet has three closed interior regions marked for removal between the sloth limbs and the branch. The yellow sheet provides the complementary silhouette. The published pair uses cut-outs, beyond regular slits.",
+      "regularSlitTemplate": false,
+      "trainingUse": "Still useful for visible-body and physical-paper identification; do not use as a regular-slit ground-truth template pair.",
+      "pipelineInterpretation": "A low-error legal regular-slit approximation is not recovery of the published cut-out construction. Seam artifacts should be interpreted with this model limitation in mind."
+    }
+  ],
+  "matchingPhotographs": [
+    {
+      "id": "real-5330aa8b62176216",
+      "embeddedImage": "tmp/pdfs/krymmel-source-check/bicycle-embedded-004.jpg",
+      "embeddedSha256": "3e9e3120794bff97d9ba32bfc71c18aa37cff300da9cda4b96cf94d977ac017f",
+      "source": "tmp/heart-training-real/assets/5330aa8b621762167ded8a0c2662e38947ee3422d7b06f669b18e6db43f0779d.jpg",
+      "sourceSha256": "5330aa8b621762167ded8a0c2662e38947ee3422d7b06f669b18e6db43f0779d",
+      "dimensions": [
+        250,
+        250
+      ],
+      "meanAbsoluteRGBDifference": 2.3612213333333334,
+      "note": "Same photographed heart and composition; embedded JPEG is recompressed."
+    },
+    {
+      "id": "real-abf590088db891f9",
+      "embeddedImage": "tmp/pdfs/krymmel-source-check/sloth-embedded-002.jpg",
+      "embeddedSha256": "e24f8bab5fc09d4c582eddc6ad5b2288849d7b3917ff5f028c40907263d3cf1e",
+      "source": "tmp/heart-training-real/assets/abf590088db891f98c7e082a3fd9b60cf72dd969fb31ab0d18e963a5297a1971.jpg",
+      "sourceSha256": "abf590088db891f98c7e082a3fd9b60cf72dd969fb31ab0d18e963a5297a1971",
+      "dimensions": [
+        250,
+        250
+      ],
+      "meanAbsoluteRGBDifference": 2.4172266666666666,
+      "note": "Same photographed heart and composition; embedded JPEG is recompressed."
+    }
+  ],
+  "verification": {
+    "pagesRenderedAndViewed": [
+      "tmp/pdfs/krymmel-source-check/bicycle-1.png",
+      "tmp/pdfs/krymmel-source-check/bicycle-2.png",
+      "tmp/pdfs/krymmel-source-check/animals-03.png",
+      "tmp/pdfs/krymmel-source-check/animals-04.png"
+    ],
+    "pageTextRead": true,
+    "embeddedPhotographsCompared": true,
+    "sourcePhotoCoordinatesChanged": false
+  },
+  "limitations": [
+    "The observations classify the published templates, not every possible alternative construction of the same visible design. No impossibility theorem for alternative slit arrangements is claimed.",
+    "The animal PDF also includes a rabbit design; its photograph differs from the reviewed Pinterest rabbit, so no exact template pairing is assigned to that instance.",
+    "Prior nineteen-photo studies retain their original denominator and per-case outcomes. Future regular-template comparisons should identify these cases separately, consistent with the user instruction to ignore irregular constructions."
+  ],
+  "artifacts": [
+    {
+      "path": "tmp/pdfs/krymmel-source-check/bicycle.txt",
+      "sha256": "8735c0232c235174ff6d292eadd0d5e7c47eadb62f284b87699695b4037b7f0c"
+    },
+    {
+      "path": "tmp/pdfs/krymmel-source-check/animals.txt",
+      "sha256": "d2881e8d49df8fc9d4de0230870f5238c1409926dfb00c17e72918ea850a3224"
+    },
+    {
+      "path": "tmp/pdfs/krymmel-source-check/bicycle-1.png",
+      "sha256": "e64b86cc51b9ea9498d44901ca339f729254798950855de1b21bf985d38ea3db"
+    },
+    {
+      "path": "tmp/pdfs/krymmel-source-check/bicycle-2.png",
+      "sha256": "b75e1ced5c301a32c0ab92a6e51b28de88824121c409e0c1c8274737a0b8fa5a"
+    },
+    {
+      "path": "tmp/pdfs/krymmel-source-check/animals-03.png",
+      "sha256": "9d98b177f5fbea350cbef2ea76ac227b5fb5a9059c06df93a002dfc1f2fce16b"
+    },
+    {
+      "path": "tmp/pdfs/krymmel-source-check/animals-04.png",
+      "sha256": "b79f0997a1aa8bfbb815de443b57afd44e46b7567370361e865e7a5ca2a0702f"
+    },
+    {
+      "path": "tmp/pdfs/krymmel-source-check/photo-comparison.json",
+      "sha256": "c38c3596fdb9ecd2744d077530aaf26a1cc03d65b13bc09327e403c66fd6ea75"
+    }
+  ]
+}
