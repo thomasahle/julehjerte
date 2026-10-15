@@ -2,7 +2,7 @@ import type { Finger, Vec } from '$lib/types/heart';
 import { BASE_CLEARANCE } from '$lib/geometry/clearance';
 import type { BezierSegment } from '$lib/geometry/bezierSegments';
 import { fingerToSegments } from '$lib/geometry/bezierSegments';
-import { bezierBBox, closestPointOnBezier, closestPointsBetweenBeziers, intersectBezierCurves } from '$lib/geometry/curves';
+import { bezierBBox, closestPointOnBezier, closestPointsBetweenBeziers, intersectBezierCurves, isLinearBezier } from '$lib/geometry/curves';
 import { vecDist, vecLerp } from '$lib/geometry/vec';
 
 /**
@@ -183,6 +183,10 @@ function lineSegmentIntersection(p1: Vec, p2: Vec, p3: Vec, p4: Vec): Vec | null
 }
 
 function hasAdjacentIntersection(segA: BezierSegment, segB: BezierSegment, join: Vec, minDist: number): boolean {
+	if (isLinearBezier(segA) && isLinearBezier(segB)) {
+		const hit = lineSegmentIntersection(segA.p0, segA.p3, segB.p0, segB.p3);
+		return hit !== null && vecDist(hit, join) >= minDist;
+	}
 	const stack: Array<{ a: BezierSegment; b: BezierSegment; depth: number }> = [{ a: segA, b: segB, depth: 0 }];
 	while (stack.length) {
 		const next = stack.pop();

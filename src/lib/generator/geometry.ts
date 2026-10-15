@@ -973,14 +973,19 @@ function* relieveNotches(edges: Edge[], ring: Ring, ports: Port[], allowed: read
 	}
 	const notchEnds = (a: Port, b: Port) => notches.filter(p => near(p.point, a.point) || near(p.point, b.point)).length;
 	chords.sort(([a, b], [c, d]) => notchEnds(c, d) - notchEnds(a, b) || distance(a.point, b.point) - distance(c.point, d.point));
+	if (!chords.length) return;
+	// Every relief chord uses the same outline edges. Locate them once on the
+	// original ring; only an edge split by a new chord needs another lookup.
+	const middlePorts = edges.map(edge => edge.family === 'AB' || edge.kind !== 'outline'
+		? null : ringPort(ring, mix(edge.from, edge.to, .5)));
 	for (const [a, b] of chords) {
 		const result: Edge[] = [];
-		for (const edge of edges) {
+		for (const [edgeIndex, edge] of edges.entries()) {
 			if (edge.family === 'AB' || edge.kind !== 'outline') {
 				result.push(edge);
 				continue;
 			}
-			const middle = ringPort(ring, mix(edge.from, edge.to, .5));
+			const middle = middlePorts[edgeIndex];
 			if (!middle) {
 				result.push(edge);
 				continue;
@@ -989,7 +994,7 @@ function* relieveNotches(edges: Edge[], ring: Ring, ports: Port[], allowed: read
 			const splits = [a.point, b.point].map(p => ({ p, t: dot(sub(p, edge.from), d) / dot(d, d) })).filter(({ p, t }) => t > EPS && t < 1 - EPS && distance(p, mix(edge.from, edge.to, t)) < EPS).sort((a, b) => a.t - b.t);
 			const points = [edge.from, ...splits.map(s => s.p), edge.to];
 			for (let i = 1; i < points.length; i++) {
-				const port = ringPort(ring, mix(points[i - 1], points[i], .5))!;
+				const port = splits.length ? ringPort(ring, mix(points[i - 1], points[i], .5))! : middle;
 				const flip = (port.index - a.index + ring.length) % ring.length < (b.index - a.index + ring.length) % ring.length;
 				add(result, [points[i - 1], points[i]], flip ? (edge.family === 'A' ? 'B' : 'A') : edge.family, 'outline');
 			}

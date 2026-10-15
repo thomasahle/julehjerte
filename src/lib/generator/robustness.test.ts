@@ -37,7 +37,7 @@ function validateHandoffs(design: HeartDesign) {
 	}
 }
 // These are expected successes, never a test that passes by accepting a refusal.
-// The larger offline corpus covers 1,008 text and 1,122 figure configurations.
+// The larger offline corpus covers 2,028 text and 1,122 figure configurations.
 describe('generator robustness regressions', () => {
 	for (const textFrame of TEXT_TEMPLATES)
 		it(`weaves lowercase shoulders in the ${textFrame} frame`, () => {

@@ -24,6 +24,26 @@ function cubicPointAt(seg: CubicBezierSegment, t: number): Point {
   };
 }
 
+/** A line with affine parameterization, allowing only floating-point roundoff.
+ * Collinear handles with unequal spacing can reverse direction, so they must
+ * still use the cubic calculations below. Generated polygon cuts are affine. */
+export function isLinearBezier(seg: CubicBezierSegment): boolean {
+  for (const axis of ['x', 'y'] as const) {
+    const a = seg.p0[axis], b = seg.p3[axis], d = b - a;
+    const tolerance = 16 * Number.EPSILON * Math.max(1, Math.abs(a), Math.abs(b));
+    if (Math.abs(seg.p1[axis] - (a + d / 3)) > tolerance ||
+        Math.abs(seg.p2[axis] - (a + d * 2 / 3)) > tolerance) return false;
+  }
+  return true;
+}
+
+function projectOnLine(a: Point, b: Point, target: Point) {
+  const dx = b.x - a.x, dy = b.y - a.y, length2 = dx * dx + dy * dy;
+  const t = length2 ? clamp01(((target.x - a.x) * dx + (target.y - a.y) * dy) / length2) : 0;
+  const point = { x: a.x + dx * t, y: a.y + dy * t };
+  return { t, point, distance: Math.hypot(point.x - target.x, point.y - target.y) };
+}
+
 function solveQuadratic(a: number, b: number, c: number): number[] {
   const eps = 1e-12;
   if (Math.abs(a) < eps) {
@@ -68,8 +88,8 @@ function sampleBezier(segment: CubicBezierSegment, steps = 50): Point[] {
  */
 export function intersectBezierCurves(seg1: CubicBezierSegment, seg2: CubicBezierSegment): Point[] {
   // Approximate intersections by polyline sampling.
-  const a = sampleBezier(seg1, 80);
-  const b = sampleBezier(seg2, 80);
+  const a = isLinearBezier(seg1) ? [seg1.p0, seg1.p3] : sampleBezier(seg1, 80);
+  const b = isLinearBezier(seg2) ? [seg2.p0, seg2.p3] : sampleBezier(seg2, 80);
 
   const points: Point[] = [];
   const segIntersect = (p1: Point, p2: Point, p3: Point, p4: Point): Point | null => {
@@ -98,6 +118,12 @@ export function intersectBezierCurves(seg1: CubicBezierSegment, seg2: CubicBezie
 type BBox = { x: number; y: number; width: number; height: number };
 
 export function bezierBBox(segment: CubicBezierSegment): BBox {
+  if (isLinearBezier(segment)) return {
+    x: Math.min(segment.p0.x, segment.p3.x),
+    y: Math.min(segment.p0.y, segment.p3.y),
+    width: Math.abs(segment.p3.x - segment.p0.x),
+    height: Math.abs(segment.p3.y - segment.p0.y)
+  };
   const tx = cubicDerivativeRoots(segment.p0.x, segment.p1.x, segment.p2.x, segment.p3.x);
   const ty = cubicDerivativeRoots(segment.p0.y, segment.p1.y, segment.p2.y, segment.p3.y);
   const ts = [0, 1, ...tx, ...ty].filter((t) => t >= 0 && t <= 1);
@@ -138,6 +164,7 @@ export function bezierPathBBox(segments: CubicBezierSegment[]): BBox {
  * Find the closest point on a Bézier curve to a target point
  */
 export function closestPointOnBezier(segment: CubicBezierSegment, target: Point): { t: number; point: Point; distance: number } {
+  if (isLinearBezier(segment)) return projectOnLine(segment.p0, segment.p3, target);
   // Coarse sample + local refinement (good enough for UI).
   // Implementation notes:
   // - Compare squared distances (avoids sqrt in inner loops).
@@ -256,6 +283,37 @@ export function closestPointsBetweenBeziers(
   segB: CubicBezierSegment,
   options: ClosestPointsBetweenBeziersOptions = {}
 ): ClosestPointsBetweenBeziersResult {
+  if (isLinearBezier(segA) && isLinearBezier(segB)) {
+    const ax = segA.p3.x - segA.p0.x, ay = segA.p3.y - segA.p0.y;
+    const bx = segB.p3.x - segB.p0.x, by = segB.p3.y - segB.p0.y;
+    const dx = segB.p0.x - segA.p0.x, dy = segB.p0.y - segA.p0.y;
+    const determinant = ax * by - ay * bx;
+    if (determinant !== 0) {
+      const u = (dx * by - dy * bx) / determinant;
+      const v = (dx * ay - dy * ax) / determinant;
+      if (u >= 0 && u <= 1 && v >= 0 && v <= 1) {
+        const pointA = { x: segA.p0.x + u * ax, y: segA.p0.y + u * ay };
+        const pointB = { x: segB.p0.x + v * bx, y: segB.p0.y + v * by };
+        return { u, v, pointA, pointB, distance: Math.hypot(pointA.x - pointB.x, pointA.y - pointB.y) };
+      }
+    }
+    // A non-crossing pair attains its minimum at an endpoint projection.
+    // This also handles parallel, collinear, and zero-length segments.
+    let best: ClosestPointsBetweenBeziersResult | undefined;
+    for (const u of [0, 1]) {
+      const pointA = u ? segA.p3 : segA.p0;
+      const hit = projectOnLine(segB.p0, segB.p3, pointA);
+      if (!best || hit.distance < best.distance)
+        best = { u, v: hit.t, pointA, pointB: hit.point, distance: hit.distance };
+    }
+    for (const v of [0, 1]) {
+      const pointB = v ? segB.p3 : segB.p0;
+      const hit = projectOnLine(segA.p0, segA.p3, pointB);
+      if (hit.distance < best!.distance)
+        best = { u: hit.t, v, pointA: hit.point, pointB, distance: hit.distance };
+    }
+    return { ...best!, pointA: { ...best!.pointA }, pointB: { ...best!.pointB } };
+  }
   const samplesPerCurve = Math.max(2, Math.floor(options.samplesPerCurve ?? 5));
   const maxSeeds = Math.max(1, Math.floor(options.maxSeeds ?? 8));
   const newtonIterations = Math.max(1, Math.floor(options.newtonIterations ?? 10));
