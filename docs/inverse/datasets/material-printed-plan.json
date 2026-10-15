@@ -1,0 +1,90 @@
+{
+  "schema": "woven-heart-material-pilot-plan-1",
+  "scope": "Nine already inspected development photos, grouped by conservative visible motif families and inherited source/duplicate links. Not unseen evaluation or topology-disjoint training. No QA-reserved inputs, deployed model or all-data model.",
+  "sourceManifest": "docs/inverse/datasets/real-manifest.json",
+  "sourceManifestSha256": "149697fc7cdd535736dd8727bba7847bca10d74823a28bdfaf77c95c44a6ffb3",
+  "labelSources": [
+    {
+      "annotations": "scripts/inverse/datasets/real-materials-motifs.json",
+      "sha256": "5e439770d03347a528746a325ce995fb8f917d096fb480113fb45e4af97ec100",
+      "name": "real-materials-motifs"
+    },
+    {
+      "annotations": "scripts/inverse/datasets/real-materials-pinterest.json",
+      "sha256": "3a9d3bb965d0165dde196b72968af30c426802fa71429ca041c045b16c31137e",
+      "name": "real-materials-pinterest"
+    },
+    {
+      "annotations": "scripts/inverse/datasets/real-materials-printed.json",
+      "sha256": "96368a150b75fc0aa04aa03eda43293b094235cd2741abaa7a55bc4fab0feee2",
+      "name": "real-materials-printed"
+    },
+    {
+      "annotations": "scripts/inverse/datasets/real-materials.json",
+      "sha256": "fae5ef1cf8f1fbf4661776e05454da849be1dcada9f778d88e522d5d29773709",
+      "name": "real-materials"
+    }
+  ],
+  "initialRun": "tmp/heart-learning/foreground-scene-v1/scene-trained",
+  "initialReportSha256": "f3a71ff6de0cb0a00fe8db15051631d131b6cbd71bf607bd607acae5d101929c",
+  "initialCheckpointSha256": "3e94244975ee6641626b5b93c3948974bfa33609f461aae828e40bdf0a889fe6",
+  "groups": [
+    {
+      "id": "checker-family",
+      "members": [
+        "real-cf2d0fcff65d7386-body-1",
+        "real-cdae5c890b6933cd-body-1",
+        "real-68d8f25d8891df62-body-1",
+        "real-995899fe049540ed-body-1",
+        "real-b87b0b19f12724f3-body-1"
+      ],
+      "reason": "Keep regular, decorative, printed and bowed checker variants together despite different photographs and counts."
+    },
+    {
+      "id": "framed-motif-family",
+      "members": [
+        "real-2044b1d98ed6f262-body-1",
+        "real-3f7b76e1a98e808f-body-1",
+        "real-45744a03afddccb1-body-1",
+        "real-8c875dd0f298b5a4-body-1"
+      ],
+      "reason": "Conservatively keep star, small hearts, boar and rabbit inside surrounding frames/grids together; these are not independent topology families."
+    }
+  ],
+  "protocol": {
+    "updates": 240,
+    "seed": 20261015,
+    "batchSize": 4,
+    "realPerMixedBatch": 2,
+    "learningRate": 0.001,
+    "weightDecay": 0.0001,
+    "syntheticReplayGeometries": 32,
+    "device": "cpu",
+    "threads": 2,
+    "encoder": "Freeze parameters AND BatchNorm statistics; train existing decoder and neutral new material head.",
+    "comparison": "Synthetic-only control plus one mixed real/synthetic run per complete connected source/motif group; identical initial model, draw schedule and updates.",
+    "selection": "Fixed final update; no held-out checkpoint selection or tuning.",
+    "metric": "Body and globally exchangeable A/B identities, including missing-body joint errors and balanced per-material errors.",
+    "trainingTarget": "Undegraded fractional synthetic paper coverage; ignore only two-pixel outer body band for material labels, preserve all body supervision.",
+    "printedReplay": [
+      {
+        "directory": "tmp/heart-learning/material-prints-v1/source-1",
+        "manifestSha256": "8cb0e3894195861aa9212f2e3de82a013670693add652bb3600aa9cab1e3115a",
+        "parentManifestSha256": "6649301431add7c3a7b7ba2ccb374723bc165fd3a64c9adede0ad11b3a54133d"
+      },
+      {
+        "directory": "tmp/heart-learning/material-prints-v1/source-2",
+        "manifestSha256": "42e5b8af44acf6406d3baa22e7c207648ca86dcea66e0bf9f9c159fb5e1d9499",
+        "parentManifestSha256": "180ecc34ae4294b3e9a70d90009cd2610f918394c0fa531fa64b3aaad0b27732"
+      }
+    ]
+  },
+  "followup": {
+    "reason": "Controlled printed-paper augmentation after the second pilot confused decorative ink with sheet identity.",
+    "comparison": "Same initial checkpoint, 240 updates, rate .001, grouped development folds and original sampling/reflection decisions as pilot v2. A separate seeded schedule substitutes one of three printed photos for half of sampled original synthetic views. Scene variants and real images are unchanged. No outcome-dependent parameter or checkpoint selection.",
+    "baselinePlanSha256": "77ef964bed0ed1d86885990c88af2cd91495ebed343c4ccf4bb4d97fcfc1814f",
+    "baselineReportSha256": "c8cb474d4e70970a22b13afab350173ce734a3e912faa6bb09a0a1ba9febf211",
+    "successEvidence": "Score body and observed/joint material errors, inspect all nine real-photo panels, then replay the same four full-pipeline arms with unchanged crop/geometry/paper gates. A pixel improvement alone does not authorize integration.",
+    "limits": "Only three procedural ink recipes and one seed; no topology expansion or unseen real-photo evaluation."
+  }
+}

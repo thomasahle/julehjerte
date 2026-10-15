@@ -18,6 +18,7 @@ from data import digest
 from foreground import load_foreground_run
 from material_transfer import material_from_foreground
 from material_pilot import material_replay, material_tensors, evaluate_materials
+from material_prints import load_printed_replay, print_schedule, printed_batch
 from real_finetune import grouped_folds, freeze_encoder, encoder_hash, schedule, step_batch
 from real_materials import build
 from real_materials_learning import load_material_labels, joint_material_loss
@@ -50,6 +51,8 @@ def main():
             str(initial_run/'report.json'): plan['initialReportSha256'],
             str(initial_run/'model.pt'): plan['initialCheckpointSha256'],
             **{str(ROOT/r['annotations']): r['sha256'] for r in plan['labelSources']}}
+    for source in protocol.get('printedReplay', []):
+        pins[str(Path(source['directory'])/'manifest.json')] = source['manifestSha256']
     def verify_pins():
         for name, expected in pins.items():
             if digest(Path(name).read_bytes()) != expected:
@@ -57,7 +60,7 @@ def main():
     verify_pins()
     args.output.mkdir(parents=True, exist_ok=False)
     source = ROOT/'scripts/inverse/learning'
-    dependencies = [Path(__file__), Path(__file__).with_name('material_pilot.py'),
+    dependencies = [Path(__file__), Path(__file__).with_name('material_pilot.py'), Path(__file__).with_name('material_prints.py'),
                     source/'material_metrics.py', source/'material_transfer.py',
                     source/'real_materials_learning.py', source/'real_foreground.py',
                     source/'real_finetune.py', source/'foreground.py', source/'model.py', source/'data.py',
@@ -114,6 +117,12 @@ def main():
         report['syntheticReplay'] = replay
         report['syntheticInputHashes'] = {i['id']: {k: digest(i[k].tobytes()) for k in ['rgb', 'body', 'materials']} for i in synthetic}
         draws = schedule(protocol['updates'], protocol['seed'], len(synthetic))
+        printed, print_draws = {}, None
+        if protocol.get('printedReplay'):
+            printed, record = load_printed_replay(synthetic, protocol['printedReplay'])
+            print_draws = print_schedule(protocol['updates'], protocol['seed'])
+            report['printedReplay'] = {'inputs': record, 'draws': print_draws,
+                                      'policy': 'Half of sampled original replay images receive a uniformly chosen print; scene counterparts and real photos remain unchanged. Same body/material targets and base draw schedule.'}
         (args.output/'draws.json').write_text(json.dumps(draws, indent=2)+'\n')
         report['drawsSha256'] = digest((args.output/'draws.json').read_bytes())
         neutral = predictions(initial, items)
@@ -133,6 +142,8 @@ def main():
             save()
             for step, draw in enumerate(draws):
                 batch = step_batch(draw, synthetic, real)
+                if print_draws is not None:
+                    batch = printed_batch(batch, print_draws[step], printed)
                 sampled.append([i['id'] for i in batch])
                 if any(i['id'] in run['heldOut'] for i in batch):
                     raise ValueError('A held-out photograph entered material training')
