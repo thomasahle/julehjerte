@@ -1,0 +1,433 @@
+{
+  "schema": "corrected-paper-scenes-paired-result-1",
+  "status": "complete-offline-no-demonstrated-pipeline-improvement",
+  "question": "Do corrected white-paper labels beneath ink and two additional reviewed checker scenes improve material identity and usable full-pipeline results under corrected family grouping?",
+  "metrics": {
+    "baseline": {
+      "bodyIoU": 0.8026872929654648,
+      "bodyPixelError": 0.07623387384398705,
+      "bodyFalseNegative": 0.03794597255566535,
+      "backgroundFalsePositive": 0.08528327931648162,
+      "materialPixelError": 0.17634087830971543,
+      "materialJointError": 0.18936041978160043,
+      "jointRegionPixelError": 0.11016600601093704,
+      "balancedMaterialJointError": 0.1947467778929115
+    },
+    "candidate": {
+      "bodyIoU": 0.8067843577675285,
+      "bodyPixelError": 0.07425562293860559,
+      "bodyFalseNegative": 0.03433405480771581,
+      "backgroundFalsePositive": 0.08501233389392034,
+      "materialPixelError": 0.17620958200661266,
+      "materialJointError": 0.18909673858559242,
+      "jointRegionPixelError": 0.11021704905807761,
+      "balancedMaterialJointError": 0.1931956126592592
+    }
+  },
+  "cohorts": {
+    "shared17": {
+      "baseline": {
+        "bodyIoU": 0.8053168700200564,
+        "bodyPixelError": 0.07595493505352634,
+        "bodyFalseNegative": 0.04217145892272362,
+        "backgroundFalsePositive": 0.08298963279697631,
+        "materialPixelError": 0.17973358121668614,
+        "materialJointError": 0.19428483344996936,
+        "jointRegionPixelError": 0.1087058307037754,
+        "balancedMaterialJointError": 0.20252550388875482
+      },
+      "candidate": {
+        "bodyIoU": 0.8098959424458924,
+        "bodyPixelError": 0.07374394874751176,
+        "bodyFalseNegative": 0.038134609675015314,
+        "backgroundFalsePositive": 0.082686811442349,
+        "materialPixelError": 0.17958683828968888,
+        "materialJointError": 0.1939901309367839,
+        "jointRegionPixelError": 0.10876287881528544,
+        "balancedMaterialJointError": 0.20079184862761398
+      }
+    },
+    "added2": {
+      "baseline": {
+        "bodyIoU": 0.7803358880014357,
+        "bodyPixelError": 0.07860485356290316,
+        "bodyFalseNegative": 0.0020293384356699718,
+        "backgroundFalsePositive": 0.10477927473227672,
+        "materialPixelError": 0.14750290360046459,
+        "materialJointError": 0.14750290360046459,
+        "jointRegionPixelError": 0.12257749612181107,
+        "balancedMaterialJointError": 0.1286276069282432
+      },
+      "candidate": {
+        "bodyIoU": 0.7803358880014357,
+        "bodyPixelError": 0.07860485356290316,
+        "bodyFalseNegative": 0.0020293384356699718,
+        "backgroundFalsePositive": 0.10477927473227672,
+        "materialPixelError": 0.14750290360046459,
+        "materialJointError": 0.14750290360046459,
+        "jointRegionPixelError": 0.12257749612181107,
+        "balancedMaterialJointError": 0.1286276069282432
+      }
+    },
+    "checker-family": {
+      "baseline": {
+        "bodyIoU": 0.7694369383373358,
+        "bodyPixelError": 0.08713466528334678,
+        "bodyFalseNegative": 0.016015967337831276,
+        "backgroundFalsePositive": 0.1127375874657104,
+        "materialPixelError": 0.19619727704914117,
+        "materialJointError": 0.2034911213444632,
+        "jointRegionPixelError": 0.13285353614924017,
+        "balancedMaterialJointError": 0.20734264792785442
+      },
+      "candidate": {
+        "bodyIoU": 0.7694369383373358,
+        "bodyPixelError": 0.08713466528334678,
+        "bodyFalseNegative": 0.016015967337831276,
+        "backgroundFalsePositive": 0.1127375874657104,
+        "materialPixelError": 0.19619727704914117,
+        "materialJointError": 0.2034911213444632,
+        "jointRegionPixelError": 0.13285353614924017,
+        "balancedMaterialJointError": 0.20734264792785442
+      }
+    },
+    "framed-motif-family": {
+      "baseline": {
+        "bodyIoU": 0.8747297279930769,
+        "bodyPixelError": 0.052615492392041004,
+        "bodyFalseNegative": 0.08546098386097249,
+        "backgroundFalsePositive": 0.025798944993152616,
+        "materialPixelError": 0.13331868104095967,
+        "materialJointError": 0.15874389972873112,
+        "jointRegionPixelError": 0.06100969071128027,
+        "balancedMaterialJointError": 0.1674557261505352
+      },
+      "candidate": {
+        "bodyIoU": 0.8877037665329454,
+        "bodyPixelError": 0.04635103119166636,
+        "bodyFalseNegative": 0.07402324432579897,
+        "backgroundFalsePositive": 0.024940951155041857,
+        "materialPixelError": 0.1329029094144675,
+        "materialJointError": 0.15790890927470566,
+        "jointRegionPixelError": 0.06117132702722542,
+        "balancedMaterialJointError": 0.16254370291063622
+      }
+    }
+  },
+  "fullPipeline": {
+    "production": {
+      "instances": 19,
+      "statuses": {
+        "crop-unresolved": 11,
+        "checked-derived-mask": 6,
+        "review-required": 2
+      },
+      "cropFailureReasons": {
+        "Crowded frame: select one heart with a rough rectangle": 5,
+        "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.": 3,
+        "Multiple substantial foreground components": 3
+      }
+    },
+    "baseline-joint": {
+      "instances": 19,
+      "statuses": {
+        "crop-unresolved": 16,
+        "checked-derived-mask": 3
+      },
+      "cropFailureReasons": {
+        "The two-colour foreground does not clearly support both heart lobes and lower edges.": 11,
+        "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.": 5
+      }
+    },
+    "candidate-joint": {
+      "instances": 19,
+      "statuses": {
+        "crop-unresolved": 16,
+        "checked-derived-mask": 3
+      },
+      "cropFailureReasons": {
+        "The two-colour foreground does not clearly support both heart lobes and lower edges.": 10,
+        "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.": 6
+      }
+    }
+  },
+  "editable": {
+    "exportedPairs": 14,
+    "conversionPassed": 14,
+    "completeCandidatePassed": 12,
+    "fidelityPassed": 14,
+    "editorIssueCount": 0
+  },
+  "verification": {
+    "trainingAndAuditChecks": [
+      {
+        "arm": "baseline",
+        "stage": "train",
+        "command": [
+          "/Library/Developer/CommandLineTools/usr/bin/python3",
+          "scripts/inverse/learning/train-material-pilot.py",
+          "--plan",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/baseline-plan.json",
+          "--output",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/baseline"
+        ],
+        "exitCode": 0,
+        "seconds": 171.251976375
+      },
+      {
+        "arm": "baseline",
+        "stage": "audit",
+        "command": [
+          "/Library/Developer/CommandLineTools/usr/bin/python3",
+          "scripts/inverse/learning/audit-material-pilot.py",
+          "--study",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/baseline",
+          "--plan",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/baseline-plan.json",
+          "--output",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/baseline-audit"
+        ],
+        "exitCode": 0,
+        "seconds": 9.477592416999983
+      },
+      {
+        "arm": "candidate",
+        "stage": "train",
+        "command": [
+          "/Library/Developer/CommandLineTools/usr/bin/python3",
+          "scripts/inverse/learning/train-material-pilot.py",
+          "--plan",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate-plan.json",
+          "--output",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate"
+        ],
+        "exitCode": 0,
+        "seconds": 175.659737334
+      },
+      {
+        "arm": "candidate",
+        "stage": "audit",
+        "command": [
+          "/Library/Developer/CommandLineTools/usr/bin/python3",
+          "scripts/inverse/learning/audit-material-pilot.py",
+          "--study",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate",
+          "--plan",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate-plan.json",
+          "--output",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate-audit"
+        ],
+        "exitCode": 0,
+        "seconds": 9.268862000000013
+      }
+    ],
+    "comparisonChecks": [
+      {
+        "stage": "paired-metrics",
+        "command": [
+          "/Library/Developer/CommandLineTools/usr/bin/python3",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/compare.py"
+        ],
+        "exitCode": 0,
+        "seconds": 7.025762416999996
+      },
+      {
+        "stage": "export-fields",
+        "command": [
+          "/Library/Developer/CommandLineTools/usr/bin/python3",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/export-probe.py"
+        ],
+        "exitCode": 0,
+        "seconds": 2.4614973749999933
+      },
+      {
+        "stage": "pipeline",
+        "command": [
+          "node",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/replay.mjs",
+          "--probe=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/probe",
+          "--output=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/pipeline"
+        ],
+        "exitCode": 0,
+        "seconds": 256.740507
+      },
+      {
+        "stage": "editor-input",
+        "command": [
+          "node",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/editor-input.mjs",
+          "--run=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/pipeline",
+          "--output=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/editor-input"
+        ],
+        "exitCode": 0,
+        "seconds": 0.8021825000000149
+      },
+      {
+        "stage": "editable",
+        "command": [
+          "node",
+          "scripts/inverse/hard-photo-editor-replay.mjs",
+          "--run=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/editor-input",
+          "--output=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/editable"
+        ],
+        "exitCode": 0,
+        "seconds": 16.850301375000015
+      }
+    ],
+    "syntheticControlTensorsExactlyEqual": true,
+    "sharedBaselinePredictionMaxDifference": 0.0,
+    "runtimeSourceHashesVerified": true,
+    "predictionComparisonsVisuallyReviewed": 19,
+    "exportedReconstructionsVisuallyReviewed": 14
+  },
+  "conclusions": [
+    "The nineteen-photo intervention does not improve usable derived-mask output count: three for each learned arm versus six for production. No model integration.",
+    "Mean observed material error changes only from 17.6341% to 17.6210%. Body IoU rises from 80.2687% to 80.6784%. Individual outcomes differ: boar material improves, green/pale star deteriorates.",
+    "All thirteen checker predictions are identical because both held-out models train on the same six framed motifs. Corrected checker labels cannot improve their own held-out predictions.",
+    "Sixteen of nineteen learned attempts fail before fitting. Ten candidate failures lack supported lobes/edges; six cannot identify both lower edges. Body and material fields, not solver search, are the immediate blockers.",
+    "Accepted learned checker reconstructions visibly lose corner contact and erode cells into islands; a small error against that learned mask is misleading as a measure of source-design recovery.",
+    "The new two-photo scenes and printed-paper correction have now been used in training the opposite-family model. They remain held out in their own inference model."
+  ],
+  "limitations": [
+    "Previously inspected development photos, one seed, two broad source/motif folds; no unseen-test or physical-assembly claim.",
+    "All pass counts are relative to a derived mask and the existing geometry/feature checks, not full ground-truth cutting paths.",
+    "Changed grouping and corrected evaluation labels prevent direct comparison with the earlier 14.90% expanded-pilot error.",
+    "Training-time label correction and two extra scenes form one intervention; this experiment does not isolate their individual effects.",
+    "No production code, ONNX model, push or deployment."
+  ],
+  "nextExperiment": "Use the held-out body prediction only to propose a rough ROI; keep the unchanged photographic locator, classifier and geometric solver. Predeclare thresholds, padding and selection before inspecting results.",
+  "reconstructionReview": [
+    {
+      "id": "real-45744a03afddccb1-body-1",
+      "method": "baseline-joint",
+      "status": "checked-derived-mask",
+      "independentImageError": 0.021275,
+      "note": "Rabbit remains recognizable but learned target loses the separate thin frame and includes a broad merged lower region; fitting adds frame discontinuities."
+    },
+    {
+      "id": "real-45744a03afddccb1-body-1",
+      "method": "candidate-joint",
+      "status": "checked-derived-mask",
+      "independentImageError": 0.02183125,
+      "note": "Rabbit remains recognizable but frame breaks and detached-looking corner fragments persist; no convincing improvement over baseline."
+    },
+    {
+      "id": "real-8c875dd0f298b5a4-body-1",
+      "method": "production",
+      "status": "checked-derived-mask",
+      "independentImageError": 0.02124375,
+      "note": "Fits visible printed hearts as cut motifs, adding false seams and shapes. Published pattern is an ordinary checker; derived-mask acceptance is not recovery."
+    },
+    {
+      "id": "real-b87b0b19f12724f3-body-1",
+      "method": "production",
+      "status": "checked-derived-mask",
+      "independentImageError": 0.00426875,
+      "note": "Pink/red checker largely preserved; warped photographic cell boundaries and outer edges retained."
+    },
+    {
+      "id": "real-cf2d0fcff65d7386-body-1",
+      "method": "production",
+      "status": "checked-derived-mask",
+      "independentImageError": 0.01300625,
+      "note": "Blue/yellow checker retains touching cell corners; bottom/right protrusions remain near background/watermark contamination."
+    },
+    {
+      "id": "real-cf2d0fcff65d7386-body-1",
+      "method": "baseline-joint",
+      "status": "checked-derived-mask",
+      "independentImageError": 0.008,
+      "note": "Rounded, eroded checker cells become separated islands. Lower target error does not reflect a better design."
+    },
+    {
+      "id": "real-cf2d0fcff65d7386-body-1",
+      "method": "candidate-joint",
+      "status": "checked-derived-mask",
+      "independentImageError": 0.008,
+      "note": "Same erosion and isolated-cell failure as baseline, with the same source prediction and mask."
+    },
+    {
+      "id": "real-5330aa8b62176216-body-1",
+      "method": "production",
+      "status": "review-required",
+      "independentImageError": 0.07688,
+      "note": "Bicycle detail disappears almost entirely during fitting although present in the target; rejection is appropriate."
+    },
+    {
+      "id": "real-abf590088db891f9-body-1",
+      "method": "production",
+      "status": "checked-derived-mask",
+      "independentImageError": 0.016256,
+      "note": "Sloth is recognizable but limb/branch gaps and seams remain despite derived-mask acceptance."
+    },
+    {
+      "id": "real-d5b0aa8d4d2465ee-body-1",
+      "method": "baseline-joint",
+      "status": "checked-derived-mask",
+      "independentImageError": 0.00445625,
+      "note": "Learned target rounds and separates checker cells and distorts the lower-left boundary; weave copies those defects."
+    },
+    {
+      "id": "real-d5b0aa8d4d2465ee-body-1",
+      "method": "candidate-joint",
+      "status": "checked-derived-mask",
+      "independentImageError": 0.00445625,
+      "note": "Same checker-cell erosion as baseline, with identical prediction and mask."
+    },
+    {
+      "id": "real-d5b0aa8d4d2465ee-body-1",
+      "method": "production",
+      "status": "checked-derived-mask",
+      "independentImageError": 0.0061875,
+      "note": "Photographic checker topology and sharper cell corners are better preserved than by either learned target."
+    },
+    {
+      "id": "real-39f3a1ba97852876-body-1",
+      "method": "production",
+      "status": "checked-derived-mask",
+      "independentImageError": 0.004588888888888889,
+      "note": "Bowed checker pattern is recognizable and mostly preserved; minor outline/seam artifacts remain."
+    },
+    {
+      "id": "real-a414dfffbd2362ae-body-1",
+      "method": "production",
+      "status": "review-required",
+      "independentImageError": 0.014075,
+      "note": "Painted checker mask includes texture fragments and a broad boundary strip; solver smooths fragments but does not recover a clean original grid. Rejected by feature checks."
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/material-corrected-scenes-v1/comparison/report.json",
+      "sha256": "ad2e041989a369a19f6d0149f571665d2de5bdc6369730b0c5d573f708b8f6f4"
+    },
+    {
+      "path": "tmp/heart-learning/material-corrected-scenes-v1/pipeline/report.json",
+      "sha256": "ed6eb47a87cdba304dfb84d58f70146727f542a9bc911e38dc156bfb53ba2c92"
+    },
+    {
+      "path": "tmp/heart-learning/material-corrected-scenes-v1/editable/results.json",
+      "sha256": "4152e223b1516297b58081e93dbd0216f4777f9ff654863164888f017860c624"
+    },
+    {
+      "path": "tmp/heart-learning/material-corrected-scenes-v1/prediction-visual-review.json",
+      "sha256": "c9dcc4926889323a356622cbdf25b3580702fa95f5b51066af2659ab536e3574"
+    },
+    {
+      "path": "tmp/heart-learning/material-corrected-scenes-v1/reconstruction-visual-review.json",
+      "sha256": "8acd872770a73c38fb119253567e3c23cd342c805f6fa4562040ec74f5fbbfcb"
+    },
+    {
+      "path": "tmp/heart-learning/material-corrected-scenes-v1/comparison-source.json",
+      "sha256": "9eebd0ae8957e52cc8291fb74a6f9c70558a1655d04a2733e0f66e5a84e6b3a6"
+    },
+    {
+      "path": "tmp/heart-learning/material-corrected-scenes-v1/reconstruction-figures.json",
+      "sha256": "483914ced92b8df88ef50651078276e9cdf73a20433969c2f0a1cc627b38d20c"
+    },
+    {
+      "path": "tmp/heart-learning/material-corrected-scenes-v1/finalize.py",
+      "sha256": "6b7b098f83aea71789e576ea02d95d7ae3123f312ffe92279b4f93724d3885ed"
+    }
+  ]
+}

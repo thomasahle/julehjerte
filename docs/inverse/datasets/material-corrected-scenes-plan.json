@@ -1,6 +1,6 @@
 {
   "schema": "corrected-paper-scenes-paired-study-1",
-  "status": "prepared-not-run",
+  "status": "complete-offline-no-demonstrated-pipeline-improvement",
   "question": "Do corrected white-paper labels beneath ink and two additional reviewed checker scenes improve material identity and usable full-pipeline results under corrected family grouping?",
   "arms": {
     "baseline": {
@@ -364,5 +364,6 @@
     "timeLimitSeconds": 10,
     "inputs": "Full original source photographs, no ROI/corners/known masks/counts/templates. Model predictions have whole-family holdout. Only original image dimensions define their letterbox windows.",
     "order": "Rotate methods by source index; sequential solves after training and independent audits."
-  }
+  },
+  "result": "docs/inverse/datasets/material-corrected-scenes-results.json"
 }

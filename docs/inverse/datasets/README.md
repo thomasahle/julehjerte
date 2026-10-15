@@ -20,13 +20,13 @@ The inventory, with material annotations updated on 2026-10-15, contains:
 | Trained proposal models | 4 | Same 880,466-parameter network: random/ImageNet, balanced loss, and broader corner data; synthetic-only, offline. |
 | Trained foreground models | 5 | RGB-only, 880,449 parameters; random/ImageNet, background augmentation, and paired clutter/control runs, all offline. |
 | Decoder-adaptation checkpoints | 4 | One synthetic control and three grouped real/synthetic folds; no all-data or deployed model. |
-| Material-pilot checkpoints | 12, plus 2 synthetic diagnostics | Four grouped pilots independently audited. The expanded pilot reproduces the preceding synthetic control exactly; no integration. |
+| Material-pilot checkpoints | 18, plus 2 synthetic diagnostics | Four earlier grouped pilots and two corrected-family study arms independently audited; no integration. |
 | Printed-paper photographic variants | 96 | Three ink recipes on the same 32 training replay geometries, plus 32 byte-identical controls. Exact body, material and graph labels retained. |
 | Training background variants | 2,040 | Five changes to each of 408 original training views; geometry labels and split groups unchanged. |
 | Training scene variants | 2,448 | Neighbours and handles paired with all six backgrounds for the same 408 training views; no new geometry families. |
 | Source-photo material QA samples | 78 integrated + 25 new | Four hearts in two reserved photographs; sparse assistant-reviewed development observations, not dense labels or training data. The new jigsaw review is not yet in the common benchmark fixture. |
-| Real visible-body annotations | 21 | Twenty instances in eighteen groups outside source QA, plus one reserved gold-angel instance. Uncertain pixels are excluded; seventeen instances enter the completed expanded material pilot. The two new paper-scene annotations remain unused. |
-| Real partial paper-material annotations | 19 heart instances | Seventeen enter the completed expanded grouped pilot, with whole motif families kept apart. Two newly labelled paper scenes remain unused. Separate body and material uncertainty; all are reviewed development examples. |
+| Real visible-body annotations | 21 | Twenty instances in eighteen groups outside source QA, plus one reserved gold-angel instance. Uncertain pixels are excluded; nineteen enter the corrected-family material study. |
+| Real partial paper-material annotations | 19 heart instances | All enter the completed corrected-family study, with whole real motif families kept apart. Separate body and material uncertainty; all are reviewed development examples. |
 
 ## Current results and limits
 
@@ -42,9 +42,10 @@ adds 1,627 white-paper pixels at 256 resolution, including red ink and dark ink
 outlines. All prior known pixels, RGB/body images and source split groups remain
 unchanged. The existing expanded model is wrong on 59.62% of these newly observed
 pixels: its error on this photo rises from 0.060% to 6.493% when scored against
-the corrected labels. This is a post-hoc diagnosis, not a new training result;
-no model has used the revision. The 22 Hunodan and 31 hard-photo benchmark counts
-are unaffected.
+the corrected labels. This is a post-hoc diagnosis of the historical model. The
+new paired study below uses the correction in training the opposite-family
+model; this photo remains held out from its own inference model. The 22 Hunodan
+and 31 hard-photo benchmark counts are unaffected.
 
 The source correction also changes real-photo family grouping. Earlier material
 pilots placed the printed checker in the framed-motif family, so it could train
@@ -52,8 +53,21 @@ the model evaluated on the other checker photographs. Source/duplicate separatio
 was preserved, but this was not complete real-checker-family holdout. A
 [new paired experiment](material-corrected-scenes-plan.json) retrains a seventeen-
 photo baseline and a corrected nineteen-photo candidate with every real checker
-in the checker family. Its training, independent audits and complete pipeline
-comparison are in progress; historical metrics are not replaced or directly
+in the checker family. Its [completed results](material-corrected-scenes-results.json)
+show no useful pipeline gain. On identical current labels, average material error
+changes from 17.6341% to 17.6210%, and body IoU from 80.2687% to 80.6784%.
+All 57 full-photo attempts finish: production has six checked derived-mask pairs
+out of nineteen, versus three for each learned arm. Sixteen learned attempts
+fail before fitting. All fourteen exported pairs preserve geometry through the
+editable conversion; twelve pass the complete candidate checks.
+
+All nineteen prediction pairs and fourteen exported reconstructions were visually
+reviewed. Learned checker masks erode touching cells into separated islands, so
+low template error against those masks does not establish good reconstruction.
+The rabbit retains frame defects, and the green/pale star's material prediction
+worsens despite a better body outline. No learned model is integrated. The next
+experiment uses predicted body extent only for a rough ROI while retaining RGB
+for the actual crop and pattern. Historical metrics are not replaced or directly
 compared across the different splits.
 
 A [boundary preparation refactor](boundary-trace-reuse.json) reuses cleanup and
