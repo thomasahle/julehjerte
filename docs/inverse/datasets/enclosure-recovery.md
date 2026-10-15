@@ -144,5 +144,22 @@ to 1.580625% independently rendered disagreement. The gift fixture, which has no
 safe incumbent, retains exactly the same coordinates. New tests replay the
 published progress geometry through the finer paper audit and preserve the
 remaining-time reserve. These are refinement diagnostics on fixed inputs, not
-new automatic-cropping or physical-assembly results. Full corpus and release QA
-for this follow-up are still pending.
+new automatic-cropping or physical-assembly results.
+
+The fresh native corpus replay on `24f5c70` passes all 22 Hunodan designs within
+9.38 seconds. Twenty image errors are unchanged from the validated release and
+two improve. Photographic checks pass 26/31, with no lost accepted case; all 48
+accepted editable pairs pass independent geometry, paper and fidelity checks.
+All 733 pinned source files remained unchanged throughout that replay.
+
+The newly accepted jigsaw deserves a qualification: its crop is still visibly
+distorted, including background near the bottom. The fitted weave agrees with
+that classified mask at 0.973125%, but visual review does not establish a faithful
+recovery of the original design. This is an improvement in fitting that input,
+not a repaired automatic crop. The complete photo benchmark remains a diagnostic
+against estimated targets, not verified cutting artwork.
+
+The strict comparison against the older validated solver still fails for crown
+(2.411875% to 2.413125%) and Viking (2.024375% to 2.03625%). These small regressions
+remain recorded. Full repository QA and actual browser verification for this
+follow-up are running; this is not yet a validated release replacement.

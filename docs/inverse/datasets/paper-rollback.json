@@ -428,7 +428,7 @@
     "steps": 201
   },
   "productionValidation": {
-    "status": "pending",
+    "status": "native-complete-full-qa-and-browser-pending",
     "focusedLog": "tmp/heart-learning/paper-rollback-validation-v1/focused-final.log",
     "nativeRun": "tmp/heart-learning/paper-rollback-native-v1",
     "fullQaRun": "tmp/heart-learning/paper-rollback-qa-v1",
@@ -436,6 +436,465 @@
       "passed": 7,
       "failed": 0,
       "sha256": "b9db5eb015c3820fd31d6f8c9cb51acd90728caa03a3fb00c8f2adf0f5d92320"
+    },
+    "runtimeCommit": "24f5c70",
+    "native": {
+      "hunodanPassed": 22,
+      "hunodanTotal": 22,
+      "hunodanErrorRegressions": [],
+      "photoPassed": 26,
+      "photoPassRegressions": [],
+      "photoErrorRegressions": [
+        {
+          "id": "crown",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.02411875,
+          "error": 0.02413125,
+          "errorDelta": 1.2499999999998623e-05
+        },
+        {
+          "id": "flettede-viking",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.02024375,
+          "error": 0.0203625,
+          "errorDelta": 0.00011874999999999733
+        }
+      ],
+      "editablePassed": 48,
+      "editableTotal": 48,
+      "passed": false
+    },
+    "sourceFilesVerified": 733,
+    "maximumHunodanSeconds": 9.380459375000003,
+    "hunodanImproved": [
+      {
+        "id": "hjfla-01",
+        "passed": true,
+        "qualityPassed": true,
+        "seconds": 9.380459375000003,
+        "previousSeconds": 6.352111583000002,
+        "error": 0.007107204861111111,
+        "previousError": 0.012166341145833334,
+        "errorDelta": -0.005059136284722223
+      },
+      {
+        "id": "hjcur-02",
+        "passed": true,
+        "qualityPassed": true,
+        "seconds": 8.849658792000001,
+        "previousSeconds": 5.613092582999998,
+        "error": 0.0050702222222222225,
+        "previousError": 0.005219555555555555,
+        "errorDelta": -0.00014933333333333292
+      }
+    ],
+    "parentPhotoComparison": [
+      {
+        "id": "oval-figure",
+        "before": null,
+        "after": null,
+        "beforePassed": false,
+        "afterPassed": false,
+        "delta": null
+      },
+      {
+        "id": "eight-point-star",
+        "before": null,
+        "after": null,
+        "beforePassed": false,
+        "afterPassed": false,
+        "delta": null
+      },
+      {
+        "id": "small-figure",
+        "before": null,
+        "after": null,
+        "beforePassed": false,
+        "afterPassed": false,
+        "delta": null
+      },
+      {
+        "id": "deer",
+        "before": null,
+        "after": null,
+        "beforePassed": false,
+        "afterPassed": false,
+        "delta": null
+      },
+      {
+        "id": "top-checker",
+        "before": null,
+        "after": null,
+        "beforePassed": false,
+        "afterPassed": false,
+        "delta": null
+      },
+      {
+        "id": "top-candle",
+        "before": null,
+        "after": null,
+        "beforePassed": false,
+        "afterPassed": false,
+        "delta": null
+      },
+      {
+        "id": "top-tree",
+        "before": null,
+        "after": null,
+        "beforePassed": false,
+        "afterPassed": false,
+        "delta": null
+      },
+      {
+        "id": "partial-top-right",
+        "before": null,
+        "after": null,
+        "beforePassed": false,
+        "afterPassed": false,
+        "delta": null
+      },
+      {
+        "id": "partial-left-checker",
+        "before": null,
+        "after": null,
+        "beforePassed": false,
+        "afterPassed": false,
+        "delta": null
+      },
+      {
+        "id": "nested-squares",
+        "before": null,
+        "after": null,
+        "beforePassed": false,
+        "afterPassed": false,
+        "delta": null
+      },
+      {
+        "id": "outline-star",
+        "before": 0.00815625,
+        "after": 0.00759375,
+        "beforePassed": false,
+        "afterPassed": false,
+        "delta": -0.0005625000000000005
+      },
+      {
+        "id": "floral-checker",
+        "before": 0.0189625,
+        "after": 0.0133625,
+        "beforePassed": true,
+        "afterPassed": true,
+        "delta": -0.005600000000000001
+      },
+      {
+        "id": "dense-checker",
+        "before": 0.00699375,
+        "after": 0.00699375,
+        "beforePassed": true,
+        "afterPassed": true,
+        "delta": 0.0
+      },
+      {
+        "id": "bird",
+        "before": 0.02470625,
+        "after": 0.02470625,
+        "beforePassed": true,
+        "afterPassed": true,
+        "delta": 0.0
+      },
+      {
+        "id": "leaf",
+        "before": 0.0131625,
+        "after": 0.00995625,
+        "beforePassed": true,
+        "afterPassed": true,
+        "delta": -0.0032062500000000008
+      },
+      {
+        "id": "partial-right-checker",
+        "before": null,
+        "after": null,
+        "beforePassed": false,
+        "afterPassed": false,
+        "delta": null
+      },
+      {
+        "id": "partial-left-abstract",
+        "before": null,
+        "after": null,
+        "beforePassed": false,
+        "afterPassed": false,
+        "delta": null
+      },
+      {
+        "id": "gift",
+        "before": 0.02300625,
+        "after": 0.01858125,
+        "beforePassed": true,
+        "afterPassed": true,
+        "delta": -0.004424999999999998
+      },
+      {
+        "id": "gingerbread",
+        "before": 0.0146875,
+        "after": 0.01106875,
+        "beforePassed": true,
+        "afterPassed": true,
+        "delta": -0.0036187499999999987
+      },
+      {
+        "id": "white-birds",
+        "before": 0.00379375,
+        "after": 0.00379375,
+        "beforePassed": true,
+        "afterPassed": true,
+        "delta": 0.0
+      },
+      {
+        "id": "flower",
+        "before": 0.0050625,
+        "after": 0.00376875,
+        "beforePassed": true,
+        "afterPassed": true,
+        "delta": -0.0012937500000000002
+      },
+      {
+        "id": "warped-checker",
+        "before": 0.01761875,
+        "after": 0.01366875,
+        "beforePassed": true,
+        "afterPassed": true,
+        "delta": -0.003949999999999999
+      },
+      {
+        "id": "round-checker",
+        "before": 0.01214375,
+        "after": 0.0121375,
+        "beforePassed": true,
+        "afterPassed": true,
+        "delta": -6.249999999999312e-06
+      },
+      {
+        "id": "santa",
+        "before": null,
+        "after": null,
+        "beforePassed": false,
+        "afterPassed": false,
+        "delta": null
+      },
+      {
+        "id": "partial-left-diamonds",
+        "before": null,
+        "after": null,
+        "beforePassed": false,
+        "afterPassed": false,
+        "delta": null
+      },
+      {
+        "id": "fine-checker",
+        "before": 0.02245,
+        "after": 0.0166625,
+        "beforePassed": true,
+        "afterPassed": true,
+        "delta": -0.005787500000000001
+      },
+      {
+        "id": "orb",
+        "before": 0.01438125,
+        "after": 0.013375,
+        "beforePassed": true,
+        "afterPassed": true,
+        "delta": -0.0010062500000000002
+      },
+      {
+        "id": "stacked-hearts",
+        "before": 0.007425,
+        "after": 0.00578125,
+        "beforePassed": true,
+        "afterPassed": true,
+        "delta": -0.0016437500000000002
+      },
+      {
+        "id": "jigsaw",
+        "before": 0.0564375,
+        "after": 0.00973125,
+        "beforePassed": false,
+        "afterPassed": true,
+        "delta": -0.046706250000000005
+      },
+      {
+        "id": "candle",
+        "before": 0.0048375,
+        "after": 0.0048375,
+        "beforePassed": true,
+        "afterPassed": true,
+        "delta": 0.0
+      },
+      {
+        "id": "maple-leaf",
+        "before": 0.01135,
+        "after": 0.00885,
+        "beforePassed": true,
+        "afterPassed": true,
+        "delta": -0.0025000000000000005
+      },
+      {
+        "id": "crown",
+        "before": 0.02413125,
+        "after": 0.02413125,
+        "beforePassed": true,
+        "afterPassed": true,
+        "delta": 0.0
+      },
+      {
+        "id": "partial-bottom-left",
+        "before": null,
+        "after": null,
+        "beforePassed": false,
+        "afterPassed": false,
+        "delta": null
+      },
+      {
+        "id": "bottom-diamonds",
+        "before": null,
+        "after": null,
+        "beforePassed": false,
+        "afterPassed": false,
+        "delta": null
+      },
+      {
+        "id": "crossed-ribbons",
+        "before": 0.02153125,
+        "after": 0.00884375,
+        "beforePassed": false,
+        "afterPassed": false,
+        "delta": -0.012687499999999999
+      },
+      {
+        "id": "bauble",
+        "before": 0.066925,
+        "after": 0.03125,
+        "beforePassed": false,
+        "afterPassed": false,
+        "delta": -0.035675
+      },
+      {
+        "id": "glare-motif",
+        "before": null,
+        "after": null,
+        "beforePassed": false,
+        "afterPassed": false,
+        "delta": null
+      },
+      {
+        "id": "bottom-flower",
+        "before": 0.0093875,
+        "after": 0.00930625,
+        "beforePassed": true,
+        "afterPassed": true,
+        "delta": -8.124999999999973e-05
+      },
+      {
+        "id": "faceted-star",
+        "before": 0.0065,
+        "after": 0.0065,
+        "beforePassed": true,
+        "afterPassed": true,
+        "delta": 0.0
+      },
+      {
+        "id": "partial-bottom-right",
+        "before": null,
+        "after": null,
+        "beforePassed": false,
+        "afterPassed": false,
+        "delta": null
+      },
+      {
+        "id": "bibel-star-8",
+        "before": 0.003675,
+        "after": 0.003675,
+        "beforePassed": true,
+        "afterPassed": true,
+        "delta": 0.0
+      },
+      {
+        "id": "bibel-star-curved",
+        "before": 0.00663125,
+        "after": 0.0064625,
+        "beforePassed": true,
+        "afterPassed": true,
+        "delta": -0.00016874999999999963
+      },
+      {
+        "id": "bibel-star-outline",
+        "before": 0.0116,
+        "after": 0.0116,
+        "beforePassed": true,
+        "afterPassed": true,
+        "delta": 0.0
+      },
+      {
+        "id": "bibel-cross",
+        "before": 0.00243125,
+        "after": 0.00243125,
+        "beforePassed": true,
+        "afterPassed": true,
+        "delta": 0.0
+      },
+      {
+        "id": "flettede-puppy",
+        "before": 0.0103125,
+        "after": 0.0103125,
+        "beforePassed": true,
+        "afterPassed": true,
+        "delta": 0.0
+      },
+      {
+        "id": "flettede-stonehenge",
+        "before": 0.01905,
+        "after": 0.01905,
+        "beforePassed": true,
+        "afterPassed": true,
+        "delta": 0.0
+      },
+      {
+        "id": "flettede-viking",
+        "before": 0.02056875,
+        "after": 0.0203625,
+        "beforePassed": true,
+        "afterPassed": true,
+        "delta": -0.00020625000000000157
+      }
+    ],
+    "artifacts": {
+      "tmp/heart-learning/paper-rollback-native-v1/source.json": "ecaa9e0bb4ea4b14f85f38895f46ad8ce91a71b73c14049e1e175ded76e64693",
+      "tmp/heart-learning/paper-rollback-native-v1/checks.json": "3752ba5b11a34dd0c77b824179c716fa76fafe18dc95fb66d1f251a6d05efe35",
+      "tmp/heart-learning/paper-rollback-native-v1/running.json": "1b50e4f200f1691a2e502860c4224229707b210df80b969d02307920ece69b26",
+      "tmp/heart-learning/paper-rollback-native-v1/native-gates.json": "00f9116dc4b0363ec272c9025b7d04779865f5ed650cbf732182e28bc2c26839",
+      "tmp/heart-learning/paper-rollback-native-v1/hunodan-comparison.json": "1ebbc1eb6e046b972cfc65d2c0da38ef59bbfe5d26780b1e4444f09838fb93da",
+      "tmp/heart-learning/paper-rollback-native-v1/photo-comparison.json": "60e0c275531af4a4d8c15b410ec73d18992419ea46b2051f230a2759a680479a",
+      "tmp/heart-learning/paper-rollback-native-v1/parent-photo-comparison.json": "e95c22ca0d89e287b03b072902f09c71d0d24db200b07742640df21ac5d967b6",
+      "tmp/heart-learning/paper-rollback-native-v1/hunodan/results.json": "9d624a85d66b77f2ed84b9b6121a81001172aa7b047f188dda62aa7405b56b1f",
+      "tmp/heart-learning/paper-rollback-native-v1/photos/results.json": "5ef5ae1e0027d922a2519bebe30ca28607496de6c5fd02a986148ffb1602f27b",
+      "tmp/heart-learning/paper-rollback-native-v1/hunodan-editor/results.json": "463b163840bd4ef594f64204081f67d93e86d88adf1ac1a14eb131d16bb48363",
+      "tmp/heart-learning/paper-rollback-native-v1/photo-editor/results.json": "a4768b0d5dfac01f7e80686f2c5b3f90f41ca65b5b38fd58983c85991772b6ec",
+      "tmp/heart-learning/paper-rollback-native-v1/photos/jigsaw/source.png": "14e867b8cd24c46c172ad813802b1bd676a85acfbfb186d12d0b2b38409132a4",
+      "tmp/heart-learning/paper-rollback-native-v1/photos/jigsaw/crop.png": "b22e3ea88a9090705eb71eac8be5f9485f0482ed5777aebfeb3bd2ba5f78bc47",
+      "tmp/heart-learning/paper-rollback-native-v1/photos/jigsaw/automatic/mask.png": "5836657bb7a8f44a02d71936a316ed50a6b4ac22d899bdb535fc3e6bd0cc8292",
+      "tmp/heart-learning/paper-rollback-native-v1/photos/jigsaw/automatic/independent-weave.png": "761705ae07c98524c4514ee00f21fbf211b86ef9e3546dd8bc4e8b74772b6daa",
+      "tmp/heart-learning/paper-rollback-native-v1/photos/jigsaw/automatic/cut_geometry.json": "61f8b9a27c3834959dd74c4462c6098dd28be7f8c00405441288e34d44f21e71"
+    },
+    "jigsawVisualReview": {
+      "sourceImageViewed": true,
+      "rectifiedPhotoViewed": true,
+      "independentWeaveViewed": true,
+      "finding": "The automatic crop remains visibly distorted and includes background near the bottom. A newly valid fit of its classified mask is not a faithful reconstruction of the original design. Cropping was unchanged by this work."
     }
   }
 }

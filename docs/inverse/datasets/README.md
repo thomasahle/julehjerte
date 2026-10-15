@@ -85,6 +85,16 @@ accepted corpus exports pass editable checks. Photographic acceptance remains
 25/31, but five errors increase slightly, so the strict release comparison
 still fails. The linked record retains these regressions and a timing probe.
 
+A subsequent [rollback investigation](enclosure-recovery.md#refinement-rollback-follow-up)
+verifies uncertain paper before repeatedly discarding a useful fit. Its fixed-work
+floral-checker regression improves from 4.61% to 1.58% error. Fresh native fitting
+keeps all 22 Hunodan designs below ten seconds, improves two of their errors and
+leaves twenty unchanged. Photographic checks reach 26/31 and all 48 accepted
+editable exports pass. The newly accepted jigsaw still has a visibly distorted
+crop, so this does not establish 26 faithful original-design reconstructions.
+Two historical photo error regressions remain; full repository and browser QA
+for this follow-up are pending.
+
 The latest validated solver revision is `c000d30`. Its
 [release record](return-projection-speed.json) passes **22/22 regular Hunodan
 designs below ten seconds**, with a maximum of **8.100 seconds**. Automatic

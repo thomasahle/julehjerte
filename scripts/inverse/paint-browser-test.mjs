@@ -622,8 +622,10 @@ try{
     }
     if(name==='sloth-x-shift-mask'&&!stopMode)assert.ok(row.sourceEditableError<.02,'A timed-out routing must not replace this known close fit with a fragmented larger grid.');
     if(name==='blue-star-polishing-mask'&&!engineReference&&!stopMode){
-     assert.equal(row.shortReturnRepair?.applied,true);assert.equal(row.shortReturnRepair.visibleBoundaryContractions,2);
-     assert.ok(row.sourceEditableError<.0052,'The finer checkpoint and visible return cleanup must survive editable export.');
+     // Earlier fine verification can make the previous two return repairs
+     // unnecessary. Require the actual downloaded quality and paper checks.
+     assert.equal(row.templateChecksPassed,true);assert.equal(observed.result.report.settings.materialResolution,700);
+     assert.ok(row.sourceEditableError<.0052,'The finer checkpoint must retain photographic quality through editable export.');
     }
     if(name==='gold-routing-mask'&&!engineReference&&!stopMode)assert.ok(row.sourceEditableError<.012,'Alternative trace recovery must preserve the angel through editable SVG export.');
     // Check the actual downloaded result, not just the converter's own success
