@@ -1,0 +1,403 @@
+{
+  "status": "integrated-candidate-full-regressions-pending",
+  "implementation": {
+    "finalGate": "Existing guarded lattice plus fine polygon offsets of both unfolded sheets. Nominal radius and two nearby probes must pass.",
+    "repair": "Only detected defects invoke the main constrained Bezier fitter, with fold forces limited to affected sheets and local separation for off-fold islands. Already valid inputs remain unchanged.",
+    "constraints": [
+      "fixed coordinates",
+      "requested symmetry",
+      "existing identical sheets",
+      "bounded displacement",
+      "source features",
+      "original image acceptance limit",
+      "both final paper checks"
+    ],
+    "unavailableBackend": "Uncertain, never a silent geometric pass. Templates remain downloadable.",
+    "display": "Paper-support exports draw nominal polygon cores, including detached islands; reports retain lattice and radius-probe results.",
+    "loading": "Engine stays deferred at editor entry. Compute worker installs its receiver before awaiting engine initialization."
+  },
+  "native": {
+    "cases": 22,
+    "passed": 22,
+    "maximumSeconds": 9.792512792000002,
+    "vsValidatedC000d30": {
+      "unchanged": 19,
+      "improved": 3,
+      "regressed": 0
+    },
+    "comparison": [
+      {
+        "id": "hjfig-01",
+        "error": 0.009799111111111111,
+        "c000d30Error": 0.009799111111111111,
+        "previousCandidateError": 0.009799111111111111,
+        "c000d30Delta": 0.0,
+        "previousCandidateDelta": 0.0,
+        "seconds": 4.188360583
+      },
+      {
+        "id": "hjfig-02",
+        "error": 0.013340444444444445,
+        "c000d30Error": 0.013340444444444445,
+        "previousCandidateError": 0.013340444444444445,
+        "c000d30Delta": 0.0,
+        "previousCandidateDelta": 0.0,
+        "seconds": 5.416108957999999
+      },
+      {
+        "id": "hjfig-03",
+        "error": 0.006634666666666666,
+        "c000d30Error": 0.006634666666666666,
+        "previousCandidateError": 0.006634666666666666,
+        "c000d30Delta": 0.0,
+        "previousCandidateDelta": 0.0,
+        "seconds": 3.7982898339999993
+      },
+      {
+        "id": "hjfig-04",
+        "error": 0.013824,
+        "c000d30Error": 0.013824,
+        "previousCandidateError": 0.013824,
+        "c000d30Delta": 0.0,
+        "previousCandidateDelta": 0.0,
+        "seconds": 4.201387125000001
+      },
+      {
+        "id": "hjfig-05",
+        "error": 0.008021555177909465,
+        "c000d30Error": 0.008021555177909465,
+        "previousCandidateError": 0.008021555177909465,
+        "c000d30Delta": 0.0,
+        "previousCandidateDelta": 0.0,
+        "seconds": 5.622316833000001
+      },
+      {
+        "id": "hjfla-01",
+        "error": 0.007622612847222222,
+        "c000d30Error": 0.012166341145833334,
+        "previousCandidateError": 0.007215711805555556,
+        "c000d30Delta": -0.004543728298611112,
+        "previousCandidateDelta": 0.0004069010416666661,
+        "seconds": 9.792512792000002
+      },
+      {
+        "id": "hjcur-01",
+        "error": 0.005148444444444444,
+        "c000d30Error": 0.005148444444444444,
+        "previousCandidateError": 0.005148444444444444,
+        "c000d30Delta": 0.0,
+        "previousCandidateDelta": 0.0,
+        "seconds": 5.720234707999996
+      },
+      {
+        "id": "hjcur-02",
+        "error": 0.0050702222222222225,
+        "c000d30Error": 0.005219555555555555,
+        "previousCandidateError": 0.0050702222222222225,
+        "c000d30Delta": -0.00014933333333333292,
+        "previousCandidateDelta": 0.0,
+        "seconds": 9.477718624999994
+      },
+      {
+        "id": "hjcur-03",
+        "error": 0.004522666666666667,
+        "c000d30Error": 0.004522666666666667,
+        "previousCandidateError": 0.004522666666666667,
+        "c000d30Delta": 0.0,
+        "previousCandidateDelta": 0.0,
+        "seconds": 5.756944208000001
+      },
+      {
+        "id": "hjcur-04",
+        "error": 0.005639111111111111,
+        "c000d30Error": 0.005639111111111111,
+        "previousCandidateError": 0.005639111111111111,
+        "c000d30Delta": 0.0,
+        "previousCandidateDelta": 0.0,
+        "seconds": 7.123654750000002
+      },
+      {
+        "id": "hjcur-05",
+        "error": 0.00933688888888889,
+        "c000d30Error": 0.009436444444444445,
+        "previousCandidateError": 0.009436444444444445,
+        "c000d30Delta": -9.955555555555586e-05,
+        "previousCandidateDelta": -9.955555555555586e-05,
+        "seconds": 3.7748808340000033
+      },
+      {
+        "id": "hjhih-01",
+        "error": 0.006040430615586996,
+        "c000d30Error": 0.006040430615586996,
+        "previousCandidateError": 0.006040430615586996,
+        "c000d30Delta": 0.0,
+        "previousCandidateDelta": 0.0,
+        "seconds": 7.144705083000008
+      },
+      {
+        "id": "hjhih-02",
+        "error": 0.003899406226779104,
+        "c000d30Error": 0.003899406226779104,
+        "previousCandidateError": 0.003899406226779104,
+        "c000d30Delta": 0.0,
+        "previousCandidateDelta": 0.0,
+        "seconds": 5.2807915420000064
+      },
+      {
+        "id": "hjhih-04",
+        "error": 0.007776029627903062,
+        "c000d30Error": 0.007776029627903062,
+        "previousCandidateError": 0.007776029627903062,
+        "c000d30Delta": 0.0,
+        "previousCandidateDelta": 0.0,
+        "seconds": 7.584392917000005
+      },
+      {
+        "id": "hjstr-01",
+        "error": 0.007550237322696868,
+        "c000d30Error": 0.007550237322696868,
+        "previousCandidateError": 0.007550237322696868,
+        "c000d30Delta": 0.0,
+        "previousCandidateDelta": 0.0,
+        "seconds": 4.376030333000003
+      },
+      {
+        "id": "hjstr-02",
+        "error": 0.004365548980933596,
+        "c000d30Error": 0.004365548980933596,
+        "previousCandidateError": 0.004365548980933596,
+        "c000d30Delta": 0.0,
+        "previousCandidateDelta": 0.0,
+        "seconds": 6.270131167000014
+      },
+      {
+        "id": "hjstr-03",
+        "error": 0.0056129769369752365,
+        "c000d30Error": 0.0056129769369752365,
+        "previousCandidateError": 0.0056129769369752365,
+        "c000d30Delta": 0.0,
+        "previousCandidateDelta": 0.0,
+        "seconds": 8.589028999999995
+      },
+      {
+        "id": "hjsta-01",
+        "error": 0.007929362880886427,
+        "c000d30Error": 0.007929362880886427,
+        "previousCandidateError": 0.007929362880886427,
+        "c000d30Delta": 0.0,
+        "previousCandidateDelta": 0.0,
+        "seconds": 4.963249125000002
+      },
+      {
+        "id": "hjsta-02",
+        "error": 0.0038045247395833335,
+        "c000d30Error": 0.0038045247395833335,
+        "previousCandidateError": 0.0038045247395833335,
+        "c000d30Delta": 0.0,
+        "previousCandidateDelta": 0.0,
+        "seconds": 4.791967084000004
+      },
+      {
+        "id": "hjsta-03",
+        "error": 0.012332213049376572,
+        "c000d30Error": 0.012332213049376572,
+        "previousCandidateError": 0.012332213049376572,
+        "c000d30Delta": 0.0,
+        "previousCandidateDelta": 0.0,
+        "seconds": 7.694832416999998
+      },
+      {
+        "id": "hjsta-04",
+        "error": 0.0050250552896055544,
+        "c000d30Error": 0.0050250552896055544,
+        "previousCandidateError": 0.0050250552896055544,
+        "c000d30Delta": 0.0,
+        "previousCandidateDelta": 0.0,
+        "seconds": 6.818344542000006
+      },
+      {
+        "id": "hjsta-05",
+        "error": 0.010624446293860237,
+        "c000d30Error": 0.010624446293860237,
+        "previousCandidateError": 0.010624446293860237,
+        "c000d30Delta": 0.0,
+        "previousCandidateDelta": 0.0,
+        "seconds": 6.4494072909999955
+      }
+    ],
+    "scope": "Fresh solves before the subsequent WASM-path and worker-receiver loading fixes; fitting/validation mathematics unchanged. The full regression run will repeat native timings on the final committed sources."
+  },
+  "independentGEOS": {
+    "cases": 22,
+    "probes": 264,
+    "passed": 264
+  },
+  "preflight": {
+    "state": {
+      "status": "complete",
+      "sourceFilesVerified": 825
+    },
+    "checks": [
+      {
+        "stage": "focused",
+        "command": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "scripts/inverse/geometric-material.test.mjs",
+          "scripts/inverse/fold-separation.test.mjs",
+          "scripts/inverse/paper-offset.test.mjs",
+          "scripts/inverse/final-return-repair.test.mjs"
+        ],
+        "exitCode": 0,
+        "seconds": 6.225866417000001
+      },
+      {
+        "stage": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 10.601055542000001
+      },
+      {
+        "stage": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 8.54106325
+      },
+      {
+        "stage": "app",
+        "command": [
+          "npx",
+          "vitest",
+          "run",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 0,
+        "seconds": 25.499512542
+      },
+      {
+        "stage": "build",
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 18.800629708000002
+      },
+      {
+        "stage": "restart",
+        "command": [
+          "python3",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/geometric-paper-integration-v1/preflight-v3/restart-preview.py"
+        ],
+        "exitCode": 0,
+        "seconds": 1.0651119169999959
+      },
+      {
+        "stage": "entry",
+        "command": [
+          "node",
+          "scripts/inverse/entry-loading-browser-test.mjs",
+          "--output=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/geometric-paper-integration-v1/preflight-v3/entry"
+        ],
+        "exitCode": 0,
+        "seconds": 3.560236500000002
+      },
+      {
+        "stage": "offset-browser",
+        "command": [
+          "node",
+          "scripts/inverse/geometric-paper-browser-test.mjs"
+        ],
+        "exitCode": 0,
+        "seconds": 3.4839287080000076
+      },
+      {
+        "stage": "paint",
+        "command": [
+          "node",
+          "scripts/inverse/paint-browser-test.mjs"
+        ],
+        "exitCode": 0,
+        "seconds": 19.264954125000003
+      }
+    ],
+    "applicationTests": {
+      "passed": 857,
+      "skipped": 1
+    },
+    "browserStartup": {
+      "delayedLoads": 1,
+      "startup": {
+        "id": 913,
+        "type": "error",
+        "message": "Cannot read properties of null (reading 'curves')",
+        "report": null
+      }
+    },
+    "paint": [
+      {
+        "name": "star",
+        "passed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.009700000047683717,
+          "prepareRoundTripSeconds": 0.041299999952316285,
+          "preparedToSolveRequestSeconds": 0.0005,
+          "solveRoundTripSeconds": 1.944,
+          "resultToReadySeconds": 0.29529999995231626,
+          "clickToReadySeconds": 2.2907999999523163
+        }
+      },
+      {
+        "name": "top-hat-preferred",
+        "passed": true,
+        "timings": {
+          "clickToPrepareRequestSeconds": 0.020600000143051148,
+          "prepareRoundTripSeconds": 0.3058999998569489,
+          "preparedToSolveRequestSeconds": 0.00040000009536743164,
+          "solveRoundTripSeconds": 8.898200000047684,
+          "resultToReadySeconds": 0.25970000004768373,
+          "clickToReadySeconds": 9.484800000190734
+        }
+      }
+    ]
+  },
+  "diagnosedIntegrationFailures": [
+    {
+      "case": "Vitest anchor export",
+      "cause": "Static WASM URL was rewritten to HTTP by the test bundler. Runtime URL construction preserves the Node filesystem path.",
+      "record": "tmp/heart-learning/geometric-paper-integration-v1/preflight/app.log"
+    },
+    {
+      "case": "First browser solve",
+      "cause": "The module worker installed its receiver after top-level asynchronous engine initialization. Posting immediately while WASM loads lost the request. Install the receiver synchronously and await the dynamic import inside it.",
+      "record": "tmp/heart-learning/geometric-paper-integration-v1/preflight-v2/startup-confirmation/startup.json"
+    }
+  ],
+  "artifacts": {
+    "tmp/heart-learning/geometric-paper-integration-v1/hunodan/results.json": "a601d7f3f6150bc91b7c39d6a8631a297c511685e634a5897c6860e502133fd7",
+    "tmp/heart-learning/geometric-paper-integration-v1/hunodan-comparison.json": "e50fc39935cb8677f1bf1edda3b9b8048c6390ad1f8020f02a7cdc9816a17644",
+    "tmp/heart-learning/geometric-paper-integration-v1/geos/results.json": "d9b6e0055bd5ef469292be72910bd3b4884047dd880056c2967edc1f881e80fc",
+    "tmp/heart-learning/geometric-paper-integration-v1/replay/results.json": "d7289729b98660d461795e091d1d739853086c4d7c586f212cc6c4822fcae1d2",
+    "tmp/heart-learning/geometric-paper-integration-v1/preflight-v3/source.json": "ab9e2b01fcdad68f24215c3ec36872a490c956cd703550ea70f7d582ba7366d4",
+    "tmp/heart-learning/geometric-paper-integration-v1/preflight-v3/checks.json": "9683ac1650f2204d2ea8e78e31656c647c82983cf0e2317cde3f1d64ca3f1201",
+    "tmp/heart-learning/geometric-paper-integration-v1/preflight-v3/entry/results.json": "95e3312b8e4be51babc44cf9e55159c718bb8c7443d38b421ff32b10f219df6e",
+    "tmp/heart-learning/geometric-paper-integration-v1/preflight-v3/offset-browser/results.json": "93a783dc83cd55cad3506e910fd55e65eacd1259c669f9df3aa613e8a89615f6",
+    "tmp/heart-learning/geometric-paper-integration-v1/preflight-v3/paint/results.json": "95fb1e559ac47d7d6d882f2b6049a405df5cea654aff3e47c529e719bb0fc700"
+  },
+  "remaining": [
+    "Full 921-test inverse suite",
+    "31-photo regression and editable exports",
+    "Remaining ordinary and ten-second browser workflows",
+    "Strict cross-corpus error comparisons; prior photographic regressions are not declared resolved."
+  ]
+}

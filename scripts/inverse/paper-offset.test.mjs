@@ -57,8 +57,8 @@ test('the independent decoder rejects broken paths and the vendor bytes stay pin
   const reversed=structuredClone(data);reversed.A_overlap_paths[0][0].reverse=true;
   assert.deepEqual(exportedPaperPaths(reversed,0),[[[1,100],[1,0]]]);
   assert.throws(()=>audit([],100,60,.25));
-  const provenance=JSON.parse(await fs.readFile('scripts/inverse/vendor/clipper2/PROVENANCE.json','utf8'));
+  const provenance=JSON.parse(await fs.readFile('static/inverse/vendor/clipper2/PROVENANCE.json','utf8'));
   for(const [name,sha]of Object.entries(provenance.files)){
-    assert.equal(createHash('sha256').update(await fs.readFile('scripts/inverse/vendor/clipper2/'+name)).digest('hex'),sha);
+    assert.equal(createHash('sha256').update(await fs.readFile('static/inverse/vendor/clipper2/'+name)).digest('hex'),sha);
   }
 });

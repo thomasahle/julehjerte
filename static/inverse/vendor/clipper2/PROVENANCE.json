@@ -6,7 +6,7 @@
   "tarball": "https://registry.npmjs.org/clipper2-wasm/-/clipper2-wasm-0.4.0.tgz",
   "integrity": "sha512-oYM/F8m7ogBmBXGxARJt9SEcjWPQg6+8zdfYw4Cmb5Ii5AOUjRgdQwQ9i5UW3BCJ4CFWG2CQWwm5HvekyvIdUA==",
   "license": "BSL-1.0",
-  "scope": "Offline inverse-geometry diagnostics only; not imported or loaded by the application.",
+  "scope": "Final unfolded-paper validation and offline diagnostics. Loaded with the inverse engine, not at editor entry.",
   "modifications": "clipper2z.js renamed to .mjs; all distributed bytes unchanged. LICENSE copied from the package gitHead.",
   "files": {
     "clipper2z.mjs": "4870702444f07f2d325df8331aa40ed0f9f75295c644cfb18f8688635730a085",

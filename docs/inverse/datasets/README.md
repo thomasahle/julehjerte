@@ -328,6 +328,28 @@ core passes, but the coarse lattice still reports uncertain. Always applying
 the new force slightly worsens valid controls, so it is not integrated as a
 blanket change. These are saved-fit continuations, not fresh ten-second solves.
 
+The geometric check and a [conditional repair](geometric-paper-integration.json)
+are now integrated into final export. Both the old lattice rule and fine
+unfolded polygon offsets must pass; loading or numerical uncertainty never
+silently certifies a candidate. Detected fold defects add a mirrored-cut force
+only on the affected sheet, using the main constrained fitter. Valid geometry
+is returned unchanged. Paper-support SVGs show the nominal polygon cores;
+downloads remain available when checks fail. A fresh integration run passes
+22/22 Hunodan below ten seconds (maximum 9.793 seconds); independent exported
+errors versus `c000d30` are nineteen unchanged and three improved. Separate
+GEOS geometry passes all 264 radius/tolerance/family probes for those exports.
+These native timings precede two loading-only fixes; a full replay is pending.
+
+Integration QA caught and corrected two startup issues: the test bundler
+rewrote the static WASM URL, and the compute worker could lose its first job
+while asynchronous initialization delayed its message handler. The receiver
+is now installed before awaiting the engine. All 857 app tests (one existing
+skip), type checking, lint, build, 22 focused inverse tests, deferred-entry
+checks, delayed-worker and backend-failure browser checks pass. Star and
+free-border hat complete the full Paint-to-Draw workflow. The complete inverse
+suite and photographic release regressions have not yet completed for this
+candidate; it is not a new validated release.
+
 The latest validated solver revision is `c000d30`. Its
 [release record](return-projection-speed.json) passes **22/22 regular Hunodan
 designs below ten seconds**, with a maximum of **8.100 seconds**. Automatic

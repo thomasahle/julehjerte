@@ -1,6 +1,7 @@
 /** Constrained free Bézier refinement: image boundary forces, Euclidean
  * separation, curvature and join costs, and independent geometry checkpoints.
  */
+import {addFoldSeparation} from './fold-separation.js';
 import {Adam,bernstein,dbernstein,ddbernstein,clamp} from './math.js';
 import {boundaryGradient,createBoundaryEvaluator} from './boundary.js';
 import {renderCurves} from './curves.js';
@@ -27,7 +28,7 @@ function initialCorners(graph){
   });cornerCache.set(graph,corners);return corners;
 }
 
-export function curvePenalty(graph,points,cfg,{separationWeight=12}={}){
+export function curvePenalty(graph,points,cfg,{separationWeight=12,paperRecovery=null}={}){
   const gradient=new Float64Array(points.length),sample=graph.sample(points,8),s=sample.samples,ds=new Float64Array(s.length),w=graph.width,margin=fittingMargin(cfg,w),side=margin;
   const total=sample.groups.reduce((v,g)=>v+g.length,0),cells=new Map(),segments=[],arcPositions=[];let loss=0,minRadius=Infinity;
   const stride=Math.ceil(w/margin)+3,key=(x,y,f)=>x>=-1&&y>=-1&&x<stride-1&&y<stride-1?(f*stride+x+1)*stride+y+1:`${x},${y},${f}`;
@@ -45,7 +46,7 @@ export function curvePenalty(graph,points,cfg,{separationWeight=12}={}){
     for(let j=0;j<ids.length;j++){
       const id=ids[j],px=s[2*id],py=s[2*id+1];nearest.clear();
       for(const e of cells.get(key(Math.floor(px/margin),Math.floor(py/margin),f))||[]){
-        const seg=segments[e];if(seg.pi===pi&&Math.abs(arcPositions[pi][j]-seg.arc)-seg.half<=cfg.localNeighborhoodFactor*cfg.nominalWidth)continue;
+        const seg=segments[e];if(seg.pi===pi&&Math.abs(arcPositions[pi][j]-seg.arc)-seg.half<=(paperRecovery?.localFamilies?.includes(f)?Math.min(3,cfg.localNeighborhoodFactor):cfg.localNeighborhoodFactor)*cfg.nominalWidth)continue;
         const{a,b}=seg,ux=s[2*a],uy=s[2*a+1],vx=s[2*b]-ux,vy=s[2*b+1]-uy,t=clamp(((px-ux)*vx+(py-uy)*vy)/Math.max(1e-12,vx*vx+vy*vy),0,1),dx=px-ux-t*vx,dy=py-uy-t*vy,d=dx*dx+dy*dy;
         if(d<margin*margin&&(!nearest.has(seg.pi)||d<nearest.get(seg.pi).d))nearest.set(seg.pi,{a,b,t,dx,dy,d});
       }
@@ -59,6 +60,7 @@ export function curvePenalty(graph,points,cfg,{separationWeight=12}={}){
       loss+=.2*delta*delta/ids.length;ds[2*id+f]+=.4*delta/ids.length;
     }
   });
+  if(paperRecovery?.foldFamilies?.length)loss+=addFoldSeparation(sample,graph.family,w,cfg.nominalWidth,margin,ds,{weight:separationWeight,activeFamilies:paperRecovery.foldFamilies});
   graph.edges.forEach((ids,e)=>{for(let j=0;j<=sample.ns;j++)for(let k=0;k<4;k++)for(let axis=0;axis<2;axis++)gradient[2*ids[k]+axis]+=sample.bases[j][k]*ds[2*(e*(sample.ns+1)+j)+axis];});
   const n=25,normalizer=Math.max(1,graph.edges.length*n);
   for(let j=0;j<n;j++){
@@ -98,7 +100,7 @@ export function curvePenalty(graph,points,cfg,{separationWeight=12}={}){
   return{loss,gradient,minRadius};
 }
 
-export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=40,deadline=Infinity,onProgress=()=>{},input={},rate=.035,identicalSheets=false,stopWhen=null,selection='boundary',weights=null,preferCheckpoint=null,skipRepeatedRollbacks=false,finalGeometry=true,resolvePaperBeforeRollback=false,paperVerificationResolution=700,paperVerificationReserve=250,retryPaperSeparation=false}={}){
+export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=40,deadline=Infinity,onProgress=()=>{},input={},rate=.035,identicalSheets=false,stopWhen=null,selection='boundary',weights=null,preferCheckpoint=null,skipRepeatedRollbacks=false,finalGeometry=true,resolvePaperBeforeRollback=false,paperVerificationResolution=700,paperVerificationReserve=250,retryPaperSeparation=false,paperRecovery=null,paperAudit=materialAudit}={}){
   if(!Number.isInteger(checkpointEvery)||checkpointEvery<1)throw new RangeError('Checkpoint interval must be a positive integer.');
   // Compile the weighted force field once, not on every optimization step.
   let penaltySettings=cfg,paperSeparationRetry=null;
@@ -141,14 +143,14 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=4
         const symmetry=symmetryReport(solution,cfg.symmetry);
         if(symmetry.honoured.length!==symmetry.requested.length){check.passed=false;check.issues.push('Requested cutting symmetries are not satisfied.');}
       }
-      let paper=check.passed?materialAudit(solution,cfg):null;
+      let paper=check.passed?paperAudit(solution,cfg):null;
       // Coarse lattice uncertainty can repeatedly reset a useful trajectory
       // to an older, much poorer fit. Verify the unchanged curves before that
       // rollback, and carry the actual finer audit through Stop and export.
       // Without a safe incumbent there is no rollback to prevent: introducing
       // one early can interrupt exploration through provisional paper states.
       if(resolvePaperBeforeRollback&&safe&&cfg.requireMaterialCore&&paper?.status==='uncertain'&&cfg.materialResolution<paperVerificationResolution&&deadline-performance.now()>paperVerificationReserve){
-        const fine=materialAudit(solution,{...cfg,materialResolution:paperVerificationResolution});
+        const fine=paperAudit(solution,{...cfg,materialResolution:paperVerificationResolution});
         if(fine.passed){
           value.paperVerification={requestedResolution:cfg.materialResolution,initialStatus:'uncertain',resolution:paperVerificationResolution,status:fine.status,source:'rollback-checkpoint'};
           solution.report={...solution.report,paperVerification:value.paperVerification};paper=fine;
@@ -225,7 +227,7 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=4
   checkpoint(-1);
   for(let step=0;step<steps;step++){
     if(stoppedEarly||(step%5===0&&performance.now()>deadline))break;
-    const g=boundaryGradient(graph,points,force,n,phase),penalty=curvePenalty(graph,points,penaltySettings);
+    const g=boundaryGradient(graph,points,force,n,phase),penalty=curvePenalty(graph,points,penaltySettings,{paperRecovery});
     if(cfg.preferMatchingSheets&&!identicalSheets){const matching=matchingPenalty(graph,points);for(let i=0;i<g.length;i++)g[i]+=matching.gradient[i];}
     for(let i=0;i<g.length;i++)g[i]=graph.fixed[i]?0:g[i]+penalty.gradient[i]+.000004*(points[i]-initial[i])/points.length;
     if(ties&&!applyTies(ties,g,points,{fixed:graph.fixed,tangent:true}))break;

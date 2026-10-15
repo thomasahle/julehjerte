@@ -27,7 +27,7 @@ it('repairs the real anchor return without increasing source error, and opens in
   // an already valid fit; require the same certified result in either case.
   const final = finish(result, cfg, () => {}, { refine: false });
   expect(final.report.validation).toMatchObject({ passed: true, finalGeometry: true });
-  expect(final.report.templateChecksPassed).toBe(true);
+  expect(final.report.templateChecksPassed, JSON.stringify(final.report.manufacturing)).toBe(true);
   expect(error(loadSolutionJSON(final.files['cut_geometry.json']!))).toBeLessThanOrEqual(error(result));
   const converted = convertValidatedCutGeometry(final.files['cut_geometry.json']!, { name: 'Anchor', reference: { mask: { size: source.resolution, data: mask } } });
   expect(converted.editorValidation?.passed).toBe(true);

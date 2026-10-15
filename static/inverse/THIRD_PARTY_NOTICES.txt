@@ -33,3 +33,15 @@ SHA-256 hashes are recorded below and in `docs/DEPENDENCY_PROVENANCE.json`. Hash
 - WASM streaming MIME requirement: https://developer.mozilla.org/en-US/docs/WebAssembly/Reference/JavaScript_interface/instantiateStreaming_static
 
 No third-party font files are included. All interface typography uses system fonts. No new artwork license is inferred from the software license.
+
+## Clipper2 / Clipper2-WASM
+
+Unfolded-paper validation uses the pinned `clipper2-wasm` 0.4.0 USINGZ build
+(commit `3c244f3edd0adae6c851460fc409c15f3d235395`), under the Boost Software
+License 1.0. The wrapper and WASM bytes are unmodified; only `.js` was renamed
+to `.mjs`. See `vendor/clipper2/LICENSE.txt` and `PROVENANCE.json` for the
+source, package integrity and individual SHA-256 hashes. It loads locally
+with the inverse engine, without a remote service or CDN.
+
+- Clipper2: https://github.com/AngusJohnson/Clipper2
+- WASM wrapper: https://github.com/ErikSom/Clipper2-WASM
