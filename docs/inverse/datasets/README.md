@@ -282,9 +282,14 @@ The 24-fit comparison also exposes existing fine-resolution paper failures:
 unmodified baseline export. The retry never ran on that output. This remains
 an unresolved validation limitation. Full repository QA now passes all 907
 inverse tests, 857 application tests (one existing skip), type checking, lint
-and build; all 747 pinned source files remain unchanged. Native corpus and
-browser checks are still running. The change remains local without a completed
-release claim.
+and build; all 747 pinned source files remain unchanged. All twelve browser
+workflows and fresh entry-loading checks pass. Native Hunodan results are
+22/22 below ten seconds (maximum 9.454 seconds), with twenty errors unchanged
+and two improved. Photo acceptance is 26/31 and all 48 accepted editable pairs
+pass, but bird, round-checker and Viking errors regress against `c000d30`. The
+first two changes are one and two pixels at 400 squared; Viking rises from
+2.0244% to 2.2181%. The distorted jigsaw crop remains a fidelity limitation.
+The strict error gate fails; this is not a validated-release replacement.
 
 The latest validated solver revision is `c000d30`. Its
 [release record](return-projection-speed.json) passes **22/22 regular Hunodan

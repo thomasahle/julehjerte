@@ -1,6 +1,6 @@
 {
   "schema": "conditional-paper-separation-retry-1",
-  "status": "integrated locally; 907/907 inverse tests and full application checks pass; native/browser validation running",
+  "status": "integrated locally; repository and browser QA complete; strict photographic error gate fails",
   "baselineRuntime": "fc7957e",
   "trigger": "During outline polishing, a complete refinement block has no accepted candidate, a safe rollback exists, and a geometry-valid proposal fails paper support. Initial step-zero failures and successful blocks do not trigger it.",
   "change": "Use a three-nominal-width same-slit exclusion for subsequent separation forces if the requested factor was larger. Keep the requested validation settings, source objective, fixed controls, learning-rate rollback and original deadline. Clear rollback-cycle detection because the force changed.",
@@ -345,7 +345,7 @@
     "scripts/inverse/paper-neck-retry.test.mjs",
     "scripts/inverse/fixtures/photographic-paper-neck-retry.json"
   ],
-  "releaseClaim": "Full repository QA passes; no complete native-corpus or browser claim yet. No push or deployment.",
+  "releaseClaim": "907 inverse and 857 application tests pass; 12 browser workflows and fresh entry-loading checks pass. Hunodan 22/22 under ten seconds with no error regression; photographs 26/31 but three errors regress. This is not a strict validated-release replacement. No push or deployment.",
   "artifactSha256": {
     "tmp/heart-learning/outline-paper-retry-v1/checks.json": "90afb32759de53e29646286e5b83c49bc57be7ff2e978949d1ca7040f60c4fd0",
     "tmp/heart-learning/outline-paper-retry-v1/source.json": "323543a0f4fc9d8760d6ab9e9c2d477384d1da4519c4b9eefdadc6a7af05cd08",
@@ -357,7 +357,18 @@
     "tmp/heart-learning/paper-neck-retry-release-v1/qa/inverse.log": "b54be666c192d1bc05c46417f49adf724c5decf0760956a4e94dfed5b923f623",
     "tmp/heart-learning/paper-neck-retry-release-v1/qa/app.log": "b866949a576974a9ff21d2c6823c034c43751263afa97ae278b970ba264bb29d",
     "tmp/heart-learning/paper-neck-retry-release-v1/qa/running.json": "99ac01282f22108c2e91785514372dbbe1a77c81a6167c458d409633a472df35",
-    "tmp/heart-learning/paper-neck-retry-release-v1/source.json": "1f72dd0fbd01cddcaa852bf8fc5210017d64fda6fc87a89a49c2808bc06a4f06"
+    "tmp/heart-learning/paper-neck-retry-release-v1/source.json": "1f72dd0fbd01cddcaa852bf8fc5210017d64fda6fc87a89a49c2808bc06a4f06",
+    "tmp/heart-learning/paper-neck-retry-release-v1/state.json": "e652b04fda0775ddf221d55c7c2587b57d866cb31b7cb5675b3c6342df041f60",
+    "tmp/heart-learning/paper-neck-retry-release-v1/checks.json": "bab1aa3ee83ef230077f3bbb0cac768c6740e78f288db536cc1671f1ab897b35",
+    "tmp/heart-learning/paper-neck-retry-release-v1/native/native-gates.json": "2d0b1501214f6527ce6b499d807ce19d9ec3d9288a9b63c232f970141dae9364",
+    "tmp/heart-learning/paper-neck-retry-release-v1/native/hunodan-comparison.json": "2a3c87aac0ee923b01037b64e7052d85c39621f50afcf562d346b0a02817bef8",
+    "tmp/heart-learning/paper-neck-retry-release-v1/native/photo-comparison.json": "4d4e768d799909f5ea710a98dcd7760a2b9c8eb54eeb3eba36bdabe35cb676c8",
+    "tmp/heart-learning/paper-neck-retry-release-v1/native/hunodan/results.json": "2a24bf9a83ea0847e3378139b48d15bb4ea59f28dd073d0193f5354c008d3b32",
+    "tmp/heart-learning/paper-neck-retry-release-v1/browser/ordinary/results.json": "d7eea81c41286ba3270f98be47597d9561dc977aa676220498e6e91b269b3897",
+    "tmp/heart-learning/paper-neck-retry-release-v1/browser/ten-second/results.json": "7eafaf1b75b216ff8561fb6c7db3a0c9beb0b70b5880cfd1666241209f0e443c",
+    "tmp/heart-learning/paper-neck-retry-release-v1/browser/entry-loading/results.json": "52e19206841b52855c330ecc863d1a844a25d194d124303da46fb8ec8ef40096",
+    "tmp/heart-learning/paper-neck-retry-release-v1/browser/checks.json": "8e4ff1884a30baca831e67869760bcb9795d88d3ded20176205d88bcd75f7f12",
+    "tmp/heart-learning/paper-neck-retry-release-v1/browser/served-assets.json": "29e4dac38416daad8d4f2eb57c1bef5bd74d4e8cc597e7de527aa72bf751df7b"
   },
   "integratedVerification": {
     "tests": 23,
@@ -424,6 +435,128 @@
       }
     ],
     "root": "tmp/heart-learning/paper-neck-retry-release-v1",
-    "corpusAndBrowser": "not yet complete"
+    "corpusAndBrowser": "complete; strict native gate fails (see nativeValidation)"
+  },
+  "nativeValidation": {
+    "baselineRuntime": "c000d30",
+    "gates": {
+      "hunodanPassed": 22,
+      "hunodanTotal": 22,
+      "hunodanErrorRegressions": [],
+      "photoPassed": 26,
+      "photoPassRegressions": [],
+      "photoErrorRegressions": [
+        {
+          "id": "bird",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.02470625,
+          "error": 0.0247125,
+          "errorDelta": 6.249999999999312e-06
+        },
+        {
+          "id": "round-checker",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.0121375,
+          "error": 0.01215,
+          "errorDelta": 1.2499999999998623e-05
+        },
+        {
+          "id": "flettede-viking",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.02024375,
+          "error": 0.02218125,
+          "errorDelta": 0.0019374999999999983
+        }
+      ],
+      "editablePassed": 48,
+      "editableTotal": 48,
+      "passed": false
+    },
+    "hunodanMaximumSeconds": 9.453663417,
+    "photoCompleteCases": 31,
+    "photoInventoryRows": 47,
+    "jigsawVisualReview": "Reviewed source, fixed crop and independent weave. Crop is visibly distorted and the weave has small seams; accepted mask agreement is not faithful original-design recovery."
+  },
+  "browserValidation": {
+    "workflows": 12,
+    "ordinary": 7,
+    "tenSecondBudget": 5,
+    "entryLoading": "pass",
+    "sourceFilesVerified": 747,
+    "cases": {
+      "ordinary": [
+        {
+          "name": "stacked-hearts-mask",
+          "pageErrors": [],
+          "clickToReadySeconds": 17.4405
+        },
+        {
+          "name": "star",
+          "pageErrors": [],
+          "clickToReadySeconds": 2.067
+        },
+        {
+          "name": "top-hat-preferred",
+          "pageErrors": [],
+          "clickToReadySeconds": 9.124899999856948
+        },
+        {
+          "name": "flower-native-mask",
+          "pageErrors": [],
+          "clickToReadySeconds": 7.484600000143051
+        },
+        {
+          "name": "hard-flettede-viking",
+          "pageErrors": [],
+          "clickToReadySeconds": 31.421599999904632
+        },
+        {
+          "name": "maple-leaf-mask",
+          "pageErrors": [],
+          "clickToReadySeconds": 16.470599999904632
+        },
+        {
+          "name": "web-danish-tree-green",
+          "pageErrors": [],
+          "clickToReadySeconds": 23.16989999985695
+        }
+      ],
+      "ten-second": [
+        {
+          "name": "floral-checker-mask",
+          "pageErrors": [],
+          "clickToReadySeconds": 10.274299999952316
+        },
+        {
+          "name": "warped-checker-mask",
+          "pageErrors": [],
+          "clickToReadySeconds": 11.196799999952317
+        },
+        {
+          "name": "fine-checker-mask",
+          "pageErrors": [],
+          "clickToReadySeconds": 12.000099999904632
+        },
+        {
+          "name": "blue-star-polishing-mask",
+          "pageErrors": [],
+          "clickToReadySeconds": 10.11239999985695
+        },
+        {
+          "name": "crown-mask",
+          "pageErrors": [],
+          "clickToReadySeconds": 10.728
+        }
+      ]
+    }
   }
 }
