@@ -1,17 +1,18 @@
 <!--
   The row of buttons under the detail page's info panel — docs/redesign/DESIGN.md
-  §4: download the PDF template, open the heart in the editor, share it, and for a
-  heart someone sent by link, save it to "Mine hjerter".
+  §4: download the PDF template, open the heart in the editor, share it, trace it
+  from the screen (docs/redesign/TRACE.md), and for a heart someone sent by link,
+  save it to "Mine hjerter".
 
   The note underneath reports how the last save or share went.
 -->
 <script lang="ts">
-	import { DownloadIcon, PencilIcon, ShareIcon } from '$lib/components/icons';
+	import { DownloadIcon, PencilIcon, ShareIcon, TabletIcon } from '$lib/components/icons';
 	import { t, type Language } from '$lib/i18n';
 
 	interface Props {
 		lang: Language;
-		/** Null until the design has loaded; the PDF button waits for it. */
+		/** False until the design has loaded; the PDF and tracing buttons wait for it. */
 		hasDesign: boolean;
 		/** Link target for "Rediger i editor". */
 		editHref: string;
@@ -27,6 +28,7 @@
 		onEdit: () => void;
 		onShare: () => void;
 		onSaveShared: () => void;
+		onTrace: () => void;
 	}
 
 	let {
@@ -41,7 +43,8 @@
 		onDownload,
 		onEdit,
 		onShare,
-		onSaveShared
+		onSaveShared,
+		onTrace
 	}: Props = $props();
 </script>
 
@@ -72,6 +75,10 @@
 			<ShareIcon size={18} />
 			{t('share', lang)}
 		{/if}
+	</button>
+	<button class="btn btn-outline" type="button" onclick={onTrace} disabled={!hasDesign}>
+		<TabletIcon size={18} />
+		{t('traceFromScreen', lang)}
 	</button>
 </div>
 

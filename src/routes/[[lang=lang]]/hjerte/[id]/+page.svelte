@@ -5,23 +5,24 @@
   bottom, three firs are drawn over it on the left, and the heart hangs from the
   big one on a stage whose four thumbnails swap the big view. The translucent
   panel on the right carries the name, the paragraph about this heart and the
-  facts, with the three action buttons directly under it; below the scene the
+  facts, with the action buttons directly under it; below the scene the
   rest of the category is offered as "Flere {kategori}".
 
   Behaviour that must survive any restyling: /hjerte/delt/ (a heart shared in the
   URL fragment, noindex, "Gem i Mine hjerter"), the editor hand-off in editHref,
-  navigator.share with a clipboard fallback, downloadPDF() and the three
-  analytics events.
+  navigator.share with a clipboard fallback, downloadPDF(), the tracing mode
+  (docs/redesign/TRACE.md) and the four analytics events.
 -->
 <script lang="ts">
   import { page } from "$app/stores";
-  import { onMount } from "svelte";
+  import { onMount, tick } from "svelte";
   import { browser } from "$app/environment";
   import type { PageProps } from "./$types";
   import HeartActions from "$lib/components/detail/HeartActions.svelte";
   import HeartPanel from "$lib/components/detail/HeartPanel.svelte";
   import HeartStage from "$lib/components/detail/HeartStage.svelte";
   import RelatedHearts from "$lib/components/detail/RelatedHearts.svelte";
+  import TraceMode from "$lib/components/detail/TraceMode.svelte";
   import Fir from "$lib/components/Fir.svelte";
   import Scene from "$lib/components/Scene.svelte";
   import PageHeader from "$lib/components/PageHeader.svelte";
@@ -244,6 +245,23 @@
     }
   }
 
+  // "Tegn af fra skærmen": the full-screen tracing mode. Focus goes back to the
+  // button that opened it, which still exists when the mode closes.
+  let traceOpen = $state(false);
+  let traceOpener: HTMLElement | null = null;
+
+  function handleTrace() {
+    if (!design) return;
+    traceOpener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    traceOpen = true;
+  }
+
+  async function handleTraceClose() {
+    traceOpen = false;
+    await tick();
+    traceOpener?.focus();
+  }
+
   function handleEdit() {
     if (info) trackHeartEdit(heartId, info.name);
   }
@@ -416,6 +434,7 @@
               onEdit={handleEdit}
               onShare={handleShare}
               onSaveShared={handleSaveShared}
+              onTrace={handleTrace}
             />
           </div>
         </div>
@@ -436,6 +455,17 @@
     />
   {/if}
   </main>
+
+  {#if design && info}
+    <TraceMode
+      {design}
+      {heartId}
+      heartName={info.name}
+      {lang}
+      open={traceOpen}
+      onClose={handleTraceClose}
+    />
+  {/if}
 </div>
 
 <style>

@@ -34,3 +34,4 @@ vite.config.ts.timestamp-*
 # Redesign working files (mockups, QA screenshots)
 docs/redesign/mockups/
 docs/redesign/qa/
+docs/redesign/trace-qa/

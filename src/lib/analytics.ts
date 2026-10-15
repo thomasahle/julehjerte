@@ -100,6 +100,16 @@ export function trackHeartEdit(heartId: string, heartName: string) {
 }
 
 /**
+ * Track when a heart's tracing mode ("Tegn af fra skærmen") is opened
+ */
+export function trackHeartTrace(heartId: string, heartName: string) {
+  trackEvent('trace_heart', {
+    heart_id: heartId,
+    heart_name: heartName,
+  });
+}
+
+/**
  * Track when a new heart is created in the editor
  */
 /**

@@ -24,6 +24,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import { tick } from 'svelte';
+	import { trapTab } from '$lib/utils/focusTrap';
 
 	interface Props {
 		open: boolean;
@@ -58,9 +59,6 @@
 
 	let dialogEl = $state.raw<HTMLDivElement | null>(null);
 
-	const FOCUSABLE =
-		'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
-
 	$effect(() => {
 		if (!open) return;
 		tick().then(() => (initialFocus ?? dialogEl)?.focus());
@@ -83,29 +81,6 @@
 			body.style.paddingRight = previousPadding;
 		};
 	});
-
-	/** Keep Tab inside the dialog while it is open. */
-	function trapTab(event: KeyboardEvent): void {
-		if (event.key !== 'Tab' || !dialogEl) return;
-		const items = Array.from(dialogEl.querySelectorAll<HTMLElement>(FOCUSABLE)).filter(
-			(el) => el.offsetParent !== null || el === document.activeElement
-		);
-		if (items.length === 0) {
-			event.preventDefault();
-			dialogEl.focus();
-			return;
-		}
-		const first = items[0];
-		const last = items[items.length - 1];
-		const active = document.activeElement;
-		if (event.shiftKey && (active === first || active === dialogEl)) {
-			event.preventDefault();
-			last.focus();
-		} else if (!event.shiftKey && active === last) {
-			event.preventDefault();
-			first.focus();
-		}
-	}
 </script>
 
 {#if open}
@@ -130,7 +105,7 @@
 				// Escape first: stopPropagation would otherwise swallow it before the
 				// overlay's handler ever sees it.
 				if (e.key === 'Escape') onClose();
-				else trapTab(e);
+				else trapTab(e, dialogEl);
 				e.stopPropagation();
 			}}
 		>

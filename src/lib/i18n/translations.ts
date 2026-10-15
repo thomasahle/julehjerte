@@ -135,6 +135,29 @@ export const translations = {
     categoryFigurerLower: 'figurer',
     categoryHjerterLower: 'hjerter',
 
+    // Heart page: tracing mode ("Tegn af fra skærmen", docs/redesign/TRACE.md)
+    traceFromScreen: 'Tegn af fra skærmen',
+    /** {name} = heart name */
+    traceTitle: 'Tegn {name} af fra skærmen',
+    close: 'Luk',
+    traceSize: 'Bredde',
+    /** {mm} = the template's width before calibration, a CSS-pixel guess */
+    traceWidthMm: 'Bredde ca. {mm} mm',
+    /** {mm} = the template's width, measured against a card */
+    traceWidthMmExact: 'Bredde {mm} mm',
+    traceFit: 'Tilpas',
+    traceCalibrate: 'Kalibrér',
+    traceCalibrateText: 'Læg et betalingskort på skærmen, og træk i skyderen, til rammen passer til kortet.',
+    traceCardSize: 'Kortets størrelse',
+    done: 'Færdig',
+    traceCalibrated: 'Kalibreret til denne skærm',
+    traceLock: 'Lås skærmen',
+    traceHint: 'Skru lysstyrken op, læg tyndt papir på skærmen, og lås, før du tegner.',
+    traceUnlock: 'Lås op',
+    traceHoldToUnlock: 'Hold 2 sek. for at låse op',
+    traceLockedAnnouncement: 'Skærmen er låst. Hold knappen nederst til højre i 2 sekunder, eller tryk Escape, for at låse op.',
+    traceUnlockedAnnouncement: 'Skærmen er låst op.',
+
     // Editor: top bar, tool rail, panels and canvas notices
     editHeart: 'Rediger hjerte',
     createNewHeartTitle: 'Lav nyt hjerte',
@@ -734,6 +757,29 @@ export const translations = {
     categoryMoenstreLower: 'patterns',
     categoryFigurerLower: 'figures',
     categoryHjerterLower: 'hearts',
+
+    // Heart page: tracing mode ("Tegn af fra skærmen", docs/redesign/TRACE.md)
+    traceFromScreen: 'Trace from the screen',
+    /** {name} = heart name */
+    traceTitle: 'Trace {name} from the screen',
+    close: 'Close',
+    traceSize: 'Width',
+    /** {mm} = the template's width before calibration, a CSS-pixel guess */
+    traceWidthMm: 'Width approx. {mm} mm',
+    /** {mm} = the template's width, measured against a card */
+    traceWidthMmExact: 'Width {mm} mm',
+    traceFit: 'Fit',
+    traceCalibrate: 'Calibrate',
+    traceCalibrateText: 'Lay a payment card on the screen and drag the slider until the frame matches the card.',
+    traceCardSize: 'Card size',
+    done: 'Done',
+    traceCalibrated: 'Calibrated for this screen',
+    traceLock: 'Lock screen',
+    traceHint: 'Turn the brightness up, lay thin paper on the screen, and lock it before you draw.',
+    traceUnlock: 'Unlock',
+    traceHoldToUnlock: 'Hold 2 s to unlock',
+    traceLockedAnnouncement: 'The screen is locked. Hold the button in the bottom right corner for 2 seconds, or press Escape, to unlock.',
+    traceUnlockedAnnouncement: 'The screen is unlocked.',
 
     // Editor: top bar, tool rail, panels and canvas notices
     editHeart: 'Edit heart',
