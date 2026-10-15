@@ -5,9 +5,10 @@ import {components} from './input.js';
 import {distanceTransform} from './material.js';
 import {sourceWeights} from './image-reference.js';
 
-// Interior classification should survive moving the crop by one source cell.
-// A one-pixel background fringe must not turn a boundary-connected region
-// into a mandatory extra motif. These pixels still enter the full image error.
+// Exclude a one-cell fringe on the classified (rectified) mask. This is not
+// one source-photograph pixel: enlarging a crop changes its physical extent.
+// Photo-resolution sensitivity is recorded in the border-fragment study.
+// These pixels still enter the full image error.
 const BORDER_CLEARANCE_PIXELS=1;
 
 // Source masks and returned feature arrays belong to callers. Check every

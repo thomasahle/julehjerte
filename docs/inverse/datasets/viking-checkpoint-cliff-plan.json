@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "status": "planned",
+  "reason": "The failed original full-suite Viking result is reproduced exactly in a fresh unchanged-runtime run (3.209375% disagreement, paper failure). It stops refinement at step394. Other fresh runs follow identical recorded checkpoint errors through step360, reach step400 or later, retain a paper-uncertain lower-error candidate and subsequently pass finer paper validation. No return projection is recorded in these refinement events, so this is not evidence that the cache caused recovery.",
+  "scope": "Capture the first fresh six-cut-per-sheet refinement before any update. Replay its exact source, grid, phase and settings with fixed step limits and no wall-clock cutoff; perform unchanged final geometry, feature and finer paper audits. No production algorithm changes.",
+  "steps": [
+    395,
+    401,
+    441,
+    521
+  ],
+  "repetitions": 2,
+  "limits": [
+    "The original failed suite remains failed.",
+    "Fixed refinement is not a fresh-photo timing benchmark.",
+    "This isolates a checkpoint/time boundary; it does not fix the overall ten-second scheduler."
+  ],
+  "root": "tmp/heart-learning/viking-checkpoint-cliff-v1",
+  "controller": "tmp/heart-learning/viking-checkpoint-cliff-v1/run.py",
+  "sourcePins": "tmp/heart-learning/viking-checkpoint-cliff-v1/source.json"
+}

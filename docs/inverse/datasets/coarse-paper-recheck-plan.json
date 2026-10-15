@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "status": "planned",
+  "scope": "Retain one geometry-valid coarse-paper-failed checkpoint separately from all existing selected and uncertain candidates. Only if existing candidates fail the original image/feature/paper gates, try its unchanged curves at the existing 700px finer paper resolution. Require original-mask error, source features, geometry and finer paper validation; keep that actual resolution through export.",
+  "nonChanges": [
+    "No original checkpoint, rollback position, source pixel or tolerance changes.",
+    "Do not accept coarse failure as validity.",
+    "No application integration until fixed and fresh replay evidence."
+  ],
+  "fixed": "Capture exactly 395 steps from the fresh Viking initializer. Confirm unchanged incumbent/history and independently audit the retained alternative at 700px and 1000px.",
+  "fresh": {
+    "cases": [
+      "flettede-viking",
+      "crown",
+      "jigsaw"
+    ],
+    "repetitions": 2,
+    "seconds": 10,
+    "track": "Mal import-to-mask, fixed pre-solver production crops, no cutting templates"
+  },
+  "source": "tmp/heart-learning/viking-checkpoint-cliff-v1/initial.json",
+  "controller": "tmp/heart-learning/coarse-paper-recheck-v1/run.py",
+  "sourcePins": "tmp/heart-learning/coarse-paper-recheck-v1/source.json"
+}

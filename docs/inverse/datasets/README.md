@@ -156,6 +156,28 @@ passes. This suite failure is retained, and the finite-deadline search needs fur
 diagnosis. The change fixes fixed-work repeatability, not the broader timed fitting
 problem or the ten-second speed goal.
 
+A [return-audit reuse experiment](return-audit-reuse-results.json) preserves all
+1,344 complete-witness comparisons and every fixed-work projection report and
+coordinate. Median local projection time falls about 33% with whole-path reuse
+and 39% with additional curve preparation reuse. Neither improves the four-of-eight
+repair count under the timed anchor stress. Across 36 fresh photo fits, the path
+and curve versions each pass 10/12, versus 9/12 for the baseline, but respectively
+three and five paired mask errors increase. All outputs were visually reviewed.
+The Viking recovery cannot be attributed to this cache: its relevant refinement
+records no return projection, and the repeated baseline also passes. Neither
+runtime change is integrated.
+
+A [fixed-input Viking checkpoint study](viking-checkpoint-cliff-results.json)
+finds a separate retention problem. After 395 steps, the refiner returns an older
+candidate with 3.2406% mask error; after 401 steps it retains one at 2.6938%.
+Both pass the independent finer paper check. More significantly, checkpoints
+280/320/360 already pass the 700-pixel paper audit and have errors below 3%, yet
+are discarded because the 360-pixel audit calls them failed. A
+[bounded alternative-retention prototype](coarse-paper-recheck-plan.json) now
+checks whether retaining one such candidate can recover the result without
+changing the original trajectory, rollback position, image rules or physical
+clearance. The existing failed suite remains recorded.
+
 A [controlled photo-border experiment](border-fragment-perturbation-results.json)
 replays 228 crop/resolution combinations with both re-estimated and frozen colour
 clusters. All four original 400-pixel masks reproduce exactly. The outline-star
