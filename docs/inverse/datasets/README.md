@@ -126,7 +126,11 @@ rollback skipping and long-budget grid comparisons, passes all 861 inverse tests
 and the full application checks. Hunodan remains 22/22 below ten seconds
 (maximum 8.113 s), photos remain 25/31 and all 47 editable pairs pass. Floral
 checker improves to 1.896250%, but warped checker and Viking increase slightly;
-the strict no-higher-error gate remains failed. Browser comparisons are pending.
+the strict no-higher-error gate remains failed. All eighteen main browser
+workflows and all six ordinary/ten-second leaf/star comparisons now pass, including
+the previously failing ordinary shifted leaf. Its downloaded SVG scores 0.7600%
+and 0.9525% at 400/800 pixels. Both entry routes retain baseline script sizes and
+deferred solver/WASM loading.
 
 The [short-search scheduling correction](photo-feature-stability.md) reserves
 curve-refinement time for nearly fitting grids while retaining routing priority

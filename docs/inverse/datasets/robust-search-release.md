@@ -3,7 +3,7 @@
 Runtime `6609581` passes all code tests and retains the accepted-template counts,
 but two photographic errors increase. It has not passed the strict release
 comparison; `c000d30` remains the latest fully validated runtime. Browser checks
-are running separately on the owned preview at port 5232.
+pass separately on the owned preview at port 5232.
 
 Full QA passes **861 inverse tests**, **857 application tests** (one existing
 skip), explicit core lint, repository lint, type checking and production build.
@@ -40,6 +40,23 @@ explain its regression. Stage-labelled fresh replays are needed to isolate it.
 
 The [evidence record](robust-search-release.json) pins completed QA, native corpus
 comparisons and editable-export audits. It records the failed gate rather than
-relaxing the error threshold. Actual browser workflows, default/short-budget
-leaf comparisons and deferred-engine loading checks are still pending. No push
-or deployment occurred.
+relaxing the error threshold. All **18 main browser workflows** pass, as do the three ordinary-budget and
+three explicit ten-second leaf/star flows. All six actual downloaded editable
+SVGs pass independent checks at both 400 and 800 pixels. The previously failing
+ordinary shifted leaf now has **0.7600% / 0.9525%** disagreement at those scales,
+with the finer 700-resolution paper audit passing. Click-to-ready time is
+**17.72 seconds**; this is a quality recovery, not a claim of ten-second browser
+latency. Its ten-second counterpart scores 0.87875% / 1.05094%.
+
+The ordinary unshifted leaf scores 1.31063% / 1.47953%; the shifted star scores
+0.75875% / 0.91656%. Their ten-second counterparts have the same measured scores.
+Visual review confirms recognizable star and leaf motifs, but some rounded tips,
+boundary nicks and a thin leaf-border seam remain.
+
+Fresh Draw and Paint contexts verify served build bytes and make zero initial
+solver/WASM requests. Initial scripts remain 473,483 / 503,384 bytes, and all
+application JS/CSS size multisets match the baseline. The separate earlier
+four-byte build-identifier failure remains in its original record. All 862
+browser/runtime/harness source pins are verified. The native no-higher-error
+comparison still fails; browser success does not override those two photographic
+regressions. No push or deployment occurred.

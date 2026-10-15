@@ -1,6 +1,6 @@
 {
   "schema": "woven-heart-robust-search-release-1",
-  "status": "native-comparison-failed-browser-pending",
+  "status": "native-comparison-failed-browser-passed",
   "runtimeCommit": "660958188a8ce619928d08fcf532194c551ed5c6",
   "latestFullyValidatedRuntime": "c000d30",
   "sourceFilesVerified": 858,
@@ -211,9 +211,128 @@
     "tmp/heart-learning/robust-search-release-v1/production-release/hunodan-comparison.json": "c895cbdad30ac25a1a7f44a3082708e64262ca3e68ebf32029dba3f99d47290d",
     "tmp/heart-learning/robust-search-release-v1/production-release/photo-comparison.json": "f7faadeae05ea4a1bd388a36830ea7eb6bef9e317be915807df8ae77ed2c8f75",
     "tmp/heart-learning/robust-search-release-v1/production-release/hunodan-editor/results.json": "ec5578e733117924294ad4d6c28f1776fdc4f0d36ebc870d03502a2920c2982f",
-    "tmp/heart-learning/robust-search-release-v1/production-release/photo-editor/results.json": "37940d5b4db2e6ed8a303128df821d346eb1a65ac86cd944aaf8f6a8ba14265b"
+    "tmp/heart-learning/robust-search-release-v1/production-release/photo-editor/results.json": "37940d5b4db2e6ed8a303128df821d346eb1a65ac86cd944aaf8f6a8ba14265b",
+    "tmp/heart-learning/robust-search-release-v1/browser-study/checks.json": "db91e544475ad7528709793fa67b82db1f0fff60481512db8dba4c5ed22210f6",
+    "tmp/heart-learning/robust-search-release-v1/browser-study/full-source.json": "52bbbfe94ec338eb049ae04c6cfee9ce295d9f5f53132b326a7db46bade13a10",
+    "tmp/heart-learning/robust-search-release-v1/browser-study/main-browser/results.json": "6ac7056af6c1cacc2341ca71bfa82643dcb0359109bc5ac4bba33b220cfeb6c6",
+    "tmp/heart-learning/robust-search-release-v1/browser-study/entry-loading/results.json": "fcb077df28e0a0e61e7764dcd1aa498bb31d2638dbf7f9c977a594612d26974e",
+    "tmp/heart-learning/robust-search-release-v1/browser-study/normal-browser/results.json": "3443925bd45068cc088ebb07edcff488d495c863c46135022ff423d52fbd0bf6",
+    "tmp/heart-learning/robust-search-release-v1/browser-study/short-browser/results.json": "9480a181853f86e4342065ee08eaceb720bcc0fc3cb588c008f7fddb5dd50267",
+    "tmp/heart-learning/robust-search-release-v1/browser-study/measurements.json": "9068b77efbf9ef3d777b7956485d7873d7465ffd6650a641268e8355dff1fe36",
+    "tmp/heart-learning/robust-search-release-v1/browser-study/visual-review.json": "305159d01f406cb451c8de1a13a00b62e511d01e28e9c657b05a64bd4a550b23"
   },
-  "browser": "Running independently on owned port 5232 after the failed native comparison; results are not yet claimed.",
+  "browser": {
+    "sourceFilesVerified": 862,
+    "mainPassed": 18,
+    "mainTotal": 18,
+    "ordinaryPassed": 3,
+    "shortPassed": 3,
+    "measurements": [
+      {
+        "mode": "normal-browser",
+        "name": "leaf-clearance-mask",
+        "passed": true,
+        "errors": {
+          "400": 0.0076,
+          "800": 0.009525
+        }
+      },
+      {
+        "mode": "normal-browser",
+        "name": "leaf-mask",
+        "passed": true,
+        "errors": {
+          "400": 0.01310625,
+          "800": 0.0147953125
+        }
+      },
+      {
+        "mode": "normal-browser",
+        "name": "outline-star-shift-mask",
+        "passed": true,
+        "errors": {
+          "400": 0.0075875,
+          "800": 0.009165625
+        }
+      },
+      {
+        "mode": "short-browser",
+        "name": "leaf-clearance-mask",
+        "passed": true,
+        "errors": {
+          "400": 0.0087875,
+          "800": 0.010509375
+        }
+      },
+      {
+        "mode": "short-browser",
+        "name": "leaf-mask",
+        "passed": true,
+        "errors": {
+          "400": 0.01310625,
+          "800": 0.0147953125
+        }
+      },
+      {
+        "mode": "short-browser",
+        "name": "outline-star-shift-mask",
+        "passed": true,
+        "errors": {
+          "400": 0.0075875,
+          "800": 0.009165625
+        }
+      }
+    ],
+    "ordinaryShiftedLeaf": {
+      "engineError": 0.00750625,
+      "clickToReadySeconds": 17.718200000047684,
+      "paperVerification": {
+        "requestedResolution": 360,
+        "initialStatus": "uncertain",
+        "resolution": 700,
+        "status": "pass",
+        "source": "clearance-initializer-refinement"
+      }
+    },
+    "entryLoadingPassed": true,
+    "initialScripts": [
+      {
+        "route": "/en/editor/",
+        "beforeBytes": 473483,
+        "afterBytes": 473483,
+        "beforeCount": 23,
+        "afterCount": 23,
+        "initialEngineRequests": 0
+      },
+      {
+        "route": "/en/editor/paint/",
+        "beforeBytes": 503384,
+        "afterBytes": 503384,
+        "beforeCount": 28,
+        "afterCount": 28,
+        "initialEngineRequests": 0
+      }
+    ],
+    "visualReview": [
+      {
+        "case": "hard-bibel-star-outline-jpeg75",
+        "runtime": "6609581",
+        "review": "Visually inspected source photograph and fresh browser result. Outline star and intended crossing pattern retained; some tips/ends remain rounded or uneven. No exact-artwork or physical-assembly claim.",
+        "files": {
+          "tmp/heart-learning/robust-search-release-v1/browser-study/main-browser/chromium-hard-bibel-star-outline-jpeg75/input.jpg": "20648c38a37120ad7948e968dc193dc1556244953db570dc56b810bb1bdc2182",
+          "tmp/heart-learning/robust-search-release-v1/browser-study/main-browser/chromium-hard-bibel-star-outline-jpeg75/result.png": "fd219c7f09516f47a667ad4223b9f7daf1ab1cf6b2bc79d8c4d76479588fcfe0"
+        }
+      },
+      {
+        "case": "leaf-clearance-mask",
+        "mode": "ordinary",
+        "review": "Browser reconstruction visibly retains the central leaf and surrounding oval/frame. Small boundary nicks and a thin lower-left border seam remain; not exact-artwork recovery. Independently measured editable-mask errors are recorded separately.",
+        "files": {
+          "tmp/heart-learning/robust-search-release-v1/browser-study/normal-browser/chromium-leaf-clearance-mask/result.png": "80438a8e1969f987d3de9b901ee105d6880b4bca3f4615f30a518659f78f51d3"
+        }
+      }
+    ]
+  },
   "limits": [
     "No automatic-photo success-count gain; the same six cases remain failures.",
     "No unchanged-or-lower-error release claim: two accepted photo errors increased.",
