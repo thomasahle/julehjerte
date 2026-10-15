@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-14T08:20:11.652841+00:00",
+  "generatedAt": "2026-10-15T19:56:02.566063+00:00",
   "assetRoot": "tmp/heart-training-real",
   "description": "Original public-source files and existing fixtures; photographs are individually visually reviewed. Not a count of independent designs or labeled heart instances.",
   "counts": {
@@ -63718,6 +63718,22 @@
       ],
       "reviewIndex": 948,
       "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+      "publishedPatternObservation": {
+        "status": "primary-source-visually-verified",
+        "report": "docs/inverse/datasets/printed-heart-source-correction.json",
+        "sourcePage": "https://www.auntannie.com/Valentines/HeartBasket/",
+        "patternUrls": [
+          "https://www.auntannie.com/Valentines/HeartBasket/ValBasketHeartsClr.pdf",
+          "https://www.auntannie.com/Valentines/HeartBasket/ValBasketHearts.pdf"
+        ],
+        "slitsPerSheet": [
+          3,
+          3
+        ],
+        "cutStyle": "matching straight parallel cuts",
+        "decoration": "red printed hearts on white paper",
+        "use": "Source interpretation and evaluation only; not supplied as cut geometry to blind fitting."
+      },
       "localPath": "tmp/heart-training-real/assets/8c875dd0f298b5a406a9d6047b0ffc33746fe6f288bc8672b9a467a7c9df063f.jpg",
       "exactDuplicateGroup": "8c875dd0f298b5a406a9d6047b0ffc33746fe6f288bc8672b9a467a7c9df063f",
       "nearDuplicateGroup": "real-8c875dd0f298b5a4",

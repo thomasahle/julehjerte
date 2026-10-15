@@ -5808,7 +5808,23 @@
   "real-8c875dd0f298b5a4": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "publishedPatternObservation": {
+      "status": "primary-source-visually-verified",
+      "report": "docs/inverse/datasets/printed-heart-source-correction.json",
+      "sourcePage": "https://www.auntannie.com/Valentines/HeartBasket/",
+      "patternUrls": [
+        "https://www.auntannie.com/Valentines/HeartBasket/ValBasketHeartsClr.pdf",
+        "https://www.auntannie.com/Valentines/HeartBasket/ValBasketHearts.pdf"
+      ],
+      "slitsPerSheet": [
+        3,
+        3
+      ],
+      "cutStyle": "matching straight parallel cuts",
+      "decoration": "red printed hearts on white paper",
+      "use": "Source interpretation and evaluation only; not supplied as cut geometry to blind fitting."
+    }
   },
   "real-248c0093f1a08d05": {
     "kind": "photo",

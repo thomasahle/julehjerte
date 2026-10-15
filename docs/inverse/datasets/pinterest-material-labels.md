@@ -1,5 +1,13 @@
 # Paper identities under uneven lighting
 
+The [current revision](printed-paper-material-correction.json) corrects the
+red/white checker: its little hearts and dark outlines are printed ink on white
+paper, verified against the publisher pattern. Four conservative cell interiors
+now label them as paper B. Previous known pixels, body geometry, RGB images and
+source groups are unchanged. Earlier offline models used the initial revision;
+no model has trained on this correction. The following record describes the
+initial annotations, including the mistaken aperture description.
+
 Two previously annotated Pinterest hearts now have partial paper-material
 labels. The red/white example supplies clear lobe and checker-cell interiors on
 a saturated blue background. The green/pale star supplies a bright pale lobe

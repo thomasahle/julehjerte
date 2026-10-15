@@ -1,0 +1,316 @@
+{
+  "schema": "printed-paper-material-correction-1",
+  "status": "admitted-untrained",
+  "sourceCorrection": "docs/inverse/datasets/printed-heart-source-correction.json",
+  "scope": "Four white checker-cell interiors include the printed red hearts and dark ink outlines. The current labels distinguish visible paper identity from image colour. No source pixels, body geometry, corners, previous known material pixels, allocations or split groups change.",
+  "annotationChanges": [
+    {
+      "id": "real-8c875dd0f298b5a4-body-1",
+      "previousKnownPixels": 13435,
+      "currentKnownPixels": 15062,
+      "newWhitePaperPixels": 1627,
+      "changedPreviouslyKnownPixels": 0,
+      "unchangedRGBAndBody": true
+    },
+    {
+      "id": "real-3f7b76e1a98e808f-body-1",
+      "previousKnownPixels": 10896,
+      "currentKnownPixels": 10896,
+      "newWhitePaperPixels": 0,
+      "changedPreviouslyKnownPixels": 0,
+      "unchangedRGBAndBody": true
+    }
+  ],
+  "admission": {
+    "status": "admitted",
+    "compiledChecks": [
+      {
+        "passed": true,
+        "instances": 2,
+        "sourceGroups": 2,
+        "manifestSha256": "43ad3b146fb44a73afdc9c5f5662adeec18c4819b9bd7d606ab7d8dacb5b7e00",
+        "annotationsSha256": "1909f24e8868be1d74458944655009b4e4fdce15fa64e1703a3f2f44bab751ae",
+        "scope": "Source bytes, body references, grouping, transforms and every output pixel; annotation correctness still requires visual review."
+      },
+      {
+        "passed": true,
+        "instances": 2,
+        "sourceGroups": 2,
+        "manifestSha256": "06dd297172d187d48a0d05e226cbd03e51e4ed7c9097bd7d7cd6ae722e2ade2b",
+        "annotationsSha256": "1909f24e8868be1d74458944655009b4e4fdce15fa64e1703a3f2f44bab751ae",
+        "scope": "Source bytes, body references, grouping, transforms and every output pixel; annotation correctness still requires visual review."
+      }
+    ],
+    "sourceCountsAndAll1034SplitGroupsUnchanged": true,
+    "all16DraftPNGsExactlyReproduced": true,
+    "newWhitePaperPixelsAt256": 1627,
+    "trainedOnRevision": false
+  },
+  "visualReview": {
+    "nativeSourceAndNewPolygons": true,
+    "compiled256Overlay": true,
+    "compiled768Overlay": true,
+    "note": "All four new diamonds lie inside white checker cells. The added supervision includes red printed ink and black printed outlines; uncertainty margins omit physical seams, body edges and portions of ink near polygon boundaries."
+  },
+  "predictionRescore": {
+    "scope": "Post-hoc rescore of unchanged existing predictions on one development photograph. New pixels are not a held-out benchmark or training result. No model retrained.",
+    "historicalTrainingInputsExactlyReproduced": true,
+    "scores": [
+      {
+        "predictions": "tmp/heart-learning/material-expanded-pilot-v1/run-v1/fold-6508a69311e9/predictions.npz",
+        "sha256": "8170d45ac8984fd04d3096223a3bac4ed2c58a9dc60eca19398971530fac3ca4",
+        "previousLabels": {
+          "id": "real-8c875dd0f298b5a4-body-1",
+          "knownBodyPixels": 62862,
+          "knownMaterialPixels": 13435,
+          "knownBackgroundPixels": 37026,
+          "knownBodyWithoutMaterialPixels": 12401,
+          "unknownBodyPixels": 2674,
+          "bodyIoU": 0.9682582536254243,
+          "bodyPixelError": 0.013092170150488372,
+          "bodyFalseNegative": 0.028293853537699334,
+          "backgroundFalsePositive": 0.002484740452654891,
+          "materialPhaseExchanged": true,
+          "materialPixelError": 0.000595459620394492,
+          "materialJointError": 0.01391886862672125,
+          "jointRegionPixelError": 0.0055290224133489226,
+          "jointKnownPixels": 50461
+        },
+        "correctedLabels": {
+          "id": "real-8c875dd0f298b5a4-body-1",
+          "knownBodyPixels": 62862,
+          "knownMaterialPixels": 15062,
+          "knownBackgroundPixels": 37026,
+          "knownBodyWithoutMaterialPixels": 10774,
+          "unknownBodyPixels": 2674,
+          "bodyIoU": 0.9682582536254243,
+          "bodyPixelError": 0.013092170150488372,
+          "bodyFalseNegative": 0.028293853537699334,
+          "backgroundFalsePositive": 0.002484740452654891,
+          "materialPhaseExchanged": true,
+          "materialPixelError": 0.0649316159872527,
+          "materialJointError": 0.07754614261054309,
+          "jointRegionPixelError": 0.024189832590999848,
+          "jointKnownPixels": 52088
+        },
+        "addedWhitePixels": 1627,
+        "addedWhitePixelErrors": 970,
+        "addedWhitePixelError": 0.5961893054701906,
+        "phasePolicy": "Use the single image-level phase chosen from original known pixels; verified identical under corrected labels."
+      },
+      {
+        "predictions": "tmp/heart-learning/material-expanded-pilot-v1/run-v1/synthetic-control/predictions.npz",
+        "sha256": "eaffc3522db714037dbd8813551952d16a61b53795076f88aabed04fc1b228be",
+        "previousLabels": {
+          "id": "real-8c875dd0f298b5a4-body-1",
+          "knownBodyPixels": 62862,
+          "knownMaterialPixels": 13435,
+          "knownBackgroundPixels": 37026,
+          "knownBodyWithoutMaterialPixels": 12401,
+          "unknownBodyPixels": 2674,
+          "bodyIoU": 0.98338161305077,
+          "bodyPixelError": 0.006935827686042442,
+          "bodyFalseNegative": 0.0013934045517882026,
+          "backgroundFalsePositive": 0.010803219359369093,
+          "materialPhaseExchanged": false,
+          "materialPixelError": 0.01689616672869371,
+          "materialJointError": 0.01689616672869371,
+          "jointRegionPixelError": 0.012425437466558333,
+          "jointKnownPixels": 50461
+        },
+        "correctedLabels": {
+          "id": "real-8c875dd0f298b5a4-body-1",
+          "knownBodyPixels": 62862,
+          "knownMaterialPixels": 15062,
+          "knownBackgroundPixels": 37026,
+          "knownBodyWithoutMaterialPixels": 10774,
+          "unknownBodyPixels": 2674,
+          "bodyIoU": 0.98338161305077,
+          "bodyPixelError": 0.006935827686042442,
+          "bodyFalseNegative": 0.0013934045517882026,
+          "backgroundFalsePositive": 0.010803219359369093,
+          "materialPhaseExchanged": false,
+          "materialPixelError": 0.09055902270614792,
+          "materialJointError": 0.09055902270614792,
+          "jointRegionPixelError": 0.033865765627399784,
+          "jointKnownPixels": 52088
+        },
+        "addedWhitePixels": 1627,
+        "addedWhitePixelErrors": 1137,
+        "addedWhitePixelError": 0.6988322065150584,
+        "phasePolicy": "Use the single image-level phase chosen from original known pixels; verified identical under corrected labels."
+      },
+      {
+        "predictions": "tmp/heart-learning/material-expanded-pilot-v1/previous-on-expanded-v1/predictions.npz",
+        "sha256": "15e6af343bcfa181f6765bd6c6632dec1e37fb7e768c096a497dc3e376a558bd",
+        "previousLabels": {
+          "id": "real-8c875dd0f298b5a4-body-1",
+          "knownBodyPixels": 62862,
+          "knownMaterialPixels": 13435,
+          "knownBackgroundPixels": 37026,
+          "knownBodyWithoutMaterialPixels": 12401,
+          "unknownBodyPixels": 2674,
+          "bodyIoU": 0.8033991731740928,
+          "bodyPixelError": 0.09531990709808788,
+          "bodyFalseNegative": 0.05225267069205759,
+          "backgroundFalsePositive": 0.12537136066547833,
+          "materialPhaseExchanged": false,
+          "materialPixelError": 0.2963900260513584,
+          "materialJointError": 0.3004093784890212,
+          "jointRegionPixelError": 0.17197439606825074,
+          "jointKnownPixels": 50461
+        },
+        "correctedLabels": {
+          "id": "real-8c875dd0f298b5a4-body-1",
+          "knownBodyPixels": 62862,
+          "knownMaterialPixels": 15062,
+          "knownBackgroundPixels": 37026,
+          "knownBodyWithoutMaterialPixels": 10774,
+          "unknownBodyPixels": 2674,
+          "bodyIoU": 0.8033991731740928,
+          "bodyPixelError": 0.09531990709808788,
+          "bodyFalseNegative": 0.05225267069205759,
+          "backgroundFalsePositive": 0.12537136066547833,
+          "materialPhaseExchanged": false,
+          "materialPixelError": 0.340791395564998,
+          "materialJointError": 0.3453060682512283,
+          "jointRegionPixelError": 0.1889686684073107,
+          "jointKnownPixels": 52088
+        },
+        "addedWhitePixels": 1627,
+        "addedWhitePixelErrors": 1151,
+        "addedWhitePixelError": 0.7074370006146281,
+        "phasePolicy": "Use the single image-level phase chosen from original known pixels; verified identical under corrected labels."
+      }
+    ]
+  },
+  "limitations": [
+    "These conservative polygons are partial identity supervision, not accurate physical cut boundaries or exact assembled-photo corners.",
+    "This is a post-hoc diagnosis on one previously reviewed development photograph. No new training, held-out performance, or end-to-end improvement is claimed.",
+    "Published three-cut structure is retained only as source interpretation and an evaluation reference; it is not input to blind photo fitting."
+  ],
+  "artifacts": [
+    {
+      "path": "scripts/inverse/datasets/real-materials-pinterest.json",
+      "sha256": "1909f24e8868be1d74458944655009b4e4fdce15fa64e1703a3f2f44bab751ae",
+      "bytes": 19344
+    },
+    {
+      "path": "scripts/inverse/datasets/real-annotations-pinterest.json",
+      "sha256": "a972cf961544f85565b2f8edc3df872dd27c2ca3333ea5c01d04e1867b19aaa9",
+      "bytes": 9942
+    },
+    {
+      "path": "scripts/inverse/datasets/real-review.json",
+      "sha256": "1e58b4a9c73f4482337fa41edb6de843d22277ee7d338088e93f764c197c8c3b",
+      "bytes": 289856
+    },
+    {
+      "path": "tmp/heart-learning/printed-paper-correction-v1/audit.json",
+      "sha256": "d2e1ca6c25d9312be191945f90ce0eef3de9c7cd8bada86b260f45dd6117fc59",
+      "bytes": 6763
+    },
+    {
+      "path": "tmp/heart-learning/printed-paper-correction-v1/admission.json",
+      "sha256": "f768cb4bbc7fe5b88b7ad5bb89c7dcd7e6df4d12ec6ff0707308864d120c8aa3",
+      "bytes": 1046
+    },
+    {
+      "path": "tmp/heart-learning/printed-paper-correction-v1/prepare.py",
+      "sha256": "b672ebed634ae8776863f772ab7a45075317a78f608987359897eb6f518b5f4d",
+      "bytes": 4550
+    },
+    {
+      "path": "tmp/heart-learning/printed-paper-correction-v1/audit.py",
+      "sha256": "773853c3798737aabef0f897b3cbd20e5bf970141caf56a392373a65f8e3cabd",
+      "bytes": 4194
+    },
+    {
+      "path": "tmp/heart-learning/printed-paper-correction-v1/admit.py",
+      "sha256": "ee6f842929e36e083ae34f0d37e02e3cd3b7270d85cce610edddaa02a91b15ab",
+      "bytes": 3530
+    },
+    {
+      "path": "tmp/heart-learning/printed-paper-correction-v1/new-polygons-native.png",
+      "sha256": "815b0d7f1e3dd4aa8e09694e33e4481c70427ead41c8db4372bf78485aa968f9",
+      "bytes": 261978
+    },
+    {
+      "path": "tmp/heart-learning/printed-paper-correction-v1/admitted-256/manifest.json",
+      "sha256": "43ad3b146fb44a73afdc9c5f5662adeec18c4819b9bd7d606ab7d8dacb5b7e00",
+      "bytes": 4210
+    },
+    {
+      "path": "tmp/heart-learning/printed-paper-correction-v1/admitted-768/manifest.json",
+      "sha256": "06dd297172d187d48a0d05e226cbd03e51e4ed7c9097bd7d7cd6ae722e2ade2b",
+      "bytes": 4241
+    },
+    {
+      "path": "tmp/heart-learning/printed-paper-correction-v1/original/real-annotations-pinterest.json",
+      "sha256": "470cab7fe80cb06709d90a718791af8ca790de83831ae8db0af0822d4559a5e5",
+      "bytes": 8864
+    },
+    {
+      "path": "tmp/heart-learning/printed-paper-correction-v1/original/real-manifest.json",
+      "sha256": "149697fc7cdd535736dd8727bba7847bca10d74823a28bdfaf77c95c44a6ffb3",
+      "bytes": 5941754
+    },
+    {
+      "path": "tmp/heart-learning/printed-paper-correction-v1/original/real-materials-pinterest.json",
+      "sha256": "3a9d3bb965d0165dde196b72968af30c426802fa71429ca041c045b16c31137e",
+      "bytes": 17743
+    },
+    {
+      "path": "tmp/heart-learning/printed-paper-correction-v1/original/real-review.json",
+      "sha256": "bac1e78aa1920b36eacd751fe82d52e23d86eb6cc06429cb06911287564de4fc",
+      "bytes": 289145
+    }
+  ],
+  "verification": {
+    "focusedPythonTests": [
+      {
+        "command": [
+          "/Library/Developer/CommandLineTools/usr/bin/python3",
+          "scripts/inverse/datasets/real-collect.test.py"
+        ],
+        "exitCode": 0,
+        "seconds": 0.22017350000000002,
+        "tests": 14,
+        "log": {
+          "path": "tmp/heart-learning/printed-paper-correction-v1/real-collect.test.py.log",
+          "sha256": "f9a4091900a07bcd14d27a28e892ffcf39eecb27a92b9bc038040e0989cc022b"
+        }
+      },
+      {
+        "command": [
+          "/Library/Developer/CommandLineTools/usr/bin/python3",
+          "scripts/inverse/learning/real_materials.test.py"
+        ],
+        "exitCode": 0,
+        "seconds": 3.239795791,
+        "tests": 15,
+        "log": {
+          "path": "tmp/heart-learning/printed-paper-correction-v1/real_materials.test.py.log",
+          "sha256": "5d027a1521a8ae5ffd93af5f131b672e170ef46b5c0b37417d78872d2f9bfb11"
+        }
+      },
+      {
+        "command": [
+          "/Library/Developer/CommandLineTools/usr/bin/python3",
+          "scripts/inverse/learning/material_metrics.test.py"
+        ],
+        "exitCode": 0,
+        "seconds": 0.17616729200000014,
+        "tests": 8,
+        "log": {
+          "path": "tmp/heart-learning/printed-paper-correction-v1/material_metrics.test.py.log",
+          "sha256": "6ff8cb6673e52248481ba0fa0eca3657ce430b443dbc93e93c7a3e25938b7877"
+        }
+      }
+    ],
+    "totalTests": 37,
+    "productionSourceChanged": false,
+    "productionQa": "docs/inverse/datasets/boundary-trace-reuse.json",
+    "scope": "Annotation correction validated by compiler pixel reconstruction, source/split invariants, visual inspection and collector/material tests. Production source matches the just-completed 940-test inverse QA."
+  }
+}

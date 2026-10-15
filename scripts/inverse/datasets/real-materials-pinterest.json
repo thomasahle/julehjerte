@@ -1,11 +1,11 @@
 {
   "schema": "woven-heart-real-material-annotations-1",
   "coordinateConvention": "source-image pixel edges; x right, y down; no EXIF transform",
-  "scope": "Two additional partial material observations on existing Pinterest body annotations. Whole-image A/B exchange is allowed; unpainted pixels remain unknown. Unassigned training candidates, no added photographs or cut-path labels, no model trained.",
+  "scope": "Partial paper identity observations for two existing Pinterest bodies. The printed checker has a source-verified material correction: red ink belongs to the white paper. Source pixels, body geometry, grouping and previous training artifacts are unchanged; this revision is not yet used for training.",
   "bodyAnnotations": [
     {
       "path": "scripts/inverse/datasets/real-annotations-pinterest.json",
-      "sha256": "470cab7fe80cb06709d90a718791af8ca790de83831ae8db0af0822d4559a5e5"
+      "sha256": "a972cf961544f85565b2f8edc3df872dd27c2ca3333ea5c01d04e1867b19aaa9"
     }
   ],
   "instances": [
@@ -14,7 +14,7 @@
       "boundaryUncertaintyPixels": 2,
       "papers": {
         "paperA": {
-          "description": "Red paper in the lobe and checker cells. Small heart-shaped apertures and their dark rims remain unknown.",
+          "description": "Red paper in the lobe and checker cells; red ink printed on white cells is paper B.",
           "polygons": [
             [
               [
@@ -217,7 +217,7 @@
           ]
         },
         "paperB": {
-          "description": "White paper, including its gently shaded lobe and checker cells. Handle, seams and heart-shaped apertures are not labeled.",
+          "description": "White paper in its shaded lobe and checker cells, including red printed hearts and black ink outlines. Handles, seams and uncertain physical boundaries are excluded.",
           "polygons": [
             [
               [
@@ -358,6 +358,78 @@
                 272,
                 319
               ]
+            ],
+            [
+              [
+                224,
+                152
+              ],
+              [
+                252,
+                180
+              ],
+              [
+                224,
+                208
+              ],
+              [
+                196,
+                180
+              ]
+            ],
+            [
+              [
+                224,
+                224
+              ],
+              [
+                252,
+                252
+              ],
+              [
+                224,
+                280
+              ],
+              [
+                196,
+                252
+              ]
+            ],
+            [
+              [
+                223,
+                295
+              ],
+              [
+                251,
+                323
+              ],
+              [
+                223,
+                351
+              ],
+              [
+                195,
+                323
+              ]
+            ],
+            [
+              [
+                223,
+                368
+              ],
+              [
+                249,
+                394
+              ],
+              [
+                223,
+                420
+              ],
+              [
+                197,
+                394
+              ]
             ]
           ]
         }
@@ -365,8 +437,9 @@
       "review": {
         "status": "initial-reviewed",
         "method": "assistant-visual-interior-polygons",
-        "note": "Native 440 by 440 source visually inspected. Conservative interiors identify the two visible papers. Small heart-shaped apertures, black rims, seams, handle and shadow are left unknown; existing body uncertainty takes precedence. No color threshold, hidden cut geometry or original template is inferred."
-      }
+        "note": "Native photograph and publisher patterns establish red printed hearts and dark ink outlines on white paper. Four conservative white-cell interiors add material B supervision across ink. Existing paper A and B polygons and body uncertainty remain unchanged. Source, native polygon overlay and compiled 256- and 768-pixel overlays visually reviewed. No model has trained on this revision; previous training inputs and predictions remain preserved."
+      },
+      "sourceCorrection": "docs/inverse/datasets/printed-heart-source-correction.json"
     },
     {
       "id": "real-3f7b76e1a98e808f-body-1",

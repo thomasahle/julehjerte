@@ -2,7 +2,7 @@
   "schema": "woven-heart-real-annotations-1",
   "coordinateConvention": "source-image pixel edges; x right, y down; no EXIF transform",
   "target": "Visible selected basket body including both papers. Exclude handles, shadows and background; uncertain attachments and clipped boundaries receive no supervision.",
-  "scope": "Two assistant-reviewed Pinterest body instances outside the currently reserved QA source groups and earlier annotated source groups. Source/motif-family review and global allocation remain pending; no neural model has used these observations. The source images and original ten-instance pilot are unchanged.",
+  "scope": "Two assistant-reviewed Pinterest body instances outside reserved QA sources. Earlier offline pilots used the preceding revision. Publisher verification corrects printed-decoration metadata; source pixels, body geometry, candidate-family grouping, corners and allocations remain unchanged.",
   "instances": [
     {
       "id": "real-8c875dd0f298b5a4-body-1",
@@ -19,11 +19,12 @@
           440,
           440
         ],
-        "note": "Red/white heart with four small heart details on a saturated blue background. Both papers are foreground; the handle and cast shadow are excluded. The attachment is uncertain. Source-size outline and label overlays reviewed. The four overlap points are approximate visible references with six-pixel uncertainty, not measured physical corners or cutting labels."
+        "note": "Red/white heart with four small heart details on a saturated blue background. Both papers are foreground; the handle and cast shadow are excluded. The attachment is uncertain. Source-size outline and label overlays reviewed. The four overlap points are approximate visible references with six-pixel uncertainty, not measured physical corners or cutting labels. Publisher verification identifies the four small hearts as printed red ink on white paper, not apertures. No body pixels or approximate corners change."
       },
       "motif": {
         "candidateFamily": "small-hearts-in-checker-frame",
-        "crossCorpusReview": "pending"
+        "crossCorpusReview": "pending",
+        "candidateFamilyBasis": "Appearance grouping retained for historical split consistency. Small hearts are printed decoration; the published cutting structure is an ordinary four-strip checker."
       },
       "allocation": "unassigned",
       "pose": "flat",
@@ -218,6 +219,22 @@
         "status": "approximate-visible-reference",
         "order": "notch,right,tip,left",
         "uncertaintyRadiusPixels": 6
+      },
+      "publishedPatternObservation": {
+        "status": "primary-source-visually-verified",
+        "report": "docs/inverse/datasets/printed-heart-source-correction.json",
+        "sourcePage": "https://www.auntannie.com/Valentines/HeartBasket/",
+        "patternUrls": [
+          "https://www.auntannie.com/Valentines/HeartBasket/ValBasketHeartsClr.pdf",
+          "https://www.auntannie.com/Valentines/HeartBasket/ValBasketHearts.pdf"
+        ],
+        "slitsPerSheet": [
+          3,
+          3
+        ],
+        "cutStyle": "matching straight parallel cuts",
+        "decoration": "red printed hearts on white paper",
+        "use": "Source interpretation and evaluation only; not supplied as cut geometry to blind fitting."
       }
     },
     {

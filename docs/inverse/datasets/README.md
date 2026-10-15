@@ -36,9 +36,15 @@ The inventory, with material annotations updated on 2026-10-15, contains:
 straight cuts per sheet. Earlier descriptions calling these shapes apertures
 were incorrect. The fixed-crop and neck studies below measure an appearance
 reinterpretation, not recovery of that photograph's published cutting paths.
-Their numerical results remain recorded. Existing partial labels excluded
-these motifs; explicit printed-paper supervision and corrected descriptions
-are still needed. The 22 Hunodan and 31 hard-photo benchmark counts are unaffected.
+Their numerical results remain recorded. Historical partial labels excluded
+these motifs. The [current material revision](printed-paper-material-correction.json)
+adds 1,627 white-paper pixels at 256 resolution, including red ink and dark ink
+outlines. All prior known pixels, RGB/body images and source split groups remain
+unchanged. The existing expanded model is wrong on 59.62% of these newly observed
+pixels: its error on this photo rises from 0.060% to 6.493% when scored against
+the corrected labels. This is a post-hoc diagnosis, not a new training result;
+no model has used the revision. The 22 Hunodan and 31 hard-photo benchmark counts
+are unaffected.
 
 A [boundary preparation refactor](boundary-trace-reuse.json) reuses cleanup and
 pixel chains when trying several tracing tolerances. Across 29 photographic
@@ -54,6 +60,12 @@ fails: one Hunodan and eight accepted photo errors increase. All eighteen
 changed photo render pairs and the changed Hunodan output were visually reviewed.
 The jigsaw recovers its puzzle tabs and 0.9744% disagreement in this run, but
 the controlled delay study still reproduces its skipped-initializer failure.
+
+A [paired initializer study](separable-start-reuse-plan.json) tested skipping
+exactly repeated separable starts. Complete seeds and reports match for all
+29 ordinary and 26 feature-weighted image-only probes, but the aggregate gains
+are only 0.44% and 1.03%, respectively. The candidate remains offline; no
+whole-solver improvement or repair of the scheduling cliff is demonstrated.
 
 A [fixed-crop material diagnosis](fixed-crop-material-diagnosis.json) separates
 the learned mask from crop placement on the stacked-heart photograph. With

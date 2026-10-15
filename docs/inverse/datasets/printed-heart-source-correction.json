@@ -75,8 +75,7 @@
     "learnedPilot17": "Historical derived-mask outcomes retained; this source is not evidence of recovering the published cutting paths. Reevaluate against material-identity labels before making that claim."
   },
   "pendingCorrections": [
-    "After the frozen full-QA run and queued initializer study terminate, correct the current annotation descriptions and add publisher/template provenance. Preserve old training labels and reports.",
-    "Add explicit white-paper labels within the printed motifs, with source-boundary uncertainty handled separately. Keep all crops in the existing source/motif group.",
+    "Use the corrected material labels in a new grouped training experiment; no model has yet trained on this revision.",
     "Use the published three-cut structure for evaluation only; do not provide it to blind photo reconstruction."
   ],
   "retiredExperiment": "tmp/heart-learning/rgb-border-routing-v1",
@@ -106,5 +105,11 @@
       "sha256": "63bb40acd2bbcaced06d0f3ab279c3df924769a72dc5429bf6980a002b02b018",
       "bytes": 64172
     }
-  ]
+  ],
+  "completedCorrections": [
+    "Current annotation descriptions and publisher/template observation corrected through the collector review sidecar and regenerated manifest.",
+    "Four conservative white-paper interiors add 1,627 known material pixels at 256 resolution. Prior known pixels, body/RGB bytes and all 1,034 source split-group records remain unchanged.",
+    "Unchanged model predictions rescored on the new labels; expanded model misclassifies 59.62% of newly supervised white-paper pixels. Old experiment inputs and reports remain preserved."
+  ],
+  "materialCorrection": "docs/inverse/datasets/printed-paper-material-correction.json"
 }
