@@ -31,6 +31,21 @@ test('clearance can reverse a finalist ranking without creating or discarding a 
   assert.deepEqual(remaining,before);
 });
 
+test('simpler finalists use image-plus-cut cost without preferring an inferior smaller grid',()=>{
+  const seed=(counts,error)=>({model:{counts},error});
+  // Measured flower scores: the five-cut start is inside the cost window,
+  // but the six-cut start is better under that same objective.
+  const flower=[seed([4,4],.061431884765625),seed([5,5],.0643768310546875),seed([6,6],.062835693359375),seed([3,3],.0720672607421875),seed([3,2],.08929443359375)];
+  assert.deepEqual(gridFinalists(flower,[]),[flower[0],flower[1],flower[3]]);
+  // The shifted leaf's useful start lies just outside the old raw-error
+  // cutoff. Crossing that cutoff must not remove a competitive routing.
+  for(const error of [.0767,.0782318115234375]){
+    const leaf=[seed([5,5],.061767578125),seed([3,5],.066131591796875),seed([4,4],.0678863525390625),seed([4,4],.0680999755859375),seed([3,3],error)];
+    leaf[2].phase=1;leaf[3].phase=-1;
+    assert.deepEqual(gridFinalists(leaf,[]),[leaf[0],leaf[1],leaf[4]],'The other colour phase of an existing count pair cannot consume the count-diversity reservation.');
+  }
+});
+
 test('small resolution changes retain a checked three-cut flower instead of crowding it out',{timeout:40000},async()=>{
   const record=JSON.parse(await fs.readFile(new URL('./fixtures/flower-resolution/source.json',import.meta.url)));
   const hash=b=>createHash('sha256').update(b).digest('hex'),masks=[];

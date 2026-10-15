@@ -100,7 +100,10 @@ mixed independent-render results and is rejected for adoption.
 A [36-run shortlist follow-up](clearance-candidate-repair.md) improves the
 right-shifted leaf and exposes a genuinely invalid clearance initializer in
 the upward shift. Standalone bounded refinement repairs that seed and passes
-the finer paper audit, but fresh end-to-end integration remains to be tested.
+the finer paper audit. The [bounded integration](clearance-repair-integration.md)
+now passes focused fresh-solve and flower regressions while retaining all final
+checks. Two shortlist variants exposed and corrected count-diversity issues;
+the corrected paired replay and full corpus/browser checks remain pending.
 
 The [short-search scheduling correction](photo-feature-stability.md) reserves
 curve-refinement time for nearly fitting grids while retaining routing priority

@@ -67,8 +67,16 @@ export function gridFinalists(coarse,evidence,limit=3){
   if(limit>=3&&chosen.length===limit){
     const total=r=>r.model.counts[0]+r.model.counts[1],balance=r=>Math.abs(r.model.counts[0]-r.model.counts[1]);
     const finite=coarse.filter(r=>Number.isFinite(r.error));
-    const best=Math.min(...finite.map(r=>r.error)),largest=Math.max(...chosen.map(total));
-    const simpler=finite.filter(r=>r.error<=best+.015&&total(r)<largest).sort((a,b)=>total(a)-total(b)||balance(a)-balance(b)||a.error-b.error)[0];
+    // Use the same image-plus-cut-count preference as fine-grid comparison.
+    // A raw-image cutoff can drop the simpler routing after a one-pixel shift
+    // even though it remains competitive under the solver's own objective.
+    const score=r=>r.error+.005*total(r),best=Math.min(...finite.map(score)),largest=Math.max(...chosen.map(total));
+    // Reserve different cut counts, ranked by that objective. Choosing the
+    // fewest cuts inside the window can favour a worse five-cut flower over
+    // the useful six-cut start. A second colour phase of an existing count
+    // pair adds no count diversity; it stays in the ordinary remaining queue.
+    const represented=new Set(chosen.map(r=>r.model.counts.join(',')));
+    const simpler=finite.filter(r=>!represented.has(r.model.counts.join(','))&&score(r)<=best+.015&&total(r)<largest).sort((a,b)=>score(a)-score(b)||total(a)-total(b)||balance(a)-balance(b))[0];
     if(simpler&&!chosen.includes(simpler)){
       const replace=chosen.map((r,i)=>i>0&&(!supported||!r.model.counts.every((c,j)=>c===supported[j]))?i:-1).filter(i=>i>=0).at(-1);
       if(replace!==undefined)chosen[replace]=simpler;

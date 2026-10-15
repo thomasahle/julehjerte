@@ -29,6 +29,7 @@ import {featureDetailPlan} from './feature-details.js';
 import {rerouteFittedBoundary} from './reroute.js';
 import {recoverClampedFeatures} from './clamped-features.js';
 import {polishCandidate} from './polish.js';
+import {repairClearanceInitializer} from './clearance-repair.js';
 
 export {borderEvidence,supportedBorderCounts,gridCountLimit,gridFinalists} from './counts.js';
 const featureSeed=c=>['feature-weighted-grid','feature-preserving-grid','feature-sampling-grid','fitted-boundary-rerouting'].includes(c.seed);
@@ -521,7 +522,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     // Weak-region starts already retain every source feature. Like ordinary
     // grids, their apparent improvement can disappear under the strip-width
     // constraint; compare the retained ordinary finalist before committing.
-    if(i===0&&!clearanceComparison&&!weights&&!symmetryRequested&&(!featureSeed(selected)||earlyFeatureInitialization?.trigger==='weak-region')&&deadline-performance.now()>3500){
+    if(i===0&&!clearanceComparison&&!weights&&!symmetryRequested&&(!featureSeed(selected)||earlyFeatureInitialization?.trigger==='weak-region')&&deadline-performance.now()>3000){
       const retry=clearanceComparisonSeed(fine.slice(i+1).filter(r=>!featureSeed(r)),selected,clear);
       if(retry){
         const at=performance.now(),alternate=prepareRefinement(retry,deadline-at);
@@ -530,8 +531,23 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
         const paper=geometry.passed?materialAudit(solution,alternate.refinementCfg):null;
         const originalColours=retainsGridColours(clear),alternativeColours=retainsGridColours(alternate.clear);
         const score=r=>r.error+.005*(r.model.counts[0]+r.model.counts[1]);
-        const preferred=score(alternate.clear)<score(clear)&&geometry.passed&&(!cfg.requireMaterialCore||paper?.passed)&&(!originalColours||alternativeColours);
-        clearanceComparison={initialCounts:clear.model.counts,initialGridError:selected.error,initialClearanceError:clear.error,alternativeCounts:alternate.clear.model.counts,alternativeGridError:retry.error,alternativeClearanceError:alternate.clear.error,initialColours:originalColours,alternativeColours,alternativeGeometry:geometry.passed,alternativePaper:paper?.status,seconds:(performance.now()-at)/1000,preferred};
+        const competitive=score(alternate.clear)<score(clear)&&(!originalColours||alternativeColours);
+        let preferred=competitive&&geometry.passed&&(!cfg.requireMaterialCore||paper?.passed),repair=null;
+        // A better coarse routing can start with a narrow neck that the
+        // common curve fitter repairs quickly. Keep the ordinary incumbent
+        // and all finalists; only a fully checked repair can move ahead.
+        if(competitive&&!geometry.passed&&clear.error>cfg.maxImageError&&!candidates.some(c=>c.imagePassed)){
+          repair=stage('directRefining',()=>repairClearanceInitializer(alternate,input,alternate.refinementCfg,{geometry,deadline:deadline-1700,onProgress:(r,s)=>onProgress({stage:'directRefining',detail:'clearance-initializer',counts:alternate.clear.model.counts,...r},s)}));
+          if(repair.candidate){
+            addCandidate(repair.candidate);
+            if(repair.candidate.imagePassed){
+              preferred=true;verifiedAlternative=true;
+              const verification=repair.candidate.paperVerification;
+              preparations.set(retry,{...alternate,graph:new CurveGraph(repair.candidate.graph.nested(repair.candidate.points),cfg.width),refinementCfg:verifiedPaperSettings({report:{paperVerification:verification}},alternate.refinementCfg),verification});
+            }
+          }
+        }
+        clearanceComparison={initialCounts:clear.model.counts,initialGridError:selected.error,initialClearanceError:clear.error,alternativeCounts:alternate.clear.model.counts,alternativeGridError:retry.error,alternativeClearanceError:alternate.clear.error,initialColours:originalColours,alternativeColours,alternativeGeometry:geometry.passed,alternativePaper:paper?.status,...(repair?{repair:repair.report}:{}),seconds:(performance.now()-at)/1000,preferred};
         if(preferred){fine.splice(fine.indexOf(retry),1);fine.splice(i,0,retry);i--;continue;}
       }
     }
@@ -564,14 +580,14 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     },onProgress:(r,solution)=>{
       if(protectedObjective){
         r.weightedError=r.error;r.error=maskDisagreement(source,sampleWeave(solution,source.resolution));
-        solution.report={paperVerification:{...verification,status:r.paper}};
       }
+      if(verification)solution.report={paperVerification:{...verification,status:r.paper}};
       onProgress({stage:'directRefining',counts:clear.model.counts,...r},solution);
     }}));
     if(protectedObjective){
       candidate.error=mismatch(renderCurves(graph,candidate.points,candidate.phase,n,32),prob);
-      candidate.paperVerification={...verification,status:candidate.paper?.status};
     }
+    if(verification)candidate.paperVerification={...verification,status:candidate.paper?.status};
     candidate.counts=clear.model.counts;candidate.seed=selected.seed;addCandidate(candidate);
     // A joint protected routing needs its established local detail pass before
     // competing with other starts; that pass can close an initially open eye.
