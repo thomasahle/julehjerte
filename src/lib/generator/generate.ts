@@ -296,6 +296,8 @@ function finishConstruction(request: GeneratorRequest, r: Construction, recipe: 
 		name: request.name,
 		colors: request.colors,
 		tolerance: 0.025,
+		reuseTranslatedFits: request.mode === 'text' &&
+			(request.textFrame === 'repeat' || request.textFrame === 'repeat-check'),
 		clearanceScale,
 		overlapAspectRatio: r.overlapAspectRatio
 	});

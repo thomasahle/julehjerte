@@ -90,6 +90,7 @@ import {
 } from '$lib/utils/symmetry';
 import { MAX_GRID_SIZE } from '$lib/constants';
 import { FIT_TOLERANCE, isSharpJoin, simplifyCubicChain } from '$lib/inverse/simplifyCurves';
+import { createTranslatedCurveFitter } from '$lib/inverse/curveFitCache';
 import { NO_SYMMETRY, type SymmetryMode, type SymmetrySettings } from '$lib/paint/symmetry';
 import { maskMismatch } from '$lib/paint/mask';
 import { rasterizeDesign } from '$lib/paint/rasterize';
@@ -157,6 +158,8 @@ export type CutGeometryOptions = {
   tolerance?: number;
   /** Keep common cutting spans exactly coincident while simplifying the rest. */
   preserveShared?: boolean;
+  /** Reuse repeated generated outline sections within this conversion. */
+  reuseTranslatedFits?: boolean;
 };
 
 export type ConvertedHeart = {
@@ -330,14 +333,15 @@ function snapToEdges(segments: BezierSegment[], axis: 'x' | 'y'): void {
 /** A curve used by both sheets is one piece of geometry. Refitting the two
  * surrounding chains independently can turn it into a gap or a crossing.
  * Keep those cubics, and simplify only runs between the common spans. */
-function simplifySharedChain(segments: BezierSegment[], shared: boolean[], tolerance: number): BezierSegment[] {
-  if (!shared.some(Boolean)) return simplifyCubicChain(segments, tolerance);
+function simplifySharedChain(segments: BezierSegment[], shared: boolean[], tolerance: number,
+  fit: typeof simplifyCubicChain): BezierSegment[] {
+  if (!shared.some(Boolean)) return fit(segments, tolerance);
   const result: BezierSegment[] = [];
   for (let i = 0; i < segments.length;) {
     if (shared[i]) { result.push(segments[i]!); i++; continue; }
     let end = i + 1;
     while (end < segments.length && !shared[end]) end++;
-    result.push(...simplifyCubicChain(segments.slice(i, end), tolerance));
+    result.push(...fit(segments.slice(i, end), tolerance));
     i = end;
   }
   return result;
@@ -494,6 +498,7 @@ export function convertCutGeometry(
 ): ConvertedHeart {
   const geometry = parseCutGeometry(json);
   const scale = SPAN / geometry.square_width_mm;
+  const fit = opts.reuseTranslatedFits ? createTranslatedCurveFitter() : simplifyCubicChain;
 
   const families: Array<{ paths: CutReference[][]; lobe: LobeId; axis: 'x' | 'y'; label: string }> = [
     { paths: geometry.A_overlap_paths, lobe: 'right', axis: 'y', label: 'A' },
@@ -525,8 +530,8 @@ export function convertCutGeometry(
       const chain = orientChain(resolved, family.axis, label);
       const shared = (chain === resolved ? cut : cut.slice().reverse()).map(ref => (uses.get(ref.curve) ?? 0) > 1);
       const simplified = opts.preserveShared === false
-        ? simplifyCubicChain(chain, opts.tolerance ?? FIT_TOLERANCE)
-        : simplifySharedChain(chain, shared, opts.tolerance ?? FIT_TOLERANCE);
+        ? fit(chain, opts.tolerance ?? FIT_TOLERANCE)
+        : simplifySharedChain(chain, shared, opts.tolerance ?? FIT_TOLERANCE, fit);
       snapToEdges(simplified, family.axis);
       return simplified;
     });

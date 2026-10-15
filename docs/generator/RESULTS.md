@@ -1,5 +1,84 @@
 # Generator robustness results
 
+## Current performance: reuse translated outline fits
+
+The two repeating-text frames now reuse fitted outline sections within a single
+geometry conversion. Matching includes the fitting tolerance and every control
+point relative to the section's origin. A rounded lookup key only finds a
+candidate; reuse requires every relative coordinate to agree within 1e-10 in
+the 0–100 frame. The translated fit retains the original endpoints exactly.
+Stored controls are independent copies, and the cache holds at most 256 entries
+before the conversion ends. Other generator frames and paint conversions keep
+the existing path.
+
+The full topology, spacing and artwork checks still run. No construction order,
+outline, shared-cut rule or fitting tolerance has changed. Profiling the previous
+amy checkerboard found 7.11 seconds in 1,696 curve-fitting calls out of 12.63
+seconds overall (`conversion-profile.json`), mainly in rejected conversions.
+
+Paired runs of the production implementation and a copy with reuse disabled:
+
+| Nunito checkerboard text | Before | After |
+|---|---:|---:|
+| ANNA | 1,597 ms | 1,048 ms |
+| amy | 13,823 ms | 7,921 ms |
+| William | 20,710 ms | 7,082 ms |
+
+The broader comparison includes all six fonts, both repeating frames, a
+multiline input, accents and counters: ten accepted outputs and two unchanged
+refusals. Every accepted pair has identical finger/segment counts, zero raster
+difference at 600 pixels, and maximum control-coordinate difference below
+1.35e-10 editor pixels. These observations ran alongside audits; they are not
+browser latency guarantees. The report is `fit-cache-compare.json`. Sofie's
+strict 45-degree tip counter changed from five to four at floating-point
+rounding scale; this is not a physical cutting improvement.
+
+The current ANNA heart and both cutting sheets were rendered and inspected in
+`fit-cache-gallery-0.png` with its corresponding SVG. Its exact 4×4 cyclic field,
+eight tips below 45° and zero tips below 30° remain. Browser inventory returned
+no browsers and the native-pipe startup failure. No physical weaving trial has
+been performed.
+
+All **396 repeating-text configurations** were freshly audited, including
+JSON/SVG handoffs, artwork fidelity and the editor's spacing check. There are
+**273 accepted / 123 refused / zero invalid**, with no status changes or
+regressions. The reports are `fit-cache-repeat.json` and `fit-cache-checker.json`.
+The combined matrix, retaining the unchanged nonrepeating and figure results,
+is `fit-cache-current.json`: **2,794 accepted / 356 refused / zero invalid**.
+The pinned success set is unchanged. The full goal remains unfinished.
+
+All **1,087 unit tests and 177 inverse tests** pass, together with type checking,
+lint and the production build. Type checking reports seven existing warnings.
+The final suite used `VITEST_MAX_WORKERS=2 npm test`; its log is
+`fit-cache-tests-bounded.log`, alongside `fit-cache-{check-final,lint-final,build}.log`.
+An earlier unrestricted rerun hit the existing handwritten-letter test's
+20-second timeout during concurrent startup and was stopped. No test limit was
+raised; the complete bounded run passes on the final source.
+
+### Curved shared connections, not shipped
+
+A prototype makes the shared cubic's endpoint tangent bisect the two outline
+directions, with a handle length of 20% of the original connection's chord.
+Both sheets use exactly the same curve. It keeps a change only after complete
+conversion, spacing and fidelity checks and an improved tip count. The initial
+per-construction trial adds work and can alter the later layout comparison;
+it is not enabled in production. The comparison is `smooth-shared-probe.json`.
+For amy it reduced tips below 45° from 12 to three, while the three tips below
+30° remained and the 600-pixel woven preview was unchanged. The before/after
+paper templates are `smooth-gallery-0.png`. Further work must check width and
+cutting practicality, not merely the endpoint-angle score.
+
+A second prototype applies this pass only to the final chosen construction,
+retaining every earlier layout decision. Five paired probes preserve all their
+visible pixels at 600 pixels. It reduces anna from three to two tips below 45°
+and amy from 12 to three; ANNA, SØREN and Kalam ANNA remain unchanged. Needle-tip
+counts do not improve. This is `smooth-final-probe.json`. A separate audit of
+the 134 accepted checkerboards passes all 134, including both handoffs, with
+zero regressions or invalid output (`smooth-final-checker.json`). The Bree Serif
+M&M roundtrip logs a coordinate-range warning that needs investigation before
+enabling the prototype. This experiment is not included in the production code
+or its coverage totals.
+
 ## Current coverage: attach to individual stroke tips
 
 The combined default-size matrix now has **2,794 accepted / 356 refused / zero
@@ -54,9 +133,10 @@ The new complex amy regression uses the same 30-second allowance as the earlier
 mixed-topology cases. The final suite log is `stroke-tip-tests-complete.log`,
 alongside `stroke-tip-{check,lint,build}.log`.
 
-The broad prototype audit of other previously refused text cases remains in
-progress (`peak-text-probe.json`). Its unfinished results are not included in
-the production totals. The goal remains unfinished: 356 corpus configurations
+The broad prototype audit of 247 other previously refused text cases finished
+with 245 refusals and only the two Bree Serif repeat recoveries already included
+above (`peak-text-probe.json`). It found no further accepted configurations.
+The goal remains unfinished: 356 corpus configurations
 still refuse, and most other sizes and the remaining searchable catalog are
 unverified. These three recoveries do not imply universal support.
 
