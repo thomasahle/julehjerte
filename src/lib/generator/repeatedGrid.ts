@@ -100,7 +100,15 @@ function openBoundary(local: Edge[], gates: Point[], active: number[]) {
 	return local.flatMap((e, i): Edge[] => kept[i].size ? [{ ...e, family: kept[i].size === 2 ? 'AB' : [...kept[i]][0] }] : []);
 }
 
-export function generateRepeatedGrid(text: string, font: Font) {
+/** Shared only by the two construction passes for the same text and font. */
+export function repeatedGridCache() {
+	return {
+		cells: new Map<string, { center: Point; edges: Edge[]; artwork: Ring[] }>(),
+		failed: new Set<string>()
+	};
+}
+
+export function generateRepeatedGrid(text: string, font: Font, practical = false, cache = repeatedGridCache()) {
 	let repeated = repeatedText(text);
 	if (!repeated)
 		throw new ConstructionError('empty', 'Empty text');
@@ -120,11 +128,6 @@ export function generateRepeatedGrid(text: string, font: Font) {
 	const minY = Math.min(...points.map(p => p[1])), maxY = Math.max(...points.map(p => p[1]));
 	const cy = (minY + maxY) / 2, cell = 100 / n, margin = gridClearance(2 * n, n);
 	const edges: Edge[] = [], artwork: Ring[] = [];
-	const cache = new Map<string, {
-		center: Point;
-		edges: Edge[];
-		artwork: Ring[];
-	}>();
 	for (let row = 0; row < n; row++)
 		for (let col = 0; col < n; col++) {
 			const char = matrix[row][col], glyph = font.glyphs[char];
@@ -145,7 +148,7 @@ export function generateRepeatedGrid(text: string, font: Font) {
 			const x = (col + (row % 2) / 2) * cell, y = row * cell;
 			const gates: Point[] = [[x, y], [x + cell / 2, y], [x + cell / 2, y + cell], [x, y + cell]];
 			const boundary = [row === 0, row % 2 === 1 && col === n - 1, row === n - 1, row % 2 === 0 && col === 0]; // N,E,S,W
-			const key = char + ':' + row % 2 + ':' + boundary.map(Number).join(''), cached = cache.get(key);
+			const key = char + ':' + row % 2 + ':' + boundary.map(Number).join(''), cached = cache.cells.get(key);
 			if (cached) {
 				const move = (p: Point): Point => [p[0] + center[0] - cached.center[0], p[1] + center[1] - cached.center[1]];
 				edges.push(...cached.edges.map(e => ({ ...e, from: move(e.from), to: move(e.to) })));
@@ -153,12 +156,19 @@ export function generateRepeatedGrid(text: string, font: Font) {
 				continue;
 			}
 			const edgeStart = edges.length, artStart = artwork.length;
-			const remember = () => cache.set(key, { center, edges: edges.slice(edgeStart), artwork: artwork.slice(artStart) });
+			const remember = () => cache.cells.set(key, { center, edges: edges.slice(edgeStart), artwork: artwork.slice(artStart) });
 			const active = [0, 1, 2, 3].filter(i => !boundary[i] && !boundary[(i + 3) % 4]);
 			const angles = gates.map(p => Math.atan2(center[1] - p[1], center[0] - p[0]));
 			if (active.length === 4) {
 				try {
-					fourPortMotif(edges, contours, gates, angles, margin, active, routes => spacedRoutes(routes, gates, active, boundary, margin, 2 * n * STRIP_WIDTH / 100));
+					try {
+						if (cache.failed.has(key)) throw new ConstructionError('topology', 'No original cell route');
+						fourPortMotif(edges, contours, gates, angles, margin, active, routes => spacedRoutes(routes, gates, active, boundary, margin, 2 * n * STRIP_WIDTH / 100));
+					} catch (error) {
+						if (error instanceof ConstructionError) cache.failed.add(key);
+						if (!practical || !(error instanceof ConstructionError)) throw error;
+						fourPortMotif(edges, contours, gates, angles, margin, active, routes => spacedRoutes(routes, gates, active, boundary, margin, 2 * n * STRIP_WIDTH / 100), { practical: true });
+					}
 				} catch (error) {
 					if (!(error instanceof ConstructionError)) throw error;
 					throw new ConstructionError(error.code, `${char} at ${row},${col}: ${error.message}`);
@@ -180,7 +190,12 @@ export function generateRepeatedGrid(text: string, font: Font) {
 				}
 				return pairs.map(([a, b]) => ({ base, a, b }));
 			});
-			for (const { base, a, b } of choices) {
+			// Keep working letter cells intact. Only failed cells need the wider
+			// corner-routing pass; sample caps across the full exposed stroke so
+			// intricate fonts cannot trigger hundreds of expensive route rankings.
+			construction: for (const improve of practical ? cache.failed.has(key) ? [true] : [false, true] : [false])
+			for (const { base, a, b } of improve && choices.length > 24
+				? Array.from({ length: 24 }, (_, i) => choices[Math.round(i * (choices.length - 1) / 23)]) : choices) {
 				const baseIndex = contours.findIndex(r => r.includes(base.ring[0]));
 				const ports = gates.slice();
 				let corner: number | undefined;
@@ -199,7 +214,7 @@ export function generateRepeatedGrid(text: string, font: Font) {
 				}
 				try {
 					const local: Edge[] = [];
-					fourPortMotif(local, contours, ports, angles, margin, active, routes => spacedRoutes(routes, ports, active, boundary, margin, 2 * n * STRIP_WIDTH / 100), { root: base.ring });
+					fourPortMotif(local, contours, ports, angles, margin, active, routes => spacedRoutes(routes, ports, active, boundary, margin, 2 * n * STRIP_WIDTH / 100), { root: base.ring, practical: improve });
 					const opened = openBoundary(local, ports, active);
 					const ends = new Map<string, Point>();
 					for (const i of [0, 1, 2, 3].filter(i => !active.includes(i))) {
@@ -222,14 +237,16 @@ export function generateRepeatedGrid(text: string, font: Font) {
 					artwork.push(outline);
 					edges.push(...opened);
 					built = true;
-					break;
+					break construction;
 				} catch (error) {
 					if (!(error instanceof ConstructionError))
 						throw error;
 				}
 			}
-			if (!built)
+			if (!built) {
+				cache.failed.add(key);
 				throw new ConstructionError('topology', `No open boundary for ${char} at ${row},${col}`);
+			}
 			remember();
 		}
 	return {

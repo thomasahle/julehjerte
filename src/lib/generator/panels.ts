@@ -9,6 +9,9 @@ import {
 	type Edge,
 	type Frame,
 	near,
+	support,
+	dot,
+	direction,
 	area,
 	mix,
 	add,
@@ -133,7 +136,7 @@ export function stitch(edges: Edge[], dividers: number[], axis: 0 | 1 = 0): Edge
 
 export function generatePanelFigure(
 	rings: Ring[],
-	frame: Frame,
+	frame: Frame | undefined,
 	size: number,
 	scale: number,
 	count = 2,
@@ -189,21 +192,35 @@ export function generatePanelFigure(
 				[x, down],
 				[lo, y]
 			].map((p) => uprightToSheet(p as Point));
+			const contours = parts.map(r => r.map(uprightToSheet));
+			const angles = [Math.PI / 4, (3 * Math.PI) / 4, (-3 * Math.PI) / 4, -Math.PI / 4];
+			if (!frame) {
+				// In the close-fitting template, outer grid lines meet the actual
+				// silhouette of each panel. Interior gates retain the shared seam.
+				for (const [side, outside] of [row === 0, col === count - 1, row === rows - 1, col === 0].entries()) {
+					if (!outside) continue;
+					const angle = angles[side] + Math.PI, d = direction(angle);
+					gates[side] = contours.map(r => support(r, angle).point)
+						.reduce((a, b) => dot(a, d) > dot(b, d) ? a : b);
+				}
+			}
 			route(
 				edges,
-				parts.map((r) => r.map(uprightToSheet)),
+				contours,
 				gates,
-				[Math.PI / 4, (3 * Math.PI) / 4, (-3 * Math.PI) / 4, -Math.PI / 4],
+				angles,
 				gridClearance(count + rows + 1)
 			);
 			cells[row].push(gates);
 		}
 	}
 	edges = stitch(stitch(edges, vertical), horizontal, 1);
-	connectCellGrid(edges, cells, frameRing(frame, size), style, spread);
+	connectCellGrid(edges, cells, frame ? frameRing(frame, size) : undefined, style, spread);
+	const artwork = upright.map(r => r.map(uprightToSheet));
 	return {
 		geometry: compile(edges),
 		edges,
-		artwork: upright.map((r) => r.map(uprightToSheet))
+		artwork,
+		...(!frame ? { domain: [...cells.flat(), ...artwork] } : {})
 	};
 }

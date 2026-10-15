@@ -402,6 +402,8 @@ share a chain. The compiler rejects branches, closed cycles and paths ending on 
 geometric clearance and artwork fidelity are checked before a result can be saved or downloaded.
 Imported figure walks are split at exactly repeated vertices, and collapsed
 loops are removed without changing the even-odd fill or moving any outline.
+Classify nested contours using bounds and a point off the parent's boundary;
+a shared starting vertex must not turn a separate component into a hole.
 If a newer local attachment route fails after cells are joined or the full
 sheet is validated, try the original route too. Skip this extra attempt when
 the local construction itself failed; keep all clearance and fidelity checks.
@@ -421,6 +423,9 @@ an entire word through two long cuts. Complicated figures first try neighbouring
 clipped boundaries cancel or become shared cuts, preserving every visible detail. Prefer more
 manageable strips over fewer cuts, while retaining the full clearance and fidelity checks. Two-dimensional
 panels separate the gift's bow and box pieces into a 5×5 grid.
+The close-fitting figure template can also use panels. Its outer gates land on
+each panel's silhouette, while internal gates keep their shared seams. The
+surrounding grid reaches the figure directly, with no added circular frame.
 
 “Gentag som mønster” is a text frame, not a separate mode or control. It makes one n×n square
 of cyclic letter shifts: ANNA / NNAA / NAAN / AANN, with no surrounding checkerboard cells.
@@ -430,6 +435,10 @@ aligned into n×n letter positions. Inner cells have four shared connections, ed
 and corner cells one. The outer letter strokes extend directly to the paper edges; there is no
 separate rim. Boundary counters and detached accents attach only to inward connections, so
 opening an outer stroke cannot discard them. Matching glyphs reuse their contour routing.
+If a letter cell fails, try bounded corner attachments and invisible relief
+cuts for that cell. Preserve completed cells between the two passes. Boundary
+route ranking must use the retained paths and their actual paper-edge ends,
+so a removed cap cannot hide a fragile or crossing cut.
 A single initial repeats in a 2×2 field. The shared 20-strip limit permits up to ten letters;
 longer messages are rejected before construction, not silently truncated. The paper remains
 square despite different strip counts: JSON and SVG preserve the physical overlap ratio.

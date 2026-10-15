@@ -1,5 +1,54 @@
 # Generator robustness results
 
+## Follow-up: touching contours, fitted panels and repeated letters
+
+A fresh pass over the earlier **2,130 configurations** finished with no
+regressions and no invalid accepted results:
+
+| Corpus | Configurations | Accepted | Refused | Invalid accepted output |
+|---|---:|---:|---:|---:|
+| Text: earlier font/frame matrix, including checkerboard | 1008 | 768 | 240 | 0 |
+| Figures: 51 motifs, 22 templates | 1122 | 975 | 147 | 0 |
+
+The ordinary repeat frame accepts **126/198** configurations; the checkerboard
+frame accepts **107/198**. Every accepted result passed artwork fidelity,
+open-cut topology, spacing and both JSON and SVG handoffs.
+
+This batch repairs 19 figure combinations and 15 repeated-text combinations.
+It also verifies 79 additional checkerboard configurations from the previously
+untested font cases. The acceptance list now pins **1,743** configurations,
+113 more than the preceding batch.
+
+- A shared starting vertex no longer makes a separate contour look like a
+  hole. Containment uses bounds and a point off the parent's boundary. This
+  recovers the Phosphor butterfly in 16 templates without changing its outline.
+- The close-fitting template can divide the motif into panels and attach outer
+  grid lines directly to each panel's silhouette. The authored gift uses a
+  5×5 grid; the Phosphor paw and Tabler gift use 4×4 grids. No circle or cutout
+  is introduced.
+- Repeated letters can use the corner-routing and invisible-chord construction
+  when the original cell fails. Completed cells are reused, and boundary
+  candidates are checked using the retained paths after their caps are opened.
+  Recovered examples include Nunito `Anna` and `SØREN`, Bree Serif `amy`,
+  Oswald `William`, and several Kalam initials and words.
+- Attachment order is reused, and rounded graph keys are cached within each
+  cell. Two diagnostic comparisons retained identical construction results:
+  Nunito `Anna` took 3.80→2.99 seconds, while the refused Cinzel `SØREN` took
+  34.27→29.03 seconds. These individual measurements are not a latency guarantee;
+  difficult handwriting and serif cases still take too long.
+
+All **939 unit tests and 177 inverse tests** pass, along with type checking,
+lint and the production build. Rendered inspection covered eight recovered
+examples. Browser checks covered the repaired mixed-case repeat preview and
+the gift's matching thumbnail, main preview and 5×5 editor handoff. No physical
+weaving trial was performed.
+
+The goal remains unfinished: **387 tested configurations are still refused**.
+The harness previously tested five fonts in only four frames. It now covers
+every font in every frame, adding **1,020 configurations not yet audited**.
+The expanded target is 2,028 text configurations plus 1,122 figures. Earlier
+matrix results must not be presented as proof of that expanded coverage.
+
 ## Follow-up: imported contours and alternative cut routes
 
 The figure sweep now accepts **956 of 1,122 combinations**, with **166 refused,

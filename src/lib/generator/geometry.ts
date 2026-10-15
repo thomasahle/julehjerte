@@ -72,13 +72,33 @@ export function forest(rings: Ring[]): Contour[] {
 		ring: area(r) < 0 ? r.slice().reverse() : r,
 		children: [] as Contour[]
 	}));
+	const bounds = new Map(nodes.map(n => [n, [
+		Math.min(...n.ring.map(p => p[0])), Math.min(...n.ring.map(p => p[1])),
+		Math.max(...n.ring.map(p => p[0])), Math.max(...n.ring.map(p => p[1]))
+	]]));
+	const contains = (parent: Contour, child: Contour) => {
+		const a = bounds.get(parent)!, b = bounds.get(child)!;
+		if (a[0] > b[0] + EPS || a[1] > b[1] + EPS || a[2] < b[2] - EPS || a[3] < b[3] - EPS) return false;
+		// Touching walks often start at their shared vertex. A ray cast there
+		// can misclassify a separate component as a hole. Use a point that is
+		// strictly off the prospective parent's boundary instead.
+		for (const p of child.ring.flatMap((p, i) => [p, mix(p, child.ring[(i + 1) % child.ring.length], .5)])) {
+			const onBoundary = parent.ring.some((u, i) => {
+				const v = parent.ring[(i + 1) % parent.ring.length], d = sub(v, u);
+				const t = dot(sub(p, u), d) / dot(d, d);
+				return t >= -EPS && t <= 1 + EPS && distance(p, mix(u, v, Math.max(0, Math.min(1, t)))) < EPS;
+			});
+			if (!onBoundary) return inside(p, parent.ring);
+		}
+		return false;
+	};
 	const roots: Contour[] = [];
 	for (const node of nodes) {
 		const parents = nodes.filter(
 			(n) =>
 				n !== node &&
 				Math.abs(area(n.ring)) > Math.abs(area(node.ring)) &&
-				inside(node.ring[0], n.ring)
+				contains(n, node)
 		);
 		parents.sort((a, b) => Math.abs(area(a.ring)) - Math.abs(area(b.ring)));
 		if (parents[0]) parents[0].children.push(node);
@@ -663,6 +683,23 @@ export function generateCheckedText(
 	};
 }
 
+/** The order depends only on the number of gates and candidates. Reuse it
+ * across letters and caps instead of rebuilding and sorting it at every call. */
+const attachmentOrders = new Map<string, number[][]>();
+function attachmentOrder(fan: number, count: number) {
+	const key = `${fan}:${count}`;
+	let choices = attachmentOrders.get(key);
+	if (!choices) {
+		choices = Array.from({ length: fan ** count }, (_, n) =>
+			Array.from({ length: count }, (_, i) => Math.floor(n / fan ** i) % fan)
+		).sort((a, b) =>
+			a.filter(x => x !== 0).length - b.filter(x => x !== 0).length ||
+			a.reduce((x, y) => x + y, 0) - b.reduce((x, y) => x + y, 0)
+		);
+		attachmentOrders.set(key, choices);
+	}
+	return choices;
+}
 /** Boundary cells restrict counters to inward gates, so opening an outer cap
  * cannot discard a counter or its bridges. Their route validator checks the
  * retained paths with the new paper-edge endpoints, instead of the cap that
@@ -678,6 +715,9 @@ function contourMotif(
 	options: { root?: Ring; visibleIslands?: boolean; strict?: boolean; practical?: boolean; originalOnly?: boolean } = {}
 ) {
 	const count = gates.length;
+	// Candidate routes reuse the same immutable outline points. Keep their
+	// rounded graph keys for this cell instead of formatting them at every walk.
+	const pointKeys = new WeakMap<Point, string>();
 	const nodes = forest(contours).sort(
 		(a, b) => {
 			const selected = (r: Ring) => Number(!!options.root && r.includes(options.root[0]));
@@ -734,13 +774,7 @@ function contourMotif(
 	// contour-routing rule, not an inverse image solve: no outline moves, and
 	// every candidate has exactly the same visible boundary and topology.
 	const fan = options.practical ? 8 : 5;
-	const combinations = Array.from({ length: fan ** count }, (_, n) =>
-		Array.from({ length: count }, (_, i) => Math.floor(n / fan ** i) % fan)
-	).sort(
-		(a, b) =>
-			a.filter((x) => x !== 0).length - b.filter((x) => x !== 0).length ||
-			a.reduce((x, y) => x + y, 0) - b.reduce((x, y) => x + y, 0)
-	);
+	const combinations = attachmentOrder(fan, count);
 	const seenPorts = new Set<string>();
 	routing: for (const indices of combinations) {
 		const ports = indices.map((index, j) => candidates[j][index]);
@@ -778,7 +812,7 @@ function contourMotif(
 		for (const interior of perforatedOutline(base, ports, bridgePorts, options.practical)) {
 			const local = [...interior, ...exterior];
 			try {
-				const routes = localRoutes(local, gates);
+				const routes = localRoutes(local, gates, pointKeys);
 				if (!routes || !clearSharedCuts(local, contours)) continue;
 				fallback ??= local;
 				if (!alternatives.has(portKey) && alternatives.size < (options.practical ? 64 : 8))
@@ -813,7 +847,7 @@ function contourMotif(
 		for (const relieved of relieveNotches(local.edges, base.ring, local.ports, bridgePorts, options.practical)) {
 			if (options.practical && ++portAttempts > 8) break;
 			if (++reliefAttempts > 256) break relief;
-			const routes = localRoutes(relieved, gates);
+			const routes = localRoutes(relieved, gates, pointKeys);
 			if (!routes || !clearSharedCuts(relieved, contours)) continue;
 			if (options.practical) {
 				ranked.push({ edges: relieved, routes, score: cuttingCost(routes, margin) });
@@ -826,7 +860,7 @@ function contourMotif(
 		}
 	}
 	for (const candidate of ranked.sort((a, b) => a.score - b.score))
-		if (usableRoutes(candidate.routes, margin)) {
+		if (acceptRoutes ? acceptRoutes(candidate.routes) : usableRoutes(candidate.routes, margin)) {
 			edges.push(...candidate.edges);
 			return;
 		}
@@ -1131,8 +1165,15 @@ function* perforatedOutline(node: Contour, ports: Port[], bridgePorts: readonly 
 }
 
 /** Trace the two noncrossing paths of each sheet, rejecting branches and loops. */
-function localRoutes(edges: Edge[], gates: Point[]): Ring[] | null {
-	const key = (p: Point) => p.map((x) => x.toFixed(6)).join(',');
+function localRoutes(edges: Edge[], gates: Point[], pointKeys: WeakMap<Point, string>): Ring[] | null {
+	const key = (p: Point) => {
+		let value = pointKeys.get(p);
+		if (value === undefined) {
+			value = p.map(x => x.toFixed(6)).join(',');
+			pointKeys.set(p, value);
+		}
+		return value;
+	};
 	const routes: Ring[] = [];
 	for (const [family, pairs] of [
 		[

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { normalizeContours } from './contours';
-import { inside, type Ring } from './geometry';
+import { inside, forest, type Ring } from './geometry';
 import rabbit from '../../../static/generator/motifs/ph-rabbit.json';
 import sun from '../../../static/generator/motifs/ph-sun.json';
 import butterfly from '../../../static/generator/motifs/ph-butterfly.json';
@@ -9,6 +9,24 @@ import bicycle from '../../../static/generator/motifs/ph-bicycle.json';
 const filled = (rings: Ring[], x: number, y: number) => rings.reduce((a, r) => a ^ Number(inside([x, y], r)), 0);
 
 describe('rounded contour normalization', () => {
+	it('keeps touching components separate regardless of their starting vertex', () => {
+		const rings: Ring[] = [[[0, 0], [2, 0], [2, 2], [0, 2]], [[0, 0], [-1, 0], [-1, -1], [0, -1]]];
+		for (const reverse of [false, true]) {
+			const roots = forest(rings.map(r => reverse ? r.slice().reverse() : r));
+			expect(roots).toHaveLength(2);
+			expect(roots.every(r => !r.children.length)).toBe(true);
+		}
+	});
+	it('recognizes an inner contour even when all its vertices touch the parent', () => {
+		const roots = forest([[[0, 0], [4, 0], [4, 4], [0, 4]], [[2, 0], [4, 2], [2, 4], [0, 2]]]);
+		expect(roots).toHaveLength(1);
+		expect(roots[0].children).toHaveLength(1);
+	});
+	it('does not mistake the touching butterfly component for a hole', () => {
+		const roots = forest(normalizeContours(butterfly.contours as Ring[]));
+		expect(roots).toHaveLength(2);
+		expect(roots.every(r => !r.children.length)).toBe(true);
+	});
 	it('removes repeated adjacent points and collapsed contours without moving edges', () => {
 		const square: Ring = [[0, 0], [2, 0], [2, 2], [0, 2]];
 		expect(normalizeContours([

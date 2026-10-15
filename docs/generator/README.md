@@ -2,9 +2,8 @@
 
 Run `npm run test:generator:robustness` from the worktree. The offline corpus uses
 34 texts, six bundled fonts, and 51 authored, Phosphor and Tabler motifs.
-Nunito is tested in all ten text frames; the other five fonts are tested in
-woven, air, repeat and repeat-check. Every motif is tested in all 22 figure
-templates. Together this is 1,008 text configurations and 1,122 figure
+Every font is tested in all ten text frames. Every motif is tested in all 22 figure
+templates. Together this is 2,028 text configurations and 1,122 figure
 configurations. Repeat cases exceeding the frame's strip limit are excluded,
 not reported as successes. The checkerboard variant uses an even period:
 ANNA is 4×4, JUL is 6×6, and OSCAR is 10×10.
@@ -26,6 +25,8 @@ in `src/lib/generator/robustness.test.ts` runs with `npm test`.
 These are digital checks, not a physical weaving trial. Figure scale and frame
 size use the product defaults. This is a deliberately varied sample of the icon
 catalog, not a test of every available icon or every historical slider value.
+Earlier reports sampled only four frames for the five additional fonts; those
+results do not prove coverage of the expanded matrix.
 
 Useful focused runs:
 

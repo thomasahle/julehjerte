@@ -36,7 +36,7 @@ try {
         for (const fontId of fontIds.filter(f => !args.font || (args.font === 'others' ? f !== 'nunito' : String(args.font).split(',').includes(f)))) {
             const font = await read(`static/generator/fonts/${fontId}.json`);
             for (const text of texts.filter(t => !args.input || args.input === t))
-                for (const textFrame of TEXT_TEMPLATES.filter(f => args.frame ? f === args.frame : fontId === 'nunito' || ['woven', 'air', 'repeat', 'repeat-check'].includes(f))) {
+                for (const textFrame of TEXT_TEMPLATES.filter(f => !args.frame || f === args.frame)) {
                     const letters = [...text.normalize('NFC').replace(/\s/g, '')].length;
                     if (textFrame === 'repeat' && letters > 10 || textFrame === 'repeat-check' && letters * (letters % 2 ? 2 : 1) > 20)
                         continue;

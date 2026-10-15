@@ -3,7 +3,7 @@ import { generateCornerChecks } from './cornerChecks';
 import { generateFittedFigure } from './fitted';
 import { sunburstBorder } from './sunburst';
 import { generateTextGrid } from './textGrid';
-import { generateRepeatedGrid } from './repeatedGrid';
+import { generateRepeatedGrid, repeatedGridCache } from './repeatedGrid';
 import { generateCheckeredGrid } from './checkeredGrid';
 import { normalizeContours } from './contours';
 import { gridClearanceScale } from '$lib/geometry/clearance';
@@ -318,8 +318,18 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 				return finish(generateCheckeredGrid(text, request.font, .82, .25), 'letters');
 			}
 		}
-		if (frame === 'repeat')
-			return finish(generateRepeatedGrid(request.text ?? '', request.font), 'letters');
+		if (frame === 'repeat') {
+			const cache = repeatedGridCache();
+			try { return finish(generateRepeatedGrid(request.text ?? '', request.font, false, cache), 'letters'); }
+			catch (error) {
+				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+				if (error instanceof ConstructionError && ['empty', 'character'].includes(error.code)) throw error;
+				// Reuse completed cells, and don't repeat a global failure when all
+				// local routes already existed. Only failed cells need new cuts.
+				if (!cache.failed.size) throw error;
+				return finish(generateRepeatedGrid(request.text ?? '', request.font, true, cache), 'letters');
+			}
+		}
 		const text = request.text ?? '';
 		const font = request.font;
 		const shape = frame === 'woven' || frame === 'air' ? undefined : frame;
@@ -370,7 +380,15 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 			}
 			catch (error) {
 				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
-				if (!constructed && !(error instanceof CompilationError)) throw error;
+				last = error;
+				if (!constructed && !(error instanceof CompilationError)) break;
+			}
+		}
+		for (const [columns, rows] of [[2, 1], [2, 2], [3, 1], [3, 2], [3, 3], [4, 2]]) {
+			try {
+				return finish(generatePanelFigure(request.contours ?? [], undefined, request.frameSize ?? 70, request.scale ?? .7, columns, 'check', rows), 'silhouette');
+			} catch (error) {
+				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 				last = error;
 			}
 		}

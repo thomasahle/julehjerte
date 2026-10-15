@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { generate } from './generate';
 import {
 	compile,
+	fourPortMotif,
 	ConstructionError,
 	generateFigure,
 	generateCheckedText,
@@ -63,6 +64,11 @@ const circle = (radius: number, x = 0, y = 0): Ring =>
 	]);
 
 describe('constructive figure generator', () => {
+	it('checks practical cut candidates with the caller’s retained-path validator', () => {
+		const ring: Ring = [[40, 40], [60, 40], [60, 60], [40, 60]];
+		const gates: Ring = [[30, 30], [70, 30], [70, 70], [30, 70]];
+		expect(() => fourPortMotif([], [ring], gates, [Math.PI / 4, 3 * Math.PI / 4, -3 * Math.PI / 4, -Math.PI / 4], 1.5, [0, 1, 2, 3], () => false, { practical: true })).toThrow(ConstructionError);
+	});
 	for (const frame of FRAMES)
 		for (const style of ['rays', 'check', 'plain'] as const)
 			it(`${frame} / ${style} preserves the star`, () => {

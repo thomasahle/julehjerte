@@ -19,6 +19,8 @@ import paw from '../../../static/generator/motifs/ph-paw-print.json';
 import butterfly from '../../../static/generator/motifs/tb-butterfly.json';
 import rabbit from '../../../static/generator/motifs/ph-rabbit.json';
 import sun from '../../../static/generator/motifs/ph-sun.json';
+import phosphorButterfly from '../../../static/generator/motifs/ph-butterfly.json';
+import tablerGift from '../../../static/generator/motifs/tb-gift.json';
 const colors = { left: '#fffdf5', right: '#b72f2b' };
 const fonts = { nunito, breeserif, oswald, kalam, cinzel, righteous } as unknown as Record<string, Font>;
 function validateHandoffs(design: HeartDesign) {
@@ -47,7 +49,8 @@ describe('generator robustness regressions', () => {
 		['JULEMAND', 'hexagon'], ['JULEMAND', 'rounded'], ['LOVE', 'hexagon'],
 		['Sofie', 'repeat'], ['i', 'repeat'], ['Åse', 'repeat'], ['A\u030A', 'repeat'],
 		['OSCAR', 'rounded'], ['BO', 'woven'],
-		['æøå', 'diamond'], ['æøå', 'hexagon'], ['æøå', 'rounded']
+		['æøå', 'diamond'], ['æøå', 'hexagon'], ['æøå', 'rounded'],
+		['Anna', 'repeat'], ['SØREN', 'repeat']
 	] as [string, TextFrame][])
 		it(`preserves ${text} in ${textFrame} through the editor and SVG`, () => {
 			validateHandoffs(generate({ mode: 'text', name: text, text, font: fonts.nunito, textFrame, colors }).design);
@@ -58,6 +61,8 @@ describe('generator robustness regressions', () => {
 		['breeserif', 'ÆØÅ', 'air'], ['breeserif', 'æøå', 'air'],
 		['kalam', 'ANNA', 'woven'], ['kalam', 'juleman', 'woven'],
 		['kalam', 'SØREN', 'air'], ['kalam', 'M&M', 'woven'],
+		['kalam', 'A', 'repeat'], ['breeserif', 'amy', 'repeat'],
+		['oswald', 'William', 'repeat'],
 		['breeserif', 'i', 'repeat'], ['oswald', 'i', 'repeat'],
 		['kalam', 'i', 'repeat'], ['righteous', 'i', 'repeat'],
 		['kalam', 'anna', 'woven'], ['kalam', 'BO', 'woven'],
@@ -66,7 +71,7 @@ describe('generator robustness regressions', () => {
 		it(`keeps ${text} in ${fontId} through the ${textFrame} frame`, () => {
 			validateHandoffs(generate({ mode: 'text', name: text, text, font: fonts[fontId], textFrame, colors }).design);
 		}, 20000);
-	for (const [name, motif] of [['Paw', paw], ['Butterfly', butterfly], ['Rabbit', rabbit], ['Sun', sun]] as const)
+	for (const [name, motif] of [['Paw', paw], ['Butterfly', butterfly], ['Rabbit', rabbit], ['Sun', sun], ['Phosphor butterfly', phosphorButterfly]] as const)
 		it(`routes the disconnected parts of ${name} from visible attachments`, () => {
 			validateHandoffs(generate({ mode: 'figure', name, contours: motif.contours as Ring[], frame: 'circle', style: 'rays', colors }).design);
 		}, 20000);
@@ -78,6 +83,12 @@ describe('generator robustness regressions', () => {
 	for (const style of ['rays', 'check', 'plain'] as const)
 		it(`retains the original paw routing in oval-${style}`, () => {
 			validateHandoffs(generate({ mode: 'figure', name: 'Pote', contours: paw.contours as Ring[], frame: 'oval', style, colors }).design);
+		}, 20000);
+	for (const [name, motif] of [['Gift', gift], ['Paw', paw], ['Tabler gift', tablerGift]] as const)
+		it(`distributes ${name} across a close-fitting panel grid`, () => {
+			const { design } = generate({ mode: 'figure', name, contours: motif.contours as Ring[], style: 'fitted', colors });
+			expect(Math.min(design.gridSize.x, design.gridSize.y)).toBeGreaterThanOrEqual(4);
+			validateHandoffs(design);
 		}, 20000);
 	for (const style of ['rays', 'check', 'plain'] as const)
 		it(`distributes the gift over several strips in oval-${style}`, () => {
