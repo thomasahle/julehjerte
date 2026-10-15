@@ -56,6 +56,17 @@ and rounded cells remain visible in some accepted outputs. These counts measure
 derived-mask and paper checks, not faithful recovery of original artwork. The
 model remains offline, and this experiment does not replace the corpus benchmarks.
 
+A [fixed appearance-sensitivity diagnostic](material-appearance-sensitivity.json)
+checks 357 predictions: seventeen photos, three frozen models, and the original
+image plus six small exposure, gamma and saturation changes. Padding, geometry
+and labels stay fixed; all original predictions reproduce exactly. In the
+expanded model, a 5% exposure increase changes 7.70% of known-body material
+predictions on the orange/yellow checker. Its observed error falls from 39.29%
+to 28.71%, still poor. The seventeen expanded-model comparisons were visually
+reviewed. These changes isolate appearance sensitivity, while persistent missing
+motifs and foreground errors show that it cannot explain every failure. No
+per-photo variant is selected for fitting, and no model is retrained or deployed.
+
 The [latest export-audit QA](editable-paper-qa.json) passes all 60 saved SVGs
 through the stronger paper check, 857 application tests, type checking, lint,
 build and two fresh browser workflows. The full inverse suite is **924/925**:
