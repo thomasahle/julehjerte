@@ -1,6 +1,6 @@
 {
   "schema": "late-weak-feature-budget-study-1",
-  "status": "prepared-not-run",
+  "status": "complete-offline-rejected",
   "baselineCoreCommit": "545ea85",
   "sourceMetadataCommit": "72f2d30",
   "delaysMilliseconds": [
@@ -46,6 +46,31 @@
       "path": "tmp/heart-learning/late-feature-budget-v1/retirement.json",
       "sha256": "7f98dd670d8d470de0252fe32be91b684d22418b7327d38077bae7eeb6efb366",
       "bytes": 617
+    },
+    {
+      "path": "tmp/heart-learning/late-feature-budget-v2/results.json",
+      "sha256": "cc29b1a098cb59f62e46ee32502354f0fd7f3fb267bc539c8a00315a969e0be7",
+      "bytes": 33988
+    },
+    {
+      "path": "tmp/heart-learning/late-feature-budget-v2/comparison.json",
+      "sha256": "297099ceb575e2f6ef69513b5941ca0a0e22f96969be2f1e6c942eb9ddce0506",
+      "bytes": 3111
+    },
+    {
+      "path": "tmp/heart-learning/late-feature-budget-v2/review.py",
+      "sha256": "eedb594fe6af77a6cba82a9099bf1e06314e074a6561948de302d3e72048481c",
+      "bytes": 2136
+    },
+    {
+      "path": "tmp/heart-learning/late-feature-budget-v2/visual-review.json",
+      "sha256": "4e4bb329742e62f20bc67eda7188f34be797912c2257d56e0fbe053642ec8355",
+      "bytes": 1940
+    },
+    {
+      "path": "tmp/heart-learning/late-feature-budget-v2/state.json",
+      "sha256": "0a45b275c8824b213f0f38d6043ffd3f886d230fb656efb6981dce3d1dee7fb6",
+      "bytes": 62
     }
   ],
   "replaySettings": "Use runs[0].settings: the original caller inputs. Do not use report.settings, which can include a post-fit increase of materialResolution.",
@@ -61,5 +86,127 @@
     },
     "reason": "The first runner reused result.report.settings, which includes a post-fit paperVerification upgrade to materialResolution=700, instead of the original runs[0].settings. This changes solver work and cannot replay the original production schedule. Partial outputs remain preserved; do not interpret as the planned benchmark.",
     "replacement": "tmp/heart-learning/late-feature-budget-v2"
+  },
+  "results": {
+    "runs": 16,
+    "referencePassed": 7,
+    "candidatePassed": 6,
+    "paired": [
+      {
+        "caseId": "jigsaw",
+        "delay": 0,
+        "previousError": 0.009775,
+        "error": 0.0099125,
+        "errorDelta": 0.00013749999999999873,
+        "previousPassed": true,
+        "passed": true,
+        "previousFeatureStart": 1,
+        "featureStart": 1,
+        "referenceSeconds": 9.757367375,
+        "candidateSeconds": 9.799105500000001
+      },
+      {
+        "caseId": "jigsaw",
+        "delay": 2000,
+        "previousError": 0.013025,
+        "error": 0.01345,
+        "errorDelta": 0.00042500000000000003,
+        "previousPassed": true,
+        "passed": true,
+        "previousFeatureStart": null,
+        "featureStart": 1,
+        "referenceSeconds": 7.812289499999999,
+        "candidateSeconds": 7.820022583
+      },
+      {
+        "caseId": "fine-checker",
+        "delay": 0,
+        "previousError": 0.017,
+        "error": 0.02188125,
+        "errorDelta": 0.00488125,
+        "previousPassed": true,
+        "passed": true,
+        "previousFeatureStart": null,
+        "featureStart": 1,
+        "referenceSeconds": 10.583443167,
+        "candidateSeconds": 10.29228375
+      },
+      {
+        "caseId": "fine-checker",
+        "delay": 2000,
+        "previousError": 0.02245,
+        "error": 0.05404375,
+        "errorDelta": 0.031593750000000004,
+        "previousPassed": true,
+        "passed": false,
+        "previousFeatureStart": null,
+        "featureStart": null,
+        "referenceSeconds": 8.267835000000002,
+        "candidateSeconds": 7.440529125
+      },
+      {
+        "caseId": "orb",
+        "delay": 0,
+        "previousError": 0.0135875,
+        "error": 0.0135875,
+        "errorDelta": 0.0,
+        "previousPassed": true,
+        "passed": true,
+        "previousFeatureStart": null,
+        "featureStart": null,
+        "referenceSeconds": 9.715274083,
+        "candidateSeconds": 9.677809542
+      },
+      {
+        "caseId": "orb",
+        "delay": 2000,
+        "previousError": 0.0135875,
+        "error": 0.0135875,
+        "errorDelta": 0.0,
+        "previousPassed": true,
+        "passed": true,
+        "previousFeatureStart": null,
+        "featureStart": null,
+        "referenceSeconds": 7.758193041,
+        "candidateSeconds": 7.634575750000001
+      },
+      {
+        "caseId": "flettede-viking",
+        "delay": 0,
+        "previousError": 0.0217625,
+        "error": 0.02148125,
+        "errorDelta": -0.00028125000000000025,
+        "previousPassed": true,
+        "passed": true,
+        "previousFeatureStart": 0,
+        "featureStart": 0,
+        "referenceSeconds": 9.959051958,
+        "candidateSeconds": 9.862969291999999
+      },
+      {
+        "caseId": "flettede-viking",
+        "delay": 2000,
+        "previousError": 0.03209375,
+        "error": 0.03209375,
+        "errorDelta": 0.0,
+        "previousPassed": false,
+        "passed": false,
+        "previousFeatureStart": null,
+        "featureStart": 0,
+        "referenceSeconds": 7.611802833,
+        "candidateSeconds": 7.599854958
+      }
+    ]
+  },
+  "decision": "Do not integrate the lowered late-feature threshold. It does not lower delayed-jigsaw error, worsens the undelayed fine checkerboard and does not rescue the delayed Viking. More late search is not an established robustness improvement.",
+  "diagnosis": [
+    "At zero delay the fine checkerboard newly performs 0.389 seconds of feature initialization, 0.399 seconds of fine fitting, and an additional clearance comparison. Main curve refinement falls from 2.471 to 1.153 seconds; independent error rises from 1.700% to 2.188%.",
+    "At two-second delay neither fine-checker run enters the changed feature branch, yet one fails at 5.404%. This exposes remaining timing/checkpoint sensitivity, not a proven effect of the threshold change. Stage durations containing the artificial clock jump are not CPU timings.",
+    "The jigsaw changes from four-by-three to four-by-four at two-second delay, but independent error rises from 1.3025% to 1.3450%. More plausible cut counts alone are not proof of a better result."
+  ],
+  "visualReview": {
+    "path": "tmp/heart-learning/late-feature-budget-v2/visual-review.json",
+    "sha256": "4e4bb329742e62f20bc67eda7188f34be797912c2257d56e0fbe053642ec8355",
+    "bytes": 1940
   }
 }

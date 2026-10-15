@@ -67,6 +67,15 @@ exactly repeated separable starts. Complete seeds and reports match for all
 are only 0.44% and 1.03%, respectively. The candidate remains offline; no
 whole-solver improvement or repair of the scheduling cliff is demonstrated.
 
+A [late feature-start scheduling study](late-weak-feature-budget-plan.json)
+finished sixteen fresh solves across four difficult photos and two clock-delay
+conditions. Lowering the speculative-start allowance from 2.5 to 1.5 seconds
+does not improve delayed-jigsaw error and worsens the undelayed fine checker
+from 1.70% to 2.19% by leaving less refinement time. It remains offline. All
+sixteen renders were reviewed. The delayed fine checker also varies despite
+neither run entering the changed branch, so that failure is recorded as
+remaining timing sensitivity rather than attributed to the candidate change.
+
 A [fixed-crop material diagnosis](fixed-crop-material-diagnosis.json) separates
 the learned mask from crop placement on the stacked-heart photograph. With
 identical corners and source RGB, red coverage is 47.82% in the resampled neural
