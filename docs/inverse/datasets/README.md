@@ -378,8 +378,10 @@ tests and six outline tests pass, including two new orientation regressions.
 Type checking, lint, all 857 application tests, build, entry-loading and
 geometric-backend browser checks pass. Star and free-border hat also pass the
 complete Paint-to-editable-Draw workflow, with screenshots visually reviewed.
-The full inverse suite and corpus replay remain pending; the historical
-photographic fidelity regressions have not been declared resolved.
+The subsequent complete inverse suite passes all 923 tests in 1,040.93 seconds,
+with all 827 pinned source files verified unchanged. The fresh corpus and
+remaining browser replay are running; the historical photographic fidelity
+regressions have not been declared resolved.
 
 The latest validated solver revision is `c000d30`. Its
 [release record](return-projection-speed.json) passes **22/22 regular Hunodan

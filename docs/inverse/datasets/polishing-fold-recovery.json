@@ -1,6 +1,6 @@
 {
   "schema": "woven-heart-polishing-fold-recovery-1",
-  "status": "focused-and-browser-validated-full-regression-pending",
+  "status": "complete-inverse-and-preflight-validated-corpus-replay-running",
   "rootCause": "Detailed outline polishing froze the eight-millimetre border band even when an initial raster pass concealed a fold island. Final repair could inherit those locks or run out of time.",
   "implementation": [
     "Check polygon offsets at detailed-polishing checkpoints while the regular constrained fitter can still improve the curves.",
@@ -199,8 +199,16 @@
     "tmp/heart-learning/conditional-paper-repair-v2/preflight-v1/paint/results.json": "9095ca8a29e74370e35432ce1d1729367fc5654d0e965592ecdb27f9574314ad"
   },
   "remaining": [
-    "Complete inverse suite on the current sources.",
     "Repeat 22 Hunodan and 31 automatic-photo fits, independent editable export checks and the remaining ordinary/ten-second browser workflows.",
     "Retain and investigate historical photographic fidelity regressions; no release replacement claimed."
-  ]
+  ],
+  "fullInverse": {
+    "tests": 923,
+    "passed": 923,
+    "failed": 0,
+    "seconds": 1040.9332036669998,
+    "sourceFilesVerified": 827,
+    "log": "tmp/heart-learning/conditional-paper-repair-v2/release-v1/inverse.log",
+    "logSha256": "c4822844ca7fe5cf2c1973c7ca5588838fddc0ee29f29cbebe83679cb546a384"
+  }
 }
