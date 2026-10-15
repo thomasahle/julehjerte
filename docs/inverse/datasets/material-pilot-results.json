@@ -1,6 +1,6 @@
 {
   "schema": "woven-heart-material-pilot-results-1",
-  "status": "training-and-independent-audit-complete-pipeline-running",
+  "status": "first-pilot-rejected-complete-pipeline-reviewed",
   "planSha256": "ef254bfa8958cfb824a645e37c51261527cbf5341bd935b0930142a2269b94e4",
   "runs": [
     {
@@ -125,29 +125,169 @@
     "checkpointInferenceReplayed": true,
     "independentMetricsAgree": true,
     "heldOutTrainingExclusionVerified": true,
-    "encoderTensorsUnchanged": true
+    "encoderTensorsUnchanged": true,
+    "offlineLearningTests": 94,
+    "offlineLearningModules": 16,
+    "materialCoordinateTests": 3
   },
   "visualReview": {
-    "reviewedInstances": [
-      "real-995899fe049540ed-body-1",
+    "scope": "All nine material galleries and all five available reconstruction rows inspected.",
+    "galleryIds": [
+      "real-2044b1d98ed6f262-body-1",
+      "real-45744a03afddccb1-body-1",
+      "real-8c875dd0f298b5a4-body-1",
       "real-3f7b76e1a98e808f-body-1",
-      "real-cf2d0fcff65d7386-body-1"
+      "real-995899fe049540ed-body-1",
+      "real-b87b0b19f12724f3-body-1",
+      "real-cf2d0fcff65d7386-body-1",
+      "real-cdae5c890b6933cd-body-1",
+      "real-68d8f25d8891df62-body-1"
     ],
-    "findings": "Printed floral/stripe, dark star and blue/yellow checker all exhibit almost single-paper material predictions. The star and checker bodies are recognizable; the printed floral outline has holes/notches. Remaining galleries and full reconstruction outputs still require review."
+    "materialFindings": "All nine material outputs are dominated by one paper. Printed hearts and held/occluded hearts also expose imperfect body predictions. Synthetic training examples visibly match their retained paper labels, but the control predicts a single paper.",
+    "reconstructionFindings": "Boar recovered by mixed body plus RGB; bowed red/pink and blue/yellow checkers retained by production. Both stacked-heart fits distort the small heart silhouettes and remain failures. Joint material models propose no crops.",
+    "displayConvention": "The first reconstruction-review.png uses opposite display colors for mask and woven PNG because the independent renderer defines dark pixels as mask 1. reconstruction-review-mask-phase.png inverts only the rendered display for a consistent mask-1-is-white comparison; neither masks, scores, templates nor source photos change."
   },
   "conclusion": "Reject browser integration of these material checkpoints. Material discrimination is weak in both controls and mixed runs; no full-pipeline gain claimed.",
-  "nextDiagnosis": "Measure material loss and logit/class distributions on the exact synthetic training replay to distinguish optimization/representation failure from real-photo transfer failure.",
+  "nextDiagnosis": "The completed training-set diagnosis is followed by the separately pinned material-pilot-v2-plan.json. No photo gains from that run have yet been established.",
   "artifacts": {
     "tmp/heart-learning/material-pilot-v1/checks.json": "aa71acbc34d191280def19f7a2cf0027dadadca0be7cdb802af16858f391f1a2",
     "tmp/heart-learning/material-pilot-v1/input-tests.log": "66d6e314674f6e6ea71cf48674237688347597b068c9457453dcd6ce6dfe124b",
     "tmp/heart-learning/material-pilot-v1/run-v1/report.json": "83d8ee7b4ed1b7c86307809021f8f077e16646ea672dbf36430fad31f904423e",
     "tmp/heart-learning/material-pilot-review-v1/review-v1/audit.json": "f3d7558687d4a46d205f5effc75d87852c71abe0e8fb944c1c3027cdfd97b6ce",
-    "tmp/heart-learning/material-pilot-review-v1/review-v1/index.html": "82e47ceeafe0de0b3b2ffa95ede4ffd9abbe25a982c222c868b39986ba28fa3e"
+    "tmp/heart-learning/material-pilot-review-v1/review-v1/index.html": "82e47ceeafe0de0b3b2ffa95ede4ffd9abbe25a982c222c868b39986ba28fa3e",
+    "tmp/heart-learning/material-pipeline-v1/checks.json": "0bd8c470049dbfdaa98d79a718594ea5327901ede85f2999d9f6464d0b864d8f",
+    "tmp/heart-learning/material-pipeline-v1/source.json": "71906667d5cebb78e1dc25a511fe08fdcd54b41c5ed06e45b5a202e8c4e8d6ff",
+    "tmp/heart-learning/material-pipeline-v1/replay-v1/report.json": "9dba4bc315b7e2bb416872542baa88e345a8625b0ba52536f1cbaf5ab8113f31",
+    "tmp/heart-learning/material-pipeline-v1/editable-v1/results.json": "75ea2278a058300bd6bf10f350182d64af91ce3b08d2a026db3ee9bc4ea55983",
+    "tmp/heart-learning/material-pipeline-v1/visual-review.json": "a1655b729d2d9d7f971f99f4539eb5354b4fffe816648636c3a108cd95d6f941",
+    "tmp/heart-learning/material-pipeline-v1/reconstruction-review-mask-phase.png": "23507216b548a09a07dfad73b038d8d158746a6d39f42064206738c24b2b3ae7",
+    "tmp/heart-learning/material-underfit-v1/report.json": "e1a47eb87fd3db163392ea2215185d74cba6135c12d7794080dd4804f0bd3225",
+    "tmp/heart-learning/material-underfit-v1/diagnose.py": "8ed2a19855254ec00a1c89142e5b2805df29d8110e62d815439bd80c528cdb70",
+    "tmp/heart-learning/material-underfit-v1/learning-tests.log": "ca754529182c5ab2208747a6e09fc4962ca8d78078bbbf9a1a54a73d7769fe15",
+    "tmp/heart-learning/material-rate-study-v1/report.json": "4aaef2331561e4522f37451248002a8c91a8cd4e6d56258eb3aefa3065deaac1",
+    "tmp/heart-learning/material-rate-study-v1/train.py": "707ce154fea92199c7ddd331e4c2cd372c43b7bbe4d0a172f8e624f2fb086bc6"
   },
   "limits": [
     "Previously inspected partial annotations; this is grouped development evaluation, not an unseen test.",
     "Declared motif/source groups are conservative but not topology-disjoint, and synthetic replay includes checker weaving.",
     "Unknown boundaries do not receive labels or scores. Body/material scores do not establish correct crops or cutting templates.",
     "One seed and a fixed update budget; no all-data model, ONNX export or browser deployment."
-  ]
+  ],
+  "pipeline": {
+    "scope": "Fixed development photos, no ROI, supplied corners or label masks. Four declared arms: production; mixed body with RGB materials; synthetic-only joint fields; mixed out-of-fold joint fields. Crop support/geometry checks unchanged. Derived-mask template agreement is NOT source-artwork accuracy.",
+    "methods": {
+      "production": {
+        "cases": 9,
+        "crops": 3,
+        "checkedDerivedMasks": 2,
+        "editablePassed": 2
+      },
+      "mixed-body": {
+        "cases": 9,
+        "crops": 2,
+        "checkedDerivedMasks": 1,
+        "editablePassed": 1
+      },
+      "synthetic-joint": {
+        "cases": 9,
+        "crops": 0,
+        "checkedDerivedMasks": 0,
+        "editablePassed": 0
+      },
+      "mixed-joint": {
+        "cases": 9,
+        "crops": 0,
+        "checkedDerivedMasks": 0,
+        "editablePassed": 0
+      }
+    },
+    "availableConversionsPassed": 5,
+    "availableConversions": 5,
+    "interpretation": "The body-only arm recovers boar but loses both production checker successes; neither joint material arm proposes a crop. The two stacked-heart fits remain rejected."
+  },
+  "trainingDiagnosis": {
+    "originalSyntheticReplay": {
+      "synthetic-control": {
+        "seconds": 2.530458709,
+        "syntheticViews": 64,
+        "materialBCE": 0.6910034446045756,
+        "expectedHardError": 0.4823712220398112,
+        "probabilityQuantiles": [
+          0.4764266610145569,
+          0.503510257601738,
+          0.517087322473526,
+          0.5242913365364075,
+          0.5309469103813171,
+          0.536741498708725,
+          0.548104465007782
+        ],
+        "nearlySingleClassImages": 62
+      },
+      "fold-bed20937384f": {
+        "seconds": 2.4863222499999997,
+        "syntheticViews": 64,
+        "materialBCE": 0.6880398625507951,
+        "expectedHardError": 0.4825313480103396,
+        "probabilityQuantiles": [
+          0.4184993505477905,
+          0.43451454877853396,
+          0.4451523035764694,
+          0.4586252272129059,
+          0.47287316918373107,
+          0.48553654909133914,
+          0.5250725150108337
+        ],
+        "nearlySingleClassImages": 64
+      },
+      "fold-da2b900600dc": {
+        "seconds": 2.542668625000001,
+        "syntheticViews": 64,
+        "materialBCE": 0.6905728569254279,
+        "expectedHardError": 0.4824350958440333,
+        "probabilityQuantiles": [
+          0.40449440479278564,
+          0.42229749500751496,
+          0.4324123114347458,
+          0.44569987058639526,
+          0.4599474370479584,
+          0.4825660938024521,
+          0.5223218202590942
+        ],
+        "nearlySingleClassImages": 64
+      }
+    },
+    "higherRateTrainingOnly": {
+      "lr-0.001": {
+        "rate": 0.001,
+        "updates": 240,
+        "metrics": {
+          "bodyIoU": 0.9685902213015608,
+          "bodyPixelError": 0.009732246398925781,
+          "bodyFalseNegative": 0.016413296420442133,
+          "backgroundFalsePositive": 0.00698112628192152,
+          "materialPixelError": 0.040871565500249604,
+          "materialJointError": 0.0439993449958881,
+          "jointRegionPixelError": 0.016955690231689316,
+          "balancedMaterialJointError": 0.04448523844014766
+        },
+        "seconds": 58.451206084000006
+      },
+      "lr-0.003": {
+        "rate": 0.003,
+        "updates": 240,
+        "metrics": {
+          "bodyIoU": 0.9712160468338795,
+          "bodyPixelError": 0.008831977844238281,
+          "bodyFalseNegative": 0.015301307252459971,
+          "backgroundFalsePositive": 0.006138237702931048,
+          "materialPixelError": 0.03629619577351825,
+          "materialJointError": 0.03887905777574448,
+          "jointRegionPixelError": 0.014974604135734265,
+          "balancedMaterialJointError": 0.03864622368718969
+        },
+        "seconds": 54.202510958
+      }
+    },
+    "conclusion": "At identical synthetic data and update count, higher learning rates learn material distinctions that the initial rate barely learned. This establishes underfitting of the initial setup, not real-photo generalization. A fresh grouped follow-up uses rate .001; its photo results are pending."
+  }
 }

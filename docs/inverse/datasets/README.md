@@ -20,7 +20,7 @@ The inventory, with material annotations updated on 2026-10-15, contains:
 | Trained proposal models | 4 | Same 880,466-parameter network: random/ImageNet, balanced loss, and broader corner data; synthetic-only, offline. |
 | Trained foreground models | 5 | RGB-only, 880,449 parameters; random/ImageNet, background augmentation, and paired clutter/control runs, all offline. |
 | Decoder-adaptation checkpoints | 4 | One synthetic control and three grouped real/synthetic folds; no all-data or deployed model. |
-| Material-pilot checkpoints | 3 | Fixed synthetic control and two grouped real/synthetic folds; independently audited, but poor paper discrimination. Rejected for integration. |
+| Material-pilot checkpoints | 3, plus 2 synthetic diagnostics | First grouped pilot is independently audited but has poor paper discrimination. Higher-rate diagnostics learn the synthetic task; a fresh grouped follow-up is running. No integration. |
 | Training background variants | 2,040 | Five changes to each of 408 original training views; geometry labels and split groups unchanged. |
 | Training scene variants | 2,448 | Neighbours and handles paired with all six backgrounds for the same 408 training views; no new geometry families. |
 | Source-photo material QA samples | 78 | Three hearts in two reserved photographs; sparse assistant-reviewed development observations, not dense labels or training data. |
@@ -33,8 +33,12 @@ The first [joint material pilot](material-pilot-results.md) has completed all
 three training runs and its independent checkpoint audit. Mixed out-of-fold
 material disagreement is 46.11%, versus 45.24% for the synthetic-only control;
 visual review shows mostly single-paper predictions. These checkpoints are not
-suitable for integration. Full reconstruction replay and training-set diagnostics
-are underway. No learned model is deployed.
+suitable for integration. Full reconstruction replay confirms zero crop proposals
+from either joint material model; production yields two checked editable pairs
+and mixed body evidence yields one on these nine development photos. Training-set
+diagnostics expose underfitting: a tenfold rate increase reduces synthetic training
+material disagreement from 48.24% to 4.09% at the same update count. A fresh grouped
+photo follow-up is running. No learned model is deployed.
 
 The latest validated solver revision is `c000d30`. Its
 [release record](return-projection-speed.json) passes **22/22 regular Hunodan
