@@ -1,0 +1,219 @@
+{
+  "schema": 1,
+  "status": "diagnostic_complete; no_production_policy_change",
+  "rectifications": 228,
+  "trackedFeatureObservations": 399,
+  "tracked": [
+    {
+      "case": "outline-star",
+      "feature": "bottom-fragment",
+      "observations": 57,
+      "components": 57,
+      "mandatory": 26,
+      "samplingOutside": 38,
+      "withinOneSourcePixel": 36,
+      "mandatorySamplingOutside": 11,
+      "mandatoryWithinOneSourcePixel": 8,
+      "sourceGapRange": [
+        0.10546873818008023,
+        1.6194370235788438
+      ]
+    },
+    {
+      "case": "outline-star",
+      "feature": "star-interior",
+      "observations": 57,
+      "components": 57,
+      "mandatory": 57,
+      "samplingOutside": 0,
+      "withinOneSourcePixel": 0,
+      "mandatorySamplingOutside": 0,
+      "mandatoryWithinOneSourcePixel": 0,
+      "sourceGapRange": [
+        31.36268083453075,
+        33.237803250246614
+      ]
+    },
+    {
+      "case": "crossed-ribbons",
+      "feature": "bottom-fragment",
+      "observations": 57,
+      "components": 57,
+      "mandatory": 30,
+      "samplingOutside": 28,
+      "withinOneSourcePixel": 23,
+      "mandatorySamplingOutside": 12,
+      "mandatoryWithinOneSourcePixel": 6,
+      "sourceGapRange": [
+        0.13232352846582182,
+        2.020034956374826
+      ]
+    },
+    {
+      "case": "bird",
+      "feature": "eye",
+      "observations": 57,
+      "components": 57,
+      "mandatory": 57,
+      "samplingOutside": 0,
+      "withinOneSourcePixel": 0,
+      "mandatorySamplingOutside": 0,
+      "mandatoryWithinOneSourcePixel": 0,
+      "sourceGapRange": [
+        30.084250666831238,
+        32.03999956221883
+      ]
+    },
+    {
+      "case": "bird",
+      "feature": "body-opening",
+      "observations": 57,
+      "components": 57,
+      "mandatory": 57,
+      "samplingOutside": 0,
+      "withinOneSourcePixel": 0,
+      "mandatorySamplingOutside": 0,
+      "mandatoryWithinOneSourcePixel": 0,
+      "sourceGapRange": [
+        47.52390697964886,
+        49.281817903955755
+      ]
+    },
+    {
+      "case": "bird",
+      "feature": "bottom-fragment",
+      "observations": 57,
+      "components": 57,
+      "mandatory": 36,
+      "samplingOutside": 21,
+      "withinOneSourcePixel": 21,
+      "mandatorySamplingOutside": 0,
+      "mandatoryWithinOneSourcePixel": 0,
+      "sourceGapRange": [
+        0.09925932878066711,
+        3.269376875885112
+      ]
+    },
+    {
+      "case": "flettede-viking",
+      "feature": "opening",
+      "observations": 57,
+      "components": 57,
+      "mandatory": 57,
+      "samplingOutside": 0,
+      "withinOneSourcePixel": 0,
+      "mandatorySamplingOutside": 0,
+      "mandatoryWithinOneSourcePixel": 0,
+      "sourceGapRange": [
+        280.8643908253394,
+        283.9608047112201
+      ]
+    }
+  ],
+  "corpus": {
+    "inventory": 47,
+    "analyzed": 29,
+    "mandatoryFeatures": 98,
+    "flaggedFeatures": [
+      {
+        "case": "outline-star",
+        "previousPassed": false,
+        "areaMm2": 4.25,
+        "sourceGap": 0.8003437963331834,
+        "samplingOutside": true,
+        "fractionSamplingOutsideCrop": 0.058823529411764705
+      },
+      {
+        "case": "white-birds",
+        "previousPassed": true,
+        "areaMm2": 224.0625,
+        "sourceGap": 0.8870875666663782,
+        "samplingOutside": false,
+        "fractionSamplingOutsideCrop": 0
+      },
+      {
+        "case": "jigsaw",
+        "previousPassed": true,
+        "areaMm2": 700.8125,
+        "sourceGap": 0.9144300016532934,
+        "samplingOutside": true,
+        "fractionSamplingOutsideCrop": 0.00017836439846606616
+      },
+      {
+        "case": "crossed-ribbons",
+        "previousPassed": false,
+        "areaMm2": 4.5,
+        "sourceGap": 1.0011106712961564,
+        "samplingOutside": true,
+        "fractionSamplingOutsideCrop": 0.013888888888888888
+      }
+    ]
+  },
+  "replayCorrection": {
+    "initialRun": "All 228 perturbations finished. Corpus reader failed its first mask SHA-256 because benchmark PNGs encode ones as [185,19,19], not black. No original input or expected hash changed.",
+    "completedReplay": "Asserted the exact two opaque benchmark colors and every original mask hash. Retained all 399 completed perturbation observations and all 47 corpus entries.",
+    "originalFailedState": {
+      "status": "failed",
+      "exitCode": 1,
+      "seconds": 65.95677208300003
+    },
+    "corpusReplay": {
+      "status": "complete",
+      "exitCode": 0,
+      "seconds": 8.639806999999998
+    }
+  },
+  "conclusions": [
+    "The exact outline-star and crossed-ribbons failure fragments include source samples outside the proposed crop. This is useful uncertainty evidence, not proof those pixels are noise.",
+    "The genuine star interior, bird eye, bird body opening and Viking opening have no outside-crop support in all 57 perturbations each.",
+    "Outside-crop support does not explain every resolution-sensitive border fragment: many mandatory fragment variants have entirely inside-crop interpolation.",
+    "A blanket any-pixel flag would also mark a 224.0625 mm2 white-birds feature and a 700.8125 mm2 jigsaw feature in accepted cases. Do not drop whole components or remove objective pixels based on that flag.",
+    "Use support fractions and spatial core/contact evidence in any future proposal. Original mask error, small-feature checks and independent geometry still need to be evaluated."
+  ],
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/photo-sampling-support-v1/source.json",
+      "sha256": "a731057707d5b8ffe0c9b608477a033ae38bf173a1deefc0156b8cf17cabc54e"
+    },
+    {
+      "path": "tmp/heart-learning/photo-sampling-support-v1/state.json",
+      "sha256": "f4369a6ac553b0f490552cd08df866f06c010a774213afbc948374fba3a5c1ea"
+    },
+    {
+      "path": "tmp/heart-learning/photo-sampling-support-v1/analyze.log",
+      "sha256": "2b9165944d6ec1915b677a795be855ac6724cd6a0a1598e49ef21c13eb6935c5"
+    },
+    {
+      "path": "tmp/heart-learning/photo-sampling-support-v1/results.json",
+      "sha256": "edfc8301aab6fa6984864bd7e578d6aa1c41d230986148f4ad41dd7bceaa478b"
+    },
+    {
+      "path": "tmp/heart-learning/photo-sampling-support-v1/corpus-plan.json",
+      "sha256": "215f3778936eb6b1371724dbef9dc76d9c3a01a44d21c2123a2952eb18a9fddf"
+    },
+    {
+      "path": "tmp/heart-learning/photo-sampling-support-v1/corpus-source.json",
+      "sha256": "8dc2410ee1df22fcd211dea31b8e2487e919790689d9b6417eba803b16599012"
+    },
+    {
+      "path": "tmp/heart-learning/photo-sampling-support-v1/corpus-state.json",
+      "sha256": "da8d96859ba9cf441c3a567aa74f501c8a764048ed66cba44aaaa07c796f5519"
+    },
+    {
+      "path": "tmp/heart-learning/photo-sampling-support-v1/corpus-results.json",
+      "sha256": "1c4b569301de6bc43880268c1a14e9bbdac6c6f3712baa1cade8942b71ee91ea"
+    },
+    {
+      "path": "tmp/heart-learning/photo-sampling-support-v1/support.mjs",
+      "sha256": "2d2118d3724fc0538eaec33e80eff9539f2eb406b05bc3cb808f0a92828bebee"
+    },
+    {
+      "path": "tmp/heart-learning/photo-sampling-support-v1/support.test.mjs",
+      "sha256": "52ad1ac55a0f3c8956d10d2a75c62f4062e18361f15a1c03d56cb69e68c86718"
+    },
+    {
+      "path": "tmp/heart-learning/photo-sampling-support-v1/unit.log",
+      "sha256": "b864746fe60bdc8701de7c1abed7ee7f8fa3d3eb1efba479fe062ee9beba0c6e"
+    }
+  ]
+}

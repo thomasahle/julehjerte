@@ -217,6 +217,17 @@ reconstructions or justify deleting genuine small drawn features. No masks, imag
 error pixels, feature gates or benchmark denominators change. The timed Viking
 failure is a separate issue; its source opening is stable in this experiment.
 
+The [source-pixel support diagnostic](photo-sampling-support-results.json) checks
+all 228 rectifications and the unchanged 47-entry corpus (29 classified masks,
+98 mandatory features). The star and ribbons failure fragments include bilinear
+samples outside their proposed crops; the four tracked genuine interior features
+do not in any of their 57 variants. However, this does not explain every unstable
+border fragment. A blanket exclusion would also flag large white-birds and jigsaw
+features in accepted cases. No such policy is integrated. The initial corpus
+reader correctly stopped on a hash mismatch because benchmark mask PNGs use red,
+not black; the corrected reader asserts their exact palette and every original
+mask hash. All original observations and the failed diagnostic log are retained.
+
 A [boundary preparation refactor](boundary-trace-reuse.json) reuses cleanup and
 pixel chains when trying several tracing tolerances. Across 29 photographic
 masks and five border radii, all 145 resulting boundaries retain every control
