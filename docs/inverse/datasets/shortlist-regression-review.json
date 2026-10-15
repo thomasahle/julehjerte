@@ -1,0 +1,1160 @@
+{
+  "scope": "Review of two failed schedule assertions and a separate shortlist-eviction counterexample. Artifact fidelity requirements remain unchanged. Full QA rerun pending.",
+  "qa": {
+    "runtimeCommit": "cb8a8cd",
+    "checks": [
+      {
+        "stage": "core-lint",
+        "command": [
+          "npx",
+          "eslint",
+          "--no-ignore",
+          "static/inverse/core/direct/counts.js",
+          "static/inverse/core/direct/fit.js",
+          "static/inverse/core/direct/clearance-repair.js"
+        ],
+        "exitCode": 0,
+        "seconds": 1.6773515000000003
+      },
+      {
+        "stage": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 9.125863917000004
+      },
+      {
+        "stage": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 6.1146656249999864
+      },
+      {
+        "stage": "app",
+        "command": [
+          "npx",
+          "vitest",
+          "run",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 0,
+        "seconds": 22.277999166
+      },
+      {
+        "stage": "build",
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 11.395551791000003
+      },
+      {
+        "stage": "inverse",
+        "command": [
+          "npm",
+          "run",
+          "test:inverse"
+        ],
+        "exitCode": 1,
+        "seconds": 858.472109042,
+        "tests": 859,
+        "pass": 857,
+        "fail": 2,
+        "skipped": 0
+      }
+    ],
+    "state": {
+      "status": "failed",
+      "stage": "inverse",
+      "exitCode": 1,
+      "sourceFilesVerified": 855
+    },
+    "sourceSnapshotSha256": "713aae756e8913f8fb4842f0cae09a1f6deeddb1308128779a66fbf3beea9cc0",
+    "inverseLogSha256": "012dbcf57d0314fa0807480a601d9bdef587c905f6845a524e3c34902e9aaf3a",
+    "passed": 857,
+    "failed": 2,
+    "failures": [
+      {
+        "file": "scripts/inverse/comparison-search.test.mjs",
+        "line": 41,
+        "assertion": "Expected a late simpler-layout comparison, although the useful pair can now enter the initial shortlist."
+      },
+      {
+        "file": "scripts/inverse/photo-counts.test.mjs",
+        "line": 30,
+        "assertion": "Expected a completed accepted denser candidate, although clearance comparison can now put the simpler pair first."
+      }
+    ]
+  },
+  "maple": {
+    "baseline": {
+      "measurement": "tmp/heart-learning/clearance-maple-regression-v1/baseline/measurement.json",
+      "sha256": "57db7ac41847b541063ea39b679ec204c8d31ff833edba686c0a3d570cc0b8fa",
+      "seconds": 14.06162975,
+      "templateChecksPassed": true,
+      "slits": {
+        "left": 3,
+        "right": 3
+      },
+      "scores": [
+        {
+          "resolution": 400,
+          "error": 0.01135,
+          "features": {
+            "passed": true,
+            "referenceAvailable": true,
+            "minimumRetention": 0.6,
+            "minimumAreaFraction": 0.0003,
+            "minimumCoreRadiusFraction": 0.005,
+            "borderClearancePixels": 1,
+            "regions": [
+              {
+                "value": 1,
+                "areaMm2": 233.9375,
+                "centerMm": [
+                  15.547989580550361,
+                  18.88481832754475
+                ],
+                "retainedFraction": 0.9927865348650815
+              },
+              {
+                "value": 1,
+                "areaMm2": 2857.4375,
+                "centerMm": [
+                  52.623195498589205,
+                  54.0216130055338
+                ],
+                "retainedFraction": 0.9978345983070496
+              }
+            ],
+            "missing": [],
+            "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+          }
+        },
+        {
+          "resolution": 800,
+          "error": 0.0130953125,
+          "features": {
+            "passed": true,
+            "referenceAvailable": true,
+            "minimumRetention": 0.6,
+            "minimumAreaFraction": 0.0003,
+            "minimumCoreRadiusFraction": 0.005,
+            "borderClearancePixels": 1,
+            "regions": [
+              {
+                "value": 1,
+                "areaMm2": 233.9375,
+                "centerMm": [
+                  15.547989580550361,
+                  18.88481832754475
+                ],
+                "retainedFraction": 0.9911167512690355
+              },
+              {
+                "value": 1,
+                "areaMm2": 2857.4375,
+                "centerMm": [
+                  52.623195498589205,
+                  54.0216130055338
+                ],
+                "retainedFraction": 0.9964730199698156
+              }
+            ],
+            "missing": [],
+            "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+          }
+        }
+      ],
+      "extraGridComparisons": [
+        {
+          "reason": "simpler-layout",
+          "acceptedCounts": [
+            [
+              4,
+              4
+            ]
+          ],
+          "selectedCounts": [
+            3,
+            3
+          ],
+          "phase": -1
+        }
+      ],
+      "fineCounts": [
+        [
+          4,
+          4
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          3,
+          3
+        ]
+      ],
+      "maskSha256": "9b0908abdb6ceb0957b6344cfa5fbaeab4a46866c640ea8d1898b3dc31a8c101",
+      "original400PixelTestFidelityPassed": true,
+      "diagnosticBothScalesPassed": false
+    },
+    "candidate": {
+      "measurement": "tmp/heart-learning/clearance-maple-regression-v1/candidate/measurement.json",
+      "sha256": "27829aeed7eda8d12e7239896c8f2c5b42154a15f54efbb60ff8c11162710cac",
+      "seconds": 8.478007750000002,
+      "templateChecksPassed": true,
+      "slits": {
+        "left": 3,
+        "right": 3
+      },
+      "scores": [
+        {
+          "resolution": 400,
+          "error": 0.01135,
+          "features": {
+            "passed": true,
+            "referenceAvailable": true,
+            "minimumRetention": 0.6,
+            "minimumAreaFraction": 0.0003,
+            "minimumCoreRadiusFraction": 0.005,
+            "borderClearancePixels": 1,
+            "regions": [
+              {
+                "value": 1,
+                "areaMm2": 233.9375,
+                "centerMm": [
+                  15.547989580550361,
+                  18.88481832754475
+                ],
+                "retainedFraction": 0.9927865348650815
+              },
+              {
+                "value": 1,
+                "areaMm2": 2857.4375,
+                "centerMm": [
+                  52.623195498589205,
+                  54.0216130055338
+                ],
+                "retainedFraction": 0.9978345983070496
+              }
+            ],
+            "missing": [],
+            "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+          }
+        },
+        {
+          "resolution": 800,
+          "error": 0.0130953125,
+          "features": {
+            "passed": true,
+            "referenceAvailable": true,
+            "minimumRetention": 0.6,
+            "minimumAreaFraction": 0.0003,
+            "minimumCoreRadiusFraction": 0.005,
+            "borderClearancePixels": 1,
+            "regions": [
+              {
+                "value": 1,
+                "areaMm2": 233.9375,
+                "centerMm": [
+                  15.547989580550361,
+                  18.88481832754475
+                ],
+                "retainedFraction": 0.9911167512690355
+              },
+              {
+                "value": 1,
+                "areaMm2": 2857.4375,
+                "centerMm": [
+                  52.623195498589205,
+                  54.0216130055338
+                ],
+                "retainedFraction": 0.9964730199698156
+              }
+            ],
+            "missing": [],
+            "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+          }
+        }
+      ],
+      "extraGridComparisons": [],
+      "fineCounts": [
+        [
+          4,
+          4
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          3,
+          3
+        ]
+      ],
+      "maskSha256": "9b0908abdb6ceb0957b6344cfa5fbaeab4a46866c640ea8d1898b3dc31a8c101",
+      "original400PixelTestFidelityPassed": true,
+      "diagnosticBothScalesPassed": false
+    },
+    "qualification": "The diagnostic initially applied the original 400-pixel 1.2% limit at both scales. Both runtimes fail that stricter 800-pixel check identically (1.3095%). They pass the original 400-pixel fidelity check. No scale-specific measurement is hidden or changed."
+  },
+  "checker": {
+    "baseline": {
+      "seconds": 6.186573542,
+      "quad": [
+        [
+          428.52499957084467,
+          107.94140443033162
+        ],
+        [
+          651.1719003615806,
+          307.87535698407953
+        ],
+        [
+          457.77859974478423,
+          527.5446206961046
+        ],
+        [
+          247.86376696068473,
+          325.5685826170488
+        ]
+      ],
+      "maskSha256": "b7417d49a05f351d70203f50df5927543b6ee8384aa4a0ca3cd838c40d7f39c8",
+      "probabilitySha256": "11e7c2c9199f8305e54c44e0e57356fa0b78891fec0df3d3fa07a57b7361ad19",
+      "error": 0.0131875,
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "templateChecksPassed": true,
+      "features": {
+        "passed": true,
+        "referenceAvailable": true,
+        "minimumRetention": 0.6,
+        "minimumAreaFraction": 0.0003,
+        "minimumCoreRadiusFraction": 0.005,
+        "borderClearancePixels": 1,
+        "regions": [
+          {
+            "value": 1,
+            "areaMm2": 1049,
+            "centerMm": [
+              49.34044327931363,
+              47.74066074833174
+            ],
+            "retainedFraction": 0.9983317445185891
+          }
+        ],
+        "missing": [],
+        "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+      },
+      "passed": true,
+      "measurement": "tmp/heart-learning/clearance-maple-regression-v1/checker-baseline/measurement.json",
+      "sha256": "1599a0549ca81d929202e36c09ccb94f1ec02ff10c3e321995250960395bcc19",
+      "candidates": [
+        {
+          "counts": [
+            2,
+            2
+          ],
+          "imagePassed": true,
+          "sourceImageError": 0.014175
+        },
+        {
+          "counts": [
+            3,
+            3
+          ],
+          "imagePassed": true,
+          "sourceImageError": 0.01789375
+        }
+      ]
+    },
+    "candidate": {
+      "seconds": 5.056489791,
+      "quad": [
+        [
+          428.52499957084467,
+          107.94140443033162
+        ],
+        [
+          651.1719003615806,
+          307.87535698407953
+        ],
+        [
+          457.77859974478423,
+          527.5446206961046
+        ],
+        [
+          247.86376696068473,
+          325.5685826170488
+        ]
+      ],
+      "maskSha256": "b7417d49a05f351d70203f50df5927543b6ee8384aa4a0ca3cd838c40d7f39c8",
+      "probabilitySha256": "11e7c2c9199f8305e54c44e0e57356fa0b78891fec0df3d3fa07a57b7361ad19",
+      "error": 0.01016875,
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "templateChecksPassed": true,
+      "features": {
+        "passed": true,
+        "referenceAvailable": true,
+        "minimumRetention": 0.6,
+        "minimumAreaFraction": 0.0003,
+        "minimumCoreRadiusFraction": 0.005,
+        "borderClearancePixels": 1,
+        "regions": [
+          {
+            "value": 1,
+            "areaMm2": 1049,
+            "centerMm": [
+              49.34044327931363,
+              47.74066074833174
+            ],
+            "retainedFraction": 0.9986892278360343
+          }
+        ],
+        "missing": [],
+        "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+      },
+      "passed": true,
+      "measurement": "tmp/heart-learning/clearance-maple-regression-v1/checker-candidate/measurement.json",
+      "sha256": "c0886deef87354eb0a3cd9089c65815ae22b328cd388a8175db3bd048c61b3ec",
+      "candidates": [
+        {
+          "counts": [
+            2,
+            2
+          ],
+          "imagePassed": true,
+          "sourceImageError": 0.01023125
+        },
+        {
+          "counts": [
+            2,
+            2
+          ],
+          "imagePassed": true,
+          "sourceImageError": 0.01025625
+        }
+      ]
+    }
+  },
+  "replacement": {
+    "proposal": {
+      "baseCommit": "cb8a8cd",
+      "productionCountsSha256": "184e0344b06354b1d17ce7874d5db8336aad132d43e1aa50e86d40fe85efb2bd",
+      "candidateCountsSha256": "173bf6bae7c4a31420c6ec7223fc95073611e3aace163e050316a5eb1f45fbbd",
+      "change": "A simpler candidate may replace only a more complex unprotected finalist. Preserve the existing coarse-rank replacement order.",
+      "scope": "Isolated proposal; production source stays frozen during the full suite.",
+      "rejectedOrdering": "Choosing the most complex finalist changed the unchanged leaf shortlist. That extra ranking change was not retained; the isolated proposal only excludes replacements that increase the displaced cut count."
+    },
+    "checks": {
+      "counterexample": {
+        "before": [
+          [
+            4,
+            4
+          ],
+          [
+            5,
+            5
+          ],
+          [
+            4,
+            3
+          ]
+        ],
+        "after": [
+          [
+            4,
+            4
+          ],
+          [
+            4,
+            3
+          ],
+          [
+            3,
+            3
+          ]
+        ]
+      },
+      "replayed": [
+        {
+          "case": "leaf-r1",
+          "variant": "baseline",
+          "selected": [
+            {
+              "counts": [
+                3,
+                5
+              ],
+              "phase": 1
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": 1
+            },
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": -1
+            }
+          ]
+        },
+        {
+          "case": "leaf-r1",
+          "variant": "candidate",
+          "selected": [
+            {
+              "counts": [
+                3,
+                5
+              ],
+              "phase": 1
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": 1
+            },
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": -1
+            }
+          ]
+        },
+        {
+          "case": "leaf-x-plus-1-r1",
+          "variant": "baseline",
+          "selected": [
+            {
+              "counts": [
+                4,
+                5
+              ],
+              "phase": -1
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": 1
+            },
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": -1
+            }
+          ]
+        },
+        {
+          "case": "leaf-x-plus-1-r1",
+          "variant": "candidate",
+          "selected": [
+            {
+              "counts": [
+                4,
+                5
+              ],
+              "phase": -1
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": 1
+            },
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": -1
+            }
+          ]
+        },
+        {
+          "case": "leaf-x-minus-1-r1",
+          "variant": "baseline",
+          "selected": [
+            {
+              "counts": [
+                3,
+                5
+              ],
+              "phase": 1
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": 1
+            },
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": -1
+            }
+          ]
+        },
+        {
+          "case": "leaf-x-minus-1-r1",
+          "variant": "candidate",
+          "selected": [
+            {
+              "counts": [
+                3,
+                5
+              ],
+              "phase": 1
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": 1
+            },
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": -1
+            }
+          ]
+        },
+        {
+          "case": "leaf-y-plus-1-r1",
+          "variant": "baseline",
+          "selected": [
+            {
+              "counts": [
+                3,
+                5
+              ],
+              "phase": 1
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": -1
+            },
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": -1
+            }
+          ]
+        },
+        {
+          "case": "leaf-y-plus-1-r1",
+          "variant": "candidate",
+          "selected": [
+            {
+              "counts": [
+                3,
+                5
+              ],
+              "phase": 1
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": -1
+            },
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": -1
+            }
+          ]
+        },
+        {
+          "case": "leaf-y-minus-1-r1",
+          "variant": "baseline",
+          "selected": [
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": 1
+            },
+            {
+              "counts": [
+                3,
+                5
+              ],
+              "phase": 1
+            },
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": -1
+            }
+          ]
+        },
+        {
+          "case": "leaf-y-minus-1-r1",
+          "variant": "candidate",
+          "selected": [
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": 1
+            },
+            {
+              "counts": [
+                3,
+                5
+              ],
+              "phase": 1
+            },
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": -1
+            }
+          ]
+        },
+        {
+          "case": "outline-star-shift-r1",
+          "variant": "baseline",
+          "selected": [
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1
+            },
+            {
+              "counts": [
+                3,
+                1
+              ],
+              "phase": 1
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": -1
+            }
+          ]
+        },
+        {
+          "case": "outline-star-shift-r1",
+          "variant": "candidate",
+          "selected": [
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1
+            },
+            {
+              "counts": [
+                3,
+                1
+              ],
+              "phase": 1
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": -1
+            }
+          ]
+        },
+        {
+          "case": "leaf-r2",
+          "variant": "candidate",
+          "selected": [
+            {
+              "counts": [
+                3,
+                5
+              ],
+              "phase": 1
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": 1
+            },
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": -1
+            }
+          ]
+        },
+        {
+          "case": "leaf-r2",
+          "variant": "baseline",
+          "selected": [
+            {
+              "counts": [
+                3,
+                5
+              ],
+              "phase": 1
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": 1
+            },
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": -1
+            }
+          ]
+        },
+        {
+          "case": "leaf-x-plus-1-r2",
+          "variant": "candidate",
+          "selected": [
+            {
+              "counts": [
+                4,
+                5
+              ],
+              "phase": -1
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": 1
+            },
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": -1
+            }
+          ]
+        },
+        {
+          "case": "leaf-x-plus-1-r2",
+          "variant": "baseline",
+          "selected": [
+            {
+              "counts": [
+                4,
+                5
+              ],
+              "phase": -1
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": 1
+            },
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": -1
+            }
+          ]
+        },
+        {
+          "case": "leaf-x-minus-1-r2",
+          "variant": "candidate",
+          "selected": [
+            {
+              "counts": [
+                3,
+                5
+              ],
+              "phase": 1
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": 1
+            },
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": -1
+            }
+          ]
+        },
+        {
+          "case": "leaf-x-minus-1-r2",
+          "variant": "baseline",
+          "selected": [
+            {
+              "counts": [
+                3,
+                5
+              ],
+              "phase": 1
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": 1
+            },
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": -1
+            }
+          ]
+        },
+        {
+          "case": "leaf-y-plus-1-r2",
+          "variant": "candidate",
+          "selected": [
+            {
+              "counts": [
+                3,
+                5
+              ],
+              "phase": 1
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": -1
+            },
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": -1
+            }
+          ]
+        },
+        {
+          "case": "leaf-y-plus-1-r2",
+          "variant": "baseline",
+          "selected": [
+            {
+              "counts": [
+                3,
+                5
+              ],
+              "phase": 1
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": -1
+            },
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": -1
+            }
+          ]
+        },
+        {
+          "case": "leaf-y-minus-1-r2",
+          "variant": "candidate",
+          "selected": [
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": 1
+            },
+            {
+              "counts": [
+                3,
+                5
+              ],
+              "phase": 1
+            },
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": -1
+            }
+          ]
+        },
+        {
+          "case": "leaf-y-minus-1-r2",
+          "variant": "baseline",
+          "selected": [
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "phase": 1
+            },
+            {
+              "counts": [
+                3,
+                5
+              ],
+              "phase": 1
+            },
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": -1
+            }
+          ]
+        },
+        {
+          "case": "outline-star-shift-r2",
+          "variant": "candidate",
+          "selected": [
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1
+            },
+            {
+              "counts": [
+                3,
+                1
+              ],
+              "phase": 1
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": -1
+            }
+          ]
+        },
+        {
+          "case": "outline-star-shift-r2",
+          "variant": "baseline",
+          "selected": [
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "phase": 1
+            },
+            {
+              "counts": [
+                3,
+                1
+              ],
+              "phase": 1
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "phase": -1
+            }
+          ]
+        }
+      ]
+    },
+    "checksSha256": "fd3e146f6cff9d43b0ad7f896b20ae7cafc1ea7692075d03388f5c279dc1db15",
+    "scope": "Pure finalist-selection replay on 24 recorded coarse tables, not 24 additional fits."
+  },
+  "focused": {
+    "passed": 14,
+    "failed": 0,
+    "log": "tmp/heart-learning/clearance-repair-release-v2/focused.log",
+    "sha256": "7dbf3ad001c0da09102ffb98fd9fe657cfc7cb51d42fee0f8dd4a9cbfa322997"
+  }
+}

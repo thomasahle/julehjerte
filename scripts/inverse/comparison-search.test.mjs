@@ -29,7 +29,7 @@ test('verified dense grids do not extend search with elaborate or poor simpler s
   assert.equal(simplerComparisonSeed([seed([1,1],NaN)],[seed([1,1],Infinity)],[[7,7]]),null);
 });
 
-test('fresh maple fitting compares the simpler routing and preserves its photographic detail',async()=>{
+test('fresh maple fitting finds the simpler routing and preserves its photographic detail',async()=>{
   const fixture=JSON.parse(await fs.readFile('scripts/inverse/fixtures/maple-comparison.json'));
   const catalogue=JSON.parse(await fs.readFile(fixture.sourceCatalogue)),photo=await readHardPhoto(catalogue.source);
   const cfg={...AUTOMATIC_PRESET,timeLimit:180,trials:0,earlyStop:false},crop=prepare({...photo,quad:fixture.quad},cfg);
@@ -38,7 +38,9 @@ test('fresh maple fitting compares the simpler routing and preserves its photogr
   const answer=await design(input,cfg),replay=await renderExportedWeave(answer.files['cut_geometry.json'],400);
   assert.equal(answer.report.templateChecksPassed,true);
   assert.deepEqual(answer.report.slits,{left:3,right:3});
-  assert.ok(answer.report.solver.extraGridComparisons.some(r=>r.reason==='simpler-layout'&&r.selectedCounts?.every(n=>n===3)));
+  // The simpler routing may now enter the initial shortlist. Its outcome is
+  // required; spending time on the formerly necessary late retry is not.
   assert.ok(mismatch(replay.mask,crop.preview.mask)<.012);
   assert.equal(auditFeatureFidelity(input.sourceImage,replay.mask,answer.report.settings).passed,true);
+  assert.deepEqual(input.sourceImage.mask,crop.preview.mask);
 });

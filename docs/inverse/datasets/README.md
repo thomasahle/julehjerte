@@ -105,7 +105,12 @@ now passes focused fresh-solve and flower regressions while retaining all final
 checks. Two shortlist variants exposed and corrected count-diversity issues.
 The corrected paired replay passes 12/12 versus 8/12, with no higher error at
 either independent render scale and a maximum native time of 9.522 seconds.
-Full corpus and browser checks remain pending.
+The first full inverse run passes 857/859; its two failures require now-obsolete
+search histories. [Paired output checks](shortlist-regression-review.md) retain
+maple fidelity and improve the checker before updating those assertions. A
+separate guard prevents a new reservation from evicting an already simpler
+finalist. Fourteen focused tests pass; full QA, corpus and browser replays are
+pending.
 
 The [short-search scheduling correction](photo-feature-stability.md) reserves
 curve-refinement time for nearly fitting grids while retaining routing priority
