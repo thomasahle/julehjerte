@@ -379,9 +379,21 @@ Type checking, lint, all 857 application tests, build, entry-loading and
 geometric-backend browser checks pass. Star and free-border hat also pass the
 complete Paint-to-editable-Draw workflow, with screenshots visually reviewed.
 The subsequent complete inverse suite passes all 923 tests in 1,040.93 seconds,
-with all 827 pinned source files verified unchanged. The fresh corpus and
-remaining browser replay are running; the historical photographic fidelity
-regressions have not been declared resolved.
+with all 827 pinned source files verified unchanged. Fresh native replay passes
+22/22 Hunodan below ten seconds (maximum 9.646 seconds), with nineteen errors
+unchanged and three improved versus `c000d30`. Photographic checks retain 26/31
+and all 48 accepted editable pairs pass existing checks. All twelve actual
+Chromium workflows pass and their Draw screenshots were visually reviewed.
+An additional audit checks the actual editable SVGs with the geometric paper
+model: all sixty native/browser exports pass. Separate GEOS checks pass all
+1,440 family/radius/tolerance probes across both engine and editable forms.
+The strict historical error gate still fails: dense checker and bird each add
+one erroneous pixel, round checker adds five, and Viking rises from 2.024375%
+to 2.225%. The previously accepted jigsaw still has crop-quality limitations.
+Two failed fits pass physical checks but omit small near-border source regions;
+their crop previews suggest boundary contamination, without establishing that
+the regions can be discarded. Reference masks and feature rules are unchanged.
+This is not a new validated release replacement.
 
 The latest validated solver revision is `c000d30`. Its
 [release record](return-projection-speed.json) passes **22/22 regular Hunodan
