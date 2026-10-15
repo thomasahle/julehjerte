@@ -1,0 +1,17 @@
+{
+  "schema": "woven-heart-material-rate-study-plan-1",
+  "purpose": "Diagnose synthetic training underfit before attributing material failure to real-photo transfer.",
+  "control": "The audited synthetic-control run from material-pilot-v1, learning rate 0.0001, 240 updates.",
+  "learningRates": [
+    0.001,
+    0.003
+  ],
+  "updates": 240,
+  "seed": 20261015,
+  "batchSize": 4,
+  "weightDecay": 0.0001,
+  "scope": "Only the exact 64 synthetic training replay images. Same initial foreground model, neutral material head, frozen encoder and BatchNorm statistics, paired reflections and draw sequence as the existing control. No real image or held-out score enters optimization or checkpoint selection.",
+  "evaluation": "Fixed final update only. Report training material discrimination, body accuracy and joint errors together. This experiment cannot establish generalization or select a deployed model.",
+  "parentTrainingReportSha256": "83d8ee7b4ed1b7c86307809021f8f077e16646ea672dbf36430fad31f904423e",
+  "underfitReportSha256": "e1a47eb87fd3db163392ea2215185d74cba6135c12d7794080dd4804f0bd3225"
+}
