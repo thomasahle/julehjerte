@@ -25,10 +25,18 @@ The inventory, with material annotations updated on 2026-10-15, contains:
 | Training background variants | 2,040 | Five changes to each of 408 original training views; geometry labels and split groups unchanged. |
 | Training scene variants | 2,448 | Neighbours and handles paired with all six backgrounds for the same 408 training views; no new geometry families. |
 | Source-photo material QA samples | 78 integrated + 25 new | Four hearts in two reserved photographs; sparse assistant-reviewed development observations, not dense labels or training data. The new jigsaw review is not yet in the common benchmark fixture. |
-| Real visible-body annotations | 19 | Eighteen instances in sixteen groups outside source QA, plus one reserved gold-angel instance. Uncertain pixels are excluded; seventeen instances enter the expanded grouped material pilot. |
-| Real partial paper-material annotations | 17 heart instances | All seventeen enter the expanded grouped pilot, with whole motif families kept apart. Separate body and material uncertainty; these are previously inspected development examples. |
+| Real visible-body annotations | 21 | Twenty instances in eighteen groups outside source QA, plus one reserved gold-angel instance. Uncertain pixels are excluded; seventeen instances enter the completed expanded material pilot. The two new paper-scene annotations remain unused. |
+| Real partial paper-material annotations | 19 heart instances | Seventeen enter the completed expanded grouped pilot, with whole motif families kept apart. Two newly labelled paper scenes remain unused. Separate body and material uncertainty; all are reviewed development examples. |
 
 ## Current results and limits
+
+Two [new Pinterest paper-scene annotations](paper-scene-labels.json) add a
+hand-held red/green checker and a painted purple/pink and white checker.
+The labels distinguish paper identity from paint variation and exclude
+fingers, handles, seams, shadows and uncertain backing. Native outlines
+and 256/768-pixel overlays were reviewed; admission reproduces all 28
+reviewed PNGs exactly. Existing annotations and QA allocation are unchanged.
+These two source groups are not yet used in training.
 
 A [guarded-clearance WASM follow-up](paper-clearance-kernel.json) accelerates the
 remaining paper-mask classification loop. Threshold ties and extreme distances
