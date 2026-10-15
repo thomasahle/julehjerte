@@ -1,5 +1,56 @@
 # Generator robustness results
 
+## Current implementation: reuse curve-fitting calculations
+
+Curve fitting now evaluates each Bernstein basis once for both coordinates and
+reuses derivative control points across the samples of each Newton pass. The
+arithmetic order, fitting tolerance, candidate routes and validation rules remain
+unchanged. The following source-level comparisons returned exactly equal full
+design objects (or the same refusal), across three alternating before/after runs:
+
+| Input | Frame | Median before | Median after | Result |
+|---|---|---:|---:|---|
+| Nunito ANNA | Checkerboard repeat | 1,128 ms | 1,087 ms | Identical design |
+| Nunito JUL | Checkerboard repeat | 1,152 ms | 985 ms | Identical design |
+| Kalam ANNA / BO, two lines | Hexagon | 4,224 ms | 3,964 ms | Identical design |
+| Cinzel BO | Circle | 7,254 ms | 6,605 ms | Identical design |
+| Oswald ÆØÅ | Air | 5,179 ms | 5,063 ms | Same refusal |
+
+These are local Node observations, not browser latency guarantees. The report is
+`tmp/generator/fitter-benchmark.json`. Separate comparisons of the gift/circle-rays
+and Phosphor snowflake/rounded-check figures also returned identical full designs.
+The current ANNA cutting template was rendered and inspected: its 4×4 field and
+cut-tip counts remain unchanged at zero below 30° and ten below 45°. There has
+been no physical weaving trial. Browser-control inventory still has no
+available browser; the previously observed browser slowdown remains unresolved.
+
+All **1,031 unit tests and 177 inverse tests** pass, as do type checking, lint and
+the production build. Type checking still reports the seven existing warnings.
+The logs are `tmp/generator/fitter-{tests,check,lint,build}.log`.
+
+There are no additional accepted configurations from this batch. The latest
+combined matrix remains **2,731 accepted / 419 refused / zero invalid accepted
+results**, as recorded below; it was not freshly rerun for this arithmetic reuse.
+The wider goal remains unfinished, including unsupported text, figures and
+unverified catalog entries.
+
+### Additional topology investigations, not shipped
+
+- Parent-counter corner attachments and independent corner/ray choices for the
+  two counter bridges did not recover the separately probed Cinzel P or R.
+- Whole letters with six, eight or ten ports and coincident internal chords can
+  produce open topology for P, E and R in some layouts, but those results still
+  fail full-sheet spacing. A 30-case prototype audit of other refused framed
+  texts added no accepted output. Its multiline strip-limit guard was overly
+  restrictive, so this does not exhaust all proposed multiline variants.
+- Cancelling closed edge cycles while retaining the visible outline did not
+  repair the R witness or any of the 19 refused bicycle templates tested.
+- Separating the R witness's degree-four junctions into adjacent, noncrossing
+  connections removes the branches, but all 64 combinations still connect at
+  least one path to the wrong paper edge. Four separation radii gave the same
+  result; branch removal alone is insufficient. These experimental geometries
+  are not accepted exports.
+
 ## Current coverage: divide the ink, retain the outer margin
 
 The current 3,150-configuration matrix has **2,731 accepted / 419 refused / zero
@@ -66,8 +117,8 @@ slowdown are unresolved. No claim of universal support follows from this matrix.
   four shared edges. Trying the next filled interval on either seam axis did
   not repair this layout. This is a panel-topology problem, not a tolerance or
   floating-point rounding problem. The witness is in
-  `tmp/generator/ink-witness-R.json`; `corner-bridges-setup.mjs` prepares a separate
-  parent-attachment experiment that has not yet been run.
+  `tmp/generator/ink-witness-R.json`; the subsequent parent-attachment experiment
+  is recorded above and did not recover P or R.
 
 ## Previous coverage: solid seams in divided letters
 

@@ -66,28 +66,30 @@ const b2 = (u: number) => 3 * u * u * (1 - u);
 const b3 = (u: number) => u ** 3;
 
 function evalCubic(c: BezierSegment, u: number): Pt {
+  // Both coordinates use the same basis; keep the arithmetic order unchanged.
+  const w0 = b0(u), w1 = b1(u), w2 = b2(u), w3 = b3(u);
   return {
-    x: b0(u) * c.p0.x + b1(u) * c.p1.x + b2(u) * c.p2.x + b3(u) * c.p3.x,
-    y: b0(u) * c.p0.y + b1(u) * c.p1.y + b2(u) * c.p2.y + b3(u) * c.p3.y
+    x: w0 * c.p0.x + w1 * c.p1.x + w2 * c.p2.x + w3 * c.p3.x,
+    y: w0 * c.p0.y + w1 * c.p1.y + w2 * c.p2.y + w3 * c.p3.y
   };
 }
 
-/** First derivative of a cubic, evaluated as the quadratic through 3(pi+1 − pi). */
-function evalCubicD1(c: BezierSegment, u: number): Pt {
+/** Derivative control points stay fixed while every sample is reparameterised. */
+function derivatives(c: BezierSegment) {
   const q0 = mul(sub(c.p1, c.p0), 3);
   const q1 = mul(sub(c.p2, c.p1), 3);
   const q2 = mul(sub(c.p3, c.p2), 3);
+  return { q0, q1, q2, r0: mul(sub(q1, q0), 2), r1: mul(sub(q2, q1), 2) };
+}
+
+/** First derivative of a cubic, evaluated as the quadratic through 3(pi+1 − pi). */
+function evalCubicD1({ q0, q1, q2 }: ReturnType<typeof derivatives>, u: number): Pt {
   const mu = 1 - u;
   return add(add(mul(q0, mu * mu), mul(q1, 2 * mu * u)), mul(q2, u * u));
 }
 
 /** Second derivative of a cubic. */
-function evalCubicD2(c: BezierSegment, u: number): Pt {
-  const q0 = mul(sub(c.p1, c.p0), 3);
-  const q1 = mul(sub(c.p2, c.p1), 3);
-  const q2 = mul(sub(c.p3, c.p2), 3);
-  const r0 = mul(sub(q1, q0), 2);
-  const r1 = mul(sub(q2, q1), 2);
+function evalCubicD2({ r0, r1 }: ReturnType<typeof derivatives>, u: number): Pt {
   return add(mul(r0, 1 - u), mul(r1, u));
 }
 
@@ -166,12 +168,13 @@ function generateBezier(points: Pt[], first: number, last: number, u: number[], 
   let x1 = 0;
   for (let i = 0; i < n; i++) {
     const ui = u[i]!;
-    const a0 = mul(tHat1, b1(ui));
-    const a1 = mul(tHat2, b2(ui));
+    const w0 = b0(ui), w1 = b1(ui), w2 = b2(ui), w3 = b3(ui);
+    const a0 = mul(tHat1, w1);
+    const a1 = mul(tHat2, w2);
     c00 += dot(a0, a0);
     c01 += dot(a0, a1);
     c11 += dot(a1, a1);
-    const onLine = add(mul(p0, b0(ui) + b1(ui)), mul(p3, b2(ui) + b3(ui)));
+    const onLine = add(mul(p0, w0 + w1), mul(p3, w2 + w3));
     const tmp = sub(points[first + i]!, onLine);
     x0 += dot(a0, tmp);
     x1 += dot(a1, tmp);
@@ -196,10 +199,10 @@ function generateBezier(points: Pt[], first: number, last: number, u: number[], 
 }
 
 /** One Newton-Raphson step towards the parameter that puts `p` closest to the curve. */
-function newtonRaphsonRootFind(curve: BezierSegment, p: Pt, u: number): number {
+function newtonRaphsonRootFind(curve: BezierSegment, derivative: ReturnType<typeof derivatives>, p: Pt, u: number): number {
   const d = sub(evalCubic(curve, u), p);
-  const d1 = evalCubicD1(curve, u);
-  const d2 = evalCubicD2(curve, u);
+  const d1 = evalCubicD1(derivative, u);
+  const d2 = evalCubicD2(derivative, u);
   const numerator = dot(d, d1);
   const denominator = dot(d1, d1) + dot(d, d2);
   if (Math.abs(denominator) < 1e-12) return u;
@@ -270,7 +273,8 @@ function fitRun(
   // than its own square — so the gate would never open. The passes run every
   // time instead; see REPARAMETERIZE_PASSES.
   for (let pass = 0; pass < REPARAMETERIZE_PASSES; pass++) {
-    const uPrime = u.map((ui, i) => newtonRaphsonRootFind(curve, points[first + i]!, ui));
+    const derivative = derivatives(curve);
+    const uPrime = u.map((ui, i) => newtonRaphsonRootFind(curve, derivative, points[first + i]!, ui));
     curve = generateBezier(points, first, last, uPrime, tHat1, tHat2);
     const measured = { curve, first, last, ...computeMaxError(points, first, last, curve, uPrime) };
     // Keep the best fit seen: a diverging reparameterisation must not lose the
