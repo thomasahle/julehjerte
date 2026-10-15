@@ -78,7 +78,9 @@ export function gridFinalists(coarse,evidence,limit=3){
     const represented=new Set(chosen.map(r=>r.model.counts.join(',')));
     const simpler=finite.filter(r=>!represented.has(r.model.counts.join(','))&&score(r)<=best+.015&&total(r)<largest).sort((a,b)=>score(a)-score(b)||total(a)-total(b)||balance(a)-balance(b))[0];
     if(simpler&&!chosen.includes(simpler)){
-      const replace=chosen.map((r,i)=>i>0&&(!supported||!r.model.counts.every((c,j)=>c===supported[j]))?i:-1).filter(i=>i>=0).at(-1);
+      // Simplification must reduce the replaced pair's count, not merely the
+      // largest count elsewhere in the shortlist. Keep existing simpler starts.
+      const replace=chosen.map((r,i)=>i>0&&total(r)>total(simpler)&&(!supported||!r.model.counts.every((c,j)=>c===supported[j]))?i:-1).filter(i=>i>=0).at(-1);
       if(replace!==undefined)chosen[replace]=simpler;
     }
   }

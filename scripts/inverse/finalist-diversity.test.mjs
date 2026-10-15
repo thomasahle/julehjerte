@@ -46,6 +46,14 @@ test('simpler finalists use image-plus-cut cost without preferring an inferior s
   }
 });
 
+test('reserving another count pair never evicts an already simpler finalist',()=>{
+  const seed=(counts,error)=>({model:{counts},error});
+  const coarse=[seed([4,4],.050),seed([5,5],.049),seed([3,3],.055),seed([4,3],.057)];
+  assert.deepEqual(gridFinalists(coarse,[]),[coarse[0],coarse[3],coarse[2]],'The seven-cut proposal replaces ten cuts, retaining the existing six-cut start.');
+  const protectedLargest=[seed([5,5],.050),seed([3,3],.060),seed([2,3],.065),seed([4,4],.059)];
+  assert.deepEqual(gridFinalists(protectedLargest,[]),protectedLargest.slice(0,3),'A reservation cannot increase a finalist count when the only larger grid is protected.');
+});
+
 test('small resolution changes retain a checked three-cut flower instead of crowding it out',{timeout:40000},async()=>{
   const record=JSON.parse(await fs.readFile(new URL('./fixtures/flower-resolution/source.json',import.meta.url)));
   const hash=b=>createHash('sha256').update(b).digest('hex'),masks=[];
