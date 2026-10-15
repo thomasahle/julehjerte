@@ -1,0 +1,441 @@
+{
+  "schema": 1,
+  "baseRuntimeCommit": "3997441",
+  "scope": "Diagnose finer paper-lattice uncertainty during final polishing; isolated experiments only. Physical tolerances remain unchanged.",
+  "capturedCheckpoints": [
+    {
+      "index": 0,
+      "checkpoint": {
+        "step": -1,
+        "error": 0.02478125,
+        "score": 0.030720628226398677,
+        "primitives": {
+          "curved": 142,
+          "straight": 1
+        },
+        "straightened": false,
+        "geometry": true,
+        "paper": "pass",
+        "issues": []
+      },
+      "initialMaterialResolution": 700,
+      "independentMaskError": 0.02474375,
+      "paper": [
+        {
+          "resolution": 700,
+          "status": "pass",
+          "seconds": 0.12032437500000015
+        },
+        {
+          "resolution": 1000,
+          "status": "pass",
+          "seconds": 0.875889459
+        },
+        {
+          "resolution": 1400,
+          "status": "pass",
+          "seconds": 1.5944537920000001
+        }
+      ]
+    },
+    {
+      "index": 1,
+      "checkpoint": {
+        "step": 0,
+        "error": 0.02458125,
+        "score": 0.03058131032591674,
+        "primitives": {
+          "curved": 142,
+          "straight": 1
+        },
+        "straightened": false,
+        "geometry": true,
+        "paper": "pass",
+        "issues": []
+      },
+      "initialMaterialResolution": 700,
+      "independentMaskError": 0.02454375,
+      "paper": [
+        {
+          "resolution": 700,
+          "status": "pass",
+          "seconds": 0.12032637500000055
+        },
+        {
+          "resolution": 1000,
+          "status": "pass",
+          "seconds": 0.2236200829999998
+        },
+        {
+          "resolution": 1400,
+          "status": "pass",
+          "seconds": 0.44886625000000097
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "checkpoint": {
+        "step": 40,
+        "error": 0.0222625,
+        "score": 0.029041765571963085,
+        "primitives": {
+          "curved": 141,
+          "straight": 2
+        },
+        "straightened": false,
+        "geometry": true,
+        "paper": "uncertain",
+        "issues": []
+      },
+      "initialMaterialResolution": 700,
+      "independentMaskError": 0.02241875,
+      "paper": [
+        {
+          "resolution": 700,
+          "status": "uncertain",
+          "seconds": 0.12010916700000053
+        },
+        {
+          "resolution": 1000,
+          "status": "pass",
+          "seconds": 0.23036404200000107
+        },
+        {
+          "resolution": 1400,
+          "status": "pass",
+          "seconds": 0.4541824580000011
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "checkpoint": {
+        "step": 80,
+        "error": 0.02254375,
+        "score": 0.029256879733619512,
+        "primitives": {
+          "curved": 141,
+          "straight": 2
+        },
+        "straightened": false,
+        "geometry": true,
+        "paper": "uncertain",
+        "issues": []
+      },
+      "initialMaterialResolution": 700,
+      "independentMaskError": 0.02253125,
+      "paper": [
+        {
+          "resolution": 700,
+          "status": "uncertain",
+          "seconds": 0.12293954099999974
+        },
+        {
+          "resolution": 1000,
+          "status": "pass",
+          "seconds": 0.22311475000000064
+        },
+        {
+          "resolution": 1400,
+          "status": "pass",
+          "seconds": 0.43782049999999983
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "checkpoint": {
+        "step": 84,
+        "error": 0.02430625,
+        "score": 0.03037167744231623,
+        "primitives": {
+          "curved": 143,
+          "straight": 0
+        },
+        "straightened": false,
+        "geometry": true,
+        "paper": "pass",
+        "issues": []
+      },
+      "initialMaterialResolution": 700,
+      "independentMaskError": 0.02413125,
+      "paper": [
+        {
+          "resolution": 700,
+          "status": "pass",
+          "seconds": 0.11369874999999956
+        },
+        {
+          "resolution": 1000,
+          "status": "pass",
+          "seconds": 0.21684699999999976
+        },
+        {
+          "resolution": 1400,
+          "status": "pass",
+          "seconds": 0.4357019999999993
+        }
+      ]
+    }
+  ],
+  "captureSource": {
+    "maskFile": "tmp/heart-learning/feature-reuse-release-v1/native/photos/crown/automatic/mask.png",
+    "maskSha256": "28f4380aaf5bb197acbaf7750b4560e317c442740098abaf4c91eb88ac7866aa",
+    "sourceFilesVerified": 110
+  },
+  "interpretation": "A 2.241875% captured crown checkpoint is uncertain at 700 but passes both 1000 and 1400. It is discarded by the current 700-cell polishing audit. Finer audits were performed only after the solve, on unchanged exported coordinates.",
+  "variants": [
+    {
+      "run": "tmp/heart-learning/polish-fine-audit-v1",
+      "reserveMilliseconds": 500,
+      "rows": [
+        {
+          "id": "crown",
+          "variant": "before",
+          "seconds": 9.400143958,
+          "checked": true,
+          "error": 0.0241375,
+          "materialResolution": 700,
+          "paperVerification": {
+            "requestedResolution": 360,
+            "initialStatus": "uncertain",
+            "resolution": 700,
+            "status": "pass"
+          }
+        },
+        {
+          "id": "crown",
+          "variant": "after",
+          "seconds": 9.414991875,
+          "checked": true,
+          "error": 0.02454375,
+          "materialResolution": 700,
+          "paperVerification": {
+            "requestedResolution": 360,
+            "initialStatus": "uncertain",
+            "resolution": 700,
+            "status": "pass"
+          }
+        },
+        {
+          "id": "flettede-viking",
+          "variant": "before",
+          "seconds": 9.485882791,
+          "checked": true,
+          "error": 0.02115625,
+          "materialResolution": 700,
+          "paperVerification": {
+            "requestedResolution": 360,
+            "initialStatus": "uncertain",
+            "resolution": 700,
+            "status": "pass"
+          }
+        },
+        {
+          "id": "flettede-viking",
+          "variant": "after",
+          "seconds": 9.386311833,
+          "checked": true,
+          "error": 0.0215125,
+          "materialResolution": 700,
+          "paperVerification": {
+            "requestedResolution": 360,
+            "initialStatus": "uncertain",
+            "resolution": 700,
+            "status": "pass"
+          }
+        },
+        {
+          "id": "stacked-hearts",
+          "variant": "before",
+          "seconds": 8.925320334,
+          "checked": true,
+          "error": 0.00635625,
+          "materialResolution": 360,
+          "paperVerification": null
+        },
+        {
+          "id": "stacked-hearts",
+          "variant": "after",
+          "seconds": 9.100534917000001,
+          "checked": true,
+          "error": 0.00635625,
+          "materialResolution": 360,
+          "paperVerification": null
+        },
+        {
+          "id": "warped-checker",
+          "variant": "before",
+          "seconds": 9.544098583,
+          "checked": true,
+          "error": 0.01573125,
+          "materialResolution": 700,
+          "paperVerification": {
+            "requestedResolution": 360,
+            "initialStatus": "uncertain",
+            "resolution": 700,
+            "status": "pass",
+            "source": "rollback-checkpoint"
+          }
+        },
+        {
+          "id": "warped-checker",
+          "variant": "after",
+          "seconds": 9.542299375,
+          "checked": true,
+          "error": 0.01555625,
+          "materialResolution": 700,
+          "paperVerification": {
+            "requestedResolution": 360,
+            "initialStatus": "uncertain",
+            "resolution": 700,
+            "status": "pass",
+            "source": "rollback-checkpoint"
+          }
+        }
+      ],
+      "notes": "Each solve runs in a fresh process, including cold higher-resolution kernel calibration. One repetition per condition; timed searches can choose different geometries."
+    },
+    {
+      "run": "tmp/heart-learning/polish-fine-audit-v2",
+      "reserveMilliseconds": 250,
+      "rows": [
+        {
+          "id": "crown",
+          "variant": "before",
+          "seconds": 9.459069833,
+          "checked": true,
+          "error": 0.02333125,
+          "materialResolution": 700,
+          "paperVerification": {
+            "requestedResolution": 360,
+            "initialStatus": "uncertain",
+            "resolution": 700,
+            "status": "pass"
+          }
+        },
+        {
+          "id": "crown",
+          "variant": "after",
+          "seconds": 9.600533167,
+          "checked": true,
+          "error": 0.02273125,
+          "materialResolution": 1000,
+          "paperVerification": {
+            "requestedResolution": 700,
+            "initialStatus": "uncertain",
+            "resolution": 1000,
+            "status": "pass",
+            "source": "rollback-checkpoint"
+          }
+        }
+      ],
+      "notes": "Each solve runs in a fresh process, including cold higher-resolution kernel calibration. One repetition per condition; timed searches can choose different geometries."
+    }
+  ],
+  "productionIntegration": "Not integrated. Full isolated corpus and editable-export checks are running before deciding whether to change the 700-resolution cap or polishing policy.",
+  "result": "The 500 ms reserve never verifies the crown checkpoint in this replay. With the existing 250 ms checkpoint reserve inside the global finalization reserve, a fresh crown solve carries a 1000-resolution verification to its final result: 2.273125% independent error in 9.600533167 seconds. Its paired baseline is 2.333125% in 9.459069833 seconds. This is one cold-start pair, not a general ten-second guarantee.",
+  "fixedWorkFixture": {
+    "path": "tmp/heart-learning/polish-fine-audit-v2/crown-refinement-checkpoint.json",
+    "status": "Captured and frozen; fixed-step replay not yet run."
+  },
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/crown-polish-audit-v1/source.json",
+      "sha256": "1eb9ad58f83ba712c61b7e107bc85c6ba7cf621a2d707c3377c47852b808d77d"
+    },
+    {
+      "path": "tmp/heart-learning/crown-polish-audit-v1/audit.json",
+      "sha256": "8fbf5291c83550bd8b28d15bab190c57cd6576b55da6670a2f1f68215853af15"
+    },
+    {
+      "path": "tmp/heart-learning/crown-polish-audit-v1/probe.mjs",
+      "sha256": "f521e24a8c29c38dba68e382e323e5defadd9fdc0d78d948a377c08a3a22a7f7"
+    },
+    {
+      "path": "tmp/heart-learning/crown-polish-audit-v1/report.json",
+      "sha256": "132980484ef781b8df35a2256b9e70a28db868857401bb1f74cd95f9034d6602"
+    },
+    {
+      "path": "tmp/heart-learning/crown-polish-audit-v1/state.json",
+      "sha256": "a70b9e0b67a1cd77558fd655503795d366d9912189754130e845ebc868d613e6"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v1/crown/before/report.json",
+      "sha256": "c60a138607279d90e8e9dc353a5aa4041e03b5d9718478382eec5fad00541e3f"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v1/crown/after/report.json",
+      "sha256": "4f5a0dcbb3f667314d23c6ea5900967c9c91719c3f6d834724a1e7fbeec18744"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v1/flettede-viking/before/report.json",
+      "sha256": "99f42b6dfd5bd8d8bb6d22a8f5ac79f1b82a0c0f6824debbd03a8a111c29416a"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v1/flettede-viking/after/report.json",
+      "sha256": "9c776f6c4de55784eead59ab4fa10a769beb2259a81564b33fe8faa4a5c628d6"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v1/stacked-hearts/before/report.json",
+      "sha256": "b6b4856a8495949e01197450a07e45e8001c034b3714fe825376e940cc84be4e"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v1/stacked-hearts/after/report.json",
+      "sha256": "997dbd631e7e657958495ada26f56755ca5fe0a97bbed95ad6f521c1f8a4fe64"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v1/warped-checker/before/report.json",
+      "sha256": "339683a9bbb8543aa2068866c85fade27b120bfe6e0cb27000e284e797fc869b"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v1/warped-checker/after/report.json",
+      "sha256": "0ada90f266e56b445fcfed5aa36183fb8bf55fff5807356aef30968a5308e68f"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v1/source.json",
+      "sha256": "27234150f78429e64ebb32f17200dd415f7b6925dddc4bddc990ad5e1ef9e909"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v1/checks.json",
+      "sha256": "f7f948f36c813dc0a4965492ff6f30bf3762debad38a7cf61e5b75ded9a164df"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v1/state.json",
+      "sha256": "d02d23f4d23f19a6e5f6109056787e61a14e288ee5b398161eed37034f1dc844"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v1/case.mjs",
+      "sha256": "49259716ddcebccdad4aeeb2ef753dc1a11411f14cbbd60cac3e2883523f94d5"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v2/crown/before/report.json",
+      "sha256": "91d21e4526e0ada0a25b6a268997a2ee1ea8235a0a0f4010b55b369ed2107523"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v2/crown/after/report.json",
+      "sha256": "313b3a8f33e0ed8c89df92d94a8ecb93c9944976b52f4a1b3a88f15e0e537ab3"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v2/source.json",
+      "sha256": "fce47f2d29632a948366ca8347c070182d1671e61e63a7f66feb995d1fc69a40"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v2/checks.json",
+      "sha256": "10b5967d6c7a9d754396cc5896f3d556e4677baf4a4d8896a5748c637947b42e"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v2/state.json",
+      "sha256": "b2edc9dbcf0167edfd6bc395d20dce053a9b5572a53595d3b2e4dea2616f2061"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v2/case.mjs",
+      "sha256": "ae5bb8a04764a08dcd0e3539b9f738b195cb9e9cb799b804cc3d9009b95d7a9f"
+    },
+    {
+      "path": "tmp/heart-learning/polish-fine-audit-v2/crown-refinement-checkpoint.json",
+      "sha256": "fb371facc1c735b6e598be4c76b0d4074e3f6b4a4e07ada3c6989536efb20e87"
+    }
+  ]
+}

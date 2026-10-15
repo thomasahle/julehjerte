@@ -115,6 +115,15 @@ historical photo-error gate still fails for crown: 2.411875% previously versus
 increases relative to the immediately preceding runtime are retained in the
 record; the cache does not make a timed optimizer's output invariant to speed.
 
+A [final-polishing diagnostic](paper-polishing-resolution.json) finds that a
+better crown checkpoint remains uncertain even at the existing 700-cell paper
+resolution. Its unchanged curves pass post-fit 1000- and 1400-cell rechecks
+at 2.241875% mask disagreement. An isolated fresh solve that verifies such a
+checkpoint and carries the finer resolution through finalization reaches
+2.273125% in 9.60 seconds, versus 2.333125% in its paired run. This is one
+cold-start comparison. The proposal is not integrated; broader corpus and
+editable-export checks are running, and the normal resolution cap remains 700.
+
 The latest validated solver revision is `c000d30`. Its
 [release record](return-projection-speed.json) passes **22/22 regular Hunodan
 designs below ten seconds**, with a maximum of **8.100 seconds**. Automatic
