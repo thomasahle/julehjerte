@@ -57,6 +57,14 @@ two hearts to the border, while neural fitting splits one and joins another to
 the border. Both results were visually inspected. Neither is faithful motif
 recovery; the shared RGB reference remains a proxy, not original artwork.
 
+An [inspection of those two RGB-fit connections](fixed-crop-neck-diagnosis.json)
+finds that each is bounded by different cuts in the same sheet, about 3 mm
+apart. Snapping them together would violate same-sheet clearance. Closing
+these motifs requires a different routing or cut assignment. The four large
+heart regions pass colour retention but exceed the current small-enclosure
+gate's area limit; source-stability analysis detects the lost enclosures.
+Fresh RGB-boundary routing experiments are prepared but have not run.
+
 A [clearance-initializer robustness fix](clearance-feature-recovery.json)
 addresses a 116-pixel change in a fixed 400-pixel stacked-heart mask. A valid
 but incomplete alternative previously missed a useful bounded refinement;
