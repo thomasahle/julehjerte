@@ -102,8 +102,10 @@ right-shifted leaf and exposes a genuinely invalid clearance initializer in
 the upward shift. Standalone bounded refinement repairs that seed and passes
 the finer paper audit. The [bounded integration](clearance-repair-integration.md)
 now passes focused fresh-solve and flower regressions while retaining all final
-checks. Two shortlist variants exposed and corrected count-diversity issues;
-the corrected paired replay and full corpus/browser checks remain pending.
+checks. Two shortlist variants exposed and corrected count-diversity issues.
+The corrected paired replay passes 12/12 versus 8/12, with no higher error at
+either independent render scale and a maximum native time of 9.522 seconds.
+Full corpus and browser checks remain pending.
 
 The [short-search scheduling correction](photo-feature-stability.md) reserves
 curve-refinement time for nearly fitting grids while retaining routing priority

@@ -1,0 +1,1947 @@
+{
+  "scope": "Fixed-mask development comparison; six cases, two fresh repeats per runtime, reversed runtime order on repeat 2. Not a new photo-corpus success rate or browser timing guarantee.",
+  "baselineCommit": "35ff54b (runtime b8e20f2)",
+  "candidateCommit": "cb8a8cd",
+  "studies": [
+    {
+      "version": "v1",
+      "root": "tmp/heart-learning/clearance-repair-integration-v1",
+      "sourceFilesVerified": 208,
+      "protocolSha256": "81ec1e8c65e8150cebef48e8608b505432737c8a91a76b64efc5798bc22036ec",
+      "sourceHashes": {
+        "tmp/heart-learning/clearance-repair-integration-v1/run.py": "5ece846f3a13572c4e14be0c36ce7cfe4c2d17815e8e335dbeca8d43ed1f61d3",
+        "tmp/heart-learning/clearance-repair-integration-v1/run-case.mjs": "5d8703462bd002ffe34ec00e965a34c4d9a418ddfe892344dda0a31089736116",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/worker.js": "dbc471cb8f5fdf07b97689ac4338274a73bf4f09bae244df4609efd1ea30fd70",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/worker-bootstrap.js": "5dfa8438cff21db635700f659642dab02e582dcf3c0141507d975daf3d16d0c2",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/THIRD_PARTY_NOTICES.txt": "dbfafe9f695b27fbcb1d5d213a4a8db7e7d216febadbd34f85e204329c26cb6e",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/LICENSE.txt": "681b46f147610336a243b3c72cd08cd5904b2dee747e74c959ae57ade9e6b9df",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/worker-controller.js": "34d4069dd9bc1aa28beabd81ba602fa80c901484d287eff27f2d103aba9475d4",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/compute-worker.js": "f613e3c7c83016993386dde32805f7249ea603c11b35be170f3f4ab8df48da1d",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/locator/grid-refine.js": "8cb1dc08b16cb855657e3ea838e07c03475d4ea77305ed35017abef873ef0be2",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/locator/palette.js": "4a373e0a911d8f8d2cdda42468c05cc52cb33b912a8990775f9db651cfc99158",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/locator/locator.js": "bb745954e2fa2b59abf8be98ded36b75b134295363f913dab04d3a4ad1c6a419",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/locator/background.js": "03d1c9b8f8237a97a7e8ed53d1dfa5117d1db079ba4162cac7117a8761f3441f",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/locator/fields.js": "569c2235139acdc3c22f1fee94158ae59406b682e7ef16e822de215fd94b36ea",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/locator/orientation.js": "687590ee664128da750695113c06b9ff921252a8715b3a121f956e47ebb9aa28",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/locator/anchored.js": "92f1ffb68bac38b1bc36f4209820b46200cfa7e6dcfbb746ed94f33beddac536",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/locator/math.js": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/locator/interior-palette.js": "6322efaa9772d488992a40da5b01091b0e71826d30c91fba5976c5b285e027bc",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/locator/NOTICE.md": "4a9cc65be6ca309d2b57609d760e584ab78c345dae95c789e351bb69180d5b05",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/self-intersections.js": "bea95be34a4a73cbb06d41c36dfcb3794f4e31b88971ca1cc84d79de22a4a4d7",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/graph.js": "fc585dbe542370f91faa6ae9f2f28e677d284fcc7922931dd487751c48b12b01",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/automatic.js": "6f3e8e3cec8d8035d1a01596c720e1360ca847076cc8629b49c7a376a0b11c21",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/kernel-choice.js": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/numerical-kernel.js": "f690a486fe92aebb33192c1b5f21d5613548561b61e59c394ce0feef152cdb0d",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/material.js": "483aba8c7c8ce04b6736692246598d39657e0d6f1d476994a6b8fb9e14f60080",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/stopped.js": "92eb57a1c5398930eb831a1fd253106e8147f402ff9b53e4c6f4e7329e52b1a1",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/complete-self-returns.js": "c39492fd0b22e65ac28bdf11cde24c8a72ffe385d488820e0d05299914f1a110",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/solver.js": "d3f3762d7d2a70983cce1a999052759c448778c7f7102b3010e1756250aecebe",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/self-returns.js": "40f33d5c795e12c683c4a351acd232620770e3ee9b47919e7150053f1506f486",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/image-features.js": "4b0d2a0c5f14deb415f82191d522a071e3a13f2938e176929a11718c9041ebf1",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/progress.js": "66498ca301179554df8f4411bbd1bcd12e5ab2fe50dbe7ff84afc9e7847d2ad7",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/border.js": "c8be96b1f7d1e80d71218f7e5e7856e674bbc2606b74702b74e564ebe6d8bd6f",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/chord-distance.js": "6be52281e3056d29ad7093f902b0f768410f3c414f049f164f94e969bd89dd48",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/feature-recovery.js": "755ca667ece3a051d5ce0387240a4b491e7051aaf2b9a68e6b5bd1c477bb25e3",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/engine.js": "df3c667254e3014ee5bcd7de4c8e1d02505b4701c8596a48cd204992b9f27e12",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/return-search.js": "7fa3ca77219e51ae3e8cc3aa09f81e23d6f63a173e2a28586e6c4c917c8d807d",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/validate.js": "6476e80b1b34fd6511ba89ae89508e501daed670369ab8c26acdce7109c155db",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/crop.js": "03552409b48975702527fb365eea6841cb441a2be26637a7d44a85aa8ea763ff",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/spatial-color.js": "f170ff447ef905fc21121d286ac427a079b184ca077fd178065b0a3e247fb132",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/feature-shapes.js": "777bcde720131643f6560cb20869bda62c3daf65c550ed6a06e94a7106f80c39",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/junctions.js": "e024950b6814bcf24daef19679487236840e22245fd37dc3a965c025a5235104",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/geometry.js": "3dd9575ae9e651b38bc827d040c1784addd4c16a39eaa4e8cab35b9180672b89",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/input.js": "1c35b6b2c9fadd824f03386fe8a6187cf6e10029358cbe07f83b4696d4bebfdc",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/routing.js": "2033fe7eb9347b9095e674d11c213033735233f93d1e485a8a5bb78dbe5e6f1f",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/direct/shared-span.js": "20b6c81ad8ddde41f093cdc8d6c0240f8003235dbb5c38a70cdbd2c9f22960d0",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/direct/primitives.js": "9e619c5bd3802b1487d73ecdd73650540a88ea9f0f691f121ec803a18b0813c5",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/direct/short-returns.js": "b329b2ca19cb7fca3493d33b0e65dcd44f32ff7bba507cddad106df7f85321ab",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/direct/feature-seeds.js": "dc92e710a54afcc94334f7ceacbb56e92584837daf30983881e8750f683f1908",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/direct/short-return-project.js": "0626bed05c4574f94947bea0ca74c43b2dae88e509aade233386c103b811df0d",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/direct/finalize.js": "d8504b811b223296c006c1cca57466c28fef0adc0e880b2d0073bfcdcd554ae4",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/direct/refine.js": "39105b04e208a53d16d3990a57584d73b33536b27885d2e0048ddb0a717f9502",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/direct/feature-details.js": "b4c07ebd50fe821c37cd61ca1404c70370f50120a4c2058f7c11e743b4cfcb49",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/direct/chord-tangent.js": "3f520f728b0a23a5263e67c33b90b0346147c98bdcd10391ddbe7ff0702aef3c",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/direct/primitive-selection.js": "1ac68a6785704d5eef04576615bea0439c79a80fcd02132d21535b35d7f31bd7",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/direct/grid.js": "08ecb20d7aa3b78149bbd8d025949ef435b3e41d73c51e987b31fd521abc4c79",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/direct/rejected-routing.js": "0c683586205f582975567c8bed43681307cfee563f38b638508efc4502141b68",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/direct/clamped-features.js": "92768d5cf3496b3a0685ce983d1ad4313dd183bc0bafc59442e06f847641e71f",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/direct/sharing-orbit.js": "02a61477394a424cd06fffe09c40c8350737b8de417c768e912defbdb9104ccd",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/direct/initialize.js": "097ae2b72608930c5337097b253328cd316123e45eaf56e0eaaaa3de3a3ad5d3",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/direct/turn-limit.js": "1f64a27bd008775f01ccc1caec37b50e3b60afb1604b9b073aec42fcbec2fb11",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/direct/outline-details.js": "ff9d4df5f27fd9ca97d15b115cc95c5692bd17e302f0dcd11c62e7295b85d8aa",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/direct/fit.js": "91a4b1448e11c9de1c1eabd424283188c64abc3caa9815df8c384d7b42ca7153",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/direct/final-return-repair.js": "591521ee1ae435e1bc8b231210de873af18042475c31265a0eca988971f654bb",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/direct/counts.js": "fa6c81786169b13407815dee8fdc7e15e05ffb4c592c011e2d62b1fbaa0d44e1",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/direct/prefer-matching.js": "4e226af8ea042dd5ede821ba5756301a7c970a48be686869b30f466f5c073633",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/direct/polish.js": "4d96c771f4c4dcb0a4b4cba1ad422fe3d5b73c8fc928848ba03417ba2685980a",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/direct/shared-simplification.js": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/direct/isometry-projection.js": "976132692a0f1fead6b45aa3a9d7e1dcf891baf19e44d8c715f541352d43cd83",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/direct/matching.js": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/direct/topology.js": "ab60d2fa572ed62b497244a459d26fd1eedbae2902a850c48b2ec3023be2d097",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/direct/reroute.js": "84a8cf2cfb6bcb1101a63004f638d0f3dc398baf3fe15ec1068b20336535d9ed",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/direct/share.js": "5f31cddc475959fa8c9c126782f2c6695bdfc5944862a5a12782f14d2113f92d",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/direct/clearance-repair.js": "4479bc23647003be20ec37d833e4456fe1063692b7b6a33d1088ddc11437bca8",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/direct/native/boundary.wasm": "52152e812fb055451635f4897b2a6c0b92156084bd272575200300263bd31ba9",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/direct/native/PROVENANCE.json": "91caa24e6333b0bb1418e49f0bbfa85691551a454d73d5047d0db05ace261879",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/core/direct/native/boundary.c": "ce50bd3ae08511e672b6e24075ce4f2e9b1fc23675e147dd2c7faa71e131d5c9",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/examples/star.saved.json": "7b3a3164d830c59adfcb7d6b51207d6423971a850e360ac00a21fbb71ee5fa50",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/examples/waves.svg": "20ee4d65378489d0cc0d3b9e41cdebf2fc81ff3b096443c76105cf3430e6a7e3",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/examples/star.png": "54ee86896412da50ccc8630593977cc6ce386fcfcc29007f311d80f6c463fa1b",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/examples/jul.saved.json": "07c223ab98b8bb576df5775682941ad688ffd097d3b7b304861db3f26fa0d454",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/vendor/HIGHS-LICENSE.txt": "9f8d8dcf27789ac59c0d7c732d6682f148804a5e99d83e9f207d6c1882b98bfa",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/vendor/PROVENANCE.json": "f90544e4eeec519b0aa3b7069b601591d4bc0e6fcafed7227d9dc1dc045a8ba5",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/vendor/highs.wasm": "528be4365bea1d4188988646b244263f50320df55782e14d6af5bce7cd45c840",
+        "tmp/heart-learning/clearance-repair-integration-v1/candidate/inverse/vendor/highs.mjs": "f2bdfd071d19c3745756a087026589e9240f329e38315a86f626823ae78a4036",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/worker.js": "dbc471cb8f5fdf07b97689ac4338274a73bf4f09bae244df4609efd1ea30fd70",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/worker-bootstrap.js": "5dfa8438cff21db635700f659642dab02e582dcf3c0141507d975daf3d16d0c2",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/THIRD_PARTY_NOTICES.txt": "dbfafe9f695b27fbcb1d5d213a4a8db7e7d216febadbd34f85e204329c26cb6e",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/LICENSE.txt": "681b46f147610336a243b3c72cd08cd5904b2dee747e74c959ae57ade9e6b9df",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/worker-controller.js": "34d4069dd9bc1aa28beabd81ba602fa80c901484d287eff27f2d103aba9475d4",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/compute-worker.js": "f613e3c7c83016993386dde32805f7249ea603c11b35be170f3f4ab8df48da1d",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/locator/grid-refine.js": "8cb1dc08b16cb855657e3ea838e07c03475d4ea77305ed35017abef873ef0be2",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/locator/palette.js": "4a373e0a911d8f8d2cdda42468c05cc52cb33b912a8990775f9db651cfc99158",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/locator/locator.js": "bb745954e2fa2b59abf8be98ded36b75b134295363f913dab04d3a4ad1c6a419",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/locator/background.js": "03d1c9b8f8237a97a7e8ed53d1dfa5117d1db079ba4162cac7117a8761f3441f",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/locator/fields.js": "569c2235139acdc3c22f1fee94158ae59406b682e7ef16e822de215fd94b36ea",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/locator/orientation.js": "687590ee664128da750695113c06b9ff921252a8715b3a121f956e47ebb9aa28",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/locator/anchored.js": "92f1ffb68bac38b1bc36f4209820b46200cfa7e6dcfbb746ed94f33beddac536",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/locator/math.js": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/locator/interior-palette.js": "6322efaa9772d488992a40da5b01091b0e71826d30c91fba5976c5b285e027bc",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/locator/NOTICE.md": "4a9cc65be6ca309d2b57609d760e584ab78c345dae95c789e351bb69180d5b05",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/self-intersections.js": "bea95be34a4a73cbb06d41c36dfcb3794f4e31b88971ca1cc84d79de22a4a4d7",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/graph.js": "fc585dbe542370f91faa6ae9f2f28e677d284fcc7922931dd487751c48b12b01",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/automatic.js": "6f3e8e3cec8d8035d1a01596c720e1360ca847076cc8629b49c7a376a0b11c21",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/kernel-choice.js": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/numerical-kernel.js": "f690a486fe92aebb33192c1b5f21d5613548561b61e59c394ce0feef152cdb0d",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/material.js": "483aba8c7c8ce04b6736692246598d39657e0d6f1d476994a6b8fb9e14f60080",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/stopped.js": "92eb57a1c5398930eb831a1fd253106e8147f402ff9b53e4c6f4e7329e52b1a1",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/complete-self-returns.js": "c39492fd0b22e65ac28bdf11cde24c8a72ffe385d488820e0d05299914f1a110",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/solver.js": "d3f3762d7d2a70983cce1a999052759c448778c7f7102b3010e1756250aecebe",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/self-returns.js": "40f33d5c795e12c683c4a351acd232620770e3ee9b47919e7150053f1506f486",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/image-features.js": "4b0d2a0c5f14deb415f82191d522a071e3a13f2938e176929a11718c9041ebf1",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/progress.js": "66498ca301179554df8f4411bbd1bcd12e5ab2fe50dbe7ff84afc9e7847d2ad7",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/border.js": "c8be96b1f7d1e80d71218f7e5e7856e674bbc2606b74702b74e564ebe6d8bd6f",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/chord-distance.js": "6be52281e3056d29ad7093f902b0f768410f3c414f049f164f94e969bd89dd48",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/feature-recovery.js": "755ca667ece3a051d5ce0387240a4b491e7051aaf2b9a68e6b5bd1c477bb25e3",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/engine.js": "df3c667254e3014ee5bcd7de4c8e1d02505b4701c8596a48cd204992b9f27e12",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/return-search.js": "7fa3ca77219e51ae3e8cc3aa09f81e23d6f63a173e2a28586e6c4c917c8d807d",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/validate.js": "6476e80b1b34fd6511ba89ae89508e501daed670369ab8c26acdce7109c155db",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/crop.js": "03552409b48975702527fb365eea6841cb441a2be26637a7d44a85aa8ea763ff",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/spatial-color.js": "f170ff447ef905fc21121d286ac427a079b184ca077fd178065b0a3e247fb132",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/feature-shapes.js": "777bcde720131643f6560cb20869bda62c3daf65c550ed6a06e94a7106f80c39",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/junctions.js": "e024950b6814bcf24daef19679487236840e22245fd37dc3a965c025a5235104",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/geometry.js": "3dd9575ae9e651b38bc827d040c1784addd4c16a39eaa4e8cab35b9180672b89",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/input.js": "1c35b6b2c9fadd824f03386fe8a6187cf6e10029358cbe07f83b4696d4bebfdc",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/routing.js": "2033fe7eb9347b9095e674d11c213033735233f93d1e485a8a5bb78dbe5e6f1f",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/direct/shared-span.js": "20b6c81ad8ddde41f093cdc8d6c0240f8003235dbb5c38a70cdbd2c9f22960d0",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/direct/primitives.js": "9e619c5bd3802b1487d73ecdd73650540a88ea9f0f691f121ec803a18b0813c5",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/direct/short-returns.js": "b329b2ca19cb7fca3493d33b0e65dcd44f32ff7bba507cddad106df7f85321ab",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/direct/feature-seeds.js": "dc92e710a54afcc94334f7ceacbb56e92584837daf30983881e8750f683f1908",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/direct/short-return-project.js": "0626bed05c4574f94947bea0ca74c43b2dae88e509aade233386c103b811df0d",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/direct/finalize.js": "d8504b811b223296c006c1cca57466c28fef0adc0e880b2d0073bfcdcd554ae4",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/direct/refine.js": "39105b04e208a53d16d3990a57584d73b33536b27885d2e0048ddb0a717f9502",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/direct/feature-details.js": "b4c07ebd50fe821c37cd61ca1404c70370f50120a4c2058f7c11e743b4cfcb49",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/direct/chord-tangent.js": "3f520f728b0a23a5263e67c33b90b0346147c98bdcd10391ddbe7ff0702aef3c",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/direct/primitive-selection.js": "1ac68a6785704d5eef04576615bea0439c79a80fcd02132d21535b35d7f31bd7",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/direct/grid.js": "08ecb20d7aa3b78149bbd8d025949ef435b3e41d73c51e987b31fd521abc4c79",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/direct/rejected-routing.js": "0c683586205f582975567c8bed43681307cfee563f38b638508efc4502141b68",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/direct/clamped-features.js": "92768d5cf3496b3a0685ce983d1ad4313dd183bc0bafc59442e06f847641e71f",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/direct/sharing-orbit.js": "02a61477394a424cd06fffe09c40c8350737b8de417c768e912defbdb9104ccd",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/direct/initialize.js": "097ae2b72608930c5337097b253328cd316123e45eaf56e0eaaaa3de3a3ad5d3",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/direct/turn-limit.js": "1f64a27bd008775f01ccc1caec37b50e3b60afb1604b9b073aec42fcbec2fb11",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/direct/outline-details.js": "ff9d4df5f27fd9ca97d15b115cc95c5692bd17e302f0dcd11c62e7295b85d8aa",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/direct/fit.js": "7db001945cc90cf86cabd55a639dbfbc7e69bb1959feacdab7186e93656d8f2e",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/direct/final-return-repair.js": "591521ee1ae435e1bc8b231210de873af18042475c31265a0eca988971f654bb",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/direct/counts.js": "f4fbb0e06b54a738f6e669593e2be84b7d4311a91f5a81604b5a55d1193bce9e",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/direct/prefer-matching.js": "4e226af8ea042dd5ede821ba5756301a7c970a48be686869b30f466f5c073633",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/direct/polish.js": "4d96c771f4c4dcb0a4b4cba1ad422fe3d5b73c8fc928848ba03417ba2685980a",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/direct/shared-simplification.js": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/direct/isometry-projection.js": "976132692a0f1fead6b45aa3a9d7e1dcf891baf19e44d8c715f541352d43cd83",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/direct/matching.js": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/direct/topology.js": "ab60d2fa572ed62b497244a459d26fd1eedbae2902a850c48b2ec3023be2d097",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/direct/reroute.js": "84a8cf2cfb6bcb1101a63004f638d0f3dc398baf3fe15ec1068b20336535d9ed",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/direct/share.js": "5f31cddc475959fa8c9c126782f2c6695bdfc5944862a5a12782f14d2113f92d",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/direct/native/boundary.wasm": "52152e812fb055451635f4897b2a6c0b92156084bd272575200300263bd31ba9",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/direct/native/PROVENANCE.json": "91caa24e6333b0bb1418e49f0bbfa85691551a454d73d5047d0db05ace261879",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/core/direct/native/boundary.c": "ce50bd3ae08511e672b6e24075ce4f2e9b1fc23675e147dd2c7faa71e131d5c9",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/examples/star.saved.json": "7b3a3164d830c59adfcb7d6b51207d6423971a850e360ac00a21fbb71ee5fa50",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/examples/waves.svg": "20ee4d65378489d0cc0d3b9e41cdebf2fc81ff3b096443c76105cf3430e6a7e3",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/examples/star.png": "54ee86896412da50ccc8630593977cc6ce386fcfcc29007f311d80f6c463fa1b",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/examples/jul.saved.json": "07c223ab98b8bb576df5775682941ad688ffd097d3b7b304861db3f26fa0d454",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/vendor/HIGHS-LICENSE.txt": "9f8d8dcf27789ac59c0d7c732d6682f148804a5e99d83e9f207d6c1882b98bfa",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/vendor/PROVENANCE.json": "f90544e4eeec519b0aa3b7069b601591d4bc0e6fcafed7227d9dc1dc045a8ba5",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/vendor/highs.wasm": "528be4365bea1d4188988646b244263f50320df55782e14d6af5bce7cd45c840",
+        "tmp/heart-learning/clearance-repair-integration-v1/baseline/inverse/vendor/highs.mjs": "f2bdfd071d19c3745756a087026589e9240f329e38315a86f626823ae78a4036",
+        "tmp/heart-learning/return-projection-speed-v1/browser-study/normal-browser/chromium-leaf-mask/prepared.json": "a7e1647e84453c97918a04f29b39c97d15bcb24019b8b2edd7ee3744eaa1f430",
+        "tmp/heart-learning/return-projection-speed-v1/browser-study/normal-browser/chromium-outline-star-shift-mask/prepared.json": "a9dcc9825377d7f7f89677c44b9ebf334387d7696118da350609dff7163a4b55",
+        "scripts/inverse/export-renderer.mjs": "fb393f73b9c39780795c3951eb82d864fef7ab40ec63a90a4365aae6041afbbe"
+      },
+      "runs": [
+        {
+          "case": "leaf-r1",
+          "runtime": "baseline",
+          "passed": true,
+          "templateChecksPassed": true,
+          "nativeSeconds": 9.329908166,
+          "processSeconds": 9.978729208,
+          "maskSha256": "0e1fefda40bbe92da956dd2467d117af6a732d0223e695901cc0255a166651f4",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.0131625,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.01468125,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            3,
+            3
+          ],
+          "repair": false,
+          "materialResolution": 360,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v1/runs/leaf-r1/baseline-10/measurement.json",
+          "measurementSha256": "96013100e8361bed92104782d5cdb2067484a964800fecf59cbddf0bf1a70969",
+          "geometrySha256": "20d7893fa3d70da7cf7bfa2a157668759ec4298194698c39d7247e40afeeb8cd"
+        },
+        {
+          "case": "leaf-r1",
+          "runtime": "candidate",
+          "passed": true,
+          "templateChecksPassed": true,
+          "nativeSeconds": 9.279196875,
+          "processSeconds": 9.824748083,
+          "maskSha256": "0e1fefda40bbe92da956dd2467d117af6a732d0223e695901cc0255a166651f4",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.0131625,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.01468125,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            3,
+            3
+          ],
+          "repair": false,
+          "materialResolution": 360,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v1/runs/leaf-r1/candidate-10/measurement.json",
+          "measurementSha256": "2990347d7c0be8cf827e7c65f9f3435b166adfcf77f12786fdd6f64c9a4b7f14",
+          "geometrySha256": "54afc4aa277c6dbbb0279416b01cf881d7aaad9a11ff0c6436f582c0fa996c88"
+        },
+        {
+          "case": "leaf-x-plus-1-r1",
+          "runtime": "baseline",
+          "passed": true,
+          "templateChecksPassed": true,
+          "nativeSeconds": 9.5637125,
+          "processSeconds": 10.128804125000002,
+          "maskSha256": "7f1d0b2b6a28e148c2651ae410473db7875bdb13c37cb7b10f5a289edd165a21",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.01784375,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.01959375,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            4,
+            5
+          ],
+          "repair": false,
+          "materialResolution": 700,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v1/runs/leaf-x-plus-1-r1/baseline-10/measurement.json",
+          "measurementSha256": "30e09efbf7074001791c91aa69af49668299a9dae2739cc4c518c8dd9df6d14e",
+          "geometrySha256": "053f52df47d6e5c2a2334d6569cc316c592c8a708eb07be7614aad7b799e6a1a"
+        },
+        {
+          "case": "leaf-x-plus-1-r1",
+          "runtime": "candidate",
+          "passed": true,
+          "templateChecksPassed": true,
+          "nativeSeconds": 6.0853600000000005,
+          "processSeconds": 6.6089196669999986,
+          "maskSha256": "7f1d0b2b6a28e148c2651ae410473db7875bdb13c37cb7b10f5a289edd165a21",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.0123375,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.013828125,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            3,
+            3
+          ],
+          "repair": false,
+          "materialResolution": 360,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v1/runs/leaf-x-plus-1-r1/candidate-10/measurement.json",
+          "measurementSha256": "13bb12de88954cde337548d868db8cf0c25de604f369d35af3a20f70b429ddbb",
+          "geometrySha256": "999983a25933d35a6118f7e880afee1a1e0b6dc5afc3f989f29659dffd70181a"
+        },
+        {
+          "case": "leaf-x-minus-1-r1",
+          "runtime": "baseline",
+          "passed": true,
+          "templateChecksPassed": true,
+          "nativeSeconds": 8.575303791,
+          "processSeconds": 9.141440457999998,
+          "maskSha256": "f749ec397b755dbfa09d4f8064b9f339ec3458ae0c29235bbf8257fb4253c183",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.01586875,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.0176328125,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            3,
+            3
+          ],
+          "repair": false,
+          "materialResolution": 360,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v1/runs/leaf-x-minus-1-r1/baseline-10/measurement.json",
+          "measurementSha256": "ea722bec970004897321eb670f50a04548192da89b5f6a826b372523859827f4",
+          "geometrySha256": "cd8aa9493b0ef873a2c80bc13a7efd3688d177ad32b766ae4d653ccb8bffdfae"
+        },
+        {
+          "case": "leaf-x-minus-1-r1",
+          "runtime": "candidate",
+          "passed": true,
+          "templateChecksPassed": true,
+          "nativeSeconds": 8.763105625,
+          "processSeconds": 9.310620292000003,
+          "maskSha256": "f749ec397b755dbfa09d4f8064b9f339ec3458ae0c29235bbf8257fb4253c183",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.01583125,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.0175484375,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            3,
+            3
+          ],
+          "repair": false,
+          "materialResolution": 360,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v1/runs/leaf-x-minus-1-r1/candidate-10/measurement.json",
+          "measurementSha256": "2cbcfe975046cdf93fbf74e0784be29875081b14f3ab3184f13bfc6c97f3fdbc",
+          "geometrySha256": "bbaa4f65222ba7081ab95543a737ac4795fbd7cd12598d2c918a43b59ca16b25"
+        },
+        {
+          "case": "leaf-y-plus-1-r1",
+          "runtime": "baseline",
+          "passed": false,
+          "templateChecksPassed": false,
+          "nativeSeconds": 8.904645582999999,
+          "processSeconds": 9.488102790999996,
+          "maskSha256": "671a32982889c30a33f6112ca682083892c5f1ed898d4881530421be8bbe794e",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.04901875,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.049521875,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            3,
+            5
+          ],
+          "repair": false,
+          "materialResolution": 360,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v1/runs/leaf-y-plus-1-r1/baseline-10/measurement.json",
+          "measurementSha256": "b685c01dc2a40e62efce81918ecfc9b7a7885946bc545fa7279cd263b34991d9",
+          "geometrySha256": "1d3988a610223b4c2ee90e814bc0b0efaa10052e71df5d84b1a5bb9eb4b35c0b"
+        },
+        {
+          "case": "leaf-y-plus-1-r1",
+          "runtime": "candidate",
+          "passed": true,
+          "templateChecksPassed": true,
+          "nativeSeconds": 9.000915417,
+          "processSeconds": 9.534821792000002,
+          "maskSha256": "671a32982889c30a33f6112ca682083892c5f1ed898d4881530421be8bbe794e",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.0127375,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.01430625,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            3,
+            3
+          ],
+          "repair": false,
+          "materialResolution": 360,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v1/runs/leaf-y-plus-1-r1/candidate-10/measurement.json",
+          "measurementSha256": "49072b91fa865ab237e4eaa129b9b6efe3c7d56167096b64728a16e43245a32d",
+          "geometrySha256": "5a06d6de43a2217601e9b9215ebfe8d2093f0df36c2f26cbb555cea933a21317"
+        },
+        {
+          "case": "leaf-y-minus-1-r1",
+          "runtime": "baseline",
+          "passed": false,
+          "templateChecksPassed": false,
+          "nativeSeconds": 8.943448166999998,
+          "processSeconds": 9.480144207999999,
+          "maskSha256": "8dc94d285d79edd22b62caeaead1667af6d837bfde7e8d8024e2e890e54831da",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.049975,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.0504984375,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            3,
+            5
+          ],
+          "repair": false,
+          "materialResolution": 360,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v1/runs/leaf-y-minus-1-r1/baseline-10/measurement.json",
+          "measurementSha256": "65e8e5982ae0abd34398d06856f917289a8dd93cfd5099ac61761b26f8375ce2",
+          "geometrySha256": "2d615b40ac1e7d1100ff9b2353c2f80367fa71be372c7ac6f79f19459b44d19c"
+        },
+        {
+          "case": "leaf-y-minus-1-r1",
+          "runtime": "candidate",
+          "passed": true,
+          "templateChecksPassed": true,
+          "nativeSeconds": 9.482519583,
+          "processSeconds": 10.072690457999997,
+          "maskSha256": "8dc94d285d79edd22b62caeaead1667af6d837bfde7e8d8024e2e890e54831da",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.00866875,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.0103546875,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            3,
+            3
+          ],
+          "repair": true,
+          "materialResolution": 700,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v1/runs/leaf-y-minus-1-r1/candidate-10/measurement.json",
+          "measurementSha256": "ec70409cb15a4ddc85f111cd3b88ad817cd4bbcdab1965bba10e50be39d76bc2",
+          "geometrySha256": "c890a7c1e50eeb984c10dce70220fc153dbbc8d29d37b0a694335237ed0f770c"
+        },
+        {
+          "case": "outline-star-shift-r1",
+          "runtime": "baseline",
+          "passed": true,
+          "templateChecksPassed": true,
+          "nativeSeconds": 8.749666875,
+          "processSeconds": 9.307971583000011,
+          "maskSha256": "3338849d32ecafd54d2365fc664ec97ee5fbca5b54534290d873f6919437f5f4",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.00756875,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.0091421875,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            3,
+            3
+          ],
+          "repair": false,
+          "materialResolution": 360,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v1/runs/outline-star-shift-r1/baseline-10/measurement.json",
+          "measurementSha256": "43e0a49f4fca7300f72261d897f33facff1f64d12fe4b902925ec65e32ee35e0",
+          "geometrySha256": "9e6da2fa44cc1c93b80e7a92e0c6e0592547576861a530d99cb3cd7b5602f54d"
+        },
+        {
+          "case": "outline-star-shift-r1",
+          "runtime": "candidate",
+          "passed": true,
+          "templateChecksPassed": true,
+          "nativeSeconds": 8.929788833,
+          "processSeconds": 9.483449708999999,
+          "maskSha256": "3338849d32ecafd54d2365fc664ec97ee5fbca5b54534290d873f6919437f5f4",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.00756875,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.0091421875,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            3,
+            3
+          ],
+          "repair": false,
+          "materialResolution": 360,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v1/runs/outline-star-shift-r1/candidate-10/measurement.json",
+          "measurementSha256": "e29a2c69bcbea9155ccc6548ca989228771c8597f462a3ca5be34b9ecd94138c",
+          "geometrySha256": "9e6da2fa44cc1c93b80e7a92e0c6e0592547576861a530d99cb3cd7b5602f54d"
+        },
+        {
+          "case": "leaf-r2",
+          "runtime": "candidate",
+          "passed": true,
+          "templateChecksPassed": true,
+          "nativeSeconds": 9.275501125,
+          "processSeconds": 9.817884499999991,
+          "maskSha256": "0e1fefda40bbe92da956dd2467d117af6a732d0223e695901cc0255a166651f4",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.0132875,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.014721875,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            3,
+            3
+          ],
+          "repair": false,
+          "materialResolution": 360,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v1/runs/leaf-r2/candidate-10/measurement.json",
+          "measurementSha256": "83ea1dfa629e36b0bfdddc54ad294fd665fc09b8b0ca0338d724549de3c4dc77",
+          "geometrySha256": "d27407dfb5cc598e911b9dc61aff360e1fb22a27e148df76b16249d414cab9ea"
+        },
+        {
+          "case": "leaf-r2",
+          "runtime": "baseline",
+          "passed": true,
+          "templateChecksPassed": true,
+          "nativeSeconds": 9.339983542,
+          "processSeconds": 9.826884916999987,
+          "maskSha256": "0e1fefda40bbe92da956dd2467d117af6a732d0223e695901cc0255a166651f4",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.0131625,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.01468125,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            3,
+            3
+          ],
+          "repair": false,
+          "materialResolution": 360,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v1/runs/leaf-r2/baseline-10/measurement.json",
+          "measurementSha256": "f69b7ae36533a04cb9eeb148df92e0db68763b44d7fd8adc5f4dba2987577ae5",
+          "geometrySha256": "20d7893fa3d70da7cf7bfa2a157668759ec4298194698c39d7247e40afeeb8cd"
+        },
+        {
+          "case": "leaf-x-plus-1-r2",
+          "runtime": "candidate",
+          "passed": true,
+          "templateChecksPassed": true,
+          "nativeSeconds": 6.256628334,
+          "processSeconds": 6.794244041000013,
+          "maskSha256": "7f1d0b2b6a28e148c2651ae410473db7875bdb13c37cb7b10f5a289edd165a21",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.0123375,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.013828125,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            3,
+            3
+          ],
+          "repair": false,
+          "materialResolution": 360,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v1/runs/leaf-x-plus-1-r2/candidate-10/measurement.json",
+          "measurementSha256": "0c6c54438dbec087bc08e21ad89d8ec2682a5c6a87f5ef481058b980efa2d6e7",
+          "geometrySha256": "999983a25933d35a6118f7e880afee1a1e0b6dc5afc3f989f29659dffd70181a"
+        },
+        {
+          "case": "leaf-x-plus-1-r2",
+          "runtime": "baseline",
+          "passed": true,
+          "templateChecksPassed": true,
+          "nativeSeconds": 9.567280541999999,
+          "processSeconds": 10.103786541999995,
+          "maskSha256": "7f1d0b2b6a28e148c2651ae410473db7875bdb13c37cb7b10f5a289edd165a21",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.017875,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.0196296875,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            4,
+            5
+          ],
+          "repair": false,
+          "materialResolution": 700,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v1/runs/leaf-x-plus-1-r2/baseline-10/measurement.json",
+          "measurementSha256": "b590975c004b9ca1a63d826d3f88c389c9ffaa34aa6661b0c1e6195e72534422",
+          "geometrySha256": "2542ef1b641e18f9f3a0064319b61e41027a257005fde4efe878c5d4f4e20cce"
+        },
+        {
+          "case": "leaf-x-minus-1-r2",
+          "runtime": "candidate",
+          "passed": true,
+          "templateChecksPassed": true,
+          "nativeSeconds": 8.634253708000001,
+          "processSeconds": 9.217044041000008,
+          "maskSha256": "f749ec397b755dbfa09d4f8064b9f339ec3458ae0c29235bbf8257fb4253c183",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.01586875,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.0176328125,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            3,
+            3
+          ],
+          "repair": false,
+          "materialResolution": 360,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v1/runs/leaf-x-minus-1-r2/candidate-10/measurement.json",
+          "measurementSha256": "076dac5288077052c07cd3f034ccb2687cc20b6ed529b0bdcaa4634cd4250e48",
+          "geometrySha256": "cd8aa9493b0ef873a2c80bc13a7efd3688d177ad32b766ae4d653ccb8bffdfae"
+        },
+        {
+          "case": "leaf-x-minus-1-r2",
+          "runtime": "baseline",
+          "passed": true,
+          "templateChecksPassed": true,
+          "nativeSeconds": 8.575707417000002,
+          "processSeconds": 9.147136791999998,
+          "maskSha256": "f749ec397b755dbfa09d4f8064b9f339ec3458ae0c29235bbf8257fb4253c183",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.01586875,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.0176328125,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            3,
+            3
+          ],
+          "repair": false,
+          "materialResolution": 360,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v1/runs/leaf-x-minus-1-r2/baseline-10/measurement.json",
+          "measurementSha256": "b6807cb28b9e9d860bcdd54b68068e84b5d0aa3ed078d437158dc33f960d4ddd",
+          "geometrySha256": "cd8aa9493b0ef873a2c80bc13a7efd3688d177ad32b766ae4d653ccb8bffdfae"
+        },
+        {
+          "case": "leaf-y-plus-1-r2",
+          "runtime": "candidate",
+          "passed": true,
+          "templateChecksPassed": true,
+          "nativeSeconds": 9.012518,
+          "processSeconds": 9.554331166000026,
+          "maskSha256": "671a32982889c30a33f6112ca682083892c5f1ed898d4881530421be8bbe794e",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.0127375,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.01430625,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            3,
+            3
+          ],
+          "repair": false,
+          "materialResolution": 360,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v1/runs/leaf-y-plus-1-r2/candidate-10/measurement.json",
+          "measurementSha256": "36fd2893c6806b707e53ceb37d46cf9ca2c896829c512fb48c90c8283e8bc0ba",
+          "geometrySha256": "5a06d6de43a2217601e9b9215ebfe8d2093f0df36c2f26cbb555cea933a21317"
+        },
+        {
+          "case": "leaf-y-plus-1-r2",
+          "runtime": "baseline",
+          "passed": false,
+          "templateChecksPassed": false,
+          "nativeSeconds": 9.150365749999999,
+          "processSeconds": 9.731167083999992,
+          "maskSha256": "671a32982889c30a33f6112ca682083892c5f1ed898d4881530421be8bbe794e",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.05046875,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.0509984375,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            3,
+            5
+          ],
+          "repair": false,
+          "materialResolution": 360,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v1/runs/leaf-y-plus-1-r2/baseline-10/measurement.json",
+          "measurementSha256": "e12c1051faac4cd709e47e141c2b2eb936ab69d3f0d5f40d089f9192adfa45c7",
+          "geometrySha256": "695bbaa4b98b0d12ce53ee4129289e5945a5063356f7a9e302186bdaa5db82f4"
+        },
+        {
+          "case": "leaf-y-minus-1-r2",
+          "runtime": "candidate",
+          "passed": true,
+          "templateChecksPassed": true,
+          "nativeSeconds": 9.490900625,
+          "processSeconds": 10.072733708000015,
+          "maskSha256": "8dc94d285d79edd22b62caeaead1667af6d837bfde7e8d8024e2e890e54831da",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.0091875,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.010703125,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            3,
+            3
+          ],
+          "repair": true,
+          "materialResolution": 700,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v1/runs/leaf-y-minus-1-r2/candidate-10/measurement.json",
+          "measurementSha256": "79b1727c26594d7edd36b9b6740b04ef60514453d8922ddff8f0044545e4a8ac",
+          "geometrySha256": "b1c2129032c473e42fb821460bcc5164d03d89158a4dfe0ad64f78dfa07bce42"
+        },
+        {
+          "case": "leaf-y-minus-1-r2",
+          "runtime": "baseline",
+          "passed": false,
+          "templateChecksPassed": false,
+          "nativeSeconds": 8.936777499999998,
+          "processSeconds": 9.458025958999997,
+          "maskSha256": "8dc94d285d79edd22b62caeaead1667af6d837bfde7e8d8024e2e890e54831da",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.049975,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.0504984375,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            3,
+            5
+          ],
+          "repair": false,
+          "materialResolution": 360,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v1/runs/leaf-y-minus-1-r2/baseline-10/measurement.json",
+          "measurementSha256": "264a8a9ec62dd2a2b1f8857285e4e401d4345b2f8907bf849f23e3ac3cb83818",
+          "geometrySha256": "2d615b40ac1e7d1100ff9b2353c2f80367fa71be372c7ac6f79f19459b44d19c"
+        },
+        {
+          "case": "outline-star-shift-r2",
+          "runtime": "candidate",
+          "passed": true,
+          "templateChecksPassed": true,
+          "nativeSeconds": 8.774913541999998,
+          "processSeconds": 9.316578915999997,
+          "maskSha256": "3338849d32ecafd54d2365fc664ec97ee5fbca5b54534290d873f6919437f5f4",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.00756875,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.0091421875,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            3,
+            3
+          ],
+          "repair": false,
+          "materialResolution": 360,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v1/runs/outline-star-shift-r2/candidate-10/measurement.json",
+          "measurementSha256": "adbc806b8cc600e647ff9cd39dcfb00f2866807bd3031d44bc7c31f4e18f2304",
+          "geometrySha256": "9e6da2fa44cc1c93b80e7a92e0c6e0592547576861a530d99cb3cd7b5602f54d"
+        },
+        {
+          "case": "outline-star-shift-r2",
+          "runtime": "baseline",
+          "passed": true,
+          "templateChecksPassed": true,
+          "nativeSeconds": 8.879555415999999,
+          "processSeconds": 9.429413208,
+          "maskSha256": "3338849d32ecafd54d2365fc664ec97ee5fbca5b54534290d873f6919437f5f4",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.00756875,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.0091421875,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            3,
+            3
+          ],
+          "repair": false,
+          "materialResolution": 360,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v1/runs/outline-star-shift-r2/baseline-10/measurement.json",
+          "measurementSha256": "c224e706e958003d3c7793ed5e537ca1f565245d3d49a884ac5bf95f2578f59d",
+          "geometrySha256": "9e6da2fa44cc1c93b80e7a92e0c6e0592547576861a530d99cb3cd7b5602f54d"
+        }
+      ],
+      "baseline": {
+        "passed": 8,
+        "total": 12,
+        "maximumNativeSeconds": 9.567280541999999
+      },
+      "candidate": {
+        "passed": 12,
+        "total": 12,
+        "maximumNativeSeconds": 9.490900625
+      },
+      "imageErrorIncreases": [
+        {
+          "case": "leaf-r2",
+          "resolution": 400,
+          "before": 0.0131625,
+          "after": 0.0132875
+        },
+        {
+          "case": "leaf-r2",
+          "resolution": 800,
+          "before": 0.01468125,
+          "after": 0.014721875
+        }
+      ]
+    },
+    {
+      "version": "v2",
+      "root": "tmp/heart-learning/clearance-repair-integration-v2",
+      "sourceFilesVerified": 208,
+      "protocolSha256": "e5439f3c957b7547eefd42ca599b43c3e2e0567f16965a89bb21be5165a67670",
+      "sourceHashes": {
+        "tmp/heart-learning/clearance-repair-integration-v2/run.py": "5ece846f3a13572c4e14be0c36ce7cfe4c2d17815e8e335dbeca8d43ed1f61d3",
+        "tmp/heart-learning/clearance-repair-integration-v2/run-case.mjs": "8511f7ed0305409b72c8776fa5b85f5f442d601094351fe3b10f23b59834c424",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/worker.js": "dbc471cb8f5fdf07b97689ac4338274a73bf4f09bae244df4609efd1ea30fd70",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/worker-bootstrap.js": "5dfa8438cff21db635700f659642dab02e582dcf3c0141507d975daf3d16d0c2",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/THIRD_PARTY_NOTICES.txt": "dbfafe9f695b27fbcb1d5d213a4a8db7e7d216febadbd34f85e204329c26cb6e",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/LICENSE.txt": "681b46f147610336a243b3c72cd08cd5904b2dee747e74c959ae57ade9e6b9df",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/worker-controller.js": "34d4069dd9bc1aa28beabd81ba602fa80c901484d287eff27f2d103aba9475d4",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/compute-worker.js": "f613e3c7c83016993386dde32805f7249ea603c11b35be170f3f4ab8df48da1d",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/locator/grid-refine.js": "8cb1dc08b16cb855657e3ea838e07c03475d4ea77305ed35017abef873ef0be2",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/locator/palette.js": "4a373e0a911d8f8d2cdda42468c05cc52cb33b912a8990775f9db651cfc99158",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/locator/locator.js": "bb745954e2fa2b59abf8be98ded36b75b134295363f913dab04d3a4ad1c6a419",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/locator/background.js": "03d1c9b8f8237a97a7e8ed53d1dfa5117d1db079ba4162cac7117a8761f3441f",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/locator/fields.js": "569c2235139acdc3c22f1fee94158ae59406b682e7ef16e822de215fd94b36ea",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/locator/orientation.js": "687590ee664128da750695113c06b9ff921252a8715b3a121f956e47ebb9aa28",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/locator/anchored.js": "92f1ffb68bac38b1bc36f4209820b46200cfa7e6dcfbb746ed94f33beddac536",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/locator/math.js": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/locator/interior-palette.js": "6322efaa9772d488992a40da5b01091b0e71826d30c91fba5976c5b285e027bc",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/locator/NOTICE.md": "4a9cc65be6ca309d2b57609d760e584ab78c345dae95c789e351bb69180d5b05",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/self-intersections.js": "bea95be34a4a73cbb06d41c36dfcb3794f4e31b88971ca1cc84d79de22a4a4d7",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/graph.js": "fc585dbe542370f91faa6ae9f2f28e677d284fcc7922931dd487751c48b12b01",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/automatic.js": "6f3e8e3cec8d8035d1a01596c720e1360ca847076cc8629b49c7a376a0b11c21",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/kernel-choice.js": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/numerical-kernel.js": "f690a486fe92aebb33192c1b5f21d5613548561b61e59c394ce0feef152cdb0d",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/material.js": "483aba8c7c8ce04b6736692246598d39657e0d6f1d476994a6b8fb9e14f60080",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/stopped.js": "92eb57a1c5398930eb831a1fd253106e8147f402ff9b53e4c6f4e7329e52b1a1",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/complete-self-returns.js": "c39492fd0b22e65ac28bdf11cde24c8a72ffe385d488820e0d05299914f1a110",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/solver.js": "d3f3762d7d2a70983cce1a999052759c448778c7f7102b3010e1756250aecebe",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/self-returns.js": "40f33d5c795e12c683c4a351acd232620770e3ee9b47919e7150053f1506f486",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/image-features.js": "4b0d2a0c5f14deb415f82191d522a071e3a13f2938e176929a11718c9041ebf1",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/progress.js": "66498ca301179554df8f4411bbd1bcd12e5ab2fe50dbe7ff84afc9e7847d2ad7",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/border.js": "c8be96b1f7d1e80d71218f7e5e7856e674bbc2606b74702b74e564ebe6d8bd6f",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/chord-distance.js": "6be52281e3056d29ad7093f902b0f768410f3c414f049f164f94e969bd89dd48",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/feature-recovery.js": "755ca667ece3a051d5ce0387240a4b491e7051aaf2b9a68e6b5bd1c477bb25e3",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/engine.js": "df3c667254e3014ee5bcd7de4c8e1d02505b4701c8596a48cd204992b9f27e12",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/return-search.js": "7fa3ca77219e51ae3e8cc3aa09f81e23d6f63a173e2a28586e6c4c917c8d807d",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/validate.js": "6476e80b1b34fd6511ba89ae89508e501daed670369ab8c26acdce7109c155db",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/crop.js": "03552409b48975702527fb365eea6841cb441a2be26637a7d44a85aa8ea763ff",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/spatial-color.js": "f170ff447ef905fc21121d286ac427a079b184ca077fd178065b0a3e247fb132",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/feature-shapes.js": "777bcde720131643f6560cb20869bda62c3daf65c550ed6a06e94a7106f80c39",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/junctions.js": "e024950b6814bcf24daef19679487236840e22245fd37dc3a965c025a5235104",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/geometry.js": "3dd9575ae9e651b38bc827d040c1784addd4c16a39eaa4e8cab35b9180672b89",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/input.js": "1c35b6b2c9fadd824f03386fe8a6187cf6e10029358cbe07f83b4696d4bebfdc",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/routing.js": "2033fe7eb9347b9095e674d11c213033735233f93d1e485a8a5bb78dbe5e6f1f",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/direct/shared-span.js": "20b6c81ad8ddde41f093cdc8d6c0240f8003235dbb5c38a70cdbd2c9f22960d0",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/direct/primitives.js": "9e619c5bd3802b1487d73ecdd73650540a88ea9f0f691f121ec803a18b0813c5",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/direct/short-returns.js": "b329b2ca19cb7fca3493d33b0e65dcd44f32ff7bba507cddad106df7f85321ab",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/direct/feature-seeds.js": "dc92e710a54afcc94334f7ceacbb56e92584837daf30983881e8750f683f1908",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/direct/short-return-project.js": "0626bed05c4574f94947bea0ca74c43b2dae88e509aade233386c103b811df0d",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/direct/finalize.js": "d8504b811b223296c006c1cca57466c28fef0adc0e880b2d0073bfcdcd554ae4",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/direct/refine.js": "39105b04e208a53d16d3990a57584d73b33536b27885d2e0048ddb0a717f9502",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/direct/feature-details.js": "b4c07ebd50fe821c37cd61ca1404c70370f50120a4c2058f7c11e743b4cfcb49",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/direct/chord-tangent.js": "3f520f728b0a23a5263e67c33b90b0346147c98bdcd10391ddbe7ff0702aef3c",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/direct/primitive-selection.js": "1ac68a6785704d5eef04576615bea0439c79a80fcd02132d21535b35d7f31bd7",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/direct/grid.js": "08ecb20d7aa3b78149bbd8d025949ef435b3e41d73c51e987b31fd521abc4c79",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/direct/rejected-routing.js": "0c683586205f582975567c8bed43681307cfee563f38b638508efc4502141b68",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/direct/clamped-features.js": "92768d5cf3496b3a0685ce983d1ad4313dd183bc0bafc59442e06f847641e71f",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/direct/sharing-orbit.js": "02a61477394a424cd06fffe09c40c8350737b8de417c768e912defbdb9104ccd",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/direct/initialize.js": "097ae2b72608930c5337097b253328cd316123e45eaf56e0eaaaa3de3a3ad5d3",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/direct/turn-limit.js": "1f64a27bd008775f01ccc1caec37b50e3b60afb1604b9b073aec42fcbec2fb11",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/direct/outline-details.js": "ff9d4df5f27fd9ca97d15b115cc95c5692bd17e302f0dcd11c62e7295b85d8aa",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/direct/fit.js": "7db001945cc90cf86cabd55a639dbfbc7e69bb1959feacdab7186e93656d8f2e",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/direct/final-return-repair.js": "591521ee1ae435e1bc8b231210de873af18042475c31265a0eca988971f654bb",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/direct/counts.js": "f4fbb0e06b54a738f6e669593e2be84b7d4311a91f5a81604b5a55d1193bce9e",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/direct/prefer-matching.js": "4e226af8ea042dd5ede821ba5756301a7c970a48be686869b30f466f5c073633",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/direct/polish.js": "4d96c771f4c4dcb0a4b4cba1ad422fe3d5b73c8fc928848ba03417ba2685980a",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/direct/shared-simplification.js": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/direct/isometry-projection.js": "976132692a0f1fead6b45aa3a9d7e1dcf891baf19e44d8c715f541352d43cd83",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/direct/matching.js": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/direct/topology.js": "ab60d2fa572ed62b497244a459d26fd1eedbae2902a850c48b2ec3023be2d097",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/direct/reroute.js": "84a8cf2cfb6bcb1101a63004f638d0f3dc398baf3fe15ec1068b20336535d9ed",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/direct/share.js": "5f31cddc475959fa8c9c126782f2c6695bdfc5944862a5a12782f14d2113f92d",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/direct/native/boundary.wasm": "52152e812fb055451635f4897b2a6c0b92156084bd272575200300263bd31ba9",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/direct/native/PROVENANCE.json": "91caa24e6333b0bb1418e49f0bbfa85691551a454d73d5047d0db05ace261879",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/core/direct/native/boundary.c": "ce50bd3ae08511e672b6e24075ce4f2e9b1fc23675e147dd2c7faa71e131d5c9",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/examples/star.saved.json": "7b3a3164d830c59adfcb7d6b51207d6423971a850e360ac00a21fbb71ee5fa50",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/examples/waves.svg": "20ee4d65378489d0cc0d3b9e41cdebf2fc81ff3b096443c76105cf3430e6a7e3",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/examples/star.png": "54ee86896412da50ccc8630593977cc6ce386fcfcc29007f311d80f6c463fa1b",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/examples/jul.saved.json": "07c223ab98b8bb576df5775682941ad688ffd097d3b7b304861db3f26fa0d454",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/vendor/HIGHS-LICENSE.txt": "9f8d8dcf27789ac59c0d7c732d6682f148804a5e99d83e9f207d6c1882b98bfa",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/vendor/PROVENANCE.json": "f90544e4eeec519b0aa3b7069b601591d4bc0e6fcafed7227d9dc1dc045a8ba5",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/vendor/highs.wasm": "528be4365bea1d4188988646b244263f50320df55782e14d6af5bce7cd45c840",
+        "tmp/heart-learning/clearance-repair-integration-v2/baseline/inverse/vendor/highs.mjs": "f2bdfd071d19c3745756a087026589e9240f329e38315a86f626823ae78a4036",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/worker.js": "dbc471cb8f5fdf07b97689ac4338274a73bf4f09bae244df4609efd1ea30fd70",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/worker-bootstrap.js": "5dfa8438cff21db635700f659642dab02e582dcf3c0141507d975daf3d16d0c2",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/THIRD_PARTY_NOTICES.txt": "dbfafe9f695b27fbcb1d5d213a4a8db7e7d216febadbd34f85e204329c26cb6e",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/LICENSE.txt": "681b46f147610336a243b3c72cd08cd5904b2dee747e74c959ae57ade9e6b9df",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/worker-controller.js": "34d4069dd9bc1aa28beabd81ba602fa80c901484d287eff27f2d103aba9475d4",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/compute-worker.js": "f613e3c7c83016993386dde32805f7249ea603c11b35be170f3f4ab8df48da1d",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/locator/grid-refine.js": "8cb1dc08b16cb855657e3ea838e07c03475d4ea77305ed35017abef873ef0be2",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/locator/palette.js": "4a373e0a911d8f8d2cdda42468c05cc52cb33b912a8990775f9db651cfc99158",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/locator/locator.js": "bb745954e2fa2b59abf8be98ded36b75b134295363f913dab04d3a4ad1c6a419",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/locator/background.js": "03d1c9b8f8237a97a7e8ed53d1dfa5117d1db079ba4162cac7117a8761f3441f",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/locator/fields.js": "569c2235139acdc3c22f1fee94158ae59406b682e7ef16e822de215fd94b36ea",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/locator/orientation.js": "687590ee664128da750695113c06b9ff921252a8715b3a121f956e47ebb9aa28",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/locator/anchored.js": "92f1ffb68bac38b1bc36f4209820b46200cfa7e6dcfbb746ed94f33beddac536",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/locator/math.js": "2ccde8c6c1c8cfff45c785eec8c32445e43c7b81c6cf393c4fdafa999abba948",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/locator/interior-palette.js": "6322efaa9772d488992a40da5b01091b0e71826d30c91fba5976c5b285e027bc",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/locator/NOTICE.md": "4a9cc65be6ca309d2b57609d760e584ab78c345dae95c789e351bb69180d5b05",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/self-intersections.js": "bea95be34a4a73cbb06d41c36dfcb3794f4e31b88971ca1cc84d79de22a4a4d7",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/bezier.js": "18fc4baaf3bb95f93c55d3339f33f93a2362199cccba41f57e8e0759156f7c6d",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/graph.js": "fc585dbe542370f91faa6ae9f2f28e677d284fcc7922931dd487751c48b12b01",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/automatic.js": "6f3e8e3cec8d8035d1a01596c720e1360ca847076cc8629b49c7a376a0b11c21",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/paper-backend.js": "955742fd215c285ebdb19a440c20a913414bf8fc8ccf91e41d67243e69036c81",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/presets.js": "2e876b4c1922385cb6c062caed0b229803e1b5d91d4cbdfcd1ee0312c83199cf",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/kernel-choice.js": "3afaa62abfb195554ddb55dfd38b8f87f5ce06d3fb42d58a8006c750cd2d1a63",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/polygonal.js": "3d9207aa7b5365ae4b475dcba4a4503523413864082682764cb01073a26b65b4",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/numerical-kernel.js": "f690a486fe92aebb33192c1b5f21d5613548561b61e59c394ce0feef152cdb0d",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/export.js": "8b5823c7b5c058a4277d04c32cb33d1c41e74e1b2fa1d920e691bb4b411f931c",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/rounding.js": "e4f598afa56f02596e4f1bbafd216c104726940b30c18f6f255aa2b64e61a295",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/image-reference.js": "e9c5f0a678b8ebce81f114d3219a6a4912781f39d3d3f577aa27be2601dd582b",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/material.js": "483aba8c7c8ce04b6736692246598d39657e0d6f1d476994a6b8fb9e14f60080",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/unmix.js": "6d0c6b4c81fcc89acd8b707f8f0f4c891ef1e49df1ee8c87437d681dabd3c4bf",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/symmetry.js": "c27497d444b5e7de476f89a84e43f6f16d13e90cbfa740293cf6dc8f43bbed83",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/stopped.js": "92eb57a1c5398930eb831a1fd253106e8147f402ff9b53e4c6f4e7329e52b1a1",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/complete-self-returns.js": "c39492fd0b22e65ac28bdf11cde24c8a72ffe385d488820e0d05299914f1a110",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/solver.js": "d3f3762d7d2a70983cce1a999052759c448778c7f7102b3010e1756250aecebe",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/self-returns.js": "40f33d5c795e12c683c4a351acd232620770e3ee9b47919e7150053f1506f486",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/image-features.js": "4b0d2a0c5f14deb415f82191d522a071e3a13f2938e176929a11718c9041ebf1",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/portals.js": "56f3b7358b16bb53fda70af9c828077ccd3cd5eeb1ccd272e37e205773a7cf40",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/progress.js": "66498ca301179554df8f4411bbd1bcd12e5ab2fe50dbe7ff84afc9e7847d2ad7",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/mask-preview.js": "a5322af5aa8ec9bb8541a5bde64d2207f24a610ee71b4b12978b2663a6b3646b",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/border.js": "c8be96b1f7d1e80d71218f7e5e7856e674bbc2606b74702b74e564ebe6d8bd6f",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/chord-distance.js": "6be52281e3056d29ad7093f902b0f768410f3c414f049f164f94e969bd89dd48",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/feature-recovery.js": "755ca667ece3a051d5ce0387240a4b491e7051aaf2b9a68e6b5bd1c477bb25e3",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/engine.js": "df3c667254e3014ee5bcd7de4c8e1d02505b4701c8596a48cd204992b9f27e12",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/return-search.js": "7fa3ca77219e51ae3e8cc3aa09f81e23d6f63a173e2a28586e6c4c917c8d807d",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/zip.js": "926cdb466405c81595130f41434f4274b53b71f55e8e9d4e0c0176e6fd83d96b",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/validate.js": "6476e80b1b34fd6511ba89ae89508e501daed670369ab8c26acdce7109c155db",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/crop.js": "03552409b48975702527fb365eea6841cb441a2be26637a7d44a85aa8ea763ff",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/spatial-color.js": "f170ff447ef905fc21121d286ac427a079b184ca077fd178065b0a3e247fb132",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/feature-shapes.js": "777bcde720131643f6560cb20869bda62c3daf65c550ed6a06e94a7106f80c39",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/junctions.js": "e024950b6814bcf24daef19679487236840e22245fd37dc3a965c025a5235104",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/settings.js": "376a5fe75d0e7d3b55c891a728cee5fe07d0a652462caf66432e1f61ae376f48",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/geometry.js": "3dd9575ae9e651b38bc827d040c1784addd4c16a39eaa4e8cab35b9180672b89",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/input.js": "1c35b6b2c9fadd824f03386fe8a6187cf6e10029358cbe07f83b4696d4bebfdc",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/routing.js": "2033fe7eb9347b9095e674d11c213033735233f93d1e485a8a5bb78dbe5e6f1f",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/direct/shared-span.js": "20b6c81ad8ddde41f093cdc8d6c0240f8003235dbb5c38a70cdbd2c9f22960d0",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/direct/primitives.js": "9e619c5bd3802b1487d73ecdd73650540a88ea9f0f691f121ec803a18b0813c5",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/direct/short-returns.js": "b329b2ca19cb7fca3493d33b0e65dcd44f32ff7bba507cddad106df7f85321ab",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/direct/feature-seeds.js": "dc92e710a54afcc94334f7ceacbb56e92584837daf30983881e8750f683f1908",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/direct/short-return-project.js": "0626bed05c4574f94947bea0ca74c43b2dae88e509aade233386c103b811df0d",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/direct/finalize.js": "d8504b811b223296c006c1cca57466c28fef0adc0e880b2d0073bfcdcd554ae4",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/direct/native.js": "ccc506cc76ac6b539313094743c71179a2722a788247242ef4aa74710a41ce46",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/direct/refine.js": "39105b04e208a53d16d3990a57584d73b33536b27885d2e0048ddb0a717f9502",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/direct/feature-details.js": "b4c07ebd50fe821c37cd61ca1404c70370f50120a4c2058f7c11e743b4cfcb49",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/direct/chord-tangent.js": "3f520f728b0a23a5263e67c33b90b0346147c98bdcd10391ddbe7ff0702aef3c",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/direct/boundary.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/direct/primitive-selection.js": "1ac68a6785704d5eef04576615bea0439c79a80fcd02132d21535b35d7f31bd7",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/direct/grid.js": "08ecb20d7aa3b78149bbd8d025949ef435b3e41d73c51e987b31fd521abc4c79",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/direct/symmetry.js": "afb0cf40f9dc6786aa542f1634a3b04ce4091494bad5afdb079db6a2f33117a3",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/direct/rejected-routing.js": "0c683586205f582975567c8bed43681307cfee563f38b638508efc4502141b68",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/direct/clamped-features.js": "92768d5cf3496b3a0685ce983d1ad4313dd183bc0bafc59442e06f847641e71f",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/direct/sharing-orbit.js": "02a61477394a424cd06fffe09c40c8350737b8de417c768e912defbdb9104ccd",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/direct/initialize.js": "097ae2b72608930c5337097b253328cd316123e45eaf56e0eaaaa3de3a3ad5d3",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/direct/turn-limit.js": "1f64a27bd008775f01ccc1caec37b50e3b60afb1604b9b073aec42fcbec2fb11",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/direct/outline-details.js": "ff9d4df5f27fd9ca97d15b115cc95c5692bd17e302f0dcd11c62e7295b85d8aa",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/direct/initialization-image.js": "6c2ace7e8519cd7274a137d106cd479c322ec22c51f4a4bf9b1e6600dafb6ea7",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/direct/fit.js": "91a4b1448e11c9de1c1eabd424283188c64abc3caa9815df8c384d7b42ca7153",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/direct/final-return-repair.js": "591521ee1ae435e1bc8b231210de873af18042475c31265a0eca988971f654bb",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/direct/math.js": "a4161fb823f28e8b8ba7cb86cab92eda2b46df543f4f459e026da4eda4f2200a",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/direct/counts.js": "184e0344b06354b1d17ce7874d5db8336aad132d43e1aa50e86d40fe85efb2bd",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/direct/prefer-matching.js": "4e226af8ea042dd5ede821ba5756301a7c970a48be686869b30f466f5c073633",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/direct/polish.js": "4d96c771f4c4dcb0a4b4cba1ad422fe3d5b73c8fc928848ba03417ba2685980a",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/direct/shared-simplification.js": "dbf2cbf4f28fe46b424a8d402d7c5578c644e084c4e62c61a6c8c7f3d9ebb821",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/direct/isometry-projection.js": "976132692a0f1fead6b45aa3a9d7e1dcf891baf19e44d8c715f541352d43cd83",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/direct/matching.js": "92f3f60d3f63823a66f7f8548234964809dca5fe6dd5fd75232b379b6c570559",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/direct/topology.js": "ab60d2fa572ed62b497244a459d26fd1eedbae2902a850c48b2ec3023be2d097",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/direct/reroute.js": "84a8cf2cfb6bcb1101a63004f638d0f3dc398baf3fe15ec1068b20336535d9ed",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/direct/share.js": "5f31cddc475959fa8c9c126782f2c6695bdfc5944862a5a12782f14d2113f92d",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/direct/clearance-repair.js": "4479bc23647003be20ec37d833e4456fe1063692b7b6a33d1088ddc11437bca8",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/direct/native/boundary.wasm": "52152e812fb055451635f4897b2a6c0b92156084bd272575200300263bd31ba9",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/direct/native/PROVENANCE.json": "91caa24e6333b0bb1418e49f0bbfa85691551a454d73d5047d0db05ace261879",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/core/direct/native/boundary.c": "ce50bd3ae08511e672b6e24075ce4f2e9b1fc23675e147dd2c7faa71e131d5c9",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/examples/star.saved.json": "7b3a3164d830c59adfcb7d6b51207d6423971a850e360ac00a21fbb71ee5fa50",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/examples/waves.svg": "20ee4d65378489d0cc0d3b9e41cdebf2fc81ff3b096443c76105cf3430e6a7e3",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/examples/star.png": "54ee86896412da50ccc8630593977cc6ce386fcfcc29007f311d80f6c463fa1b",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/examples/jul.saved.json": "07c223ab98b8bb576df5775682941ad688ffd097d3b7b304861db3f26fa0d454",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/vendor/HIGHS-LICENSE.txt": "9f8d8dcf27789ac59c0d7c732d6682f148804a5e99d83e9f207d6c1882b98bfa",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/vendor/PROVENANCE.json": "f90544e4eeec519b0aa3b7069b601591d4bc0e6fcafed7227d9dc1dc045a8ba5",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/vendor/highs.wasm": "528be4365bea1d4188988646b244263f50320df55782e14d6af5bce7cd45c840",
+        "tmp/heart-learning/clearance-repair-integration-v2/candidate/inverse/vendor/highs.mjs": "f2bdfd071d19c3745756a087026589e9240f329e38315a86f626823ae78a4036",
+        "tmp/heart-learning/return-projection-speed-v1/browser-study/normal-browser/chromium-leaf-mask/prepared.json": "a7e1647e84453c97918a04f29b39c97d15bcb24019b8b2edd7ee3744eaa1f430",
+        "tmp/heart-learning/return-projection-speed-v1/browser-study/normal-browser/chromium-outline-star-shift-mask/prepared.json": "a9dcc9825377d7f7f89677c44b9ebf334387d7696118da350609dff7163a4b55",
+        "scripts/inverse/export-renderer.mjs": "fb393f73b9c39780795c3951eb82d864fef7ab40ec63a90a4365aae6041afbbe"
+      },
+      "runs": [
+        {
+          "case": "leaf-r1",
+          "runtime": "baseline",
+          "passed": true,
+          "templateChecksPassed": true,
+          "nativeSeconds": 9.220403625000001,
+          "processSeconds": 9.852349791,
+          "maskSha256": "0e1fefda40bbe92da956dd2467d117af6a732d0223e695901cc0255a166651f4",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.0132875,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.014721875,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            3,
+            3
+          ],
+          "repair": false,
+          "materialResolution": 360,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v2/runs/leaf-r1/baseline-10/measurement.json",
+          "measurementSha256": "049e149d117f284e6e8b6486b7c5b52a7d2099b954f51c70b85ce312b82351d6",
+          "geometrySha256": "d27407dfb5cc598e911b9dc61aff360e1fb22a27e148df76b16249d414cab9ea"
+        },
+        {
+          "case": "leaf-r1",
+          "runtime": "candidate",
+          "passed": true,
+          "templateChecksPassed": true,
+          "nativeSeconds": 9.145718624999999,
+          "processSeconds": 9.701225583,
+          "maskSha256": "0e1fefda40bbe92da956dd2467d117af6a732d0223e695901cc0255a166651f4",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.0132875,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.014721875,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            3,
+            3
+          ],
+          "repair": false,
+          "materialResolution": 360,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v2/runs/leaf-r1/candidate-10/measurement.json",
+          "measurementSha256": "44e5a35a5d1f96cd9785fcd5f3ee7c09ca8073e4e7419c3d0b0953845aa7c41f",
+          "geometrySha256": "d27407dfb5cc598e911b9dc61aff360e1fb22a27e148df76b16249d414cab9ea"
+        },
+        {
+          "case": "leaf-x-plus-1-r1",
+          "runtime": "baseline",
+          "passed": true,
+          "templateChecksPassed": true,
+          "nativeSeconds": 9.569629959,
+          "processSeconds": 10.137062208000003,
+          "maskSha256": "7f1d0b2b6a28e148c2651ae410473db7875bdb13c37cb7b10f5a289edd165a21",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.017875,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.0196296875,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            4,
+            5
+          ],
+          "repair": false,
+          "materialResolution": 700,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v2/runs/leaf-x-plus-1-r1/baseline-10/measurement.json",
+          "measurementSha256": "672d455fa45a86ee046bdd1e51eacfede7e4e01ed2c8d7b166e7a050fe42b6fd",
+          "geometrySha256": "2542ef1b641e18f9f3a0064319b61e41027a257005fde4efe878c5d4f4e20cce"
+        },
+        {
+          "case": "leaf-x-plus-1-r1",
+          "runtime": "candidate",
+          "passed": true,
+          "templateChecksPassed": true,
+          "nativeSeconds": 6.205966,
+          "processSeconds": 6.713796084000002,
+          "maskSha256": "7f1d0b2b6a28e148c2651ae410473db7875bdb13c37cb7b10f5a289edd165a21",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.0123375,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.013828125,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            3,
+            3
+          ],
+          "repair": false,
+          "materialResolution": 360,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v2/runs/leaf-x-plus-1-r1/candidate-10/measurement.json",
+          "measurementSha256": "606bed5b17cc2afea14f7a4e9aa8ad0500c85512384dcafa3454ea183a306968",
+          "geometrySha256": "999983a25933d35a6118f7e880afee1a1e0b6dc5afc3f989f29659dffd70181a"
+        },
+        {
+          "case": "leaf-x-minus-1-r1",
+          "runtime": "baseline",
+          "passed": true,
+          "templateChecksPassed": true,
+          "nativeSeconds": 8.743267291,
+          "processSeconds": 9.296450833000002,
+          "maskSha256": "f749ec397b755dbfa09d4f8064b9f339ec3458ae0c29235bbf8257fb4253c183",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.01583125,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.0175484375,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            3,
+            3
+          ],
+          "repair": false,
+          "materialResolution": 360,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v2/runs/leaf-x-minus-1-r1/baseline-10/measurement.json",
+          "measurementSha256": "2f9aa5c1b32c23b3bc428005e3f78a80025016f9df3eaaa15c6b0d070b872f73",
+          "geometrySha256": "bbaa4f65222ba7081ab95543a737ac4795fbd7cd12598d2c918a43b59ca16b25"
+        },
+        {
+          "case": "leaf-x-minus-1-r1",
+          "runtime": "candidate",
+          "passed": true,
+          "templateChecksPassed": true,
+          "nativeSeconds": 8.792822417,
+          "processSeconds": 9.329825249999999,
+          "maskSha256": "f749ec397b755dbfa09d4f8064b9f339ec3458ae0c29235bbf8257fb4253c183",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.01583125,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.0175484375,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            3,
+            3
+          ],
+          "repair": false,
+          "materialResolution": 360,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v2/runs/leaf-x-minus-1-r1/candidate-10/measurement.json",
+          "measurementSha256": "98f52333975297b9d5dd33959289dc8437e8fa535ed6fb270e8c3916a9b7c7f1",
+          "geometrySha256": "bbaa4f65222ba7081ab95543a737ac4795fbd7cd12598d2c918a43b59ca16b25"
+        },
+        {
+          "case": "leaf-y-plus-1-r1",
+          "runtime": "baseline",
+          "passed": false,
+          "templateChecksPassed": false,
+          "nativeSeconds": 9.12342325,
+          "processSeconds": 9.687518790999995,
+          "maskSha256": "671a32982889c30a33f6112ca682083892c5f1ed898d4881530421be8bbe794e",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.05046875,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.0509984375,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            3,
+            5
+          ],
+          "repair": false,
+          "materialResolution": 360,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v2/runs/leaf-y-plus-1-r1/baseline-10/measurement.json",
+          "measurementSha256": "062dad2c3eb7c0289e7bd3cfd3bb0132819d8da64ebd22b8e546c5f127edf2d3",
+          "geometrySha256": "695bbaa4b98b0d12ce53ee4129289e5945a5063356f7a9e302186bdaa5db82f4"
+        },
+        {
+          "case": "leaf-y-plus-1-r1",
+          "runtime": "candidate",
+          "passed": true,
+          "templateChecksPassed": true,
+          "nativeSeconds": 9.034874708,
+          "processSeconds": 9.576132583999993,
+          "maskSha256": "671a32982889c30a33f6112ca682083892c5f1ed898d4881530421be8bbe794e",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.0127375,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.01430625,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            3,
+            3
+          ],
+          "repair": false,
+          "materialResolution": 360,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v2/runs/leaf-y-plus-1-r1/candidate-10/measurement.json",
+          "measurementSha256": "88609c588f5204d45a3cf1b479f6a504691284daed7428a521057cf12c315b8f",
+          "geometrySha256": "5a06d6de43a2217601e9b9215ebfe8d2093f0df36c2f26cbb555cea933a21317"
+        },
+        {
+          "case": "leaf-y-minus-1-r1",
+          "runtime": "baseline",
+          "passed": false,
+          "templateChecksPassed": false,
+          "nativeSeconds": 9.065618832999998,
+          "processSeconds": 9.660113624999994,
+          "maskSha256": "8dc94d285d79edd22b62caeaead1667af6d837bfde7e8d8024e2e890e54831da",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.05079375,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.051334375,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            3,
+            5
+          ],
+          "repair": false,
+          "materialResolution": 360,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v2/runs/leaf-y-minus-1-r1/baseline-10/measurement.json",
+          "measurementSha256": "fc5ee5608e12fba10c8c728d1015048c50cf91f1959c4deb27347b00c07e21c8",
+          "geometrySha256": "3d66f689448ece9bbe00a87418140684b332ec8dcca9bf824039a252a97f5551"
+        },
+        {
+          "case": "leaf-y-minus-1-r1",
+          "runtime": "candidate",
+          "passed": true,
+          "templateChecksPassed": true,
+          "nativeSeconds": 9.505892791,
+          "processSeconds": 10.082282375000005,
+          "maskSha256": "8dc94d285d79edd22b62caeaead1667af6d837bfde7e8d8024e2e890e54831da",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.0091875,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.010703125,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            3,
+            3
+          ],
+          "repair": true,
+          "materialResolution": 700,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v2/runs/leaf-y-minus-1-r1/candidate-10/measurement.json",
+          "measurementSha256": "7da01b3cc28e3b659926ba415480aa445b64daa2df83f18c90792e288763d878",
+          "geometrySha256": "b1c2129032c473e42fb821460bcc5164d03d89158a4dfe0ad64f78dfa07bce42"
+        },
+        {
+          "case": "outline-star-shift-r1",
+          "runtime": "baseline",
+          "passed": true,
+          "templateChecksPassed": true,
+          "nativeSeconds": 8.8228985,
+          "processSeconds": 9.41456525000001,
+          "maskSha256": "3338849d32ecafd54d2365fc664ec97ee5fbca5b54534290d873f6919437f5f4",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.00756875,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.0091421875,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            3,
+            3
+          ],
+          "repair": false,
+          "materialResolution": 360,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v2/runs/outline-star-shift-r1/baseline-10/measurement.json",
+          "measurementSha256": "c7d5aaec4ebe14c81bcb6b1dd6839a899266038e4ea20bff0304f5ca815a1466",
+          "geometrySha256": "9e6da2fa44cc1c93b80e7a92e0c6e0592547576861a530d99cb3cd7b5602f54d"
+        },
+        {
+          "case": "outline-star-shift-r1",
+          "runtime": "candidate",
+          "passed": true,
+          "templateChecksPassed": true,
+          "nativeSeconds": 8.878117791000001,
+          "processSeconds": 9.409283541999997,
+          "maskSha256": "3338849d32ecafd54d2365fc664ec97ee5fbca5b54534290d873f6919437f5f4",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.00756875,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.0091421875,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            3,
+            3
+          ],
+          "repair": false,
+          "materialResolution": 360,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v2/runs/outline-star-shift-r1/candidate-10/measurement.json",
+          "measurementSha256": "cbda9ff6f87995e89192e9c3a90af45425a1b6d61fc75d2872063f44671ea60f",
+          "geometrySha256": "9e6da2fa44cc1c93b80e7a92e0c6e0592547576861a530d99cb3cd7b5602f54d"
+        },
+        {
+          "case": "leaf-r2",
+          "runtime": "candidate",
+          "passed": true,
+          "templateChecksPassed": true,
+          "nativeSeconds": 9.306860083,
+          "processSeconds": 9.891457916000007,
+          "maskSha256": "0e1fefda40bbe92da956dd2467d117af6a732d0223e695901cc0255a166651f4",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.0131625,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.01468125,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            3,
+            3
+          ],
+          "repair": false,
+          "materialResolution": 360,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v2/runs/leaf-r2/candidate-10/measurement.json",
+          "measurementSha256": "7a38f02b6ebd68d834c524ecd41dc20d99a2f1e27f24127a1ec930215e024b24",
+          "geometrySha256": "20d7893fa3d70da7cf7bfa2a157668759ec4298194698c39d7247e40afeeb8cd"
+        },
+        {
+          "case": "leaf-r2",
+          "runtime": "baseline",
+          "passed": true,
+          "templateChecksPassed": true,
+          "nativeSeconds": 9.291408874999998,
+          "processSeconds": 9.837254916000006,
+          "maskSha256": "0e1fefda40bbe92da956dd2467d117af6a732d0223e695901cc0255a166651f4",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.0131625,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.01468125,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            3,
+            3
+          ],
+          "repair": false,
+          "materialResolution": 360,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v2/runs/leaf-r2/baseline-10/measurement.json",
+          "measurementSha256": "aa04afbea596804ded60ec8315dcd86673176fde780d992cd922dc9378868678",
+          "geometrySha256": "54afc4aa277c6dbbb0279416b01cf881d7aaad9a11ff0c6436f582c0fa996c88"
+        },
+        {
+          "case": "leaf-x-plus-1-r2",
+          "runtime": "candidate",
+          "passed": true,
+          "templateChecksPassed": true,
+          "nativeSeconds": 6.187616542000001,
+          "processSeconds": 6.723146958000001,
+          "maskSha256": "7f1d0b2b6a28e148c2651ae410473db7875bdb13c37cb7b10f5a289edd165a21",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.0123375,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.013828125,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            3,
+            3
+          ],
+          "repair": false,
+          "materialResolution": 360,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v2/runs/leaf-x-plus-1-r2/candidate-10/measurement.json",
+          "measurementSha256": "0e8d2cb43d80b8b5861607eb65c95ad9a66cefb72da579d83af12ed7a3582bc2",
+          "geometrySha256": "999983a25933d35a6118f7e880afee1a1e0b6dc5afc3f989f29659dffd70181a"
+        },
+        {
+          "case": "leaf-x-plus-1-r2",
+          "runtime": "baseline",
+          "passed": true,
+          "templateChecksPassed": true,
+          "nativeSeconds": 9.490044708000001,
+          "processSeconds": 9.991979874999998,
+          "maskSha256": "7f1d0b2b6a28e148c2651ae410473db7875bdb13c37cb7b10f5a289edd165a21",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.0178875,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.0196265625,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            4,
+            5
+          ],
+          "repair": false,
+          "materialResolution": 700,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v2/runs/leaf-x-plus-1-r2/baseline-10/measurement.json",
+          "measurementSha256": "17bd3585858ddbf4d8a1fe19f4dd4f4d59aae4c7ada3bb5d911790a2ae4634ae",
+          "geometrySha256": "1d2f2b89853ef9f572a3260c4ba843a22dfada0d949b0aa66d2544a616f845b2"
+        },
+        {
+          "case": "leaf-x-minus-1-r2",
+          "runtime": "candidate",
+          "passed": true,
+          "templateChecksPassed": true,
+          "nativeSeconds": 8.711079750000001,
+          "processSeconds": 9.265618541999999,
+          "maskSha256": "f749ec397b755dbfa09d4f8064b9f339ec3458ae0c29235bbf8257fb4253c183",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.01583125,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.0175484375,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            3,
+            3
+          ],
+          "repair": false,
+          "materialResolution": 360,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v2/runs/leaf-x-minus-1-r2/candidate-10/measurement.json",
+          "measurementSha256": "d2cb23ade21418ba6cf0f5a1e997be556c15815cf72973728561bd8a31872dd2",
+          "geometrySha256": "bbaa4f65222ba7081ab95543a737ac4795fbd7cd12598d2c918a43b59ca16b25"
+        },
+        {
+          "case": "leaf-x-minus-1-r2",
+          "runtime": "baseline",
+          "passed": true,
+          "templateChecksPassed": true,
+          "nativeSeconds": 8.717815542,
+          "processSeconds": 9.251586916999997,
+          "maskSha256": "f749ec397b755dbfa09d4f8064b9f339ec3458ae0c29235bbf8257fb4253c183",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.01583125,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.0175484375,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            3,
+            3
+          ],
+          "repair": false,
+          "materialResolution": 360,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v2/runs/leaf-x-minus-1-r2/baseline-10/measurement.json",
+          "measurementSha256": "6e8bd8a245818334e97fc98110d5c4859b94e8435235ec19b802d5dffe4f925e",
+          "geometrySha256": "bbaa4f65222ba7081ab95543a737ac4795fbd7cd12598d2c918a43b59ca16b25"
+        },
+        {
+          "case": "leaf-y-plus-1-r2",
+          "runtime": "candidate",
+          "passed": true,
+          "templateChecksPassed": true,
+          "nativeSeconds": 9.042867292,
+          "processSeconds": 9.562152583,
+          "maskSha256": "671a32982889c30a33f6112ca682083892c5f1ed898d4881530421be8bbe794e",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.0127375,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.01430625,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            3,
+            3
+          ],
+          "repair": false,
+          "materialResolution": 360,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v2/runs/leaf-y-plus-1-r2/candidate-10/measurement.json",
+          "measurementSha256": "6a49f9bce4a3a7d4fdcd7373a120c552de2762b47e949b059101e2a4067c3fca",
+          "geometrySha256": "5a06d6de43a2217601e9b9215ebfe8d2093f0df36c2f26cbb555cea933a21317"
+        },
+        {
+          "case": "leaf-y-plus-1-r2",
+          "runtime": "baseline",
+          "passed": false,
+          "templateChecksPassed": false,
+          "nativeSeconds": 9.096327708,
+          "processSeconds": 9.617525291000021,
+          "maskSha256": "671a32982889c30a33f6112ca682083892c5f1ed898d4881530421be8bbe794e",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.05046875,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.0509984375,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            3,
+            5
+          ],
+          "repair": false,
+          "materialResolution": 360,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v2/runs/leaf-y-plus-1-r2/baseline-10/measurement.json",
+          "measurementSha256": "2e65eeb1556f572b9a79fe6a6d3244106ce0fbc469d89404df4af7cb85edeae4",
+          "geometrySha256": "695bbaa4b98b0d12ce53ee4129289e5945a5063356f7a9e302186bdaa5db82f4"
+        },
+        {
+          "case": "leaf-y-minus-1-r2",
+          "runtime": "candidate",
+          "passed": true,
+          "templateChecksPassed": true,
+          "nativeSeconds": 9.52207575,
+          "processSeconds": 10.067533999999995,
+          "maskSha256": "8dc94d285d79edd22b62caeaead1667af6d837bfde7e8d8024e2e890e54831da",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.0091875,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.010703125,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            3,
+            3
+          ],
+          "repair": true,
+          "materialResolution": 700,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v2/runs/leaf-y-minus-1-r2/candidate-10/measurement.json",
+          "measurementSha256": "21e1a2fe1f2d72407599f8122267675d58e5e1a593d9d694ea416df9b33a9e8b",
+          "geometrySha256": "b1c2129032c473e42fb821460bcc5164d03d89158a4dfe0ad64f78dfa07bce42"
+        },
+        {
+          "case": "leaf-y-minus-1-r2",
+          "runtime": "baseline",
+          "passed": false,
+          "templateChecksPassed": false,
+          "nativeSeconds": 9.090184708,
+          "processSeconds": 9.639850291000016,
+          "maskSha256": "8dc94d285d79edd22b62caeaead1667af6d837bfde7e8d8024e2e890e54831da",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.05079375,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.051334375,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            3,
+            5
+          ],
+          "repair": false,
+          "materialResolution": 360,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v2/runs/leaf-y-minus-1-r2/baseline-10/measurement.json",
+          "measurementSha256": "2cf4854d53bdd0c988533cda99b2e47cf78de654e71ddf874fd90d77d855f68e",
+          "geometrySha256": "3d66f689448ece9bbe00a87418140684b332ec8dcca9bf824039a252a97f5551"
+        },
+        {
+          "case": "outline-star-shift-r2",
+          "runtime": "candidate",
+          "passed": true,
+          "templateChecksPassed": true,
+          "nativeSeconds": 8.784709792,
+          "processSeconds": 9.28270783299999,
+          "maskSha256": "3338849d32ecafd54d2365fc664ec97ee5fbca5b54534290d873f6919437f5f4",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.00756875,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.0091421875,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            3,
+            3
+          ],
+          "repair": false,
+          "materialResolution": 360,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v2/runs/outline-star-shift-r2/candidate-10/measurement.json",
+          "measurementSha256": "77f873743a176d07d5ca294e5ddeebd4b78f8e9dfffe4efd4f63684fae1dfd32",
+          "geometrySha256": "9e6da2fa44cc1c93b80e7a92e0c6e0592547576861a530d99cb3cd7b5602f54d"
+        },
+        {
+          "case": "outline-star-shift-r2",
+          "runtime": "baseline",
+          "passed": true,
+          "templateChecksPassed": true,
+          "nativeSeconds": 8.839381750000001,
+          "processSeconds": 9.427947458999995,
+          "maskSha256": "3338849d32ecafd54d2365fc664ec97ee5fbca5b54534290d873f6919437f5f4",
+          "scores": [
+            {
+              "resolution": 400,
+              "error": 0.00756875,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "error": 0.0091421875,
+              "featuresPassed": true
+            }
+          ],
+          "counts": [
+            3,
+            3
+          ],
+          "repair": false,
+          "materialResolution": 360,
+          "measurement": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-integration-v2/runs/outline-star-shift-r2/baseline-10/measurement.json",
+          "measurementSha256": "160c292c435a34aa112ecee2e2351cfc5b9c3b248951c4080378588878537440",
+          "geometrySha256": "9e6da2fa44cc1c93b80e7a92e0c6e0592547576861a530d99cb3cd7b5602f54d"
+        }
+      ],
+      "baseline": {
+        "passed": 8,
+        "total": 12,
+        "maximumNativeSeconds": 9.569629959
+      },
+      "candidate": {
+        "passed": 12,
+        "total": 12,
+        "maximumNativeSeconds": 9.52207575
+      },
+      "imageErrorIncreases": []
+    }
+  ],
+  "rejectedV1Flower": {
+    "baseline": {
+      "seconds": 6.318964,
+      "error": 0.0045,
+      "slits": {
+        "left": 3,
+        "right": 3
+      },
+      "measurement": "tmp/heart-learning/clearance-repair-flower-v1/baseline-native.json",
+      "sha256": "63d141311a508651dc59d211c91a90ea250052f62353a6e7af5ba838389e0058"
+    },
+    "candidate": {
+      "seconds": 9.446744375,
+      "error": 0.0077375,
+      "slits": {
+        "left": 4,
+        "right": 4
+      },
+      "measurement": "tmp/heart-learning/clearance-repair-flower-v1/candidate-native.json",
+      "sha256": "c3832f7373e20cc2b55d8d69c875623dfbc65b520bbe32fa68534e845241538f"
+    }
+  },
+  "focusedTests": {
+    "passed": 9,
+    "failed": 0,
+    "log": "tmp/heart-learning/clearance-repair-integration-v2/focused.log",
+    "sha256": "54da18fbcc7a4d32b535d90f5602190fa196fd3bb78d3d179d6f7fdff35b5cea"
+  },
+  "fullQA": "Running separately; no claim of whole-corpus or browser validation."
+}

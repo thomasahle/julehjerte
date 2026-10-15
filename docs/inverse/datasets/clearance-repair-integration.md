@@ -52,5 +52,26 @@ The first paired experiment remains in
 `tmp/heart-learning/clearance-repair-integration-v1/`; its flower diagnosis is in
 `tmp/heart-learning/clearance-repair-flower-v1/`. The corrected paired replay is
 in `tmp/heart-learning/clearance-repair-integration-v2/` with 208 pinned source
-files. That replay and full corpus/browser QA are pending. These development
-cases do not update the published 25/31 photographic success rate.
+files. The [completed evidence record](clearance-repair-integration.json) retains
+both paired studies and the rejected flower comparison.
+
+## Corrected paired replay
+
+Runtime `cb8a8cd` passes **12/12**, versus **8/12** for the committed baseline.
+Every paired candidate error is equal or lower at both independent render
+resolutions. All original source-mask hashes remain unchanged.
+
+| Fixed mask | Baseline error, 400 px | Candidate error, 400 px | Candidate native time |
+| --- | ---: | ---: | ---: |
+| Leaf, unchanged | 1.3163–1.3288% | 1.3163–1.3288% | 9.15–9.31 s |
+| Leaf, right one pixel | 1.7875–1.7888% | 1.2338% | 6.19–6.21 s |
+| Leaf, left one pixel | 1.5831% | 1.5831% | 8.71–8.79 s |
+| Leaf, down one pixel | 5.0469% (fails) | 1.2738% | 9.03–9.04 s |
+| Leaf, up one pixel | 5.0794% (fails) | 0.9188% | 9.51–9.52 s |
+| Shifted outline star | 0.7569% | 0.7569% | 8.78–8.88 s |
+
+Native time includes preparation, fitting, final validation and exports. Process
+startup and independent rendering are recorded separately; the maximum native
+time is 9.522 seconds. These are the same six fixed masks, not twelve independent
+photographs. Full corpus, editable-export and browser QA are pending. These
+development cases do not update the published 25/31 photographic success rate.
