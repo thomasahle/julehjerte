@@ -9,6 +9,52 @@ import {settings} from '../../static/inverse/core/settings.js';
 import {LinearModel} from '../../static/inverse/core/solver.js';
 import {referenceError} from '../../static/inverse/core/image-reference.js';
 
+function squareSource(n=64){
+  const mask=new Uint8Array(n*n);
+  for(let y=n/4;y<n/2;y++)for(let x=n/4;x<n/2;x++)mask[y*n+x]=1;
+  return{mask,resolution:n};
+}
+
+test('reused feature analysis follows in-place edits without sharing caller-owned arrays',()=>{
+  const source=squareSource(),saved=source.mask.slice(),first=imageFeatures(source),expected=structuredClone(first);
+  assert.equal(first.length,1);assert.equal(first[0].areaMm2,625);assert.deepEqual(first[0].centerMm,[37.5,37.5]);
+  const poison=features=>{features[0].pixels.fill(-1);features[0].centerMm.fill(-100);features[0].value=0;features.push({value:0});};
+  poison(first);assert.deepEqual(imageFeatures(source),expected);
+  const second=imageFeatures(source);poison(second);assert.deepEqual(imageFeatures(source),expected);
+  assert.deepEqual(source.mask,saved);
+  for(let y=0;y<16;y++)source.mask[y*64+20]=1;
+  assert.deepEqual(imageFeatures(source),[],'A newly border-connected region must stop being an interior feature.');
+  source.mask.set(saved);assert.deepEqual(imageFeatures(source),expected);
+  source.mask=new Uint8Array(saved.length);assert.deepEqual(imageFeatures(source),[]);
+  source.mask=saved.slice();assert.deepEqual(imageFeatures(source),expected);
+});
+
+test('feature reuse respects physical scale, replacement resolution and array representations',()=>{
+  const source=squareSource(),expected=imageFeatures(source);
+  const larger=imageFeatures(source,200);assert.equal(larger[0].areaMm2,2500);assert.deepEqual(larger[0].centerMm,[75,75]);
+  assert.deepEqual(imageFeatures(source),expected);
+  Object.assign(source,squareSource(32));
+  const smaller=imageFeatures(source);assert.equal(smaller[0].pixels.length,64);assert.equal(smaller[0].areaMm2,625);
+  source.mask=Array.from(source.mask);assert.deepEqual(imageFeatures(source),smaller);
+  if(typeof SharedArrayBuffer!=='undefined'){
+    const shared=new Uint8Array(new SharedArrayBuffer(source.mask.length));shared.set(source.mask);source.mask=shared;
+    assert.deepEqual(imageFeatures(source),smaller);shared.fill(0);assert.deepEqual(imageFeatures(source),[]);
+  }
+});
+
+test('adding and editing observation fields cannot reuse a fully observed feature audit',()=>{
+  const source=squareSource(),saved=source.mask.slice(),expected=imageFeatures(source);
+  source.validMask=new Uint8Array(saved.length).fill(1);assert.deepEqual(imageFeatures(source),expected);
+  source.validMask[20*64+20]=0;assert.deepEqual(imageFeatures(source),[]);
+  delete source.validMask;assert.deepEqual(imageFeatures(source),expected);
+  source.weights=new Float64Array(saved.length).fill(1);
+  assert.deepEqual(imageFeatures(source),expected,'Uniform unit weights keep the unweighted representation.');
+  source.weights.fill(.5);assert.equal(imageFeatures(source)[0].weightMass,128);
+  source.weights.fill(0,16*64,32*64);assert.deepEqual(imageFeatures(source),[]);
+  source.mask.fill(0);delete source.weights;assert.deepEqual(imageFeatures(source),[]);
+  source.mask.set(saved);assert.deepEqual(imageFeatures(source),expected);
+});
+
 test('one-pixel crop fringes do not turn border regions into mandatory interior motifs',()=>{
   for(const n of[100,400,800])for(const invert of[0,1])for(const side of[0,1,2,3]){
     const width=Math.ceil(2*Math.max(1.5,.005*n))+1,clean=new Uint8Array(n*n).fill(invert),fringe=clean.slice(),interior=clean.slice(),woven=clean.slice();

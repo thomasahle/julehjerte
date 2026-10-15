@@ -10,7 +10,25 @@ import {sourceWeights} from './image-reference.js';
 // into a mandatory extra motif. These pixels still enter the full image error.
 const BORDER_CLEARANCE_PIXELS=1;
 
+// Source masks and returned feature arrays belong to callers. Check every
+// source byte before reuse and copy nested arrays so edits cannot poison a
+// later audit. Weak keys retain only one analysis per live source object.
+const featureCache=new WeakMap();
+const copyFeatures=features=>features.map(f=>({...f,pixels:f.pixels.slice(),centerMm:f.centerMm.slice()}));
 export function imageFeatures(source,width=100){
+  const mask=source?.mask,n=source?.resolution;
+  const cacheable=mask instanceof Uint8Array&&Number.isInteger(n)&&n>0&&mask.length===n*n
+    &&typeof width==='number'&&Number.isFinite(width)&&width>0&&!source.weights&&!source.validMask
+    &&(typeof SharedArrayBuffer==='undefined'||!(mask.buffer instanceof SharedArrayBuffer));
+  if(!cacheable)return computeImageFeatures(source,width);
+  const previous=featureCache.get(source);
+  if(previous&&previous.n===n&&Object.is(previous.width,width)&&previous.mask.length===mask.length&&mask.every((v,i)=>v===previous.mask[i]))return copyFeatures(previous.features);
+  const features=computeImageFeatures(source,width);
+  featureCache.set(source,{n,width,mask:mask.slice(),features:copyFeatures(features)});
+  return features;
+}
+
+function computeImageFeatures(source,width){
   if(!source)return [];
   const {mask,resolution:n,validMask}=source,features=[],weights=source.weights?sourceWeights(source):null;
   const observed=weights?Uint8Array.from(mask,(v,i)=>weights[i]>0?v:2):mask;

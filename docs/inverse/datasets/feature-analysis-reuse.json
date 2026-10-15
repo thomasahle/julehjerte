@@ -1,0 +1,234 @@
+{
+  "schema": 1,
+  "baseRuntimeCommit": "24f5c70",
+  "baseWorkspaceCommit": "66aea0d",
+  "scope": "Byte-verified reuse of image feature analysis; no changes to region definitions, fitting objectives, or geometry/paper constraints.",
+  "policy": {
+    "reuse": "One entry per live source object in a WeakMap; verify every mask byte, resolution and physical width.",
+    "ownership": "Keep private copies of source pixels and feature arrays; return independently owned arrays.",
+    "bypass": "Weighted, partially observed, shared-memory, non-byte and nonstandard-size inputs use the original computation."
+  },
+  "semanticComparisons": {
+    "comparisons": 112,
+    "rows": [
+      {
+        "id": "crown",
+        "features": 4,
+        "beforeMilliseconds": 27.938408350000003,
+        "afterMilliseconds": 1.1358791499999996
+      },
+      {
+        "id": "flettede-viking",
+        "features": 5,
+        "beforeMilliseconds": 28.194579150000003,
+        "afterMilliseconds": 1.117406249999999
+      },
+      {
+        "id": "fine-checker",
+        "features": 14,
+        "beforeMilliseconds": 26.807816650000017,
+        "afterMilliseconds": 1.143972900000017
+      },
+      {
+        "id": "gingerbread",
+        "features": 1,
+        "beforeMilliseconds": 26.104810399999998,
+        "afterMilliseconds": 1.0915333500000088
+      }
+    ],
+    "notes": "Exact feature equality, source/returned-array mutation, resolution/width/observation changes. Timing is a microbenchmark of repeated analysis, not a solver speed claim."
+  },
+  "experiment": {
+    "order": [
+      "before-1",
+      "after-1",
+      "after-2",
+      "before-2"
+    ],
+    "configuration": {
+      "algorithm": "auto",
+      "polygonal": false,
+      "identicalSheets": false,
+      "resolution": 400,
+      "fitTolerance": 0.5,
+      "maxSpan": 15,
+      "smoothRadius": 0,
+      "snapRadius": 1.5,
+      "borderRadius": 3,
+      "gridPortals": false,
+      "neighbors": 16,
+      "connectorVariants": 2,
+      "junctionBalancePenalty": 0,
+      "gridPreference": 0,
+      "sharpPenalty": 50,
+      "acutePenalty": 30,
+      "turnPenalty": 3,
+      "maxTurn": 175,
+      "localNeighborhoodFactor": 8,
+      "roundHidden": false,
+      "timeLimit": 10,
+      "trials": 0,
+      "invert": false,
+      "removeSpecks": 0,
+      "fillHoles": 0
+    },
+    "source": "Four frozen 400-pixel masks prepared afresh for every solve; original photograph cropping is not exercised.",
+    "rows": [
+      {
+        "id": "crown",
+        "before": {
+          "seconds": [
+            9.517716792,
+            9.418946249999998
+          ],
+          "independentMaskErrors": [
+            0.02413125,
+            0.0245375
+          ],
+          "checked": true
+        },
+        "after": {
+          "seconds": [
+            9.476963041,
+            9.353260582999999
+          ],
+          "independentMaskErrors": [
+            0.02413125,
+            0.02413125
+          ],
+          "checked": true
+        }
+      },
+      {
+        "id": "flettede-viking",
+        "before": {
+          "seconds": [
+            9.531690458000005,
+            9.416540374999997
+          ],
+          "independentMaskErrors": [
+            0.0205875,
+            0.02055625
+          ],
+          "checked": true
+        },
+        "after": {
+          "seconds": [
+            9.366691374999995,
+            9.349956375000001
+          ],
+          "independentMaskErrors": [
+            0.02056875,
+            0.020275
+          ],
+          "checked": true
+        }
+      },
+      {
+        "id": "fine-checker",
+        "before": {
+          "seconds": [
+            9.47638708300001,
+            9.4867365
+          ],
+          "independentMaskErrors": [
+            0.01841875,
+            0.01850625
+          ],
+          "checked": true
+        },
+        "after": {
+          "seconds": [
+            9.431221458,
+            9.438626957999993
+          ],
+          "independentMaskErrors": [
+            0.0166625,
+            0.0166625
+          ],
+          "checked": true
+        }
+      },
+      {
+        "id": "gingerbread",
+        "before": {
+          "seconds": [
+            9.340026500000008,
+            9.351483874999976
+          ],
+          "independentMaskErrors": [
+            0.01106875,
+            0.01106875
+          ],
+          "checked": true
+        },
+        "after": {
+          "seconds": [
+            9.225634749999983,
+            9.247185333000001
+          ],
+          "independentMaskErrors": [
+            0.01094375,
+            0.01106875
+          ],
+          "checked": true
+        }
+      }
+    ],
+    "meanSeconds": {
+      "before": 9.442440979125,
+      "after": 9.361192484124997
+    },
+    "limitations": [
+      "Only two repetitions per condition. Wall-clock budgets can change iteration counts and selected geometry.",
+      "The repeated-analysis microbenchmark is not a whole-pipeline speedup.",
+      "Engine geometry/paper checks pass in all sixteen fits; independent SVG rendering measures image error, not physical assembly."
+    ]
+  },
+  "focusedValidation": {
+    "passed": 24,
+    "failed": 0,
+    "explicitCoreLint": true
+  },
+  "productionValidation": {
+    "status": "pending-full-qa-native-benchmarks-and-browser-replay"
+  },
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/feature-reuse-v1/source.json",
+      "sha256": "5c7781be6be4a3500d7e188683c230327758e3c383c201cf073967553e44477f"
+    },
+    {
+      "path": "tmp/heart-learning/feature-reuse-v1/semantics.json",
+      "sha256": "120c03a728eef5128ea10114a2a4656e4e1949d0bda75c31b949b11499a2783b"
+    },
+    {
+      "path": "tmp/heart-learning/feature-reuse-v1/report.json",
+      "sha256": "4a5936cf8127b4f1a329e1cc0f7e773209d38d28468432416d4ae1aff028cf4e"
+    },
+    {
+      "path": "tmp/heart-learning/feature-reuse-v1/checks.json",
+      "sha256": "810b08ffc658ca955cb4273031898f1e9bdf90f65a5cc68175b57a07d7ca41bc"
+    },
+    {
+      "path": "tmp/heart-learning/feature-reuse-v1/state.json",
+      "sha256": "b2edc9dbcf0167edfd6bc395d20dce053a9b5572a53595d3b2e4dea2616f2061"
+    },
+    {
+      "path": "tmp/heart-learning/feature-reuse-v1/resume.py",
+      "sha256": "d5fe68eb41ae7923924eb1172bbfaedd559820d4f7b6346f53c5744ec526072d"
+    },
+    {
+      "path": "tmp/heart-learning/feature-reuse-validation-v1/checks.json",
+      "sha256": "ba60666cd438f099453aab5f2409669112ef4ccc5aad0c63d155882c7c2626ed"
+    },
+    {
+      "path": "tmp/heart-learning/feature-reuse-validation-v1/focused.log",
+      "sha256": "9c2bd70a04f3d949dbaea14f0f6d91b026e726c331b16c4ff384d9452f03b091"
+    },
+    {
+      "path": "tmp/heart-learning/feature-reuse-validation-v1/lint.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}
