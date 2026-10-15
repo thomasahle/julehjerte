@@ -21,6 +21,9 @@ import rabbit from '../../../static/generator/motifs/ph-rabbit.json';
 import sun from '../../../static/generator/motifs/ph-sun.json';
 import phosphorButterfly from '../../../static/generator/motifs/ph-butterfly.json';
 import tablerGift from '../../../static/generator/motifs/tb-gift.json';
+import angel from '../../../static/generator/motifs/angel.json';
+import snow from '../../../static/generator/motifs/snow.json';
+import smiley from '../../../static/generator/motifs/ph-smiley.json';
 const colors = { left: '#fffdf5', right: '#b72f2b' };
 const fonts = { nunito, breeserif, oswald, kalam, cinzel, righteous } as unknown as Record<string, Font>;
 function validateHandoffs(design: HeartDesign) {
@@ -66,7 +69,8 @@ describe('generator robustness regressions', () => {
 		['breeserif', 'i', 'repeat'], ['oswald', 'i', 'repeat'],
 		['kalam', 'i', 'repeat'], ['righteous', 'i', 'repeat'],
 		['kalam', 'anna', 'woven'], ['kalam', 'BO', 'woven'],
-		['kalam', 'i', 'woven'], ['kalam', 'i', 'air']
+		['kalam', 'i', 'woven'], ['kalam', 'i', 'air'],
+		['kalam', 'juleman', 'air'], ['kalam', 'amy', 'circle']
 	] as [string, string, TextFrame][])
 		it(`keeps ${text} in ${fontId} through the ${textFrame} frame`, () => {
 			validateHandoffs(generate({ mode: 'text', name: text, text, font: fonts[fontId], textFrame, colors }).design);
@@ -94,6 +98,12 @@ describe('generator robustness regressions', () => {
 		it(`distributes the gift over several strips in oval-${style}`, () => {
 			const { design } = generate({ mode: 'figure', name: 'Gave', contours: gift.contours as Ring[], frame: 'oval', style, colors });
 			expect(design.gridSize.x).toBeGreaterThanOrEqual(5);
+			validateHandoffs(design);
+		}, 20000);
+	for (const [name, motif] of [['Angel', angel], ['Snow', snow], ['Sun', sun], ['Smiley', smiley]] as const)
+		it(`distributes ${name} inside the layered medallion without losing either border`, () => {
+			const { design } = generate({ mode: 'figure', name, contours: motif.contours as Ring[], style: 'layers', colors });
+			expect(Math.min(design.gridSize.x, design.gridSize.y)).toBeGreaterThanOrEqual(8);
 			validateHandoffs(design);
 		}, 20000);
 });

@@ -9,6 +9,8 @@ import {
 	type Edge,
 	type Frame,
 	near,
+	ray,
+	distance,
 	support,
 	dot,
 	direction,
@@ -134,6 +136,32 @@ export function stitch(edges: Edge[], dividers: number[], axis: 0 | 1 = 0): Edge
 	return result;
 }
 
+/** Attach both neighbours inside the widest filled part of their shared seam.
+ * Clipping opens counters onto that seam, so its midpoint may otherwise land
+ * in a hole. Sorting geometrically also makes opposite contour orders agree. */
+export function filledSeamGate(parts: Ring[], axis: 0 | 1, value: number, target: number): Point | undefined {
+	const spans: [number, number][] = [];
+	for (const ring of parts) for (const [i, a] of ring.entries()) {
+		const b = ring[(i + 1) % ring.length];
+		if (Math.abs(a[axis] - value) < 1e-6 && Math.abs(b[axis] - value) < 1e-6)
+			spans.push([Math.min(a[1 - axis], b[1 - axis]), Math.max(a[1 - axis], b[1 - axis])]);
+	}
+	spans.sort((a, b) => a[0] - b[0]);
+	const merged: [number, number][] = [];
+	for (const span of spans) {
+		const last = merged.at(-1);
+		if (last && span[0] <= last[1] + 1e-6) last[1] = Math.max(last[1], span[1]);
+		else merged.push([...span]);
+	}
+	const rounded = (x: number) => Math.round(x * 1e6);
+	merged.sort((a, b) => rounded((b[1] - b[0]) - (a[1] - a[0])) ||
+		rounded(Math.abs((a[0] + a[1]) / 2 - target) - Math.abs((b[0] + b[1]) / 2 - target)) || a[0] - b[0]);
+	const span = merged[0];
+	if (!span) return;
+	const t = (span[0] + span[1]) / 2;
+	return uprightToSheet(axis === 0 ? [value, t] : [t, value]);
+}
+
 export function generatePanelFigure(
 	rings: Ring[],
 	frame: Frame | undefined,
@@ -143,7 +171,8 @@ export function generatePanelFigure(
 	style: 'rays' | 'check' | 'plain' = 'rays',
 	rows = 1,
 	spread = false,
-	route = fourPortMotif
+	route = fourPortMotif,
+	attachments: 'support' | 'ray' | 'filled' = 'support'
 ) {
 	const factor = size * scale * (frame === 'oval' ? 0.75 : 1);
 	const upright = rings.map((r) =>
@@ -192,6 +221,12 @@ export function generatePanelFigure(
 				[x, down],
 				[lo, y]
 			].map((p) => uprightToSheet(p as Point));
+			if (attachments === 'filled') {
+				if (row) gates[0] = filledSeamGate(parts, 1, up, x) ?? gates[0];
+				if (row < rows - 1) gates[2] = filledSeamGate(parts, 1, down, x) ?? gates[2];
+				if (col) gates[3] = filledSeamGate(parts, 0, lo, y) ?? gates[3];
+				if (col < count - 1) gates[1] = filledSeamGate(parts, 0, hi, y) ?? gates[1];
+			}
 			const contours = parts.map(r => r.map(uprightToSheet));
 			const angles = [Math.PI / 4, (3 * Math.PI) / 4, (-3 * Math.PI) / 4, -Math.PI / 4];
 			if (!frame) {
@@ -199,6 +234,22 @@ export function generatePanelFigure(
 				// silhouette of each panel. Interior gates retain the shared seam.
 				for (const [side, outside] of [row === 0, col === count - 1, row === rows - 1, col === 0].entries()) {
 					if (!outside) continue;
+					if (attachments !== 'support') {
+						// An extremum at the seam can belong to both panels. Project
+						// inward from this panel's side to give it its own attachment.
+						const origin = gates[side];
+						const hits = contours.flatMap(r => {
+							try { return [ray(r, origin, angles[side]).point]; }
+							catch (error) {
+								if (!(error instanceof ConstructionError)) throw error;
+								return [];
+							}
+						});
+						if (hits.length) {
+							gates[side] = hits.reduce((a, b) => distance(a, origin) < distance(b, origin) ? a : b);
+							continue;
+						}
+					}
 					const angle = angles[side] + Math.PI, d = direction(angle);
 					gates[side] = contours.map(r => support(r, angle).point)
 						.reduce((a, b) => dot(a, d) > dot(b, d) ? a : b);

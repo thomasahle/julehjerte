@@ -712,7 +712,7 @@ function contourMotif(
 	margin = 1.5,
 	bridgePorts: readonly number[] = [0, 1, 2, 3],
 	acceptRoutes?: (routes: Ring[]) => boolean,
-	options: { root?: Ring; visibleIslands?: boolean; strict?: boolean; practical?: boolean; originalOnly?: boolean } = {}
+	options: { root?: Ring; visibleIslands?: boolean; strict?: boolean; practical?: boolean; originalOnly?: boolean; compound?: boolean; onCompound?: () => void } = {}
 ) {
 	const count = gates.length;
 	// Candidate routes reuse the same immutable outline points. Keep their
@@ -864,6 +864,28 @@ function contourMotif(
 			edges.push(...candidate.edges);
 			return;
 		}
+	if (options.practical && options.compound) {
+		// One chord cannot relieve two independent shoulders. Combine at most
+		// two existing relief operations, keeping their original port pairings
+		// and coincident A/B cuts. Bound this final local search to 128 pairs.
+		for (const local of [...alternatives.values()].slice(0, 8)) {
+			let firstCount = 0;
+			for (const first of relieveNotches(local.edges, base.ring, local.ports, bridgePorts, true)) {
+				if (++firstCount > 4) break;
+				let secondCount = 0;
+				for (const second of relieveNotches(first, base.ring, local.ports, bridgePorts, true)) {
+					if (++secondCount > 4) break;
+					const routes = localRoutes(second, gates, pointKeys);
+					if (!routes || !clearSharedCuts(second, contours)) continue;
+					if (acceptRoutes ? acceptRoutes(routes) : usableRoutes(routes, margin)) {
+						edges.push(...second);
+						options.onCompound?.();
+						return;
+					}
+				}
+			}
+		}
+	}
 	if (options.practical) {
 		// Corner attachments are optional improvements. Keep the original
 		// construction when none fits; final fitted cuts still get validated.

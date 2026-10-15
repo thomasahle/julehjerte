@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { generate } from './generate';
 import { generateFittedFigure } from './fitted';
+import { generateLayeredFigure } from './layers';
 import { generateCornerChecks } from './cornerChecks';
 import { defaults, readGeneratorState } from './state';
 import { templateVariants } from './templates';
@@ -14,6 +15,7 @@ import star from '../../../static/generator/motifs/star.json';
 import snowflake from '../../../static/generator/motifs/ph-snowflake.json';
 import gift from '../../../static/generator/motifs/gift.json';
 import female from '../../../static/generator/motifs/ph-gender-female.json';
+import sun from '../../../static/generator/motifs/ph-sun.json';
 const colors = { left: '#fff', right: '#b91313' };
 const examples = { tree, horse, bird, star, snowflake };
 
@@ -62,6 +64,13 @@ describe('complete motif frames', () => {
  it('builds the layered female-symbol reference with nested invisible cuts', () => {
   const { design } = generate({ mode: 'figure', name: 'Female', contours: female.contours as Ring[], colors, style: 'layers' });
   expect(design.gridSize).toEqual({ x: 7, y: 7 });
+ });
+ it('retains two complete outer bands when the medallion uses several panels', () => {
+  const result = generateLayeredFigure(sun.contours as Ring[], 70, .7, { columns: 1, rows: 2, filled: false });
+  for (const t of [7, 11, 89, 93]) {
+   expect(result.edges).toContainEqual({ from: [t, 0], to: [t, 100], family: 'A', kind: 'frame' });
+   expect(result.edges).toContainEqual({ from: [0, t], to: [100, t], family: 'B', kind: 'frame' });
+  }
  });
  it('distributes separate stars and a snowflake over the three central lanes', () => {
   const contours: Ring[] = (snowflake.contours as Ring[]).map(r => r.map(([x,y]) => [x*.6,y*.6]));

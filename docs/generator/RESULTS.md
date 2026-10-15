@@ -1,5 +1,52 @@
 # Generator robustness results
 
+## Current coverage: compound relief cuts and divided medallions
+
+The expanded matrix covers every bundled font in every text frame. Its current
+status is **2,487 accepted / 663 refused / zero invalid accepted results**:
+
+| Corpus | Configurations | Accepted | Refused | Invalid accepted output |
+|---|---:|---:|---:|---:|
+| Text: 34 inputs, six fonts, ten frames | 2028 | 1508 | 520 | 0 |
+| Figures: 51 motifs, 22 templates | 1122 | 979 | 143 | 0 |
+
+This batch freshly retested all **1,632 non-repeating text configurations** and
+all **51 layered figures**, with no regressions. The other configurations retain
+the preceding expanded audit's results; their construction paths are unchanged.
+The combined record is `tmp/generator/compound-current.json`. All 2,487 accepted
+IDs are pinned in `scripts/generator/expected.json`; none were removed.
+
+- A difficult letter can use two invisible relief chords when one leaves a
+  narrow shoulder. The bounded final pass keeps the outline, counters and open
+  strip pairings. This recovers Kalam `juleman` in air, diamond, hexagon, rounded
+  and scalloped frames, plus `amy` in a circle. If joining a new route fails,
+  the previous recipe remains available; it is rerun only if a chord changed.
+- Layered medallions can divide their circle and motif into neighbouring panels.
+  Outer attachments project onto each panel's own silhouette; shared attachments
+  can use the widest filled interval instead of landing in a counter. Both outer
+  bands remain complete. Angel, snow, Phosphor sun and Phosphor smiley now pass,
+  using 8×8 or 10×10 grids.
+- The earlier checkerboard optimization remains: Nunito ANNA has ten exported
+  tips narrower than 45°, down from sixteen, with none narrower than 30°. Its
+  4×4 cyclic letter field is unchanged. JUL retains its original connections
+  because the alternative produces worse tips.
+
+Isolated single-run checks changed Kalam `amy`/circle from a 4.02-second refusal
+to a 3.38-second accepted result, and `juleman`/air from a 2.10-second refusal to
+a 1.72-second accepted result. These samples are not latency guarantees; difficult
+handwriting and serif cases still take too long. Corpus timing includes concurrent
+batches and is not used for performance claims.
+
+All **955 unit tests and 177 inverse tests** pass, along with type checking, lint
+and the production build. Rendered inspection covered the ten repaired layouts;
+browser verification covered matching previews/thumbnails, the handwritten
+`amy` 5×5 editor handoff and the unchanged ANNA checkerboard selection. These
+are digital geometry and export checks, not a physical weaving trial.
+
+The goal remains unfinished. The 663 refusals, the rest of the searchable icon
+catalog and non-default figure scales still need work. The historical results
+below describe earlier, smaller audits and must not be read as current totals.
+
 ## Follow-up: touching contours, fitted panels and repeated letters
 
 A fresh pass over the earlier **2,130 configurations** finished with no

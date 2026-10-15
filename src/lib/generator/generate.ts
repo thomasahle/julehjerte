@@ -355,7 +355,7 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		const text = request.text ?? '';
 		const font = request.font;
 		const shape = frame === 'woven' || frame === 'air' ? undefined : frame;
-		const recipes = text.includes('\n') ? [] : [
+		const recipes: Array<() => ReturnType<typeof generateTextGrid> | ReturnType<typeof generateCheckedText> | undefined> = text.includes('\n') ? [] : [
 			() => generateCheckedText(text, font, frame === 'air', shape)
 		];
 		recipes.push(() => generateTextGrid(text, font, frame === 'air', shape));
@@ -369,10 +369,21 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 			}));
 		for (const [columns, slices] of [[2, 1], [1, 2], [2, 2], [1, 3]])
 			recipes.push(() => generateTextGrid(text, font, frame === 'air', shape, { columns, slices, spread: true }));
-		recipes.push(() => generateTextGrid(text, font, frame === 'air', shape, { spread: true, practical: true }));
+		let usedCompound = false;
+		recipes.push(() => generateTextGrid(text, font, frame === 'air', shape, {
+			spread: true, practical: true, compound: true, onCompound: () => { usedCompound = true; }
+		}));
+		// A locally improved route can still conflict with a neighbouring cell.
+		// Retain the established recipe, but only rerun it if a chord changed.
+		recipes.push(() => usedCompound
+			? generateTextGrid(text, font, frame === 'air', shape, { spread: true, practical: true })
+			: undefined);
 		let last: unknown;
 		for (const construct of recipes) {
-			try { return finish(construct(), 'letters'); }
+			try {
+				const result = construct();
+				if (result) return finish(result, 'letters');
+			}
 			catch (error) {
 				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 				if (error instanceof ConstructionError && ['empty', 'character'].includes(error.code)) throw error;
@@ -381,11 +392,20 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		}
 		throw last;
 	}
-	if (request.style === 'layers')
-		return finish(
-			generateLayeredFigure(request.contours ?? [], request.frameSize, request.scale),
-			'nested'
-		);
+	if (request.style === 'layers') {
+		const layouts = [undefined, ...[false, true].flatMap(filled =>
+			[[1, 2], [2, 1], [2, 2], [3, 2]].map(([columns, rows]) => ({ columns, rows, filled })))];
+		let last: unknown;
+		for (const panels of layouts) {
+			try {
+				return finish(generateLayeredFigure(request.contours ?? [], request.frameSize, request.scale, panels), 'nested');
+			} catch (error) {
+				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+				last = error;
+			}
+		}
+		throw last;
+	}
 	if (request.style === 'corners')
 		return finish(
 			generateCornerChecks(request.contours ?? [], request.frameSize, request.scale),

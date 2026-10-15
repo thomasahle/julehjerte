@@ -426,6 +426,11 @@ panels separate the gift's bow and box pieces into a 5×5 grid.
 The close-fitting figure template can also use panels. Its outer gates land on
 each panel's silhouette, while internal gates keep their shared seams. The
 surrounding grid reaches the figure directly, with no added circular frame.
+For a layered circular medallion that cannot fit in one cell, divide the whole
+circle and motif together. Project outer panel gates inward from each panel's
+side instead of attaching two neighbours at the same silhouette extremum.
+Internal gates may move into the widest filled interval of their shared seam,
+avoiding counters. Keep both complete outer bands and validate the joined cuts.
 
 “Gentag som mønster” is a text frame, not a separate mode or control. It makes one n×n square
 of cyclic letter shifts: ANNA / NNAA / NAAN / AANN, with no surrounding checkerboard cells.
@@ -464,6 +469,11 @@ Framed text may also use this ranking as a final construction when the ordinary
 letter-cell and panel layouts fail. In a 2×2 checkerboard field, one additional
 spacing of the shared grid attachments can provide a clear route to detached
 accents; the letter outline stays unchanged.
+When a framed letter has several difficult shoulders, the final routing pass
+may combine two invisible relief chords. Bound this to 128 local pairs and
+retain the original port pairings, artwork and full-sheet spacing checks.
+If a compound route fails after joining neighbouring cells, keep the earlier
+recipe available. Do not rerun it when no compound route was used.
 Identical glyphs in the same position within a four-cell group reuse their cuts.
 This frame uses an n×n cut grid with a square physical overlap, up to the shared
 20-strip limit. Its thumbnail, shared link, editor and PDF use the same design.

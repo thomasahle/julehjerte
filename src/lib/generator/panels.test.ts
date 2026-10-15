@@ -1,7 +1,7 @@
 import { it, expect } from 'vitest';
-import { clipContours, generatePanelFigure } from './panels';
+import { clipContours, filledSeamGate, generatePanelFigure } from './panels';
 import { convertValidatedCutGeometry } from '$lib/inverse/toHeartDesign';
-import { type Ring, inside } from './geometry';
+import { type Ring, inside, uprightToSheet } from './geometry';
 import cat from '../../../static/generator/motifs/ph-cat.json';
 const square = (r: number): Ring => [
 	[-r, -r],
@@ -15,6 +15,21 @@ it('opens a hole onto a divider without filling or deleting it', () => {
 	expect(parts).toHaveLength(1);
 	expect(inside([-2, 0], parts[0])).toBe(false);
 	expect(inside([-8, 0], parts[0])).toBe(true);
+});
+it('joins both clipped neighbours through paper rather than a counter', () => {
+	const rings = [square(10), square(4)];
+	const left = clipContours(rings, 0, true), right = clipContours(rings, 0, false);
+	const gate = filledSeamGate(left, 0, 0, 0);
+	// Both six-unit intervals are equally wide; the upper one wins consistently.
+	expect(gate).toEqual(uprightToSheet([0, -7]));
+	expect(filledSeamGate(right.map(r => [...r].reverse()).reverse(), 0, 0, 0)).toEqual(gate);
+	const swap = (r: Ring): Ring => r.map(([x, y]) => [y, x]);
+	expect(filledSeamGate(left.map(swap), 1, 0, 0)).toEqual(uprightToSheet([-7, 0]));
+});
+it('selects the wider filled seam and leaves an absent seam alone', () => {
+	const rings = [square(10), square(4).map(([x, y]) => [x, y + 2] as [number, number])];
+	expect(filledSeamGate(clipContours(rings, 0, true), 0, 0, 8)).toEqual(uprightToSheet([0, -6]));
+	expect(filledSeamGate(rings, 0, 0, 0)).toBeUndefined();
 });
 it('spreads cat details across several cuts', () => {
 	const r = generatePanelFigure(cat.contours as Ring[], 'circle', 70, 0.7);
