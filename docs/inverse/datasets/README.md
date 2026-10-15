@@ -237,6 +237,17 @@ The second routing failure remains open: a later integer proposal leaves only
 enough repair time for an uncertain paper checkpoint. Paired fresh trials before
 this fix pass 6/6 on the pre-retention runtime and 3/6 on the current runtime, so
 the small candidate-retention change is not declared free of timing regressions.
+The post-fix full run passes 947/949 inverse tests and all 857 application tests,
+type checks, lint, build and star/hat browser checks. The upward-leaf failure is
+specifically an expected internal repair route: its initial template check passes,
+but the test stops before independent image verification. Its complete output
+was not captured. The other failure rejects a short, geometry-invalid routing
+repair before paper verification. Corpus replay again passes 22/22 Hunodan designs
+(maximum 9.515 seconds, identical errors), 26/31 complete-heart photos and all 48
+editable conversions. Four accepted photo errors increase against the pinned
+comparison, so strict quality still fails. All seven changed outputs were visually
+reviewed; fine contact/seam defects and the rejected bauble's broken frame remain.
+All 785 pinned source files stayed unchanged through the full run.
 
 A [fixed routing-checkpoint follow-up](routing-paper-continuation-results.json)
 finds that the 81-step repair passes actual paper verification at 1000 pixels;

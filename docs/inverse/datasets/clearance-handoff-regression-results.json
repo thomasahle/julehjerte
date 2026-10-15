@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "status": "initializer_deadline_fix_implemented; focused_checks_pass; broader_QA_pending; uncertain_routing_failure_unresolved",
+  "status": "initializer_deadline_fix_implemented; full_inverse_947_of_949; corpus_22_of_22_and_26_of_31; strict_quality_gate_failed",
   "rootCause": "repairClearanceInitializer discarded a geometry-valid, feature-retaining and independently paper-verified continuation after its final audit crossed the 1.2-second local cap, despite the original caller having time left. The observed full-suite run completed at 1.248 seconds.",
   "change": "Keep the same refinement budget and pre-audit local checks. After a completed successful paper audit, compare time with the original caller deadline. This is still only a continuation when source error exceeds the final limit.",
   "deterministicRegression": {
@@ -357,11 +357,208 @@
     }
   ],
   "broaderQA": {
-    "status": "running",
+    "status": "complete; two_inverse_failures_and_four_accepted_photo_error_increases",
     "controller": "tmp/heart-learning/clearance-handoff-regression-v1/qa/run.py",
     "state": "tmp/heart-learning/clearance-handoff-regression-v1/qa/state.json",
     "expectedInverseTests": 949,
     "productionCommit": "9cedec4",
-    "sourceFreeze": "static/inverse, src and scripts/inverse until the QA controller and its complete corpus replay finish"
+    "sourceFreeze": "Finished; all 785 pinned runtime/application/test source files verified unchanged throughout QA and corpus replay.",
+    "application": {
+      "passed": 857,
+      "skipped": 1,
+      "failed": 0
+    },
+    "inverse": {
+      "tests": 949,
+      "passed": 947,
+      "failed": 2,
+      "failures": [
+        {
+          "test": "fresh fitting finds a checked pair for the upward-shifted photograph without saved cuts",
+          "assertion": "report.solver.clearanceComparison.repair.accepted === true",
+          "sourceLine": 46,
+          "qualification": "The preceding templateChecksPassed assertion passed. The test then stopped before its paper-resolution, paper-status and independent-image assertions. No full report or geometry was captured; do not infer the missing checks from a later rerun."
+        },
+        {
+          "test": "fresh y-minus-1 fitting carries repaired clearance through final export",
+          "assertion": "report.templateChecksPassed === true",
+          "sourceLine": 46,
+          "diagnostic": "tmp/heart-learning/clearance-handoff-regression-v1/qa/failure-diagnostics/line-182.json",
+          "qualification": "This run rejected an 85-step repair for geometry, without reaching fine paper verification; integer-candidate generation took 3.7175 seconds. Earlier failures at the same input were paper-uncertain, so the failure mechanism varies with available work."
+        }
+      ]
+    },
+    "hunodan": {
+      "passed": 22,
+      "total": 22,
+      "maximumSeconds": 9.515122125000001,
+      "allErrorsUnchangedFromPriorRuntime": true
+    },
+    "sourceFilesVerified": 785,
+    "commands": [
+      {
+        "stage": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 10.596833875
+      },
+      {
+        "stage": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 7.0367732090000015
+      },
+      {
+        "stage": "build",
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 16.010570291999997
+      },
+      {
+        "stage": "preview",
+        "command": [
+          "python3",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-handoff-regression-v1/qa/restart-preview.py"
+        ],
+        "exitCode": 0,
+        "seconds": 1.1871660420000012
+      },
+      {
+        "stage": "browser",
+        "command": [
+          "node",
+          "scripts/inverse/paint-browser-test.mjs"
+        ],
+        "exitCode": 0,
+        "seconds": 18.881217792
+      },
+      {
+        "stage": "test",
+        "command": [
+          "npm",
+          "test"
+        ],
+        "exitCode": 1,
+        "seconds": 1112.630031459
+      },
+      {
+        "stage": "native",
+        "command": [
+          "python3",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-handoff-regression-v1/qa/native/run.py"
+        ],
+        "exitCode": 0,
+        "seconds": 524.057671042
+      }
+    ],
+    "corpus": {
+      "hunodanPassed": 22,
+      "hunodanTotal": 22,
+      "hunodanErrorRegressions": [],
+      "photoPassed": 26,
+      "photoPassRegressions": [],
+      "photoErrorRegressions": [
+        {
+          "id": "floral-checker",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.01360625,
+          "error": 0.01410625,
+          "errorDelta": 0.0005000000000000004
+        },
+        {
+          "id": "gingerbread",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.010875,
+          "error": 0.01094375,
+          "errorDelta": 6.87500000000011e-05
+        },
+        {
+          "id": "warped-checker",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.01424375,
+          "error": 0.0145125,
+          "errorDelta": 0.0002687499999999999
+        },
+        {
+          "id": "fine-checker",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.0179125,
+          "error": 0.01800625,
+          "errorDelta": 9.375000000000008e-05
+        }
+      ],
+      "editablePassed": 48,
+      "editableTotal": 48,
+      "passed": false,
+      "completeHeartPhotos": 31,
+      "allInventoryEntries": 47,
+      "classifiedPhotos": 29,
+      "cropFailures": 2,
+      "existingIncompleteOrObscured": 16,
+      "maximumHunodanSeconds": 9.515122125000001,
+      "comparisonBaseline": "tmp/heart-learning/trace-reuse-v1/qa/native",
+      "cropAndMaskHashesUnchanged": true
+    },
+    "visualReview": {
+      "path": "tmp/heart-learning/clearance-handoff-regression-v1/qa/native/visual-review.json",
+      "sha256": "7dff58dc804c9f3e68e97736642d2323ef7997840a9270a40c5ed40bd22374fb",
+      "changedOutputs": 7,
+      "finding": "Floral/warped/fine checker contacts and gingerbread contours move slightly; no newly accepted or rejected photo. Faceted star improves against the unchanged mask, while the bauble retains broken border structure and its error worsens. Thin seams and imperfect checker contacts remain. The bottom flower change is small. These images do not establish recovery of original published cutting paths."
+    },
+    "interpretation": "The local-deadline regression is fixed and the Hunodan speed/quality target remains met. The broad run is not green. Photo pass counts are unchanged, but four accepted photo errors increased versus the pinned comparison. Clock-limited trajectory differences prevent attributing every photo movement to the handoff fix.",
+    "artifacts": [
+      {
+        "path": "tmp/heart-learning/clearance-handoff-regression-v1/qa/source.json",
+        "sha256": "67857d41be2bb2a1c92b3497f89bd0683b8e8f9f92770134b0e01403fb3f15c4"
+      },
+      {
+        "path": "tmp/heart-learning/clearance-handoff-regression-v1/qa/checks.json",
+        "sha256": "a78f7ff5d1a59e23d57e1df777e5244739551a48af17c0fa7d8ccc2c08ae87c4"
+      },
+      {
+        "path": "tmp/heart-learning/clearance-handoff-regression-v1/qa/state.json",
+        "sha256": "2aaa99ae9ebacd06cda3931ef4e12e550a96d4d63dd3d12a20e27c13a34814dd"
+      },
+      {
+        "path": "tmp/heart-learning/clearance-handoff-regression-v1/qa/test.log",
+        "sha256": "280f4c360b0b539ad1c057c91555e90aac039847b0129ffbe7c3b9089796a3c5"
+      },
+      {
+        "path": "tmp/heart-learning/clearance-handoff-regression-v1/qa/native/native-gates.json",
+        "sha256": "f04bfa48322ef0b4834df974f46011d9bcbdf13069e8fe334d52d89908dc29b8"
+      },
+      {
+        "path": "tmp/heart-learning/clearance-handoff-regression-v1/qa/native/photo-comparison.json",
+        "sha256": "ce85fdbfe136fc69cac941e844d2342ffa5a54a5055288b17aefdea1474dbcc1"
+      },
+      {
+        "path": "tmp/heart-learning/clearance-handoff-regression-v1/qa/native/hunodan-comparison.json",
+        "sha256": "2c96e333c264222634bac80a97ee9a4a4498a768b5b53df467497b42329a74f8"
+      }
+    ]
   }
 }
