@@ -1,5 +1,5 @@
 import {
-	forest, centroid, area, sub, dot, inside, distance, mix, frameRing, ray,
+	forest, centroid, area, sub, dot, cross, inside, distance, mix, frameRing, ray,
 	uprightToSheet, fourPortMotif, connectCellGrid, compile, ConstructionError,
 	type Ring, type Point, type Edge, type Contour, type Frame
 } from './geometry';
@@ -9,11 +9,30 @@ import { gridClearance } from '$lib/geometry/clearance';
 
 const contoursOf = (node: Contour): Ring[] => [node.ring, ...node.children.flatMap(contoursOf)];
 
+/** The outer connections of a fitted grid must clear every island, including
+ * the ones in other cells. Their common convex envelope supplies those gates. */
+function componentEnvelope(points: Ring): Ring {
+	const sorted = [...points].sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+	const chain = (points: Ring) => {
+		const result: Ring = [];
+		for (const p of points) {
+			while (result.length > 1 && cross(sub(result.at(-1)!, result.at(-2)!), sub(p, result.at(-1)!)) <= 1e-9)
+				result.pop();
+			result.push(p);
+		}
+		return result;
+	};
+	const hull = [...chain(sorted).slice(0, -1), ...chain([...sorted].reverse()).slice(0, -1)];
+	if (hull.length < 3) throw new ConstructionError('empty', 'No component envelope');
+	return hull;
+}
+
 /** Give separate motif islands their own cells instead of clipping all of them
  * with the same rectangular dividers. Counters stay with their parent island.
- * An odd island count divides the largest island into two neighbouring cells. */
-export function generateComponentFigure(rings: Ring[], frame: Frame = 'circle', size = 70, scale = .7,
-	style: 'rays' | 'check' | 'plain' = 'rays', route = fourPortMotif) {
+ * Divide the largest islands until every row is full. A wider grid can keep
+ * small neighbouring islands separate while sharing a larger body below them. */
+export function generateComponentFigure(rings: Ring[], frame: Frame | 'fitted' = 'circle', size = 70, scale = .7,
+	style: 'rays' | 'check' | 'plain' = 'rays', route = fourPortMotif, columns: 2 | 3 | 4 = 2, extraStrips = 0) {
 	const upright = rings.map(r => r.map(([x, y]): Point => [
 		x * size * scale * (frame === 'oval' ? .75 : 1), y * size * scale * (frame === 'oval' ? .75 : 1)
 	]));
@@ -21,26 +40,36 @@ export function generateComponentFigure(rings: Ring[], frame: Frame = 'circle', 
 	if (nodes.length < 2 || nodes.length > 8)
 		throw new ConstructionError('topology', 'Component grid needs 2–8 islands');
 	const parts = nodes.map(contoursOf);
-	let split: number | undefined, splitParts: Ring[][] = [];
-	if (parts.length % 2) {
-		const biggest = nodes.reduce((a, b) => Math.abs(area(a.ring)) > Math.abs(area(b.ring)) ? a : b),
-			i = nodes.indexOf(biggest);
-		split = centroid(biggest.ring)[0];
-		const left = clipContours(parts[i], split, true), right = clipContours(parts[i], split, false);
+	const sources = new Map(parts.map((part, i) => [part, i]));
+	const splits: number[] = [];
+	const weight = (part: Ring[]) => forest(part).reduce((sum, node) => sum + Math.abs(area(node.ring)), 0);
+	while (parts.length % columns) {
+		const biggest = parts.reduce((a, b) => weight(a) > weight(b) ? a : b), i = parts.indexOf(biggest);
+		const split = centroid(biggest.flat())[0];
+		const left = clipContours(biggest, split, true), right = clipContours(biggest, split, false);
 		if (!left.length || !right.length) throw new ConstructionError('topology', 'Empty component panel');
-		splitParts = [left, right];
+		for (const part of [left, right]) sources.set(part, sources.get(biggest)!);
 		parts.splice(i, 1, left, right);
+		splits.push(split);
 	}
 	parts.sort((a, b) => centroid(a.flat())[1] - centroid(b.flat())[1]);
 	const matrix: Ring[][][] = [];
-	for (let i = 0; i < parts.length; i += 2)
-		matrix.push(parts.slice(i, i + 2).sort((a, b) => centroid(a.flat())[0] - centroid(b.flat())[0]));
-	const rows = matrix.length, boundary = frameRing(frame, size), margin = gridClearance(rows + 3),
+	for (let i = 0; i < parts.length; i += columns)
+		matrix.push(parts.slice(i, i + columns).sort((a, b) => centroid(a.flat())[0] - centroid(b.flat())[0]));
+	const rows = matrix.length, boundary = frame === 'fitted' ? undefined : frameRing(frame, size), margin = gridClearance(rows + columns + 1 + extraStrips),
 		cells: Point[][][] = matrix.map(row => row.map(() => []));
 	const contact = (a: Ring[], b: Ring[]): Point => {
-		if (split !== undefined && splitParts.includes(a) && splitParts.includes(b)) {
-			const p = filledSeamGate(a, 0, split, (centroid(a.flat())[1] + centroid(b.flat())[1]) / 2);
-			if (p) return p;
+		// Split neighbours must meet inside their common filled seam, not
+		// at the nearest point on an unrelated island or counter.
+		if (sources.get(a) === sources.get(b)) {
+			const xsA = a.flat().map(p => p[0]), xsB = b.flat().map(p => p[0]);
+			for (const split of splits) if (
+				Math.abs(Math.max(...xsA) - split) < 1e-6 && Math.abs(Math.min(...xsB) - split) < 1e-6 ||
+				Math.abs(Math.max(...xsB) - split) < 1e-6 && Math.abs(Math.min(...xsA) - split) < 1e-6
+			) {
+				const p = filledSeamGate(a, 0, split, (centroid(a.flat())[1] + centroid(b.flat())[1]) / 2);
+				if (p) return p;
+			}
 		}
 		let best = Infinity, p: Point = [0, 0];
 		const rootsA = forest(a).map(n => n.ring), rootsB = forest(b).map(n => n.ring);
@@ -73,28 +102,33 @@ export function generateComponentFigure(rings: Ring[], frame: Frame = 'circle', 
 		}
 		return uprightToSheet(p);
 	};
+	const envelope = boundary ?? componentEnvelope(upright.flat().map(uprightToSheet));
+	const origin: Point = boundary ? [50, 50] : [
+		envelope.reduce((sum, p) => sum + p[0], 0) / envelope.length,
+		envelope.reduce((sum, p) => sum + p[1], 0) / envelope.length
+	];
 	const exterior = (side: number, index: number, count: number) => {
 		const step = Math.PI / (2 * count), angle = side === 0 ? Math.PI + (index + .5) * step
 			: side === 2 ? Math.PI / 2 - (index + .5) * step
 				: side === 3 ? Math.PI - (index + .5) * step : 3 * Math.PI / 2 + (index + .5) * step;
-		return ray(boundary, [50, 50], angle).point;
+		return ray(envelope, origin, angle).point;
 	};
-	for (let row = 0; row < rows; row++) for (let col = 0; col < 2; col++) {
+	for (let row = 0; row < rows; row++) for (let col = 0; col < columns; col++) {
 		const gates = cells[row][col], part = matrix[row][col];
-		gates[0] = row ? cells[row - 1][col][2] : exterior(0, col, 2);
+		gates[0] = row ? cells[row - 1][col][2] : exterior(0, col, columns);
 		gates[3] = col ? cells[row][col - 1][1] : exterior(3, row, rows);
-		gates[1] = col === 0 ? contact(part, matrix[row][1]) : exterior(1, row, rows);
-		gates[2] = row < rows - 1 ? contact(part, matrix[row + 1][col]) : exterior(2, col, 2);
+		gates[1] = col < columns - 1 ? contact(part, matrix[row][col + 1]) : exterior(1, row, rows);
+		gates[2] = row < rows - 1 ? contact(part, matrix[row + 1][col]) : exterior(2, col, columns);
 	}
 	let edges: Edge[] = [];
-	for (let row = 0; row < rows; row++) for (let col = 0; col < 2; col++) {
+	for (let row = 0; row < rows; row++) for (let col = 0; col < columns; col++) {
 		const contours = matrix[row][col].map(r => r.map(uprightToSheet)), gates = cells[row][col],
 			center = centroid(contours.flat());
 		route(edges, contours, gates, gates.map(p => Math.atan2(center[1] - p[1], center[0] - p[0])), margin);
 	}
-	if (split !== undefined) edges = stitch(edges, [split]);
+	if (splits.length) edges = stitch(edges, [...new Set(splits)].sort((a, b) => a - b));
 	connectCellGrid(edges, cells, boundary, style, true);
 	edges = rerouteSharedCuts(edges, margin);
 	const artwork = upright.map(r => r.map(uprightToSheet));
-	return { edges, artwork, geometry: compile(edges), domain: [boundary] };
+	return { edges, artwork, geometry: compile(edges), domain: [envelope] };
 }

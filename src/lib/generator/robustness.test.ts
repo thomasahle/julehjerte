@@ -18,6 +18,7 @@ import cinzel from '../../../static/generator/fonts/cinzel.json';
 import righteous from '../../../static/generator/fonts/righteous.json';
 import gift from '../../../static/generator/motifs/gift.json';
 import paw from '../../../static/generator/motifs/ph-paw-print.json';
+import tablerPaw from '../../../static/generator/motifs/tb-paw.json';
 import butterfly from '../../../static/generator/motifs/tb-butterfly.json';
 import rabbit from '../../../static/generator/motifs/ph-rabbit.json';
 import sun from '../../../static/generator/motifs/ph-sun.json';
@@ -48,6 +49,17 @@ function validateHandoffs(design: HeartDesign) {
 // These are expected successes, never a test that passes by accepting a refusal.
 // The larger offline corpus covers 2,028 text and 1,122 figure configurations.
 describe('generator robustness regressions', () => {
+	it('fits a grid around all three stars while preserving the empty space between them', () => {
+		const { design } = generate({ mode: 'figure', name: 'Stars', contours: tablerStars.contours as Ring[], style: 'fitted', colors });
+		expect(design.gridSize).toEqual({ x: 5, y: 5 });
+		validateHandoffs(design);
+	}, 20000);
+	for (const frame of ['circle', 'diamond', 'hexagon', 'rounded', 'scalloped'] as const)
+		it(`gives the paw's four toes separate cells in ${frame}`, () => {
+			const { design } = generate({ mode: 'figure', name: 'Paw', contours: tablerPaw.contours as Ring[], frame, style: 'rays', colors });
+			expect(design.gridSize).toEqual({ x: 7, y: 7 });
+			validateHandoffs(design);
+		}, 20000);
 	for (const [name, motif] of [['Gift', gift], ['Paw', paw]] as const)
 		it(`counts the sunburst's outer strips when routing ${name}`, () => {
 			const { design } = generate({ mode: 'figure', name, contours: motif.contours as Ring[], style: 'sunburst', colors });

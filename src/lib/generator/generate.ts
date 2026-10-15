@@ -581,7 +581,20 @@ function generateUsingRecipes(request: GeneratorRequest,
 				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 			}
 		}
-		return finish(generatePanelFigure(request.contours ?? [], undefined, request.frameSize ?? 70, request.scale ?? .7, 3, 'check', 1, false, fourPortMotif, 'support', true), 'silhouette');
+		try {
+			return finish(generatePanelFigure(request.contours ?? [], undefined, request.frameSize ?? 70, request.scale ?? .7, 3, 'check', 1, false, fourPortMotif, 'support', true), 'silhouette');
+		} catch (error) {
+			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			for (const columns of [2, 3, 4] as const) {
+				try {
+					return finish(generateComponentFigure(request.contours ?? [], 'fitted', request.frameSize,
+						request.scale, 'check', fourPortMotif, columns), 'silhouette');
+				} catch (retryError) {
+					if (!(retryError instanceof ConstructionError) && !(retryError instanceof CutGeometryError)) throw retryError;
+				}
+			}
+			throw error;
+		}
 	}
 	const sunburst = request.style === 'sunburst';
 	const outerSize = request.frameSize ?? 70;
@@ -682,12 +695,18 @@ function generateUsingRecipes(request: GeneratorRequest,
 			errors.push(error);
 		}
 	}
-	try {
-		const construction = generateComponentFigure(rings, shape, size, scale, style);
-		return finish(sunburst ? sunburstBorder(construction, outerSize) : construction, 'nested');
-	} catch (error) {
-		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
-		errors.push(error);
+	// More columns give a row of separate islands its own clear connections.
+	// Split the larger bodies below them to complete the grid, retaining the
+	// earlier two-column recipe before these wider alternatives.
+	for (const columns of [2, 3, 4] as const) {
+		try {
+			const construction = generateComponentFigure(rings, shape, size, scale, style,
+				fourPortMotif, columns, sunburst && columns > 2 ? 2 : 0);
+			return finish(sunburst ? sunburstBorder(construction, outerSize) : construction, 'nested');
+		} catch (error) {
+			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			errors.push(error);
+		}
 	}
 	const last = errors.at(-1)!;
 	throw new ConstructionError(

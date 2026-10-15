@@ -449,10 +449,20 @@ closed walks at each repeated vertex instead of rejecting the shared point or
 returning one self-touching outline. Retain the same boundary edges and even-odd
 fill, including counters and separate islands. Reject unpaired or open boundaries,
 and keep the complete paper-path and artwork checks after stitching.
-If those layouts fail, separate islands may occupy their own cells in a two-column
-grid. Keep counters with their parent island; for an odd island count, split the
-largest island into two and stitch its artificial seam. This construction handles
-two to eight islands and retains the original artwork, frame and grid clearance.
+If those layouts fail, separate islands may occupy their own cells. Try two
+columns first, then three and four. Keep counters with their parent island;
+repeatedly split the largest island until every row is full. Track each piece's
+original island so adjacent pieces meet inside their common filled seam. Stitch
+all artificial seams after routing. This construction handles two to eight
+original islands and retains the artwork, selected frame and grid clearance.
+A wider grid can give four toes separate cells while dividing the larger paw pad
+beneath them; do not merge or reposition the components to fit the grid.
+The close-fitting template may use this component layout after its earlier
+recipes fail. Put its exterior gates on the convex envelope of the complete
+motif, then project them to the paper edges without drawing a new frame outline.
+The average of the envelope vertices supplies an interior origin for those
+projections. Check fidelity over the entire envelope, including the empty spaces
+between islands; clipping the validation domain to individual cells is insufficient.
 Neighbouring cells share a gate between their nearest boundaries. If a third
 island occupies that gate, move it into the surrounding space. Shared A/B cuts
 can then detour around other cuts using a bounded geometric visibility graph:

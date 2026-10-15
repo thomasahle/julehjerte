@@ -1,6 +1,71 @@
 # Generator robustness results
 
-## Current work: fewer sharp checkerboard tips and complete sunburst grids
+## Current coverage: wider component grids and a fitted envelope
+
+The combined default-size matrix is **2,786 accepted / 364 refused / zero invalid
+accepted output**. This batch recovers **16 figure combinations**. It freshly
+checked all 1,122 figures, then repeated all 51 fitted-frame cases after adding
+the common-envelope fallback. There are no regressions. The preceding full
+3,150-case refresh and the 198-case checkerboard audit have also completed.
+
+| Corpus | Configurations | Accepted | Refused | Invalid accepted output |
+|---|---:|---:|---:|---:|
+| Text: 34 inputs, six fonts, ten frames | 2028 | 1711 | 317 | 0 |
+| Figures: 51 motifs, 22 templates | 1122 | 1075 | 47 | 0 |
+
+The combined record is `tmp/generator/wide-current.json`. Fresh figure reports
+are `wide-final-figure.json` and `wide-final-fitted.json`; the completed preceding
+reports are `junction-current.json` and `quality-checker.json`. All 2,786 accepted
+IDs are pinned in `scripts/generator/expected.json`; none were removed.
+
+- Component grids now try two, three and four columns. They split the largest
+  islands until each row is full and retain each piece's source island. Adjacent
+  pieces of that island share a gate inside their filled seam. Every original
+  outline and counter is retained, and artificial seams are stitched afterward.
+- This recovers Tabler paw in circle, diamond, hexagon, rounded and scalloped
+  frames, each in all three outer styles: **15 combinations**, all with 7×7 grids.
+  The four toes occupy their own cells; the larger pad is divided beneath them.
+  Its oval, sunburst, fitted, checked-tip and layered variants still refuse.
+- A final fitted-frame recipe puts component-grid gates on the convex envelope
+  of the complete motif. The outer cuts then project to the paper edges without
+  adding a visible circular frame. Fidelity is checked over the **whole envelope**,
+  including spaces between components. This recovers Tabler stars in the fitted
+  template with a 5×5 grid. Existing successful recipes return before it.
+- Six new regression cases cover the five paw frame shapes and the fitted stars,
+  including JSON/SVG roundtrips and the editor's own cut-spacing checks.
+
+The final generator's hearts and both cutting templates were rendered in
+`tmp/generator/wide-final-hearts-and-cuts.png`. The paw/rays example has one tip
+below 30° and two below 45°; the fitted stars have two below both thresholds.
+A separate checked hexagon paw has one below 30° and nine below 45°. These are
+still intricate paper cuts; there has been no physical weaving trial. Browser
+inventory again returned no available app or browser.
+
+All **1,072 unit tests and 177 inverse tests** pass, together with type
+checking, lint and the production build. Type checking reports seven existing
+warnings. Logs are `tmp/generator/wide-{check,lint,build,tests}.log`.
+
+The goal remains unfinished: 364 default-size configurations still refuse,
+most other sizes and the rest of the searchable catalog remain unverified, and
+difficult-case latency remains unresolved. These recoveries are progress toward
+the full goal, not a claim that the corpus or all combinations now work.
+
+### Additional probes, not shipped
+
+- Giving individual fitted components their own silhouette projections recovered
+  none of 20 three-/four-column probes; those projections can cross another
+  component. The common envelope recovered the stars in a subsequent 30-case probe.
+- Uniform divisions, axis-aligned gap contacts and larger three-/four-row grids
+  recovered no further failing figures. The larger grids encountered new local
+  topology problems rather than clearing the oval paw's tight join.
+- The coffee cup's three-column layout has a 0.087-unit pinch where a steam
+  connection approaches an artificial division. Testing 49 division-fraction
+  pairs still recovered none; it needs a different connection or decomposition.
+  A separate 40-case probe that rejected shared attachments near seam endpoints
+  recovered no additional failures and also rejected the valid wider paw route.
+  That stricter local acceptance rule is not shipped.
+
+## Previous coverage: fewer sharp checkerboard tips and complete sunburst grids
 
 The checkerboard frame now considers one more connection spacing after finding
 a valid design. It keeps a candidate only when the complete exported template
@@ -22,9 +87,9 @@ raw candidates. The additional search does not run for an already refused input.
 All **51 sunburst configurations** were freshly checked: **47 accepted / four
 refused / zero invalid output**, with two recoveries and no regressions. The
 report is `tmp/generator/quality-sunburst.json`; the combined record with prior
-results retained elsewhere is `quality-current.json`. The 198-case checkerboard audit
-is running. The preceding full refresh has completed 2,812 of 3,150 cases; its
-Cinzel process is still running. All 2,770 accepted IDs, including these two new
+results retained elsewhere is `quality-current.json`. The completed 198-case
+checkerboard audit has 128 accepted / 70 refused / zero invalid output and no
+regressions. The preceding full 3,150-case refresh also finished with no regressions. All 2,770 accepted IDs, including these two new
 figure cases, are pinned in `scripts/generator/expected.json`.
 
 The finished ANNA heart and both cutting templates before and after the change
@@ -57,11 +122,10 @@ only the four-port sunburst retry needed for the verified recoveries.
 ## Previous coverage: clipping touching contours
 
 The combined default-size matrix has **2,768 accepted / 382 refused / zero invalid
-accepted results**. A full refresh is in progress. Completed reports cover all
-1,122 figure configurations and all 338 text configurations for each of Nunito,
-Bree Serif, Oswald, Righteous and Kalam: **2,812 freshly checked cases**, with four
-gains, no regressions and no invalid accepted output. The 338 Cinzel records
-still retain their preceding results while its audit process finishes.
+accepted results**. The full refresh completed all **3,150 cases**: all 1,122
+figure configurations and all 338 text configurations for each of Nunito,
+Bree Serif, Oswald, Righteous, Kalam and Cinzel. There were four gains, no
+regressions and no invalid accepted output.
 
 | Corpus | Configurations | Accepted | Refused | Invalid accepted output |
 |---|---:|---:|---:|---:|
@@ -69,8 +133,7 @@ still retain their preceding results while its audit process finishes.
 | Figures: 51 motifs, 22 templates | 1122 | 1057 | 65 | 0 |
 
 The combined record is `tmp/generator/junction-current.json`. Completed reports
-are `junction-{figure,nunito,breeserif,oswald,righteous,kalam}.json`; the Cinzel
-report is not yet complete. All 2,768 accepted IDs are pinned in
+are `junction-{figure,nunito,breeserif,oswald,righteous,kalam,cinzel}.json`. All 2,768 accepted IDs are pinned in
 `scripts/generator/expected.json`; none were removed.
 
 - Clipping can produce a shared vertex belonging to more than one closed
@@ -96,8 +159,8 @@ All **1,064 unit tests and 177 inverse tests** pass, along with type checking,
 lint and the production build. Type checking reports seven existing warnings.
 Logs are `tmp/generator/junction-{tests,check,lint,build}.log`.
 
-The goal remains unfinished. In addition to the running Cinzel corpus audit, 382
-matrix configurations are still refused, most non-default sizes and the rest of
+The goal remained unfinished after this batch: 382 matrix configurations were
+still refused, most non-default sizes and the rest of
 the searchable catalog remain unverified, and difficult-case latency is unresolved.
 
 ### Additional investigations, not shipped
