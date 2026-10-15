@@ -1,6 +1,67 @@
 # Generator robustness results
 
-## Current coverage: repair complete layouts and give bent text connections room
+## Current coverage: clipping touching contours
+
+The combined default-size matrix has **2,768 accepted / 382 refused / zero invalid
+accepted results**. A full refresh is in progress. Completed reports cover all
+1,122 figure configurations and all 338 text configurations for each of Nunito,
+Bree Serif, Oswald and Righteous: **2,474 freshly checked cases**, with four gains,
+no regressions and no invalid accepted output. The 676 Kalam and Cinzel records
+still retain their preceding results while those two audit processes finish.
+
+| Corpus | Configurations | Accepted | Refused | Invalid accepted output |
+|---|---:|---:|---:|---:|
+| Text: 34 inputs, six fonts, ten frames | 2028 | 1711 | 317 | 0 |
+| Figures: 51 motifs, 22 templates | 1122 | 1057 | 65 | 0 |
+
+The combined record is `tmp/generator/junction-current.json`. Completed reports
+are `junction-{figure,nunito,breeserif,oswald,righteous}.json`; the Kalam and Cinzel
+reports are not yet complete. All 2,768 accepted IDs are pinned in
+`scripts/generator/expected.json`; none were removed.
+
+- Clipping can produce a shared vertex belonging to more than one closed
+  contour. An even-degree junction now yields separate closed walks instead
+  of an ambiguity error or one self-touching outline. Each original boundary
+  edge is retained once, and the even-odd artwork stays the same. Unpaired and
+  open boundaries remain errors.
+- This recovers Phosphor butterfly in all three oval styles, with 5×5 grids,
+  and Phosphor rabbit in the layered frame, with a 10×10 grid. Their complete
+  generated paths and JSON/SVG/editor handoffs pass all existing checks.
+- Three focused clipping tests cover touching islands, a counter touching its
+  parent, and three islands meeting on the divider. They compare the clipped
+  fill with the original on both sides of the divider and with reversed input
+  contour order and direction. The eight-test panel suite passes.
+
+Both finished hearts and both cutting templates for each were rendered and
+inspected in `tmp/generator/junction-hearts-and-cuts.png`. Butterfly has no cut
+tips below 45°; rabbit has two below 30° and ten below 45°, including its ears.
+The cuts remain intricate, with no physical weaving trial. Browser inventory
+again returned no app or browser, so a live interface check was unavailable.
+
+All **1,064 unit tests and 177 inverse tests** pass, along with type checking,
+lint and the production build. Type checking reports seven existing warnings.
+Logs are `tmp/generator/junction-{tests,check,lint,build}.log`.
+
+The goal remains unfinished. In addition to the two running corpus audits, 382
+matrix configurations are still refused, most non-default sizes and the rest of
+the searchable catalog remain unverified, and difficult-case latency is unresolved.
+
+### Additional investigations, not shipped
+
+- Treating every odd-degree clipping vertex as a divider endpoint fixes an
+  isolated touching-square/triangle Boolean example without changing its fill.
+  However, a separate completed probe of all 65 remaining figure refusals
+  recovered none. This broader endpoint rule remains experimental.
+- Adaptive letter-panel dividers placed between contour coordinates recovered
+  none of 96 direct probes: Cinzel P, E, R and PIP in three frames, four layouts
+  and two paddings. Moving whole figure components directly onto the fitted
+  frame also recovered none of that frame's 11 refusals.
+- [Weaving Paper into Star Patterns](https://archive.bridgesmathart.org/2020/bridges2020-427.pdf)
+  discusses changing sheets at extra vertices, but its more complex examples
+  cut one sheet into separate components. It therefore does not provide a direct
+  replacement for this generator's open-strip, no-detached-piece requirement.
+
+## Previous coverage: repair complete layouts and give bent text connections room
 
 The current default-size matrix has **2,764 accepted / 386 refused / zero invalid
 accepted results**. This batch freshly retested all 75 previous figure refusals:

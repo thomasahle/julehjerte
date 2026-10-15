@@ -28,7 +28,8 @@ const key = (p: Point) => p.map((x) => x.toFixed(6)).join(',');
 
 /** Clip an even-odd contour forest, joining crossings in filled-interval order.
  * Unlike clipping rings separately, this opens holes that meet the divider and
- * keeps all disconnected pieces. Every retained vertex must have degree two. */
+ * keeps all disconnected pieces. Touching contours may share a vertex, but each
+ * returned contour is a closed cycle. */
 export function clipContours(rings: Ring[], x: number, left: boolean): Ring[] {
 	const edges: [Point, Point][] = [];
 	const keep = (p: Point) => (left ? p[0] <= x : p[0] >= x);
@@ -61,8 +62,39 @@ export function clipContours(rings: Ring[], x: number, left: boolean): Ring[] {
 		throw new ConstructionError('topology', 'Unpaired clipping intersection');
 	for (let i = 0; i < ends.length; i += 2) edges.push([ends[i], ends[i + 1]]);
 	adj = adjacency();
-	if ([...adj.values()].some((ids) => ids.length !== 2))
-		throw new ConstructionError('topology', 'Ambiguous clipping vertex');
+	if ([...adj.values()].some((ids) => ids.length % 2))
+		throw new ConstructionError('topology', 'Unpaired clipping vertex');
+	if ([...adj.values()].some((ids) => ids.length > 2)) {
+		// A kissing contour is not an open or branching boundary. Extract each
+		// closed walk at its repeated vertex instead of joining the touching
+		// rings into one self-touching outline. The edge set and even-odd fill
+		// stay unchanged; the eventual paper paths still need full validation.
+		const used = new Set<number>(), rings: Ring[] = [];
+		for (let start = 0; start < edges.length; start++) {
+			if (used.has(start)) continue;
+			const path: Point[] = [edges[start][0]], positions = new Map([[key(path[0]), 0]]);
+			let at = path[0];
+			for (;;) {
+				const id = adj.get(key(at))!.find(i => !used.has(i));
+				if (id === undefined) break;
+				used.add(id);
+				const edge = edges[id];
+				at = key(edge[0]) === key(at) ? edge[1] : edge[0];
+				const existing = positions.get(key(at));
+				if (existing === undefined) {
+					positions.set(key(at), path.length);
+					path.push(at);
+				} else {
+					const ring = path.slice(existing);
+					if (ring.length >= 3 && Math.abs(area(ring)) > 1e-6) rings.push(ring);
+					for (const point of path.slice(existing + 1)) positions.delete(key(point));
+					path.splice(existing + 1);
+				}
+			}
+			if (path.length !== 1) throw new ConstructionError('topology', 'Open clipped contour');
+		}
+		return rings;
+	}
 	const used = new Set<number>(),
 		result: Ring[] = [];
 	for (let start = 0; start < edges.length; start++) {

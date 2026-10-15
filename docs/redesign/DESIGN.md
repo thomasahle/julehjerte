@@ -444,6 +444,11 @@ avoiding counters. Keep both complete outer bands and validate the joined cuts.
 General framed figures can also use filled seam intervals after their existing
 layouts fail. Try bounded 2×2 and spread 5×2 panel layouts; both neighbours must
 agree on each shared gate. Keep the selected frame and the motif's visible shape.
+When clipping creates an even-degree junction at touching contours, extract
+closed walks at each repeated vertex instead of rejecting the shared point or
+returning one self-touching outline. Retain the same boundary edges and even-odd
+fill, including counters and separate islands. Reject unpaired or open boundaries,
+and keep the complete paper-path and artwork checks after stitching.
 If those layouts fail, separate islands may occupy their own cells in a two-column
 grid. Keep counters with their parent island; for an odd island count, split the
 largest island into two and stitch its artificial seam. This construction handles

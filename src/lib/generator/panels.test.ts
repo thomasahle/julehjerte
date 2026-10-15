@@ -1,7 +1,7 @@
 import { it, expect } from 'vitest';
 import { clipContours, filledSeamGate, generatePanelFigure, panelDividers } from './panels';
 import { convertValidatedCutGeometry } from '$lib/inverse/toHeartDesign';
-import { type Ring, inside, uprightToSheet } from './geometry';
+import { type Ring, type Point, inside, uprightToSheet } from './geometry';
 import cat from '../../../static/generator/motifs/ph-cat.json';
 const square = (r: number): Ring => [
 	[-r, -r],
@@ -16,6 +16,32 @@ it('opens a hole onto a divider without filling or deleting it', () => {
 	expect(inside([-2, 0], parts[0])).toBe(false);
 	expect(inside([-8, 0], parts[0])).toBe(true);
 });
+for (const [name, rings, divider] of [
+	['two touching islands', [
+		square(2).map(([x, y]): Point => [x - 2, y - 2]),
+		square(2).map(([x, y]): Point => [x + 2, y + 2])
+	], 2],
+	['a counter touching its parent', [
+		[[-4, -4], [4, -4], [4, 4], [-4, 4], [-4, 0]],
+		[[-4, 0], [0, -2], [2, 0], [0, 2]]
+	], 1],
+	['three islands meeting on the divider', [
+		[[0, 0], [-4, -6], [-5, -3]],
+		[[0, 0], [-6, -1], [-6, 1]],
+		[[0, 0], [-5, 3], [-4, 6]]
+	], 0]
+] as [string, Ring[], number][])
+	it(`preserves the even-odd artwork when clipping ${name}`, () => {
+		const filled = (point: Point, contours: Ring[]) => contours.reduce((v, ring) => v ^ Number(inside(point, ring)), 0);
+		for (const input of [rings, rings.map(r => [...r].reverse()).reverse()])
+			for (const left of [false, true]) {
+				const clipped = clipContours(input, divider, left);
+				for (const ring of clipped)
+					expect(new Set(ring.map(p => p.join(','))).size).toBe(ring.length);
+				for (let y = -6.13; y < 6; y += .31) for (let x = -6.17; x < 6; x += .31)
+					expect(filled([x, y], clipped)).toBe(Number(left ? x <= divider : x >= divider) * filled([x, y], rings));
+			}
+	});
 it('joins both clipped neighbours through paper rather than a counter', () => {
 	const rings = [square(10), square(4)];
 	const left = clipContours(rings, 0, true), right = clipContours(rings, 0, false);
