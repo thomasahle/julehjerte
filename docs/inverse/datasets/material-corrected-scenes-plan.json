@@ -55,6 +55,41 @@
       "path": "tmp/heart-learning/material-corrected-scenes-v1/run.py",
       "sha256": "a136a7c53def2c2b59d1025be7b5c7859ff0953aeac4d19b7219b218ba3e7066",
       "bytes": 1550
+    },
+    {
+      "path": "tmp/heart-learning/material-corrected-scenes-v1/compare.py",
+      "sha256": "fb1f2bd24ad2a1c5d1512963e9b4e9cbe9481e896667f54cdf0eb65cffa3db7f",
+      "bytes": 6862
+    },
+    {
+      "path": "tmp/heart-learning/material-corrected-scenes-v1/export-probe.py",
+      "sha256": "2884e75e125aee1041ab523996904d522c9212ac68e871ed1687d37fa98673ff",
+      "bytes": 3043
+    },
+    {
+      "path": "tmp/heart-learning/material-corrected-scenes-v1/replay.mjs",
+      "sha256": "4cfa896b8368fd3a9688c7832998aa29de3d564b07a239d6a526c9618f2c9ed3",
+      "bytes": 8349
+    },
+    {
+      "path": "tmp/heart-learning/material-corrected-scenes-v1/foreground-crop.mjs",
+      "sha256": "1d8ff0130f798d34b3eec33d15e55466a5ec6577d30ed42e91e56415da7a6d0a",
+      "bytes": 5705
+    },
+    {
+      "path": "tmp/heart-learning/material-corrected-scenes-v1/material-fields.mjs",
+      "sha256": "a4528b8668b7e44fed80f0ed96eaf8f4058cfec57525319cf92e66cb4fefc8f6",
+      "bytes": 2657
+    },
+    {
+      "path": "tmp/heart-learning/material-corrected-scenes-v1/editor-input.mjs",
+      "sha256": "7ed41e6b1d7602521aa68307c1bfe3544e91e71bd4490c92b3ff1636ba834fae",
+      "bytes": 2261
+    },
+    {
+      "path": "tmp/heart-learning/material-corrected-scenes-v1/run-comparison.py",
+      "sha256": "93d8f37f2b2d7b6093ae613a0e3955cc27ae63d190cae2c44980a0e0a932a1b2",
+      "bytes": 2909
     }
   ],
   "trainingPlans": {
@@ -317,5 +352,17 @@
     "snapshotRoot": "tmp/heart-learning/printed-paper-correction-v1/original",
     "replayAnnotations": "tmp/heart-learning/printed-paper-correction-v1/before-materials.json",
     "transform": "Copy the original annotation bytes from that Git revision. In the material replay copy, change only bodyAnnotations[0].path to the original body snapshot; retain its SHA256. No polygon or label changes."
+  },
+  "pairedReplay": {
+    "methods": [
+      "production",
+      "baseline-joint",
+      "candidate-joint"
+    ],
+    "cases": 19,
+    "attempts": 57,
+    "timeLimitSeconds": 10,
+    "inputs": "Full original source photographs, no ROI/corners/known masks/counts/templates. Model predictions have whole-family holdout. Only original image dimensions define their letterbox windows.",
+    "order": "Rotate methods by source index; sequential solves after training and independent audits."
   }
 }
