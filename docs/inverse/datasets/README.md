@@ -44,8 +44,18 @@ return to the existing JavaScript `hypot` calculation. All 37 fixed-geometry cas
 retain every map pixel and audit field; complete audits are 18.8% faster at the
 median in this Node comparison. Eight private Chromium cases also match exactly,
 and the star and free-border hat workflows pass through editable SVG export.
-Full inverse QA and fresh corpus fits are still pending. This is an audit-cost
-improvement, not yet a measured reduction in complete solve time.
+Full QA now passes 930 inverse tests and 857 application tests (one skip),
+plus type checking, lint and build. Fresh fitting keeps 22/22 Hunodan below
+ten seconds (maximum 9.566 seconds), 26/31 photo acceptances and 48/48
+editable-template checks. Hunodan total runtime is 4.5% lower in this single
+before/after run. The strict incremental error gate **fails**: one Hunodan
+render is one pixel worse and the puppy is fourteen pixels worse. Among
+accepted photos, fifteen errors improve and ten are unchanged. All nineteen
+changed photo renders were visually reviewed; existing seams and crop
+distortions remain, and the orb gains small border artifacts despite a
+lower error. The Hunodan change also exposes internal point-sampling versus
+independent antialias scoring differences when more polishing steps fit
+within the budget. This is not a no-regression release claim.
 
 A [fixed-input polishing study](polishing-work-study.json) isolates the Viking
 checkpoint from crop and initialization changes. With the production numerical
