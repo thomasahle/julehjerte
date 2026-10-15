@@ -40,7 +40,12 @@ perturbed solve passes at 1.36% disagreement within ten seconds, with the same
 geometry and paper rules. The controlled regression and both fresh masks pass;
 type checking, lint, build and private star/hat browser checks pass. Full tests
 and corpus QA are still running. Visual inspection still finds split heart
-motifs and imperfect borders, so this is not complete artwork recovery.
+motifs and imperfect borders, so this is not complete artwork recovery. A saved-export
+component review confirms one heart remains connected to the boundary and
+another splits, with only 67% of its source region in the largest piece.
+A separate border-only probe restores consistent endpoints with different
+inset depths per side while staying within the existing 0.5% edit allowance;
+that probe has not yet produced a traced or fitted template.
 
 The [guided-field experiment](guided-material-fields.json) is complete and
 remains offline. Across seventeen development photos, RGB-guided sharpening

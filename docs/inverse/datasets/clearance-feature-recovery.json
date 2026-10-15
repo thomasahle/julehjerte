@@ -664,5 +664,605 @@
     "Fresh deadline-bound controls vary: the same resampled baseline previously gave 7.439375%, while the new cold control gives 3.0375% and still fails paper. The exact 7.4% outcome is not presented as deterministic.",
     "Independent geometry checks and a low total pixel error do not prove that all heart silhouettes are faithfully reconstructed.",
     "Full-corpus no-regression status remains pending until the current serial QA finishes."
-  ]
+  ],
+  "componentReview": {
+    "scope": "Posthoc saved-export diagnostics. The 800px source is nearest-neighbour replication of the same 400px mask, not new image information. Stable enclosures are source-confidence heuristics, not artwork ground truth.",
+    "artifacts": [
+      {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/feature-review.mjs",
+        "sha256": "fc7053c64779a2f65a25d74302bc492f683603503121d5a85399cfb130cbfb88",
+        "bytes": 2764
+      },
+      {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/feature-review.json",
+        "sha256": "25b651f1bc98711fb94fd966991e2c71b8f387faeef9c8f78ef9a230bf574756",
+        "bytes": 18494
+      }
+    ],
+    "rows": [
+      {
+        "name": "original-control",
+        "sourceReportSha256": "6f054ac426c6852229375c379c6089e99a142cafc4aca5f98a13851cd1af943b",
+        "geometrySha256": "8a89362fde766e133be34682e8f171c2f47d4230e64bfba3334ebff3d3b532c1",
+        "sourceMaskSha256": "9e52e7d9b61188cf5167b481f7e7dc28370f45f5279463164934b4b6cd5ffaa9",
+        "scales": [
+          {
+            "resolution": 400,
+            "featureCount": 7,
+            "stableEnclosures": 6,
+            "retainedEnclosures": 5,
+            "productionFidelityPassed": true,
+            "stableRegions": [
+              {
+                "value": 1,
+                "centerMm": [
+                  13.169446325770402,
+                  15.461945479173721
+                ],
+                "sourceAreaMm2": 184.5625,
+                "intersectionPixels": 2933,
+                "retention": 0.993227226549272,
+                "predictedComponentAreaMm2": 194.9375,
+                "touchesBorder": false,
+                "componentIoU": 0.9343740044600192
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  63.53983305615965,
+                  39.36080017909684
+                ],
+                "sourceAreaMm2": 488.5625,
+                "intersectionPixels": 7775,
+                "retention": 0.994627094793399,
+                "predictedComponentAreaMm2": 488.3125,
+                "touchesBorder": false,
+                "componentIoU": 0.9898154042011458
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  39.29348887153456,
+                  40.34259078484967
+                ],
+                "sourceAreaMm2": 160.0625,
+                "intersectionPixels": 2528,
+                "retention": 0.9871144084342054,
+                "predictedComponentAreaMm2": 160.875,
+                "touchesBorder": false,
+                "componentIoU": 0.9696969696969697
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  37.945615708459414,
+                  63.85733785028285
+                ],
+                "sourceAreaMm2": 475.0625,
+                "intersectionPixels": 7576,
+                "retention": 0.996710959084331,
+                "predictedComponentAreaMm2": 474.875,
+                "touchesBorder": false,
+                "componentIoU": 0.993834448379903
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  64.1469614921781,
+                  65.02010629763338
+                ],
+                "sourceAreaMm2": 155.8125,
+                "intersectionPixels": 2462,
+                "retention": 0.9875651825110309,
+                "predictedComponentAreaMm2": 657.8125,
+                "touchesBorder": true,
+                "componentIoU": 0.2332322849564229
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  87.72610069302895,
+                  88.87387892376681
+                ],
+                "sourceAreaMm2": 153.3125,
+                "intersectionPixels": 2425,
+                "retention": 0.9885854056257644,
+                "predictedComponentAreaMm2": 153.6875,
+                "touchesBorder": false,
+                "componentIoU": 0.975070365902694
+              }
+            ]
+          },
+          {
+            "resolution": 800,
+            "featureCount": 7,
+            "stableEnclosures": 6,
+            "retainedEnclosures": 5,
+            "productionFidelityPassed": true,
+            "stableRegions": [
+              {
+                "value": 1,
+                "centerMm": [
+                  13.169446325770402,
+                  15.461945479173721
+                ],
+                "sourceAreaMm2": 184.5625,
+                "intersectionPixels": 11686,
+                "retention": 0.9893328818151033,
+                "predictedComponentAreaMm2": 194.984375,
+                "touchesBorder": false,
+                "componentIoU": 0.9270924236414121
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  63.53983305615965,
+                  39.36080017909684
+                ],
+                "sourceAreaMm2": 488.5625,
+                "intersectionPixels": 31058,
+                "retention": 0.9932838684917488,
+                "predictedComponentAreaMm2": 488.34375,
+                "touchesBorder": false,
+                "componentIoU": 0.9870963640986524
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  39.29348887153456,
+                  40.34259078484967
+                ],
+                "sourceAreaMm2": 160.0625,
+                "intersectionPixels": 10096,
+                "retention": 0.9855525185474424,
+                "predictedComponentAreaMm2": 160.84375,
+                "touchesBorder": false,
+                "componentIoU": 0.9668645853284812
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  37.945615708459414,
+                  63.85733785028285
+                ],
+                "sourceAreaMm2": 475.0625,
+                "intersectionPixels": 30254,
+                "retention": 0.9950664386264965,
+                "predictedComponentAreaMm2": 475.5,
+                "touchesBorder": false,
+                "componentIoU": 0.9892747367732653
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  64.1469614921781,
+                  65.02010629763338
+                ],
+                "sourceAreaMm2": 155.8125,
+                "intersectionPixels": 9818,
+                "retention": 0.98455675892499,
+                "predictedComponentAreaMm2": 657.578125,
+                "touchesBorder": true,
+                "componentIoU": 0.2324392149435356
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  87.72610069302895,
+                  88.87387892376681
+                ],
+                "sourceAreaMm2": 153.3125,
+                "intersectionPixels": 9679,
+                "retention": 0.9864451691805952,
+                "predictedComponentAreaMm2": 153.78125,
+                "touchesBorder": false,
+                "componentIoU": 0.9703258145363408
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "resampled-control",
+        "sourceReportSha256": "e9b0e2d550b29d0773c4a72b5dd7221c91c2e706576db8891ad9b1acf19908ef",
+        "geometrySha256": "94a450d42453288635294a143b11fea0d3f9b2dce82d795e38deaffefb6427d9",
+        "sourceMaskSha256": "88a77851c564c157375f2c319f9a62b49799a7dfc710d7dde256afcb0d095ce7",
+        "scales": [
+          {
+            "resolution": 400,
+            "featureCount": 7,
+            "stableEnclosures": 6,
+            "retainedEnclosures": 3,
+            "productionFidelityPassed": true,
+            "stableRegions": [
+              {
+                "value": 1,
+                "centerMm": [
+                  13.153552005438478,
+                  15.455897348742353
+                ],
+                "sourceAreaMm2": 183.875,
+                "intersectionPixels": 2875,
+                "retention": 0.9772263766145479,
+                "predictedComponentAreaMm2": 183.875,
+                "touchesBorder": false,
+                "componentIoU": 0.9554669325357261
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  63.5496413015629,
+                  39.358986676915194
+                ],
+                "sourceAreaMm2": 487.875,
+                "intersectionPixels": 7788,
+                "retention": 0.9976940814757879,
+                "predictedComponentAreaMm2": 488.6875,
+                "touchesBorder": false,
+                "componentIoU": 0.9937476075028709
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  39.28689167974882,
+                  40.34242543171115
+                ],
+                "sourceAreaMm2": 159.25,
+                "intersectionPixels": 2524,
+                "retention": 0.9905808477237049,
+                "predictedComponentAreaMm2": 160.875,
+                "touchesBorder": false,
+                "componentIoU": 0.9715165511932256
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  37.954389665172684,
+                  63.853051674136566
+                ],
+                "sourceAreaMm2": 474.125,
+                "intersectionPixels": 7546,
+                "retention": 0.9947271289216979,
+                "predictedComponentAreaMm2": 780.75,
+                "touchesBorder": true,
+                "componentIoU": 0.6021385253750399
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  64.1374698310539,
+                  65.02041432019308
+                ],
+                "sourceAreaMm2": 155.375,
+                "intersectionPixels": 2461,
+                "retention": 0.9899436846339501,
+                "predictedComponentAreaMm2": 780.75,
+                "touchesBorder": true,
+                "componentIoU": 0.19661260685467763
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  87.72424366312347,
+                  88.87765739983647
+                ],
+                "sourceAreaMm2": 152.875,
+                "intersectionPixels": 2409,
+                "retention": 0.9848732624693377,
+                "predictedComponentAreaMm2": 197.875,
+                "touchesBorder": true,
+                "componentIoU": 0.752107399313144
+              }
+            ]
+          },
+          {
+            "resolution": 800,
+            "featureCount": 7,
+            "stableEnclosures": 6,
+            "retainedEnclosures": 3,
+            "productionFidelityPassed": true,
+            "stableRegions": [
+              {
+                "value": 1,
+                "centerMm": [
+                  13.153552005438478,
+                  15.455897348742353
+                ],
+                "sourceAreaMm2": 183.875,
+                "intersectionPixels": 11488,
+                "retention": 0.9762066621346023,
+                "predictedComponentAreaMm2": 183.734375,
+                "touchesBorder": false,
+                "componentIoU": 0.9542320790763352
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  63.5496413015629,
+                  39.358986676915194
+                ],
+                "sourceAreaMm2": 487.875,
+                "intersectionPixels": 31085,
+                "retention": 0.9955482961824238,
+                "predictedComponentAreaMm2": 488.109375,
+                "touchesBorder": false,
+                "componentIoU": 0.9906622474345083
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  39.28689167974882,
+                  40.34242543171115
+                ],
+                "sourceAreaMm2": 159.25,
+                "intersectionPixels": 10051,
+                "retention": 0.9861656200941915,
+                "predictedComponentAreaMm2": 160.484375,
+                "touchesBorder": false,
+                "componentIoU": 0.9653284671532847
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  37.954389665172684,
+                  63.853051674136566
+                ],
+                "sourceAreaMm2": 474.125,
+                "intersectionPixels": 30122,
+                "retention": 0.9926838913788558,
+                "predictedComponentAreaMm2": 779.765625,
+                "touchesBorder": true,
+                "componentIoU": 0.6009136792546931
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  64.1374698310539,
+                  65.02041432019308
+                ],
+                "sourceAreaMm2": 155.375,
+                "intersectionPixels": 9789,
+                "retention": 0.9844127111826226,
+                "predictedComponentAreaMm2": 779.765625,
+                "touchesBorder": true,
+                "componentIoU": 0.19554534558529765
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  87.72424366312347,
+                  88.87765739983647
+                ],
+                "sourceAreaMm2": 152.875,
+                "intersectionPixels": 9591,
+                "retention": 0.9802739165985282,
+                "predictedComponentAreaMm2": 197.421875,
+                "touchesBorder": true,
+                "componentIoU": 0.7476613657623947
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "resampled-integrated",
+        "sourceReportSha256": "0c9cfa75560a747d188f5274e829f83b9a09f0b3ccabf84c0c117da05fe314e8",
+        "geometrySha256": "3d316467341bae1b84b142c62068702c6f4f6684bdd50e2e247aa27410d5681d",
+        "sourceMaskSha256": "88a77851c564c157375f2c319f9a62b49799a7dfc710d7dde256afcb0d095ce7",
+        "scales": [
+          {
+            "resolution": 400,
+            "featureCount": 7,
+            "stableEnclosures": 6,
+            "retainedEnclosures": 5,
+            "productionFidelityPassed": true,
+            "stableRegions": [
+              {
+                "value": 1,
+                "centerMm": [
+                  13.153552005438478,
+                  15.455897348742353
+                ],
+                "sourceAreaMm2": 183.875,
+                "intersectionPixels": 2915,
+                "retention": 0.9908225696804894,
+                "predictedComponentAreaMm2": 183.6875,
+                "touchesBorder": false,
+                "componentIoU": 0.9828051247471342
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  63.5496413015629,
+                  39.358986676915194
+                ],
+                "sourceAreaMm2": 487.875,
+                "intersectionPixels": 7778,
+                "retention": 0.9964130156290033,
+                "predictedComponentAreaMm2": 487.875,
+                "touchesBorder": false,
+                "componentIoU": 0.9928516721981108
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  39.28689167974882,
+                  40.34242543171115
+                ],
+                "sourceAreaMm2": 159.25,
+                "intersectionPixels": 1712,
+                "retention": 0.6718995290423861,
+                "predictedComponentAreaMm2": 107.1875,
+                "touchesBorder": false,
+                "componentIoU": 0.671109368874951
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  37.954389665172684,
+                  63.853051674136566
+                ],
+                "sourceAreaMm2": 474.125,
+                "intersectionPixels": 7563,
+                "retention": 0.9969680991299763,
+                "predictedComponentAreaMm2": 473.8125,
+                "touchesBorder": false,
+                "componentIoU": 0.9946081009994739
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  64.1374698310539,
+                  65.02041432019308
+                ],
+                "sourceAreaMm2": 155.375,
+                "intersectionPixels": 2463,
+                "retention": 0.9907481898632341,
+                "predictedComponentAreaMm2": 658.5625,
+                "touchesBorder": true,
+                "componentIoU": 0.23323863636363637
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  87.72424366312347,
+                  88.87765739983647
+                ],
+                "sourceAreaMm2": 152.875,
+                "intersectionPixels": 2425,
+                "retention": 0.991414554374489,
+                "predictedComponentAreaMm2": 154,
+                "touchesBorder": false,
+                "componentIoU": 0.9758551307847082
+              }
+            ]
+          },
+          {
+            "resolution": 800,
+            "featureCount": 7,
+            "stableEnclosures": 6,
+            "retainedEnclosures": 5,
+            "productionFidelityPassed": true,
+            "stableRegions": [
+              {
+                "value": 1,
+                "centerMm": [
+                  13.153552005438478,
+                  15.455897348742353
+                ],
+                "sourceAreaMm2": 183.875,
+                "intersectionPixels": 11622,
+                "retention": 0.9875934738273283,
+                "predictedComponentAreaMm2": 183.546875,
+                "touchesBorder": false,
+                "componentIoU": 0.977213486925082
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  63.5496413015629,
+                  39.358986676915194
+                ],
+                "sourceAreaMm2": 487.875,
+                "intersectionPixels": 31058,
+                "retention": 0.9946835767358442,
+                "predictedComponentAreaMm2": 487.8125,
+                "touchesBorder": false,
+                "componentIoU": 0.9895494806601669
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  39.28689167974882,
+                  40.34242543171115
+                ],
+                "sourceAreaMm2": 159.25,
+                "intersectionPixels": 6831,
+                "retention": 0.6702315541601256,
+                "predictedComponentAreaMm2": 107.546875,
+                "touchesBorder": false,
+                "componentIoU": 0.6668293635298711
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  37.954389665172684,
+                  63.853051674136566
+                ],
+                "sourceAreaMm2": 474.125,
+                "intersectionPixels": 30199,
+                "retention": 0.9952214605852887,
+                "predictedComponentAreaMm2": 474.28125,
+                "touchesBorder": false,
+                "componentIoU": 0.9901636119217023
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  64.1374698310539,
+                  65.02041432019308
+                ],
+                "sourceAreaMm2": 155.375,
+                "intersectionPixels": 9820,
+                "retention": 0.9875301689460981,
+                "predictedComponentAreaMm2": 658.46875,
+                "touchesBorder": true,
+                "componentIoU": 0.23233804949604883
+              },
+              {
+                "value": 1,
+                "centerMm": [
+                  87.72424366312347,
+                  88.87765739983647
+                ],
+                "sourceAreaMm2": 152.875,
+                "intersectionPixels": 9657,
+                "retention": 0.9870196238757154,
+                "predictedComponentAreaMm2": 154.046875,
+                "touchesBorder": false,
+                "componentIoU": 0.9670538754255958
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "interpretation": "At both 400 and 800 pixels, the integrated output keeps 5 of 6 source-stable regions enclosed, up from 3 in the rejected resampled control. These six include two checker regions and four hearts. One heart remains open to the border, and another is split: its largest component retains only 67.2% (400px) / 67.0% (800px) of the source heart. The production fidelity check still passes. This is not complete motif recovery."
+  },
+  "borderFollowup": {
+    "status": "diagnostic-only-not-integrated",
+    "artifacts": [
+      {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/routing-preflight.json",
+        "sha256": "d895081c1e682d5fad2bdf30874ad0ac6f66a081932d0f0f3c39a036033ca29c",
+        "bytes": 87
+      },
+      {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/border-profiles.json",
+        "sha256": "003d30480b69ed0dbdd9ae2d8a2f5c9941e28577ecd92a347b6d706c0c474ec5",
+        "bytes": 2833
+      },
+      {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/fine-border-profiles.json",
+        "sha256": "0ae9d456417081fa33e6bfed70c112dcc44efb7aa5096de8125d1e3d1ce571e5",
+        "bytes": 3877
+      },
+      {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/independent-border-probe.json",
+        "sha256": "afe29431478f358175a75ecd499d10377a28f670f8f6c2b392fd19474991a995",
+        "bytes": 3837
+      },
+      {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/independent-border-probe.u8",
+        "sha256": "ed01949b6a79dc2c679aa07385c9e0e6c07290a0683f9f49cb20a995fdb53c69",
+        "bytes": 160000
+      }
+    ],
+    "findings": [
+      "The current learned mask has outer-edge transition counts [6,0,4,6], although the direct fitter estimates [3,3] from inset evidence. The corner-fragment helper has no proposal.",
+      "A uniform 1mm border interpretation restores [3,3,3,3] but changes 822/160000 pixels (0.51375%), just above the existing 0.5% topology-initialization allowance. A 0.75mm interpretation still misses two right-edge endpoints.",
+      "Combining already measured 0.5mm top/bottom/left interpretations with the 1mm right interpretation changes 740 pixels (0.4625%), restores [3,3,3,3] and retains every source feature and all six stable enclosures.",
+      "These side radii were selected after inspecting this case. No general selector, traced-curve error, new MILP result or template success is claimed. The input reference remains unchanged; the combined mask is only a possible initialization."
+    ]
+  }
 }
