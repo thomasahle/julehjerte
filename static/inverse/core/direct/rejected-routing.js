@@ -62,7 +62,14 @@ export function repairRejectedRouting(proposal,input,cfg,{deadline=Infinity,qual
   if(!initial.repairable)return finish('geometry_not_repairable');
   const source=input.sourceImage,initialMask=sampleWeave(proposal,source.resolution);
   report.initialImageError=maskDisagreement(source,initialMask);
-  if(report.initialImageError>cfg.maxImageError||!auditFeatureFidelity(source,initialMask,cfg).passed)return finish('initial_image');
+  // Border interpretation admits a bounded provisional trace before fitting
+  // the original pixels. A near-valid routing can need that same image repair:
+  // requiring final accuracy here prevents any gradient step from improving it.
+  // Keep the final error limit below unchanged, including stricter user limits.
+  report.maximumInitialImageError=Math.max(cfg.maxImageError,Math.min(.05,2*cfg.maxImageError));
+  if(report.initialImageError>report.maximumInitialImageError)return finish('initial_image');
+  report.initialFeatures=auditFeatureFidelity(source,initialMask,cfg);
+  if(!report.initialFeatures.passed)return finish('initial_image');
   const graph=new CurveGraph(proposal.paths.map((family,f)=>family.map((_,i)=>curvesOf(proposal,f,i).map(c=>c.p))),cfg.width),phase=proposal.graph.target.phase?-1:1;
   // Leave room for the final geometry, source-image and paper audits. A late
   // integer proposal can otherwise produce a valid checkpoint and then lose

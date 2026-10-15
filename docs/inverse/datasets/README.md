@@ -197,7 +197,37 @@ identical exported coordinates and PNG pixels; its one observed run drops from
 Four new snapshot/weight regressions pass, and focused checks pass 29/30; the
 existing free-border matching test still times out. Neither a simple priority
 budget nor a lower fitting resolution consistently fixes that failure, so those
-experiments remain unintegrated. Full repository and corpus QA remain pending.
+experiments remain unintegrated. The subsequent full run passes 900/901 inverse
+tests, all 857 application tests, type checking, lint and build, with all 739
+pinned source files verified. Its only failure compares a computed
+0.4999999999999991-second allowance with exactly 0.5 seconds. The matching-seed
+regression passes in this run, but earlier timing failures remain unresolved.
+The floating-point correction passes both real-MILP tests with all geometry
+and paper assertions retained; native corpus and browser stages did not start.
+
+A [late-matching deadline correction](late-matching-finalization.json) now
+uses the requested allowance after the independent fit's initial ten-second
+phase. Two isolated twenty-second handoffs that previously skipped matching
+now find identical templates at 0.4013% independent mask disagreement. Each
+has twelve seconds already elapsed and finishes finalization in about three
+more seconds. Expired requests still skip refinement; ten-second deadlines are
+unchanged. This is not a fresh-photo speed result or a demonstrated cure for
+the separate ten-second matching timeout.
+
+A [cropped-tree repair correction](cropped-tree-handoff.json) now lets a bounded
+provisional trace improve against the original pixels before requiring final
+image accuracy. Its first routing has 3.80125% mask error and two small clearance
+violations; the old code rejected it before any gradient step. Final error,
+feature, geometry and paper checks are unchanged. In two fresh ten-second runs,
+the tree improves from rejected 7.88875% exports to checked pairs at 2.27625%
+and 2.29875%, taking 8.39 and 8.66 seconds for design and export. Independent
+800-pixel renders also remain below 2.46%. Across four fixed masks and two
+alternating-order rounds, acceptance rises from 6/8 to 8/8; all three controls
+retain passes, but one increases from 0.6000% to 0.6544% error. The frame still
+has visible small defects. All eighteen focused integration tests pass, including
+the old ten-second matching regression. New full repository, corpus and browser
+checks remain pending; these experiments do not increase the published 31-photo
+benchmark count.
 
 The latest validated solver revision is `c000d30`. Its
 [release record](return-projection-speed.json) passes **22/22 regular Hunodan
