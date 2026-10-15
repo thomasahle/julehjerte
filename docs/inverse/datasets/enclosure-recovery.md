@@ -179,3 +179,24 @@ source-error ceiling. Additional cuts must beat that retained alternative's
 original-source error. Both tests now retain actual curves on any subsequent
 assertion failure. All five focused tests and their lint pass; a fresh full-suite
 run and browser QA remain pending. No solver policy changed in this test correction.
+
+## Source evidence for the jigsaw crop
+
+The [new source-photo observations](jigsaw-material-observations.json) make the
+crop defect measurable without using template agreement to choose corners.
+Twenty-five clearly visible red/white motif-interior points were reviewed on
+the original photograph. One ambiguous point in a narrow blurred bridge was
+excluded before the coverage replay. Source bytes, decoded pixels, coordinates
+and reviewed overlays are pinned. These are development QA observations, not
+training labels, original artwork or physical-corner ground truth.
+
+The current automatic crop includes only **21/25** points. It excludes red pixels
+`(832,690)` and `(846,697)`, and white pixels `(855,730)` and `(867,710)`. This loss
+occurs before classification or fitting; the 0.973125% mask error cannot account
+for those missing observations. The historical diagnostic crop includes 25/25,
+which is useful comparative evidence but does not verify all its corners.
+
+This is a source-coordinate projection check, with no new solver run or changed
+input. The 25 observations remain separate from the common benchmark's existing
+78 samples while release QA runs on its pinned files. No production crop or
+acceptance gate has changed.
