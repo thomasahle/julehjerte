@@ -33,7 +33,7 @@ export function polishCandidate(candidate,prob,n,cfg,options={}){
     // the fitting forces and physical tolerances retain the incoming settings.
     polished=refineCurves(graph,local?.objective.probability||prob,n,candidate.phase,polishingCfg,{...options,
       ...(polishingCfg.materialResolution===700&&!local?{resolvePaperBeforeRollback:true,paperVerificationResolution:1000,paperVerificationReserve:250}:{}),
-      ...(local?{weights:local.objective.weights,steps:Math.min(options.steps??16,16),checkpointEvery:4}:{}),...(detail?{rate:.035}:{}),onProgress:(r,solution)=>{
+      ...(local?{weights:local.objective.weights,steps:Math.min(options.steps??16,16),checkpointEvery:4}:{}),...(detail?{rate:.035,retryPaperSeparation:true}:{}),onProgress:(r,solution)=>{
         const active=r.paperVerification||verification;
         if(active)solution.report={...solution.report,paperVerification:{...active,status:r.paper}};
         options.onProgress?.(r,solution);
@@ -45,6 +45,7 @@ export function polishCandidate(candidate,prob,n,cfg,options={}){
   // Keep the provenance of an earlier checked repair when polishing finds a
   // better checkpoint. Its current geometry and paper status are rechecked.
   const active=polished.paperVerification||verification;
-  return{...polished,counts:candidate.counts,sharing:candidate.sharing,seed:candidate.seed,clampedFeatureRecovery:candidate.clampedFeatureRecovery,outlineDetail:detail?.report,localFeaturePolish:local?.report,
+  const outlineDetail=detail?{...detail.report,...(polished.paperSeparationRetry?{paperSeparationRetry:polished.paperSeparationRetry}:{})}:undefined;
+  return{...polished,counts:candidate.counts,sharing:candidate.sharing,seed:candidate.seed,clampedFeatureRecovery:candidate.clampedFeatureRecovery,outlineDetail,localFeaturePolish:local?.report,
     ...(active?{paperVerification:{...active,status:polished.paper?.status}}:{})};
 }

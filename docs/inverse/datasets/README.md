@@ -268,9 +268,20 @@ and locates a pinched hook whose paper-core failure persists at 1400 cells.
 The automatic fit's separation force ignores nearby portions of one slit over
 eight nominal widths. A shorter exclusion recovers quality in an equal-work
 replay, but [applying it throughout polishing](outline-separation-force-probe.json)
-damages neighbouring motifs. That version is rejected. A fallback triggered by
-an actual failed refinement block remains under isolated evaluation; neither
-the physical checks nor the fidelity limits have been weakened.
+damages neighbouring motifs. That version is rejected.
+
+The [conditional paper-separation retry](conditional-paper-separation.json)
+now activates only after a complete geometry-valid, paper-failed block during
+outline polishing. In the fixed 120-step regression, independent error falls
+from 3.0536% to 2.3316%, with paper checks passing at both 360 and 1000 cells.
+A fresh cold-start pair improves from 2.9852% to 2.2878%; a successful control
+retains every curve coordinate. All 23 focused tests pass. Neither acceptance
+rules nor deadlines change, and a changed force resets rollback-cycle detection.
+The 24-fit comparison also exposes existing fine-resolution paper failures:
+20/24 pass at 1000 cells, and one failed output is byte-identical to an earlier
+unmodified baseline export. The retry never ran on that output. This remains
+an unresolved validation limitation. Full repository, corpus and browser QA
+are pending; the change is committed locally without a release claim.
 
 The latest validated solver revision is `c000d30`. Its
 [release record](return-projection-speed.json) passes **22/22 regular Hunodan

@@ -98,9 +98,10 @@ export function curvePenalty(graph,points,cfg,{separationWeight=12}={}){
   return{loss,gradient,minRadius};
 }
 
-export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=40,deadline=Infinity,onProgress=()=>{},input={},rate=.035,identicalSheets=false,stopWhen=null,selection='boundary',weights=null,preferCheckpoint=null,skipRepeatedRollbacks=false,finalGeometry=true,resolvePaperBeforeRollback=false,paperVerificationResolution=700,paperVerificationReserve=250}={}){
+export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=40,deadline=Infinity,onProgress=()=>{},input={},rate=.035,identicalSheets=false,stopWhen=null,selection='boundary',weights=null,preferCheckpoint=null,skipRepeatedRollbacks=false,finalGeometry=true,resolvePaperBeforeRollback=false,paperVerificationResolution=700,paperVerificationReserve=250,retryPaperSeparation=false}={}){
   if(!Number.isInteger(checkpointEvery)||checkpointEvery<1)throw new RangeError('Checkpoint interval must be a positive integer.');
   // Compile the weighted force field once, not on every optimization step.
+  let penaltySettings=cfg,paperSeparationRetry=null;
   const objective=boundaryObjective(prob,weights),force=objective.target;
   const imageValue=createBoundaryEvaluator(graph,force,n),transposedImageValue=createBoundaryEvaluator(graph,force,n,{transpose:true,rows:193});
   const points=graph.points.slice(),initial=points.slice(),adam=new Adam(points.length,rate*graph.width/100),history=[];
@@ -201,6 +202,17 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=4
     }
     let repeatedRollback=false;
     if(!accepted&&safe){
+      // Automatic fitting's long same-slit exclusion can hide a pinched hook
+      // from the separation force. After a complete paper-failed block, try
+      // the general fitter's shorter, three-width force neighbourhood. Keep
+      // the requested validation rules and the ordinary safe rollback point.
+      // Successful blocks and initial transient failures keep their forces.
+      if(retryPaperSeparation&&!paperSeparationRetry&&step>=checkpointEvery&&cfg.localNeighborhoodFactor>3&&proposals.some(v=>v.validation?.passed&&v.paper?.status==='fail')){
+        penaltySettings={...cfg,localNeighborhoodFactor:3};
+        paperSeparationRetry={step,previousLocalFactor:cfg.localNeighborhoodFactor,localFactor:3};
+        history.at(-1).paperSeparationRetry=paperSeparationRetry;
+        lastRollback=null; // The changed force has not completed a rollback cycle yet.
+      }
       points.set(safe);adam.reset();adam.rate=Math.max(.004*graph.width/100,adam.rate*.65);
       // Equal reset coordinates and rate give the same next checkpoint block.
       // Require exact equality and consecutive full checkpoints; a smaller
@@ -213,7 +225,7 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=4
   checkpoint(-1);
   for(let step=0;step<steps;step++){
     if(stoppedEarly||(step%5===0&&performance.now()>deadline))break;
-    const g=boundaryGradient(graph,points,force,n,phase),penalty=curvePenalty(graph,points,cfg);
+    const g=boundaryGradient(graph,points,force,n,phase),penalty=curvePenalty(graph,points,penaltySettings);
     if(cfg.preferMatchingSheets&&!identicalSheets){const matching=matchingPenalty(graph,points);for(let i=0;i<g.length;i++)g[i]+=matching.gradient[i];}
     for(let i=0;i<g.length;i++)g[i]=graph.fixed[i]?0:g[i]+penalty.gradient[i]+.000004*(points[i]-initial[i])/points.length;
     if(ties&&!applyTies(ties,g,points,{fixed:graph.fixed,tangent:true}))break;
@@ -250,5 +262,5 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=4
   // audit by the caller, without treating it as accepted or using it for
   // rollback here. Ordinary callers still receive the verified incumbent.
   const paperAlternative=bestUncertain&&bestUncertain!==selected?{...bestUncertain,geometryPassed:true,paperPassed:false}:null;
-  return{...selected,geometryPassed:selected.validation.passed,paperPassed:!!best,history,steps:completed,computedSteps:completed-skippedSteps,skippedSteps,stoppedEarly,paperAlternative};
+  return{...selected,geometryPassed:selected.validation.passed,paperPassed:!!best,history,steps:completed,computedSteps:completed-skippedSteps,skippedSteps,stoppedEarly,paperAlternative,paperSeparationRetry};
 }

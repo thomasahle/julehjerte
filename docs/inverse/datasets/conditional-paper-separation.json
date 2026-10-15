@@ -1,0 +1,372 @@
+{
+  "schema": "conditional-paper-separation-retry-1",
+  "status": "integrated locally; all 23 focused tests pass; full validation pending",
+  "baselineRuntime": "fc7957e",
+  "trigger": "During outline polishing, a complete refinement block has no accepted candidate, a safe rollback exists, and a geometry-valid proposal fails paper support. Initial step-zero failures and successful blocks do not trigger it.",
+  "change": "Use a three-nominal-width same-slit exclusion for subsequent separation forces if the requested factor was larger. Keep the requested validation settings, source objective, fixed controls, learning-rate rollback and original deadline. Clear rollback-cycle detection because the force changed.",
+  "fixedWork": {
+    "steps": 120,
+    "baselineError800": 0.0305359375,
+    "retryError800": 0.023315625,
+    "triggerStep": 40,
+    "forceFactorBefore": 8,
+    "forceFactorAfter": 3,
+    "geometryPassed": true,
+    "paper360Passed": true,
+    "paper1000Passed": true,
+    "sourceMaskUnchanged": true,
+    "originalRuntimeRegression": "New quality assertion fails against unmodified runtime at 0.0305359375.",
+    "unchangedControl": "Enabling the retry on a successful straight-grid fit preserves every control coordinate and checkpoint record."
+  },
+  "freshFitComparison": {
+    "fits": 24,
+    "sourceFilesVerified": 218,
+    "allOriginalTestsPassed": true,
+    "coldOriginal": {
+      "beforeError800": 0.0298515625,
+      "afterError800": 0.022878125,
+      "finePaper": "pass for both"
+    },
+    "retryUsed": "Only the cold adaptive fit activates it; all eleven other adaptive fits keep the original force. Timed quality changes where no retry ran are not evidence of a causal improvement.",
+    "runs": [
+      {
+        "group": "cold",
+        "policy": "baseline",
+        "index": 0,
+        "wallSeconds": 6.156383584,
+        "error800": 0.0298515625,
+        "retry": null,
+        "finePaper": "pass",
+        "sourceSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890",
+        "capture": "tmp/heart-learning/outline-paper-retry-v1/cold-baseline/feature-near-miss.test-0"
+      },
+      {
+        "group": "cold",
+        "policy": "adaptive",
+        "index": 0,
+        "wallSeconds": 6.331818792,
+        "error800": 0.022878125,
+        "retry": {
+          "step": 40,
+          "previousLocalFactor": 8,
+          "localFactor": 3
+        },
+        "finePaper": "pass",
+        "sourceSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890",
+        "capture": "tmp/heart-learning/outline-paper-retry-v1/cold-adaptive/feature-near-miss.test-0"
+      },
+      {
+        "group": "full",
+        "policy": "baseline",
+        "index": 0,
+        "wallSeconds": 9.24322625,
+        "error800": 0.0129515625,
+        "retry": null,
+        "finePaper": "pass",
+        "sourceSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890",
+        "capture": "tmp/heart-learning/outline-paper-retry-v1/full-baseline/feature-near-miss.test-0"
+      },
+      {
+        "group": "full",
+        "policy": "baseline",
+        "index": 1,
+        "wallSeconds": 9.301480583,
+        "error800": 0.0111515625,
+        "retry": null,
+        "finePaper": "pass",
+        "sourceSha256": "34c9b902b787f4b934b50fdea0238277932d70d1f1d58391c0323c30a80dcd16",
+        "capture": "tmp/heart-learning/outline-paper-retry-v1/full-baseline/feature-near-miss.test-1"
+      },
+      {
+        "group": "full",
+        "policy": "baseline",
+        "index": 2,
+        "wallSeconds": 8.023581375,
+        "error800": 0.0132375,
+        "retry": null,
+        "finePaper": "fail",
+        "sourceSha256": "5366729f963fe8255091b1ed9fae26d734fdd6def020b4effc87c1965ac9aaea",
+        "capture": "tmp/heart-learning/outline-paper-retry-v1/full-baseline/feature-near-miss.test-2"
+      },
+      {
+        "group": "full",
+        "policy": "baseline",
+        "index": 3,
+        "wallSeconds": 8.220805875,
+        "error800": 0.013534375,
+        "retry": null,
+        "finePaper": "pass",
+        "sourceSha256": "52b62e8802e974e4f2bea0142e10bbd94e42213083cb0f01f089c94093c4419c",
+        "capture": "tmp/heart-learning/outline-paper-retry-v1/full-baseline/feature-near-miss.test-3"
+      },
+      {
+        "group": "full",
+        "policy": "baseline",
+        "index": 4,
+        "wallSeconds": 6.120804875,
+        "error800": 0.0285015625,
+        "retry": null,
+        "finePaper": "pass",
+        "sourceSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890",
+        "capture": "tmp/heart-learning/outline-paper-retry-v1/full-baseline/feature-near-miss.test-4"
+      },
+      {
+        "group": "full",
+        "policy": "baseline",
+        "index": 5,
+        "wallSeconds": 6.215047209000001,
+        "error800": 0.012340625,
+        "retry": null,
+        "finePaper": "pass",
+        "sourceSha256": "34c9b902b787f4b934b50fdea0238277932d70d1f1d58391c0323c30a80dcd16",
+        "capture": "tmp/heart-learning/outline-paper-retry-v1/full-baseline/feature-near-miss.test-5"
+      },
+      {
+        "group": "full",
+        "policy": "baseline",
+        "index": 6,
+        "wallSeconds": 6.180997667,
+        "error800": 0.016403125,
+        "retry": null,
+        "finePaper": "fail",
+        "sourceSha256": "5366729f963fe8255091b1ed9fae26d734fdd6def020b4effc87c1965ac9aaea",
+        "capture": "tmp/heart-learning/outline-paper-retry-v1/full-baseline/feature-near-miss.test-6"
+      },
+      {
+        "group": "full",
+        "policy": "baseline",
+        "index": 7,
+        "wallSeconds": 6.16892975,
+        "error800": 0.0159109375,
+        "retry": null,
+        "finePaper": "pass",
+        "sourceSha256": "52b62e8802e974e4f2bea0142e10bbd94e42213083cb0f01f089c94093c4419c",
+        "capture": "tmp/heart-learning/outline-paper-retry-v1/full-baseline/feature-near-miss.test-7"
+      },
+      {
+        "group": "full",
+        "policy": "adaptive",
+        "index": 0,
+        "wallSeconds": 8.891605041999998,
+        "error800": 0.01255625,
+        "retry": null,
+        "finePaper": "fail",
+        "sourceSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890",
+        "capture": "tmp/heart-learning/outline-paper-retry-v1/full-adaptive/feature-near-miss.test-0"
+      },
+      {
+        "group": "full",
+        "policy": "adaptive",
+        "index": 1,
+        "wallSeconds": 9.366608207999999,
+        "error800": 0.0111515625,
+        "retry": null,
+        "finePaper": "pass",
+        "sourceSha256": "34c9b902b787f4b934b50fdea0238277932d70d1f1d58391c0323c30a80dcd16",
+        "capture": "tmp/heart-learning/outline-paper-retry-v1/full-adaptive/feature-near-miss.test-1"
+      },
+      {
+        "group": "full",
+        "policy": "adaptive",
+        "index": 2,
+        "wallSeconds": 7.88715175,
+        "error800": 0.0132375,
+        "retry": null,
+        "finePaper": "fail",
+        "sourceSha256": "5366729f963fe8255091b1ed9fae26d734fdd6def020b4effc87c1965ac9aaea",
+        "capture": "tmp/heart-learning/outline-paper-retry-v1/full-adaptive/feature-near-miss.test-2"
+      },
+      {
+        "group": "full",
+        "policy": "adaptive",
+        "index": 3,
+        "wallSeconds": 8.353435792,
+        "error800": 0.013534375,
+        "retry": null,
+        "finePaper": "pass",
+        "sourceSha256": "52b62e8802e974e4f2bea0142e10bbd94e42213083cb0f01f089c94093c4419c",
+        "capture": "tmp/heart-learning/outline-paper-retry-v1/full-adaptive/feature-near-miss.test-3"
+      },
+      {
+        "group": "full",
+        "policy": "adaptive",
+        "index": 4,
+        "wallSeconds": 6.201847792,
+        "error800": 0.0148015625,
+        "retry": null,
+        "finePaper": "pass",
+        "sourceSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890",
+        "capture": "tmp/heart-learning/outline-paper-retry-v1/full-adaptive/feature-near-miss.test-4"
+      },
+      {
+        "group": "full",
+        "policy": "adaptive",
+        "index": 5,
+        "wallSeconds": 6.157897875,
+        "error800": 0.014521875,
+        "retry": null,
+        "finePaper": "pass",
+        "sourceSha256": "34c9b902b787f4b934b50fdea0238277932d70d1f1d58391c0323c30a80dcd16",
+        "capture": "tmp/heart-learning/outline-paper-retry-v1/full-adaptive/feature-near-miss.test-5"
+      },
+      {
+        "group": "full",
+        "policy": "adaptive",
+        "index": 6,
+        "wallSeconds": 6.188254458,
+        "error800": 0.0166171875,
+        "retry": null,
+        "finePaper": "pass",
+        "sourceSha256": "5366729f963fe8255091b1ed9fae26d734fdd6def020b4effc87c1965ac9aaea",
+        "capture": "tmp/heart-learning/outline-paper-retry-v1/full-adaptive/feature-near-miss.test-6"
+      },
+      {
+        "group": "full",
+        "policy": "adaptive",
+        "index": 7,
+        "wallSeconds": 6.117106333,
+        "error800": 0.0158390625,
+        "retry": null,
+        "finePaper": "pass",
+        "sourceSha256": "52b62e8802e974e4f2bea0142e10bbd94e42213083cb0f01f089c94093c4419c",
+        "capture": "tmp/heart-learning/outline-paper-retry-v1/full-adaptive/feature-near-miss.test-7"
+      },
+      {
+        "group": "controls",
+        "policy": "baseline",
+        "index": 0,
+        "wallSeconds": 9.447256708000001,
+        "error800": 0.02633125,
+        "retry": null,
+        "finePaper": "pass",
+        "sourceSha256": "7137173fa17abe3f8f7788ddb7d321fe48258a4a3f4c2f8b3171b9ff9f15a16f",
+        "capture": "tmp/heart-learning/outline-paper-retry-v1/controls-baseline/feature-seeds.test-0"
+      },
+      {
+        "group": "controls",
+        "policy": "baseline",
+        "index": 1,
+        "wallSeconds": 9.248245958,
+        "error800": 0.014453125,
+        "retry": null,
+        "finePaper": "pass",
+        "sourceSha256": "19f2c14b8e5e09abdeda442284bb1187e80369331482ab6db0d935ef8335fd91",
+        "capture": "tmp/heart-learning/outline-paper-retry-v1/controls-baseline/feature-seeds.test-1"
+      },
+      {
+        "group": "controls",
+        "policy": "baseline",
+        "index": 2,
+        "wallSeconds": 2.853195584,
+        "error800": 0.0056515625,
+        "retry": null,
+        "finePaper": "pass",
+        "sourceSha256": "263a91fc0a1b6db6db4da860f4145bd52aa0973927285068f8cbe267c9bc175d",
+        "capture": "tmp/heart-learning/outline-paper-retry-v1/controls-baseline/feature-seeds.test-2"
+      },
+      {
+        "group": "controls",
+        "policy": "adaptive",
+        "index": 0,
+        "wallSeconds": 9.474402333,
+        "error800": 0.02633125,
+        "retry": null,
+        "finePaper": "pass",
+        "sourceSha256": "7137173fa17abe3f8f7788ddb7d321fe48258a4a3f4c2f8b3171b9ff9f15a16f",
+        "capture": "tmp/heart-learning/outline-paper-retry-v1/controls-adaptive/feature-seeds.test-0"
+      },
+      {
+        "group": "controls",
+        "policy": "adaptive",
+        "index": 1,
+        "wallSeconds": 9.2942205,
+        "error800": 0.014453125,
+        "retry": null,
+        "finePaper": "pass",
+        "sourceSha256": "19f2c14b8e5e09abdeda442284bb1187e80369331482ab6db0d935ef8335fd91",
+        "capture": "tmp/heart-learning/outline-paper-retry-v1/controls-adaptive/feature-seeds.test-1"
+      },
+      {
+        "group": "controls",
+        "policy": "adaptive",
+        "index": 2,
+        "wallSeconds": 2.970352041,
+        "error800": 0.0056515625,
+        "retry": null,
+        "finePaper": "pass",
+        "sourceSha256": "263a91fc0a1b6db6db4da860f4145bd52aa0973927285068f8cbe267c9bc175d",
+        "capture": "tmp/heart-learning/outline-paper-retry-v1/controls-adaptive/feature-seeds.test-2"
+      }
+    ]
+  },
+  "finerAuditLimits": {
+    "passed": 20,
+    "total": 24,
+    "failed": [
+      {
+        "group": "full",
+        "policy": "baseline",
+        "capture": "tmp/heart-learning/outline-paper-retry-v1/full-baseline/feature-near-miss.test-2",
+        "error800": 0.0132375
+      },
+      {
+        "group": "full",
+        "policy": "baseline",
+        "capture": "tmp/heart-learning/outline-paper-retry-v1/full-baseline/feature-near-miss.test-6",
+        "error800": 0.016403125
+      },
+      {
+        "group": "full",
+        "policy": "adaptive",
+        "capture": "tmp/heart-learning/outline-paper-retry-v1/full-adaptive/feature-near-miss.test-0",
+        "error800": 0.01255625
+      },
+      {
+        "group": "full",
+        "policy": "adaptive",
+        "capture": "tmp/heart-learning/outline-paper-retry-v1/full-adaptive/feature-near-miss.test-2",
+        "error800": 0.0132375
+      }
+    ],
+    "interpretation": "Fine verification exposes existing resolution-sensitive paper failures. Both policies fail the normal vertical crop. The newly observed normal-original failure is byte-identical to a previously captured unmodified baseline output; no retry ran. This is an unresolved validation limitation, not an accepted physical-strength claim.",
+    "byteIdenticalGeometry": {
+      "paths": [
+        "tmp/heart-learning/base-count-near-miss-v1/0-baseline-feature-near-miss/feature-near-miss.test-0/cut_geometry.json",
+        "tmp/heart-learning/outline-paper-retry-v1/full-adaptive/feature-near-miss.test-0/cut_geometry.json"
+      ],
+      "sha256": "431170a663a02a9db6f23efa3f23cc8e1ffa35eb18632af126a1ad475335d99d"
+    }
+  },
+  "productionChanges": [
+    "static/inverse/core/direct/refine.js",
+    "static/inverse/core/direct/polish.js"
+  ],
+  "tests": [
+    "scripts/inverse/paper-neck-retry.test.mjs",
+    "scripts/inverse/fixtures/photographic-paper-neck-retry.json"
+  ],
+  "releaseClaim": "None. Full repository, native corpus and browser checks remain outstanding; no push or deployment.",
+  "artifactSha256": {
+    "tmp/heart-learning/outline-paper-retry-v1/checks.json": "90afb32759de53e29646286e5b83c49bc57be7ff2e978949d1ca7040f60c4fd0",
+    "tmp/heart-learning/outline-paper-retry-v1/source.json": "323543a0f4fc9d8760d6ab9e9c2d477384d1da4519c4b9eefdadc6a7af05cd08",
+    "tmp/heart-learning/outline-paper-retry-v1/state.json": "e618f762531b937ff7324d0506ba078697fedba5568d57084773e189b1241e5d",
+    "tmp/heart-learning/outline-paper-retry-v1/fine-audits.json": "8721cd89a74d475338697489f48a6cbfa3bfbf8dd70d61dcefbf41fa44cba89f",
+    "tmp/heart-learning/outline-paper-retry-v1/unit-old.log": "84ec43818fb6672b18bad50e52b6a327231a3fc08e52bfe140671015c71e81f3",
+    "tmp/heart-learning/outline-paper-retry-v1/integrated-tests.log": "efcb7c25ca171a335d12011a364fade1128d0e3d922fca38a94bfeec5fdaca1a"
+  },
+  "integratedVerification": {
+    "tests": 23,
+    "passed": 23,
+    "failed": 0,
+    "seconds": 162.548968708,
+    "scope": "Complete feature-near-miss and feature-seeds files plus two new fixed-work regressions",
+    "lint": "Modified runtime/test files: no errors; existing unused bernstein import warning remains",
+    "artifact": "tmp/heart-learning/outline-paper-retry-v1/integrated-tests.log"
+  },
+  "integratedSourceSha256": {
+    "static/inverse/core/direct/refine.js": "561dc0805f5bc390c09494ad542e68b8b3e4908f7a03ce2f42593be2ccb6e4f7",
+    "static/inverse/core/direct/polish.js": "8bdc58c0769ff71d1a1940e64c39cfdef2206651032462f204807776175ec38c",
+    "scripts/inverse/paper-neck-retry.test.mjs": "d7f0017e797c5f98dec183b93fc4915e2516c64be005da4b190f9aaef1b748b5",
+    "scripts/inverse/fixtures/photographic-paper-neck-retry.json": "2b79275bac2283dafad2e39d290860a6b757df4a7b79bb59ec0ea7a4590b03aa"
+  }
+}
