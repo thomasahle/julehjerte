@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "status": "planned; five_analytic_sampling_tests_pass",
+  "status": "planned; six_analytic_sampling_tests_pass",
   "scope": "Measure photographic interpolation support and source-pixel boundary distances. This is diagnostic metadata only: no mask, feature, objective or acceptance changes.",
   "perturbationRoot": "tmp/heart-learning/border-fragment-perturbation-v1",
   "perturbationReport": "tmp/heart-learning/border-fragment-perturbation-v1/results.json",
@@ -20,7 +20,8 @@
     "All original feature and source-error criteria remain unchanged. Flags are not instructions to remove features.",
     "Reproduce every decoded mask SHA-256 before analysis.",
     "Check all recorded crop perturbations and all classified baseline corpus cases; do not select only the two failed fragments.",
-    "Existing mask history and worker APIs discard sampling provenance. Any application design must preserve that distinction from drawn or edited pixels without abusing validMask, which would also remove image-error evidence."
+    "Existing mask history and worker APIs discard sampling provenance. Any application design must preserve that distinction from drawn or edited pixels without abusing validMask, which would also remove image-error evidence.",
+    "The paint canvas uses nearest-neighbour mask resampling. Keep the original classification resolution; enlarging that mask must not be modeled as a fresh RGB interpolation."
   ],
   "controller": "tmp/heart-learning/photo-sampling-support-v1/run.py",
   "sourcePins": "tmp/heart-learning/photo-sampling-support-v1/source.json"

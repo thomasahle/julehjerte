@@ -1,0 +1,31 @@
+{
+  "schema": 1,
+  "status": "proposed; no_application_behavior_changes",
+  "finding": "Mal deliberately converts imported classified masks to its fixed 400px paint grid by nearest-neighbour sampling and then submits only the mask. Original photo size/corners and classification-grid resolution are lost. The existing validMask field is unsuitable for this purpose because it also removes pixels from the image-error objective.",
+  "proposedEvidence": [
+    "Original source dimensions and crop quadrilateral",
+    "Original classified grid resolution, distinct from the paint mask size",
+    "Immutable import-time mask on the current paint grid, for identifying subsequent local edits"
+  ],
+  "constraints": [
+    "Keep every original mask pixel in the reported whole-image error.",
+    "Preserve metadata through history clones, worker cloning and resampling with explicit ownership.",
+    "Edits to a component or its separating boundary make that feature deliberate artwork; do not silently exempt it as photographic uncertainty.",
+    "Explicit transforms need consistent provenance mapping or a deliberate reset to artwork semantics.",
+    "No geometric support flag alone establishes paper identity, true topology or acceptable reconstruction.",
+    "Keep raw source/frame evidence available for overlay review."
+  ],
+  "analyticChecks": {
+    "passed": 6,
+    "log": "tmp/heart-learning/photo-sampling-support-v1/unit.log",
+    "coverage": [
+      "Identity sampling",
+      "Bilinear outside-image and outside-crop weights",
+      "Same physical samples at multiple rectified resolutions",
+      "Opposite winding under transpose",
+      "Caller ownership and invalid input",
+      "Original sampling retained through paint-grid nearest-neighbour resampling"
+    ]
+  },
+  "followup": "Run the pinned 228-rectification diagnostic and retain the full 47-entry inventory, including 29 classified cases, 2 crop failures and 16 existing incomplete/obscured cases. Evaluate true features alongside suspect border fragments before choosing any policy."
+}
