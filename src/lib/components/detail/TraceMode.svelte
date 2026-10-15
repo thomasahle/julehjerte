@@ -877,8 +877,12 @@
 		-webkit-touch-callout: none;
 	}
 
+	/* A light pill, so the words stay legible where they cross the template's lines. */
 	.unlock-hint {
 		margin: 0;
+		padding: 2px 8px;
+		border-radius: 999px;
+		background: rgb(255 255 255 / 0.85);
 		color: var(--muted);
 		font-size: 12px;
 		white-space: nowrap;
