@@ -156,6 +156,19 @@ passes. This suite failure is retained, and the finite-deadline search needs fur
 diagnosis. The change fixes fixed-work repeatability, not the broader timed fitting
 problem or the ten-second speed goal.
 
+A [controlled photo-border experiment](border-fragment-perturbation-results.json)
+replays 228 crop/resolution combinations with both re-estimated and frozen colour
+clusters. All four original 400-pixel masks reproduce exactly. The outline-star
+and crossed-ribbons failures each contain a small bottom fragment excluded at
+200 pixels but mandatory at 400 and 600: its physical gap is similar, while the
+one-rectified-pixel exclusion changes meaning. A quarter-source-pixel shift also
+switches the star requirement. The star interior, bird eye/body opening and Viking
+opening remain mandatory in all 57 variants for each classifier arm. This supports
+source-resolution-aware photographic uncertainty, but does not certify the saved
+reconstructions or justify deleting genuine small drawn features. No masks, image
+error pixels, feature gates or benchmark denominators change. The timed Viking
+failure is a separate issue; its source opening is stable in this experiment.
+
 A [boundary preparation refactor](boundary-trace-reuse.json) reuses cleanup and
 pixel chains when trying several tracing tolerances. Across 29 photographic
 masks and five border radii, all 145 resulting boundaries retain every control

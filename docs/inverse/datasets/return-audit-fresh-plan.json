@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "status": "planned",
+  "scope": "Fresh fits with original photographed pixels, fixed pre-solver automatic crops, original classified masks, ten-second deadline and unchanged validation. Compare all three copied runtime arms. The frozen Viking is the same source/crop/settings as the failing suite test; all other cases are additional regressions, not a whole-corpus speed claim.",
+  "cases": [
+    "flettede-viking",
+    "crown",
+    "jigsaw",
+    "fine-checker",
+    "outline-star",
+    "bird"
+  ],
+  "arms": [
+    "before",
+    "path-cache",
+    "curve-cache"
+  ],
+  "repetitions": 2,
+  "track": "Mal import-to-mask; earlyStop:false",
+  "artifacts": "tmp/heart-learning/return-audit-reuse-v1/fresh",
+  "priorQA": "tmp/heart-learning/anchor-projection-clock-v1/qa/state.json",
+  "caveat": "Capture every full solver report and progress event. A passing fresh replay does not replace the original failed suite.",
+  "controller": "tmp/heart-learning/return-audit-reuse-v1/fresh-run.py",
+  "sourcePins": "tmp/heart-learning/return-audit-reuse-v1/fresh-source.json"
+}
