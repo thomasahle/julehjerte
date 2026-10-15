@@ -18,7 +18,7 @@ export const paperKernelChoices=()=>({distanceTransform:distanceBackend.report()
  */
 export function verifiedPaperSettings(solution,cfg){
   const resolution=solution.report?.paperVerification?.resolution;
-  return Number.isInteger(resolution)&&resolution>cfg.materialResolution&&resolution<=700?{...cfg,materialResolution:resolution}:cfg;
+  return Number.isInteger(resolution)&&resolution>cfg.materialResolution&&resolution<=1000?{...cfg,materialResolution:resolution}:cfg;
 }
 // Only the capsule outline and pixel positions are fixed across fitted cuts.
 // Bound retained grids; never cache cut clearances, components or decisions.

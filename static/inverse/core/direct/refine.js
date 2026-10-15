@@ -98,7 +98,7 @@ export function curvePenalty(graph,points,cfg,{separationWeight=12}={}){
   return{loss,gradient,minRadius};
 }
 
-export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=40,deadline=Infinity,onProgress=()=>{},input={},rate=.035,identicalSheets=false,stopWhen=null,selection='boundary',weights=null,preferCheckpoint=null,skipRepeatedRollbacks=false,finalGeometry=true,resolvePaperBeforeRollback=false}={}){
+export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=40,deadline=Infinity,onProgress=()=>{},input={},rate=.035,identicalSheets=false,stopWhen=null,selection='boundary',weights=null,preferCheckpoint=null,skipRepeatedRollbacks=false,finalGeometry=true,resolvePaperBeforeRollback=false,paperVerificationResolution=700,paperVerificationReserve=250}={}){
   if(!Number.isInteger(checkpointEvery)||checkpointEvery<1)throw new RangeError('Checkpoint interval must be a positive integer.');
   // Compile the weighted force field once, not on every optimization step.
   const objective=boundaryObjective(prob,weights),force=objective.target;
@@ -146,10 +146,10 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=4
       // rollback, and carry the actual finer audit through Stop and export.
       // Without a safe incumbent there is no rollback to prevent: introducing
       // one early can interrupt exploration through provisional paper states.
-      if(resolvePaperBeforeRollback&&safe&&cfg.requireMaterialCore&&paper?.status==='uncertain'&&cfg.materialResolution<700&&deadline-performance.now()>250){
-        const fine=materialAudit(solution,{...cfg,materialResolution:700});
+      if(resolvePaperBeforeRollback&&safe&&cfg.requireMaterialCore&&paper?.status==='uncertain'&&cfg.materialResolution<paperVerificationResolution&&deadline-performance.now()>paperVerificationReserve){
+        const fine=materialAudit(solution,{...cfg,materialResolution:paperVerificationResolution});
         if(fine.passed){
-          value.paperVerification={requestedResolution:cfg.materialResolution,initialStatus:'uncertain',resolution:700,status:fine.status,source:'rollback-checkpoint'};
+          value.paperVerification={requestedResolution:cfg.materialResolution,initialStatus:'uncertain',resolution:paperVerificationResolution,status:fine.status,source:'rollback-checkpoint'};
           solution.report={...solution.report,paperVerification:value.paperVerification};paper=fine;
         }
       }

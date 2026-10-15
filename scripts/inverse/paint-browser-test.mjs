@@ -139,7 +139,7 @@ try{
    const slothShift={'sloth-x-shift-mask':'x-plus-1','sloth-y-shift-mask':'y-minus-1'}[name];
    const slothSearch={'sloth-frozen-mask':'frozen','sloth-synthetic-mask':'synthetic-control','sloth-y-plus-mask':'y-plus-1'}[name],slothVariant=slothShift||slothSearch;
    const flowerMask=['flower-native-mask','flower-downsample-mask'].includes(name),anchorMask=name==='anchor-spatial-mask',fadedFrameMask=name==='faded-frame-mask',slothMask=name==='sloth-routing-mask'||Boolean(slothVariant);
-   const unequalLobes=name==='unequal-lobes',webPhoto=name.startsWith('web-'),hardPhoto=name.startsWith('hard-'),photoMask=flowerMask||anchorMask||fadedFrameMask||slothMask||['stacked-hearts-mask','outline-star-shift-mask','gold-routing-mask','blue-star-polishing-mask','near-miss-mask','near-miss-shift-mask','near-miss-y-shift-mask','near-miss-diagonal-mask','leaf-mask','maple-leaf-mask','bird-mask','bird-shift-mask','bird-y-shift-mask','gift-mask','puppy-shift-mask','floral-checker-mask','warped-checker-mask','fine-checker-mask'].includes(name),photograph=unequalLobes||webPhoto||hardPhoto||name==='hunodan'||name.startsWith('hunodan-');
+   const unequalLobes=name==='unequal-lobes',webPhoto=name.startsWith('web-'),hardPhoto=name.startsWith('hard-'),photoMask=flowerMask||anchorMask||fadedFrameMask||slothMask||['stacked-hearts-mask','outline-star-shift-mask','gold-routing-mask','blue-star-polishing-mask','crown-mask','near-miss-mask','near-miss-shift-mask','near-miss-y-shift-mask','near-miss-diagonal-mask','leaf-mask','maple-leaf-mask','bird-mask','bird-shift-mask','bird-y-shift-mask','gift-mask','puppy-shift-mask','floral-checker-mask','warped-checker-mask','fine-checker-mask'].includes(name),photograph=unequalLobes||webPhoto||hardPhoto||name==='hunodan'||name.startsWith('hunodan-');
    const topHat=['top-hat','top-hat-preferred','top-hat-independent','top-hat-anti','top-hat-free-small'].includes(name),small=name.endsWith('-free-small'),free=topHat||name.endsWith('-free')||small,frameSize=small?.64:.84;
    const dir=path.join(output,`${browserName}-${name}${repeats>1?`-repeat-${repeat+1}`:''}`);await fs.mkdir(dir,{recursive:true});
    const row={browser:browserName,browserVersion:browser.version(),name,...(repeats>1?{repeat:repeat+1}:{}),pageErrors:[]};results.push(row);
@@ -227,6 +227,10 @@ try{
        fixture={sourceCase:'reviewed-crop-gold-angel',quad:null,maskSha256:data.maskSha256};
        fixedMask=new Uint8Array(data.resolution**2);for(const[start,length]of data.maskRuns)fixedMask.fill(1,start,start+length);
        row.sourceMaskFixture={file,sha256:createHash('sha256').update(bytes).digest('hex'),scope:'Fixed classified pixels from an annotation-assisted crop. Tests the worker and export, not automatic photograph cropping.'};
+      }else if(name==='crown-mask'){
+       fixture=JSON.parse(await fs.readFile('scripts/inverse/fixtures/crown-polishing-checkpoint.json'));
+       const catalogue=JSON.parse(await fs.readFile(fixture.sourceCatalogue));photo=await readHardPhoto(catalogue.source);
+       row.sourceMaskFixture={file:'scripts/inverse/fixtures/crown-polishing-checkpoint.json',scope:'Only photograph and crop coordinates create the uploaded mask. Saved controls are not supplied to the worker.'};
       }else if(name==='blue-star-polishing-mask'){
        fixture={...JSON.parse(await fs.readFile('scripts/inverse/fixtures/blue-star-polishing.json')),sourceCase:'bibel-star-outline'};
        photo=await readHardPhoto(fixture.source);
@@ -634,8 +638,14 @@ try{
     if(name==='blue-star-polishing-mask'&&!engineReference&&!stopMode){
      // Earlier fine verification can make the previous two return repairs
      // unnecessary. Require the actual downloaded quality and paper checks.
-     assert.equal(row.templateChecksPassed,true);assert.equal(observed.result.report.settings.materialResolution,700);
+     assert.equal(row.templateChecksPassed,true);
+     assert.equal(observed.result.report.settings.materialResolution,observed.result.report.solver.paperVerification.resolution);
+     assert.ok(observed.result.report.settings.materialResolution>=700);
      assert.ok(row.sourceEditableError<.0052,'The finer checkpoint must retain photographic quality through editable export.');
+    }
+    if(name==='crown-mask'&&!engineReference&&!stopMode){
+     assert.equal(row.templateChecksPassed,true,'The crown must retain its complete editable geometry and paper checks.');
+     assert.ok(row.sourceEditableError<.0242,'Final polishing must preserve the improved crown through downloaded SVG export.');
     }
     if(name==='gold-routing-mask'&&!engineReference&&!stopMode)assert.ok(row.sourceEditableError<.012,'Alternative trace recovery must preserve the angel through editable SVG export.');
     // Check the actual downloaded result, not just the converter's own success

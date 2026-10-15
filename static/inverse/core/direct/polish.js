@@ -28,9 +28,14 @@ export function polishCandidate(candidate,prob,n,cfg,options={}){
   const graph=local?.graph||detail?.graph||new CurveGraph(candidate.graph.nested(candidate.points),cfg.width);
   let polished;
   try{
+    // An already fine-verified fit can still encounter lattice uncertainty.
+    // Recheck that checkpoint before rollback, within the existing reserve;
+    // the fitting forces and physical tolerances retain the incoming settings.
     polished=refineCurves(graph,local?.objective.probability||prob,n,candidate.phase,polishingCfg,{...options,
+      ...(polishingCfg.materialResolution===700&&!local?{resolvePaperBeforeRollback:true,paperVerificationResolution:1000,paperVerificationReserve:250}:{}),
       ...(local?{weights:local.objective.weights,steps:Math.min(options.steps??16,16),checkpointEvery:4}:{}),...(detail?{rate:.035}:{}),onProgress:(r,solution)=>{
-        if(verification)solution.report={paperVerification:{...verification,status:r.paper}};
+        const active=r.paperVerification||verification;
+        if(active)solution.report={...solution.report,paperVerification:{...active,status:r.paper}};
         options.onProgress?.(r,solution);
       }});
   }finally{
@@ -39,6 +44,7 @@ export function polishCandidate(candidate,prob,n,cfg,options={}){
   }
   // Keep the provenance of an earlier checked repair when polishing finds a
   // better checkpoint. Its current geometry and paper status are rechecked.
+  const active=polished.paperVerification||verification;
   return{...polished,counts:candidate.counts,sharing:candidate.sharing,seed:candidate.seed,clampedFeatureRecovery:candidate.clampedFeatureRecovery,outlineDetail:detail?.report,localFeaturePolish:local?.report,
-    ...(verification?{paperVerification:{...verification,status:polished.paper?.status}}:{})};
+    ...(active?{paperVerification:{...active,status:polished.paper?.status}}:{})};
 }

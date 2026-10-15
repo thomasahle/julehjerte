@@ -334,8 +334,8 @@
       "notes": "Each solve runs in a fresh process, including cold higher-resolution kernel calibration. One repetition per condition; timed searches can choose different geometries."
     }
   ],
-  "productionIntegration": "Not integrated. Full isolated corpus and editable-export checks completed; strict historical no-error-regression gate fails on dense-checker, round-checker and flettede-viking. The normal resolution cap remains 700.",
-  "result": "Fixed-work evidence confirms the crown benefit. Full isolated native replay passes 22/22 Hunodan in at most 9.282888875 seconds, retains 26/31 photographic acceptances and passes 48/48 editable exports, but fails the strict historical no-error-regression gate: dense-checker +2 source pixels, round-checker +1 and Viking +102 at 400x400. Separate fixed-work replays of the regressing cases are required before deciding on integration.",
+  "productionIntegration": "Integrated in the worktree after fixed-work replay: final ordinary polishing can recheck uncertain 700-resolution checkpoints at 1000 within its existing time reserve. Full repository QA and actual browser/export checks remain pending. Physical tolerances and the default requested resolution remain unchanged.",
+  "result": "Fixed-work experiments support the polishing change: crown and fine-checker improve, while four other captured cases have identical selected coordinates. The isolated native corpus retains all acceptances and checked editable pairs, but its strict historical error gate still fails on three timed fits. Production integration is undergoing full QA; no global no-regression claim is established.",
   "fixedWorkFixture": {
     "path": "tmp/heart-learning/polish-fine-audit-v2/crown-refinement-checkpoint.json",
     "status": "Completed: identical initial controls, source mask, 41 steps and no wall-clock deadline.",
@@ -534,6 +534,22 @@
     {
       "path": "tmp/heart-learning/polish-fine-release-v1/parent-photo-comparison.json",
       "sha256": "b51ecdd9dda701584586d463226ffe029c5cd4227012220243fce0444e9e090b"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-fixed-corpus-v1/results.json",
+      "sha256": "c7171f9ef89671150f7a8d7322e9e3884f5dcfc10170cdbf781a969d13cd5342"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-fixed-corpus-v1/source.json",
+      "sha256": "c426f37d5fe29e89094ef36a20e0e3db99067550d39707c702f94c4d4d0ddd2f"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-fixed-corpus-v1/state.json",
+      "sha256": "da00a7d7ad2714c092d245ea2169d6dd08f3164bda456359b9a920903cf6989c"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-fixed-corpus-v1/probe.mjs",
+      "sha256": "f15bf3512ff85879d8cb0a66f0a464b00cc6a36e903b8d72b1ba2e0e5d498251"
     }
   ],
   "fixedWorkInterpretation": "The same 41-step crown trajectory yields 2.454375% exported mask error under the 700-resolution policy and 2.241875% when the uncertain checkpoint is rechecked at 1000. Both geometries pass the nominal validator; the latter is uncertain at 700 and passes 1000 and 1400. This isolates a useful verification change from timed-search variation. The paper rechecks use the same auditor at different resolutions, not independent implementations.",
@@ -592,5 +608,97 @@
       "delta": -0.001818750000000001
     },
     "comparisonScope": "Same photographs, crop coordinates and target hashes; errors compare independent exported rendering. Strict historical reference c000d30 and immediate runtime 3997441 comparisons both retained. Runtime difference alone is not a causal explanation for timed-optimizer variation."
+  },
+  "fixedCorpusReplay": {
+    "sourceFilesVerified": 323,
+    "scope": "Captured baseline polishing inputs, identical 160 refinement steps and no overall wall-clock deadline. Frozen binary source masks. Final short-return projection may retain its internal time bound.",
+    "cases": [
+      {
+        "id": "dense-checker",
+        "materialResolution": 360,
+        "identicalCoordinates": true,
+        "beforeError": 0.00699375,
+        "afterError": 0.00699375,
+        "afterResolution": 360,
+        "geometryPassed": [
+          true,
+          true
+        ],
+        "paperStatus": [
+          "pass",
+          "pass"
+        ],
+        "projectionAttempts": 0
+      },
+      {
+        "id": "round-checker",
+        "materialResolution": 700,
+        "identicalCoordinates": true,
+        "beforeError": 0.01216875,
+        "afterError": 0.01216875,
+        "afterResolution": 700,
+        "geometryPassed": [
+          true,
+          true
+        ],
+        "paperStatus": [
+          "pass",
+          "pass"
+        ],
+        "projectionAttempts": 0
+      },
+      {
+        "id": "fine-checker",
+        "materialResolution": 700,
+        "identicalCoordinates": false,
+        "beforeError": 0.015775,
+        "afterError": 0.01553125,
+        "afterResolution": 1000,
+        "geometryPassed": [
+          true,
+          true
+        ],
+        "paperStatus": [
+          "pass",
+          "pass"
+        ],
+        "projectionAttempts": 0
+      },
+      {
+        "id": "warped-checker",
+        "materialResolution": 700,
+        "identicalCoordinates": true,
+        "beforeError": 0.0135,
+        "afterError": 0.0135,
+        "afterResolution": 700,
+        "geometryPassed": [
+          true,
+          true
+        ],
+        "paperStatus": [
+          "pass",
+          "pass"
+        ],
+        "projectionAttempts": 0
+      },
+      {
+        "id": "flettede-viking",
+        "materialResolution": 700,
+        "identicalCoordinates": true,
+        "beforeError": 0.02176875,
+        "afterError": 0.02176875,
+        "afterResolution": 700,
+        "geometryPassed": [
+          true,
+          true
+        ],
+        "paperStatus": [
+          "pass",
+          "pass"
+        ],
+        "projectionAttempts": 0
+      }
+    ],
+    "interpretation": "Identical 160-step inputs produce byte-identical selected controls for dense-checker, round-checker, warped-checker and Viking. No finer verification is selected for them; fine-checker improves from 1.5775% to 1.553125% and verifies at 1000. No timed short-return projection occurs in any replay. This isolates the polishing policy on these captured starts; it does not make fresh timed searches deterministic or erase the earlier strict-gate failures."
   }
 }

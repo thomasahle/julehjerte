@@ -125,9 +125,13 @@ cold-start comparison. A fixed 41-step replay now isolates the verification
 benefit: 2.454375% becomes 2.241875% from identical initial controls. Full isolated
 replay retains 22/22 Hunodan below ten seconds, 26/31 photo acceptances and 48/48
 checked editable pairs, but the strict historical error gate fails on three
-photos (two by one or two pixels, Viking by 102 at 400 squared). Fixed-work
-comparisons are investigating the cause. The proposal is not integrated, and
-the normal resolution cap remains 700.
+photos (two by one or two pixels, Viking by 102 at 400 squared). Fixed 160-step
+comparisons produce identical coordinates for dense checker, round checker,
+warped checker and Viking; fine checker improves from 1.5775% to 1.553125%.
+The bounded finer polishing check is now integrated in the worktree with
+progress, Stop and export regressions; full repository and browser QA remain
+pending. Default resolution and physical tolerances are unchanged. The timed
+historical error regressions remain recorded, not explained away by this test.
 
 The latest validated solver revision is `c000d30`. Its
 [release record](return-projection-speed.json) passes **22/22 regular Hunodan

@@ -34,7 +34,11 @@ test('export rechecks a finer verified paper lattice without changing physical t
 
 test('paper verification cannot lower the requested resolution or exceed the supported bound',()=>{
   const cfg=settings({materialResolution:540});
-  for(const resolution of [undefined,NaN,360,540,700.5,701,'700']){
+  for(const resolution of [undefined,NaN,360,540,700.5,1000.5,1001,'1000']){
     assert.equal(verifiedPaperSettings({report:{paperVerification:{resolution}}},cfg),cfg);
   }
+  const finer=verifiedPaperSettings({report:{paperVerification:{resolution:1000}}},cfg);
+  assert.equal(finer.materialResolution,1000);
+  assert.deepEqual(settings(finer),finer,'Final export settings must accept the actual verified resolution.');
+  assert.throws(()=>settings({...cfg,materialResolution:1001}),/materialResolution/);
 });
