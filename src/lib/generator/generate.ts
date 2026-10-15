@@ -368,6 +368,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 			const text = request.text ?? '';
 			const cache = checkeredGridCache();
 			let best: GeneratorResult | undefined;
+			let bestInset = .35;
 			let rawTips: [number, number] | undefined;
 			let crowded = false;
 			let last: unknown;
@@ -387,6 +388,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 					const candidate = finish(construction, 'letters');
 					if (!best || fewerCutTips(cutTipCounts(candidate.design), cutTipCounts(best.design))) {
 						best = candidate;
+						bestInset = inset;
 						rawTips = tips;
 					}
 					if (best && !cutTipCounts(best.design)[1]) break;
@@ -396,7 +398,20 @@ function generateUsingRecipes(request: GeneratorRequest,
 					last = error;
 				}
 			}
-			if (best) return best;
+			if (best) {
+				if (rawTips?.[1] && cutTipCounts(best.design)[1]) try {
+					const construction = generateCheckeredGrid(text, request.font, .82, bestInset, { cache, optimize: true });
+					// Skip fitting unchanged or worse combinations. A local improvement
+					// still has to pass every full-sheet check and improve the export.
+					if (fewerCutTips(cutTipCounts(construction.geometry), rawTips)) {
+						const candidate = finish(construction, 'letters');
+						if (fewerCutTips(cutTipCounts(candidate.design), cutTipCounts(best.design))) best = candidate;
+					}
+				} catch (error) {
+					if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+				}
+				return best;
+			}
 			if (crowded) for (const inset of small ? [.35, .25] : [.35]) {
 				try {
 					return finish(generateCheckeredGrid(text, request.font, .82, inset, { cache, balanced: true }), 'letters');

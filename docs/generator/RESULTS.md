@@ -1,6 +1,66 @@
 # Generator robustness results
 
-## Current coverage: wider component grids and a fitted envelope
+## Current quality: choose checkerboard connections per letter
+
+The checkerboard now combines the best letter cells from its existing spacing
+passes. The local score includes both paper paths where a connection meets a
+grid line. This reuses cached geometry without another routing search. It skips
+fitting unless the combined raw cuts improve, and keeps the earlier result unless
+the complete exported template has fewer narrow tips and passes every validator.
+An export with no tips below 45° returns without this additional pass.
+
+- Nunito SØREN decreases from **40 to 30 tips below 45°**, with none below 30°.
+- Lowercase Nunito anna decreases from **five to three tips below 45°**; its two
+  tips below 30° remain. These are improvements, not claims of effortless cutting.
+- Uppercase ANNA retains its 4×4 ANNA / NNAA / NAAN / AANN field and **eight tips
+  below 45°**, none below 30°. The original unoptimized design had 34 and eight.
+  JUL retains its broad connections, with no tips below 45°.
+- Each letter outline, counter, colour arrangement and grid size is preserved.
+  Counters still use coincident cuts rather than detached cutouts.
+
+All **128 previously accepted checkerboard configurations** were freshly checked
+across all six fonts: **128 accepted / zero refused / zero invalid**, including
+JSON/SVG handoffs and the editor's spacing check. The report is
+`tmp/generator/cell-quality-checker.json`. The 70 previous refusals do not enter
+this new quality pass and were not rerun. The combined matrix remains **2,786
+accepted / 364 refused / zero invalid accepted output**; results outside these
+128 cases are retained from `wide-current.json`. Its updated combined record is
+`cell-quality-current.json`. No expected success was removed.
+
+The current generator's hearts and both cutting templates were rendered and
+inspected in `cell-quality-gallery-0.png` (ANNA), `-1.png` (anna), and `-2.png`
+(SØREN), with matching SVGs under `tmp/generator`. Browser inventory returned no
+available browser and a native-pipe startup failure. There has been no physical
+weaving trial. Single consecutive timing probes measured anna at 5.77→6.24 seconds
+and SØREN at 9.89→11.48 seconds: the extra full-sheet fit still costs time when a
+better combination is found. These measurements ran alongside regression checks
+and are not latency guarantees. Difficult-case speed remains unresolved.
+
+All **1,073 unit tests and 177 inverse tests** pass, together with type checking,
+lint and the production build. Type checking reports seven existing warnings.
+The 17 focused checkerboard/quality tests also pass on the final source. Logs
+are `tmp/generator/cell-quality-{check,lint,build,tests,tests-focused}.log`.
+
+The full goal remains unfinished: 364 corpus configurations still refuse, and
+most other sizes and the remaining searchable catalog are unverified. This
+change improves cutting quality for working layouts without weakening the
+acceptance checks or claiming universal support.
+
+### Additional figure probes, not shipped
+
+- Sliding shared attachments along their original outline segment away from
+  artificial seam endpoints removes the first coffee-cup pinch, but the complete
+  cuts still fail spacing. None of 36 probes recovered a refused configuration.
+- Swapping whole four-port cells between paper families tried 584 assignments
+  across coffee, oval paw, sunburst paw and sunburst stars. Only the four original
+  assignments compiled; the other 580 ended on the wrong paper edge. This is
+  distinct from the earlier swaps of two-terminal islands within one cell.
+- Constructing those four component layouts after a half-turn or reflection,
+  then restoring the original artwork and sheet families, recovered none of 12
+  probes. Their geometry problems remain. Reports are `slide-ports-probe.json`,
+  `component-phase-probe.json`, and `component-symmetry-probe.json`.
+
+## Previous coverage: wider component grids and a fitted envelope
 
 The combined default-size matrix is **2,786 accepted / 364 refused / zero invalid
 accepted output**. This batch recovers **16 figure combinations**. It freshly

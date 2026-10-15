@@ -12,6 +12,7 @@ import { findFingersWithIssues, intersectionMarginPx } from '$lib/editor/curveIs
 import { gridClearance, gridClearanceScale } from '$lib/geometry/clearance';
 import { inferOverlapRect } from '$lib/utils/overlapRect';
 import { convertValidatedCutGeometry } from '$lib/inverse/toHeartDesign';
+import { cutTipCounts } from './cutQuality';
 
 const font = nunito as unknown as Font;
 const colors = { left: '#fffdf5', right: '#b72f2b' };
@@ -73,6 +74,13 @@ describe('repeated letters with alternating backgrounds', () => {
 		it(`preserves ${text} and its checkerboard through JSON and SVG`, () => {
 			const design = make(text), original = rasterizeDesign(design, 160).data;
 			expect(design.gridSize).toEqual({ x: n, y: n });
+			// Combining already-calculated cell layouts improves on the best
+			// uniform connection spacing (40 and 5 sharp tips respectively).
+			if (text === 'SØREN' || text === 'anna') {
+				const [needles, sharp] = cutTipCounts(design);
+				expect(needles).toBeLessThanOrEqual(text === 'SØREN' ? 0 : 2);
+				expect(sharp).toBeLessThanOrEqual(text === 'SØREN' ? 30 : 3);
+			}
 			for (const restored of [normalizeHeartDesign(serializeHeartDesign(design)), parseHeartFromSVG(serializeHeartToSVG(design))]) {
 				expect(restored?.fingers.length).toBe(design.fingers.length);
 				expect(restored).not.toHaveProperty('rightCutouts');

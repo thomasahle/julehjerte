@@ -536,7 +536,12 @@ routes before choosing one. After a valid layout exists, one additional pair of
 connections near the cell midpoint can remove further sharp paper tips. Accept
 it only if the exported paths have fewer narrow tips and still pass the complete
 spacing and artwork checks. Stop when there are no tips below 45°, and reject
-worse raw candidates before curve fitting. Prefer counter joins at natural corners and avoid
+worse raw candidates before curve fitting. After the uniform-spacing passes,
+combine their already-cached letter cells when choosing connections individually
+reduces narrow tips. Include each connection's join to both grid directions in
+the local score, keep connection order along shared edges, and retain the earlier
+valid design unless the complete fitted export improves too. Do not start another
+routing search for this pass. Prefer counter joins at natural corners and avoid
 short sharp steps and hairpin turns; an extra coincident chord may split a
 fragile tongue between the sheets. Keep the glyph outline unchanged. If these
 routes cannot pass spacing validation, retain the original contour construction

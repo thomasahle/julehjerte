@@ -4,6 +4,7 @@
 import { MAX_GRID_SIZE } from '$lib/constants';
 import { gridClearance } from '$lib/geometry/clearance';
 import { repeatedText } from './repeatedText';
+import { cellTipCounts, fewerCutTips } from './cutQuality';
 import {
 	ConstructionError, type Font, type Ring, type Point, type Edge,
 	twoPortMotif, usableMotif, add, compile
@@ -15,6 +16,7 @@ type LetterCell = {
 	gates: Point[];
 	insets: [number, number];
 	usable?: boolean;
+	tips?: [number, number];
 };
 
 /** Scoped to one text/font/fill request; shared by its construction passes. */
@@ -23,7 +25,7 @@ export function checkeredGridCache() {
 }
 
 export function generateCheckeredGrid(text: string, font: Font, fill = .82, contactInset = .35,
-	options: { balanced?: boolean; onCrowded?: () => void; repair?: boolean; onRepair?: () => void; cache?: ReturnType<typeof checkeredGridCache> } = {}) {
+	options: { balanced?: boolean; onCrowded?: () => void; repair?: boolean; onRepair?: () => void; optimize?: boolean; cache?: ReturnType<typeof checkeredGridCache> } = {}) {
 	const repeated = repeatedText(text);
 	if (!repeated) throw new ConstructionError('empty', 'Empty text');
 	const word = repeated.split('\n')[0];
@@ -103,6 +105,18 @@ export function generateCheckeredGrid(text: string, font: Font, fill = .82, cont
 				cache.set(repairKey, piece);
 			}
 			piece ??= construct(contactInset, 1 - contactInset);
+			if (options.optimize) {
+				// The uniform-spacing passes already built these alternatives. Mix
+				// their best cells without another routing search. Every choice keeps
+				// its two connections on the same sides of the grid-edge midpoint.
+				const tips = (cell: LetterCell) => cell.tips ??= cellTipCounts(cell.edges,
+					cell.gates.map((point, i) => ({ point, axis: (q + i) % 2 })));
+				const prefix = `${matrix[row][col]}:${q}:`;
+				for (const [id, candidate] of cache) {
+					if (id.startsWith(prefix) && fewerCutTips(tips(candidate), tips(piece)) && usable(candidate))
+						piece = candidate;
+				}
+			}
 			if (options.repair && piece !== cache.get(baseKey)) options.onRepair?.();
 			const selected = piece;
 			const move = (p: Point): Point => [p[0] + origin[0] - selected.origin[0], p[1] + origin[1] - selected.origin[1]];

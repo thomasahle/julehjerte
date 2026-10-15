@@ -1,6 +1,7 @@
 import { expect, it } from 'vitest';
 import type { Vec, BezierSegment, Finger } from '$lib/types/heart';
-import { cutTipCounts, fewerCutTips } from './cutQuality';
+import { cutTipCounts, cellTipCounts, fewerCutTips } from './cutQuality';
+import type { Edge, Point } from './geometry';
 
 function line(p0: Vec, p3: Vec): BezierSegment {
 	return { p0, p1: { x: (2 * p0.x + p3.x) / 3, y: (2 * p0.y + p3.y) / 3 },
@@ -37,4 +38,22 @@ it('never trades fewer mild tips for additional needle points', () => {
 	expect(fewerCutTips([1, 1], [0, 20])).toBe(false);
 	expect(fewerCutTips([0, 10], [0, 16])).toBe(true);
 	expect(fewerCutTips([0, 16], [0, 16])).toBe(false);
+});
+
+it('includes both sheet continuations where a shared letter connection meets the grid', () => {
+	const edges: Edge[] = [
+		{ from: [0, 0], to: [2, 1], family: 'AB', kind: 'shared' },
+		{ from: [10, 0], to: [8, 1], family: 'AB', kind: 'shared' },
+		{ from: [2, 1], to: [5, 5], family: 'A', kind: 'outline' },
+		{ from: [5, 5], to: [8, 1], family: 'A', kind: 'outline' },
+		{ from: [2, 1], to: [5, 0], family: 'B', kind: 'outline' },
+		{ from: [5, 0], to: [8, 1], family: 'B', kind: 'outline' }
+	];
+	for (const axis of [0, 1]) {
+		const transform = ([x, y]: Point): Point => axis ? [20 - y, 30 + x] : [x, y];
+		const moved = edges.map(e => ({ ...e, from: transform(e.from), to: transform(e.to) }));
+		const gates = [[0, 0], [10, 0]].map(p => ({ point: transform(p as Point), axis }));
+		// Both narrow tips are at the grid; the letter's own turns are broad.
+		expect(cellTipCounts(moved, gates)).toEqual([2, 2]);
+	}
 });
