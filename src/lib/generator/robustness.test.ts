@@ -50,6 +50,13 @@ function validateHandoffs(design: HeartDesign) {
 // These are expected successes, never a test that passes by accepting a refusal.
 // The larger offline corpus covers 2,028 text and 1,122 figure configurations.
 describe('generator robustness regressions', () => {
+	for (const textFrame of ['diamond', 'hexagon'] as const)
+		it(`gives ten Nunito letters room with curved shared cuts in ${textFrame}`, () => {
+			const { design } = generate({ mode: 'text', name: 'ABCDEFGHIJ', text: 'ABCDEFGHIJ',
+				font: fonts.nunito, textFrame, colors });
+			expect(design.gridSize).toEqual({ x: 12, y: 12 });
+			validateHandoffs(design);
+		}, 30000);
 	it('connects the separate strokes of lowercase m in a checkerboard', () => {
 		const { design } = generate({ mode: 'text', name: 'amy', text: 'amy', font: fonts.nunito, textFrame: 'repeat-check', colors });
 		expect(design.gridSize).toEqual({ x: 6, y: 6 });

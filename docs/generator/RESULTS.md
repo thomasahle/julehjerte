@@ -1,5 +1,114 @@
 # Generator robustness results
 
+## Current coverage: curved shared connections after straight layouts fail
+
+Completed constructions can now retry with curved coincident cuts after all
+established recipes fail. The handles approach the visible outline across its
+tangent, using 20% of the connection's chord length. The original endpoints,
+visible controls, paper paths, font and frame remain unchanged. Both papers
+reference the same curve. Existing successful constructions return before this
+pass, and duplicate rejected geometries are tried only once. A severe gap
+between two unchanged visible outlines rejects the retry before curve fitting:
+moving a shared cut cannot widen that gap. This keeps the existing excessively
+thin-ring refusal fast without relaxing its acceptance criteria.
+
+The original polygon intersection and severe-pinch prechecks describe straight
+segments. Curved retries instead run the complete converter's checks on the
+actual cubic paths, followed by the unchanged artwork-fidelity check. They do
+not bypass final spacing, crossing or topology validation. No inverse solver is
+involved.
+
+Seven recoveries of `ABCDEFGHIJ` have been verified in the production generator:
+
+| Font | Frame | Paper strips | Tips below 30° / below 45° |
+|---|---|---|---|
+| Nunito | Diamond | 12×12 | 0 / 3 |
+| Nunito | Hexagon | 12×12 | 0 / 7 |
+| Bree Serif | Diamond | 12×12 | 0 / 1 |
+| Bree Serif | Hexagon | 12×12 | 0 / 6 |
+| Oswald | Hexagon | 12×12 | 1 / 7 |
+| Righteous | Diamond | 12×12 | 0 / 1 |
+| Righteous | Hexagon | 12×12 | 0 / 6 |
+
+The production audit covers all 60 long-text combinations across six fonts and
+ten frames: **49 accepted / 11 refused / zero invalid**, including both JSON/SVG
+handoffs. It finds seven recoveries and no regressions
+(`curved-cuts-ten-letters.json` and `curved-cuts-ten-letters-rest.json`).
+The heart and both paper sheets are rendered in `curved-cuts-gallery-{0,1}.png`
+and `curved-cuts-other-gallery-{0,1,2}.png`, plus
+`curved-cuts-righteous-gallery-{0,1}.png`, with matching SVGs. All seven have
+been visually inspected.
+
+After adding the fixed-outline pinch precheck, all seven recoveries were run
+again. Their cutting controls are identical to the inspected outputs, and both
+handoffs still pass (`curved-cuts-final-verify.json`). All seven IDs are now
+pinned without removing any of the existing 2,794 success IDs. The combined
+matrix retains the other preceding results: **2,801 accepted / 349 refused /
+zero invalid** (`curved-cuts-current.json`). Text is **1,726 accepted / 302
+refused**; figures remain **1,075 accepted / 47 refused**. This is a combined
+record, not a fresh rerun of all 3,150 cases after the precheck change. The full
+goal remains unfinished, including other sizes and the remaining icon catalog.
+
+The two Nunito production outputs have exactly the same controls as their
+prototype witnesses. A separate guarded rolling-disk audit at the grid's
+assumed minimum width passes the diamond at resolution 1,400. The hexagon
+remains uncertain at resolutions 1,400 and 2,100: the possible paper core stays
+connected, but the conservative core has small separated regions. This is not
+a physical strength certificate. The reports are `curved-material-hires.json`
+and `curved-material-hexagon-2100.json`. An earlier diagnostic had the editor's
+reversed left paths unfolded in the wrong direction; its failure report must
+not be used. The corrected probe orients both families toward the fold first.
+
+Type checking, lint and the production build pass; type checking retains the
+seven existing warnings. The full unit run reports **1,090 passed / two timed
+out** (`curved-cuts-tests-recheck.log`, 780 seconds). Both failures are the
+existing Kalam A/ANNA ordinary-repeat regressions. A focused single-worker run
+passes both in 8.08 and 8.78 seconds, within their unchanged 20-second limits
+(`curved-cuts-kalam-focused.log`). Four paired runs against the preceding commit
+produce identical cuts and similar times: A takes 7.83–8.12 seconds before and
+7.92–7.94 after; ANNA takes 8.83–9.04 before and 9.05–9.29 after
+(`curved-kalam-compare.json`). This does not establish the cause of the
+full-suite timing difference, and the full run must not be reported as green.
+All **177 inverse-engine tests pass** in the separate run
+(`curved-cuts-inverse.log`). The check/lint/build logs are
+`curved-cuts-{check,lint,build}-final.log`.
+
+### Additional investigations
+
+- Curving the connections during local route selection recovered single Cinzel
+  R in a circle, on a 5×5 grid. Its successful construction uses one column and
+  three filled rows. The eight-case trial is `curved-local-probe.json`, with the
+  selected construction saved in `curved-r-construction.json`. This variant is
+  not in production: replaying all recipes this way was substantially slower.
+  Directly trying one/two columns and three filled rows recovered none of 156
+  existing nonrepeating Cinzel corpus refusals (`curved-grid-cinzel.json`). R is
+  outside that corpus, so its improvement does not change those totals.
+- The global curved retry recovered none of the 47 previous figure refusals
+  (`curved-retry-figures.json`). It recovered seven of 110 refused non-Cinzel
+  text configurations (`curved-retry-text-other.json`), all included above.
+  The 199-case Cinzel audit is still running in
+  `curved-retry-text-cinzel.json`; its first 51 cases found no recoveries.
+- A request-wide fitting-cache prototype is not enabled. In the paired probe
+  it made Nunito's ten-letter hexagon slower (8.99 to 17.04 seconds), while
+  Cinzel LOVE remained refused (44.80 to 40.75 seconds). The accepted output's
+  maximum coordinate difference was 2.28e-13, with zero raster difference at
+  600 pixels (`request-cache-compare.log`). These results do not establish a
+  performance improvement.
+- ANNA's remaining eight tips below 45° are joins between two visible outline
+  edges (approximately 38°), rather than shared-cut junctions. Seven handle
+  lengths from 5% to 35% preserve its 600-pixel weave exactly but leave all
+  eight tips unchanged (`curve-angle-probe.json`). A separate local-routing
+  prototype that prioritizes tip counts ahead of the existing cutting cost
+  also finds no reduction (`tip-ranked-probe.json`). Neither experiment changes
+  production's ANNA output or its exact 4×4 cyclic checkerboard. Forcing four
+  connections on every letter also leaves at least eight tips, both with
+  straight and curved shared connections (`four-port-checker-probe.json` and
+  `four-port-curved-probe.json`); that extra construction is not enabled.
+- The earlier Bree Serif M&M warning comes from discarded self-intersecting
+  curved candidates, not out-of-range coordinates in the returned design.
+  The final result is exactly the original design, with all controls in 0–100
+  and zero raster difference (`smooth-bounds-report.json`).
+
 ## Current performance: reuse translated outline fits
 
 The two repeating-text frames now reuse fitted outline sections within a single

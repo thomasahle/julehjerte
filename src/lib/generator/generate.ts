@@ -12,6 +12,7 @@ import { gridClearanceScale } from '$lib/geometry/clearance';
 import { generatePanelFigure } from './panels';
 import { generateComponentFigure } from './components';
 import { rerouteSharedCuts } from './sharedCuts';
+import { curveSharedCuts } from './curvedCuts';
 import {
 	convertValidatedCutGeometry,
 	CutGeometryError,
@@ -117,7 +118,10 @@ function audit(edges: Edge[]) {
  * moves outlines by at most 0.025 units, so a sub-0.5 gap cannot become a 1.5
  * unit strip. Ignore nearby bends of the same path: only a remote return can
  * pinch paper. Checking these lines directly avoids repeated cubic fits. */
-function hasSeverePinch(g: CutGeometry, factor = 1): boolean {
+function hasSeverePinch(g: CutGeometry, factor = 1, fixedOnly = false): boolean {
+	const uses = new Map<string, number>();
+	if (fixedOnly) for (const path of [...g.A_overlap_paths, ...g.B_overlap_paths])
+		for (const ref of path) uses.set(ref.curve, (uses.get(ref.curve) ?? 0) + 1);
 	const project = (p: Point, a: Point, b: Point) => {
 		const d = sub(b, a);
 		return Math.max(
@@ -132,7 +136,7 @@ function hasSeverePinch(g: CutGeometry, factor = 1): boolean {
 				const p = g.curves[ref.curve].control_points as Ring;
 				const a = p[ref.reverse ? 3 : 0],
 					b = p[ref.reverse ? 0 : 3];
-				const segment = { a, b, start: length, length: distance(a, b) };
+				const segment = { a, b, start: length, length: distance(a, b), fixed: (uses.get(ref.curve) ?? 1) === 1 };
 				length += segment.length;
 				return segment;
 			});
@@ -145,6 +149,7 @@ function hasSeverePinch(g: CutGeometry, factor = 1): boolean {
 					for (let n = i === j ? m + 2 : 0; n < b.length; n++) {
 						const u = a[m],
 							v = b[n];
+						if (fixedOnly && (!u.fixed || !v.fixed)) continue;
 						if (
 							[0, 1].some(
 								(axis) =>
@@ -279,24 +284,28 @@ type Construction = ReturnType<typeof generateFigure> & {
 	overlapAspectRatio?: number;
 };
 
-function finishConstruction(request: GeneratorRequest, r: Construction, recipe: GeneratorResult['recipe']): GeneratorResult {
-	audit(r.edges);
+function finishConstruction(request: GeneratorRequest, r: Construction, recipe: GeneratorResult['recipe'],
+	geometry = r.geometry): GeneratorResult {
+	const curved = geometry !== r.geometry;
+	// The polygon prechecks describe the original straight cuts. A curved retry
+	// is checked on its actual cubics by the complete converter below.
+	if (!curved) audit(r.edges);
 	const clearanceScale = gridClearanceScale(
 		r.geometry.A_overlap_paths.length + 1,
 		r.geometry.B_overlap_paths.length + 1
 	);
 	// Avoid expensive curve fitting when cuts already leave a severe sliver.
-	if (request.mode !== 'text' && hasSeverePinch(r.geometry, clearanceScale))
+	if (!curved && request.mode !== 'text' && hasSeverePinch(r.geometry, clearanceScale))
 		throw new ConstructionError(
 			'clearance',
 			'The original cuts have a severe pinch'
 		);
-	orientForeground(r.geometry, r.artwork);
-	const { design } = convertValidatedCutGeometry(r.geometry, {
+	orientForeground(geometry, r.artwork);
+	const { design } = convertValidatedCutGeometry(geometry, {
 		name: request.name,
 		colors: request.colors,
 		tolerance: 0.025,
-		reuseTranslatedFits: request.mode === 'text' &&
+		reuseTranslatedFits: curved || request.mode === 'text' &&
 			(request.textFrame === 'repeat' || request.textFrame === 'repeat-check'),
 		clearanceScale,
 		overlapAspectRatio: r.overlapAspectRatio
@@ -308,39 +317,65 @@ function finishConstruction(request: GeneratorRequest, r: Construction, recipe: 
 	return { design, recipe };
 }
 
-/** Retry only completed figure constructions after all established recipes fail.
+/** Retry completed constructions after all established recipes fail.
  * Moving coincident cuts preserves the artwork and graph endpoints; the entire
  * result must pass the same topology, spacing and fidelity checks again. */
 export function generate(request: GeneratorRequest): GeneratorResult {
 	const rejected: { construction: Construction; recipe: GeneratorResult['recipe'] }[] = [];
 	try {
-		return generateUsingRecipes(request, (construction, recipe) => {
-			if (request.mode === 'figure') rejected.push({ construction, recipe });
-		});
+		return generateUsingRecipes(request, (construction, recipe) => rejected.push({ construction, recipe }));
 	} catch (error) {
 		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
-		for (const { construction, recipe } of rejected) {
+		const curvedCandidates = [...rejected];
+		for (const { construction, recipe } of request.mode === 'figure' ? rejected : []) {
 			const margin = 1.5 * gridClearanceScale(
 				construction.geometry.A_overlap_paths.length + 1,
 				construction.geometry.B_overlap_paths.length + 1
 			);
 			const edges = rerouteSharedCuts(construction.edges, margin);
 			if (edges === construction.edges) continue;
+			let retry: Construction | undefined;
 			try {
-				return finishConstruction(request, { ...construction, edges, geometry: compile(edges) }, recipe);
+				retry = { ...construction, edges, geometry: compile(edges) };
+				return finishConstruction(request, retry, recipe);
 			} catch (retryError) {
 				if (!(retryError instanceof ConstructionError) && !(retryError instanceof CutGeometryError)) throw retryError;
+				if (retry) curvedCandidates.push({ construction: retry, recipe });
 			}
 		}
 		if (request.mode === 'figure' && request.style === 'sunburst') {
 			// The outer sunburst adds two strips to each sheet. Use the final
 			// five-strip clearance when rerouting the medallion, then check the
 			// entire heart as usual. Earlier valid layouts return unchanged.
+			let retry: Construction | undefined;
 			try {
 				const size = request.frameSize ?? 70;
 				const construction = generateFourPortFigure(normalizeContours(request.contours ?? []),
 					'circle', size * .8, request.scale ?? .7, 'rays', fourPortMotif, 2);
-				return finishConstruction(request, sunburstBorder(construction, size), 'nested');
+				retry = sunburstBorder(construction, size);
+				return finishConstruction(request, retry, 'nested');
+			} catch (retryError) {
+				if (!(retryError instanceof ConstructionError) && !(retryError instanceof CutGeometryError)) throw retryError;
+				if (retry) curvedCandidates.push({ construction: retry, recipe: 'nested' });
+			}
+		}
+		// Preserve every established successful layout. Only a completed but
+		// rejected construction needs a different shape for its shared cuts.
+		const seen = new Set<string>();
+		for (const { construction, recipe } of curvedCandidates) {
+			const key = JSON.stringify(construction.geometry);
+			if (seen.has(key)) continue;
+			seen.add(key);
+			// Shared curves cannot widen a severe gap between two unchanged
+			// outline sections. Their fitting allowance is much smaller than the
+			// missing clearance, even at the densest supported grid.
+			const scale = gridClearanceScale(construction.geometry.A_overlap_paths.length + 1,
+				construction.geometry.B_overlap_paths.length + 1);
+			if (hasSeverePinch(construction.geometry, scale, true)) continue;
+			const geometry = curveSharedCuts(construction.geometry);
+			if (!geometry) continue;
+			try {
+				return finishConstruction(request, construction, recipe, geometry);
 			} catch (retryError) {
 				if (!(retryError instanceof ConstructionError) && !(retryError instanceof CutGeometryError)) throw retryError;
 			}
