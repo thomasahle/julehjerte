@@ -102,6 +102,7 @@ therefore not attributed to printed training. Fixed wall-clock fitting budgets
 can still yield different final refinement progress.
 
 Repository type checking, lint, 857 application tests (one existing skip) and
-production build pass. Full inverse tests are running separately. The initial
+production build pass. All **866 inverse tests** now pass, and all 866 pinned
+source files remain unchanged throughout repository QA. The initial
 explicit renderer lint run caught a sparse-array test fixture; its equivalent
 construction now passes lint and the focused tests. The failed record is retained.

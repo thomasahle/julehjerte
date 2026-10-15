@@ -1,6 +1,6 @@
 {
   "schema": "woven-heart-printed-material-results-1",
-  "status": "experiment-complete-repository-qa-running",
+  "status": "complete",
   "scope": "One fixed seed, nine previously inspected development photographs and 32 existing synthetic training geometries. Not unseen or topology-disjoint evaluation. No model integration.",
   "evidence": {
     "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-printed-pilot-v1/run-v1/report.json": "48fb66e545ddc8d0e149589f83b90c6aa615a462e8beb993d434a38935cf0852",
@@ -15,7 +15,10 @@
     "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-prints-v1/checks.json": "7a4c0a627cc01ebb954319b134c75670c88404fc190fb3f8aadd04c44a878bcb",
     "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-prints-v1/visual-review.json": "78abe8848d6fd4d5e30c1b2d040bfbc26f68b152572a65a215ee025c64a62900",
     "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-prints-v1/learning-tests.log": "992a4d515c0daf3740673f590e980204d1da7f26258e7a6c5d94b824b68290ac",
-    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-prints-v1/renderer-tests.log": "3c5b441b1776784ae1a19c829d20e2a5325edd3ffd4bbff06afbfd64cf9c5de9"
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-prints-v1/renderer-tests.log": "3c5b441b1776784ae1a19c829d20e2a5325edd3ffd4bbff06afbfd64cf9c5de9",
+    "tmp/heart-learning/material-printed-pilot-v1/production-qa-v2/checks.json": "0d0fcb05343c589b2aceb30ee87d6cda9353a2e5a8ef44b05b2f152d86a6a977",
+    "tmp/heart-learning/material-printed-pilot-v1/production-qa-v2/running.json": "aee8f53cfcbcef1c0650c7041e28c96ca21876cbce99cf1e8d03df761b78a822",
+    "tmp/heart-learning/material-printed-pilot-v1/production-qa-v2/source.json": "e53634264ae5285334533dea0c93c7ba2116bffaff0fee08024e0125b00980df"
   },
   "pairedTrainingFieldsIdentical": [
     "inputs",
@@ -430,7 +433,12 @@
     "completeEditableCandidates": 5,
     "independentModelInferenceMaxDifference": 0.0,
     "fullRepositoryQaDirectory": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-printed-pilot-v1/production-qa-v2",
-    "priorQaFailure": "Sparse-array test fixture violated lint; rewritten without changing test coverage. Initial failed run retained in production-qa."
+    "priorQaFailure": "Sparse-array test fixture violated lint; rewritten without changing test coverage. Initial failed run retained in production-qa.",
+    "inverseTests": 866,
+    "applicationTests": 857,
+    "applicationTestsSkipped": 1,
+    "repositoryTypeCheckLintBuildPassed": true,
+    "qaPinnedSourceFilesVerified": 866
   },
   "conclusion": "Printed supervision improves some material identities and recovers blue/yellow in the joint pipeline, but regressions and crop failures remain. The joint model matches production on count (2/9), with different successes. No deployment."
 }
