@@ -235,6 +235,18 @@ three white openings when the pipeline selects its worse fallback. This prototyp
 is not integrated. The next scheduling experiment must fund useful verification
 or continuation inside the original total budget, not accept uncertainty.
 
+A [graph-budget investigation](topology-graph-budget-plan.json) finds that fewer
+traced boundary segments do not guarantee a smaller MILP: guide portals can expand
+the graph again. Across the latest 22 Hunodan and 29 classified-photo reports,
+15 enter coarse preparation, one reaches its MILP and none accepts a coarse seed.
+That `bibel-star-outline` graph has 5070 binary variables, compared with 708–834
+in later detailed recovery. The separate perturbed routing fixture spends about
+2.3 seconds on 2544 binaries before trying the useful 1380-variable graph.
+These saved outcomes motivate a serial copied-runtime comparison of a sparse
+coarse attempt with guided fallback, and detailed routing before coarse fallback.
+The six-case repeated experiment is queued after full QA, preserves all source
+hashes and the ten-second request, and has no results or production integration yet.
+
 A [controlled photo-border experiment](border-fragment-perturbation-results.json)
 replays 228 crop/resolution combinations with both re-estimated and frozen colour
 clusters. All four original 400-pixel masks reproduce exactly. The outline-star
