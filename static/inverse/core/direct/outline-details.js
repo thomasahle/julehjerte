@@ -41,10 +41,11 @@ export function outlineDetailPlan(graph,points,phase,source,cfg){
   // Keep the incumbent when this bounded pass cannot cover all its residuals.
   if(!added||added>=128)return null;
   const detailed=new CurveGraph(graph.families.map(f=>f.map(pi=>graph.paths[pi].flatMap(([e,d])=>d===1?pieces[e]:pieces[e].toReversed().map(p=>p.toReversed())))),w);
+  const originalFixed=detailed.fixed.slice();
   let frozenCoordinates=0;
   for(let i=0;i<detailed.points.length;i+=2){
     const x=detailed.points[i],y=detailed.points[i+1];
     if(Math.min(x,y,w-x,w-y)<band){detailed.fixed[i]=detailed.fixed[i+1]=1;frozenCoordinates+=2;}
   }
-  return{graph:detailed,report:{residualCoreFraction:residual/(n*n),addedCurves:added,fixedBorderMm:band,maximumLengthMm:maximumLength,frozenCoordinates}};
+  return{graph:detailed,originalFixed,report:{residualCoreFraction:residual/(n*n),addedCurves:added,fixedBorderMm:band,maximumLengthMm:maximumLength,frozenCoordinates}};
 }

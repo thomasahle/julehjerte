@@ -1,7 +1,8 @@
 /** Refine an existing candidate without reverting its verified paper lattice. */
 import {CurveGraph} from './curves.js';
 import {refineCurves} from './refine.js';
-import {verifiedPaperSettings} from '../material.js';
+import {materialAudit,verifiedPaperSettings} from '../material.js';
+import {geometricMaterialAudit} from '../geometric-material.js';
 import {requestedSymmetry} from '../settings.js';
 import {outlineDetailPlan} from './outline-details.js';
 import {featurePolishPlan} from './feature-details.js';
@@ -26,6 +27,34 @@ export function polishCandidate(candidate,prob,n,cfg,options={}){
   const detail=!local&&(candidate.imagePassed||closeFeatureFit)&&independent
     ?outlineDetailPlan(candidate.graph,candidate.points,candidate.phase,options.input?.sourceImage,polishingCfg):null;
   const graph=local?.graph||detail?.graph||new CurveGraph(candidate.graph.nested(candidate.points),cfg.width);
+  // A raster pass can conceal a thin island, particularly across the fold.
+  // Check detailed polishing while there is still time to change the curves.
+  // Temporary border locks must not prevent correcting a detected fold defect;
+  // the graph's original endpoint constraints remain fixed.
+  const paperRecovery={foldFamilies:[],localFamilies:[]};let releasedCoordinates=0;
+  const paperAudit=detail&&cfg.requireMaterialCore?(solution,settings)=>{
+    const lattice=materialAudit(solution,settings);
+    if(lattice.status==='fail')return lattice;
+    const offset=geometricMaterialAudit(solution,settings,{tolerance:.002,probeRadii:false});
+    for(const f of offset.families){
+      if(f.status==='pass')continue;
+      const floating=f.parts.filter(p=>!p.anchored&&p.significant),w=cfg.width;
+      const fold=floating.some(p=>p.bounds[1]<=w&&p.bounds[3]>=w)||f.foldIntervals.some(i=>i.anchoredCoreLength<=1e-8);
+      if(fold&&!paperRecovery.foldFamilies.includes(f.family)){
+        paperRecovery.foldFamilies.push(f.family);
+        for(const path of graph.families[f.family])for(const[e]of graph.paths[path])for(const id of graph.edges[e]){
+          if(w-graph.points[2*id+1-f.family]>detail.report.fixedBorderMm)continue;
+          for(let axis=0;axis<2;axis++){
+            const index=2*id+axis;
+            if(graph.fixed[index]&&!detail.originalFixed[index]){graph.fixed[index]=0;releasedCoordinates++;}
+          }
+        }
+      }
+      if(floating.some(p=>p.bounds[3]<w||p.bounds[1]>w)&&!paperRecovery.localFamilies.includes(f.family))paperRecovery.localFamilies.push(f.family);
+    }
+    const status=offset.status==='fail'?'fail':offset.status==='uncertain'?'uncertain':lattice.status;
+    return{...lattice,status,passed:status==='pass',summary:{...lattice.summary,status,offset:offset.summary}};
+  }:materialAudit;
   let polished;
   try{
     // An already fine-verified fit can still encounter lattice uncertainty.
@@ -33,7 +62,7 @@ export function polishCandidate(candidate,prob,n,cfg,options={}){
     // the fitting forces and physical tolerances retain the incoming settings.
     polished=refineCurves(graph,local?.objective.probability||prob,n,candidate.phase,polishingCfg,{...options,
       ...(polishingCfg.materialResolution===700&&!local?{resolvePaperBeforeRollback:true,paperVerificationResolution:1000,paperVerificationReserve:250}:{}),
-      ...(local?{weights:local.objective.weights,steps:Math.min(options.steps??16,16),checkpointEvery:4}:{}),...(detail?{rate:.035,retryPaperSeparation:true}:{}),onProgress:(r,solution)=>{
+      ...(local?{weights:local.objective.weights,steps:Math.min(options.steps??16,16),checkpointEvery:4}:{}),...(detail?{rate:.035,retryPaperSeparation:true,paperRecovery,paperAudit}:{}),onProgress:(r,solution)=>{
         const active=r.paperVerification||verification;
         if(active)solution.report={...solution.report,paperVerification:{...active,status:r.paper}};
         options.onProgress?.(r,solution);
@@ -45,7 +74,7 @@ export function polishCandidate(candidate,prob,n,cfg,options={}){
   // Keep the provenance of an earlier checked repair when polishing finds a
   // better checkpoint. Its current geometry and paper status are rechecked.
   const active=polished.paperVerification||verification;
-  const outlineDetail=detail?{...detail.report,...(polished.paperSeparationRetry?{paperSeparationRetry:polished.paperSeparationRetry}:{})}:undefined;
+  const outlineDetail=detail?{...detail.report,...(paperRecovery.foldFamilies.length||paperRecovery.localFamilies.length?{paperRecovery:{...paperRecovery,releasedCoordinates}}:{}),...(polished.paperSeparationRetry?{paperSeparationRetry:polished.paperSeparationRetry}:{})}:undefined;
   return{...polished,counts:candidate.counts,sharing:candidate.sharing,seed:candidate.seed,clampedFeatureRecovery:candidate.clampedFeatureRecovery,outlineDetail,localFeaturePolish:local?.report,
     ...(active?{paperVerification:{...active,status:polished.paper?.status}}:{})};
 }

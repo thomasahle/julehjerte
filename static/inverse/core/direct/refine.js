@@ -209,7 +209,7 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=4
       // the general fitter's shorter, three-width force neighbourhood. Keep
       // the requested validation rules and the ordinary safe rollback point.
       // Successful blocks and initial transient failures keep their forces.
-      if(retryPaperSeparation&&!paperSeparationRetry&&step>=checkpointEvery&&cfg.localNeighborhoodFactor>3&&proposals.some(v=>v.validation?.passed&&v.paper?.status==='fail')){
+      if(retryPaperSeparation&&!paperSeparationRetry&&step>=checkpointEvery&&cfg.localNeighborhoodFactor>3&&proposals.some(v=>v.validation?.passed&&v.paper?.status==='fail'&&v.paper?.offset?.status!=='fail')){
         penaltySettings={...cfg,localNeighborhoodFactor:3};
         paperSeparationRetry={step,previousLocalFactor:cfg.localNeighborhoodFactor,localFactor:3};
         history.at(-1).paperSeparationRetry=paperSeparationRetry;

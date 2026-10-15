@@ -365,6 +365,22 @@ is the next step to distinguish deadline exhaustion from inadequate repair.
 The native/photo and remaining browser release stages were not run after that
 failure; this candidate is not a new validated release.
 
+A [polishing-stage repair](polishing-fold-recovery.json) identifies the cause:
+the detailed fitter froze the border band even when the coarse paper check
+missed a fold island. Geometric checks now run during detailed polishing,
+activate separation on affected sheets and release only their temporary fold
+locks, preserving endpoint constraints. Four fresh source/crop/clock replays
+now pass, compared with one before. The two ordinary-clock runs finish design
+and finalization in 9.94 and 9.36 seconds; independent mask errors are 1.2575%
+and 1.335%, slightly above the earlier invalid outputs. Separate GEOS checks
+pass all 48 family/radius/tolerance probes. The nineteen existing focused
+tests and six outline tests pass, including two new orientation regressions.
+Type checking, lint, all 857 application tests, build, entry-loading and
+geometric-backend browser checks pass. Star and free-border hat also pass the
+complete Paint-to-editable-Draw workflow, with screenshots visually reviewed.
+The full inverse suite and corpus replay remain pending; the historical
+photographic fidelity regressions have not been declared resolved.
+
 The latest validated solver revision is `c000d30`. Its
 [release record](return-projection-speed.json) passes **22/22 regular Hunodan
 designs below ten seconds**, with a maximum of **8.100 seconds**. Automatic

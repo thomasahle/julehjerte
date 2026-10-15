@@ -63,3 +63,40 @@ test('a crowded residual cannot spend an unbounded number of new curve pieces',(
   assert.equal(outlineDetailPlan(graph,graph.points,1,source,cfg),null);
   assert.deepEqual(mask,before);assert.deepEqual(graph.points,points);
 });
+
+for(const family of [0,1])test(`detailed polishing releases a defective fold without releasing endpoints on sheet ${family}`,async()=>{
+  const {polishCandidate}=await import('../../static/inverse/core/direct/polish.js');
+  const {geometricMaterialAudit,finalMaterialAudit}=await import('../../static/inverse/core/geometric-material.js');
+  const {materialAudit}=await import('../../static/inverse/core/material.js');
+  const {renderCurves}=await import('../../static/inverse/core/direct/curves.js');
+  const {loadNumericalKernel}=await import('../../static/inverse/core/numerical-kernel.js');
+  const local=settings({algorithm:'auto',preferMatchingSheets:false,roundHidden:false,trials:0,maxTurn:175,localNeighborhoodFactor:8});
+  const chain=p=>p.slice(1).map((v,i)=>line(p[i],v));
+  const hook=chain([[20,0],[20,40],[20,60],[20,98.8],[30,98.5],[75,98.5],[85,98.8],[90,100]]);
+  const target=chain([[20,0],[23,40],[23,60],[20,96],[30,96],[75,96],[85,96],[90,100]]),other=[line([0,50],[100,50])];
+  const paths=cut=>family===0?[[cut],[other]]:[[other.map(c=>c.map(([x,y])=>[y,x]))],[cut.map(c=>c.map(([x,y])=>[y,x]))]];
+  const graph=new CurveGraph(paths(hook)),truth=new CurveGraph(paths(target));
+  const probability=Float64Array.from(renderCurves(truth,truth.points,1,n)),source={resolution:n,mask:Uint8Array.from(probability),probability},input={width:100,sourceImage:source,metadata:{}};
+  const before=graph.points.slice(),fixed=graph.fixed.slice(),sourceBefore=structuredClone(source);
+  const initial=graph.solution(graph.points,1,input);
+  assert.equal(materialAudit(initial,local).passed,true,'The coarse lattice misses this thin fold island.');
+  assert.equal(geometricMaterialAudit(initial,local).passed,false);
+  const error=renderCurves(graph,graph.points,1,n).reduce((sum,v,i)=>sum+Number(v!==source.mask[i]),0)/(n*n);
+  assert.ok(error>.03&&error<.04,'Use the existing close-fit allowance; the image acceptance limit stays 3%.');
+  await loadNumericalKernel();
+  const candidate={graph,points:graph.points,phase:1,counts:[1,1],geometryPassed:true,paperPassed:true,originalFeatures:{passed:true},originalImageError:error,imagePassed:false};
+  const result=polishCandidate(candidate,probability,n,local,{input,steps:160,selection:'mask'});
+  assert.deepEqual(result.outlineDetail.paperRecovery.foldFamilies,[family]);
+  assert.ok(result.outlineDetail.paperRecovery.releasedCoordinates>0);
+  assert.equal(result.history[0].paper,'fail','An invalid starting fit must not become a safe rollback point.');
+  assert.equal(result.paperPassed,true);
+  const solution=result.graph.solution(result.points,1,input);
+  assert.equal(finalMaterialAudit(solution,local).passed,true);
+  const endpoints=new CurveGraph(result.graph.nested());
+  for(let i=0;i<endpoints.fixed.length;i++)if(endpoints.fixed[i]){
+    assert.equal(result.graph.fixed[i],1);assert.equal(result.points[i],result.graph.points[i]);
+  }
+  const rendered=await renderExportedWeave(solutionJSON(solution),n);
+  assert.ok(rendered.mask.reduce((sum,v,i)=>sum+Number(v!==source.mask[i]),0)/(n*n)<.005);
+  assert.deepEqual(graph.points,before);assert.deepEqual(graph.fixed,fixed);assert.deepEqual(source,sourceBefore);
+});
