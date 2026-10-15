@@ -327,7 +327,95 @@
       "31 photographic cases",
       "editable SVG conversion and paper checks"
     ],
-    "noReleaseClaim": true
+    "noReleaseClaim": true,
+    "completedChecks": [
+      {
+        "stage": "focused",
+        "command": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "scripts/inverse/polishing-paper.test.mjs",
+          "scripts/inverse/outline-details.test.mjs",
+          "scripts/inverse/material-kernel.test.mjs",
+          "scripts/inverse/paper-clearance.test.mjs",
+          "scripts/inverse/paper-rollback.test.mjs",
+          "scripts/inverse/refinement-checkpoints.test.mjs"
+        ],
+        "exitCode": 0,
+        "seconds": 65.280243541
+      },
+      {
+        "stage": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 10.633454125
+      },
+      {
+        "stage": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 7.588049083000001
+      },
+      {
+        "stage": "build",
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 16.922374915999995
+      },
+      {
+        "stage": "preview",
+        "command": [
+          "python3",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/polish-native-v2/qa/restart-preview.py"
+        ],
+        "exitCode": 0,
+        "seconds": 1.0483169999999973
+      },
+      {
+        "stage": "browser",
+        "command": [
+          "node",
+          "scripts/inverse/paint-browser-test.mjs"
+        ],
+        "exitCode": 0,
+        "seconds": 19.590565124999998
+      },
+      {
+        "stage": "test",
+        "command": [
+          "npm",
+          "test"
+        ],
+        "exitCode": 1,
+        "seconds": 13.443118749999982
+      }
+    ],
+    "focusedTests": 29,
+    "applicationTests": {
+      "passed": 856,
+      "failed": 1,
+      "skipped": 1,
+      "failure": "src/lib/inverse/shortReturns.test.ts: anchor short-return repair reported applied:false. This path calls refineCurves directly, not the changed polishCandidate function. Cause unresolved.",
+      "inverseSuiteStartedByNpmTest": false
+    },
+    "followupController": "tmp/heart-learning/polish-native-v2/qa/followup.py",
+    "followupScope": "After the current corpus/editor controller ends, run the inverse suite explicitly and replay the failing anchor test in isolation. Preserve the original full-suite failure.",
+    "preview": "http://127.0.0.1:5232/editor/mal/",
+    "concurrentLoadObservation": "tmp/heart-learning/polish-native-v2/qa/concurrent-load.json",
+    "provisionalTimingFailures": "The in-progress Hunodan run already contains cases over 10 seconds. Preserve them; no speed-goal success is claimed."
   },
   "limitations": [
     "Current full-solve evidence does not satisfy the no-regression requirement. Candidate is under evaluation, not a demonstrated robustness fix.",
@@ -386,6 +474,30 @@
     {
       "path": "tmp/heart-learning/polish-native-v2/visual-review.json",
       "sha256": "4fffdacf739c392d29891c686855158dc87ef9748421d2fda681b0219df78089"
+    },
+    {
+      "path": "tmp/heart-learning/polish-native-v2/qa/checks-before-corpus.json",
+      "sha256": "d58ccbe43c0a7b11eb13fd8e42440f8de7109cced13e66983dfb25ede13b25a5"
+    },
+    {
+      "path": "tmp/heart-learning/polish-native-v2/qa/concurrent-load.json",
+      "sha256": "4c4aeaaa9711978085b5903a452703e6263da1982e00be57e364310761445e30"
+    },
+    {
+      "path": "tmp/heart-learning/polish-native-v2/qa/followup.py",
+      "sha256": "593db69bffe59d3b080324f93281066322284320b55187d90fc73b73dde1ffec"
+    },
+    {
+      "path": "tmp/heart-learning/polish-native-v2/qa/source.json",
+      "sha256": "cd779aa0e8d90b7dfce09efb06b01d78aacbb59a69dad93df17ed8433137e587"
+    },
+    {
+      "path": "tmp/heart-learning/polish-native-v2/qa/test.log",
+      "sha256": "b773809c9ba79abc1d24ba36acd374615a8a83e565f9fb2e1e5d38963b720a85"
+    },
+    {
+      "path": "tmp/heart-learning/polish-native-v2/qa/browser/results.json",
+      "sha256": "047a74ed257b1e3f4b02f453c9c007bf9cc77eb43eb40509c74275020bb95be7"
     }
   ]
 }
