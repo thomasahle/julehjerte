@@ -1,6 +1,6 @@
 {
   "schema": "clearance-feature-recovery-1",
-  "status": "implemented-qa-in-progress",
+  "status": "followup-qa-in-progress",
   "commit": "423462a",
   "scope": "Robustness to a 116-pixel (0.0725%) resampling perturbation in a fixed 400x400 learned development mask; cropping and slit-count candidates held unchanged. Not an original-artwork accuracy claim.",
   "findings": [
@@ -603,11 +603,10 @@
     "observation": "The integrated resampled fit has smaller broad deformations and 1.35875% derived-mask disagreement, but the middle hearts still contain unwanted splits/channels and the border remains imperfect. Existing colour-retention checks do not certify faithful large enclosed motifs."
   },
   "qa": {
+    "revision": "423462a",
     "state": {
-      "status": "running",
-      "stage": "test",
-      "pid": 96138,
-      "controllerPid": 93734
+      "status": "complete",
+      "sourceFilesVerified": 776
     },
     "checks": [
       {
@@ -657,13 +656,250 @@
         ],
         "exitCode": 0,
         "seconds": 20.653928333000003
+      },
+      {
+        "stage": "test",
+        "command": [
+          "npm",
+          "test"
+        ],
+        "exitCode": 0,
+        "seconds": 1058.170311917
+      },
+      {
+        "stage": "native",
+        "command": [
+          "python3",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/initializer-perturbation-v1/qa/native/run.py"
+        ],
+        "exitCode": 0,
+        "seconds": 524.3093491250002
+      }
+    ],
+    "inverseTestsPassed": 933,
+    "inverseTestsFailed": 0,
+    "applicationTestsPassed": 857,
+    "applicationTestsSkipped": 1,
+    "sourceFilesVerified": 776,
+    "freshCorpus": {
+      "gate": {
+        "hunodanPassed": 22,
+        "hunodanTotal": 22,
+        "hunodanErrorRegressions": [],
+        "photoPassed": 25,
+        "photoPassRegressions": [
+          {
+            "id": "flettede-viking",
+            "previousStatus": "validated",
+            "status": "failed",
+            "previousPassed": true,
+            "passed": false,
+            "previousError": 0.02055625,
+            "error": 0.03209375,
+            "errorDelta": 0.011537499999999996
+          }
+        ],
+        "photoErrorRegressions": [
+          {
+            "id": "floral-checker",
+            "previousStatus": "validated",
+            "status": "validated",
+            "previousPassed": true,
+            "passed": true,
+            "previousError": 0.01315,
+            "error": 0.01359375,
+            "errorDelta": 0.0004437499999999997
+          },
+          {
+            "id": "dense-checker",
+            "previousStatus": "validated",
+            "status": "validated",
+            "previousPassed": true,
+            "passed": true,
+            "previousError": 0.00699375,
+            "error": 0.00700625,
+            "errorDelta": 1.2500000000000358e-05
+          },
+          {
+            "id": "gingerbread",
+            "previousStatus": "validated",
+            "status": "validated",
+            "previousPassed": true,
+            "passed": true,
+            "previousError": 0.010875,
+            "error": 0.01094375,
+            "errorDelta": 6.87500000000011e-05
+          },
+          {
+            "id": "warped-checker",
+            "previousStatus": "validated",
+            "status": "validated",
+            "previousPassed": true,
+            "passed": true,
+            "previousError": 0.013575,
+            "error": 0.0141625,
+            "errorDelta": 0.0005874999999999995
+          },
+          {
+            "id": "round-checker",
+            "previousStatus": "validated",
+            "status": "validated",
+            "previousPassed": true,
+            "passed": true,
+            "previousError": 0.01214375,
+            "error": 0.01215,
+            "errorDelta": 6.249999999999312e-06
+          },
+          {
+            "id": "fine-checker",
+            "previousStatus": "validated",
+            "status": "validated",
+            "previousPassed": true,
+            "passed": true,
+            "previousError": 0.01663125,
+            "error": 0.01841875,
+            "errorDelta": 0.001787500000000001
+          },
+          {
+            "id": "orb",
+            "previousStatus": "validated",
+            "status": "validated",
+            "previousPassed": true,
+            "passed": true,
+            "previousError": 0.01134375,
+            "error": 0.0118875,
+            "errorDelta": 0.0005437500000000008
+          }
+        ],
+        "editablePassed": 47,
+        "editableTotal": 47,
+        "passed": false
+      },
+      "hunodanMaximumSeconds": 9.546644625,
+      "hunodanErrorsUnchanged": 22,
+      "photoInputsAndCropsExactlyReproduced": true,
+      "acceptedPhotoErrorsImproved": 1,
+      "acceptedPhotoErrorsUnchanged": 17,
+      "completePhotoCases": 31
+    },
+    "visualReview": {
+      "scope": "Every available prior/new photo render with different PNG bytes, including equal-error pairs; crop, binary target, previous and current weave from left to right.",
+      "cases": [
+        "outline-star",
+        "floral-checker",
+        "dense-checker",
+        "leaf",
+        "gingerbread",
+        "warped-checker",
+        "round-checker",
+        "fine-checker",
+        "orb",
+        "maple-leaf",
+        "flettede-puppy",
+        "flettede-viking"
+      ],
+      "figures": [
+        {
+          "path": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/initializer-perturbation-v1/qa/photo-changes-1.png",
+          "ids": [
+            "outline-star",
+            "floral-checker",
+            "dense-checker",
+            "leaf"
+          ],
+          "sha256": "4d3798b4390e62c0ba929cd701799e2e9d49442850d25f5c1dc3464bf4e2d641"
+        },
+        {
+          "path": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/initializer-perturbation-v1/qa/photo-changes-2.png",
+          "ids": [
+            "gingerbread",
+            "warped-checker",
+            "round-checker",
+            "fine-checker"
+          ],
+          "sha256": "8ba30ef9578a77ac37960d54fb83ffad2964666c12b64d43c1cac5a2d9bfac33"
+        },
+        {
+          "path": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/initializer-perturbation-v1/qa/photo-changes-3.png",
+          "ids": [
+            "orb",
+            "maple-leaf",
+            "flettede-puppy",
+            "flettede-viking"
+          ],
+          "sha256": "db7cfade7677472e4778e0f5e17061595513b70d6d023ec3f31209fbe924b0b7"
+        }
+      ],
+      "findings": [
+        "All twelve changed render pairs were inspected, including the equal-error leaf and puppy.",
+        "The Viking visibly regresses, with larger border distortions, seams and altered narrow motif detail. It also fails the paper/image checks; this is not dismissed as scoring noise.",
+        "Floral, warped and fine checkers retain curved or displaced cells and the defects already in their estimated masks; fine-checker error increases by 0.17875 percentage points.",
+        "The outline star remains rejected despite a low pixel error. The accepted leaf/maple-leaf and puppy retain their broad silhouettes but still show seams and imperfect boundaries.",
+        "Smaller mask errors are not asserted to imply uniformly better visual artwork."
+      ]
+    },
+    "artifacts": [
+      {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/qa/qa-checks.json",
+        "sha256": "094a5ef933e0d3afcca27c5677bd07e6ea456b61af1aca880b6c5cc26dd1ba98",
+        "bytes": 1247
+      },
+      {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/qa/qa-state.json",
+        "sha256": "4e16ecd8e200117befc41f90e928fe36f603d0feb02f0b7db49ee6bba8486d60",
+        "bytes": 57
+      },
+      {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/qa/qa-source.json",
+        "sha256": "4d7286beb8aae5cda11ca7aac62cb350261c55a59fc31985453d7d9a89ce2cfd",
+        "bytes": 89037
+      },
+      {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/qa/test.log",
+        "sha256": "1c3b4aa1fb19dd69e6b58038c8287fdd5cc57e6ec6736f99e85dea7849818651",
+        "bytes": 88836
+      },
+      {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/qa/native/native-gates.json",
+        "sha256": "3530c01a65a2cd035e84edcca90f607c1e8f3db29d95cd02d739cb6a70cefd62",
+        "bytes": 2320
+      },
+      {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/qa/native/hunodan-comparison.json",
+        "sha256": "5349e819583c04136ca7482c2592f3a7fb03673470305b7122e63fcc9effe955",
+        "bytes": 5519
+      },
+      {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/qa/native/photo-comparison.json",
+        "sha256": "f085185470d174f96aeeb98eeb7a3c15657ddbaf536b3fa43c1fde198e532b58",
+        "bytes": 10548
+      },
+      {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/qa/native/hunodan-editor/results.json",
+        "sha256": "b351ff08b5eddb16c51cbe5797c4af0f839e0aeef54a6ae8a2938708ffee553c",
+        "bytes": 439586
+      },
+      {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/qa/native/photo-editor/results.json",
+        "sha256": "672673b0baf47e1185035dcb4a0122788940dfaf58ef1a778a3f441b6488ea90",
+        "bytes": 545182
+      },
+      {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/qa/photo-figure-index.json",
+        "sha256": "c022c45d58d900be7ad678fa1067d693b6325a1a6e5c50ab422e571723ffa962",
+        "bytes": 3497
+      },
+      {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/qa/corpus-visual-review.json",
+        "sha256": "3a02bf607e1aa0feedc0550ac960f2cee16c1dc0e4676175eaf92a4e231788c6",
+        "bytes": 2252
       }
     ]
   },
   "limitations": [
     "Fresh deadline-bound controls vary: the same resampled baseline previously gave 7.439375%, while the new cold control gives 3.0375% and still fails paper. The exact 7.4% outcome is not presented as deterministic.",
     "Independent geometry checks and a low total pixel error do not prove that all heart silhouettes are faithfully reconstructed.",
-    "Full-corpus no-regression status remains pending until the current serial QA finishes."
+    "The first full run loses the Viking acceptance (25/31 versus 26/31), with seven additional accepted-photo error increases. Its 22 Hunodan errors are unchanged. The narrower follow-up restores the focused Viking solve; its full corpus check is still pending."
   ],
   "componentReview": {
     "scope": "Posthoc saved-export diagnostics. The 800px source is nearest-neighbour replication of the same 400px mask, not new image information. Stable enclosures are source-confidence heuristics, not artwork ground truth.",
@@ -1264,5 +1500,480 @@
       "Combining already measured 0.5mm top/bottom/left interpretations with the 1mm right interpretation changes 740 pixels (0.4625%), restores [3,3,3,3] and retains every source feature and all six stable enclosures.",
       "These side radii were selected after inspecting this case. No general selector, traced-curve error, new MILP result or template success is claimed. The input reference remains unchanged; the combined mask is only a possible initialization."
     ]
+  },
+  "editableFocused": {
+    "artifact": {
+      "path": "tmp/heart-learning/initializer-perturbation-v1/editable/results.json",
+      "sha256": "d7981402e20b04acd506cfc9545abe27062aa0839712c99394c5a6f575192c84",
+      "bytes": 69055
+    },
+    "scope": "All three saved original, rejected resampled control and integrated exports; no new fit.",
+    "rows": [
+      {
+        "id": "stacked-hearts-original-control",
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "editableError": 0.01258125,
+        "editorIssues": [],
+        "missingFeatures": 0
+      },
+      {
+        "id": "stacked-hearts-resampled-control",
+        "conversionPassed": true,
+        "completeCandidatePassed": false,
+        "editableError": 0.030575,
+        "editorIssues": [],
+        "missingFeatures": 0
+      },
+      {
+        "id": "stacked-hearts-resampled-integrated",
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "editableError": 0.01366875,
+        "editorIssues": [],
+        "missingFeatures": 0
+      }
+    ],
+    "note": "The converter logs an out-of-range control-coordinate warning for the integrated pair; its final editor intersection and independent physical checks pass. The warning is retained in editable.log.",
+    "log": {
+      "path": "tmp/heart-learning/initializer-perturbation-v1/editable.log",
+      "sha256": "7ac4099867bb47d074725faf06de3f821b95fb26f961d5d4d52f8e3e72a1eb7b",
+      "bytes": 513
+    }
+  },
+  "followup": {
+    "commit": "897e022",
+    "reason": "The broad feature retry consumed 0.890 seconds on the Viking four-cut seed, which had zero retention of the required interior opening both before and after clearance. This deprived the viable six-cut seed of refinement time.",
+    "evidence": [
+      {
+        "name": "viking-diagnostic",
+        "artifact": {
+          "path": "tmp/heart-learning/initializer-perturbation-v1/viking-diagnostic/report.json",
+          "sha256": "42ecabcf60516a51d7bcad7e1985731dc1ad4369377a9c6f6b9a6e09f4a940c7",
+          "bytes": 117762
+        },
+        "seconds": 9.605611041,
+        "error": 0.03209375,
+        "checkedPair": false,
+        "comparison": {
+          "initialCounts": [
+            6,
+            6
+          ],
+          "initialGridError": 0.04638671875,
+          "initialClearanceError": 0.0796051025390625,
+          "alternativeCounts": [
+            4,
+            4
+          ],
+          "alternativeGridError": 0.0569305419921875,
+          "alternativeClearanceError": 0.0563201904296875,
+          "initialColours": true,
+          "alternativeColours": false,
+          "alternativeGeometry": true,
+          "alternativePaper": "pass",
+          "seconds": 1.3483302499999996,
+          "preferred": false
+        },
+        "initializerArtifact": {
+          "path": "tmp/heart-learning/initializer-perturbation-v1/viking-diagnostic/initializers.json",
+          "sha256": "fa5bbaddab3490d0e00b11647788655b03d8b93d0c246af00bedd2e4d03a8876",
+          "bytes": 180052
+        },
+        "featureDiagnostic": {
+          "fineFeatures": {
+            "passed": false,
+            "referenceAvailable": true,
+            "minimumRetention": 0.6,
+            "minimumAreaFraction": 0.0003,
+            "minimumCoreRadiusFraction": 0.005,
+            "borderClearancePixels": 1,
+            "regions": [
+              {
+                "value": 0,
+                "areaMm2": 51.5625,
+                "centerMm": [
+                  47.41287878787879,
+                  56.99560606060606
+                ],
+                "retainedFraction": 0
+              },
+              {
+                "value": 1,
+                "areaMm2": 158.5,
+                "centerMm": [
+                  14.408517350157728,
+                  15.145011829652997
+                ],
+                "retainedFraction": 0.9893533123028391
+              },
+              {
+                "value": 1,
+                "areaMm2": 147.5,
+                "centerMm": [
+                  85.19735169491526,
+                  15.877012711864406
+                ],
+                "retainedFraction": 0.9088983050847458
+              },
+              {
+                "value": 1,
+                "areaMm2": 1942.125,
+                "centerMm": [
+                  45.96876810195018,
+                  48.65838804144944
+                ],
+                "retainedFraction": 0.9064491214520177
+              },
+              {
+                "value": 1,
+                "areaMm2": 58.1875,
+                "centerMm": [
+                  95.61345327604725,
+                  95.43461331901182
+                ],
+                "retainedFraction": 0.9602577873254565
+              }
+            ],
+            "missing": [
+              {
+                "value": 0,
+                "areaMm2": 51.5625,
+                "centerMm": [
+                  47.41287878787879,
+                  56.99560606060606
+                ],
+                "retainedFraction": 0
+              }
+            ],
+            "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+          },
+          "clearFeatures": {
+            "passed": false,
+            "referenceAvailable": true,
+            "minimumRetention": 0.6,
+            "minimumAreaFraction": 0.0003,
+            "minimumCoreRadiusFraction": 0.005,
+            "borderClearancePixels": 1,
+            "regions": [
+              {
+                "value": 0,
+                "areaMm2": 51.5625,
+                "centerMm": [
+                  47.41287878787879,
+                  56.99560606060606
+                ],
+                "retainedFraction": 0
+              },
+              {
+                "value": 1,
+                "areaMm2": 158.5,
+                "centerMm": [
+                  14.408517350157728,
+                  15.145011829652997
+                ],
+                "retainedFraction": 0.9905362776025236
+              },
+              {
+                "value": 1,
+                "areaMm2": 147.5,
+                "centerMm": [
+                  85.19735169491526,
+                  15.877012711864406
+                ],
+                "retainedFraction": 0.9165254237288135
+              },
+              {
+                "value": 1,
+                "areaMm2": 1942.125,
+                "centerMm": [
+                  45.96876810195018,
+                  48.65838804144944
+                ],
+                "retainedFraction": 0.9068352963892643
+              },
+              {
+                "value": 1,
+                "areaMm2": 58.1875,
+                "centerMm": [
+                  95.61345327604725,
+                  95.43461331901182
+                ],
+                "retainedFraction": 0.9613319011815252
+              }
+            ],
+            "missing": [
+              {
+                "value": 0,
+                "areaMm2": 51.5625,
+                "centerMm": [
+                  47.41287878787879,
+                  56.99560606060606
+                ],
+                "retainedFraction": 0
+              }
+            ],
+            "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+          }
+        }
+      },
+      {
+        "name": "resampled-diagnostic",
+        "artifact": {
+          "path": "tmp/heart-learning/initializer-perturbation-v1/resampled-diagnostic/report.json",
+          "sha256": "ac57849baecc4fd14973d1151fef92224f1e5eaf1b8fd180a7a26c16ef2a4f51",
+          "bytes": 132787
+        },
+        "seconds": 9.690910792,
+        "error": 0.013375,
+        "checkedPair": true,
+        "comparison": {
+          "initialCounts": [
+            3,
+            5
+          ],
+          "initialGridError": 0.060638427734375,
+          "initialClearanceError": 0.0811920166015625,
+          "alternativeCounts": [
+            4,
+            4
+          ],
+          "alternativeGridError": 0.062835693359375,
+          "alternativeClearanceError": 0.074920654296875,
+          "initialColours": true,
+          "alternativeColours": false,
+          "alternativeGeometry": true,
+          "alternativePaper": "pass",
+          "seconds": 1.4143489580000006,
+          "preferred": true
+        },
+        "initializerArtifact": {
+          "path": "tmp/heart-learning/initializer-perturbation-v1/resampled-diagnostic/initializers.json",
+          "sha256": "7a2e22de6a6af857abe783d728afdf35858c9e5c2f67cd021aa58d39473d0109",
+          "bytes": 166305
+        },
+        "featureDiagnostic": {
+          "fineFeatures": {
+            "passed": true,
+            "referenceAvailable": true,
+            "minimumRetention": 0.6,
+            "minimumAreaFraction": 0.0003,
+            "minimumCoreRadiusFraction": 0.005,
+            "borderClearancePixels": 1,
+            "regions": [
+              {
+                "value": 1,
+                "areaMm2": 183.875,
+                "centerMm": [
+                  13.153552005438478,
+                  15.455897348742353
+                ],
+                "retainedFraction": 0.8212100611828688
+              },
+              {
+                "value": 1,
+                "areaMm2": 487.875,
+                "centerMm": [
+                  63.5496413015629,
+                  39.358986676915194
+                ],
+                "retainedFraction": 0.9191647450678965
+              },
+              {
+                "value": 1,
+                "areaMm2": 159.25,
+                "centerMm": [
+                  39.28689167974882,
+                  40.34242543171115
+                ],
+                "retainedFraction": 0.9266091051805337
+              },
+              {
+                "value": 1,
+                "areaMm2": 474.5,
+                "centerMm": [
+                  87.63372629083246,
+                  63.448169125395154
+                ],
+                "retainedFraction": 0.9296628029504742
+              },
+              {
+                "value": 1,
+                "areaMm2": 474.125,
+                "centerMm": [
+                  37.954389665172684,
+                  63.853051674136566
+                ],
+                "retainedFraction": 0.9782494068020037
+              },
+              {
+                "value": 1,
+                "areaMm2": 155.375,
+                "centerMm": [
+                  64.1374698310539,
+                  65.02041432019308
+                ],
+                "retainedFraction": 0.9090909090909091
+              },
+              {
+                "value": 1,
+                "areaMm2": 152.875,
+                "centerMm": [
+                  87.72424366312347,
+                  88.87765739983647
+                ],
+                "retainedFraction": 0.874897792313982
+              }
+            ],
+            "missing": [],
+            "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+          },
+          "clearFeatures": {
+            "passed": false,
+            "referenceAvailable": true,
+            "minimumRetention": 0.6,
+            "minimumAreaFraction": 0.0003,
+            "minimumCoreRadiusFraction": 0.005,
+            "borderClearancePixels": 1,
+            "regions": [
+              {
+                "value": 1,
+                "areaMm2": 183.875,
+                "centerMm": [
+                  13.153552005438478,
+                  15.455897348742353
+                ],
+                "retainedFraction": 0.5863358259687288
+              },
+              {
+                "value": 1,
+                "areaMm2": 487.875,
+                "centerMm": [
+                  63.5496413015629,
+                  39.358986676915194
+                ],
+                "retainedFraction": 0.9344094286446324
+              },
+              {
+                "value": 1,
+                "areaMm2": 159.25,
+                "centerMm": [
+                  39.28689167974882,
+                  40.34242543171115
+                ],
+                "retainedFraction": 0.43995290423861855
+              },
+              {
+                "value": 1,
+                "areaMm2": 474.5,
+                "centerMm": [
+                  87.63372629083246,
+                  63.448169125395154
+                ],
+                "retainedFraction": 0.9379610115911485
+              },
+              {
+                "value": 1,
+                "areaMm2": 474.125,
+                "centerMm": [
+                  37.954389665172684,
+                  63.853051674136566
+                ],
+                "retainedFraction": 0.9794358027946217
+              },
+              {
+                "value": 1,
+                "areaMm2": 155.375,
+                "centerMm": [
+                  64.1374698310539,
+                  65.02041432019308
+                ],
+                "retainedFraction": 0.8817377312952535
+              },
+              {
+                "value": 1,
+                "areaMm2": 152.875,
+                "centerMm": [
+                  87.72424366312347,
+                  88.87765739983647
+                ],
+                "retainedFraction": 0.8254292722812756
+              }
+            ],
+            "missing": [
+              {
+                "value": 1,
+                "areaMm2": 183.875,
+                "centerMm": [
+                  13.153552005438478,
+                  15.455897348742353
+                ],
+                "retainedFraction": 0.5863358259687288
+              },
+              {
+                "value": 1,
+                "areaMm2": 159.25,
+                "centerMm": [
+                  39.28689167974882,
+                  40.34242543171115
+                ],
+                "retainedFraction": 0.43995290423861855
+              }
+            ],
+            "method": "Both colours; four-connected interior source regions with a solid core. At least 60% of each region must remain its original colour. Regions touching the border or its one-pixel neighbourhood, and tiny or thin classification fragments, are excluded. All observed pixels still enter the image-error measurement."
+          }
+        }
+      },
+      {
+        "name": "viking-gated",
+        "artifact": {
+          "path": "tmp/heart-learning/initializer-perturbation-v1/viking-gated/report.json",
+          "sha256": "d946216e204da7e4fdbaf7a8f404f955232e1aef7bed5cb985cf95f5e55cd5e0",
+          "bytes": 98590
+        },
+        "seconds": 9.864037415999999,
+        "error": 0.02148125,
+        "checkedPair": true,
+        "comparison": {
+          "initialCounts": [
+            6,
+            6
+          ],
+          "initialGridError": 0.04638671875,
+          "initialClearanceError": 0.0796051025390625,
+          "alternativeCounts": [
+            4,
+            4
+          ],
+          "alternativeGridError": 0.0569305419921875,
+          "alternativeClearanceError": 0.0563201904296875,
+          "initialColours": true,
+          "alternativeColours": false,
+          "alternativeGeometry": true,
+          "alternativePaper": "pass",
+          "seconds": 0.4660599999999995,
+          "preferred": false
+        }
+      }
+    ],
+    "decision": "Only retry missing colours when this same seed retained them before clearance preparation. The stacked-heart fine seed passes that check; the Viking alternative does not. Existing checks and the overall deadlines remain unchanged.",
+    "focusedTests": {
+      "passed": 4,
+      "artifact": {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/gated-focused.log",
+        "sha256": "5e01b368861d7cf5c63acaae28746103b50713c54dcaf9ea5e2efbc000e4bff4",
+        "bytes": 515
+      }
+    },
+    "fullQa": {
+      "state": {
+        "status": "running",
+        "stage": "test",
+        "pid": 75020,
+        "controllerPid": 72871
+      },
+      "root": "tmp/heart-learning/initializer-perturbation-v1/qa-gated"
+    },
+    "regressionTest": "scripts/inverse/clearance-feature-budget.test.mjs"
   }
 }

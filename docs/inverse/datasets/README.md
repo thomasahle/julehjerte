@@ -32,20 +32,30 @@ The inventory, with material annotations updated on 2026-10-15, contains:
 
 A [clearance-initializer robustness fix](clearance-feature-recovery.json)
 addresses a 116-pixel change in a fixed 400-pixel stacked-heart mask. A valid
-but incomplete alternative previously missed the bounded refinement that an
-invalid alternative received; coarse paper uncertainty then repeatedly erased
-useful progress. The helper now verifies uncertain checkpoints, including the
-last retained alternative, before accepting their unchanged curves. A fresh
-perturbed solve passes at 1.36% disagreement within ten seconds, with the same
-geometry and paper rules. The controlled regression and both fresh masks pass;
-type checking, lint, build and private star/hat browser checks pass. Full tests
-and corpus QA are still running. Visual inspection still finds split heart
-motifs and imperfect borders, so this is not complete artwork recovery. A saved-export
-component review confirms one heart remains connected to the boundary and
-another splits, with only 67% of its source region in the largest piece.
-A separate border-only probe restores consistent endpoints with different
-inset depths per side while staying within the existing 0.5% edit allowance;
-that probe has not yet produced a traced or fitted template.
+but incomplete alternative previously missed a useful bounded refinement;
+coarse paper uncertainty then repeatedly erased progress. The helper verifies
+retained uncertain checkpoints without relaxing geometry or paper rules.
+
+The first full replay passes 933 inverse tests, 857 application tests (one
+skip), type checking, lint, build and the private star/hat browser workflows.
+Hunodan remains 22/22 below ten seconds (maximum 9.547 seconds), with every
+image error unchanged. However, the photographic benchmark regresses from
+26/31 to 25/31: an unsuccessful extra retry steals refinement time from the
+Viking. Seven other accepted-photo errors increase. All 47 accepted editable
+outputs pass, and all twelve changed photo-render pairs were visually reviewed.
+This first version does not meet the no-regression gate.
+
+The follow-up limits this retry to features that the same seed retained before
+clearance preparation. The Viking's alternative never contained its missing
+opening; the stacked-heart seed did. All four focused checks pass, including
+both stacked masks and the Viking at ten seconds. A fresh Viking export passes
+at 2.15% disagreement in 9.86 seconds; full QA of this revision is running.
+
+The stacked-heart fit still needs improvement despite its lower mask error.
+One heart remains connected to the border; another is split, with only 67% of
+its source region in the largest piece. A separate border-only probe restores
+consistent endpoints using different inset depths per side, within the existing
+0.5% edit allowance. It has not yet produced a traced or fitted template.
 
 The [guided-field experiment](guided-material-fields.json) is complete and
 remains offline. Across seventeen development photos, RGB-guided sharpening
