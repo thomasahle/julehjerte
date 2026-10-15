@@ -531,6 +531,18 @@ and clearance checks. Share the letter cache across construction passes and
 reuse locally clear cells, including those completed by the wider attachment
 search. Do not refit the full design when none of its local routes changed.
 
+Some checkerboard glyphs need four external connections rather than two. After
+all earlier layouts and repairs fail, each 2×2 letter group may select a mixed
+two-/four-port topology. Keep existing successful cuts: the mixed construction
+can leave more sharp tips than a previously valid two-port repair. Interleave the
+neighbours' connections along their shared grid edge; two connections surround
+a two-port neighbour's single connection. Exchange paper families only according
+to the group's open-path pairing. The group retains one cut between each pair
+of opposite boundary edges, so these groups compose into the original grid with
+the same letter field and checker colours. Reuse the earlier two-port geometry
+where positions match, cache local failures, and reroute only four-port cells in
+the balanced retry. Validate the complete fitted result and both editor handoffs.
+
 For the checkerboard construction, compare a bounded set of invisible-cut
 routes before choosing one. After a valid layout exists, one additional pair of
 connections near the cell midpoint can remove further sharp paper tips. Accept

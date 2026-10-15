@@ -1,6 +1,78 @@
 # Generator robustness results
 
-## Current quality: choose checkerboard connections per letter
+## Current coverage: mixed two- and four-connection checkerboard letters
+
+The combined default-size matrix now has **2,791 accepted / 359 refused / zero
+invalid accepted output**, recovering five checkerboard configurations. Text is
+**1,716 accepted / 312 refused**; figures remain **1,075 accepted / 47 refused**.
+The checkerboard alone is **133 accepted / 65 refused / zero invalid**.
+
+| Font | Text | Grid | Tips below 30° / below 45° |
+|---|---|---|---|
+| Nunito | Anna | 4×4 | 2 / 6 |
+| Nunito | William | 14×14 | 63 / 175 |
+| Oswald | GOD JUL | 6×6 | 12 / 24 |
+| Kalam | ABCDEFGHIJ | 10×10 | 0 / 10 |
+| Kalam | GOD JUL | 6×6 | 0 / 0 |
+
+Each 2×2 letter group can now use a mixture of two- and four-port contour
+constructions. Their connections interleave along the shared grid edges, with
+paper-family assignments chosen from the compatible open-path pairings. Each
+group still connects the same opposite boundary edges. The letter field, font,
+checker colours and number of paper strips are unchanged. Counters still use
+coincident cuts, never detached cutouts. Repeated local cells and failures are
+cached; matching two-port geometry is reused from the earlier construction.
+
+The new construction runs **after all existing recipes fail**. Moving it before
+the wider two-port repair recovered the same five cases sooner, but a separate
+comparison of the 20 earlier repair successes found five with worse tip counts,
+including handwritten ANNA and Oswald A-B. That order was rejected. All 20
+established quality measurements are restored in the final source, with three
+new regression tests guarding representative cases. Five further regressions
+cover the newly supported configurations and both editor handoffs.
+
+All **198 checkerboard cases** were audited, then the 20 earlier repair successes
+and five new cases were rerun after restoring the final recipe order. Every
+accepted result passes JSON/SVG roundtrips, the editor's own spacing check and
+the generator's artwork-fidelity check. There are no regressions. The merged
+report is `tmp/generator/mixed-checker-merged.json`, backed by
+`mixed-checker-final.json` and `mixed-restored-final.json`. The combined record
+is `mixed-current.json`; other frames retain their preceding results. All 2,791
+success IDs are pinned in `scripts/generator/expected.json`; none were removed.
+
+All five finished hearts and both paper templates were rendered and inspected
+in `tmp/generator/mixed-checker-gallery-0.png` through `-4.png`, with matching
+SVGs. Hashes of their cuts match the final source's validation outputs. William
+and the Oswald design remain intricate, as their tip counts show; no physical
+weaving trial has been performed. Browser inventory again returned no available
+browser and a native-pipe startup failure. Final construction times for these
+cases are still several seconds, exceeding 20 seconds for William in a run
+alongside tests. Difficult-case latency is not solved.
+
+All **1,081 unit tests and 177 inverse tests** pass, together with type checking,
+lint and the production build. Type checking reports seven existing warnings.
+Logs are under `tmp/generator/mixed-checker-`, with `tests-final.log` for the
+final full-suite run.
+
+The full goal remains unfinished: 359 corpus configurations still refuse, and
+most other sizes and the remaining searchable catalog are unverified. These
+five recoveries do not imply universal support.
+
+### Additional topology probes, not shipped
+
+- Four connections in every cell produced valid open paths only when neighbouring
+  contacts interleaved and the quadrants alternated their paper assignments.
+  Using four connections everywhere still failed the targeted rejected glyphs;
+  choosing the topology separately for each group recovered the five cases above.
+- A six-port symbolic extension has 26 compatible group pairings, 15 involving
+  six-port cells. Its eight tested difficult texts recovered none; local geometry
+  still failed. The reports are `checker-sixport-symbolic.json` and
+  `sixport-checker-probe.json`.
+- Routing blocked shared spokes around the original glyph outlines inside their
+  cell recovered none of five probes and added work. The bounded visibility-graph
+  experiment is in `routed-spokes-probe.json` and is not in production.
+
+## Previous quality: choose checkerboard connections per letter
 
 The checkerboard now combines the best letter cells from its existing spacing
 passes. The local score includes both paper paths where a connection meets a

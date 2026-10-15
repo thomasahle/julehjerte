@@ -5,6 +5,7 @@ import { sunburstBorder } from './sunburst';
 import { generateTextGrid } from './textGrid';
 import { generateRepeatedGrid, repeatedGridCache } from './repeatedGrid';
 import { generateCheckeredGrid, checkeredGridCache } from './checkeredGrid';
+import { generateMixedCheckeredGrid, mixedCheckeredGridCache } from './mixedCheckeredGrid';
 import { cutTipCounts, fewerCutTips } from './cutQuality';
 import { normalizeContours } from './contours';
 import { gridClearanceScale } from '$lib/geometry/clearance';
@@ -429,6 +430,17 @@ function generateUsingRecipes(request: GeneratorRequest,
 					// All local cells can be clear while their joined paths fail.
 					// An unchanged construction does not need another global fit.
 					if (repaired) return finish(construction, 'letters');
+				} catch (error) {
+					if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+					last = error;
+				}
+			}
+			// Keep the existing successful cuts: a four-port layout can be more
+			// intricate. Add connections only after the two-port repairs fail.
+			const mixed = mixedCheckeredGridCache();
+			for (const balanced of [false, true]) {
+				try {
+					return finish(generateMixedCheckeredGrid(text, request.font, { cache: mixed, previous: cache, balanced }), 'letters');
 				} catch (error) {
 					if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 					last = error;

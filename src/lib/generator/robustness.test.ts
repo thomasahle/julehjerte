@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { generate } from './generate';
 import { generateComponentFigure } from './components';
+import { cutTipCounts } from './cutQuality';
 import { convertValidatedCutGeometry } from '$lib/inverse/toHeartDesign';
 import type { Font, TextFrame, Ring } from './geometry';
 import { TEXT_TEMPLATES } from './templates';
@@ -49,6 +50,22 @@ function validateHandoffs(design: HeartDesign) {
 // These are expected successes, never a test that passes by accepting a refusal.
 // The larger offline corpus covers 2,028 text and 1,122 figure configurations.
 describe('generator robustness regressions', () => {
+	for (const [fontId, text, tips] of [
+		['kalam', 'Anna', [0, 0]], ['kalam', 'ANNA', [0, 4]], ['oswald', 'A-B', [6, 9]]
+	] as const) it(`retains the simpler existing ${fontId} ${text} checkerboard cuts`, () => {
+		const { design } = generate({ mode: 'text', name: text, text, font: fonts[fontId], textFrame: 'repeat-check', colors });
+		const actual = cutTipCounts(design);
+		expect(actual[0]).toBeLessThanOrEqual(tips[0]);
+		expect(actual[1]).toBeLessThanOrEqual(tips[1]);
+	}, 20000);
+	for (const [fontId, text, n] of [
+		['nunito', 'Anna', 4], ['nunito', 'William', 14], ['oswald', 'GOD JUL', 6],
+		['kalam', 'ABCDEFGHIJ', 10], ['kalam', 'GOD JUL', 6]
+	] as const) it(`combines two- and four-connection letters for ${fontId} ${text}`, () => {
+		const { design } = generate({ mode: 'text', name: text, text, font: fonts[fontId], textFrame: 'repeat-check', colors });
+		expect(design.gridSize).toEqual({ x: n, y: n });
+		validateHandoffs(design);
+	}, 30000);
 	it('fits a grid around all three stars while preserving the empty space between them', () => {
 		const { design } = generate({ mode: 'figure', name: 'Stars', contours: tablerStars.contours as Ring[], style: 'fitted', colors });
 		expect(design.gridSize).toEqual({ x: 5, y: 5 });
