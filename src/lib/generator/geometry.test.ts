@@ -3,6 +3,7 @@ import { generate } from './generate';
 import {
 	compile,
 	fourPortMotif,
+	hasCounterContact,
 	ConstructionError,
 	generateFigure,
 	generateCheckedText,
@@ -64,6 +65,14 @@ const circle = (radius: number, x = 0, y = 0): Ring =>
 	]);
 
 describe('constructive figure generator', () => {
+	it('distinguishes a touching counter from separate touching silhouettes', () => {
+		const square: Ring = [[0, 0], [10, 0], [10, 10], [0, 10]];
+		const touching: Ring = [[5, 0], [7, 3], [3, 3]];
+		expect(hasCounterContact([square, touching])).toBe(true);
+		expect(hasCounterContact([square, touching.map(([x, y]) => [x, y + .1])])).toBe(false);
+		expect(hasCounterContact([square, [[10, 10], [12, 10], [12, 12], [10, 12]]])).toBe(false);
+	});
+
 	it('checks practical cut candidates with the caller’s retained-path validator', () => {
 		const ring: Ring = [[40, 40], [60, 40], [60, 60], [40, 60]];
 		const gates: Ring = [[30, 30], [70, 30], [70, 70], [30, 70]];

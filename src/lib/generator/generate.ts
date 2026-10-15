@@ -24,6 +24,8 @@ import {
 	fourPortMotif,
 	originalFourPortMotif,
 	balancedFourPortMotif,
+	touchingFourPortMotif,
+	hasCounterContact,
 	generateCheckedText,
 	inside,
 	distance,
@@ -426,7 +428,6 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 			'silhouette'
 		);
 	if (request.style === 'fitted') {
-		let last: unknown;
 		for (const route of [fourPortMotif, originalFourPortMotif]) {
 			let constructed = false;
 			try {
@@ -436,7 +437,6 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 			}
 			catch (error) {
 				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
-				last = error;
 				if (!constructed && !(error instanceof CompilationError)) break;
 			}
 		}
@@ -445,10 +445,9 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 				return finish(generatePanelFigure(request.contours ?? [], undefined, request.frameSize ?? 70, request.scale ?? .7, columns, 'check', rows), 'silhouette');
 			} catch (error) {
 				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
-				last = error;
 			}
 		}
-		throw last;
+		return finish(generatePanelFigure(request.contours ?? [], undefined, request.frameSize ?? 70, request.scale ?? .7, 3, 'check', 1, false, fourPortMotif, 'support', true), 'silhouette');
 	}
 	const sunburst = request.style === 'sunburst';
 	const outerSize = request.frameSize ?? 70;
@@ -507,6 +506,24 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 			if (!(e instanceof ConstructionError) && !(e instanceof CutGeometryError)) throw e;
 			if (constructed || e instanceof CompilationError) retryOriginal.add(construct);
 			errors.push(e);
+		}
+	}
+	// A uniform seam can graze a motif's tip. Shift one modest three-panel layout
+	// within its cells before refusing the figure, keeping its exact outline.
+	try {
+		const construction = generatePanelFigure(rings, shape, size, scale, 3, style, 1, false, fourPortMotif, 'support', true);
+		return finish(sunburst ? sunburstBorder(construction, outerSize) : construction, rings.length === 1 ? 'silhouette' : 'nested');
+	} catch (error) {
+		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		errors.push(error);
+	}
+	if (hasCounterContact(rings)) for (const construct of balancedRecipes) {
+		try {
+			const construction = construct(touchingFourPortMotif);
+			return finish(sunburst ? sunburstBorder(construction, outerSize) : construction, 'nested');
+		} catch (error) {
+			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			errors.push(error);
 		}
 	}
 	const last = errors.at(-1)!;

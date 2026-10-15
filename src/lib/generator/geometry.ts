@@ -712,7 +712,7 @@ function contourMotif(
 	margin = 1.5,
 	bridgePorts: readonly number[] = [0, 1, 2, 3],
 	acceptRoutes?: (routes: Ring[]) => boolean,
-	options: { root?: Ring; visibleIslands?: boolean; strict?: boolean; practical?: boolean; originalOnly?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void } = {}
+	options: { root?: Ring; visibleIslands?: boolean; strict?: boolean; practical?: boolean; originalOnly?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; touching?: boolean } = {}
 ) {
 	const count = gates.length;
 	// Candidate routes reuse the same immutable outline points. Keep their
@@ -810,7 +810,7 @@ function contourMotif(
 		}
 		if (!clearSharedCuts(exterior, contours)) continue;
 		let attachmentAttempts = 0;
-		for (const interior of perforatedOutline(base, ports, bridgePorts, options.practical)) {
+		for (const interior of perforatedOutline(base, ports, bridgePorts, options.practical, options.touching)) {
 			const local = [...interior, ...exterior];
 			try {
 				const routes = localRoutes(local, gates, pointKeys);
@@ -930,6 +930,19 @@ export function balancedFourPortMotif(...args: Parameters<typeof contourMotif>) 
 	return contourMotif(...args);
 }
 
+/** A counter touching its parent can use that existing junction as one
+ * connection, with a coincident A/B bridge on the other side of the gate. */
+export function touchingFourPortMotif(...args: Parameters<typeof contourMotif>) {
+	args[7] = { ...args[7], touching: true };
+	return contourMotif(...args);
+}
+
+export function hasCounterContact(rings: Ring[]): boolean {
+	const touching = (node: Contour): boolean => node.children.some(child =>
+		child.ring.some(point => !!ringPort(node.ring, point)) || touching(child));
+	return forest(rings).some(touching);
+}
+
 /** A checkerboard junction can feed one letter through two shared bridges.
  * Counters may bracket either bridge; they are never removed from the sheet. */
 export function twoPortMotif(edges: Edge[], contours: Ring[], gates: Point[], margin: number,
@@ -1044,7 +1057,7 @@ function* relieveNotches(edges: Edge[], ring: Ring, ports: Port[], allowed: read
  * outline arcs preserves the four external path pairings. A bridge pair on an
  * arc with no external port would instead create a closed cutting cycle.
  * Sibling holes share a chain; nested contours use the two-terminal block. */
-function* perforatedOutline(node: Contour, ports: Port[], bridgePorts: readonly number[], practical = false): Generator<Edge[]> {
+function* perforatedOutline(node: Contour, ports: Port[], bridgePorts: readonly number[], practical = false, touching = false): Generator<Edge[]> {
 	if (!node.children.length) {
 		const edges: Edge[] = [];
 		outline(edges, node.ring, ports, 'B');
@@ -1053,6 +1066,10 @@ function* perforatedOutline(node: Contour, ports: Port[], bridgePorts: readonly 
 	}
 	const ring = node.ring,
 		n = ring.length, count = ports.length;
+	const contacts = new Map(node.children.map(child => [child, touching
+		? child.ring.map(point => ringPort(ring, point)).filter((port): port is Port => !!port)
+		: []]));
+	const contactPairs = [...contacts.values()].some(ports => ports.length) ? [[-2, -1], [-1, -2]] : [];
 	const at = (a: Port, b: Port, fraction: number): Port => {
 		const points = arc(ring, a, b);
 		const lengths = points.slice(1).map((p, i) => distance(points[i], p));
@@ -1119,6 +1136,7 @@ function* perforatedOutline(node: Contour, ports: Port[], bridgePorts: readonly 
 		if (seenPartitions.has(key)) continue;
 		seenPartitions.add(key);
 		for (const corners of practical ? [true, false] : [false]) for (const [left, right] of [
+			...contactPairs,
 			[-1, -1],
 			[0.5, 0.5],
 			[0.3, 0.7],
@@ -1135,11 +1153,19 @@ function* perforatedOutline(node: Contour, ports: Port[], bridgePorts: readonly 
 					const children = node.children.filter((_, i) => assignment[i] === j);
 					if (!children.length) continue;
 					const center = centroid(children.flatMap((h) => h.ring));
-					const before =
+					const contact = (a: Port, b: Port): Port => {
+						if (children.length !== 1) throw new ConstructionError('topology', 'Contact needs one counter');
+						const candidates = contacts.get(children[0])!.filter(p =>
+							!near(p.point, a.point) && !near(p.point, b.point) &&
+							(p.index - a.index + n) % n < (b.index - a.index + n) % n);
+						if (!candidates.length) throw new ConstructionError('topology', 'No counter contact on arc');
+						return candidates.reduce((a, b) => distance(a.point, center) < distance(b.point, center) ? a : b);
+					};
+					const before = left === -2 ? contact(ports[(j + count - 1) % count], ports[j]) :
 						left < 0
 							? closest(ports[(j + count - 1) % count], ports[j], center)
 							: at(ports[(j + count - 1) % count], ports[j], left);
-					const after =
+					const after = right === -2 ? contact(ports[j], ports[(j + 1) % count]) :
 						right < 0
 							? closest(ports[j], ports[(j + 1) % count], center)
 							: at(ports[j], ports[(j + 1) % count], right);
@@ -1162,16 +1188,16 @@ function* perforatedOutline(node: Contour, ports: Port[], bridgePorts: readonly 
 							k + 1 < children.length
 								? centroid(children[k + 1].ring)
 								: after.point;
-						const entry = corners ? support(h.ring, Math.atan2(previous[1] - c[1], previous[0] - c[0])) : ray(
+						const entry = (left === -2 ? ringPort(h.ring, previous) : undefined) ?? (corners ? support(h.ring, Math.atan2(previous[1] - c[1], previous[0] - c[0])) : ray(
 							h.ring,
 							previous,
 							Math.atan2(c[1] - previous[1], c[0] - previous[0])
-						);
-						const exit = corners ? support(h.ring, Math.atan2(next[1] - c[1], next[0] - c[0])) : ray(
+						));
+						const exit = (right === -2 ? ringPort(h.ring, next) : undefined) ?? (corners ? support(h.ring, Math.atan2(next[1] - c[1], next[0] - c[0])) : ray(
 							h.ring,
 							next,
 							Math.atan2(c[1] - next[1], c[0] - next[0])
-						);
+						));
 						if (near(entry.point, exit.point))
 							throw new ConstructionError('topology', 'Coincident hole ports');
 						add(edges, [previous, entry.point], 'AB', 'shared');

@@ -1,6 +1,47 @@
 # Generator robustness results
 
-## Current coverage: more attachment choices for difficult contours
+## Current coverage: shifted panels and touching counters
+
+The current 3,150-configuration matrix has **2,585 accepted / 565 refused / zero
+invalid accepted results**, with no regressions. This batch freshly reran all
+1,122 figures; its 2,028 text results come from the complete preceding audit.
+Text construction rules are unchanged in this batch.
+
+| Corpus | Configurations | Accepted | Refused | Invalid accepted output |
+|---|---:|---:|---:|---:|
+| Text: 34 inputs, six fonts, ten frames | 2028 | 1584 | 444 | 0 |
+| Figures: 51 motifs, 22 templates | 1122 | 1001 | 121 | 0 |
+
+The combined record is `tmp/generator/contacts-current.json`; all 2,585 accepted
+IDs are pinned in `scripts/generator/expected.json`. This batch adds 13 figure
+combinations, following the preceding batch's 85 recoveries.
+
+- A final three-panel layout shifts invisible dividers away from motif tips and
+  into wider gaps between outline coordinates. Each shift stays within a quarter
+  of a panel width. Phosphor sun now works in the fitted template and all three
+  styles of diamond, hexagon and oval, using 5×5 grids.
+- A counter that already meets its parent outline can use that junction as one
+  connection, with an invisible A/B bridge on the other side of an external
+  gate. The compiler still requires open paths and valid sheet degrees. This
+  recovers Phosphor bicycle in all three oval styles, using 3×3 grids.
+- Successful existing designs retain their routes. The additional figure
+  recipes run only after those fail, and the counter fallback is skipped when
+  the contour forest contains no counter contact. Visible outlines, counters,
+  frame choices and clearance thresholds remain intact.
+
+All **986 unit tests and 177 inverse tests** pass, along with type checking,
+lint and the production build. Six representative renders were inspected.
+Browser checks verified matching previews and selected thumbnails, plus the
+bicycle's 3×3 and fitted sun's 5×5 editor handoffs without warnings. The corpus
+checks artwork fidelity, open cuts, clearance and JSON/SVG roundtrips. No
+physical weaving trial was performed.
+
+The goal remains unfinished: 565 tested combinations are still refused. The
+rest of the searchable icon catalog and non-default figure scales also remain
+outside this matrix. Difficult cases still take too long; the concurrent audit
+is not a latency benchmark. Historical counts below describe earlier audits.
+
+## Previous coverage: more attachment choices for difficult contours
 
 A fresh audit of all **3,150 configurations** finished with **2,572 accepted /
 578 refused / zero invalid accepted results**, with no regressions. This adds

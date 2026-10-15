@@ -1,5 +1,5 @@
 import { it, expect } from 'vitest';
-import { clipContours, filledSeamGate, generatePanelFigure } from './panels';
+import { clipContours, filledSeamGate, generatePanelFigure, panelDividers } from './panels';
 import { convertValidatedCutGeometry } from '$lib/inverse/toHeartDesign';
 import { type Ring, inside, uprightToSheet } from './geometry';
 import cat from '../../../static/generator/motifs/ph-cat.json';
@@ -50,4 +50,15 @@ it('spreads cat details across several cuts', () => {
 	);
 	// At 100 mm paper width, the old four-port cat had a 268 mm cutting path.
 	expect(Math.max(...lengths)).toBeLessThan(230);
+});
+
+it('moves dividers away from near-coincident tips without creating narrow panels', () => {
+	const vertices = [-9, -5.01, -5, -3, 0, .01, 2, 5, 5.01, 7];
+	const dividers = panelDividers(vertices, -10, 10, 4);
+	expect(dividers).toEqual([-4, 1.005, 6.005]);
+	expect(panelDividers([...vertices].reverse(), -10, 10, 4)).toEqual(dividers);
+	const boundaries = [-10, ...dividers, 10];
+	expect(Math.min(...boundaries.slice(1).map((p, i) => p - boundaries[i]))).toBeGreaterThan(2.5);
+	// Without a useful gap near the nominal seam, retain the uniform position.
+	expect(panelDividers([-10, 10], -10, 10, 4)).toEqual([-5, 0, 5]);
 });

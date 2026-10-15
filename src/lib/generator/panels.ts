@@ -162,6 +162,21 @@ export function filledSeamGate(parts: Ring[], axis: 0 | 1, value: number, target
 	return uprightToSheet(axis === 0 ? [value, t] : [t, value]);
 }
 
+/** Keep panel widths comparable while moving dividers away from contour vertices.
+ * A midpoint in a wider coordinate gap avoids grazing a tip or creating a tiny
+ * clipped fragment. This changes only the invisible partition, never the motif. */
+export function panelDividers(values: number[], low: number, high: number, count: number) {
+	const sorted = [...new Set(values)].sort((a, b) => a - b), width = (high - low) / count;
+	return Array.from({ length: count - 1 }, (_, i) => {
+		const target = low + (i + 1) * width;
+		const gaps = sorted.slice(1).map((b, j) => ({ midpoint: (sorted[j] + b) / 2, width: b - sorted[j] }))
+			.filter(gap => Math.abs(gap.midpoint - target) < width * .25 && gap.width > 1e-5);
+		const score = (gap: typeof gaps[number]) => gap.width / (1 + Math.abs(gap.midpoint - target) / width);
+		gaps.sort((a, b) => score(b) - score(a));
+		return gaps[0]?.midpoint ?? target;
+	});
+}
+
 export function generatePanelFigure(
 	rings: Ring[],
 	frame: Frame | undefined,
@@ -172,7 +187,8 @@ export function generatePanelFigure(
 	rows = 1,
 	spread = false,
 	route = fourPortMotif,
-	attachments: 'support' | 'ray' | 'filled' = 'support'
+	attachments: 'support' | 'ray' | 'filled' = 'support',
+	adaptive = false
 ) {
 	const factor = size * scale * (frame === 'oval' ? 0.75 : 1);
 	const upright = rings.map((r) =>
@@ -188,24 +204,25 @@ export function generatePanelFigure(
 		bottom = Math.max(...ys) + 2;
 	const width = (right - left) / count,
 		height = (bottom - top) / rows;
-	const vertical = Array.from(
+	const vertical = adaptive ? panelDividers(xs, left, right, count) : Array.from(
 		{ length: count - 1 },
 		(_, i) => left + (i + 1) * width
 	);
-	const horizontal = Array.from(
+	const horizontal = adaptive ? panelDividers(ys, top, bottom, rows) : Array.from(
 		{ length: rows - 1 },
 		(_, i) => top + (i + 1) * height
 	);
+	const xLines = [left, ...vertical, right], yLines = [top, ...horizontal, bottom];
 	let edges: Edge[] = [];
 	const cells: Point[][][] = [];
 	const swap = (r: Ring): Ring => r.map(([x, y]) => [y, x]);
 	for (let row = 0; row < rows; row++) {
 		cells.push([]);
 		for (let col = 0; col < count; col++) {
-			const lo = left + col * width,
-				hi = lo + width,
-				up = top + row * height,
-				down = up + height;
+			const lo = adaptive ? xLines[col] : left + col * width,
+				hi = adaptive ? xLines[col + 1] : lo + width,
+				up = adaptive ? yLines[row] : top + row * height,
+				down = adaptive ? yLines[row + 1] : up + height;
 			let parts = upright;
 			if (col) parts = clipContours(parts, lo, false);
 			if (col < count - 1) parts = clipContours(parts, hi, true);

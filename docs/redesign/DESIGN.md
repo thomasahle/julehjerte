@@ -407,6 +407,12 @@ a shared starting vertex must not turn a separate component into a hole.
 If a newer local attachment route fails after cells are joined or the full
 sheet is validated, try the original route too. Skip this extra attempt when
 the local construction itself failed; keep all clearance and fidelity checks.
+For a counter already touching its parent outline, a final figure fallback may
+use that existing junction as one connection and retain an invisible bridge on
+the other side of an external port. The two connections must still bracket that
+port and preserve open strip pairings. Do not move the outline, merge away the
+counter, or create a zero-length cutting segment. Skip this fallback when the
+contour forest has no counter contact.
 Both generators offer circle, diamond, hexagon, oval, soft diamond and scalloped frames. Text also
 has close and spacious letter-cell framing. Figure choices combine the frame and outside weave
 into complete templates. Their thumbnails render the actual generated heart in the current colours,
@@ -423,6 +429,10 @@ an entire word through two long cuts. Complicated figures first try neighbouring
 clipped boundaries cancel or become shared cuts, preserving every visible detail. Prefer more
 manageable strips over fewer cuts, while retaining the full clearance and fidelity checks. Two-dimensional
 panels separate the gift's bow and box pieces into a 5×5 grid.
+If uniform panel seams graze a tip, one final three-panel layout may shift its
+dividers into wider gaps between contour coordinates. Keep each shift within a
+quarter of the nominal panel width, so neighbouring panels cannot become narrow.
+Only the invisible partitions move; the motif, frame and clearance stay intact.
 The close-fitting figure template can also use panels. Its outer gates land on
 each panel's silhouette, while internal gates keep their shared seams. The
 surrounding grid reaches the figure directly, with no added circular frame.

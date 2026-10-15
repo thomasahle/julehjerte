@@ -25,6 +25,7 @@ import angel from '../../../static/generator/motifs/angel.json';
 import snow from '../../../static/generator/motifs/snow.json';
 import smiley from '../../../static/generator/motifs/ph-smiley.json';
 import palette from '../../../static/generator/motifs/tb-palette.json';
+import bicycle from '../../../static/generator/motifs/ph-bicycle.json';
 const colors = { left: '#fffdf5', right: '#b72f2b' };
 const fonts = { nunito, breeserif, oswald, kalam, cinzel, righteous } as unknown as Record<string, Font>;
 function validateHandoffs(design: HeartDesign) {
@@ -115,4 +116,22 @@ describe('generator robustness regressions', () => {
 			it(`uses a wider choice of attachments for ${name} in ${frame}-${style}`, () => {
 				validateHandoffs(generate({ mode: 'figure', name, contours: motif.contours as Ring[], frame, style, colors }).design);
 			}, 20000);
+	for (const frame of ['diamond', 'hexagon', 'oval'] as const)
+		for (const style of ['rays', 'check', 'plain'] as const)
+			it(`keeps the sun's rays when shifting panels inside ${frame}-${style}`, () => {
+				const { design } = generate({ mode: 'figure', name: 'Sun', contours: sun.contours as Ring[], frame, style, colors });
+				expect(design.gridSize).toEqual({ x: 5, y: 5 });
+				validateHandoffs(design);
+			}, 20000);
+	it('fits the sun silhouette with offset panel seams', () => {
+		const { design } = generate({ mode: 'figure', name: 'Sun', contours: sun.contours as Ring[], frame: 'circle', style: 'fitted', colors });
+		expect(design.gridSize).toEqual({ x: 5, y: 5 });
+		validateHandoffs(design);
+	}, 20000);
+	for (const style of ['rays', 'check', 'plain'] as const)
+		it(`routes the bicycle's touching counter through an oval-${style}`, () => {
+			const { design } = generate({ mode: 'figure', name: 'Bicycle', contours: bicycle.contours as Ring[], frame: 'oval', style, colors });
+			expect(design.gridSize).toEqual({ x: 3, y: 3 });
+			validateHandoffs(design);
+		}, 20000);
 });
