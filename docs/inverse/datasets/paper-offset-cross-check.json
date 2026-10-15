@@ -1,0 +1,1402 @@
+{
+  "schema": "paper-offset-cross-check-1",
+  "status": "offline diagnostic implemented; production lattice and fitting unchanged",
+  "question": "Can the guarded lattice pass disconnected nominal-width cores?",
+  "finding": "Yes. Connectivity and area-threshold decisions are not monotone as offset radius increases: a neck can disconnect before its island shrinks below the minimum area. Coarse rows can also miss a thin island entirely. Guarded possible/certain masks do not exclude these events.",
+  "initialStudy": {
+    "cases": 6,
+    "independentComparisons": 72,
+    "statusMismatches": 0,
+    "bothColdControlsPass": true,
+    "threePreviouslyAcceptedFailures": [
+      "normal-original",
+      "normal-vertical",
+      "accelerated-vertical"
+    ],
+    "alreadyRejectedFailure": "rejected-outline-40",
+    "radiusBrackets": "All family statuses stable at both flattening tolerances and all +/- tolerance radius probes."
+  },
+  "corpus": {
+    "nativeExports": 48,
+    "browserExports": 12,
+    "passed": 59,
+    "total": 60,
+    "independentComparisons": 240,
+    "statusMismatches": 0,
+    "maxFloatingAreaDifferenceMm2": 5.296509083763112e-06,
+    "newFailure": {
+      "id": "hjcur-05",
+      "family": 0,
+      "geosAreaMm2": 4.154219809802256,
+      "clipperAreaMm2": 4.1542212908716465,
+      "region": "Thin disconnected core across the unfolded fold; displayed area is for the full sheet."
+    },
+    "cases": [
+      {
+        "id": "hjfig-01",
+        "group": "hunodan",
+        "geometrySha256": "d7ad5e34490ec434df08448000f24ff0cba34e62923d67eef6ddf2a13a640983",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.01653924999999998
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.01391337500000003
+          }
+        ]
+      },
+      {
+        "id": "hjfig-02",
+        "group": "hunodan",
+        "geometrySha256": "bc90373c69a2bcc1236d56643df72e3c3e205aea3d3a4b8f2b93c88ec187be88",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.01891224999999997
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.018179832999999975
+          }
+        ]
+      },
+      {
+        "id": "hjfig-03",
+        "group": "hunodan",
+        "geometrySha256": "ce50b811ccfc67a307097b3d058c6d6ab6e47fbd1da7bf87584b6cda6cdaf8f6",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.019961040999999968
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.01967949999999996
+          }
+        ]
+      },
+      {
+        "id": "hjfig-04",
+        "group": "hunodan",
+        "geometrySha256": "16695deef171fd7b1f248ef452407bbbcc4a0c65aeabdfbb6038ef5c56117db7",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.010970583000000034
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.011118124999999963
+          }
+        ]
+      },
+      {
+        "id": "hjfig-05",
+        "group": "hunodan",
+        "geometrySha256": "2e1ded7069dffac78fff8f3226efd4446a9efa0640821753b59a3f59596fc561",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.015128750000000026
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.032299208000000024
+          }
+        ]
+      },
+      {
+        "id": "hjfla-01",
+        "group": "hunodan",
+        "geometrySha256": "e9755af32b92dab071bfc3304a3362eee6e937d28a95a3586f0be80b8abb46c8",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.035697332999999956
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.027499625000000038
+          }
+        ]
+      },
+      {
+        "id": "hjcur-01",
+        "group": "hunodan",
+        "geometrySha256": "049b9ebeddc1110704836a415214288788c8494bd69914e99140e1c6a00e499a",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.03150662499999998
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.027363166999999976
+          }
+        ]
+      },
+      {
+        "id": "hjcur-02",
+        "group": "hunodan",
+        "geometrySha256": "7859fa91ba4933ea2d9528ea73fa7b9c797e56728962094e0e99bf6e73bc0a87",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.027045499999999948
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.017435333000000015
+          }
+        ]
+      },
+      {
+        "id": "hjcur-03",
+        "group": "hunodan",
+        "geometrySha256": "ad97a002943d8e2647c3b8d9f4b9c7d0f6f1ee10dd5db85238f2366dd6ca91c3",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.022019874999999956
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.02182762500000001
+          }
+        ]
+      },
+      {
+        "id": "hjcur-04",
+        "group": "hunodan",
+        "geometrySha256": "a525041d65f090550c374aa1d58e5b9a22afbeaaa8d21f397e32ed8cd26ae022",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.04496758299999999
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.02716366699999992
+          }
+        ]
+      },
+      {
+        "id": "hjcur-05",
+        "group": "hunodan",
+        "geometrySha256": "1b3822492ae13f4b6f73bc67284ce4eb568f292cb87b092b80be053e914817f7",
+        "passed": false,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": false,
+            "significantFloatingCount": 1,
+            "significantFloatingArea": 4.1542212908716465,
+            "seconds": 0.01317658300000005
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.009762790999999993
+          }
+        ]
+      },
+      {
+        "id": "hjhih-01",
+        "group": "hunodan",
+        "geometrySha256": "df9facec711075be91afcf6f2ddf537842a1724fcd44ef1f68cdb0703d5f2c68",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.047090332999999984
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.041024250000000054
+          }
+        ]
+      },
+      {
+        "id": "hjhih-02",
+        "group": "hunodan",
+        "geometrySha256": "25db88ee2ae032dd7f5aaa85fe1a897b585797aa10fbdf37af94d73e24a81f2a",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.027405832999999803
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.020623583999999938
+          }
+        ]
+      },
+      {
+        "id": "hjhih-04",
+        "group": "hunodan",
+        "geometrySha256": "8c34f52f04b01a4ba97e7e20eae725dfe423f2ef7eb1b1b8154c749e63d220d6",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.05457249999999999
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.04066983400000004
+          }
+        ]
+      },
+      {
+        "id": "hjstr-01",
+        "group": "hunodan",
+        "geometrySha256": "a7f33780db85389adc0d24217c4e7febf717857000a2b4ad93f677fcfd0860f2",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.023016291000000137
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.021795292000000018
+          }
+        ]
+      },
+      {
+        "id": "hjstr-02",
+        "group": "hunodan",
+        "geometrySha256": "febe020fdc59877ef5cf71c22eff1fbc4607a1eaae93baf40ec9611d46bdb270",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.01752212499999996
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.01866012499999988
+          }
+        ]
+      },
+      {
+        "id": "hjstr-03",
+        "group": "hunodan",
+        "geometrySha256": "5ffc98f412dcae8e143a786b0f2dea156757837c0d08dbd8d0e9c123664e9cb5",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.03954279200000019
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.03881383299999993
+          }
+        ]
+      },
+      {
+        "id": "hjsta-01",
+        "group": "hunodan",
+        "geometrySha256": "ec714b590351efd48a2ca01d3c2a1ec25791b52fe9286389b1c6aa0b96eea005",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.008763083000000052
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.0079368750000001
+          }
+        ]
+      },
+      {
+        "id": "hjsta-02",
+        "group": "hunodan",
+        "geometrySha256": "ba755c3c9ca90e290630af6e8984e9167b4f865dfd5055a578378a6d2fba1cd7",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.01948945800000001
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.015459125000000086
+          }
+        ]
+      },
+      {
+        "id": "hjsta-03",
+        "group": "hunodan",
+        "geometrySha256": "94a7e2fae6933095c873744551ba72caf03ad1119701a8f6e162f1f6687266f5",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.04378845899999988
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.03679099999999994
+          }
+        ]
+      },
+      {
+        "id": "hjsta-04",
+        "group": "hunodan",
+        "geometrySha256": "0ec351fd7566f5570145c107913d323e6761f018527258f6def41cd4dcc67a1e",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.03991799999999989
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.02908808399999998
+          }
+        ]
+      },
+      {
+        "id": "hjsta-05",
+        "group": "hunodan",
+        "geometrySha256": "e5c679f439952dc25a281d54f49977ec76113eab8e1eead9473f77b881a9f5f2",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.052506042000000204
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.04191350000000011
+          }
+        ]
+      },
+      {
+        "id": "floral-checker",
+        "group": "photos",
+        "geometrySha256": "05c2c2589778985c36fa280435e65ca10f4045aa3c147d52b6aa4b5b2d9167bc",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.1208895
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.1063513330000003
+          }
+        ]
+      },
+      {
+        "id": "dense-checker",
+        "group": "photos",
+        "geometrySha256": "82409f2e258529028c77e7b6e3b8f8b81cc19895daaf0dddf249b9aaaccba2df",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.08879183399999965
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.0827204999999999
+          }
+        ]
+      },
+      {
+        "id": "bird",
+        "group": "photos",
+        "geometrySha256": "ae1918e69a56c704e234fe27465a9ee97b149fe6f20444be8a1e83940d0609f5",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.08469433300000037
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.09196408299999985
+          }
+        ]
+      },
+      {
+        "id": "leaf",
+        "group": "photos",
+        "geometrySha256": "2be49e265daa89b0957affc6586d55c3b832230f0a9f65138249047942f6389b",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.03409070799999972
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.031413666999999805
+          }
+        ]
+      },
+      {
+        "id": "gift",
+        "group": "photos",
+        "geometrySha256": "24ab4acd08ec86c1dca6779f9187d3155380241e6798bafb811b7962fdf05516",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.03595970800000032
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.03609483300000011
+          }
+        ]
+      },
+      {
+        "id": "gingerbread",
+        "group": "photos",
+        "geometrySha256": "9d82ac3970373743c7c1e9d49947ca86efe76ea0e5b9e9f37d5fe686644de233",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.037751582999999755
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.014906375000000026
+          }
+        ]
+      },
+      {
+        "id": "white-birds",
+        "group": "photos",
+        "geometrySha256": "6c8c0ef9ecf16ffde3f8b46b9424f2c8f7d169e8b2e0de6f278547cd700fb1ce",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.020312999999999647
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.018668125000000146
+          }
+        ]
+      },
+      {
+        "id": "flower",
+        "group": "photos",
+        "geometrySha256": "973e334efe4c7fd1db408dd96a0c6352432074ab5215dc2790b5ccce1c5bb7b8",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.018712375000000066
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.024427791999999955
+          }
+        ]
+      },
+      {
+        "id": "warped-checker",
+        "group": "photos",
+        "geometrySha256": "c689624064c178cefff178d372adbf11b5f2df669ee02cdad2f649775982cb11",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.13525900000000002
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.14459404099999984
+          }
+        ]
+      },
+      {
+        "id": "round-checker",
+        "group": "photos",
+        "geometrySha256": "05364afae403efb5f783abfbc8959c6331c8a3265b619d62491b1136f84bd68a",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.052015000000000325
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.04162516700000014
+          }
+        ]
+      },
+      {
+        "id": "fine-checker",
+        "group": "photos",
+        "geometrySha256": "b830cd40cc728414f3fa226294c5adcabccc785d396ee0eb0785012067a9f478",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.16267970799999967
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.1633713340000004
+          }
+        ]
+      },
+      {
+        "id": "orb",
+        "group": "photos",
+        "geometrySha256": "27ba700dc706d3ddbb6580ef8896bc30f88e0adb108921ad5f5d18b22232e549",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.053882458999999924
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.03622845899999993
+          }
+        ]
+      },
+      {
+        "id": "stacked-hearts",
+        "group": "photos",
+        "geometrySha256": "0e98e642c708f228d90c8f43811cc891858bb30ca579f43eecc98b439f8f5431",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.029849958999999673
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.018115875000000416
+          }
+        ]
+      },
+      {
+        "id": "jigsaw",
+        "group": "photos",
+        "geometrySha256": "9a699832aff45c0dd9fd56f2dab1751877b7e62e2f3444de6d7d5a5d6bb2e26b",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.08473066699999982
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.06075854100000015
+          }
+        ]
+      },
+      {
+        "id": "candle",
+        "group": "photos",
+        "geometrySha256": "1bc0dd1dba943690ef6f316b404c1a855be582f7ca0fd9b98fd70ef814ec26f7",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.008996250000000145
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.00819616700000006
+          }
+        ]
+      },
+      {
+        "id": "maple-leaf",
+        "group": "photos",
+        "geometrySha256": "6fbb3b4de551ebee142f5168e74d48809182a76d07af8f6cf602b7a47eafe2b7",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.05931220899999971
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.03774695799999972
+          }
+        ]
+      },
+      {
+        "id": "crown",
+        "group": "photos",
+        "geometrySha256": "369b8045ef4df59843903e2fb7c39bc1bda75e2ee355a20cd5c81b9661f1005d",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.09736062500000026
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.08071799999999985
+          }
+        ]
+      },
+      {
+        "id": "bottom-flower",
+        "group": "photos",
+        "geometrySha256": "93ce231d5576cdd5d257826d6c82e33c43509413cf9b1b8909731ed488a258ba",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.035759375000000544
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.03513820899999973
+          }
+        ]
+      },
+      {
+        "id": "faceted-star",
+        "group": "photos",
+        "geometrySha256": "229d2de8e9616388bc4ff178759a57fa3fbde8277a10d8ee6f06db8c97c5dcaa",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.04157800000000043
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.041847375000000284
+          }
+        ]
+      },
+      {
+        "id": "bibel-star-8",
+        "group": "photos",
+        "geometrySha256": "86835af75f4222c274fdd1757ba65e6494909876bac46bb31a18561628d53e97",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.01261591700000008
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.017647041000000172
+          }
+        ]
+      },
+      {
+        "id": "bibel-star-curved",
+        "group": "photos",
+        "geometrySha256": "21efb325c91acc04e39ecbe926f97f6a82ecc8f11e900a65fd1671fbca19c260",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.04752966699999979
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.023087250000000496
+          }
+        ]
+      },
+      {
+        "id": "bibel-star-outline",
+        "group": "photos",
+        "geometrySha256": "4c9a25ea9b9317a32f57efe82c23cd260ded4e1aa313d40780c7dc38f47f706a",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.01322241699999995
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.0113692089999995
+          }
+        ]
+      },
+      {
+        "id": "bibel-cross",
+        "group": "photos",
+        "geometrySha256": "9668da65c3b88ef077b3054d27e022b021851263785e9868f692bb7cc9fa0a05",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.008220915999999306
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.013561208000000078
+          }
+        ]
+      },
+      {
+        "id": "flettede-puppy",
+        "group": "photos",
+        "geometrySha256": "7cdda85aa95f3bb6bb8a05acd4f2dcf8de9168f8338972387c11fe7385929303",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.04540829200000007
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.03734633399999984
+          }
+        ]
+      },
+      {
+        "id": "flettede-stonehenge",
+        "group": "photos",
+        "geometrySha256": "10565d122f97f74332491c143afeaef5bdc6e16c70558255a0438ae0e2a489bd",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.06376408300000003
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.06792308400000002
+          }
+        ]
+      },
+      {
+        "id": "flettede-viking",
+        "group": "photos",
+        "geometrySha256": "114e662356c38b074e68c56e94fb2e6bdedd1bf7d411df3a55eefd3aed500d95",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.1015625
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.0803565840000001
+          }
+        ]
+      },
+      {
+        "id": "stacked-hearts-mask",
+        "group": "browser-ordinary",
+        "geometrySha256": "70877c73eb69322cc785c8a0c28629f585d57770e972592673f1df608e428bcb",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.016127250000000457
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.01774816699999974
+          }
+        ]
+      },
+      {
+        "id": "star",
+        "group": "browser-ordinary",
+        "geometrySha256": "7e040bc9715127cdbf3d111dd6acb85beebb267bcfab69c198a9b3966de87601",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.0015209160000003977
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.0008787499999998545
+          }
+        ]
+      },
+      {
+        "id": "top-hat-preferred",
+        "group": "browser-ordinary",
+        "geometrySha256": "e680ca2c09bf1b422a3cd892816129091cf782f2f7634db6d58732c83fcf4cfd",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.01679304200000024
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.016635167000000364
+          }
+        ]
+      },
+      {
+        "id": "flower-native-mask",
+        "group": "browser-ordinary",
+        "geometrySha256": "88e1dbb6e42c56dffdeb6dbdd1e3fc16f821531ea9fa4ef2857e7caed6f3cb76",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.026514208999999938
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.025096667000000707
+          }
+        ]
+      },
+      {
+        "id": "hard-flettede-viking",
+        "group": "browser-ordinary",
+        "geometrySha256": "705d61c84e82e9e37840f94e58389f0a4baedf45bdb1b775336b0ec7582ac079",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.14840087499999935
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.10457141700000011
+          }
+        ]
+      },
+      {
+        "id": "maple-leaf-mask",
+        "group": "browser-ordinary",
+        "geometrySha256": "2ce5d6717c0192f6223b19d0d57b045f92a4d1f8210a2d28399a8ebe07db0aad",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.05604145900000003
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.03343004199999996
+          }
+        ]
+      },
+      {
+        "id": "web-danish-tree-green",
+        "group": "browser-ordinary",
+        "geometrySha256": "677ab2953518f19287ae303d4428ac789098d27403e1c3a656a9c239b5e4c829",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.03248333399999956
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.03187641600000006
+          }
+        ]
+      },
+      {
+        "id": "floral-checker-mask",
+        "group": "browser-ten-second",
+        "geometrySha256": "ff9218739659d58846d23d30d9d4b1ea207e3bc2be0123c12372e717d268d1f0",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.11472766700000012
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.11087162499999977
+          }
+        ]
+      },
+      {
+        "id": "warped-checker-mask",
+        "group": "browser-ten-second",
+        "geometrySha256": "accf0dcbcc53f12ee2f351abd826ca9a3a39f9c92dd70dea5749eb2d00b257fa",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.1250058339999996
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.1404936660000003
+          }
+        ]
+      },
+      {
+        "id": "fine-checker-mask",
+        "group": "browser-ten-second",
+        "geometrySha256": "b6d092544a6b0d55a5a30fa67f501e2b623da23cf08e0f9ecc362580cb0ef9b6",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.1358278339999997
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.14012862499999937
+          }
+        ]
+      },
+      {
+        "id": "blue-star-polishing-mask",
+        "group": "browser-ten-second",
+        "geometrySha256": "dbf8e826be578881d041450496c6a089e20d51e943a911a50dd166dcb7337d51",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.02158770800000002
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.019991833000000042
+          }
+        ]
+      },
+      {
+        "id": "crown-mask",
+        "group": "browser-ten-second",
+        "geometrySha256": "2ac711fea5e1b80ec1ebe7082f30470f2e329d94ef5db84c8fe0e071a5ea028e",
+        "passed": true,
+        "nominalFine": [
+          {
+            "family": 0,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.09198208299999988
+          },
+          {
+            "family": 1,
+            "passed": true,
+            "significantFloatingCount": 0,
+            "significantFloatingArea": 0,
+            "seconds": 0.07815425000000051
+          }
+        ]
+      }
+    ]
+  },
+  "timings": {
+    "method": "One diagnostic run on frozen exports; not end-to-end or browser timings. Fine nominal offsets, both sheets.",
+    "medianPairSeconds": 0.06725522949999971,
+    "maximumPairSeconds": 0.32605104200000007,
+    "moduleLoadSeconds": 0.011818291999999985
+  },
+  "visualReview": [
+    "hjcur-05 folded connection: black cut lines and isolated red nominal core between them.",
+    "normal-original hook: isolated red nominal core between nearby returning cut sections."
+  ],
+  "tests": {
+    "focused": 4,
+    "passed": 4,
+    "fullRepository": "907 existing inverse tests passed before these diagnostic-only additions; complete follow-up pending."
+  },
+  "vendor": {
+    "package": "clipper2-wasm",
+    "version": "0.4.0",
+    "license": "BSL-1.0",
+    "scope": "Pinned offline diagnostic dependency; not served or loaded by the website.",
+    "source": "scripts/inverse/vendor/clipper2/PROVENANCE.json"
+  },
+  "limits": [
+    "Polygonal offset approximation, not an exact algebraic certificate or a physical assembly test.",
+    "The GEOS and Clipper implementations are independent polygon engines; both still use chord flattening.",
+    "Radius probes expose sensitivity but do not prove the topology of every intermediate radius.",
+    "The earlier 22/22 Hunodan result passes the existing raster rules; this independent check identifies a deficiency in those rules.",
+    "The new checks are not connected to live candidate selection or final validation yet."
+  ],
+  "next": "Use a geometric final check and provide the fitter with folded-cut or local-neck witnesses; measure recovery and complete speed/quality impact before changing live acceptance.",
+  "artifacts": {
+    "scripts/inverse/diagnostics/paper-offset.mjs": "4eff5c88bc891efb6bba4f2a958a44a33fd84f2632a353504a69b55c548c6e72",
+    "scripts/inverse/diagnostics/paper-offset-study.mjs": "344c9be8e0e31327f54983209c4a259aec211673406fd1e72123bcfb9f70d759",
+    "scripts/inverse/diagnostics/paper-offset-reference.py": "acd14e6b5747116c45f36567b73242d55ff81d5e4db3fd297a0b27f796b19863",
+    "scripts/inverse/fixtures/paper-offset-cases.json": "7d6cb53a27102cfd2ee07a3ba42b7bcbf3b72566b82c9e07e39c616819b0b6ce",
+    "scripts/inverse/paper-offset.test.mjs": "87aa979864ee00541d4ae841cf91402fd44959a5f82b971b2396122364a5a773",
+    "tmp/heart-learning/paper-offset-reference-v1/results/results.json": "fd6a800e93df45a56d0d5b6eb10490e620c703500457661e3774f3d5e7693f03",
+    "tmp/heart-learning/paper-core-topology-v1/results.json": "a2ef933a21611b8e9ecb717f5dc49508230583ed4cf97bf1aae18d490d644e96",
+    "tmp/heart-learning/paper-offset-wasm-v1/corpus-results.json": "810080e4774e127077eb389b765bbb9cc333547e0a5da5be23d18b61b0f8a51c",
+    "tmp/heart-learning/paper-offset-wasm-v1/corpus-geos/results.json": "9afebcdc2e2f845bf9e02d92b37104b2af5185e1ad01f93bed78356457e4dcf2",
+    "tmp/heart-learning/paper-offset-wasm-v1/corpus-reference-plan.json": "f1c03bd8091f3de2be036e26b7a865335408f10fa8cc574841deea0f318afe18",
+    "tmp/heart-learning/paper-offset-wasm-v1/results.json": "0a147402dfc757f58606897af29da48ca57d2fb2cf23fbdac6227c7f0eb33c8e",
+    "tmp/heart-learning/paper-offset-wasm-v1/package-source.json": "bec20fae12652176401560df06927d4d3f42a254bbbdee72f491e8f0eb5f52ad",
+    "tmp/heart-learning/paper-offset-wasm-v1/committed-replay/results.json": "5fbbdda748f1069bac475057caf6a9bb9f3164658e8723d5a990308ee2b0c05a"
+  }
+}

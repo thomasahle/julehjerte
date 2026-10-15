@@ -11,6 +11,7 @@ export default [
 			'docs/**',
 			'.svelte-kit/**',
 			'node_modules/**',
+			'scripts/inverse/vendor/**',
 			'static/**',
 			'tmp/**',
 			'coverage/**'

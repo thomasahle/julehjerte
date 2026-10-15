@@ -300,6 +300,19 @@ first two changes are one and two pixels at 400 squared; Viking rises from
 2.0244% to 2.2181%. The distorted jigsaw crop remains a fidelity limitation.
 The strict error gate fails; this is not a validated-release replacement.
 
+An [independent polygon-offset audit](paper-offset-cross-check.json) now
+confirms three resolution-sensitive photographic false passes. At intermediate
+offset radii, a connection can close before its island becomes too small; the
+coarse guard endpoints can both look acceptable. A second case is a thin
+fold-centred island that falls between lattice rows. Clipper2 WASM and separate
+GEOS offsets agree on all 240 nominal comparisons across 60 current native and
+browser exports: 59 pass, while Hunodan `hjcur-05` has a disconnected 4.154 mm²
+core on paper A. This qualifies the earlier 22/22 result, which passed the
+existing raster rules. The diagnostic has seven committed regression examples
+and four passing tests. It is offline; the production lattice, acceptance
+settings and fitting remain unchanged. Nominal fine-offset checks take a median
+67 ms per pair in this run, excluding fitting.
+
 The latest validated solver revision is `c000d30`. Its
 [release record](return-projection-speed.json) passes **22/22 regular Hunodan
 designs below ten seconds**, with a maximum of **8.100 seconds**. Automatic
