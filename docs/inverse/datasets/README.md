@@ -25,10 +25,20 @@ The inventory, with material annotations updated on 2026-10-15, contains:
 | Training background variants | 2,040 | Five changes to each of 408 original training views; geometry labels and split groups unchanged. |
 | Training scene variants | 2,448 | Neighbours and handles paired with all six backgrounds for the same 408 training views; no new geometry families. |
 | Source-photo material QA samples | 78 integrated + 25 new | Four hearts in two reserved photographs; sparse assistant-reviewed development observations, not dense labels or training data. The new jigsaw review is not yet in the common benchmark fixture. |
+| Sparse four-sector neighbourhood observations | 16 on one source | Reviewed locations and uncertainty boxes; exact physical joining is unknown. Unassigned development observations, not training labels. |
 | Real visible-body annotations | 21 | Twenty instances in eighteen groups outside source QA, plus one reserved gold-angel instance. Uncertain pixels are excluded; nineteen enter the corrected-family material study. |
 | Real partial paper-material annotations | 19 heart instances | All enter the completed corrected-family study, with whole real motif families kept apart. Separate body and material uncertainty; all are reviewed development examples. |
 
 ## Current results and limits
+
+[Sixteen sparse junction observations](curved-contact-observations.json) now mark
+four alternating-colour neighbourhoods on an existing green/cream curved checker.
+The original source, full overview and every local patch were reviewed. Several
+have visible gaps or almost tangent approaches, so the 16-pixel boxes describe
+candidate locations, not exact cutting intersections or physical joining. The
+source remains unassigned; no body/material label, split, model or training run
+changes. These observations address the missing contact supervision exposed by
+the neural checker masks, but one photograph is not a generalization result.
 
 **Source-kind correction:** a larger-pixel review removed five false positive
 heart classifications: two star photographs, one process photograph, one folded

@@ -1,0 +1,348 @@
+{
+  "schema": "woven-heart-junction-observations-1",
+  "status": "reviewed-development-observations; not_training_data",
+  "coordinateConvention": "source-image pixel edges; x right, y down; no EXIF transform",
+  "source": {
+    "assetId": "real-642c4cb2ef3e92dc",
+    "file": "tmp/heart-training-real/assets/642c4cb2ef3e92dcdc8be337d3724f49fe0f5e0ce164c606bd3a6ae5b113dd6b.jpg",
+    "sha256": "642c4cb2ef3e92dcdc8be337d3724f49fe0f5e0ce164c606bd3a6ae5b113dd6b",
+    "size": [
+      1000,
+      1334
+    ],
+    "splitGroupId": "real-split-885e1bb554227fbf",
+    "splitStatus": "unassigned",
+    "familyId": null,
+    "sourcePages": [
+      "https://dk.pinterest.com/pin/195484440066745007/",
+      "https://dk.pinterest.com/pin/34199278420991356/"
+    ]
+  },
+  "purpose": "Supervise candidate locations where four alternating colour sectors approach one another. This can inform a future graph-proposal model without treating photographic gaps or shadows as exact cutting topology.",
+  "scope": "Sixteen sparse positive neighbourhoods on one existing unassigned source. They do not label all junctions or negatives, prescribe exact shared endpoints, recover hidden cuts, define overlap corners or change existing body/material annotations. No split assignment or training is performed.",
+  "paperAppearance": {
+    "paperA": "green",
+    "paperB": "cream/pale paper; similar to the surrounding background"
+  },
+  "review": {
+    "method": "Original 1000x1334 source, annotated source overview and all sixteen enlarged 64x64 source patches inspected.",
+    "localization": "Each 16x16 source-pixel region is a localization interval; its center is an approximate representative, not exact ground truth.",
+    "topology": "Several opposing tips have a visible light gap or nearly tangent approach. Every region has four alternating colour sectors, but exact meeting and physical joining are intentionally unknown.",
+    "clipping": "The source clips parts of the outer heart. All selected neighbourhoods are inside visible paper; no hidden outline is inferred.",
+    "family": "Curved checker with repeated broad lobes. Cross-corpus family allocation remains pending; no new family or independent-image count is claimed."
+  },
+  "observations": [
+    {
+      "id": "contact-01",
+      "center": [
+        493,
+        548
+      ],
+      "region": [
+        485,
+        540,
+        501,
+        556
+      ],
+      "kind": "alternating-four-sector-neighbourhood",
+      "reviewStatus": "assistant-reviewed-source-and-local-patch",
+      "exactMeetingPointKnown": false,
+      "physicalConnectionKnown": false,
+      "appearance": "point-like convergence with unresolved pixel-scale contact"
+    },
+    {
+      "id": "contact-02",
+      "center": [
+        464,
+        598
+      ],
+      "region": [
+        456,
+        590,
+        472,
+        606
+      ],
+      "kind": "alternating-four-sector-neighbourhood",
+      "reviewStatus": "assistant-reviewed-source-and-local-patch",
+      "exactMeetingPointKnown": false,
+      "physicalConnectionKnown": false,
+      "appearance": "point-like convergence with unresolved pixel-scale contact"
+    },
+    {
+      "id": "contact-03",
+      "center": [
+        523,
+        592
+      ],
+      "region": [
+        515,
+        584,
+        531,
+        600
+      ],
+      "kind": "alternating-four-sector-neighbourhood",
+      "reviewStatus": "assistant-reviewed-source-and-local-patch",
+      "exactMeetingPointKnown": false,
+      "physicalConnectionKnown": false,
+      "appearance": "point-like convergence with unresolved pixel-scale contact"
+    },
+    {
+      "id": "contact-04",
+      "center": [
+        497,
+        729
+      ],
+      "region": [
+        489,
+        721,
+        505,
+        737
+      ],
+      "kind": "alternating-four-sector-neighbourhood",
+      "reviewStatus": "assistant-reviewed-source-and-local-patch",
+      "exactMeetingPointKnown": false,
+      "physicalConnectionKnown": false,
+      "appearance": "near-tangent approaches"
+    },
+    {
+      "id": "contact-05",
+      "center": [
+        233,
+        832
+      ],
+      "region": [
+        225,
+        824,
+        241,
+        840
+      ],
+      "kind": "alternating-four-sector-neighbourhood",
+      "reviewStatus": "assistant-reviewed-source-and-local-patch",
+      "exactMeetingPointKnown": false,
+      "physicalConnectionKnown": false,
+      "appearance": "point-like convergence with unresolved pixel-scale contact"
+    },
+    {
+      "id": "contact-06",
+      "center": [
+        180,
+        876
+      ],
+      "region": [
+        172,
+        868,
+        188,
+        884
+      ],
+      "kind": "alternating-four-sector-neighbourhood",
+      "reviewStatus": "assistant-reviewed-source-and-local-patch",
+      "exactMeetingPointKnown": false,
+      "physicalConnectionKnown": false,
+      "appearance": "point-like convergence with unresolved pixel-scale contact"
+    },
+    {
+      "id": "contact-07",
+      "center": [
+        240,
+        898
+      ],
+      "region": [
+        232,
+        890,
+        248,
+        906
+      ],
+      "kind": "alternating-four-sector-neighbourhood",
+      "reviewStatus": "assistant-reviewed-source-and-local-patch",
+      "exactMeetingPointKnown": false,
+      "physicalConnectionKnown": false,
+      "appearance": "point-like convergence with unresolved pixel-scale contact"
+    },
+    {
+      "id": "contact-08",
+      "center": [
+        378,
+        861
+      ],
+      "region": [
+        370,
+        853,
+        386,
+        869
+      ],
+      "kind": "alternating-four-sector-neighbourhood",
+      "reviewStatus": "assistant-reviewed-source-and-local-patch",
+      "exactMeetingPointKnown": false,
+      "physicalConnectionKnown": false,
+      "appearance": "near-tangent approaches"
+    },
+    {
+      "id": "contact-09",
+      "center": [
+        677,
+        850
+      ],
+      "region": [
+        669,
+        842,
+        685,
+        858
+      ],
+      "kind": "alternating-four-sector-neighbourhood",
+      "reviewStatus": "assistant-reviewed-source-and-local-patch",
+      "exactMeetingPointKnown": false,
+      "physicalConnectionKnown": false,
+      "appearance": "near-tangent approaches"
+    },
+    {
+      "id": "contact-10",
+      "center": [
+        785,
+        808
+      ],
+      "region": [
+        777,
+        800,
+        793,
+        816
+      ],
+      "kind": "alternating-four-sector-neighbourhood",
+      "reviewStatus": "assistant-reviewed-source-and-local-patch",
+      "exactMeetingPointKnown": false,
+      "physicalConnectionKnown": false,
+      "appearance": "visible gap between opposing green tips"
+    },
+    {
+      "id": "contact-11",
+      "center": [
+        842,
+        850
+      ],
+      "region": [
+        834,
+        842,
+        850,
+        858
+      ],
+      "kind": "alternating-four-sector-neighbourhood",
+      "reviewStatus": "assistant-reviewed-source-and-local-patch",
+      "exactMeetingPointKnown": false,
+      "physicalConnectionKnown": false,
+      "appearance": "visible gap between opposing green tips"
+    },
+    {
+      "id": "contact-12",
+      "center": [
+        780,
+        891
+      ],
+      "region": [
+        772,
+        883,
+        788,
+        899
+      ],
+      "kind": "alternating-four-sector-neighbourhood",
+      "reviewStatus": "assistant-reviewed-source-and-local-patch",
+      "exactMeetingPointKnown": false,
+      "physicalConnectionKnown": false,
+      "appearance": "visible gap between opposing green tips"
+    },
+    {
+      "id": "contact-13",
+      "center": [
+        503,
+        993
+      ],
+      "region": [
+        495,
+        985,
+        511,
+        1001
+      ],
+      "kind": "alternating-four-sector-neighbourhood",
+      "reviewStatus": "assistant-reviewed-source-and-local-patch",
+      "exactMeetingPointKnown": false,
+      "physicalConnectionKnown": false,
+      "appearance": "near-tangent approaches"
+    },
+    {
+      "id": "contact-14",
+      "center": [
+        473,
+        1129
+      ],
+      "region": [
+        465,
+        1121,
+        481,
+        1137
+      ],
+      "kind": "alternating-four-sector-neighbourhood",
+      "reviewStatus": "assistant-reviewed-source-and-local-patch",
+      "exactMeetingPointKnown": false,
+      "physicalConnectionKnown": false,
+      "appearance": "point-like convergence with unresolved pixel-scale contact"
+    },
+    {
+      "id": "contact-15",
+      "center": [
+        540,
+        1127
+      ],
+      "region": [
+        532,
+        1119,
+        548,
+        1135
+      ],
+      "kind": "alternating-four-sector-neighbourhood",
+      "reviewStatus": "assistant-reviewed-source-and-local-patch",
+      "exactMeetingPointKnown": false,
+      "physicalConnectionKnown": false,
+      "appearance": "visible gap between opposing green tips"
+    },
+    {
+      "id": "contact-16",
+      "center": [
+        505,
+        1187
+      ],
+      "region": [
+        497,
+        1179,
+        513,
+        1195
+      ],
+      "kind": "alternating-four-sector-neighbourhood",
+      "reviewStatus": "assistant-reviewed-source-and-local-patch",
+      "exactMeetingPointKnown": false,
+      "physicalConnectionKnown": false,
+      "appearance": "point-like convergence with unresolved pixel-scale contact"
+    }
+  ],
+  "validation": {
+    "sourceSha256Verified": true,
+    "sourceSizeVerified": true,
+    "exifTransformRequired": false,
+    "allRegionsInsideSource": true,
+    "uniqueIds": true,
+    "originalSourceUnmodified": true,
+    "manifestUnmodified": true,
+    "manifestSha256": "d3b02c4fcb1ce82ab984303419ad90bd3dc130727b8d08d30daca2f66d100364"
+  },
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/curved-contact-observations-v1/overview.png",
+      "sha256": "cd2a07719d652c06230637d614f4e8b73797205bdeec2303a796d1468a10d7e6"
+    },
+    {
+      "path": "tmp/heart-learning/curved-contact-observations-v1/patches.png",
+      "sha256": "5a8cebd4d7c2f66be53478e755496dc03907047e7f27776ea6e7285cfba0e33e"
+    },
+    {
+      "path": "tmp/heart-learning/curved-contact-observations-v1/preview.py",
+      "sha256": "c2cfcb4fc7a87d07143a1f9aed8ab3505339882db927b9b3e1467ca078326e6e"
+    }
+  ]
+}
