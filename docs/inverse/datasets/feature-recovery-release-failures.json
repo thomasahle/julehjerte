@@ -1,6 +1,6 @@
 {
   "schema": "woven-heart-feature-recovery-release-audit-1",
-  "status": "two-intermediate-assertions-corrected-remaining-timed-fidelity-failure-under-investigation",
+  "status": "two-intermediate-assertions-corrected-both-complete-files-pass-original-timing-failure-unexplained",
   "runtimeRevision": "b358c01",
   "precedingFullRun": {
     "tests": 905,
@@ -1010,11 +1010,42 @@
       "independentError": 0.01341875,
       "requiredMaximumError": 0.018
     },
-    "completeFeatureSeedsFile": "running"
+    "completeFeatureSeedsFile": {
+      "tests": 10,
+      "passed": 10,
+      "failed": 0,
+      "shiftedPuppyCapture": {
+        "path": "tmp/heart-learning/feature-test-followup-v1/captures/feature-seeds.test-6/result.json",
+        "milliseconds": 9257.134584,
+        "error": 0.01341875,
+        "sourceSha256": "19f2c14b8e5e09abdeda442284bb1187e80369331482ab6db0d935ef8335fd91",
+        "templateChecks": true,
+        "geometry": true,
+        "paper": "pass"
+      }
+    },
+    "followupSourceFilesVerified": 743,
+    "followupChecks": [
+      {
+        "stage": "lint",
+        "exitCode": 0,
+        "seconds": 1.7999674159999999
+      },
+      {
+        "stage": "refinement",
+        "exitCode": 0,
+        "seconds": 61.874383208
+      },
+      {
+        "stage": "seeds",
+        "exitCode": 0,
+        "seconds": 92.54953025
+      }
+    ]
   },
   "limits": [
     "The full 905-test run failed; native and browser release stages did not run.",
-    "The one-pixel-shift fidelity bound is unchanged. Isolated replays do not explain its earlier full-suite failure.",
+    "The one-pixel-shift fidelity bound is unchanged. Four isolated fits and the entire ten-test file now pass, but these replays do not establish the cause of the original full-suite error failure.",
     "All paired candidates pass existing template, geometry and paper checks, but one parent cropped-tree export exceeds that unit test's tighter 2.5% bound.",
     "Visual review still shows small border protrusions and uneven corners. No physical assembly or original-artwork accuracy is claimed."
   ],
@@ -1080,6 +1111,43 @@
     "tmp/heart-learning/matching-tree-failure-replay-v1/1-current/feature-refinement.test-0/report.json": "825125b70e229e3fa5ad5ebb9e65082182531c2ad1723cbcaa154901216ac779",
     "tmp/heart-learning/matching-tree-failure-replay-v1/1-current/feature-refinement.test-0/result.json": "d35a0befd5076de7a6693eaf67bf74a8b61b92333768f088814758019aaa7f5a",
     "tmp/heart-learning/matching-tree-failure-replay-v1/1-current/feature-refinement.test-0/cut_geometry.json": "911085f66f3cdc5ca14955de5bc391aaef676854e7745b5b1be605ee7804f9b9",
-    "tmp/heart-learning/matching-tree-failure-replay-v1/1-current/feature-refinement.test-0/woven.png": "0be8378f9dd1156c8c6f5f8b25c965a5d07d20c66854af95987196aec279d67c"
+    "tmp/heart-learning/matching-tree-failure-replay-v1/1-current/feature-refinement.test-0/woven.png": "0be8378f9dd1156c8c6f5f8b25c965a5d07d20c66854af95987196aec279d67c",
+    "tmp/heart-learning/feature-test-followup-v1/state.json": "070aa864e0d2960d53dec0cb73cdc5897874ec735b8f22b89ae5670d318bc483",
+    "tmp/heart-learning/feature-test-followup-v1/source.json": "4299dbf4959ac6b25e4a3de1cc5543c79d88fa10c3420f6e123dcc18d4314dff",
+    "tmp/heart-learning/feature-test-followup-v1/checks.json": "007bde31abaf00b2b2b2607c145921e7af06f72dea3dca60439bd207648fcdd4",
+    "tmp/heart-learning/feature-test-followup-v1/lint.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tmp/heart-learning/feature-test-followup-v1/seeds.log": "9b47032a31a8b82855db611655c497e89d72c67bd0c6bfae535957a1d89079fc",
+    "tmp/heart-learning/feature-test-followup-v1/captures/feature-seeds.test-7/report.json": "faad38c9c9ca39a30a0bf586b20197af06fec49483ace41c9fd308875d2df2e0",
+    "tmp/heart-learning/feature-test-followup-v1/captures/feature-seeds.test-7/result.json": "35c44308e8ebcda58063357f6a20a99f5acd54c6d9926a14ffb01181b18ceb23",
+    "tmp/heart-learning/feature-test-followup-v1/captures/feature-seeds.test-7/cut_geometry.json": "1bc0dd1dba943690ef6f316b404c1a855be582f7ca0fd9b98fd70ef814ec26f7",
+    "tmp/heart-learning/feature-test-followup-v1/captures/feature-seeds.test-7/woven.png": "e0fe40045dcef87e386c60b8c67537b09b6791a957cce501a185fa0b0db6429a",
+    "tmp/heart-learning/feature-test-followup-v1/captures/feature-seeds.test-0/report.json": "ec7950a5216c2412e79a58a5fa3b9b3dcf3c773dea0975614758cd290a189688",
+    "tmp/heart-learning/feature-test-followup-v1/captures/feature-seeds.test-0/result.json": "b3620cb7732bfd1b8d397fb3ef91bf3143c817d1291e57ce85cb69be8772b078",
+    "tmp/heart-learning/feature-test-followup-v1/captures/feature-seeds.test-0/cut_geometry.json": "93226f3420e479878fc8edde88226c56964050033d92ffd763115ee0c105a407",
+    "tmp/heart-learning/feature-test-followup-v1/captures/feature-seeds.test-0/woven.png": "7c79455daba80d9e6317b0f4b346e43739fe64e6813a927d8825bdf0563642ad",
+    "tmp/heart-learning/feature-test-followup-v1/captures/feature-seeds.test-1/report.json": "5bc6f74a365820600e81d3bb65c5f38193850530af46af4fe5bd912d4ee8bd82",
+    "tmp/heart-learning/feature-test-followup-v1/captures/feature-seeds.test-1/result.json": "c5437b9eda3b8e5285541456745de8f87d4a33af3ff8ff235b4fbd1d6d33bde2",
+    "tmp/heart-learning/feature-test-followup-v1/captures/feature-seeds.test-1/cut_geometry.json": "8b010c1ea0ff1c3d0280d01744c4c75a9896d0ed5833f83ccad653c9cbcd9d83",
+    "tmp/heart-learning/feature-test-followup-v1/captures/feature-seeds.test-1/woven.png": "7c79455daba80d9e6317b0f4b346e43739fe64e6813a927d8825bdf0563642ad",
+    "tmp/heart-learning/feature-test-followup-v1/captures/feature-seeds.test-6/report.json": "127005d2e597c7b4b8b4ac228aa33fa5665cd8c5243a2a5d9cdbe4ea39eadcec",
+    "tmp/heart-learning/feature-test-followup-v1/captures/feature-seeds.test-6/result.json": "6a59e9ca4a2c9f31d9469f7d5cb2bc53470d824d243d446ec15f29b431588fa0",
+    "tmp/heart-learning/feature-test-followup-v1/captures/feature-seeds.test-6/cut_geometry.json": "4c58fb6b5852b8bde19e9a2b5dc3be9500c1345472d6192b29192d0bae8a8ea4",
+    "tmp/heart-learning/feature-test-followup-v1/captures/feature-seeds.test-6/woven.png": "91a6faca1f3e0b48fecb950c9a189c05236a88408bc94969ee99d9fad050f6ad",
+    "tmp/heart-learning/feature-test-followup-v1/captures/feature-seeds.test-3/report.json": "00515a96d5b242208930e6a0e72ef47f08a9458efc16dee767f45de5903e6a73",
+    "tmp/heart-learning/feature-test-followup-v1/captures/feature-seeds.test-3/result.json": "03de36f2cf241fc264dada9f203ab42950c1d3ba5295df6e3d535b2d4ae47602",
+    "tmp/heart-learning/feature-test-followup-v1/captures/feature-seeds.test-3/cut_geometry.json": "903acd9c97e0134e4302d894fee1d7600e6b92c2f57f3fc334d8c77f86d37662",
+    "tmp/heart-learning/feature-test-followup-v1/captures/feature-seeds.test-3/woven.png": "43a22b244af68534ea7a926171dd21a8bff71ab0e94f40e604646bd67e954eb7",
+    "tmp/heart-learning/feature-test-followup-v1/captures/feature-seeds.test-4/report.json": "88ca9a6c8448f82d682b966613b434976392520f95417016386a2cb9d2eaa1e6",
+    "tmp/heart-learning/feature-test-followup-v1/captures/feature-seeds.test-4/result.json": "2deca4e7e25b6643eba47145ca6a6410340b2b0685be85f70e5807b3d31b88a4",
+    "tmp/heart-learning/feature-test-followup-v1/captures/feature-seeds.test-4/cut_geometry.json": "93062bd10c67a0da2d8143a0244ab233a3778ed723c4bd85d77785c4fc465f03",
+    "tmp/heart-learning/feature-test-followup-v1/captures/feature-seeds.test-4/woven.png": "150bae1592d0534b74016e8b57e9976bc28babfe9ed50e3df142c03f8fb74492",
+    "tmp/heart-learning/feature-test-followup-v1/captures/feature-seeds.test-5/report.json": "366f337ea3c19b55fd8353bb386d6ebc0b4559495e450eb49e1f1b5b083abde3",
+    "tmp/heart-learning/feature-test-followup-v1/captures/feature-seeds.test-5/result.json": "06b0e66c985e9f897caccc93774ca7185dea1674e214ae3107f06180d107d77c",
+    "tmp/heart-learning/feature-test-followup-v1/captures/feature-seeds.test-5/cut_geometry.json": "7cdda85aa95f3bb6bb8a05acd4f2dcf8de9168f8338972387c11fe7385929303",
+    "tmp/heart-learning/feature-test-followup-v1/captures/feature-seeds.test-5/woven.png": "9b8ca6490e7cc0e59d417b07a72211422f80d8639c2feb45fc4cd817e2afe9c0",
+    "tmp/heart-learning/feature-test-followup-v1/captures/feature-seeds.test-2/report.json": "84579d8adb2e862a60b4384ea9ba2fc6289ec2b09707ddd0992158b5da83f6d4",
+    "tmp/heart-learning/feature-test-followup-v1/captures/feature-seeds.test-2/result.json": "23b0aea95ed0e336fafd28bfe5935330702fe1250229d4e6c3080f68befe3982",
+    "tmp/heart-learning/feature-test-followup-v1/captures/feature-seeds.test-2/cut_geometry.json": "48b9708d1d91f2ebf953aba77569616d2a92c0e283122797657fd45020687ae2",
+    "tmp/heart-learning/feature-test-followup-v1/captures/feature-seeds.test-2/woven.png": "bead473fa5ac15854d3415e423f310cf71a0f8c7183c54be287a5d925510ccf6"
   }
 }
