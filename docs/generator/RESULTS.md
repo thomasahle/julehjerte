@@ -1,5 +1,44 @@
 # Generator robustness results
 
+## Focused follow-up: checkerboard text and practical cuts
+
+The new `repeat-check` frame ("Gentag med tern") builds alternating backgrounds
+from the actual cutting geometry. ANNA keeps its cyclic 4×4 letter field;
+odd-length words repeat twice along each axis to make an even colour period.
+The ordinary repeat frame remains a separate choice.
+
+Counter connections can land at natural corners, and invisible chords can split
+long pointed tongues between the two sheets. The bounded route comparison
+penalizes hairpins and short sharp steps while preserving every visible outline.
+If none of these alternatives fits, that letter keeps the original contour
+construction. On Nunito ANNA, exported cut tips narrower than 45° fell from 34
+to 16; all eight tips narrower than 30° were eliminated. This is a geometric
+improvement, not a physical paper-strength measurement.
+
+The final checkerboard sweep tested 33 Nunito texts plus ANNA in the other five
+fonts: **27 accepted, 11 refused, zero invalid accepted results**. All 25
+configurations that worked before cut optimization still work; Oswald ANNA and
+Cinzel ANNA are newly accepted. Every accepted result passed both JSON and SVG
+handoffs, raster comparison and editor spacing checks. These 27 cases join the
+acceptance list, which now pins 1,532 configurations across the generators.
+
+The focused follow-up also recovered 12 text configurations and two default
+figure configurations (`ph-paw-print` and `tb-butterfly`) from the preceding
+audit's refusals. These are pinned in `scripts/generator/expected.json` and
+covered by export regression tests. Larger letter panels and visible
+connections to disconnected components retain the selected font and motif.
+
+All 900 unit tests and 177 inverse tests pass, as do type checking, lint and the
+production build. Browser verification covered ANNA's new frame thumbnail,
+matching main preview and 4×4 editor handoff with the improved cuts. The updated
+intersection warning scan retains the exhaustive algorithm's results and order
+while excluding distant segment pairs before testing them.
+
+The full audit below predates this follow-up. Its aggregate counts have not been
+replaced with estimates from the focused runs; full coverage remains unfinished.
+
+## Preceding full audit
+
 Offline audit completed 15 October 2026. Baseline: `7e5d5d7`. The generators are safer and cover more inputs after this change, but **they do not yet support every tested combination**. Refusals are listed separately from successful generations.
 
 | Corpus | Configurations | Accepted | Refused | Invalid accepted output |

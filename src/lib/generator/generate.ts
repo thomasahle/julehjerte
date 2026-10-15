@@ -4,6 +4,7 @@ import { generateFittedFigure } from './fitted';
 import { sunburstBorder } from './sunburst';
 import { generateTextGrid } from './textGrid';
 import { generateRepeatedGrid } from './repeatedGrid';
+import { generateCheckeredGrid } from './checkeredGrid';
 import { gridClearanceScale } from '$lib/geometry/clearance';
 import { generatePanelFigure } from './panels';
 import {
@@ -76,11 +77,19 @@ function linesCross(a: Point, b: Point, c: Point, d: Point) {
 }
 /** Validate the actual polygon cuts, not just their graph endpoints. */
 function audit(edges: Edge[]) {
-	for (let i = 0; i < edges.length; i++)
-		for (let j = i + 1; j < edges.length; j++) {
-			const a = edges[i],
-				b = edges[j];
-			if (![...a.family].some((f) => b.family.includes(f))) continue;
+	// Repeated letters produce many distant segments. Sweep their bounding
+	// boxes before the exact intersection test; validation stays identical.
+	const sorted = edges.map(edge => ({
+		edge, minX: Math.min(edge.from[0], edge.to[0]), maxX: Math.max(edge.from[0], edge.to[0]),
+		minY: Math.min(edge.from[1], edge.to[1]), maxY: Math.max(edge.from[1], edge.to[1])
+	})).sort((a, b) => a.minX - b.minX);
+	for (let i = 0; i < sorted.length; i++)
+		for (let j = i + 1; j < sorted.length; j++) {
+			const u = sorted[i], v = sorted[j];
+			if (v.minX > u.maxX + 1e-7) break;
+			if (v.minY > u.maxY + 1e-7 || u.minY > v.maxY + 1e-7) continue;
+			const a = u.edge, b = v.edge;
+			if (a.family !== b.family && a.family !== 'AB' && b.family !== 'AB') continue;
 			if (
 				[a.from, a.to].some((p) =>
 					[b.from, b.to].some((q) => distance(p, q) < 1e-7)
@@ -288,6 +297,8 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 	if (request.mode === 'text') {
 		if (!request.font) throw new ConstructionError('empty', 'No font');
 		const frame = request.textFrame ?? 'woven';
+		if (frame === 'repeat-check')
+			return finish(generateCheckeredGrid(request.text ?? '', request.font), 'letters');
 		if (frame === 'repeat')
 			return finish(generateRepeatedGrid(request.text ?? '', request.font), 'letters');
 		const text = request.text ?? '';
@@ -305,6 +316,8 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 				padding: .5,
 				spread: true
 			}));
+		for (const [columns, slices] of [[2, 1], [1, 2], [2, 2], [1, 3]])
+			recipes.push(() => generateTextGrid(text, font, frame === 'air', shape, { columns, slices, spread: true }));
 		let last: unknown;
 		for (const construct of recipes) {
 			try { return finish(construct(), 'letters'); }
@@ -363,6 +376,8 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		() => generatePanelFigure(rings, shape, size, scale, 3, style, 3),
 		() => generatePanelFigure(rings, shape, size, scale, 2, style, 2, true)
 	);
+	for (const [columns, rows] of [[4, 1], [5, 1], [4, 2], [2, 4], [5, 2], [4, 3], [3, 4], [4, 4]])
+		recipes.push(() => generatePanelFigure(rings, shape, size, scale, columns, style, rows, true));
 	const errors: Error[] = [];
 	for (const construct of recipes) {
 		try {

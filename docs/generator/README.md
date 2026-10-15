@@ -2,10 +2,12 @@
 
 Run `npm run test:generator:robustness` from the worktree. The offline corpus uses
 34 texts, six bundled fonts, and 51 authored, Phosphor and Tabler motifs.
-Nunito is tested in all nine text frames; the other five fonts are tested in
-woven, air and repeat. Every motif is tested in all 22 figure templates. Together
-this is 810 text configurations and 1,122 figure configurations. Repeat cases
-longer than the supported ten letters are excluded, not reported as successes.
+Nunito is tested in all ten text frames; the other five fonts are tested in
+woven, air, repeat and repeat-check. Every motif is tested in all 22 figure
+templates. Together this is 1,008 text configurations and 1,122 figure
+configurations. Repeat cases exceeding the frame's strip limit are excluded,
+not reported as successes. The checkerboard variant uses an even period:
+ANNA is 4×4, JUL is 6×6, and OSCAR is 10×10.
 
 The command writes `tmp/generator/report.json` and a visual review in
 `tmp/generator/report.html`. It records generation time, accepted/refused status,
@@ -29,9 +31,11 @@ Useful focused runs:
 
 ```sh
 node scripts/generator/robustness.mjs --mode=text --font=nunito --frame=repeat
+node scripts/generator/robustness.mjs --mode=text --frame=repeat-check
 node scripts/generator/robustness.mjs --mode=text --input=anna
 node scripts/generator/robustness.mjs --mode=figure --input=gift
 node scripts/generator/robustness.mjs --mode=figure --frame=circle-layers
+node scripts/generator/robustness.mjs --mode=text --failed=tmp/generator/previous-report.json --out=tmp/generator/retest.json
 ```
 
 Keep each run's output path distinct with `--out=tmp/generator/name.json` when

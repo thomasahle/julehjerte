@@ -28,7 +28,7 @@ export const FRAMES = [
 	'scalloped'
 ] as const;
 export type Frame = (typeof FRAMES)[number];
-export type TextFrame = 'woven' | 'air' | 'repeat' | Frame;
+export type TextFrame = 'woven' | 'air' | 'repeat' | 'repeat-check' | Frame;
 export class ConstructionError extends Error {
 	constructor(
 		public code: 'topology' | 'clearance' | 'empty' | 'character',
@@ -232,7 +232,8 @@ export function contourChain(
 	angle: number,
 	start: Point,
 	end: Point,
-	first: 'A' | 'B' = 'A'
+	first: 'A' | 'B' = 'A',
+	visible = false
 ) {
 	const ordered = nodes
 		.slice()
@@ -242,9 +243,10 @@ export function contourChain(
 				dot(centroid(b.ring), direction(angle))
 		);
 	let previous = start;
-	for (const node of ordered) {
-		const entry = support(node.ring, angle + Math.PI),
-			exit = support(node.ring, angle);
+	for (const [index, node] of ordered.entries()) {
+		const c = centroid(node.ring), next = index + 1 < ordered.length ? centroid(ordered[index + 1].ring) : end;
+		const entry = visible ? ray(node.ring, previous, Math.atan2(c[1] - previous[1], c[0] - previous[0])) : support(node.ring, angle + Math.PI),
+			exit = visible ? ray(node.ring, next, Math.atan2(c[1] - next[1], c[0] - next[0])) : support(node.ring, angle);
 		add(edges, [previous, entry.point], 'AB', 'shared');
 		block(edges, node, entry, exit, first);
 		previous = exit.point;
@@ -663,17 +665,22 @@ export function generateCheckedText(
  * cannot discard a counter or its bridges. Their route validator checks the
  * retained paths with the new paper-edge endpoints, instead of the cap that
  * will be removed. Other constructions keep the original four-route check. */
-export function fourPortMotif(
+function contourMotif(
 	edges: Edge[],
 	contours: Ring[],
 	gates: Point[],
 	angles: number[],
 	margin = 1.5,
 	bridgePorts: readonly number[] = [0, 1, 2, 3],
-	acceptRoutes?: (routes: Ring[]) => boolean
+	acceptRoutes?: (routes: Ring[]) => boolean,
+	options: { root?: Ring; visibleIslands?: boolean; strict?: boolean; practical?: boolean } = {}
 ) {
+	const count = gates.length;
 	const nodes = forest(contours).sort(
-		(a, b) => Math.abs(area(b.ring)) - Math.abs(area(a.ring))
+		(a, b) => {
+			const selected = (r: Ring) => Number(!!options.root && r.includes(options.root[0]));
+			return selected(b.ring) - selected(a.ring) || Math.abs(area(b.ring)) - Math.abs(area(a.ring));
+		}
 	);
 	const base = nodes[0];
 	const candidates = gates.map((p, j) => {
@@ -714,20 +721,20 @@ export function fourPortMotif(
 			.sort((a, b) => distance(a.point, p) - distance(b.point, p));
 		result.splice(1, 0, notches[0] ?? null);
 		result.push(support(base.ring, angles[j] + Math.PI));
+		if (options.practical) result.push(notches[1] ?? null, support(base.ring, angles[j] + Math.PI - .7), support(base.ring, angles[j] + Math.PI + .7));
 		return result;
 	});
 	let fallback: Edge[] | null = null;
 	const alternatives = new Map<string, { edges: Edge[]; ports: Port[] }>();
+	const ranked: { edges: Edge[]; routes: Ring[]; score: number }[] = [];
 	let attempts = 0;
 	// Choose visible attachments in cyclic order. The finite fan of rays is a
 	// contour-routing rule, not an inverse image solve: no outline moves, and
 	// every candidate has exactly the same visible boundary and topology.
-	const combinations = Array.from({ length: 625 }, (_, n) => [
-		n % 5,
-		Math.floor(n / 5) % 5,
-		Math.floor(n / 25) % 5,
-		Math.floor(n / 125) % 5
-	]).sort(
+	const fan = options.practical ? 8 : 5;
+	const combinations = Array.from({ length: fan ** count }, (_, n) =>
+		Array.from({ length: count }, (_, i) => Math.floor(n / fan ** i) % fan)
+	).sort(
 		(a, b) =>
 			a.filter((x) => x !== 0).length - b.filter((x) => x !== 0).length ||
 			a.reduce((x, y) => x + y, 0) - b.reduce((x, y) => x + y, 0)
@@ -735,7 +742,7 @@ export function fourPortMotif(
 	const seenPorts = new Set<string>();
 	routing: for (const indices of combinations) {
 		const ports = indices.map((index, j) => candidates[j][index]);
-		if (!ports.every((p): p is Port => p !== null) || !cyclic(base.ring, ports))
+		if (!ports.every((p): p is Port => p != null) || !cyclic(base.ring, ports))
 			continue;
 		const portKey = ports.map((p) => p.index.toFixed(8)).join(',');
 		if (seenPorts.has(portKey)) continue;
@@ -743,7 +750,7 @@ export function fourPortMotif(
 		// Spokes are independent of the internal bridges. Check them once rather
 		// than retrying the same blocked attachment for every counter route.
 		const exterior: Edge[] = [];
-		const extras = Array.from({ length: 4 }, () => [] as Contour[]);
+		const extras = Array.from({ length: count }, () => [] as Contour[]);
 		for (const node of nodes.slice(1)) {
 			const c = centroid(node.ring);
 			const j = bridgePorts.reduce(
@@ -753,9 +760,12 @@ export function fourPortMotif(
 			extras[j].push(node);
 		}
 		try {
-			for (let j = 0; j < 4; j++) {
-				if (extras[j].length)
-					contourChain(exterior, extras[j], angles[j], gates[j], ports[j].point);
+			for (let j = 0; j < count; j++) {
+				if (extras[j].length) {
+					const c = centroid(extras[j].flatMap(n => n.ring)), b = centroid(base.ring);
+					const angle = options.visibleIslands ? Math.atan2(b[1] - c[1], b[0] - c[0]) : angles[j];
+					contourChain(exterior, extras[j], angle, gates[j], ports[j].point, 'A', options.visibleIslands);
+				}
 				else add(exterior, [gates[j], ports[j].point], 'AB', 'shared');
 			}
 		} catch (error) {
@@ -763,14 +773,19 @@ export function fourPortMotif(
 			continue;
 		}
 		if (!clearSharedCuts(exterior, contours)) continue;
-		for (const interior of perforatedOutline(base, ports, bridgePorts)) {
+		for (const interior of perforatedOutline(base, ports, bridgePorts, options.practical)) {
 			const local = [...interior, ...exterior];
 			try {
 				const routes = localRoutes(local, gates);
 				if (!routes || !clearSharedCuts(local, contours)) continue;
 				fallback ??= local;
-				if (!alternatives.has(portKey) && alternatives.size < 8)
+				if (!alternatives.has(portKey) && alternatives.size < (options.practical ? 64 : 8))
 					alternatives.set(portKey, { edges: local, ports });
+				if (options.practical) {
+					ranked.push({ edges: local, routes, score: cuttingCost(routes, margin) });
+					if (++attempts >= 256) break routing;
+					continue;
+				}
 				if (acceptRoutes ? acceptRoutes(routes) : usableRoutes(routes, margin)) {
 					edges.push(...local);
 					return;
@@ -792,22 +807,79 @@ export function fourPortMotif(
 	// across all attachment choices for this cell.
 	let reliefAttempts = 0;
 	relief: for (const local of alternatives.values()) {
-		for (const relieved of relieveNotches(local.edges, base.ring, local.ports, bridgePorts)) {
+		let portAttempts = 0;
+		for (const relieved of relieveNotches(local.edges, base.ring, local.ports, bridgePorts, options.practical)) {
+			if (options.practical && ++portAttempts > 8) break;
 			if (++reliefAttempts > 256) break relief;
 			const routes = localRoutes(relieved, gates);
 			if (!routes || !clearSharedCuts(relieved, contours)) continue;
+			if (options.practical) {
+				ranked.push({ edges: relieved, routes, score: cuttingCost(routes, margin) });
+				continue;
+			}
 			if (acceptRoutes ? acceptRoutes(routes) : usableRoutes(routes, margin)) {
 				edges.push(...relieved);
 				return;
 			}
 		}
 	}
+	for (const candidate of ranked.sort((a, b) => a.score - b.score))
+		if (usableRoutes(candidate.routes, margin)) {
+			edges.push(...candidate.edges);
+			return;
+		}
+	if (options.practical) {
+		// Corner attachments are optional improvements. Keep the original
+		// construction when none fits; final fitted cuts still get validated.
+		contourMotif(edges, contours, gates, angles, margin, bridgePorts, acceptRoutes, { ...options, practical: false });
+		return;
+	}
+	if (!options.visibleIslands && nodes.length > 1) {
+		try {
+			contourMotif(edges, contours, gates, angles, margin, bridgePorts, acceptRoutes, { ...options, visibleIslands: true, strict: true });
+			return;
+		} catch (error) {
+			if (!(error instanceof ConstructionError)) throw error;
+		}
+	}
 	// Fitted curves get their own full-sheet clearance check before export.
-	if (fallback && !acceptRoutes) {
+	if (fallback && !acceptRoutes && !options.strict) {
 		edges.push(...fallback);
 		return;
 	}
-	throw new ConstructionError('topology', 'No open four-port construction');
+	throw new ConstructionError('topology', `No open ${count === 4 ? 'four' : 'two'}-port construction`);
+}
+
+export const fourPortMotif = contourMotif;
+
+/** A checkerboard junction can feed one letter through two shared bridges.
+ * Counters may bracket either bridge; they are never removed from the sheet. */
+export function twoPortMotif(edges: Edge[], contours: Ring[], gates: Point[], margin: number) {
+	const center = centroid(contours.flat());
+	try {
+		contourMotif(edges, contours, gates, gates.map(p => Math.atan2(center[1] - p[1], center[0] - p[0])), margin, [0, 1], undefined, { practical: true });
+	} catch (error) {
+		if (!(error instanceof ConstructionError)) throw error;
+		contourChain(edges, forest(contours), Math.atan2(gates[1][1] - gates[0][1], gates[1][0] - gates[0][0]), gates[0], gates[1], 'A', true);
+	}
+}
+
+/** Penalize hairpin turns and short sharp steps. A bridge at a letter's
+ * natural corner can divide a fragile tongue between the two paper sheets
+ * without changing the visible letter. Smooth, finely sampled curves remain
+ * cheap: their tiny steps have tiny turning angles. */
+function cuttingCost(routes: Ring[], margin: number) {
+	let cost = 0;
+	for (const route of routes) {
+		for (let i = 1; i < route.length; i++) cost += distance(route[i - 1], route[i]) / margin * .002;
+		for (let i = 1; i < route.length - 1; i++) {
+			const a = sub(route[i], route[i - 1]), b = sub(route[i + 1], route[i]);
+			const turn = Math.atan2(Math.abs(cross(a, b)), dot(a, b)) / Math.PI;
+			const length = Math.min(Math.hypot(...a), Math.hypot(...b));
+			cost += turn ** 4 * (1 + margin / Math.max(length, margin * .1));
+		}
+	}
+	return cost;
 }
 
 /** Locate a point on the original outline, including fractional edge positions. */
@@ -823,17 +895,22 @@ function ringPort(ring: Ring, point: Point): Port | null {
 /** A chord brackets one active external port. Flipping that interval preserves
  * the four path pairings; both sheets share the new internal cut. Boundary
  * ports are excluded so an opened letter cap cannot swallow this bridge. */
-function* relieveNotches(edges: Edge[], ring: Ring, ports: Port[], allowed: readonly number[]): Generator<Edge[]> {
+function* relieveNotches(edges: Edge[], ring: Ring, ports: Port[], allowed: readonly number[], practical = false): Generator<Edge[]> {
 	const chords: [Port, Port][] = [];
+	const notches = practical ? ring.flatMap((p, i) => {
+		const u = sub(p, ring[(i + ring.length - 1) % ring.length]), v = sub(ring[(i + 1) % ring.length], p);
+		return Math.atan2(cross(u, v), dot(u, v)) < -.8 ? [{ point: p, index: i }] : [];
+	}) : [];
 	for (let i = 0; i < ring.length; i++) {
 		const p = ring[i], u = sub(p, ring[(i + ring.length - 1) % ring.length]), v = sub(ring[(i + 1) % ring.length], p);
 		if (Math.atan2(cross(u, v), dot(u, v)) > -.8)
 			continue;
 		if (edges.some(e => e.family === 'AB' && (near(e.from, p) || near(e.to, p))))
 			continue;
-		for (let j = 0; j < 32; j++) {
+		for (let j = 0; j < 32 + notches.length; j++) {
 			try {
-				const b = ray(ring, p, j * Math.PI / 16);
+				const b = j < 32 ? ray(ring, p, j * Math.PI / 16) : notches[j - 32];
+				if (near(p, b.point)) continue;
 				if (!inside(mix(p, b.point, .5), ring))
 					continue;
 				if (edges.some(e => e.family === 'AB' && (near(e.from, b.point) || near(e.to, b.point))))
@@ -851,7 +928,8 @@ function* relieveNotches(edges: Edge[], ring: Ring, ports: Port[], allowed: read
 			}
 		}
 	}
-	chords.sort(([a, b], [c, d]) => distance(a.point, b.point) - distance(c.point, d.point));
+	const notchEnds = (a: Port, b: Port) => notches.filter(p => near(p.point, a.point) || near(p.point, b.point)).length;
+	chords.sort(([a, b], [c, d]) => notchEnds(c, d) - notchEnds(a, b) || distance(a.point, b.point) - distance(c.point, d.point));
 	for (const [a, b] of chords) {
 		const result: Edge[] = [];
 		for (const edge of edges) {
@@ -882,7 +960,7 @@ function* relieveNotches(edges: Edge[], ring: Ring, ports: Port[], allowed: read
  * outline arcs preserves the four external path pairings. A bridge pair on an
  * arc with no external port would instead create a closed cutting cycle.
  * Sibling holes share a chain; nested contours use the two-terminal block. */
-function* perforatedOutline(node: Contour, ports: Port[], bridgePorts: readonly number[]): Generator<Edge[]> {
+function* perforatedOutline(node: Contour, ports: Port[], bridgePorts: readonly number[], practical = false): Generator<Edge[]> {
 	if (!node.children.length) {
 		const edges: Edge[] = [];
 		outline(edges, node.ring, ports, 'B');
@@ -890,7 +968,7 @@ function* perforatedOutline(node: Contour, ports: Port[], bridgePorts: readonly 
 		return;
 	}
 	const ring = node.ring,
-		n = ring.length;
+		n = ring.length, count = ports.length;
 	const at = (a: Port, b: Port, fraction: number): Port => {
 		const points = arc(ring, a, b);
 		const lengths = points.slice(1).map((p, i) => distance(points[i], p));
@@ -956,7 +1034,7 @@ function* perforatedOutline(node: Contour, ports: Port[], bridgePorts: readonly 
 		const key = assignment.join(',');
 		if (seenPartitions.has(key)) continue;
 		seenPartitions.add(key);
-		for (const [left, right] of [
+		for (const corners of practical ? [true, false] : [false]) for (const [left, right] of [
 			[-1, -1],
 			[0.5, 0.5],
 			[0.3, 0.7],
@@ -969,18 +1047,18 @@ function* perforatedOutline(node: Contour, ports: Port[], bridgePorts: readonly 
 			const edges: Edge[] = [],
 				intervals: [Port, Port][] = [];
 			try {
-				for (let j = 0; j < 4; j++) {
+				for (let j = 0; j < count; j++) {
 					const children = node.children.filter((_, i) => assignment[i] === j);
 					if (!children.length) continue;
 					const center = centroid(children.flatMap((h) => h.ring));
 					const before =
 						left < 0
-							? closest(ports[(j + 3) % 4], ports[j], center)
-							: at(ports[(j + 3) % 4], ports[j], left);
+							? closest(ports[(j + count - 1) % count], ports[j], center)
+							: at(ports[(j + count - 1) % count], ports[j], left);
 					const after =
 						right < 0
-							? closest(ports[j], ports[(j + 1) % 4], center)
-							: at(ports[j], ports[(j + 1) % 4], right);
+							? closest(ports[j], ports[(j + 1) % count], center)
+							: at(ports[j], ports[(j + 1) % count], right);
 					if (
 						[before, after].some((p) =>
 							ports.some((q) => near(p.point, q.point))
@@ -1000,12 +1078,12 @@ function* perforatedOutline(node: Contour, ports: Port[], bridgePorts: readonly 
 							k + 1 < children.length
 								? centroid(children[k + 1].ring)
 								: after.point;
-						const entry = ray(
+						const entry = corners ? support(h.ring, Math.atan2(previous[1] - c[1], previous[0] - c[0])) : ray(
 							h.ring,
 							previous,
 							Math.atan2(c[1] - previous[1], c[0] - previous[0])
 						);
-						const exit = ray(
+						const exit = corners ? support(h.ring, Math.atan2(next[1] - c[1], next[0] - c[0])) : ray(
 							h.ring,
 							next,
 							Math.atan2(c[1] - next[1], c[0] - next[0])
@@ -1028,7 +1106,7 @@ function* perforatedOutline(node: Contour, ports: Port[], bridgePorts: readonly 
 					const contains = (a: Port, b: Port) =>
 						(mid - a.index + n) % n < (b.index - a.index + n) % n;
 					let family: 'A' | 'B' =
-						ports.findIndex((p, j) => contains(p, ports[(j + 1) % 4])) % 2
+						ports.findIndex((p, j) => contains(p, ports[(j + 1) % count])) % 2
 							? 'A'
 							: 'B';
 					if (intervals.filter(([a, b]) => contains(a, b)).length % 2)
@@ -1076,7 +1154,7 @@ function localRoutes(edges: Edge[], gates: Point[]): Ring[] | null {
 			used = new Set<number>();
 		for (const [k, ids] of adj)
 			if (ids.length !== (gateKeys.includes(k) ? 1 : 2)) return null;
-		for (const [start, end] of pairs) {
+		for (const [start, end] of gates.length === 2 ? [[0, 1]] : pairs) {
 			let p = gates[start];
 			const route = [p];
 			for (;;) {
@@ -1154,7 +1232,7 @@ function usableRoutes(routes: Ring[], margin: number): boolean {
 	});
 	const fingers: Finger[] = extended.map((route, i) => ({
 		id: String(i),
-		lobe: i < 2 ? 'right' : 'left',
+		lobe: i < routes.length / 2 ? 'right' : 'left',
 		segments: route.slice(1).map((p, j) => {
 			const a = route[j],
 				b = mix(a, p, 1 / 3),

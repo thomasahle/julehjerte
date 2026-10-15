@@ -82,7 +82,7 @@ export function clipContours(rings: Ring[], x: number, left: boolean): Ring[] {
 
 /** Atomic divider segments cancel within a sheet, or combine into an AB cut.
  * Splitting at every endpoint handles the different port positions of two cells. */
-function stitch(edges: Edge[], dividers: number[], axis: 0 | 1 = 0): Edge[] {
+export function stitch(edges: Edge[], dividers: number[], axis: 0 | 1 = 0): Edge[] {
 	let result = edges;
 	const uprightX = (p: Point) =>
 		(axis === 0 ? p[0] - p[1] : p[0] + p[1] - 100) * Math.SQRT1_2;

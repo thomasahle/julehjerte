@@ -8,7 +8,7 @@ import { gridClearance } from '$lib/geometry/clearance';
 import { repeatedText } from './repeatedText';
 import {
 	ConstructionError, type Font, type Ring, type Edge, type Point, type Port,
-	forest, fourPortMotif, arc, mix, dot, area, distance, add, compile
+	forest, fourPortMotif, arc, mix, dot, area, distance, add, compile, support
 } from './geometry';
 
 /** Intersect a supporting line with the outline. Each returned arc is one
@@ -137,8 +137,7 @@ export function generateRepeatedGrid(text: string, font: Font) {
 				center[0] + ((x - cx) + (y - cy)) * Math.SQRT1_2 * scale,
 				center[1] + ((y - cy) - (x - cx)) * Math.SQRT1_2 * scale
 			]));
-			const baseIndex = contours.reduce((best, r, i) => Math.abs(area(r)) > Math.abs(area(contours[best])) ? i : best, 0);
-			const nodes = forest(contours), base = nodes.sort((a, b) => Math.abs(area(b.ring)) - Math.abs(area(a.ring)))[0];
+			const nodes = forest(contours).sort((a, b) => Math.abs(area(b.ring)) - Math.abs(area(a.ring)));
 			// Occupied cells of a 2n×n checker lattice have four neighbouring
 			// gates. Align the glyph centres into the requested n×n square while
 			// retaining that staggered connectivity. No empty foreground cell is
@@ -172,7 +171,17 @@ export function generateRepeatedGrid(text: string, font: Font) {
 			const normals: Point[] = [[0, -1], [1, 0], [0, 1], [-1, 0]];
 			const normal = sides.reduce<Point>((p, i) => [p[0] + normals[i][0], p[1] + normals[i][1]], [0, 0]);
 			let built = false;
-			for (const [a, b] of caps(base.ring, normal, margin)) {
+			const choices = nodes.flatMap(base => {
+				const pairs = caps(base.ring, normal, margin);
+				if (sides.length === 2) {
+					const corner = [0, 1, 2, 3].find(i => boundary[i] && boundary[(i + 3) % 4])!;
+					const before = normals[(corner + 3) % 4], after = normals[corner];
+					pairs.push([support(base.ring, Math.atan2(before[1], before[0])), support(base.ring, Math.atan2(after[1], after[0]))]);
+				}
+				return pairs.map(([a, b]) => ({ base, a, b }));
+			});
+			for (const { base, a, b } of choices) {
+				const baseIndex = contours.findIndex(r => r.includes(base.ring[0]));
 				const ports = gates.slice();
 				let corner: number | undefined;
 				if (sides.length === 1) {
@@ -190,7 +199,7 @@ export function generateRepeatedGrid(text: string, font: Font) {
 				}
 				try {
 					const local: Edge[] = [];
-					fourPortMotif(local, contours, ports, angles, margin, active, routes => spacedRoutes(routes, ports, active, boundary, margin, 2 * n * STRIP_WIDTH / 100));
+					fourPortMotif(local, contours, ports, angles, margin, active, routes => spacedRoutes(routes, ports, active, boundary, margin, 2 * n * STRIP_WIDTH / 100), { root: base.ring });
 					const opened = openBoundary(local, ports, active);
 					const ends = new Map<string, Point>();
 					for (const i of [0, 1, 2, 3].filter(i => !active.includes(i))) {

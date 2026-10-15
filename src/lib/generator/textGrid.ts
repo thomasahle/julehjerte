@@ -17,13 +17,14 @@ import {
 	connectCellGrid
 } from './geometry';
 import { gridClearance } from '$lib/geometry/clearance';
+import { clipContours, stitch } from './panels';
 
 export function generateTextGrid(
 	text: string,
 	font: Font,
 	air = false,
 	frame?: Frame,
-	layout: { padding?: number; spread?: boolean } = {}
+	layout: { padding?: number; spread?: boolean; slices?: number; columns?: number } = {}
 ) {
 	const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n');
 	const cols = Math.max(...lines.map((l) => [...l].length)),
@@ -70,22 +71,27 @@ export function generateTextGrid(
 					(0.88 * distance(hit.point, [50, 50])) / Math.hypot(x, y)
 				);
 			}
-	const edges: Edge[] = [],
-		artwork: Ring[] = [],
+	let edges: Edge[] = [];
+	const slices = layout.slices ?? 1;
+	const columns = layout.columns ?? 1;
+	const artwork: Ring[] = [],
 		cells: Point[][][] = [],
 		background: Ring[] = [];
 	const cached = new Map<string, { x: number; y: number; edges: Edge[] }>();
-	const margin = gridClearance(cols + rows + 1);
-	for (let row = 0; row < rows; row++) {
+	const margin = gridClearance(cols * columns + rows * slices + 1);
+	for (let row = 0; row < rows * slices; row++) {
 		cells.push([]);
 		let cursor = -span / 2;
-		for (let col = 0; col < cols; col++) {
-			const { char, glyph } = matrix[row][col];
-			const x = (cursor + widths[col] / 2) * scale,
-				y = (-fullHeight / 2 + (row + 0.5) * cellHeight) * scale;
-			const w = widths[col] * scale,
-				h = cellHeight * scale;
-			cursor += widths[col];
+		for (let col = 0; col < cols * columns; col++) {
+			const sourceCol = Math.floor(col / columns);
+			const { char, glyph } = matrix[Math.floor(row / slices)][sourceCol];
+			const x = (cursor + widths[sourceCol] / columns / 2) * scale,
+				glyphX = (cursor + (.5 - (col % columns) / columns) * widths[sourceCol]) * scale,
+				y = (-fullHeight / 2 + (row + 0.5) * cellHeight / slices) * scale,
+				glyphY = (-fullHeight / 2 + (Math.floor(row / slices) + .5) * cellHeight) * scale;
+			const w = widths[sourceCol] * scale / columns,
+				h = cellHeight * scale / slices;
+			cursor += widths[sourceCol] / columns;
 			const gates: Point[] = [
 				[x, y - h / 2],
 				[x + w / 2, y],
@@ -113,14 +119,22 @@ export function generateTextGrid(
 			}
 			const xs = glyph.contours.flat().map((p) => p[0]),
 				cx = (Math.min(...xs) + Math.max(...xs)) / 2;
-			const contours = glyph.contours.map((r) =>
-				r.map((p) =>
-					uprightToSheet([x + (p[0] - cx) * scale, y + (p[1] - cy) * scale])
-				)
-			);
-			artwork.push(...contours);
+			let upright = glyph.contours.map(r => r.map(p => [glyphX + (p[0] - cx) * scale, glyphY + (p[1] - cy) * scale] as Point));
+			if (row % slices === 0 && col % columns === 0) artwork.push(...upright.map(r => r.map(uprightToSheet)));
+			if (columns > 1) {
+				if (col % columns) upright = clipContours(upright, x - w / 2, false);
+				if (col % columns < columns - 1) upright = clipContours(upright, x + w / 2, true);
+				if (!upright.length) throw new ConstructionError('topology', 'Empty text panel');
+			}
+			if (slices > 1) {
+				const swap = (r: Ring): Ring => r.map(([x, y]) => [y, x]);
+				if (row % slices) upright = clipContours(upright.map(swap), y - h / 2, false).map(swap);
+				if (row % slices < slices - 1) upright = clipContours(upright.map(swap), y + h / 2, true).map(swap);
+				if (!upright.length) throw new ConstructionError('topology', 'Empty text panel');
+			}
+			const contours = upright.map(r => r.map(uprightToSheet));
 			// Identical cells share routing across rows and columns.
-			const key = char + ':' + widths[col],
+			const key = char + ':' + widths[sourceCol] + ':' + row % slices + ':' + col % columns,
 				prior = cached.get(key);
 			if (prior) {
 				const dx = x - prior.x,
@@ -149,6 +163,20 @@ export function generateTextGrid(
 				edges.push(...local);
 			}
 		}
+	}
+	if (slices > 1) {
+		const dividers = Array.from({length: rows}, (_, row) => Array.from({length: slices - 1}, (_, i) =>
+			(-fullHeight / 2 + (row + (i + 1) / slices) * cellHeight) * scale)).flat();
+		edges = stitch(edges, dividers, 1);
+	}
+	if (columns > 1) {
+		let cursor = -span / 2;
+		const dividers = widths.flatMap(width => {
+			const values = Array.from({length: columns - 1}, (_, i) => (cursor + (i + 1) * width / columns) * scale);
+			cursor += width;
+			return values;
+		});
+		edges = stitch(edges, dividers);
 	}
 	connectCellGrid(edges, cells, boundary, 'check', layout.spread);
 	const domain =

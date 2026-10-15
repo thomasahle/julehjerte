@@ -432,6 +432,24 @@ Fidelity covers the whole woven square, including the explicitly extended edge s
 tests check that the white spaces between letters reach the paper edges. SVG import deduplicates actual path geometry,
 not nearby starting positions, so these densely spaced cuts survive export and editing intact.
 
+“Gentag med tern” adds the classical alternating paper background to those cyclic
+letters. Every square contains a contrasting letter; counters keep the square's
+background colour. It is actual cutting geometry, with no preview overlays or
+cutouts. The combined letter-and-colour period is even: ANNA uses a 4×4 field,
+JUL a 6×6 field, and one initial a 2×2 field. Four neighbouring letters connect
+to a common grid junction through paired shared bridges. At each bridge the
+visible grid changes sheet, preserving open strips and the checkerboard.
+
+For the checkerboard construction, compare a bounded set of invisible-cut
+routes before choosing one. Prefer counter joins at natural corners and avoid
+short sharp steps and hairpin turns; an extra coincident chord may split a
+fragile tongue between the sheets. Keep the glyph outline unchanged. If these
+routes cannot pass spacing validation, retain the original contour construction
+for that letter.
+Identical glyphs in the same position within a four-cell group reuse their cuts.
+This frame uses an n×n cut grid with a square physical overlap, up to the shared
+20-strip limit. Its thumbnail, shared link, editor and PDF use the same design.
+
 Spacing follows grid density: use 1.5 normalized units for grids up to 4×4, then scale the gap
 by 4 / max(columns, rows). This retains the construction assumption of about 25 mm per strip
 without selecting a paper size. The generator and editor use this same rule. Generated designs

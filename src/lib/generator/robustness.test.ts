@@ -15,6 +15,8 @@ import kalam from '../../../static/generator/fonts/kalam.json';
 import cinzel from '../../../static/generator/fonts/cinzel.json';
 import righteous from '../../../static/generator/fonts/righteous.json';
 import gift from '../../../static/generator/motifs/gift.json';
+import paw from '../../../static/generator/motifs/ph-paw-print.json';
+import butterfly from '../../../static/generator/motifs/tb-butterfly.json';
 const colors = { left: '#fffdf5', right: '#b72f2b' };
 const fonts = { nunito, breeserif, oswald, kalam, cinzel, righteous } as unknown as Record<string, Font>;
 function validateHandoffs(design: HeartDesign) {
@@ -31,7 +33,7 @@ function validateHandoffs(design: HeartDesign) {
 	}
 }
 // These are expected successes, never a test that passes by accepting a refusal.
-// The larger offline corpus covers 810 text and 1,122 figure configurations.
+// The larger offline corpus covers 1,008 text and 1,122 figure configurations.
 describe('generator robustness regressions', () => {
 	for (const textFrame of TEXT_TEMPLATES)
 		it(`weaves lowercase shoulders in the ${textFrame} frame`, () => {
@@ -40,10 +42,25 @@ describe('generator robustness regressions', () => {
 		}, 20000);
 	for (const [text, textFrame] of [
 		['OSCAR', 'repeat'], ['juleman', 'hexagon'], ['juleman', 'rounded'],
-		['JULEMAND', 'hexagon'], ['JULEMAND', 'rounded'], ['LOVE', 'hexagon']
+		['JULEMAND', 'hexagon'], ['JULEMAND', 'rounded'], ['LOVE', 'hexagon'],
+		['Sofie', 'repeat'], ['i', 'repeat'], ['Åse', 'repeat'], ['A\u030A', 'repeat'],
+		['OSCAR', 'rounded'], ['BO', 'woven']
 	] as [string, TextFrame][])
 		it(`preserves ${text} in ${textFrame} through the editor and SVG`, () => {
 			validateHandoffs(generate({ mode: 'text', name: text, text, font: fonts.nunito, textFrame, colors }).design);
+		}, 20000);
+	for (const [fontId, text, textFrame] of [
+		['breeserif', 'Anna', 'air'], ['oswald', 'anna', 'woven'],
+		['oswald', 'ANNA', 'repeat-check'], ['cinzel', 'ANNA', 'repeat-check'],
+		['kalam', 'anna', 'woven'], ['kalam', 'BO', 'woven'],
+		['kalam', 'i', 'woven'], ['kalam', 'i', 'air']
+	] as [string, string, TextFrame][])
+		it(`keeps ${text} in ${fontId} using additional letter panels`, () => {
+			validateHandoffs(generate({ mode: 'text', name: text, text, font: fonts[fontId], textFrame, colors }).design);
+		}, 20000);
+	for (const [name, motif] of [['Paw', paw], ['Butterfly', butterfly]] as const)
+		it(`routes the disconnected parts of ${name} from visible attachments`, () => {
+			validateHandoffs(generate({ mode: 'figure', name, contours: motif.contours as Ring[], frame: 'circle', style: 'rays', colors }).design);
 		}, 20000);
 	for (const [fontId, font] of Object.entries(fonts))
 		for (const text of (fontId === 'kalam' ? ['JUL', 'O'] : ['JUL', 'O', 'A']))

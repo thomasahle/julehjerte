@@ -31,13 +31,14 @@ try {
     const { gridClearanceScale } = await server.ssrLoadModule('/src/lib/geometry/clearance.ts');
     const { rasterizeDesign } = await server.ssrLoadModule('/src/lib/paint/rasterize.ts');
     const { renderHeartSvgMarkup } = await server.ssrLoadModule('/src/lib/rendering/heartSvg.ts');
-    const cases = [];
+    let cases = [];
     if (args.mode !== 'figure')
         for (const fontId of fontIds.filter(f => !args.font || (args.font === 'others' ? f !== 'nunito' : String(args.font).split(',').includes(f)))) {
             const font = await read(`static/generator/fonts/${fontId}.json`);
             for (const text of texts.filter(t => !args.input || args.input === t))
-                for (const textFrame of TEXT_TEMPLATES.filter(f => args.frame ? f === args.frame : fontId === 'nunito' || ['woven', 'air', 'repeat'].includes(f))) {
-                    if (textFrame === 'repeat' && [...text.replace(/\s/g, '')].length > 10)
+                for (const textFrame of TEXT_TEMPLATES.filter(f => args.frame ? f === args.frame : fontId === 'nunito' || ['woven', 'air', 'repeat', 'repeat-check'].includes(f))) {
+                    const letters = [...text.normalize('NFC').replace(/\s/g, '')].length;
+                    if (textFrame === 'repeat' && letters > 10 || textFrame === 'repeat-check' && letters * (letters % 2 ? 2 : 1) > 20)
                         continue;
                     cases.push({ id: `text/${fontId}/${textFrame}/${JSON.stringify(text)}`, mode: 'text', input: text, fontId, template: textFrame, request: { mode: 'text', name: text, text, font, textFrame, colors } });
                 }
@@ -48,6 +49,10 @@ try {
             for (const template of FIGURE_TEMPLATES.filter(t => !args.frame || args.frame === t.id))
                 cases.push({ id: `figure/${id}/${template.id}`, mode: 'figure', input: id, template: template.id, request: { mode: 'figure', name: id, contours, colors, frame: template.frame, style: template.style } });
         }
+    if (args.failed) {
+        const failed = new Set((await read(String(args.failed))).results.filter(r => r.status !== 'accepted').map(r => r.id));
+        cases = cases.filter(entry => failed.has(entry.id));
+    }
     if (!cases.length) throw new Error('No corpus cases matched the requested filters');
     const results = [];
     const output = path.resolve(root, args.out ?? 'tmp/generator/report.json');
@@ -88,7 +93,7 @@ try {
                 }
                 const representative = entry.mode === 'figure'
                     ? entry.template === 'circle-rays' || (entry.input === 'gift' && entry.template.startsWith('oval-'))
-                    : entry.template === 'repeat' && ['ANNA', 'anna', 'JUL'].includes(entry.input);
+                    : ['repeat', 'repeat-check'].includes(entry.template) && ['ANNA', 'anna', 'JUL'].includes(entry.input);
                 if (args.artifacts && (representative || (!expected.has(entry.id) && samples.length < 96)))
                     samples.push({ id: entry.id, svg: renderHeartSvgMarkup(design, colors, {idPrefix: 'sample-' + samples.length}) });
             }
@@ -99,7 +104,7 @@ try {
         if (record.status !== 'accepted' && expected.has(entry.id))
             record.regression = true;
         results.push(record);
-        if (index % 10 === 0 || index === cases.length - 1) {
+        if (args.frame || index % 10 === 0 || index === cases.length - 1) {
             await save();
             process.stdout.write(`${index + 1}/${cases.length} ${record.id} ${record.status} ${record.ms}ms\n`);
         }
