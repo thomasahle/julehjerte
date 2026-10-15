@@ -428,10 +428,10 @@
     "steps": 201
   },
   "productionValidation": {
-    "status": "native-complete-test-assumptions-corrected-full-qa-repeat-pending",
+    "status": "repository-and-browser-qa-complete-historical-photo-error-gate-failed",
     "focusedLog": "tmp/heart-learning/paper-rollback-validation-v1/focused-final.log",
     "nativeRun": "tmp/heart-learning/paper-rollback-native-v1",
-    "fullQaRun": "tmp/heart-learning/paper-rollback-qa-v1",
+    "fullQaRun": "tmp/heart-learning/paper-rollback-qa-v2",
     "focused": {
       "passed": 7,
       "failed": 0,
@@ -1095,6 +1095,279 @@
         "tmp/heart-learning/paper-rollback-regressions-v1/corrected-tests.log": "0253b245111c068ad8944da147fc1d6040054222c1cbb22ca55b029a71794357",
         "tmp/heart-learning/paper-rollback-regressions-v1/lint.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
       }
-    }
+    },
+    "fullQaRerun": {
+      "inversePassed": 886,
+      "inverseFailed": 0,
+      "applicationPassed": 857,
+      "applicationSkipped": 1,
+      "sourceFilesVerified": 733,
+      "checks": [
+        {
+          "stage": "core-lint",
+          "exitCode": 0,
+          "seconds": 2.068220542
+        },
+        {
+          "stage": "check",
+          "exitCode": 0,
+          "seconds": 9.459015749999999
+        },
+        {
+          "stage": "lint",
+          "exitCode": 0,
+          "seconds": 7.036395707999999
+        },
+        {
+          "stage": "app",
+          "exitCode": 0,
+          "seconds": 22.910976083000005
+        },
+        {
+          "stage": "build",
+          "exitCode": 0,
+          "seconds": 12.818006957999998
+        },
+        {
+          "stage": "inverse",
+          "exitCode": 0,
+          "seconds": 962.13585925
+        }
+      ]
+    },
+    "browser": {
+      "passed": true,
+      "failedFirstRun": "tmp/heart-learning/paper-rollback-browser-v2",
+      "completionRun": "tmp/heart-learning/paper-rollback-browser-v3",
+      "failureReason": "Maple assertion fixed the selected cut count at three despite a checked, better four-cut candidate. No runtime code changed.",
+      "harnessChange": "Require the checked three-cut alternative below 1.2%, and extra cuts to improve on it before and after editable export.",
+      "retainedEvidence": "Six passing ordinary workflows from v2; fresh maple, four ten-second workflows and entry loading in v3. Runtime and fixture hashes match; only the maple harness assertions changed.",
+      "cases": [
+        {
+          "name": "stacked-hearts-mask",
+          "run": "tmp/heart-learning/paper-rollback-browser-v2/ordinary",
+          "passed": true,
+          "sourceEditableError": 0.0173,
+          "clickToReadySeconds": 16.72439999985695,
+          "selectedCounts": [
+            3,
+            3
+          ],
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "conversionFidelityPassed": true
+        },
+        {
+          "name": "star",
+          "run": "tmp/heart-learning/paper-rollback-browser-v2/ordinary",
+          "passed": true,
+          "sourceEditableError": 0.0016,
+          "clickToReadySeconds": 2.092700000047684,
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "conversionFidelityPassed": true
+        },
+        {
+          "name": "top-hat-preferred",
+          "run": "tmp/heart-learning/paper-rollback-browser-v2/ordinary",
+          "passed": true,
+          "sourceEditableError": 0.004118835034013606,
+          "clickToReadySeconds": 8.976799999952316,
+          "selectedCounts": [
+            3,
+            3
+          ],
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "conversionFidelityPassed": true
+        },
+        {
+          "name": "flower-native-mask",
+          "run": "tmp/heart-learning/paper-rollback-browser-v2/ordinary",
+          "passed": true,
+          "sourceEditableError": 0.00401875,
+          "clickToReadySeconds": 7.535,
+          "selectedCounts": [
+            3,
+            3
+          ],
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "conversionFidelityPassed": true
+        },
+        {
+          "name": "hard-flettede-viking",
+          "run": "tmp/heart-learning/paper-rollback-browser-v2/ordinary",
+          "passed": true,
+          "sourceEditableError": 0.0168625,
+          "clickToReadySeconds": 30.356399999856947,
+          "selectedCounts": [
+            6,
+            4
+          ],
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "conversionFidelityPassed": true
+        },
+        {
+          "name": "web-danish-tree-green",
+          "run": "tmp/heart-learning/paper-rollback-browser-v2/ordinary",
+          "passed": true,
+          "sourceEditableError": 0.0087625,
+          "clickToReadySeconds": 21.4535,
+          "selectedCounts": [
+            3,
+            3
+          ],
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "conversionFidelityPassed": true
+        },
+        {
+          "name": "maple-leaf-mask",
+          "run": "tmp/heart-learning/paper-rollback-browser-v3/maple",
+          "passed": true,
+          "sourceEditableError": 0.00883125,
+          "clickToReadySeconds": 13.175599999904632,
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "conversionFidelityPassed": true
+        },
+        {
+          "name": "floral-checker-mask",
+          "run": "tmp/heart-learning/paper-rollback-browser-v3/ten-second",
+          "passed": true,
+          "sourceEditableError": 0.0135875,
+          "clickToReadySeconds": 10.344100000143051,
+          "selectedCounts": [
+            7,
+            7
+          ],
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "conversionFidelityPassed": true
+        },
+        {
+          "name": "warped-checker-mask",
+          "run": "tmp/heart-learning/paper-rollback-browser-v3/ten-second",
+          "passed": true,
+          "sourceEditableError": 0.0159125,
+          "clickToReadySeconds": 10.958200000047684,
+          "selectedCounts": [
+            9,
+            9
+          ],
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "conversionFidelityPassed": true
+        },
+        {
+          "name": "fine-checker-mask",
+          "run": "tmp/heart-learning/paper-rollback-browser-v3/ten-second",
+          "passed": true,
+          "sourceEditableError": 0.022725,
+          "clickToReadySeconds": 12.009099999904633,
+          "selectedCounts": [
+            9,
+            10
+          ],
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "conversionFidelityPassed": true
+        },
+        {
+          "name": "blue-star-polishing-mask",
+          "run": "tmp/heart-learning/paper-rollback-browser-v3/ten-second",
+          "passed": true,
+          "sourceEditableError": 0.00415625,
+          "clickToReadySeconds": 10.036900000095368,
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "conversionFidelityPassed": true
+        }
+      ],
+      "entryLoading": {
+        "passed": true,
+        "routes": [
+          {
+            "route": "/en/editor/",
+            "initialEngineRequests": 0,
+            "pageErrors": [],
+            "failedRequests": [],
+            "scriptBytes": 473483
+          },
+          {
+            "route": "/en/editor/paint/",
+            "initialEngineRequests": 0,
+            "pageErrors": [],
+            "failedRequests": [],
+            "scriptBytes": 503384
+          }
+        ],
+        "scope": "Fresh served-build verification and zero initial engine/WASM loads. No comparison against a historical bundle-size baseline."
+      }
+    },
+    "completedQaArtifacts": [
+      {
+        "path": "tmp/heart-learning/paper-rollback-qa-v2/checks.json",
+        "sha256": "9f28fae8f32e770f718b884ad2e3a69a3f8b22a0b246f82478265f6506122c77"
+      },
+      {
+        "path": "tmp/heart-learning/paper-rollback-qa-v2/source.json",
+        "sha256": "fcc0bf80447ace48259665a34e46551cb8fa0c2267ec1a4a5f572df94daa5816"
+      },
+      {
+        "path": "tmp/heart-learning/paper-rollback-qa-v2/inverse.log",
+        "sha256": "76a81c45566f8dd99da74be64621cceda9d8835f8164a6c3511449c93f9582c9"
+      },
+      {
+        "path": "tmp/heart-learning/paper-rollback-qa-v2/app.log",
+        "sha256": "54d7d085c3d8e3a8c80b54e28829ee6cc5911f6d9cc89d7531f9722337eb1050"
+      },
+      {
+        "path": "tmp/heart-learning/paper-rollback-browser-v2/checks.json",
+        "sha256": "95cea0ce127ce5329c1dd5b2692c2886b519359d52daa3d5b893996cdc23111c"
+      },
+      {
+        "path": "tmp/heart-learning/paper-rollback-browser-v2/ordinary/results.json",
+        "sha256": "92e9fcea580c32dc4a7fec7a7e9c346ef791ba73e1e90cefc6d5ac92fd881ab1"
+      },
+      {
+        "path": "tmp/heart-learning/paper-rollback-browser-v3/checks.json",
+        "sha256": "841cd3ea38cf81b593de89cdea4b25def1b14f1a83ce2d7fcd9623635ce5bc00"
+      },
+      {
+        "path": "tmp/heart-learning/paper-rollback-browser-v3/source.json",
+        "sha256": "8b936d12eeac140ad9451ccc93792adbf4779e3743fc4dca5b972bf984a635ce"
+      },
+      {
+        "path": "tmp/heart-learning/paper-rollback-browser-v3/reuse.json",
+        "sha256": "d6d398b61766459e2097f8112604612838e2ca7730360f051069c051c31bd442"
+      },
+      {
+        "path": "tmp/heart-learning/paper-rollback-browser-v3/maple/results.json",
+        "sha256": "413a21bd2902d2c4bfc47d6b2fde18fb09e6bc652a9fb915aa75f796eeba3c93"
+      },
+      {
+        "path": "tmp/heart-learning/paper-rollback-browser-v3/ten-second/results.json",
+        "sha256": "730b7c750feb4f4fc5bd9c70c8ed8ce0f3c1f095263e50d7acd6b6602b87dd2c"
+      },
+      {
+        "path": "tmp/heart-learning/paper-rollback-browser-v3/entry-loading/results.json",
+        "sha256": "a238cc3c5d6739a12c5844311a84849d2e3d5327069f1e7081b8eb0d8202598a"
+      }
+    ]
   }
 }

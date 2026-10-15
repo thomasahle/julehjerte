@@ -454,10 +454,13 @@ try{
     assert.equal(observed.result.report.manufacturing.status,'pass');
     if(name==='maple-leaf-mask'&&!engineReference){
      assert.equal(row.templateChecksPassed,true);
-     assert.deepEqual(observed.result.report.slits,{left:3,right:3});
+     row.simplerCandidates=observed.result.report.solver.candidates.filter(c=>c.counts.every(n=>n===3)&&c.imagePassed&&c.geometry&&c.paper);
+     assert.ok(row.simplerCandidates.some(c=>c.sourceImageError<.012),'The real worker must still consider the known checked three-cut fit.');
+     if(row.selectedCounts.reduce((sum,n)=>sum+n,0)>6){
+      assert.ok(row.engineError<Math.min(...row.simplerCandidates.map(c=>c.sourceImageError)),
+       'Additional cuts must improve on the retained simpler candidate.');
+     }
      assert.ok(row.engineError<.012);
-     // A better shortlist can find the same simpler pair without a late
-     // comparison. The downloaded geometry and fidelity are checked below.
     }
     if(name==='web-bibel-checker-3'&&!engineReference){
      assert.deepEqual(observed.result.report.slits,{left:2,right:2},'Conflicting photo borders must not hide the better simpler finalist.');
@@ -612,6 +615,13 @@ try{
      assert.ok(row.originalArtworkError<.05,`Original checker artwork disagreement: ${row.originalArtworkError}`);
     }
     row.sourceEditableError=free?frameMismatch(sourceRendered,sourceMask,resolution,{mode:'free',shape:'diamond',size:frameSize}).inside:maskMismatch(sourceRendered,sourceMask);
+    if(name==='maple-leaf-mask'&&!engineReference){
+     assert.ok(row.sourceEditableError<.012,'The downloaded maple must retain the improved source fit.');
+     if(row.selectedCounts.reduce((sum,n)=>sum+n,0)>6){
+      assert.ok(row.sourceEditableError<Math.min(...row.simplerCandidates.map(c=>c.sourceImageError)),
+       'The extra cuts must still improve the source fit after editable export.');
+     }
+    }
     row.physical=auditEditablePaper(design,overlap,observed.result.report.settings,observed.result.report.slits);
     if(observed.result.report.validation.passed)assert.equal(row.physical.geometry.passed,true,'Downloaded SVG must retain the engine geometry constraints');
     if(observed.result.report.templateChecksPassed)assert.equal(row.physical.paper?.status,'pass','Downloaded SVG must retain the verified paper support');

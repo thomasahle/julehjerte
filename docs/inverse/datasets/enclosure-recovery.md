@@ -161,8 +161,8 @@ against estimated targets, not verified cutting artwork.
 
 The strict comparison against the older validated solver still fails for crown
 (2.411875% to 2.413125%) and Viking (2.024375% to 2.03625%). These small regressions
-remain recorded. Full repository QA and actual browser verification for this
-follow-up are incomplete; this is not yet a validated release replacement.
+remain recorded. Repository and browser QA now pass, but the historical error
+gate still prevents this from being a validated release replacement.
 
 The first full inverse run passes 884 tests and fails two assertions about which
 initializer or cut count must win. Captured replays reproduce both failures:
@@ -177,8 +177,25 @@ branch-region limits. They require the tree's coarse proposal to remain availabl
 and the maple's three-cut alternative to remain checked below its existing 1.2%
 source-error ceiling. Additional cuts must beat that retained alternative's
 original-source error. Both tests now retain actual curves on any subsequent
-assertion failure. All five focused tests and their lint pass; a fresh full-suite
-run and browser QA remain pending. No solver policy changed in this test correction.
+assertion failure. All five focused tests and their lint pass. No solver policy
+changed in this test correction.
+
+The full repeat passes **886 inverse tests**, **857 application tests** (one
+existing skip), type checking, lint and build. All 733 pinned source files were
+verified. Actual browser verification passes eleven Paint/worker/Draw workflows,
+including four ten-second requests, with independent downloaded-SVG checks.
+Six ordinary passes are retained from the first browser run; the maple and four
+short-budget cases were completed in a subsequent run on the same runtime.
+
+The first browser run stopped on another obsolete three-cut maple assertion.
+It recorded a checked three-cut candidate at 1.1875% source error and a selected
+four-cut result at 0.866875%. The corrected check requires both a checked simpler
+alternative and an improvement from any extra cuts, including after editable
+export. The fresh downloaded maple has **0.883125%** disagreement and passes
+geometry, paper and conversion-fidelity checks. Its screenshot was inspected;
+the leaf is recognizable, with remaining uneven border details. The earlier
+failed run remains recorded. Fresh Draw and Paint loading checks also pass with
+no initial solver or WASM requests; no historical bundle-size comparison is claimed.
 
 ## Source evidence for the jigsaw crop
 
