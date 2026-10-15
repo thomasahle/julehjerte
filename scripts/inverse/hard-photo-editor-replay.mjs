@@ -21,6 +21,7 @@ for(const file of ['src/lib/inverse/toHeartDesign.ts','src/lib/inverse/conversio
 const ledger={benchmarkRun:args.run,cropMode:benchmark.cropMode,targetMode:benchmark.targetMode||'photo',sourceHashes,method:'Saved engine geometry and exact classified mask through production validated conversion, SVG serialization/parsing, editor intersection rules and source-mask replay. No new fitting or crop correction. Not a browser interaction test.',results};
 sourceHashes['static/inverse/core/feature-shapes.js']=hash(await fs.readFile('static/inverse/core/feature-shapes.js'));
 sourceHashes['static/inverse/core/self-returns.js']=hash(await fs.readFile('static/inverse/core/self-returns.js'));
+for(const file of ['core/geometric-material.js','core/paper-offset.js','core/graph.js','vendor/clipper2/clipper2z.mjs','vendor/clipper2/clipper2z.wasm'])sourceHashes['static/inverse/'+file]=hash(await fs.readFile('static/inverse/'+file));
 // This loader serves only explicit SSR imports. Client dependency discovery
 // would scan the accumulated HTML benchmark reports under tmp as app entries.
 const loader=await createServer({configFile:false,optimizeDeps:{noDiscovery:true},cacheDir:path.resolve(output,'vite-cache'),server:{middlewareMode:true,hmr:false,ws:false},resolve:{alias:{$lib:path.resolve('src/lib')}}});

@@ -217,7 +217,11 @@
     "tmp/heart-learning/conditional-paper-repair-v2/release-v1/browser/ten-second/chromium-fine-checker-mask/draw.png": "b4f1faaba974e07d5576a457bf1bcd5f6a166d7528553baa2f9b51f4abaf739e",
     "tmp/heart-learning/conditional-paper-repair-v2/release-v1/browser/ten-second/chromium-warped-checker-mask/draw.png": "9b64587f957990f55446350a8a4fb523c0ba62596379b7a17871c26680c104bb",
     "tmp/heart-learning/conditional-paper-repair-v2/release-v1/browser/ten-second/chromium-floral-checker-mask/draw.png": "9d3ff3ef1f58074adfa50b45ae46fa924419224a0edf1b395de36a10de84e2ab",
-    "tmp/heart-learning/conditional-paper-repair-v2/release-v1/browser/ten-second/chromium-blue-star-polishing-mask/draw.png": "8abe522947387aa9820b5f10577f792ed03e1ae46059ab882aa25b78368f578b"
+    "tmp/heart-learning/conditional-paper-repair-v2/release-v1/browser/ten-second/chromium-blue-star-polishing-mask/draw.png": "8abe522947387aa9820b5f10577f792ed03e1ae46059ab882aa25b78368f578b",
+    "tmp/heart-learning/conditional-paper-repair-v2/editable-audit-before.log": "bdf0e7e4dd5e666cdfe17c9cd1c06a751a47e996cd812d3dbc763ad060bd6ece",
+    "tmp/heart-learning/conditional-paper-repair-v2/editable-audit-after.log": "2d740ba9ed8543fa992e3b10fe9b8a494f11e64092dd338eba2b8ce0045cb035",
+    "tmp/heart-learning/conditional-paper-repair-v2/editable-helper-replay.mjs": "05d9414f958dab95df9be32497ed62f877040f7e2ffd58a1fcd7325a6a586ef1",
+    "tmp/heart-learning/conditional-paper-repair-v2/editable-helper-v2/results.json": "ebdb6d78a860fd76c866eacbc34606952b2cea6c3a5705cecadbde61c16d3214"
   },
   "remaining": [
     "Make the stronger editable paper check routine in the QA helper.",
@@ -539,5 +543,26 @@
       "longerBrowserClickToReadySeconds": 30.506,
       "qualification": "Different runtime and time allowance; suggests scheduling/refinement work remains, not a controlled latency ablation."
     }
+  },
+  "editableAuditRegression": {
+    "status": "focused-tests-and-saved-export-replay-pass",
+    "change": "Routine editable SVG QA now combines the existing guarded lattice with the fine unfolded polygon-offset check. Native and browser harnesses pin the additional backend sources. No fitter, converter or UI change.",
+    "fixture": "hjcur-05 at a non-default SVG scale and translation, original and transposed sheet families",
+    "before": {
+      "passed": 1,
+      "failed": 2,
+      "failure": "Old audit incorrectly reported pass for a 4.1542 mm\u00b2 detached paper core between lattice rows."
+    },
+    "after": {
+      "passed": 3,
+      "failed": 0
+    },
+    "savedSvgReplay": {
+      "passed": 60,
+      "total": 60,
+      "newFitting": false,
+      "newBrowserInteractions": false
+    },
+    "fullSuiteQualification": "The 923-test full run above predates these two new harness regressions; no 925-test result claimed yet."
   }
 }

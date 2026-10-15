@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {auditEditablePaper} from './editable-paper-audit.mjs';
+import fs from 'node:fs/promises';
+import {auditEditablePaper,editablePaperSolution} from './editable-paper-audit.mjs';
+import {materialAudit} from '../../static/inverse/core/material.js';
 
 test('paper checks use the downloaded cut coordinates and their physical scale',()=>{
   const overlap={left:20,top:30,width:200,height:200};
@@ -23,4 +25,29 @@ test('paper checks use the downloaded cut coordinates and their physical scale',
   assert.equal(auditEditablePaper(edited,overlap,{width:100,materialResolution:700},counts).geometry.passed,false);
   assert.throws(()=>auditEditablePaper({...design,fingers:design.fingers.slice(1)},overlap,{},counts),/every exported slit/);
   assert.throws(()=>auditEditablePaper(design,{...overlap,height:100},{},counts),/rectangular SVG/);
+});
+
+for(const transpose of [false,true])test(`editable cuts cannot hide a fold island between paper-lattice rows (${transpose?'transposed':'original'})`,async()=>{
+  const fixture=JSON.parse(await fs.readFile('scripts/inverse/fixtures/paper-offset-cases.json'));
+  const entry=fixture.cases.find(c=>c.id==='hjcur-05'),data=entry.geometry;
+  const overlap={left:17,top:-23,width:250,height:250},scale=overlap.width/data.square_width_mm;
+  let families=[data.A_overlap_paths,data.B_overlap_paths];if(transpose)families=families.toReversed();
+  const design={weaveParity:0,fingers:families.flatMap((paths,family)=>paths.map((refs,i)=>({
+    id:`parsed-${family}-${i}`,lobe:family===0?'right':'left',segments:refs.map(ref=>{
+      let points=data.curves[String(ref.curve)].control_points;if(ref.reverse)points=points.toReversed();
+      return Object.fromEntries(points.map((p,k)=>{const [x,y]=transpose?[p[1],p[0]]:p;return['p'+k,{x:overlap.left+scale*x,y:overlap.top+scale*y}];}));
+    })
+  })))};
+  const counts={right:families[0].length,left:families[1].length},before=structuredClone(design);
+  const {solution,cfg}=editablePaperSolution(design,overlap,entry.settings,counts);
+  assert.equal(materialAudit(solution,cfg).status,'pass','The previous editable audit missed this disconnected paper core.');
+  const result=auditEditablePaper(design,overlap,entry.settings,counts);
+  assert.equal(result.geometry.passed,true);
+  assert.equal(result.paper.status,'fail');
+  assert.equal(result.paper.latticeStatus,'pass');
+  assert.equal(result.paper.offset.status,'fail');
+  const family=result.paper.offset.families[transpose?1:0];
+  assert.equal(family.significantFloatingCount,1);
+  assert.ok(Math.abs(family.significantFloatingArea-4.15421981)<.002);
+  assert.deepEqual(design,before,'Auditing must not modify the downloaded coordinates.');
 });

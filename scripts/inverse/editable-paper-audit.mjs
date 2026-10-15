@@ -6,7 +6,7 @@
 import assert from 'node:assert/strict';
 import {CurveGraph} from '../../static/inverse/core/direct/curves.js';
 import {validate} from '../../static/inverse/core/validate.js';
-import {materialAudit} from '../../static/inverse/core/material.js';
+import {finalMaterialAudit} from '../../static/inverse/core/geometric-material.js';
 import {settings} from '../../static/inverse/core/settings.js';
 
 export function editablePaperSolution(design,overlap,raw,counts){
@@ -26,6 +26,6 @@ export function editablePaperSolution(design,overlap,raw,counts){
 
 export function auditEditablePaper(design,overlap,raw,counts){
   const {solution,cfg}=editablePaperSolution(design,overlap,raw,counts);
-  const geometry=validate(solution,cfg),paper=geometry.passed?materialAudit(solution,cfg).summary:null;
+  const geometry=validate(solution,cfg),paper=geometry.passed?finalMaterialAudit(solution,cfg).summary:null;
   return{geometry,paper,materialResolution:cfg.materialResolution};
 }
