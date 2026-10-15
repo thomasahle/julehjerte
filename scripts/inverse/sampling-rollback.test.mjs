@@ -14,7 +14,7 @@ import {sampleWeave} from '../../static/inverse/core/validate.js';
 import {loadNumericalKernel} from '../../static/inverse/core/numerical-kernel.js';
 import {readHardPhoto} from './hard-photo-data.mjs';
 
-test('skipping exact rollback cycles preserves the final partial block and both retained geometries',async()=>{
+test('ordinary and feature-preferred rollback cycles preserve the final block and both retained geometries',async()=>{
   const checkpoint=JSON.parse(await fs.readFile('scripts/inverse/fixtures/photographic-sampling-rollback.json'));
   const fixture=JSON.parse(await fs.readFile(checkpoint.sourceFixture));
   const catalogue=JSON.parse(await fs.readFile(fixture.sourceCatalogue));
@@ -30,8 +30,8 @@ test('skipping exact rollback cycles preserves the final partial block and both 
   await loadNumericalKernel();
   // Saved clearance geometry isolates optimizer equivalence. The separate
   // photographic regressions still derive every starting curve from pixels.
-  for(const steps of [650,750]){
-    const run=skipRepeatedRollbacks=>refineCurves(new CurveGraph(checkpoint.paths,cfg.width),probability,256,checkpoint.phase,cfg,{input,steps,rate:.05,preferCheckpoint,skipRepeatedRollbacks});
+  for(const preference of [null,preferCheckpoint])for(const steps of [650,750]){
+    const run=skipRepeatedRollbacks=>refineCurves(new CurveGraph(checkpoint.paths,cfg.width),probability,256,checkpoint.phase,cfg,{input,steps,rate:.05,preferCheckpoint:preference,skipRepeatedRollbacks});
     const reference=run(false),fast=run(true);
     assert.ok(fast.skippedSteps>0);assert.equal(fast.computedSteps+fast.skippedSteps,steps);
     assert.equal(fast.history.at(-1).step,steps-1,'The non-repeated final block must still be evaluated.');

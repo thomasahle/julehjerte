@@ -1,6 +1,6 @@
 {
   "schema": "woven-heart-clearance-release-1",
-  "status": "full-qa-passed; native-error-gate-failed; browser-qa-running",
+  "status": "full-qa-passed; native-error-gate-failed; browser-regression-found",
   "root": "tmp/heart-learning/clearance-repair-release-v2",
   "runtimeCommit": "9ee6f49",
   "testHarnessCommit": "7e264de814e219ad5a0452e60b8a3686646b3aa3",
@@ -311,7 +311,7 @@
         0,
         40
       ],
-      "interpretation": "Fixed crop and mask rule out a changed input for this comparison. Floral common checkpoints agree but the new run ends earlier; Viking already differs at its initial refinement checkpoint. These records do not establish that audit ordering caused the time or initializer differences."
+      "interpretation": "Fixed crop and mask rule out a changed input for this comparison. Floral common checkpoints agree but the new run ends earlier; Viking already differs at its initial reported checkpoint. These records do not establish that audit ordering caused the time or initializer differences."
     },
     {
       "id": "flettede-viking",
@@ -476,7 +476,7 @@
         }
       ],
       "identicalCheckpointSteps": [],
-      "interpretation": "Fixed crop and mask rule out a changed input for this comparison. Floral common checkpoints agree but the new run ends earlier; Viking already differs at its initial refinement checkpoint. These records do not establish that audit ordering caused the time or initializer differences."
+      "interpretation": "Fixed crop and mask rule out a changed input for this comparison. Floral common checkpoints agree but the new run ends earlier; Viking already differs at its initial reported checkpoint. These records do not establish that audit ordering caused the time or initializer differences."
     }
   ],
   "artifactsSha256": {
@@ -491,7 +491,176 @@
     "tmp/heart-learning/clearance-repair-release-v2/production-release/hunodan/results.json": "34df206366c376b7d2f2b7846c5caee4ab04474b40d3b42eda2389107b453534",
     "tmp/heart-learning/clearance-repair-release-v2/production-release/photos/results.json": "fa532c99220d75b93feb847b3b70b860b90744d7f3299dfa3b0184409eabb283",
     "tmp/heart-learning/clearance-repair-release-v2/production-release/hunodan-editor/results.json": "256922f47dcdb107a1df343da03fc48571d9ae1a0704ebeb351d9432a59304fe",
-    "tmp/heart-learning/clearance-repair-release-v2/production-release/photo-editor/results.json": "d7db09ba637aa8eab7b5980d6d267b7f68a04445d3263a6f79ff912224094866"
+    "tmp/heart-learning/clearance-repair-release-v2/production-release/photo-editor/results.json": "d7db09ba637aa8eab7b5980d6d267b7f68a04445d3263a6f79ff912224094866",
+    "tmp/heart-learning/clearance-repair-release-v2/browser-study/checks.json": "013c9b2ec8a9f5a1377eced3033bb8c287f4ca941492e94f1d3ab184cb73c2ec",
+    "tmp/heart-learning/clearance-repair-release-v2/browser-study/running.json": "3d68dd052920002a802116f35951eb9ae240e99fe6d89a69b15bae13f1a39ace",
+    "tmp/heart-learning/clearance-repair-release-v2/browser-study/measure.log": "437812ef9c4f5afd486e91c15bcfc81fb1d8dc781c93d6d2caed94917ab1417f",
+    "tmp/heart-learning/clearance-repair-release-v2/browser-study/entry-loading/results.json": "df8bb72c7c3c239d93b0b5f138c63bdac954368370a9e7f83b7ff57070a0e97c",
+    "tmp/heart-learning/clearance-repair-release-v2/browser-study/entry-loading-fresh/results.json": "6ff228b545956494528f423bb4ba1a95421ff1edcb12315a55eac17d3bef32a7",
+    "tmp/heart-learning/clearance-repair-release-v2/browser-study/main-browser/results.json": "3f84d2a8b2fc91f3b2e16b852d10f8e890694f1902d517e88d6385e22be7f42e",
+    "tmp/heart-learning/clearance-repair-release-v2/browser-study/normal-browser/results.json": "aeb78be405cb0ebbbe20aef06b4b3650acda4a283f3f2741be3614da87946dc1",
+    "tmp/heart-learning/clearance-repair-release-v2/browser-study/short-browser/results.json": "efcb78f7aa887f4fb73d2e5df26879e8cea2ca5b826eb6f1e93cbd49b813196d"
   },
-  "browser": "Diagnostic browser replay continues despite the failed native promotion gate, using only the owned 5232 preview. This record does not claim browser completion."
+  "browser": {
+    "checks": [
+      {
+        "stage": "restart-owned-preview",
+        "command": [
+          "python3",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-release-v2/production-release/restart-preview.py"
+        ],
+        "environment": {},
+        "exitCode": 0,
+        "seconds": 1.1929485829998612
+      },
+      {
+        "stage": "main-browser",
+        "command": [
+          "node",
+          "scripts/inverse/paint-browser-test.mjs"
+        ],
+        "environment": {
+          "PLAYWRIGHT_MODULE": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/collage-resolution-v1/playwright.mjs",
+          "INVERSE_TEST_URL": "http://127.0.0.1:5232",
+          "INVERSE_TEST_BROWSERS": "chromium",
+          "INVERSE_TEST_CASES": "flower-native-mask,flower-downsample-mask,hard-bibel-star-outline,hard-bibel-star-outline-half,hard-bibel-star-outline-jpeg75,hard-flettede-puppy,hard-flettede-viking,hunodan,star,top-hat-preferred,blue-star-polishing-mask,web-danish-tree-green,gold-routing-mask,bird-mask,bird-shift-mask,bird-y-shift-mask,maple-leaf-mask,web-bibel-checker-3",
+          "INVERSE_TEST_OUTPUT": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-release-v2/browser-study/main-browser"
+        },
+        "exitCode": 0,
+        "seconds": 266.2776751670001
+      },
+      {
+        "stage": "entry-loading",
+        "command": [
+          "node",
+          "scripts/inverse/entry-loading-browser-test.mjs",
+          "--output=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-release-v2/browser-study/entry-loading",
+          "--baseline-assets=tmp/heart-learning/return-projection-speed-v1/production-release/served-assets.json",
+          "--baseline-loading=tmp/heart-learning/return-projection-speed-v1/browser-loading-v3/results.json"
+        ],
+        "environment": {
+          "PLAYWRIGHT_MODULE": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/collage-resolution-v1/playwright.mjs",
+          "INVERSE_TEST_URL": "http://127.0.0.1:5232",
+          "INVERSE_TEST_BROWSERS": "chromium"
+        },
+        "exitCode": 1,
+        "seconds": 2.176581583999905
+      },
+      {
+        "stage": "normal-browser",
+        "command": [
+          "node",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-release-v2/browser-study/paint-probe.mjs"
+        ],
+        "environment": {
+          "PLAYWRIGHT_MODULE": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/collage-resolution-v1/playwright.mjs",
+          "INVERSE_TEST_URL": "http://127.0.0.1:5232",
+          "INVERSE_TEST_BROWSERS": "chromium",
+          "INVERSE_TEST_CASES": "leaf-clearance-mask,leaf-mask,outline-star-shift-mask",
+          "INVERSE_TEST_OUTPUT": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-release-v2/browser-study/normal-browser"
+        },
+        "exitCode": 1,
+        "seconds": 44.356033875000094
+      },
+      {
+        "stage": "short-browser",
+        "command": [
+          "node",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-release-v2/browser-study/paint-probe.mjs"
+        ],
+        "environment": {
+          "PLAYWRIGHT_MODULE": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/collage-resolution-v1/playwright.mjs",
+          "INVERSE_TEST_URL": "http://127.0.0.1:5232",
+          "INVERSE_TEST_BROWSERS": "chromium",
+          "INVERSE_TEST_CASES": "leaf-clearance-mask,leaf-mask,outline-star-shift-mask",
+          "INVERSE_TEST_SECONDS": "10",
+          "INVERSE_TEST_OUTPUT": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-release-v2/browser-study/short-browser"
+        },
+        "exitCode": 0,
+        "seconds": 45.29658808399995
+      },
+      {
+        "stage": "measure",
+        "command": [
+          "node",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-release-v2/browser-study/measure.mjs"
+        ],
+        "environment": {},
+        "exitCode": 1,
+        "seconds": 1.7276122499999929
+      }
+    ],
+    "mainPassed": 18,
+    "mainTotal": 18,
+    "budgetFlows": [
+      {
+        "mode": "normal-browser",
+        "name": "leaf-clearance-mask",
+        "passed": false,
+        "failure": "AssertionError [ERR_ASSERTION]: The uploaded perturbation must preserve the recovered leaf silhouette.\n    at file:///Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/clearance-repair-release-v2/browser-study/paint-probe.mjs:405:13",
+        "engineError": 0.02225625,
+        "clickToReadySeconds": 7.609399999856949
+      },
+      {
+        "mode": "normal-browser",
+        "name": "leaf-mask",
+        "passed": true,
+        "failure": null,
+        "engineError": 0.02575625,
+        "clickToReadySeconds": 8.628899999856948
+      },
+      {
+        "mode": "normal-browser",
+        "name": "outline-star-shift-mask",
+        "passed": true,
+        "failure": null,
+        "engineError": 0.0075125,
+        "clickToReadySeconds": 13.286
+      },
+      {
+        "mode": "short-browser",
+        "name": "leaf-clearance-mask",
+        "passed": true,
+        "failure": null,
+        "engineError": 0.0089125,
+        "clickToReadySeconds": 10.071200000047684
+      },
+      {
+        "mode": "short-browser",
+        "name": "leaf-mask",
+        "passed": true,
+        "failure": null,
+        "engineError": 0.01303125,
+        "clickToReadySeconds": 10.181
+      },
+      {
+        "mode": "short-browser",
+        "name": "outline-star-shift-mask",
+        "passed": true,
+        "failure": null,
+        "engineError": 0.00756875,
+        "clickToReadySeconds": 9.609599999904633
+      }
+    ],
+    "independentDownloads": "Five available pairs passed both 400/800-pixel checks. The ordinary shifted-leaf flow failed its 2% silhouette assertion before download; missing exports remain a failure, not a skipped success.",
+    "entrySizeComparison": "Failed: four additional raw bytes in one initial chunk. Current build has four __sveltekit_16w03pa references, versus the baseline version hash pcs580; application sources are unchanged. This explains the observed size delta through generated build identity, but the original strict size test remains failed.",
+    "freshEntryLoading": {
+      "passed": true,
+      "routes": [
+        {
+          "route": "/en/editor/",
+          "engineRequests": 0,
+          "passed": true,
+          "initialScriptBytes": 473487
+        },
+        {
+          "route": "/en/editor/paint/",
+          "engineRequests": 0,
+          "passed": true,
+          "initialScriptBytes": 503388
+        }
+      ]
+    }
+  },
+  "checkpointScope": "Final selected-candidate history may describe polishing rather than main refinement. The queued paired probe captures stage-labelled progress."
 }

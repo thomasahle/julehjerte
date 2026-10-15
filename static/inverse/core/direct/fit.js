@@ -567,7 +567,10 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
         fine.splice(i+1,0,retry);
       }
     }
-    let candidate=stage('directRefining',()=>refineCurves(graph,objectiveProb,n,clear.phase,{...refinementCfg,preferMatchingSheets:false},{deadline:end,input,weights:objectiveWeights,skipRepeatedRollbacks:featureSeed(selected),preferCheckpoint:featureSeed(selected)?(_candidate,solution)=>auditFeatureFidelity(source,sampleWeave(solution,source.resolution),cfg,sourceFeatures).passed:null,rate:clear.model.counts[0]+clear.model.counts[1]>4?.05:.035,stopWhen:value=>{
+    // Ordinary grids can also repeat an identical failed block after the
+    // optimizer resets at its minimum rate. Preserve the final partial block
+    // while freeing the redundant work for polishing the retained candidate.
+    let candidate=stage('directRefining',()=>refineCurves(graph,objectiveProb,n,clear.phase,{...refinementCfg,preferMatchingSheets:false},{deadline:end,input,weights:objectiveWeights,skipRepeatedRollbacks:true,preferCheckpoint:featureSeed(selected)?(_candidate,solution)=>auditFeatureFidelity(source,sampleWeave(solution,source.resolution),cfg,sourceFeatures).passed:null,rate:clear.model.counts[0]+clear.model.counts[1]>4?.05:.035,stopWhen:value=>{
       if(goodEnough(value))return true;
       if(!selected.protectFeatures||!earlyFeatureInitialization?.enclosurePending)return false;
       // Hand a checked colour-retaining fit to local shape refinement as soon
