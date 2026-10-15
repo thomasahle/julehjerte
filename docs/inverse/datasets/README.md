@@ -83,6 +83,20 @@ and rounded cells remain visible in some accepted outputs. These counts measure
 derived-mask and paper checks, not faithful recovery of original artwork. The
 model remains offline, and this experiment does not replace the corpus benchmarks.
 
+A [body/material swap diagnostic](material-crop-swaps.json) now separates the
+two predicted fields across all seventeen photographs (68 crop attempts).
+Both diagonal controls reproduce their historical crop decisions and
+coordinates exactly. The rabbit and stacked hearts require both expanded
+predictions; replacing either previous prediction loses the boar. Neither
+fixed cross-combination improves the crop count. One newly supported
+decorated checker passes full fitting and editable checks, but its neural
+mask has already rounded and displaced the photographed straight cells.
+Existing RGB classification on the identical crop restores straighter
+interior edges; its fit also passes, while retaining border artifacts
+around the displaced crop. The two fits use different targets, so their
+error percentages are not a paired artwork-accuracy comparison. No
+ensemble, replacement model or additional corpus success is claimed.
+
 A [fixed appearance-sensitivity diagnostic](material-appearance-sensitivity.json)
 checks 357 predictions: seventeen photos, three frozen models, and the original
 image plus six small exposure, gamma and saturation changes. Padding, geometry
