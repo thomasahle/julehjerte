@@ -192,10 +192,17 @@ original optimization trajectory and incumbent remain identical in fixed work,
 and the retained alternative passes both 700- and 1000-pixel paper audits. The new
 regression fails before the change and passes afterwards, including independent
 SVG replay. All six focused checks, 857 application tests (one skip), type checking, lint,
-build and private star/hat browser checks pass. The full inverse suite is running,
-with the unchanged complete corpora queued afterwards. The twelve uncapped fresh trials all pass, but contain paired
-error increases and do not establish no-regression. The prior failed suite remains
-recorded.
+build and private star/hat browser checks pass. The completed inverse suite passes
+945/947; two clearance-repair failures are under a
+[separate controlled investigation](clearance-handoff-regression-plan.json).
+The complete corpus passes 22/22 Hunodan designs (maximum 9.490 seconds, every
+error unchanged), 26/31 complete-heart photos and all 48 editable conversions.
+The same 47-entry photo inventory, crop coordinates and mask hashes are retained.
+Six accepted photo errors increase, so the strict no-regression gate fails.
+All twelve changed photo outputs were visually reviewed: small contour changes,
+checker-contact defects and thin seams remain. The twelve earlier uncapped fresh
+trials also contain paired error increases. Prior failed runs remain recorded;
+the current candidate is not a clean release result.
 
 A [controlled photo-border experiment](border-fragment-perturbation-results.json)
 replays 228 crop/resolution combinations with both re-estimated and frozen colour
