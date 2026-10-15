@@ -1,0 +1,570 @@
+{
+  "schema": "woven-heart-material-proposal-review-1",
+  "status": "source-and-outline-reviewed; compiled-label-review-pending",
+  "scope": "Two additional partial material proposals on existing body-labelled photographs. No admitted material-label count increase, training, split assignment, crop change or cutting-path ground truth.",
+  "root": "tmp/heart-learning/printed-material-labels-v1",
+  "sourceHashes": {
+    "tmp/heart-learning/printed-material-labels-v1/draft.json": "543618f3ba85f758199226aec82aa22700d8678c001ceec71b61f61515a08aae",
+    "tmp/heart-learning/printed-material-labels-v1/reviewed-proposal.json": "44778c1603bb2eb91fff13819a05cb3bdc0e7ba2d355c1223b969acfc3728e07",
+    "tmp/heart-learning/printed-material-labels-v1/review-notes.json": "4e89466717c6069c4106d9278b1dbcd94d4cf42f7fdb79b6e5283f3959b1dd26",
+    "scripts/inverse/datasets/real-annotations.json": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5",
+    "scripts/inverse/datasets/real_materials.py": "7f6052d404e66b971bc76821e4de75d7fee38972cdd2af30fa076037faaf878a",
+    "scripts/inverse/datasets/real_annotations.py": "b505fb723dc45b644cb95a058ddf45317f6afb700c61fb88cb3d93571fb9e33c",
+    "docs/inverse/datasets/real-manifest.json": "149697fc7cdd535736dd8727bba7847bca10d74823a28bdfaf77c95c44a6ffb3",
+    "tmp/heart-learning/printed-material-labels-v1/real-b87b0b19f12724f3-body-1-outlines.png": "2b0c2d8bc660727e1549d4da1db8fe62ea624f6f12b535b75d87797d2e940b43",
+    "tmp/heart-learning/printed-material-labels-v1/real-995899fe049540ed-body-1-outlines.png": "48cbcea7b4c57db7fd41f6ef78d3341c721671b898de27fff2e466f896edaa53"
+  },
+  "proposals": {
+    "schema": "woven-heart-real-material-annotations-1",
+    "scope": "Partial material identities on existing reviewed bodies. Printed ink belongs to its material; no cut-path or exact-corner labels. New model training and global split assignment are not included.",
+    "bodyAnnotations": [
+      {
+        "path": "scripts/inverse/datasets/real-annotations.json",
+        "sha256": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5"
+      }
+    ],
+    "instances": [
+      {
+        "id": "real-995899fe049540ed-body-1",
+        "boundaryUncertaintyPixels": 8,
+        "papers": {
+          "paperA": {
+            "description": "Floral printed material: turquoise ground and every flower, leaf and printed colour on that same material; physical paper/fabric composition is unverified.",
+            "polygons": [
+              [
+                [
+                  235,
+                  310
+                ],
+                [
+                  285,
+                  213
+                ],
+                [
+                  370,
+                  160
+                ],
+                [
+                  470,
+                  130
+                ],
+                [
+                  560,
+                  140
+                ],
+                [
+                  659,
+                  170
+                ],
+                [
+                  738,
+                  214
+                ],
+                [
+                  596,
+                  334
+                ],
+                [
+                  765,
+                  524
+                ],
+                [
+                  620,
+                  661
+                ],
+                [
+                  442,
+                  493
+                ],
+                [
+                  408,
+                  493
+                ],
+                [
+                  255,
+                  644
+                ],
+                [
+                  212,
+                  552
+                ],
+                [
+                  205,
+                  434
+                ]
+              ],
+              [
+                [
+                  811,
+                  570
+                ],
+                [
+                  975,
+                  410
+                ],
+                [
+                  1124,
+                  537
+                ],
+                [
+                  978,
+                  681
+                ]
+              ],
+              [
+                [
+                  466,
+                  891
+                ],
+                [
+                  621,
+                  753
+                ],
+                [
+                  758,
+                  910
+                ],
+                [
+                  622,
+                  1057
+                ]
+              ],
+              [
+                [
+                  839,
+                  909
+                ],
+                [
+                  983,
+                  762
+                ],
+                [
+                  1137,
+                  910
+                ],
+                [
+                  997,
+                  1058
+                ]
+              ]
+            ]
+          },
+          "paperB": {
+            "description": "Horizontally striped printed material, including all its white, green, blue, yellow, orange and magenta stripes as one identity.",
+            "polygons": [
+              [
+                [
+                  830,
+                  217
+                ],
+                [
+                  945,
+                  164
+                ],
+                [
+                  1110,
+                  155
+                ],
+                [
+                  1210,
+                  170
+                ],
+                [
+                  1300,
+                  214
+                ],
+                [
+                  1375,
+                  327
+                ],
+                [
+                  1409,
+                  442
+                ],
+                [
+                  1417,
+                  543
+                ],
+                [
+                  1390,
+                  637
+                ],
+                [
+                  1335,
+                  720
+                ],
+                [
+                  1190,
+                  870
+                ],
+                [
+                  1025,
+                  715
+                ],
+                [
+                  1200,
+                  536
+                ],
+                [
+                  979,
+                  331
+                ],
+                [
+                  805,
+                  491
+                ],
+                [
+                  674,
+                  338
+                ]
+              ],
+              [
+                [
+                  663,
+                  708
+                ],
+                [
+                  804,
+                  574
+                ],
+                [
+                  939,
+                  719
+                ],
+                [
+                  801,
+                  865
+                ]
+              ],
+              [
+                [
+                  288,
+                  699
+                ],
+                [
+                  427,
+                  574
+                ],
+                [
+                  577,
+                  707
+                ],
+                [
+                  428,
+                  849
+                ]
+              ],
+              [
+                [
+                  665,
+                  1104
+                ],
+                [
+                  802,
+                  951
+                ],
+                [
+                  958,
+                  1105
+                ],
+                [
+                  813,
+                  1254
+                ]
+              ]
+            ]
+          }
+        },
+        "review": {
+          "method": "assistant-visual-interior-polygons",
+          "status": "initial-reviewed",
+          "note": "The original photograph and polygon-outline review were inspected. Floral ink of every colour belongs to one material; all horizontal printed stripes belong to the other. Conservative visible interiors avoid joins and edges. Physical paper/fabric composition is not asserted. Compiled overlays still require review before promotion."
+        }
+      },
+      {
+        "id": "real-b87b0b19f12724f3-body-1",
+        "boundaryUncertaintyPixels": 3,
+        "papers": {
+          "paperA": {
+            "description": "Saturated red paper, including its illumination changes and bowed front regions.",
+            "polygons": [
+              [
+                [
+                  247,
+                  173
+                ],
+                [
+                  281,
+                  121
+                ],
+                [
+                  310,
+                  100
+                ],
+                [
+                  328,
+                  99
+                ],
+                [
+                  355,
+                  108
+                ],
+                [
+                  381,
+                  129
+                ],
+                [
+                  395,
+                  151
+                ],
+                [
+                  393,
+                  178
+                ],
+                [
+                  378,
+                  210
+                ],
+                [
+                  359,
+                  233
+                ],
+                [
+                  339,
+                  221
+                ],
+                [
+                  365,
+                  181
+                ],
+                [
+                  313,
+                  148
+                ],
+                [
+                  285,
+                  189
+                ],
+                [
+                  275,
+                  197
+                ]
+              ],
+              [
+                [
+                  278,
+                  215
+                ],
+                [
+                  316,
+                  234
+                ],
+                [
+                  296,
+                  265
+                ],
+                [
+                  260,
+                  249
+                ]
+              ],
+              [
+                [
+                  206,
+                  233
+                ],
+                [
+                  240,
+                  252
+                ],
+                [
+                  224,
+                  280
+                ],
+                [
+                  192,
+                  262
+                ]
+              ],
+              [
+                [
+                  285,
+                  309
+                ],
+                [
+                  304,
+                  289
+                ],
+                [
+                  325,
+                  299
+                ],
+                [
+                  309,
+                  325
+                ]
+              ]
+            ]
+          },
+          "paperB": {
+            "description": "Pale pink paper, including the darker bowed left lobe and lighter front squares.",
+            "polygons": [
+              [
+                [
+                  150,
+                  163
+                ],
+                [
+                  170,
+                  139
+                ],
+                [
+                  195,
+                  130
+                ],
+                [
+                  221,
+                  130
+                ],
+                [
+                  242,
+                  140
+                ],
+                [
+                  214,
+                  179
+                ],
+                [
+                  265,
+                  213
+                ],
+                [
+                  249,
+                  237
+                ],
+                [
+                  198,
+                  212
+                ],
+                [
+                  177,
+                  246
+                ],
+                [
+                  157,
+                  231
+                ],
+                [
+                  146,
+                  208
+                ],
+                [
+                  145,
+                  187
+                ]
+              ],
+              [
+                [
+                  308,
+                  174
+                ],
+                [
+                  338,
+                  189
+                ],
+                [
+                  321,
+                  216
+                ],
+                [
+                  289,
+                  203
+                ]
+              ],
+              [
+                [
+                  255,
+                  263
+                ],
+                [
+                  289,
+                  280
+                ],
+                [
+                  274,
+                  300
+                ],
+                [
+                  237,
+                  289
+                ]
+              ],
+              [
+                [
+                  327,
+                  241
+                ],
+                [
+                  354,
+                  252
+                ],
+                [
+                  334,
+                  282
+                ],
+                [
+                  310,
+                  273
+                ]
+              ]
+            ]
+          }
+        },
+        "review": {
+          "method": "assistant-visual-interior-polygons",
+          "status": "initial-reviewed",
+          "note": "The original photograph and polygon-outline review were inspected. Red and pale-pink identities continue through their illumination changes and bowing. Label conservative front interiors only; chocolates, tabletop, cast shadows and seam margins remain outside material supervision. Compiled overlays still require review before promotion."
+        }
+      }
+    ]
+  },
+  "sources": [
+    {
+      "id": "real-995899fe049540ed",
+      "localPath": "tmp/heart-training-real/assets/995899fe049540eddee6f7bdd90e0a65f839059ac404346642c904617875ca8e.jpg",
+      "sha256": "995899fe049540eddee6f7bdd90e0a65f839059ac404346642c904617875ca8e",
+      "width": 1600,
+      "height": 1349,
+      "nearDuplicateGroup": "real-995899fe049540ed",
+      "splitGroupId": "real-split-837aa89750c4379e",
+      "splitStatus": "unassigned",
+      "trainingRightsStatus": "not-cleared"
+    },
+    {
+      "id": "real-b87b0b19f12724f3",
+      "localPath": "tmp/heart-training-real/assets/b87b0b19f12724f37b816b22afe3dc5f59aa57531bdaf18d8c678f074d4eafd3.jpg",
+      "sha256": "b87b0b19f12724f37b816b22afe3dc5f59aa57531bdaf18d8c678f074d4eafd3",
+      "width": 600,
+      "height": 400,
+      "nearDuplicateGroup": "real-b87b0b19f12724f3",
+      "splitGroupId": "real-split-b0658dffd8a94416",
+      "splitStatus": "unassigned",
+      "trainingRightsStatus": "not-cleared"
+    }
+  ],
+  "abstentions": [
+    {
+      "id": "real-f4b397c381357dfa-body-1",
+      "reason": "Both sides appear to use similar dark decorative material. The photograph alone does not clearly establish two distinguishable material identities. Keep its existing body label; do not infer A/B labels from a guessed cut grid."
+    }
+  ],
+  "queuedVerification": {
+    "runner": "tmp/heart-learning/printed-material-labels-v1/after-browser.py",
+    "sha256": "620341194f314070782102e59804edfae97b6a22984b0f436f11720dc6f68506",
+    "resolutions": [
+      256,
+      768
+    ],
+    "policy": "Runs after the current serial solver/browser checks. Compiled overlays must be inspected before these proposals enter the material annotation inventory."
+  }
+}
