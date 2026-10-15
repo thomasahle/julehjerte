@@ -355,5 +355,13 @@
       "path": "tmp/heart-learning/clearance-handoff-regression-v1/focused-after.log",
       "sha256": "2d57cf39ec8aaa1c27cd0b92da07a945576309af5c6da98d123d2a213bd9493c"
     }
-  ]
+  ],
+  "broaderQA": {
+    "status": "running",
+    "controller": "tmp/heart-learning/clearance-handoff-regression-v1/qa/run.py",
+    "state": "tmp/heart-learning/clearance-handoff-regression-v1/qa/state.json",
+    "expectedInverseTests": 949,
+    "productionCommit": "9cedec4",
+    "sourceFreeze": "static/inverse, src and scripts/inverse until the QA controller and its complete corpus replay finish"
+  }
 }

@@ -216,6 +216,17 @@ enough repair time for an uncertain paper checkpoint. Paired fresh trials before
 this fix pass 6/6 on the pre-retention runtime and 3/6 on the current runtime, so
 the small candidate-retention change is not declared free of timing regressions.
 
+A [fixed routing-checkpoint follow-up](routing-paper-continuation-results.json)
+finds that the 81-step repair passes actual paper verification at 1000 pixels;
+120 further steps at 700 improve its independently rendered error to 1.0944%.
+That offline result does not fit the existing timing allocation. A bounded finer-
+audit prototype still fails both controlled fresh trials: one integer proposal is
+too late to enter repair, and the other completes a passing audit after its caller
+deadline. All eight fresh outputs were reviewed; controlled failures lose the
+three white openings when the pipeline selects its worse fallback. This prototype
+is not integrated. The next scheduling experiment must fund useful verification
+or continuation inside the original total budget, not accept uncertainty.
+
 A [controlled photo-border experiment](border-fragment-perturbation-results.json)
 replays 228 crop/resolution combinations with both re-estimated and frozen colour
 clusters. All four original 400-pixel masks reproduce exactly. The outline-star
