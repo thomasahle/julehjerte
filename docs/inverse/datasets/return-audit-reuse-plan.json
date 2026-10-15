@@ -1,0 +1,627 @@
+{
+  "schema": 1,
+  "status": "queued_after_live_fixed_work_QA",
+  "sourceCommit": "f83270d",
+  "question": "Can local constraint projection reuse exact path witnesses or immutable curve preparation to fit more valid repair work inside the unchanged 400 ms timed allowance?",
+  "evidence": {
+    "scope": "One anchor checkpoint only, not full-solver timing. Initial witnesses can move three of eight paths; later iterations can discover different witnesses.",
+    "dependencies": {
+      "scope": "Initial witness control dependencies only, not measured caching benefit; later witnesses can touch other paths.",
+      "rows": [
+        {
+          "projection": 0,
+          "policy": "hidden-controls-only",
+          "iterations": 13,
+          "termination": "no_movable_gradient",
+          "paths": [
+            {
+              "index": 0,
+              "curves": 6,
+              "possiblyChanged": false
+            },
+            {
+              "index": 1,
+              "curves": 13,
+              "possiblyChanged": true
+            },
+            {
+              "index": 2,
+              "curves": 9,
+              "possiblyChanged": true
+            },
+            {
+              "index": 3,
+              "curves": 5,
+              "possiblyChanged": false
+            },
+            {
+              "index": 4,
+              "curves": 7,
+              "possiblyChanged": false
+            },
+            {
+              "index": 5,
+              "curves": 18,
+              "possiblyChanged": true
+            },
+            {
+              "index": 6,
+              "curves": 8,
+              "possiblyChanged": false
+            },
+            {
+              "index": 7,
+              "curves": 5,
+              "possiblyChanged": false
+            }
+          ]
+        },
+        {
+          "projection": 1,
+          "policy": "all-free-controls",
+          "iterations": 16,
+          "termination": "validated",
+          "paths": [
+            {
+              "index": 0,
+              "curves": 6,
+              "possiblyChanged": false
+            },
+            {
+              "index": 1,
+              "curves": 13,
+              "possiblyChanged": true
+            },
+            {
+              "index": 2,
+              "curves": 9,
+              "possiblyChanged": true
+            },
+            {
+              "index": 3,
+              "curves": 5,
+              "possiblyChanged": false
+            },
+            {
+              "index": 4,
+              "curves": 7,
+              "possiblyChanged": false
+            },
+            {
+              "index": 5,
+              "curves": 18,
+              "possiblyChanged": true
+            },
+            {
+              "index": 6,
+              "curves": 8,
+              "possiblyChanged": false
+            },
+            {
+              "index": 7,
+              "curves": 5,
+              "possiblyChanged": false
+            }
+          ]
+        },
+        {
+          "projection": 2,
+          "policy": "hidden-controls-only",
+          "iterations": 1,
+          "termination": "no_movable_gradient",
+          "paths": [
+            {
+              "index": 0,
+              "curves": 6,
+              "possiblyChanged": false
+            },
+            {
+              "index": 1,
+              "curves": 13,
+              "possiblyChanged": false
+            },
+            {
+              "index": 2,
+              "curves": 9,
+              "possiblyChanged": false
+            },
+            {
+              "index": 3,
+              "curves": 5,
+              "possiblyChanged": false
+            },
+            {
+              "index": 4,
+              "curves": 7,
+              "possiblyChanged": false
+            },
+            {
+              "index": 5,
+              "curves": 18,
+              "possiblyChanged": false
+            },
+            {
+              "index": 6,
+              "curves": 8,
+              "possiblyChanged": false
+            },
+            {
+              "index": 7,
+              "curves": 5,
+              "possiblyChanged": false
+            }
+          ]
+        },
+        {
+          "projection": 3,
+          "policy": "all-free-controls",
+          "iterations": 1,
+          "termination": "validated",
+          "paths": [
+            {
+              "index": 0,
+              "curves": 6,
+              "possiblyChanged": false
+            },
+            {
+              "index": 1,
+              "curves": 13,
+              "possiblyChanged": false
+            },
+            {
+              "index": 2,
+              "curves": 9,
+              "possiblyChanged": true
+            },
+            {
+              "index": 3,
+              "curves": 5,
+              "possiblyChanged": false
+            },
+            {
+              "index": 4,
+              "curves": 7,
+              "possiblyChanged": false
+            },
+            {
+              "index": 5,
+              "curves": 18,
+              "possiblyChanged": true
+            },
+            {
+              "index": 6,
+              "curves": 8,
+              "possiblyChanged": false
+            },
+            {
+              "index": 7,
+              "curves": 5,
+              "possiblyChanged": false
+            }
+          ]
+        },
+        {
+          "projection": 4,
+          "policy": "hidden-controls-only",
+          "iterations": 7,
+          "termination": "no_movable_gradient",
+          "paths": [
+            {
+              "index": 0,
+              "curves": 6,
+              "possiblyChanged": false
+            },
+            {
+              "index": 1,
+              "curves": 13,
+              "possiblyChanged": true
+            },
+            {
+              "index": 2,
+              "curves": 9,
+              "possiblyChanged": true
+            },
+            {
+              "index": 3,
+              "curves": 5,
+              "possiblyChanged": false
+            },
+            {
+              "index": 4,
+              "curves": 7,
+              "possiblyChanged": false
+            },
+            {
+              "index": 5,
+              "curves": 18,
+              "possiblyChanged": true
+            },
+            {
+              "index": 6,
+              "curves": 8,
+              "possiblyChanged": false
+            },
+            {
+              "index": 7,
+              "curves": 5,
+              "possiblyChanged": false
+            }
+          ]
+        },
+        {
+          "projection": 5,
+          "policy": "all-free-controls",
+          "iterations": 8,
+          "termination": "validated",
+          "paths": [
+            {
+              "index": 0,
+              "curves": 6,
+              "possiblyChanged": false
+            },
+            {
+              "index": 1,
+              "curves": 13,
+              "possiblyChanged": true
+            },
+            {
+              "index": 2,
+              "curves": 9,
+              "possiblyChanged": true
+            },
+            {
+              "index": 3,
+              "curves": 5,
+              "possiblyChanged": false
+            },
+            {
+              "index": 4,
+              "curves": 7,
+              "possiblyChanged": false
+            },
+            {
+              "index": 5,
+              "curves": 18,
+              "possiblyChanged": true
+            },
+            {
+              "index": 6,
+              "curves": 8,
+              "possiblyChanged": false
+            },
+            {
+              "index": 7,
+              "curves": 5,
+              "possiblyChanged": false
+            }
+          ]
+        },
+        {
+          "projection": 6,
+          "policy": "hidden-controls-only",
+          "iterations": 7,
+          "termination": "no_movable_gradient",
+          "paths": [
+            {
+              "index": 0,
+              "curves": 6,
+              "possiblyChanged": false
+            },
+            {
+              "index": 1,
+              "curves": 13,
+              "possiblyChanged": true
+            },
+            {
+              "index": 2,
+              "curves": 9,
+              "possiblyChanged": true
+            },
+            {
+              "index": 3,
+              "curves": 5,
+              "possiblyChanged": false
+            },
+            {
+              "index": 4,
+              "curves": 7,
+              "possiblyChanged": false
+            },
+            {
+              "index": 5,
+              "curves": 18,
+              "possiblyChanged": true
+            },
+            {
+              "index": 6,
+              "curves": 8,
+              "possiblyChanged": false
+            },
+            {
+              "index": 7,
+              "curves": 5,
+              "possiblyChanged": false
+            }
+          ]
+        },
+        {
+          "projection": 7,
+          "policy": "all-free-controls",
+          "iterations": 5,
+          "termination": "validated",
+          "paths": [
+            {
+              "index": 0,
+              "curves": 6,
+              "possiblyChanged": false
+            },
+            {
+              "index": 1,
+              "curves": 13,
+              "possiblyChanged": true
+            },
+            {
+              "index": 2,
+              "curves": 9,
+              "possiblyChanged": true
+            },
+            {
+              "index": 3,
+              "curves": 5,
+              "possiblyChanged": false
+            },
+            {
+              "index": 4,
+              "curves": 7,
+              "possiblyChanged": false
+            },
+            {
+              "index": 5,
+              "curves": 18,
+              "possiblyChanged": true
+            },
+            {
+              "index": 6,
+              "curves": 8,
+              "possiblyChanged": false
+            },
+            {
+              "index": 7,
+              "curves": 5,
+              "possiblyChanged": false
+            }
+          ]
+        },
+        {
+          "projection": 8,
+          "policy": "hidden-controls-only",
+          "iterations": 5,
+          "termination": "validated",
+          "paths": [
+            {
+              "index": 0,
+              "curves": 6,
+              "possiblyChanged": false
+            },
+            {
+              "index": 1,
+              "curves": 13,
+              "possiblyChanged": true
+            },
+            {
+              "index": 2,
+              "curves": 9,
+              "possiblyChanged": false
+            },
+            {
+              "index": 3,
+              "curves": 5,
+              "possiblyChanged": false
+            },
+            {
+              "index": 4,
+              "curves": 7,
+              "possiblyChanged": false
+            },
+            {
+              "index": 5,
+              "curves": 18,
+              "possiblyChanged": true
+            },
+            {
+              "index": 6,
+              "curves": 8,
+              "possiblyChanged": false
+            },
+            {
+              "index": 7,
+              "curves": 5,
+              "possiblyChanged": false
+            }
+          ]
+        },
+        {
+          "projection": 9,
+          "policy": "hidden-controls-only",
+          "iterations": 5,
+          "termination": "validated",
+          "paths": [
+            {
+              "index": 0,
+              "curves": 6,
+              "possiblyChanged": false
+            },
+            {
+              "index": 1,
+              "curves": 13,
+              "possiblyChanged": true
+            },
+            {
+              "index": 2,
+              "curves": 9,
+              "possiblyChanged": false
+            },
+            {
+              "index": 3,
+              "curves": 5,
+              "possiblyChanged": false
+            },
+            {
+              "index": 4,
+              "curves": 7,
+              "possiblyChanged": false
+            },
+            {
+              "index": 5,
+              "curves": 18,
+              "possiblyChanged": true
+            },
+            {
+              "index": 6,
+              "curves": 8,
+              "possiblyChanged": false
+            },
+            {
+              "index": 7,
+              "curves": 5,
+              "possiblyChanged": false
+            }
+          ]
+        }
+      ]
+    },
+    "pathCosts": {
+      "scope": "One saved initial checkpoint, three local path-only observations. Diagnostic only, not full-solver timing.",
+      "rows": [
+        {
+          "family": 0,
+          "slit": 0,
+          "curves": 6,
+          "issues": 0,
+          "timings": [
+            0.3073750000000004,
+            0.03633299999999906,
+            0.02070900000000364
+          ]
+        },
+        {
+          "family": 0,
+          "slit": 1,
+          "curves": 13,
+          "issues": 0,
+          "timings": [
+            7.188749999999999,
+            2.689957999999997,
+            2.844458000000003
+          ]
+        },
+        {
+          "family": 0,
+          "slit": 2,
+          "curves": 9,
+          "issues": 0,
+          "timings": [
+            2.044666999999997,
+            1.4351660000000024,
+            1.7573340000000002
+          ]
+        },
+        {
+          "family": 0,
+          "slit": 3,
+          "curves": 5,
+          "issues": 0,
+          "timings": [
+            0.05145899999999415,
+            0.010041000000001077,
+            0.008042000000003213
+          ]
+        },
+        {
+          "family": 1,
+          "slit": 0,
+          "curves": 7,
+          "issues": 0,
+          "timings": [
+            0.011541999999991504,
+            0.010708000000008155,
+            0.0105829999999969
+          ]
+        },
+        {
+          "family": 1,
+          "slit": 1,
+          "curves": 18,
+          "issues": 3,
+          "timings": [
+            5.585124999999991,
+            4.084999999999994,
+            3.9157499999999885
+          ]
+        },
+        {
+          "family": 1,
+          "slit": 2,
+          "curves": 8,
+          "issues": 0,
+          "timings": [
+            1.269041999999999,
+            1.3949580000000026,
+            1.077875000000006
+          ]
+        },
+        {
+          "family": 1,
+          "slit": 3,
+          "curves": 5,
+          "issues": 0,
+          "timings": [
+            0.010915999999994597,
+            0.007167000000009693,
+            0.00679200000000435
+          ]
+        }
+      ]
+    }
+  },
+  "arms": {
+    "before": "Committed f83270d runtime copied unchanged.",
+    "path-cache": "Scope a witness cache to one projection. Reuse only when all current path coordinates and physical margin are exactly equal; copy cached witnesses and rebuild current edge identities. Final full validation remains uncached.",
+    "curve-cache": "Add reuse of privately owned normalized ReturnCurve objects, flattening and turning-root preparation inside changed paths. Every current normalized coordinate is compared exactly; changed geometry receives new objects. The uncached final validator still checks the result."
+  },
+  "protocol": {
+    "oracle": "Twelve analytic/saved fixtures, four exact subdivision representations and both reflections. Compare every complete issue against the baseline after coordinate changes, physical-scale changes, path reordering and caller edits to returned witnesses.",
+    "fixedWork": "Ten captured anchor projections plus 24 analytic/saved projection modes and one final hidden-return fixture. Three repetitions in rotating policy order and fresh processes. Complete reports, validation objects and all coordinates must equal the baseline; independently validate every accepted repair.",
+    "timed": "Fixed anchor cleanup with a finite 10-second overall deadline and the unchanged 400 ms local allowance. Clock scales 1, 2, 4, 8; two repetitions with reversed arm order. Measure acceptance, image error, geometry and paper checks. This is not fresh-image fitting or a ten-second browser latency benchmark."
+  },
+  "limits": [
+    "No production source changed for this experiment.",
+    "Curve-cache modifies a copied generated return-search module only; any adoption must be implemented in its authoritative TypeScript source and regenerated.",
+    "A local speedup is insufficient for adoption without full fitting and quality evidence.",
+    "No clearance threshold, final validation rule or image allowance is relaxed."
+  ],
+  "controller": "tmp/heart-learning/return-audit-reuse-v1/run.py",
+  "sourcePins": "tmp/heart-learning/return-audit-reuse-v1/source.json",
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/return-audit-reuse-v1/source.json",
+      "sha256": "9bbafde83ad8451bb55e66a6cabcc4ae6529fb78048ffadb0a8b486379b5ee41"
+    },
+    {
+      "path": "tmp/heart-learning/return-audit-reuse-v1/oracle.mjs",
+      "sha256": "b421a9daa93d1aaef16400016491653210211d17a759e9712c8f9556ecbde3b2"
+    },
+    {
+      "path": "tmp/heart-learning/return-audit-reuse-v1/projections.mjs",
+      "sha256": "e3ea8bea984fdca0f76750902954991f8decc211b380d426c3cdc03a31ee7c82"
+    },
+    {
+      "path": "tmp/heart-learning/return-audit-reuse-v1/timed-anchor.mjs",
+      "sha256": "8371781c738ed9ac88068b214456f5baf5b2eac71505d46250170dd93cb082ff"
+    },
+    {
+      "path": "tmp/heart-learning/return-audit-reuse-v1/run.py",
+      "sha256": "a4df5e0d7342bc7c2a2046bf767ef4dd15f738cfaec99d6d1c499848c951de19"
+    }
+  ]
+}

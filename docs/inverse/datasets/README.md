@@ -150,8 +150,11 @@ wall-time cutoff. Finite-deadline website fitting keeps the existing 400 ms
 allowance and all quality rules. All 29 focused regressions pass, including
 explicit deadlines. All 857 application tests pass (one skipped), together with
 type checking, lint, build and private Chromium star/hat workflows. The full
-inverse suite is running. This fixes fixed-work repeatability, not the broader
-timed fitting problem or the ten-second speed goal.
+inverse suite completes with **945/946 passing**. The remaining ten-second Viking
+fit has 3.2094% mask disagreement and a paper failure; the new fixed-work regression
+passes. This suite failure is retained, and the finite-deadline search needs further
+diagnosis. The change fixes fixed-work repeatability, not the broader timed fitting
+problem or the ten-second speed goal.
 
 A [boundary preparation refactor](boundary-trace-reuse.json) reuses cleanup and
 pixel chains when trying several tracing tolerances. Across 29 photographic

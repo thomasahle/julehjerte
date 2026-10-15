@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "status": "implemented; focused_tests_pass; full_QA_running",
+  "status": "implemented; full_QA_complete_with_one_timed_Viking_failure",
   "plan": "docs/inverse/datasets/anchor-projection-clock-plan.json",
   "scope": "Fixed saved anchor geometry, fixed 160-step cleanup, original image and validity rules; no overall refinement deadline. Clock multiplication affects local timing decisions. This is not a fresh-image benchmark or an under-ten-second speed result.",
   "findings": {
@@ -532,5 +532,107 @@
       "path": "tmp/heart-learning/anchor-projection-clock-v1/qa/served-assets.json",
       "sha256": "92ebde644a6c5247ad952944453c1f4fc344f7cef67cbb7ffbd107e90d90e811"
     }
-  ]
+  ],
+  "fullQA": {
+    "state": {
+      "status": "complete",
+      "sourceFilesVerified": 783,
+      "allCommandsPassed": false
+    },
+    "commands": [
+      {
+        "stage": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 10.346118833
+      },
+      {
+        "stage": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 7.0832004170000005
+      },
+      {
+        "stage": "build",
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 15.700764249999999
+      },
+      {
+        "stage": "preview",
+        "command": [
+          "python3",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/anchor-projection-clock-v1/qa/restart-preview.py"
+        ],
+        "exitCode": 0,
+        "seconds": 1.0852372499999987
+      },
+      {
+        "stage": "browser",
+        "command": [
+          "node",
+          "scripts/inverse/paint-browser-test.mjs"
+        ],
+        "exitCode": 0,
+        "seconds": 19.135201917000003
+      },
+      {
+        "stage": "test",
+        "command": [
+          "npm",
+          "test"
+        ],
+        "exitCode": 1,
+        "seconds": 1140.397717167
+      }
+    ],
+    "application": {
+      "passed": 857,
+      "skipped": 1,
+      "failed": 0
+    },
+    "inverse": {
+      "passed": 945,
+      "failed": 1,
+      "total": 946,
+      "failingTest": "scripts/inverse/clearance-feature-budget.test.mjs",
+      "independentMaskError": 0.03209375,
+      "termination": "paper_failure",
+      "diagnostic": {
+        "initialCounts": [
+          6,
+          6
+        ],
+        "initialGridError": 0.04638671875,
+        "initialClearanceError": 0.0796051025390625,
+        "alternativeCounts": [
+          4,
+          4
+        ],
+        "alternativeGridError": 0.0569305419921875,
+        "alternativeClearanceError": 0.0563201904296875,
+        "initialColours": true,
+        "alternativeColours": false,
+        "alternativeColoursBeforeClearance": false,
+        "alternativeGeometry": true,
+        "alternativePaper": "pass",
+        "seconds": 0.5205985839999994,
+        "preferred": false
+      },
+      "interpretation": "The new untimed repair regression passes. This finite-deadline Viking failure remains unresolved; an isolated replay would not replace this suite outcome."
+    },
+    "log": "tmp/heart-learning/anchor-projection-clock-v1/qa/test.log"
+  }
 }
