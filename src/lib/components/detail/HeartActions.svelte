@@ -48,38 +48,44 @@
 	}: Props = $props();
 </script>
 
+<!-- Two rows: first the two ways to get the template (print it, or trace it
+     from the screen), then what else can be done with the heart. -->
 <div class="actions">
-	{#if isShared && hasDesign}
-		{#if savedShared}
-			<a class="btn btn-dark" href={galleryHref}>{t('showInGallery', lang)}</a>
-		{:else}
-			<button class="btn btn-dark" type="button" onclick={onSaveShared}>
-				{t('saveToMyHearts', lang)}
-			</button>
+	<div class="actions-row">
+		{#if isShared && hasDesign}
+			{#if savedShared}
+				<a class="btn btn-dark" href={galleryHref}>{t('showInGallery', lang)}</a>
+			{:else}
+				<button class="btn btn-dark" type="button" onclick={onSaveShared}>
+					{t('saveToMyHearts', lang)}
+				</button>
+			{/if}
 		{/if}
-	{/if}
-	<button class="btn btn-primary" type="button" onclick={onDownload} disabled={!hasDesign}>
-		<DownloadIcon size={18} />
-		{t('downloadPdfTemplate', lang)}
-	</button>
-	<a class="btn btn-outline" href={editHref} onclick={onEdit}>
-		<PencilIcon size={18} />
-		{t('openInEditor', lang)}
-	</a>
-	<button class="btn btn-ghost" type="button" onclick={onShare} aria-label={t('share', lang)}>
-		{#if shareStatus === 'copied'}
-			{t('copied', lang)}
-		{:else if shareStatus === 'error'}
-			{t('failed', lang)}
-		{:else}
-			<ShareIcon size={18} />
-			{t('share', lang)}
-		{/if}
-	</button>
-	<button class="btn btn-outline" type="button" onclick={onTrace} disabled={!hasDesign}>
-		<TabletIcon size={18} />
-		{t('traceFromScreen', lang)}
-	</button>
+		<button class="btn btn-primary" type="button" onclick={onDownload} disabled={!hasDesign}>
+			<DownloadIcon size={18} />
+			{t('downloadPdfTemplate', lang)}
+		</button>
+		<button class="btn btn-outline" type="button" onclick={onTrace} disabled={!hasDesign}>
+			<TabletIcon size={18} />
+			{t('traceFromScreen', lang)}
+		</button>
+	</div>
+	<div class="actions-row">
+		<a class="btn btn-outline" href={editHref} onclick={onEdit}>
+			<PencilIcon size={18} />
+			{t('openInEditor', lang)}
+		</a>
+		<button class="btn btn-ghost" type="button" onclick={onShare} aria-label={t('share', lang)}>
+			{#if shareStatus === 'copied'}
+				{t('copied', lang)}
+			{:else if shareStatus === 'error'}
+				{t('failed', lang)}
+			{:else}
+				<ShareIcon size={18} />
+				{t('share', lang)}
+			{/if}
+		</button>
+	</div>
 </div>
 
 {#if isShared && savedShared}
@@ -91,6 +97,12 @@
 <style>
 	/* The gap to whatever sits above is the parent column's, not ours. */
 	.actions {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+	}
+
+	.actions-row {
 		display: flex;
 		gap: 12px;
 		flex-wrap: wrap;

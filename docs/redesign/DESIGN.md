@@ -247,7 +247,8 @@ Right column: panel `rgb(255 255 255 / .55)`, radius 16, padding 24px 28px, gap 
 "Se den illustrerede vejledning →" to the guide page 12px under it; two-column block bordered top/bottom by
 `--line`: SVÆRHEDSGRAD (dots + label) and SYMMETRI ("Spejlsymmetri – én skabelon til begge sider" or the
 asymmetric equivalent). Under the panel, flush with its left edge and wrapping when the column narrows, the
-button row: primary "Download PDF-skabelon", outline "Rediger i editor", ghost "Del" (share, existing
+buttons in two rows — first the two ways to get the template: primary "Download PDF-skabelon" and outline
+"Tegn af fra skærmen" (the tracing mode, docs/redesign/TRACE.md); then outline "Rediger i editor", ghost "Del" (share, existing
 hash-link sharing) — the ghost one on `rgb(255 255 255 / .8)`, since the row crosses the landscape drawing.
 When the columns stack below 1100 the buttons follow the panel down.
 
