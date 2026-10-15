@@ -14,6 +14,10 @@ for(const [name,pixels]of [['resampled',mask],['original',originalMask]]){
     if(!report.templateChecksPassed||error>=.03)t.diagnostic(JSON.stringify({error,comparison:report.solver.clearanceComparison,termination:report.solver.termination}));
     assert.equal(report.templateChecksPassed,true);
     assert.ok(error<.03);
+    if(name==='resampled'){
+      assert.equal(report.solver.clearanceComparison.alternativeColoursBeforeClearance,true);
+      assert.equal(report.solver.clearanceComparison.repair.accepted,true);
+    }
     assert.equal(auditFeatureFidelity(source.sourceImage,rendered.mask,report.settings).passed,true);
     assert.deepEqual(source.sourceImage.mask,pixels);
   });

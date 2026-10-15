@@ -552,7 +552,12 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
         const paper=geometry.passed?materialAudit(solution,alternate.refinementCfg):null;
         const originalColours=retainsGridColours(clear),alternativeColours=retainsGridColours(alternate.clear);
         const score=r=>r.error+.005*(r.model.counts[0]+r.model.counts[1]);
-        const lowerScore=score(alternate.clear)<score(clear),recoverFeatures=lowerScore&&geometry.passed&&!alternativeColours;
+        const lowerScore=score(alternate.clear)<score(clear);
+        // This short repair can restore features lost during clearance, but
+        // cannot invent a routing that never represented them. Leave that
+        // work to feature initialization instead of starving its viable seed.
+        const alternativeColoursBeforeClearance=lowerScore&&geometry.passed&&!alternativeColours?retainsGridColours(retry):null;
+        const recoverFeatures=alternativeColoursBeforeClearance===true;
         const competitive=lowerScore&&(!originalColours||alternativeColours);
         let preferred=competitive&&geometry.passed&&(!cfg.requireMaterialCore||paper?.passed),repair=null;
         // A better coarse routing can start with a narrow neck that the
@@ -570,7 +575,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
             }
           }
         }
-        clearanceComparison={initialCounts:clear.model.counts,initialGridError:selected.error,initialClearanceError:clear.error,alternativeCounts:alternate.clear.model.counts,alternativeGridError:retry.error,alternativeClearanceError:alternate.clear.error,initialColours:originalColours,alternativeColours,alternativeGeometry:geometry.passed,alternativePaper:paper?.status,...(repair?{repair:repair.report}:{}),seconds:(performance.now()-at)/1000,preferred};
+        clearanceComparison={initialCounts:clear.model.counts,initialGridError:selected.error,initialClearanceError:clear.error,alternativeCounts:alternate.clear.model.counts,alternativeGridError:retry.error,alternativeClearanceError:alternate.clear.error,initialColours:originalColours,alternativeColours,alternativeColoursBeforeClearance,alternativeGeometry:geometry.passed,alternativePaper:paper?.status,...(repair?{repair:repair.report}:{}),seconds:(performance.now()-at)/1000,preferred};
         if(preferred){fine.splice(fine.indexOf(retry),1);fine.splice(i,0,retry);i--;continue;}
       }
     }
