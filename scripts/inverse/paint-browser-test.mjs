@@ -124,6 +124,8 @@ report.harnessSourceHashes['scripts/inverse/fixtures/sloth-search-scheduling.jso
 report.workspaceSourceHashes['static/inverse/core/direct/rejected-routing.js']=createHash('sha256').update(await fs.readFile('static/inverse/core/direct/rejected-routing.js')).digest('hex');
 report.harnessSourceHashes['scripts/inverse/fixtures/blue-star-polishing.json']=createHash('sha256').update(await fs.readFile('scripts/inverse/fixtures/blue-star-polishing.json')).digest('hex');
 report.harnessSourceHashes['scripts/inverse/fixtures/photographic-gold-routing.json']=createHash('sha256').update(await fs.readFile('scripts/inverse/fixtures/photographic-gold-routing.json')).digest('hex');
+report.harnessSourceHashes['scripts/inverse/fixtures/stacked-hearts-corner-mask.json']=createHash('sha256').update(await fs.readFile('scripts/inverse/fixtures/stacked-hearts-corner-mask.json')).digest('hex');
+for(const file of ['static/inverse/core/direct/corner-topology.js','static/inverse/core/feature-enclosures.js'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 for(const file of ['static/inverse/core/direct/refine.js','static/inverse/core/direct/clamped-features.js','static/inverse/core/direct/primitive-selection.js','static/inverse/core/direct/primitives.js','static/inverse/core/direct/shared-simplification.js','static/inverse/core/direct/curves.js','static/inverse/core/direct/curve-topology.js','static/inverse/core/direct/short-returns.js'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 for(const file of ['src/lib/components/editor/SymmetryRows.svelte','src/lib/components/ui/toggle-group/toggle-group.svelte','src/lib/components/paint/FramePanel.svelte','src/lib/components/paint/MaskToolPanel.svelte','src/lib/i18n/translations.ts','src/lib/components/paint/FindCutsPanel.svelte'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 report.workspaceSourceHashes['static/inverse/locator/interior-palette.js']=createHash('sha256').update(await fs.readFile('static/inverse/locator/interior-palette.js')).digest('hex');
@@ -137,7 +139,7 @@ try{
    const slothShift={'sloth-x-shift-mask':'x-plus-1','sloth-y-shift-mask':'y-minus-1'}[name];
    const slothSearch={'sloth-frozen-mask':'frozen','sloth-synthetic-mask':'synthetic-control','sloth-y-plus-mask':'y-plus-1'}[name],slothVariant=slothShift||slothSearch;
    const flowerMask=['flower-native-mask','flower-downsample-mask'].includes(name),anchorMask=name==='anchor-spatial-mask',fadedFrameMask=name==='faded-frame-mask',slothMask=name==='sloth-routing-mask'||Boolean(slothVariant);
-   const unequalLobes=name==='unequal-lobes',webPhoto=name.startsWith('web-'),hardPhoto=name.startsWith('hard-'),photoMask=flowerMask||anchorMask||fadedFrameMask||slothMask||['outline-star-shift-mask','gold-routing-mask','blue-star-polishing-mask','near-miss-mask','near-miss-shift-mask','near-miss-y-shift-mask','near-miss-diagonal-mask','leaf-mask','maple-leaf-mask','bird-mask','bird-shift-mask','bird-y-shift-mask','gift-mask','puppy-shift-mask','floral-checker-mask','warped-checker-mask','fine-checker-mask'].includes(name),photograph=unequalLobes||webPhoto||hardPhoto||name==='hunodan'||name.startsWith('hunodan-');
+   const unequalLobes=name==='unequal-lobes',webPhoto=name.startsWith('web-'),hardPhoto=name.startsWith('hard-'),photoMask=flowerMask||anchorMask||fadedFrameMask||slothMask||['stacked-hearts-mask','outline-star-shift-mask','gold-routing-mask','blue-star-polishing-mask','near-miss-mask','near-miss-shift-mask','near-miss-y-shift-mask','near-miss-diagonal-mask','leaf-mask','maple-leaf-mask','bird-mask','bird-shift-mask','bird-y-shift-mask','gift-mask','puppy-shift-mask','floral-checker-mask','warped-checker-mask','fine-checker-mask'].includes(name),photograph=unequalLobes||webPhoto||hardPhoto||name==='hunodan'||name.startsWith('hunodan-');
    const topHat=['top-hat','top-hat-preferred','top-hat-independent','top-hat-anti','top-hat-free-small'].includes(name),small=name.endsWith('-free-small'),free=topHat||name.endsWith('-free')||small,frameSize=small?.64:.84;
    const dir=path.join(output,`${browserName}-${name}${repeats>1?`-repeat-${repeat+1}`:''}`);await fs.mkdir(dir,{recursive:true});
    const row={browser:browserName,browserVersion:browser.version(),name,...(repeats>1?{repeat:repeat+1}:{}),pageErrors:[]};results.push(row);
@@ -213,6 +215,13 @@ try{
        fixture={...data,quad:data.quad.map(([x,y])=>[x+1,y]),maskSha256:'3338849d32ecafd54d2365fc664ec97ee5fbca5b54534290d873f6919437f5f4'};
        const catalogue=JSON.parse(await fs.readFile(fixture.sourceCatalogue));photo=await readHardPhoto(catalogue.source);
        assert.equal(photo.fileSha256,fixture.sourceFileSha256);assert.equal(photo.rgbaSha256,fixture.decodedPixelsSha256);
+      }else if(name==='stacked-hearts-mask'){
+       const file='scripts/inverse/fixtures/stacked-hearts-corner-mask.json',bytes=await fs.readFile(file),data=JSON.parse(bytes);
+       fixture={sourceCase:data.sourceInstance,quad:null,maskSha256:data.maskSha256};
+       fixedMask=new Uint8Array(data.resolution**2);let offset=0,value=data.first;
+       for(const run of data.runs){fixedMask.fill(value,offset,offset+run);offset+=run;value^=1;}
+       assert.equal(offset,fixedMask.length);
+       row.sourceMaskFixture={file,sha256:createHash('sha256').update(bytes).digest('hex'),scope:'Frozen estimated mask; tests the actual upload, worker and editable export, not neural inference or photograph cropping.'};
       }else if(name==='gold-routing-mask'){
        const file='scripts/inverse/fixtures/photographic-gold-routing.json',bytes=await fs.readFile(file),data=JSON.parse(bytes);
        fixture={sourceCase:'reviewed-crop-gold-angel',quad:null,maskSha256:data.maskSha256};
@@ -572,6 +581,16 @@ try{
     if(hardPhoto||photoMask){
      row.editableFeatures=auditFeatureFidelity({mask:sourceMask,resolution},sourceRendered,observed.result.report.settings);
      row.featureComponents=featureComponentMetrics({mask:sourceMask,resolution},sourceRendered);
+     if(name==='stacked-hearts-mask'&&!engineReference&&!stopMode){
+      assert.equal(observed.result.report.solver.cornerTopologyInitialization?.accepted,true);
+      assert.deepEqual(row.selectedCounts,[3,3]);
+      for(const size of [resolution,2*resolution]){
+       const reference=resample(sourceMask,resolution,size),woven=rasterizeDesign(design,size).data;
+       const components=featureComponentMetrics({mask:reference,resolution:size},woven);
+       assert.equal(components.length,5);assert.ok(maskMismatch(woven,reference)<.02);
+       for(const i of [0,1,3,4]){assert.equal(components[i].touchesBorder,false,`${size}px heart ${i} must stay enclosed`);assert.ok(components[i].componentIoU>.9);}
+      }
+     }
      if(['bird-mask','bird-shift-mask','bird-y-shift-mask'].includes(name)&&!stopMode){
       const eye=row.featureComponents.find(f=>f.centerMm[0]<30);
       assert.equal(eye.touchesBorder,false,'The exported eye must remain separate from the background');

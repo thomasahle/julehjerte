@@ -5,6 +5,7 @@
 import {connectedComponent} from './input.js';
 import {imageFeatures,auditImageFeatures,auditFeatureChange} from './image-features.js';
 import {sourceWeights} from './image-reference.js';
+import {stableInteriorFeatures} from './feature-enclosures.js';
 
 export function smallInteriorFeatures(source,features,cfg){
   if(!source)return [];
@@ -39,7 +40,7 @@ export function auditFeatureFidelity(source,woven,cfg,features=imageFeatures(sou
  */
 export function auditFeatureFidelityChange(source,before,after,cfg,features=imageFeatures(source,cfg.width)){
   const retention=auditFeatureChange(source,before,after,cfg.width,features);
-  const selected=smallInteriorFeatures(source,features,cfg);
+  const selected=[...smallInteriorFeatures(source,features,cfg),...stableInteriorFeatures(source,features,cfg)];
   if(!selected.length)return retention;
   const a=featureComponentMetrics(source,before,cfg.width,selected),b=featureComponentMetrics(source,after,cfg.width,selected);
   const opened=b.filter((part,i)=>a[i].touchesBorder===false&&part.touchesBorder===true);

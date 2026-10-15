@@ -30,6 +30,7 @@ import {rerouteFittedBoundary} from './reroute.js';
 import {recoverClampedFeatures} from './clamped-features.js';
 import {polishCandidate} from './polish.js';
 import {repairClearanceInitializer} from './clearance-repair.js';
+import {recoverCornerTopology} from './corner-topology.js';
 
 export {borderEvidence,supportedBorderCounts,gridCountLimit,gridFinalists} from './counts.js';
 const featureSeed=c=>['feature-weighted-grid','feature-preserving-grid','feature-sampling-grid','fitted-boundary-rerouting'].includes(c.seed);
@@ -113,7 +114,23 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     solution.report={countSearch:countSearchReport,algorithm:'direct-bezier',numericalBackend,imported:false,termination:'validated_initial_grid',stoppedEarly:true,seconds:(performance.now()-start)/1000,traceUsed:false,borderCountsAreHardConstraints:false,selectedCounts:counts,attempts,stages:timings,estimatedMaskMismatch:error,matchingPreference:{enabled:cfg.preferMatchingSheets,...matchingEvidence,...matchingSummary(solution),identicalCandidateBonus:0}};
     return solution;
   }
-  let topology=null;
+  let topology=null,cornerTopology=null;
+  // A longer allowance can repair a coupled corner disturbance before a
+  // lower-error grid opens an enclosed motif. Short searches retain their
+  // established budget; this optional route needs time for geometry and paper
+  // checks as well as the MILP. No source pixels or count hypotheses change.
+  if(cfg.timeLimit>=20&&!weights&&!symmetryRequested){
+    const seconds=Math.min(16,(start+cfg.timeLimit*1000-performance.now()-2500)/1000);
+    cornerTopology=await recoverCornerTopology(input,cfg,{seconds,onProgress,features:sourceFeatures});
+    if(cornerTopology.solution){
+      const solution=cornerTopology.solution;
+      solution.report={...solution.report,countSearch:countSearchReport,algorithm:'direct-bezier',numericalBackend,imported:false,
+        termination:'validated_corner_topology',seconds:(performance.now()-start)/1000,traceUsed:true,
+        selectedCounts:solution.paths.map(p=>p.length),attempts,stages:timings,cornerTopologyInitialization:cornerTopology.report,
+        estimatedMaskMismatch:cornerTopology.report.imageError,borderCountsAreHardConstraints:false};
+      return solution;
+    }
+  }
   // Short searches share one allowance between precise and coarse boundary
   // initialization. Otherwise a difficult first MILP and its coarse retry can
   // consume the time needed to route and refine the original image later.
@@ -310,7 +327,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       recovery.report.refinement={imageError:maskDisagreement(source,woven),featuresPassed:auditFeatureFidelity(source,woven,cfg,sourceFeatures).passed,geometryPassed:candidate.geometryPassed,paperPassed:candidate.paperPassed,steps:candidate.steps};
       if(candidate.geometryPassed&&candidate.paperPassed&&maskDisagreement(source,woven)<=cfg.maxImageError&&auditFeatureFidelity(source,woven,cfg,sourceFeatures).passed){
         solution.graph.metadata.candidateMethod='Feature-recovery topology followed by joint cubic and straight-span refinement';
-        solution.report={countSearch:countSearchReport,finalistPreference,deferredFeatureRecovery,...(recoveryHistory.length>1?{featureRecoveryAttempts:recoveryHistory}:{}),...(candidate.paperVerification?{paperVerification:candidate.paperVerification}:{}),algorithm:'direct-bezier',numericalBackend,imported:false,termination:'candidate_found',seconds:(performance.now()-start)/1000,traceUsed:true,selectedCounts:solution.paths.map(p=>p.length),attempts,topologyInitialization:topology?.report,coarseTopologyInitialization:coarseTopology?.report,featureRecovery:{trigger:features,...recovery.report},borderCountsAreHardConstraints:false,checkpoints:candidate.history,primitives:candidate.primitives};
+        solution.report={countSearch:countSearchReport,finalistPreference,deferredFeatureRecovery,...(recoveryHistory.length>1?{featureRecoveryAttempts:recoveryHistory}:{}),...(candidate.paperVerification?{paperVerification:candidate.paperVerification}:{}),algorithm:'direct-bezier',numericalBackend,imported:false,termination:'candidate_found',seconds:(performance.now()-start)/1000,traceUsed:true,selectedCounts:solution.paths.map(p=>p.length),attempts,cornerTopologyInitialization:cornerTopology?.report,topologyInitialization:topology?.report,coarseTopologyInitialization:coarseTopology?.report,featureRecovery:{trigger:features,...recovery.report},borderCountsAreHardConstraints:false,checkpoints:candidate.history,primitives:candidate.primitives};
         return solution;
       }
     }
@@ -726,6 +743,6 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   const paper={passed:candidate.paperPassed};
   solution.report={countSearch:countSearchReport,finalistPreference,deferredFeatureRecovery,...(recoveryHistory.length>1?{featureRecoveryAttempts:recoveryHistory}:{}),algorithm:'direct-bezier',numericalBackend,imported:false,termination:!candidate.geometryPassed?'geometry_failure':!paper.passed?'paper_failure':candidate.originalImageError>cfg.maxImageError?'image_mismatch':'candidate_found',seconds:(performance.now()-start)/1000,
     stoppedEarly,clearanceComparison,extraGridComparisons,earlyClampedFeatureRecovery,clampedFeatureRecovery:candidate.clampedFeatureRecovery,refinementFeaturesPassed:candidate.originalFeatures?.passed,refinementBudget:{requestedSeconds:cfg.timeLimit,maximumSearchSeconds:searchSeconds(),verifiedAlternative},earlyFeatureInitialization,featureInitialization,samplingRecovery,featureDetail,featureDetailAttempts,outlineDetail,paperVerification:candidate.paperVerification,matchingPreference:{enabled:cfg.preferMatchingSheets,...matchingEvidence,...matchingSummary(solution),identicalCandidateBonus:0},optimizationResolution:n,sourceResolution:source.resolution,scaleSampling:'Each fitting scale is area-resampled directly from the original classified source; no chained downsampling',initialization:'Fresh ordered grids, soft border endpoint proposals and alternating row dynamic programming; independent shapes for both sheets',countsSearched:attempts.filter(a=>a.stage==='coarse').map(a=>({counts:a.counts,phase:a.phase})),attempts,selectedCounts:candidate.counts,candidates:candidates.map(c=>({counts:c.counts,error:c.error,sourceImageError:c.originalImageError,imagePassed:c.imagePassed,featuresPassed:c.originalFeatures?.passed,enclosuresOpened:c.originalFeatures?.enclosures?.opened,score:c.score,geometry:c.geometryPassed,paper:c.paperPassed,paperVerification:c.paperVerification})),
-    borderEvidence:evidence,supportedBorderCounts:supportedBorderCounts(evidence),borderCountsAreHardConstraints:false,traceUsed:['coarse-boundary-topology','feature-recovery'].includes(candidate.seed),topologyInitialization:topology?.report,coarseTopologyInitialization:coarseTopology?.report,selectedInitialization:candidate.seed||'grid',featureRecovery:recovery?.report||null,freeCoordinates:'Both coordinates of anchors and handles; endpoints remain on assigned sides',stages:timings,checkpoints:candidate.history,localFeaturePolish:candidate.localFeaturePolish,sharing:candidate.sharing||{accepted:[],rejected:[]},estimatedMaskMismatch:candidate.error,minimumNominalWidth:cfg.nominalWidth,physicalAssemblyTested:false};
+    borderEvidence:evidence,supportedBorderCounts:supportedBorderCounts(evidence),borderCountsAreHardConstraints:false,traceUsed:['coarse-boundary-topology','feature-recovery'].includes(candidate.seed),cornerTopologyInitialization:cornerTopology?.report,topologyInitialization:topology?.report,coarseTopologyInitialization:coarseTopology?.report,selectedInitialization:candidate.seed||'grid',featureRecovery:recovery?.report||null,freeCoordinates:'Both coordinates of anchors and handles; endpoints remain on assigned sides',stages:timings,checkpoints:candidate.history,localFeaturePolish:candidate.localFeaturePolish,sharing:candidate.sharing||{accepted:[],rejected:[]},estimatedMaskMismatch:candidate.error,minimumNominalWidth:cfg.nominalWidth,physicalAssemblyTested:false};
   return solution;
 }

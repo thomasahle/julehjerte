@@ -5,7 +5,7 @@ import {curvesOf} from '../graph.js';
 import {sampleWeave,validate} from '../validate.js';
 import {materialAudit} from '../material.js';
 import {imageFeatures} from '../image-features.js';
-import {auditFeatureFidelity} from '../feature-shapes.js';
+import {auditFeatureFidelity,auditFeatureFidelityChange} from '../feature-shapes.js';
 import {CurveGraph} from './curves.js';
 import {refineCurves} from './refine.js';
 import {matchingGrid,matchingPaths,matchingSummary,symmetryEvidence} from './matching.js';
@@ -54,12 +54,14 @@ export function preferMatchingSolution(solution,cfg,{deadline=Infinity,steps=200
   const limit=report.maximumMatchingImageError;
   if(report.minimumIdenticalImageError>limit)return finish(solution,'image_bound_exceeds_allowance');
   onProgress({stage:'directMatching'});
-  const features=imageFeatures(source,cfg.width),phase=solution.graph.target.phase?-1:1,input=solution.graph.target;
+  const features=imageFeatures(source,cfg.width),phase=solution.graph.target.phase?-1:1,input=solution.graph.target,before=sampleWeave(solution,source.resolution);
   const inspect=(candidate,attempt)=>{
     const woven=sampleWeave(candidate,source.resolution),error=maskDisagreement(source,woven);
     Object.assign(attempt,{imageError:error,withinAllowance:error<=limit});
     if(error>limit)return false;
     attempt.featuresPassed=auditFeatureFidelity(source,woven,cfg,features).passed;
+    attempt.featureChange=auditFeatureFidelityChange(source,before,woven,cfg,features);
+    attempt.featuresPassed&&=attempt.featureChange.passed;
     attempt.geometryPassed=validate(candidate,cfg).passed;
     attempt.paperPassed=!cfg.requireMaterialCore||attempt.geometryPassed&&materialAudit(candidate,cfg).passed;
     return attempt.featuresPassed&&attempt.geometryPassed&&attempt.paperPassed&&matchingSummary(candidate).identical;
