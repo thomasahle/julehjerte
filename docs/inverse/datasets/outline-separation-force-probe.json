@@ -1,0 +1,535 @@
+{
+  "schema": "outline-separation-force-comparison-1",
+  "status": "rejected; not integrated",
+  "runtimeRevision": "fc7957e",
+  "difference": "Uniformly use a two-nominal-width same-slit exclusion in outline-polish separation forces. Original captured exclusion is eight nominal widths. All validators and source objectives remain unchanged.",
+  "comparison": {
+    "fits": 22,
+    "sourceFilesVerified": 218,
+    "checks": [
+      {
+        "policy": "baseline",
+        "file": "feature-near-miss",
+        "exitCode": 0,
+        "seconds": 69.14919499999999
+      },
+      {
+        "policy": "baseline",
+        "file": "feature-seeds",
+        "exitCode": 0,
+        "seconds": 25.436844124999993
+      },
+      {
+        "policy": "short-locality",
+        "file": "feature-near-miss",
+        "exitCode": 1,
+        "seconds": 68.94734070800001
+      },
+      {
+        "policy": "short-locality",
+        "file": "feature-seeds",
+        "exitCode": 0,
+        "seconds": 25.233223791
+      }
+    ]
+  },
+  "findings": [
+    "All outputs pass their current global mask, feature, curve and paper gates, but the vertical-shift local motif regression fails at both clocks.",
+    "The normal vertical-shift sun-region error rises to 4.3059%, above the unchanged 4% limit. Accelerated vertical-shift error is 4.3563%.",
+    "Every near-miss global 800px error is higher in the proposed run. Bird, puppy and candle controls are unchanged.",
+    "The successful fixed-work failure repair does not justify globally stronger outline forces. Next experiment enables them only after a full geometry-valid paper-failed refinement block, using the less aggressive three-width exclusion."
+  ],
+  "runs": [
+    {
+      "policy": "baseline",
+      "case": "original-normal",
+      "wallSeconds": 8.955557167,
+      "sourceSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "renders": [
+        {
+          "resolution": 400,
+          "error": 0.01118125,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.01255625,
+          "featuresPassed": true
+        }
+      ],
+      "capture": "tmp/heart-learning/outline-separation-forces-v1/baseline-feature-near-miss/feature-near-miss.test-0"
+    },
+    {
+      "policy": "baseline",
+      "case": "horizontal-normal",
+      "wallSeconds": 9.236759417,
+      "sourceSha256": "34c9b902b787f4b934b50fdea0238277932d70d1f1d58391c0323c30a80dcd16",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "renders": [
+        {
+          "resolution": 400,
+          "error": 0.010875,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.0122375,
+          "featuresPassed": true
+        }
+      ],
+      "capture": "tmp/heart-learning/outline-separation-forces-v1/baseline-feature-near-miss/feature-near-miss.test-1"
+    },
+    {
+      "policy": "baseline",
+      "case": "vertical-normal",
+      "wallSeconds": 7.98474375,
+      "sourceSha256": "5366729f963fe8255091b1ed9fae26d734fdd6def020b4effc87c1965ac9aaea",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "renders": [
+        {
+          "resolution": 400,
+          "error": 0.011375,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.0132375,
+          "featuresPassed": true
+        }
+      ],
+      "capture": "tmp/heart-learning/outline-separation-forces-v1/baseline-feature-near-miss/feature-near-miss.test-2"
+    },
+    {
+      "policy": "baseline",
+      "case": "negative-diagonal-normal",
+      "wallSeconds": 8.597722333,
+      "sourceSha256": "52b62e8802e974e4f2bea0142e10bbd94e42213083cb0f01f089c94093c4419c",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "renders": [
+        {
+          "resolution": 400,
+          "error": 0.01185,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.013534375,
+          "featuresPassed": true
+        }
+      ],
+      "capture": "tmp/heart-learning/outline-separation-forces-v1/baseline-feature-near-miss/feature-near-miss.test-3"
+    },
+    {
+      "policy": "baseline",
+      "case": "original-accelerated",
+      "wallSeconds": 6.14583,
+      "sourceSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "renders": [
+        {
+          "resolution": 400,
+          "error": 0.01333125,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.014715625,
+          "featuresPassed": true
+        }
+      ],
+      "capture": "tmp/heart-learning/outline-separation-forces-v1/baseline-feature-near-miss/feature-near-miss.test-4"
+    },
+    {
+      "policy": "baseline",
+      "case": "horizontal-accelerated",
+      "wallSeconds": 6.186092041,
+      "sourceSha256": "34c9b902b787f4b934b50fdea0238277932d70d1f1d58391c0323c30a80dcd16",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "renders": [
+        {
+          "resolution": 400,
+          "error": 0.01251875,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.01389375,
+          "featuresPassed": true
+        }
+      ],
+      "capture": "tmp/heart-learning/outline-separation-forces-v1/baseline-feature-near-miss/feature-near-miss.test-5"
+    },
+    {
+      "policy": "baseline",
+      "case": "vertical-accelerated",
+      "wallSeconds": 6.168777542,
+      "sourceSha256": "5366729f963fe8255091b1ed9fae26d734fdd6def020b4effc87c1965ac9aaea",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "renders": [
+        {
+          "resolution": 400,
+          "error": 0.015075,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.016609375,
+          "featuresPassed": true
+        }
+      ],
+      "capture": "tmp/heart-learning/outline-separation-forces-v1/baseline-feature-near-miss/feature-near-miss.test-6"
+    },
+    {
+      "policy": "baseline",
+      "case": "negative-diagonal-accelerated",
+      "wallSeconds": 6.170246667000001,
+      "sourceSha256": "52b62e8802e974e4f2bea0142e10bbd94e42213083cb0f01f089c94093c4419c",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "renders": [
+        {
+          "resolution": 400,
+          "error": 0.0145125,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.0158859375,
+          "featuresPassed": true
+        }
+      ],
+      "capture": "tmp/heart-learning/outline-separation-forces-v1/baseline-feature-near-miss/feature-near-miss.test-7"
+    },
+    {
+      "policy": "baseline",
+      "case": "short-bird",
+      "wallSeconds": 9.376534958,
+      "sourceSha256": "7137173fa17abe3f8f7788ddb7d321fe48258a4a3f4c2f8b3171b9ff9f15a16f",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "renders": [
+        {
+          "resolution": 400,
+          "error": 0.02471875,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.02633125,
+          "featuresPassed": true
+        }
+      ],
+      "capture": "tmp/heart-learning/outline-separation-forces-v1/baseline-feature-seeds/feature-seeds.test-0"
+    },
+    {
+      "policy": "baseline",
+      "case": "puppy-y+1",
+      "wallSeconds": 9.256152917,
+      "sourceSha256": "19f2c14b8e5e09abdeda442284bb1187e80369331482ab6db0d935ef8335fd91",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "renders": [
+        {
+          "resolution": 400,
+          "error": 0.01341875,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.014453125,
+          "featuresPassed": true
+        }
+      ],
+      "capture": "tmp/heart-learning/outline-separation-forces-v1/baseline-feature-seeds/feature-seeds.test-1"
+    },
+    {
+      "policy": "baseline",
+      "case": "candle",
+      "wallSeconds": 3.0823243750000002,
+      "sourceSha256": "263a91fc0a1b6db6db4da860f4145bd52aa0973927285068f8cbe267c9bc175d",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "renders": [
+        {
+          "resolution": 400,
+          "error": 0.0048375,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.0056515625,
+          "featuresPassed": true
+        }
+      ],
+      "capture": "tmp/heart-learning/outline-separation-forces-v1/baseline-feature-seeds/feature-seeds.test-2"
+    },
+    {
+      "policy": "short-locality",
+      "case": "original-normal",
+      "wallSeconds": 9.354628542,
+      "sourceSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "renders": [
+        {
+          "resolution": 400,
+          "error": 0.01374375,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.01503125,
+          "featuresPassed": true
+        }
+      ],
+      "capture": "tmp/heart-learning/outline-separation-forces-v1/short-locality-feature-near-miss/feature-near-miss.test-0"
+    },
+    {
+      "policy": "short-locality",
+      "case": "horizontal-normal",
+      "wallSeconds": 8.964135125,
+      "sourceSha256": "34c9b902b787f4b934b50fdea0238277932d70d1f1d58391c0323c30a80dcd16",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "renders": [
+        {
+          "resolution": 400,
+          "error": 0.0153625,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.01651875,
+          "featuresPassed": true
+        }
+      ],
+      "capture": "tmp/heart-learning/outline-separation-forces-v1/short-locality-feature-near-miss/feature-near-miss.test-1"
+    },
+    {
+      "policy": "short-locality",
+      "case": "vertical-normal",
+      "wallSeconds": 7.270459708000001,
+      "sourceSha256": "5366729f963fe8255091b1ed9fae26d734fdd6def020b4effc87c1965ac9aaea",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "renders": [
+        {
+          "resolution": 400,
+          "error": 0.0173375,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.01876875,
+          "featuresPassed": true
+        }
+      ],
+      "capture": "tmp/heart-learning/outline-separation-forces-v1/short-locality-feature-near-miss/feature-near-miss.test-2"
+    },
+    {
+      "policy": "short-locality",
+      "case": "negative-diagonal-normal",
+      "wallSeconds": 9.070480041000001,
+      "sourceSha256": "52b62e8802e974e4f2bea0142e10bbd94e42213083cb0f01f089c94093c4419c",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "renders": [
+        {
+          "resolution": 400,
+          "error": 0.01435,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.01580625,
+          "featuresPassed": true
+        }
+      ],
+      "capture": "tmp/heart-learning/outline-separation-forces-v1/short-locality-feature-near-miss/feature-near-miss.test-3"
+    },
+    {
+      "policy": "short-locality",
+      "case": "original-accelerated",
+      "wallSeconds": 6.337684875,
+      "sourceSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "renders": [
+        {
+          "resolution": 400,
+          "error": 0.0199,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.0208140625,
+          "featuresPassed": true
+        }
+      ],
+      "capture": "tmp/heart-learning/outline-separation-forces-v1/short-locality-feature-near-miss/feature-near-miss.test-4"
+    },
+    {
+      "policy": "short-locality",
+      "case": "horizontal-accelerated",
+      "wallSeconds": 6.343102708,
+      "sourceSha256": "34c9b902b787f4b934b50fdea0238277932d70d1f1d58391c0323c30a80dcd16",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "renders": [
+        {
+          "resolution": 400,
+          "error": 0.0196875,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.020503125,
+          "featuresPassed": true
+        }
+      ],
+      "capture": "tmp/heart-learning/outline-separation-forces-v1/short-locality-feature-near-miss/feature-near-miss.test-5"
+    },
+    {
+      "policy": "short-locality",
+      "case": "vertical-accelerated",
+      "wallSeconds": 6.183904792,
+      "sourceSha256": "5366729f963fe8255091b1ed9fae26d734fdd6def020b4effc87c1965ac9aaea",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "renders": [
+        {
+          "resolution": 400,
+          "error": 0.01771875,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.019109375,
+          "featuresPassed": true
+        }
+      ],
+      "capture": "tmp/heart-learning/outline-separation-forces-v1/short-locality-feature-near-miss/feature-near-miss.test-6"
+    },
+    {
+      "policy": "short-locality",
+      "case": "negative-diagonal-accelerated",
+      "wallSeconds": 6.246064667,
+      "sourceSha256": "52b62e8802e974e4f2bea0142e10bbd94e42213083cb0f01f089c94093c4419c",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "renders": [
+        {
+          "resolution": 400,
+          "error": 0.01840625,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.0192921875,
+          "featuresPassed": true
+        }
+      ],
+      "capture": "tmp/heart-learning/outline-separation-forces-v1/short-locality-feature-near-miss/feature-near-miss.test-7"
+    },
+    {
+      "policy": "short-locality",
+      "case": "short-bird",
+      "wallSeconds": 9.36912525,
+      "sourceSha256": "7137173fa17abe3f8f7788ddb7d321fe48258a4a3f4c2f8b3171b9ff9f15a16f",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "renders": [
+        {
+          "resolution": 400,
+          "error": 0.02471875,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.02633125,
+          "featuresPassed": true
+        }
+      ],
+      "capture": "tmp/heart-learning/outline-separation-forces-v1/short-locality-feature-seeds/feature-seeds.test-0"
+    },
+    {
+      "policy": "short-locality",
+      "case": "puppy-y+1",
+      "wallSeconds": 9.282761875,
+      "sourceSha256": "19f2c14b8e5e09abdeda442284bb1187e80369331482ab6db0d935ef8335fd91",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "renders": [
+        {
+          "resolution": 400,
+          "error": 0.01341875,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.014453125,
+          "featuresPassed": true
+        }
+      ],
+      "capture": "tmp/heart-learning/outline-separation-forces-v1/short-locality-feature-seeds/feature-seeds.test-1"
+    },
+    {
+      "policy": "short-locality",
+      "case": "candle",
+      "wallSeconds": 2.962352584,
+      "sourceSha256": "263a91fc0a1b6db6db4da860f4145bd52aa0973927285068f8cbe267c9bc175d",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "renders": [
+        {
+          "resolution": 400,
+          "error": 0.0048375,
+          "featuresPassed": true
+        },
+        {
+          "resolution": 800,
+          "error": 0.0056515625,
+          "featuresPassed": true
+        }
+      ],
+      "capture": "tmp/heart-learning/outline-separation-forces-v1/short-locality-feature-seeds/feature-seeds.test-2"
+    }
+  ],
+  "artifactSha256": {
+    "tmp/heart-learning/outline-separation-forces-v1/checks.json": "2c987b85d9ea73bfc83885173f363df7e8defdc7f8858bdb540941953f89916d",
+    "tmp/heart-learning/outline-separation-forces-v1/state.json": "5997ad03e6f9afc61de38920335e1d2b7fe673f418fcba0d28d0ef30a990cf62",
+    "tmp/heart-learning/outline-separation-forces-v1/source.json": "4497d184b44e1172e4b06704236c5d7629d3c0f8ef5dab03a32e62ff7d5a6909",
+    "tmp/heart-learning/outline-separation-forces-v1/short-locality-feature-near-miss/test.log": "06c33bcac5836afd413d2b1bc6fa3ab9eb2649b904932c1e73713a42c31200a0"
+  },
+  "releaseClaim": "None."
+}

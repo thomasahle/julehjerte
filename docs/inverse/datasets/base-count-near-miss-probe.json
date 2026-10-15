@@ -1,0 +1,726 @@
+{
+  "schema": "base-count-near-miss-comparison-1",
+  "runtimeRevision": "fc7957e",
+  "status": "rejected; no production integration",
+  "question": "Can repairing an existing base-count near miss before testing larger cut counts preserve more time for curve refinement?",
+  "difference": "Try near-miss and retained alternate refinement at the current cut counts first. Only a successful base-count retry skips the other count hypotheses. Ordinary immediately valid base grids still search all hypotheses. Cache retries so failed base refinements are not repeated. Final acceptance remains unchanged.",
+  "protocol": {
+    "order": [
+      "baseline",
+      "base-first",
+      "base-first",
+      "baseline"
+    ],
+    "runs": 28,
+    "cases": [
+      "original-normal",
+      "horizontal-normal",
+      "original-accelerated",
+      "horizontal-accelerated",
+      "vertical-accelerated",
+      "negative-diagonal-accelerated",
+      "puppy-y+1"
+    ],
+    "sourceFilesVerified": 426,
+    "allOriginalAssertionsPassed": true,
+    "limitsUnchanged": true,
+    "syntheticClockMeaning": "1.5x advances the monotonic clock faster while the request remains ten seconds; it is scheduling pressure, not browser performance."
+  },
+  "findings": [
+    "All 28 exported pairs pass the original independent image, feature, geometry and paper assertions.",
+    "For original/horizontal near misses, the proposal evaluates two count/phase hypotheses instead of ten, retaining the same three-by-three count.",
+    "Original accelerated 800-pixel errors: baseline [2.8259374999999998, 2.7796874999999996]%; proposal [2.6434375, 2.879375]%. The paired benefit is not repeatable.",
+    "Some other short-budget fits also regress; the puppy control remains unchanged.",
+    "Do not integrate this heuristic as a demonstrated robustness improvement. Investigate the actual low-error paper-failed detail checkpoints next."
+  ],
+  "summary": [
+    {
+      "case": "original-normal",
+      "baseline": {
+        "meanWallSeconds": 8.9190227295,
+        "error800": [
+          0.01255625,
+          0.01255625
+        ],
+        "countHypotheses": [
+          10,
+          10
+        ]
+      },
+      "base-first": {
+        "meanWallSeconds": 8.815672833499999,
+        "error800": [
+          0.01255625,
+          0.01255625
+        ],
+        "countHypotheses": [
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "case": "horizontal-normal",
+      "baseline": {
+        "meanWallSeconds": 9.3139569795,
+        "error800": [
+          0.0111515625,
+          0.0111515625
+        ],
+        "countHypotheses": [
+          10,
+          10
+        ]
+      },
+      "base-first": {
+        "meanWallSeconds": 9.0254870625,
+        "error800": [
+          0.0111515625,
+          0.0111515625
+        ],
+        "countHypotheses": [
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "case": "original-accelerated",
+      "baseline": {
+        "meanWallSeconds": 6.113574479,
+        "error800": [
+          0.028259375,
+          0.027796875
+        ],
+        "countHypotheses": [
+          10,
+          10
+        ]
+      },
+      "base-first": {
+        "meanWallSeconds": 6.112982624999999,
+        "error800": [
+          0.026434375,
+          0.02879375
+        ],
+        "countHypotheses": [
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "case": "horizontal-accelerated",
+      "baseline": {
+        "meanWallSeconds": 6.161251479000001,
+        "error800": [
+          0.014521875,
+          0.014521875
+        ],
+        "countHypotheses": [
+          10,
+          10
+        ]
+      },
+      "base-first": {
+        "meanWallSeconds": 6.340856688000001,
+        "error800": [
+          0.0141953125,
+          0.0141953125
+        ],
+        "countHypotheses": [
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "case": "vertical-accelerated",
+      "baseline": {
+        "meanWallSeconds": 6.1484382295,
+        "error800": [
+          0.0166453125,
+          0.0166453125
+        ],
+        "countHypotheses": [
+          10,
+          10
+        ]
+      },
+      "base-first": {
+        "meanWallSeconds": 6.1777359375,
+        "error800": [
+          0.016353125,
+          0.0168109375
+        ],
+        "countHypotheses": [
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "case": "negative-diagonal-accelerated",
+      "baseline": {
+        "meanWallSeconds": 6.1494065204999995,
+        "error800": [
+          0.0159421875,
+          0.013040625
+        ],
+        "countHypotheses": [
+          10,
+          10
+        ]
+      },
+      "base-first": {
+        "meanWallSeconds": 6.1866116044999995,
+        "error800": [
+          0.01603125,
+          0.0156046875
+        ],
+        "countHypotheses": [
+          10,
+          10
+        ]
+      }
+    },
+    {
+      "case": "puppy-y+1",
+      "baseline": {
+        "meanWallSeconds": 9.2843331875,
+        "error800": [
+          0.014453125,
+          0.014453125
+        ],
+        "countHypotheses": [
+          10,
+          10
+        ]
+      },
+      "base-first": {
+        "meanWallSeconds": 9.3289728545,
+        "error800": [
+          0.014453125,
+          0.014453125
+        ],
+        "countHypotheses": [
+          10,
+          10
+        ]
+      }
+    }
+  ],
+  "runs": [
+    {
+      "iteration": 0,
+      "policy": "baseline",
+      "case": "original-normal",
+      "wallSeconds": 8.914648167,
+      "reportedSeconds": 8.716177250000001,
+      "error400": 0.01118125,
+      "error800": 0.01255625,
+      "sourceSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "featuresPassed": true,
+      "countHypotheses": 10,
+      "baseRetryAccepted": null,
+      "outlineSteps": 160,
+      "capture": "tmp/heart-learning/base-count-near-miss-v1/0-baseline-feature-near-miss/feature-near-miss.test-0"
+    },
+    {
+      "iteration": 0,
+      "policy": "baseline",
+      "case": "horizontal-normal",
+      "wallSeconds": 9.286282625,
+      "reportedSeconds": 9.005552042,
+      "error400": 0.00985,
+      "error800": 0.0111515625,
+      "sourceSha256": "34c9b902b787f4b934b50fdea0238277932d70d1f1d58391c0323c30a80dcd16",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "featuresPassed": true,
+      "countHypotheses": 10,
+      "baseRetryAccepted": null,
+      "outlineSteps": 160,
+      "capture": "tmp/heart-learning/base-count-near-miss-v1/0-baseline-feature-near-miss/feature-near-miss.test-1"
+    },
+    {
+      "iteration": 0,
+      "policy": "baseline",
+      "case": "original-accelerated",
+      "wallSeconds": 6.120016,
+      "reportedSeconds": 9.0188653125,
+      "error400": 0.02721875,
+      "error800": 0.028259375,
+      "sourceSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "featuresPassed": true,
+      "countHypotheses": 10,
+      "baseRetryAccepted": null,
+      "outlineSteps": 125,
+      "capture": "tmp/heart-learning/base-count-near-miss-v1/0-baseline-feature-near-miss/feature-near-miss.test-2"
+    },
+    {
+      "iteration": 0,
+      "policy": "baseline",
+      "case": "horizontal-accelerated",
+      "wallSeconds": 6.188899041,
+      "reportedSeconds": 9.088571812500001,
+      "error400": 0.01334375,
+      "error800": 0.014521875,
+      "sourceSha256": "34c9b902b787f4b934b50fdea0238277932d70d1f1d58391c0323c30a80dcd16",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "featuresPassed": true,
+      "countHypotheses": 10,
+      "baseRetryAccepted": null,
+      "outlineSteps": 160,
+      "capture": "tmp/heart-learning/base-count-near-miss-v1/0-baseline-feature-near-miss/feature-near-miss.test-3"
+    },
+    {
+      "iteration": 0,
+      "policy": "baseline",
+      "case": "vertical-accelerated",
+      "wallSeconds": 6.1520726670000005,
+      "reportedSeconds": 9.026639249999993,
+      "error400": 0.01505,
+      "error800": 0.0166453125,
+      "sourceSha256": "5366729f963fe8255091b1ed9fae26d734fdd6def020b4effc87c1965ac9aaea",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "featuresPassed": true,
+      "countHypotheses": 10,
+      "baseRetryAccepted": null,
+      "outlineSteps": 125,
+      "capture": "tmp/heart-learning/base-count-near-miss-v1/0-baseline-feature-near-miss/feature-near-miss.test-4"
+    },
+    {
+      "iteration": 0,
+      "policy": "baseline",
+      "case": "negative-diagonal-accelerated",
+      "wallSeconds": 6.153915875,
+      "reportedSeconds": 9.050018312999994,
+      "error400": 0.01454375,
+      "error800": 0.0159421875,
+      "sourceSha256": "52b62e8802e974e4f2bea0142e10bbd94e42213083cb0f01f089c94093c4419c",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "featuresPassed": true,
+      "countHypotheses": 10,
+      "baseRetryAccepted": null,
+      "outlineSteps": 160,
+      "capture": "tmp/heart-learning/base-count-near-miss-v1/0-baseline-feature-near-miss/feature-near-miss.test-5"
+    },
+    {
+      "iteration": 0,
+      "policy": "baseline",
+      "case": "puppy-y+1",
+      "wallSeconds": 9.2801165,
+      "reportedSeconds": 9.000918667,
+      "error400": 0.01341875,
+      "error800": 0.014453125,
+      "sourceSha256": "19f2c14b8e5e09abdeda442284bb1187e80369331482ab6db0d935ef8335fd91",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "featuresPassed": true,
+      "countHypotheses": 10,
+      "baseRetryAccepted": null,
+      "outlineSteps": null,
+      "capture": "tmp/heart-learning/base-count-near-miss-v1/0-baseline-feature-seeds/feature-seeds.test-0"
+    },
+    {
+      "iteration": 1,
+      "policy": "base-first",
+      "case": "original-normal",
+      "wallSeconds": 8.874673542,
+      "reportedSeconds": 8.659015167,
+      "error400": 0.01118125,
+      "error800": 0.01255625,
+      "sourceSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "featuresPassed": true,
+      "countHypotheses": 2,
+      "baseRetryAccepted": true,
+      "outlineSteps": 160,
+      "capture": "tmp/heart-learning/base-count-near-miss-v1/1-base-first-feature-near-miss/feature-near-miss.test-0"
+    },
+    {
+      "iteration": 1,
+      "policy": "base-first",
+      "case": "horizontal-normal",
+      "wallSeconds": 9.059730125,
+      "reportedSeconds": 8.784993625,
+      "error400": 0.00985,
+      "error800": 0.0111515625,
+      "sourceSha256": "34c9b902b787f4b934b50fdea0238277932d70d1f1d58391c0323c30a80dcd16",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "featuresPassed": true,
+      "countHypotheses": 2,
+      "baseRetryAccepted": true,
+      "outlineSteps": 160,
+      "capture": "tmp/heart-learning/base-count-near-miss-v1/1-base-first-feature-near-miss/feature-near-miss.test-1"
+    },
+    {
+      "iteration": 1,
+      "policy": "base-first",
+      "case": "original-accelerated",
+      "wallSeconds": 6.115924874999999,
+      "reportedSeconds": 9.005523311999998,
+      "error400": 0.02538125,
+      "error800": 0.026434375,
+      "sourceSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "featuresPassed": true,
+      "countHypotheses": 2,
+      "baseRetryAccepted": true,
+      "outlineSteps": 150,
+      "capture": "tmp/heart-learning/base-count-near-miss-v1/1-base-first-feature-near-miss/feature-near-miss.test-2"
+    },
+    {
+      "iteration": 1,
+      "policy": "base-first",
+      "case": "horizontal-accelerated",
+      "wallSeconds": 6.341927459000001,
+      "reportedSeconds": 9.1340648745,
+      "error400": 0.01299375,
+      "error800": 0.0141953125,
+      "sourceSha256": "34c9b902b787f4b934b50fdea0238277932d70d1f1d58391c0323c30a80dcd16",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "featuresPassed": true,
+      "countHypotheses": 2,
+      "baseRetryAccepted": true,
+      "outlineSteps": 125,
+      "capture": "tmp/heart-learning/base-count-near-miss-v1/1-base-first-feature-near-miss/feature-near-miss.test-3"
+    },
+    {
+      "iteration": 1,
+      "policy": "base-first",
+      "case": "vertical-accelerated",
+      "wallSeconds": 6.183500875,
+      "reportedSeconds": 9.062153001000006,
+      "error400": 0.0148625,
+      "error800": 0.016353125,
+      "sourceSha256": "5366729f963fe8255091b1ed9fae26d734fdd6def020b4effc87c1965ac9aaea",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "featuresPassed": true,
+      "countHypotheses": 2,
+      "baseRetryAccepted": true,
+      "outlineSteps": 135,
+      "capture": "tmp/heart-learning/base-count-near-miss-v1/1-base-first-feature-near-miss/feature-near-miss.test-4"
+    },
+    {
+      "iteration": 1,
+      "policy": "base-first",
+      "case": "negative-diagonal-accelerated",
+      "wallSeconds": 6.126877625,
+      "reportedSeconds": 9.007677562500009,
+      "error400": 0.01449375,
+      "error800": 0.01603125,
+      "sourceSha256": "52b62e8802e974e4f2bea0142e10bbd94e42213083cb0f01f089c94093c4419c",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "featuresPassed": true,
+      "countHypotheses": 10,
+      "baseRetryAccepted": false,
+      "outlineSteps": 140,
+      "capture": "tmp/heart-learning/base-count-near-miss-v1/1-base-first-feature-near-miss/feature-near-miss.test-5"
+    },
+    {
+      "iteration": 1,
+      "policy": "base-first",
+      "case": "puppy-y+1",
+      "wallSeconds": 9.326595792,
+      "reportedSeconds": 9.050739292,
+      "error400": 0.01341875,
+      "error800": 0.014453125,
+      "sourceSha256": "19f2c14b8e5e09abdeda442284bb1187e80369331482ab6db0d935ef8335fd91",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "featuresPassed": true,
+      "countHypotheses": 10,
+      "baseRetryAccepted": false,
+      "outlineSteps": null,
+      "capture": "tmp/heart-learning/base-count-near-miss-v1/1-base-first-feature-seeds/feature-seeds.test-0"
+    },
+    {
+      "iteration": 2,
+      "policy": "base-first",
+      "case": "original-normal",
+      "wallSeconds": 8.756672125,
+      "reportedSeconds": 8.564480625,
+      "error400": 0.01118125,
+      "error800": 0.01255625,
+      "sourceSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "featuresPassed": true,
+      "countHypotheses": 2,
+      "baseRetryAccepted": true,
+      "outlineSteps": 160,
+      "capture": "tmp/heart-learning/base-count-near-miss-v1/2-base-first-feature-near-miss/feature-near-miss.test-0"
+    },
+    {
+      "iteration": 2,
+      "policy": "base-first",
+      "case": "horizontal-normal",
+      "wallSeconds": 8.991244,
+      "reportedSeconds": 8.710076375,
+      "error400": 0.00985,
+      "error800": 0.0111515625,
+      "sourceSha256": "34c9b902b787f4b934b50fdea0238277932d70d1f1d58391c0323c30a80dcd16",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "featuresPassed": true,
+      "countHypotheses": 2,
+      "baseRetryAccepted": true,
+      "outlineSteps": 160,
+      "capture": "tmp/heart-learning/base-count-near-miss-v1/2-base-first-feature-near-miss/feature-near-miss.test-1"
+    },
+    {
+      "iteration": 2,
+      "policy": "base-first",
+      "case": "original-accelerated",
+      "wallSeconds": 6.110040375,
+      "reportedSeconds": 9.007787437500003,
+      "error400": 0.02765625,
+      "error800": 0.02879375,
+      "sourceSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "featuresPassed": true,
+      "countHypotheses": 2,
+      "baseRetryAccepted": true,
+      "outlineSteps": 125,
+      "capture": "tmp/heart-learning/base-count-near-miss-v1/2-base-first-feature-near-miss/feature-near-miss.test-2"
+    },
+    {
+      "iteration": 2,
+      "policy": "base-first",
+      "case": "horizontal-accelerated",
+      "wallSeconds": 6.339785917,
+      "reportedSeconds": 9.105239186999999,
+      "error400": 0.01299375,
+      "error800": 0.0141953125,
+      "sourceSha256": "34c9b902b787f4b934b50fdea0238277932d70d1f1d58391c0323c30a80dcd16",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "featuresPassed": true,
+      "countHypotheses": 2,
+      "baseRetryAccepted": true,
+      "outlineSteps": 125,
+      "capture": "tmp/heart-learning/base-count-near-miss-v1/2-base-first-feature-near-miss/feature-near-miss.test-3"
+    },
+    {
+      "iteration": 2,
+      "policy": "base-first",
+      "case": "vertical-accelerated",
+      "wallSeconds": 6.171970999999999,
+      "reportedSeconds": 9.037818250499994,
+      "error400": 0.01520625,
+      "error800": 0.0168109375,
+      "sourceSha256": "5366729f963fe8255091b1ed9fae26d734fdd6def020b4effc87c1965ac9aaea",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "featuresPassed": true,
+      "countHypotheses": 2,
+      "baseRetryAccepted": true,
+      "outlineSteps": 125,
+      "capture": "tmp/heart-learning/base-count-near-miss-v1/2-base-first-feature-near-miss/feature-near-miss.test-4"
+    },
+    {
+      "iteration": 2,
+      "policy": "base-first",
+      "case": "negative-diagonal-accelerated",
+      "wallSeconds": 6.246345583999999,
+      "reportedSeconds": 9.003064375499997,
+      "error400": 0.01445625,
+      "error800": 0.0156046875,
+      "sourceSha256": "52b62e8802e974e4f2bea0142e10bbd94e42213083cb0f01f089c94093c4419c",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "featuresPassed": true,
+      "countHypotheses": 10,
+      "baseRetryAccepted": false,
+      "outlineSteps": 160,
+      "capture": "tmp/heart-learning/base-count-near-miss-v1/2-base-first-feature-near-miss/feature-near-miss.test-5"
+    },
+    {
+      "iteration": 2,
+      "policy": "base-first",
+      "case": "puppy-y+1",
+      "wallSeconds": 9.331349916999999,
+      "reportedSeconds": 9.057408084,
+      "error400": 0.01341875,
+      "error800": 0.014453125,
+      "sourceSha256": "19f2c14b8e5e09abdeda442284bb1187e80369331482ab6db0d935ef8335fd91",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "featuresPassed": true,
+      "countHypotheses": 10,
+      "baseRetryAccepted": false,
+      "outlineSteps": null,
+      "capture": "tmp/heart-learning/base-count-near-miss-v1/2-base-first-feature-seeds/feature-seeds.test-0"
+    },
+    {
+      "iteration": 3,
+      "policy": "baseline",
+      "case": "original-normal",
+      "wallSeconds": 8.923397291999999,
+      "reportedSeconds": 8.725350500000001,
+      "error400": 0.01118125,
+      "error800": 0.01255625,
+      "sourceSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "featuresPassed": true,
+      "countHypotheses": 10,
+      "baseRetryAccepted": null,
+      "outlineSteps": 160,
+      "capture": "tmp/heart-learning/base-count-near-miss-v1/3-baseline-feature-near-miss/feature-near-miss.test-0"
+    },
+    {
+      "iteration": 3,
+      "policy": "baseline",
+      "case": "horizontal-normal",
+      "wallSeconds": 9.341631334,
+      "reportedSeconds": 9.070522834,
+      "error400": 0.00985,
+      "error800": 0.0111515625,
+      "sourceSha256": "34c9b902b787f4b934b50fdea0238277932d70d1f1d58391c0323c30a80dcd16",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "featuresPassed": true,
+      "countHypotheses": 10,
+      "baseRetryAccepted": null,
+      "outlineSteps": 160,
+      "capture": "tmp/heart-learning/base-count-near-miss-v1/3-baseline-feature-near-miss/feature-near-miss.test-1"
+    },
+    {
+      "iteration": 3,
+      "policy": "baseline",
+      "case": "original-accelerated",
+      "wallSeconds": 6.107132958,
+      "reportedSeconds": 9.002225437500002,
+      "error400": 0.0267125,
+      "error800": 0.027796875,
+      "sourceSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "featuresPassed": true,
+      "countHypotheses": 10,
+      "baseRetryAccepted": null,
+      "outlineSteps": 130,
+      "capture": "tmp/heart-learning/base-count-near-miss-v1/3-baseline-feature-near-miss/feature-near-miss.test-2"
+    },
+    {
+      "iteration": 3,
+      "policy": "baseline",
+      "case": "horizontal-accelerated",
+      "wallSeconds": 6.133603917,
+      "reportedSeconds": 9.004874062500006,
+      "error400": 0.01334375,
+      "error800": 0.014521875,
+      "sourceSha256": "34c9b902b787f4b934b50fdea0238277932d70d1f1d58391c0323c30a80dcd16",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "featuresPassed": true,
+      "countHypotheses": 10,
+      "baseRetryAccepted": null,
+      "outlineSteps": 160,
+      "capture": "tmp/heart-learning/base-count-near-miss-v1/3-baseline-feature-near-miss/feature-near-miss.test-3"
+    },
+    {
+      "iteration": 3,
+      "policy": "baseline",
+      "case": "vertical-accelerated",
+      "wallSeconds": 6.144803791999999,
+      "reportedSeconds": 9.020211937500004,
+      "error400": 0.01505,
+      "error800": 0.0166453125,
+      "sourceSha256": "5366729f963fe8255091b1ed9fae26d734fdd6def020b4effc87c1965ac9aaea",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "featuresPassed": true,
+      "countHypotheses": 10,
+      "baseRetryAccepted": null,
+      "outlineSteps": 125,
+      "capture": "tmp/heart-learning/base-count-near-miss-v1/3-baseline-feature-near-miss/feature-near-miss.test-4"
+    },
+    {
+      "iteration": 3,
+      "policy": "baseline",
+      "case": "negative-diagonal-accelerated",
+      "wallSeconds": 6.144897166,
+      "reportedSeconds": 9.011448562499995,
+      "error400": 0.01143125,
+      "error800": 0.013040625,
+      "sourceSha256": "52b62e8802e974e4f2bea0142e10bbd94e42213083cb0f01f089c94093c4419c",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "featuresPassed": true,
+      "countHypotheses": 10,
+      "baseRetryAccepted": null,
+      "outlineSteps": 90,
+      "capture": "tmp/heart-learning/base-count-near-miss-v1/3-baseline-feature-near-miss/feature-near-miss.test-5"
+    },
+    {
+      "iteration": 3,
+      "policy": "baseline",
+      "case": "puppy-y+1",
+      "wallSeconds": 9.288549875000001,
+      "reportedSeconds": 9.014042958,
+      "error400": 0.01341875,
+      "error800": 0.014453125,
+      "sourceSha256": "19f2c14b8e5e09abdeda442284bb1187e80369331482ab6db0d935ef8335fd91",
+      "templateChecks": true,
+      "geometry": true,
+      "paper": "pass",
+      "featuresPassed": true,
+      "countHypotheses": 10,
+      "baseRetryAccepted": null,
+      "outlineSteps": null,
+      "capture": "tmp/heart-learning/base-count-near-miss-v1/3-baseline-feature-seeds/feature-seeds.test-0"
+    }
+  ],
+  "artifactSha256": {
+    "tmp/heart-learning/base-count-near-miss-v1/plan.json": "f8aa4145eefc0a5f824660e129925d5218f866412f07ab62d72f960f82c1d438",
+    "tmp/heart-learning/base-count-near-miss-v1/run-source.json": "4e6577ae62b5466ecdbe7cee54e31a7219f9cb7726a3b4992208637973e643f9",
+    "tmp/heart-learning/base-count-near-miss-v1/state.json": "c09ae9f4917bcf840a7691c57761e11e25250a01702775cc676735e7e4edd7bb",
+    "tmp/heart-learning/base-count-near-miss-v1/checks.json": "2df19a6f1f57f376af444d4b85be9a569ddb8d200e37655e2e51723ed4bc232f"
+  },
+  "releaseClaim": "None; isolated snapshots only."
+}

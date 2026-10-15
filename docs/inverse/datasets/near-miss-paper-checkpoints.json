@@ -1,0 +1,1056 @@
+{
+  "schema": "near-miss-paper-checkpoint-diagnosis-1",
+  "runtimeRevision": "fc7957e",
+  "status": "reproduced failure and isolated cause; proposed force change remains experimental",
+  "sourceMaskSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890",
+  "capture": {
+    "runs": [
+      {
+        "repeat": 0,
+        "exitCode": 1,
+        "seconds": 11.858766832999999
+      },
+      {
+        "repeat": 1,
+        "exitCode": 0,
+        "seconds": 11.713098
+      }
+    ],
+    "sourceFilesVerified": 109,
+    "instrumentation": "An isolated refine.js copy retains graph/point snapshots in memory; serialization, independent rendering and finer audits happen after the solver timer. Instrumentation can slightly affect timed selection.",
+    "result": "First original accelerated-clock fit fails at 3.04203125% independent 800px disagreement; the second passes at 2.98515625%. The rejected step-40 and step-80 geometries are identical in both runs."
+  },
+  "evidence": [
+    {
+      "repeat": 0,
+      "final": {
+        "milliseconds": 6157.627167,
+        "reportedSeconds": 9.040248375,
+        "sourceSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890",
+        "templateChecks": true,
+        "geometry": true,
+        "paper": "pass",
+        "renders": [
+          {
+            "resolution": 400,
+            "error": 0.02963125,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 800,
+            "error": 0.0304203125,
+            "featuresPassed": true
+          }
+        ]
+      },
+      "rejected": [
+        {
+          "step": 40,
+          "error800": 0.0202890625,
+          "geometryPassed": true,
+          "paper": [
+            {
+              "resolution": 360,
+              "status": "fail",
+              "families": [
+                {
+                  "family": 0,
+                  "status": "fail",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 2,
+                  "detachedPossibleArea": 4.166666666666667
+                },
+                {
+                  "family": 1,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0
+                }
+              ]
+            },
+            {
+              "resolution": 700,
+              "status": "fail",
+              "families": [
+                {
+                  "family": 0,
+                  "status": "fail",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 2,
+                  "detachedPossibleArea": 2.4489795918367343
+                },
+                {
+                  "family": 1,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0
+                }
+              ]
+            },
+            {
+              "resolution": 1000,
+              "status": "fail",
+              "families": [
+                {
+                  "family": 0,
+                  "status": "fail",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 2,
+                  "detachedPossibleArea": 1.8800000000000001
+                },
+                {
+                  "family": 1,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0
+                }
+              ]
+            },
+            {
+              "resolution": 1400,
+              "status": "fail",
+              "families": [
+                {
+                  "family": 0,
+                  "status": "fail",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 2,
+                  "detachedPossibleArea": 1.673469387755102
+                },
+                {
+                  "family": 1,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0
+                }
+              ]
+            }
+          ],
+          "geometrySha256": "3aa4ce6793cb1649e7e1624bebe2610fe16cde1b361d1d0b01036099a3b25642"
+        },
+        {
+          "step": 80,
+          "error800": 0.0226515625,
+          "geometryPassed": true,
+          "paper": [
+            {
+              "resolution": 360,
+              "status": "fail",
+              "families": [
+                {
+                  "family": 0,
+                  "status": "fail",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 2,
+                  "detachedPossibleArea": 2.932098765432099
+                },
+                {
+                  "family": 1,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0
+                }
+              ]
+            },
+            {
+              "resolution": 700,
+              "status": "fail",
+              "families": [
+                {
+                  "family": 0,
+                  "status": "fail",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 2,
+                  "detachedPossibleArea": 1.7959183673469385
+                },
+                {
+                  "family": 1,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0
+                }
+              ]
+            },
+            {
+              "resolution": 1000,
+              "status": "fail",
+              "families": [
+                {
+                  "family": 0,
+                  "status": "fail",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 2,
+                  "detachedPossibleArea": 1.5
+                },
+                {
+                  "family": 1,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0
+                }
+              ]
+            },
+            {
+              "resolution": 1400,
+              "status": "fail",
+              "families": [
+                {
+                  "family": 0,
+                  "status": "fail",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 2,
+                  "detachedPossibleArea": 1.2857142857142856
+                },
+                {
+                  "family": 1,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0
+                }
+              ]
+            }
+          ],
+          "geometrySha256": "d18ca74762770fa9eef045030bc6a04d23655f68a7269ffeb94f6dd4278867dd"
+        },
+        {
+          "step": 119,
+          "error800": 0.0247703125,
+          "geometryPassed": true,
+          "paper": [
+            {
+              "resolution": 360,
+              "status": "fail",
+              "families": [
+                {
+                  "family": 0,
+                  "status": "fail",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 2,
+                  "detachedPossibleArea": 2.623456790123457
+                },
+                {
+                  "family": 1,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0
+                }
+              ]
+            },
+            {
+              "resolution": 700,
+              "status": "fail",
+              "families": [
+                {
+                  "family": 0,
+                  "status": "fail",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 2,
+                  "detachedPossibleArea": 1.4285714285714284
+                },
+                {
+                  "family": 1,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0
+                }
+              ]
+            },
+            {
+              "resolution": 1000,
+              "status": "fail",
+              "families": [
+                {
+                  "family": 0,
+                  "status": "fail",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 2,
+                  "detachedPossibleArea": 1.1800000000000002
+                },
+                {
+                  "family": 1,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0
+                }
+              ]
+            },
+            {
+              "resolution": 1400,
+              "status": "fail",
+              "families": [
+                {
+                  "family": 0,
+                  "status": "fail",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 2,
+                  "detachedPossibleArea": 0.9693877551020408
+                },
+                {
+                  "family": 1,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0
+                }
+              ]
+            }
+          ],
+          "geometrySha256": "82c4e75b4512fa7fdc075cf68e3840851d3701c557dda03a23597ca29842182e"
+        }
+      ]
+    },
+    {
+      "repeat": 1,
+      "final": {
+        "milliseconds": 6151.614208,
+        "reportedSeconds": 9.033166750500001,
+        "sourceSha256": "bfe6e806387e761bdb89ef6412da9203c777d40ec03e839b5e51140cb5b05890",
+        "templateChecks": true,
+        "geometry": true,
+        "paper": "pass",
+        "renders": [
+          {
+            "resolution": 400,
+            "error": 0.029025,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 800,
+            "error": 0.0298515625,
+            "featuresPassed": true
+          }
+        ]
+      },
+      "rejected": [
+        {
+          "step": 40,
+          "error800": 0.0202890625,
+          "geometryPassed": true,
+          "paper": [
+            {
+              "resolution": 360,
+              "status": "fail",
+              "families": [
+                {
+                  "family": 0,
+                  "status": "fail",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 2,
+                  "detachedPossibleArea": 4.166666666666667
+                },
+                {
+                  "family": 1,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0
+                }
+              ]
+            },
+            {
+              "resolution": 700,
+              "status": "fail",
+              "families": [
+                {
+                  "family": 0,
+                  "status": "fail",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 2,
+                  "detachedPossibleArea": 2.4489795918367343
+                },
+                {
+                  "family": 1,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0
+                }
+              ]
+            },
+            {
+              "resolution": 1000,
+              "status": "fail",
+              "families": [
+                {
+                  "family": 0,
+                  "status": "fail",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 2,
+                  "detachedPossibleArea": 1.8800000000000001
+                },
+                {
+                  "family": 1,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0
+                }
+              ]
+            },
+            {
+              "resolution": 1400,
+              "status": "fail",
+              "families": [
+                {
+                  "family": 0,
+                  "status": "fail",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 2,
+                  "detachedPossibleArea": 1.673469387755102
+                },
+                {
+                  "family": 1,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0
+                }
+              ]
+            }
+          ],
+          "geometrySha256": "3aa4ce6793cb1649e7e1624bebe2610fe16cde1b361d1d0b01036099a3b25642"
+        },
+        {
+          "step": 80,
+          "error800": 0.0226515625,
+          "geometryPassed": true,
+          "paper": [
+            {
+              "resolution": 360,
+              "status": "fail",
+              "families": [
+                {
+                  "family": 0,
+                  "status": "fail",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 2,
+                  "detachedPossibleArea": 2.932098765432099
+                },
+                {
+                  "family": 1,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0
+                }
+              ]
+            },
+            {
+              "resolution": 700,
+              "status": "fail",
+              "families": [
+                {
+                  "family": 0,
+                  "status": "fail",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 2,
+                  "detachedPossibleArea": 1.7959183673469385
+                },
+                {
+                  "family": 1,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0
+                }
+              ]
+            },
+            {
+              "resolution": 1000,
+              "status": "fail",
+              "families": [
+                {
+                  "family": 0,
+                  "status": "fail",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 2,
+                  "detachedPossibleArea": 1.5
+                },
+                {
+                  "family": 1,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0
+                }
+              ]
+            },
+            {
+              "resolution": 1400,
+              "status": "fail",
+              "families": [
+                {
+                  "family": 0,
+                  "status": "fail",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 2,
+                  "detachedPossibleArea": 1.2857142857142856
+                },
+                {
+                  "family": 1,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0
+                }
+              ]
+            }
+          ],
+          "geometrySha256": "d18ca74762770fa9eef045030bc6a04d23655f68a7269ffeb94f6dd4278867dd"
+        },
+        {
+          "step": 120,
+          "error800": 0.02465625,
+          "geometryPassed": true,
+          "paper": [
+            {
+              "resolution": 360,
+              "status": "fail",
+              "families": [
+                {
+                  "family": 0,
+                  "status": "fail",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 2,
+                  "detachedPossibleArea": 2.623456790123457
+                },
+                {
+                  "family": 1,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0
+                }
+              ]
+            },
+            {
+              "resolution": 700,
+              "status": "fail",
+              "families": [
+                {
+                  "family": 0,
+                  "status": "fail",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 2,
+                  "detachedPossibleArea": 1.4693877551020407
+                },
+                {
+                  "family": 1,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0
+                }
+              ]
+            },
+            {
+              "resolution": 1000,
+              "status": "fail",
+              "families": [
+                {
+                  "family": 0,
+                  "status": "fail",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 2,
+                  "detachedPossibleArea": 1.1800000000000002
+                },
+                {
+                  "family": 1,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0
+                }
+              ]
+            },
+            {
+              "resolution": 1400,
+              "status": "fail",
+              "families": [
+                {
+                  "family": 0,
+                  "status": "fail",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 2,
+                  "detachedPossibleArea": 1.020408163265306
+                },
+                {
+                  "family": 1,
+                  "status": "pass",
+                  "detachedCertainCoreIslands": 0,
+                  "detachedPossibleCoreIslands": 0,
+                  "detachedPossibleArea": 0
+                }
+              ]
+            }
+          ],
+          "geometrySha256": "7641e438cca978b830a2966974b68eb8bdc70bc06293605c99db4fb2a2a0852b"
+        }
+      ]
+    }
+  ],
+  "localization": [
+    {
+      "family": 0,
+      "parts": [
+        {
+          "pixels": 94,
+          "area": 0.9400000000000002,
+          "bounds": [
+            50.6,
+            71.2,
+            53.400000000000006,
+            73.5
+          ]
+        },
+        {
+          "pixels": 94,
+          "area": 0.9400000000000002,
+          "bounds": [
+            50.6,
+            126.5,
+            53.400000000000006,
+            128.8
+          ]
+        }
+      ]
+    },
+    {
+      "family": 1,
+      "parts": []
+    }
+  ],
+  "distanceProbe": {
+    "method": "Adaptive polyline point-pair diagnostic, tolerance 0.002 mm; not a separate validity predicate",
+    "nominalWidth": 2.50501002004008,
+    "rows": [
+      {
+        "slit": 1,
+        "range": [
+          1,
+          2
+        ],
+        "pointA": [
+          53.6259463992926,
+          71.9703319596006
+        ],
+        "pointB": [
+          54.39208742277214,
+          73.80013135691345
+        ],
+        "arcSeparation": 2.5387799615524784,
+        "distance": 1.9837182013241605
+      },
+      {
+        "slit": 1,
+        "range": [
+          2,
+          3
+        ],
+        "pointA": [
+          52.74011784360988,
+          71.49377948538765
+        ],
+        "pointB": [
+          51.32280942548669,
+          73.70674617132238
+        ],
+        "arcSeparation": 7.327796712234573,
+        "distance": 2.6279240295601793
+      },
+      {
+        "slit": 1,
+        "range": [
+          3,
+          5
+        ],
+        "pointA": [
+          51.17365543171556,
+          70.03589863113788
+        ],
+        "pointB": [
+          49.40922777747168,
+          71.70049229837774
+        ],
+        "arcSeparation": 12.248736601107282,
+        "distance": 2.4257116531186473
+      }
+    ]
+  },
+  "interpretation": [
+    "The lower-error outline checkpoint passes curve geometry but fails the guarded paper-core test at 360, 700, 1000 and 1400 cells. This is not cured by finer verification.",
+    "Both failures are mirrored portions of one short hook on paper A. At resolution 1000 each detached possible-core component occupies 0.94 mm squared. The actual paper need not be disconnected: it is the prescribed-width disk-centre core that fails.",
+    "The captured automatic settings exclude same-slit force samples within eight nominal widths (20.040 mm), not the general default of three. A close pair near the hook is 12.249 mm apart along the path and 2.426 mm apart spatially, below the 2.505 mm nominal width. Reducing the force exclusion to three widths (7.515 mm) addresses this otherwise ignored region without changing the independent acceptance rules.",
+    "The proposed penalty change leaves validation, source masks, deadlines and final acceptance untouched; fixed-work evidence alone does not establish broader reliability."
+  ],
+  "fixedWork": {
+    "start": "Exact captured outline graph, fixed coordinates, original binary source mask and phase",
+    "steps": 120,
+    "deadline": "none, equal work rather than timed early stopping",
+    "independentMaskHashVerified": true,
+    "results": [
+      {
+        "checkpointEvery": 40,
+        "rate": 0.035,
+        "seconds": 0.9363481250000001,
+        "steps": 120,
+        "geometry": true,
+        "paper": "pass",
+        "finePaper": "pass",
+        "error": 0.029775,
+        "renders": [
+          {
+            "resolution": 400,
+            "error": 0.029675
+          },
+          {
+            "resolution": 800,
+            "error": 0.0305359375
+          }
+        ],
+        "geometrySha256": "08343ae00ad4bc3e628e9d8dc233a623e4c9929646a4231dea50be0896339aa0"
+      },
+      {
+        "checkpointEvery": 10,
+        "rate": 0.035,
+        "seconds": 1.3568844999999998,
+        "steps": 120,
+        "geometry": true,
+        "paper": "pass",
+        "finePaper": "fail",
+        "error": 0.02335,
+        "renders": [
+          {
+            "resolution": 400,
+            "error": 0.0234
+          },
+          {
+            "resolution": 800,
+            "error": 0.02435
+          }
+        ],
+        "geometrySha256": "741364ad2dccae9e50853a8d2e18ea7efae742c3b094ac86b6017c958c08a17c"
+      },
+      {
+        "checkpointEvery": 4,
+        "rate": 0.035,
+        "seconds": 2.2606920000000006,
+        "steps": 120,
+        "geometry": true,
+        "paper": "pass",
+        "finePaper": "fail",
+        "error": 0.0241625,
+        "renders": [
+          {
+            "resolution": 400,
+            "error": 0.0242625
+          },
+          {
+            "resolution": 800,
+            "error": 0.025284375
+          }
+        ],
+        "geometrySha256": "6ccb9e3d21ae3b0130495b97e70285b26256e8d24913bc48a900841db80ae3aa"
+      },
+      {
+        "checkpointEvery": 40,
+        "rate": 0.015,
+        "seconds": 0.6391591660000003,
+        "steps": 120,
+        "geometry": true,
+        "paper": "pass",
+        "finePaper": "fail",
+        "error": 0.02535,
+        "renders": [
+          {
+            "resolution": 400,
+            "error": 0.0254
+          },
+          {
+            "resolution": 800,
+            "error": 0.0263765625
+          }
+        ],
+        "geometrySha256": "24fb86147bbdfd76447c9c9d2291de4f4db6564bf99baf86321a39c4b87fe740"
+      },
+      {
+        "checkpointEvery": 10,
+        "rate": 0.015,
+        "seconds": 1.1688728340000007,
+        "steps": 120,
+        "geometry": true,
+        "paper": "pass",
+        "finePaper": "fail",
+        "error": 0.023425,
+        "renders": [
+          {
+            "resolution": 400,
+            "error": 0.023475
+          },
+          {
+            "resolution": 800,
+            "error": 0.0245109375
+          }
+        ],
+        "geometrySha256": "9b4912b611d3ada35d85b1e60635e8ba65c489fddd19ae28758694a1611f81e7"
+      },
+      {
+        "locality": 2,
+        "checkpointEvery": 40,
+        "rate": 0.035,
+        "seconds": 1.044243459,
+        "steps": 120,
+        "geometry": true,
+        "paper": "pass",
+        "finePaper": "pass",
+        "error": 0.02303125,
+        "renders": [
+          {
+            "resolution": 400,
+            "error": 0.0230625
+          },
+          {
+            "resolution": 800,
+            "error": 0.0240125
+          }
+        ],
+        "geometrySha256": "07eb4e57a0e0e0562a75b1d5a3fc3b55d4a7924c69f7ba616b943c9739e9cd99"
+      },
+      {
+        "locality": 1.5,
+        "checkpointEvery": 40,
+        "rate": 0.035,
+        "seconds": 0.7872344579999999,
+        "steps": 120,
+        "geometry": true,
+        "paper": "pass",
+        "finePaper": "pass",
+        "error": 0.02535625,
+        "renders": [
+          {
+            "resolution": 400,
+            "error": 0.02544375
+          },
+          {
+            "resolution": 800,
+            "error": 0.02625
+          }
+        ],
+        "geometrySha256": "5574f580f6cd6c516cdb03206ded12af8cb692c2e3d1e54f7d81191f135d5178"
+      },
+      {
+        "experiment": "fixed-work-adaptive",
+        "paperSeparationRetry": {
+          "step": 40,
+          "previousLocalFactor": 8,
+          "localFactor": 2
+        },
+        "checkpointEvery": 40,
+        "rate": 0.035,
+        "seconds": 1.075837917,
+        "steps": 120,
+        "geometry": true,
+        "paper": "pass",
+        "finePaper": "pass",
+        "error": 0.02303125,
+        "renders": [
+          {
+            "resolution": 400,
+            "error": 0.02304375
+          },
+          {
+            "resolution": 800,
+            "error": 0.0240296875
+          }
+        ],
+        "geometrySha256": "953cddf3f1562c8957ae44302e4f56bf62677ad80ba0d4c1fe7f90c9087c47e5"
+      },
+      {
+        "experiment": "fixed-work-locality-three",
+        "locality": 3,
+        "checkpointEvery": 40,
+        "rate": 0.035,
+        "seconds": 1.302278459,
+        "steps": 120,
+        "geometry": true,
+        "paper": "pass",
+        "finePaper": "pass",
+        "error": 0.0222625,
+        "renders": [
+          {
+            "resolution": 400,
+            "error": 0.02223125
+          },
+          {
+            "resolution": 800,
+            "error": 0.023284375
+          }
+        ],
+        "geometrySha256": "67b291039803b1963131c51b8c6ead1db6556937fd7baa536c25d4e091da031c"
+      },
+      {
+        "experiment": "fixed-work-adaptive-three",
+        "paperSeparationRetry": {
+          "step": 40,
+          "previousLocalFactor": 8,
+          "localFactor": 3
+        },
+        "checkpointEvery": 40,
+        "rate": 0.035,
+        "seconds": 1.1016077089999998,
+        "steps": 120,
+        "geometry": true,
+        "paper": "pass",
+        "finePaper": "pass",
+        "error": 0.02229375,
+        "renders": [
+          {
+            "resolution": 400,
+            "error": 0.02226875
+          },
+          {
+            "resolution": 800,
+            "error": 0.023315625
+          }
+        ],
+        "geometrySha256": "b9148138b0c9b5ab44d64ed96693c29b1256c762210cb4b3247737ef6b35fd2f"
+      }
+    ],
+    "conclusions": [
+      "More frequent checkpoints and a smaller learning rate improve image error but all four selected alternatives fail the independent 1000-cell paper check. They are rejected.",
+      "Shortening only the penalty exclusion to two nominal widths improves 800px error from 3.05359375% to 2.40125%, retaining geometry and paper passes at 360 and 1000. A 1.5-width exclusion is less accurate at 2.625%.",
+      "A separate fresh-fit comparison is required before integration.",
+      "Using three nominal widths yields 2.3284375% error when applied throughout the fixed replay; enabling it only after the first full failed block yields 2.3315625%. Both pass 360/1000 paper checks.",
+      "Uniform two-width forces were subsequently rejected by fresh fits: both vertical-shift tests exceed the unchanged local motif-error limit. The adaptive three-width fallback remains isolated and under comparison."
+    ]
+  },
+  "visualReview": "Inspected full paper map and close view with cutting paths. The isolated narrow core lies inside the short hooked motif; source mask remains unchanged.",
+  "artifactSha256": {
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/feature-near-miss.test.mjs": "5a3691a235b6bb7a3015e3ff03b81d009d4c90f4e06349bd85d651a5527a209e",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/state.json": "1f018564e116302e83891942a4f2a2601ea609bf102ce73cd54a9bb38b97c457",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/plan.json": "5f09d27ae76c90e3026497a2e5621b5ec664ca1f9091c032d176f29651dce360",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/source.json": "540f2f1aeaaf6f859b7d04f6b50e4cdfa9b562e4368cf3c6bded20b46f6cfc70",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/replay-locality-three.mjs": "8be071f436ec3bffa57f24485bf03b2f570e32eb800db12e6454137b90e16145",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/save.mjs": "8d134f2458e883fb57c6960434105fd14d7eb85186015a21a6f488ea3f97dd23",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/checks.json": "d421de2e323a26285c130340934949c5569cf4e4d79ac3843024debf1eef4182",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/locate-islands.mjs": "9071af88eeef4f10684badf2d08adef88c8785fe2494c67a5b0a4b1f6f11544c",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/replay-adaptive.mjs": "9662d40ea610b93253f65df924a1453518254a874caafd1804bbc1777349cda0",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/replay.mjs": "0dcc025275cf4ff61bd8d276f337a4cea06744f9504195eecb023c907238fd74",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/replay-locality.mjs": "1b67b66dbda96a13c5ce2ebd88cd4f4fb7f1806c7592640c9c1e12645a8b14b1",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/replay-adaptive-three.mjs": "63b98aae29c67e104b3f6eee2be5a998880a290c48f328f3e5652db47fb9e3d2",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/run-source.json": "1cc21e3534822be5d815256fe76b44e58bf1fc006f886a968ad34974c81d4daa",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/fixed-work-locality/locality-1.5-checkpoint-40-rate-0.035.json": "5574f580f6cd6c516cdb03206ded12af8cb692c2e3d1e54f7d81191f135d5178",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/fixed-work-locality/summary.json": "83a8c61e205406b1c06527b78b8d65366a5966b585fa47c2d97af9d7c927cb7f",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/fixed-work-locality/locality-2-checkpoint-40-rate-0.035-400.png": "ed6d350716c47e73c57d0458d97ff1602c34d207f0177ea02bf1caf8b5ab2cf7",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/fixed-work-locality/locality-2-checkpoint-40-rate-0.035.json": "07eb4e57a0e0e0562a75b1d5a3fc3b55d4a7924c69f7ba616b943c9739e9cd99",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/fixed-work-locality/locality-1.5-checkpoint-40-rate-0.035-400.png": "7f0963a062f85ac8e86d59f5aec6235161f916bc756ae87249ca8f9e85d8d474",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/fixed-work-locality/locality-1.5-checkpoint-40-rate-0.035-800.png": "abb64e0d8675fd379f1058af93f22a68804062be696a9d6cd37b8442ec2dd372",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/fixed-work-locality/locality-2-checkpoint-40-rate-0.035-800.png": "12e3cd51e165cc4dab6293bb0093dd4bae50f4cd8e9147ff5adc216bd623b6b1",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/fixed-work-adaptive/summary.json": "7a10331deb22c7bde93f3a3688edb38f77aca3bd11000b1a6418e2f8f6cbba77",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/fixed-work-adaptive/checkpoint-40-rate-0.035-400.png": "61c0d8ed43a594163059f4062cc59b39ba939a5286d7809157cfb2231c9eed8a",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/fixed-work-adaptive/checkpoint-40-rate-0.035.json": "953cddf3f1562c8957ae44302e4f56bf62677ad80ba0d4c1fe7f90c9087c47e5",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/fixed-work-adaptive/checkpoint-40-rate-0.035-800.png": "b90b9aeda30a8e02b9aa114ce82a2b780f3c77b7fdae1c3ce7befaaf2503712a",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/0/test.log": "7bfa6d4d70a3f3eea883cf6af561159b418a962a4ebd63de6a2b67500e7cab35",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/0/feature-near-miss.test-0/woven-400.png": "e602aa1b734050f118f408eaf3fd4a4fb645386b732d0d61a6ca958553942e38",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/0/feature-near-miss.test-0/refinements.json": "6f7e926c3ff0e33eb40c119729642d6032e011cb78dee8c5aff9b5bf78317773",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/0/feature-near-miss.test-0/report.json": "5f46fa48f14217c4e190259008a25011d126ba007801921a9a541b63c5677c10",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/0/feature-near-miss.test-0/result.json": "6cfcc19a4dd597ea95f08780175741291d6e02782425bebe7ef436a38bab8f0a",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/0/feature-near-miss.test-0/events.json": "bd83104e6cbacaee04c3a87d63bdd7f3c108c823f1915bf70dec3050106eb7e7",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/0/feature-near-miss.test-0/cut_geometry.json": "f3db8ae1a2df125963e80cdabb0d23a2c1ac8555ae7eb6bc9d753d93c1e91584",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/0/feature-near-miss.test-0/rejected-summary.json": "51a7c216a9e5e3bffa860892ddfb785dc109ba061be56f64f5b03e77263baa0b",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/0/feature-near-miss.test-0/woven-800.png": "95bc201224aab615d4d304dcc9dc41c937d18ea190981765accac95f1245215b",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/0/feature-near-miss.test-0/rejected-0/paper-0-island.png": "872c88d02fffbb2cb88ffc91654eec68a5dc61c720f26cd8d6d7539acb27375d",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/0/feature-near-miss.test-0/rejected-0/woven-400.png": "920cd0202416aadc62cfbeedd6f309de96fba52a8aa47ea1fb067c029522eca0",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/0/feature-near-miss.test-0/rejected-0/islands.json": "4eb189c6b46d08f95f599897c7c3d33947b4deb38ea23150d392bca74ef780ac",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/0/feature-near-miss.test-0/rejected-0/audit.json": "9e713325db4ba66d5ae843a6b4c793a177f3b1992ba453caf031200e134bafc1",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/0/feature-near-miss.test-0/rejected-0/paper-1-cuts.png": "dad94c7cb0469b4e6a53f9d30ca80dcab8fff3bb78bfbf937f30872549ecd703",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/0/feature-near-miss.test-0/rejected-0/paper-0-cuts.png": "916810b5eee7d91d5cfc9f14c459f5d49e58066103b17ff0b0dfc50fdaadcfa8",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/0/feature-near-miss.test-0/rejected-0/cut_geometry.json": "3aa4ce6793cb1649e7e1624bebe2610fe16cde1b361d1d0b01036099a3b25642",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/0/feature-near-miss.test-0/rejected-0/replay.json": "1fc4f92ef3070e2890fa1368bb289fc0769f0d7a1bdee1c56e1161ab607418fc",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/0/feature-near-miss.test-0/rejected-0/paper-1.png": "06dbc5d6a7913e0dd424c4d2ce449d6e420bbd7cae0736ea3da9d5e2f679e0e3",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/0/feature-near-miss.test-0/rejected-0/paper-0.png": "f1dcaccdab87c530abe6d2ff4f0d09ace89b81651d84fbd8c5af842b1eb29670",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/0/feature-near-miss.test-0/rejected-0/woven-800.png": "540553344f0b0e297fa15f2b60c7cfa693faf24d6f17630c2714d4808ac595bf",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/0/feature-near-miss.test-0/rejected-0/neck-distance.json": "e29d4e70b6c071ab8073d90acd75f13ee7dd5ba08201ed8754dc501e676e8505",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/0/feature-near-miss.test-0/rejected-1/woven-400.png": "3399acd3c70ddb7b8c7078671172e2c843e4110922cbc4213e041b7e06b57202",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/0/feature-near-miss.test-0/rejected-1/audit.json": "6a8a3752f793691c9bb37d15bf6d2dbe1e2d661ccf416eeb627fc863e4d29ef4",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/0/feature-near-miss.test-0/rejected-1/cut_geometry.json": "d18ca74762770fa9eef045030bc6a04d23655f68a7269ffeb94f6dd4278867dd",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/0/feature-near-miss.test-0/rejected-1/replay.json": "65e021bced735e40f3fa1761305c03cc7842c39fe2ee8ac8600d4b4e5faecc2d",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/0/feature-near-miss.test-0/rejected-1/paper-1.png": "5464446d25c9c7c12308200df5214477be2dc229e7dbd1fb901c046723e9fe0e",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/0/feature-near-miss.test-0/rejected-1/paper-0.png": "acecf3eaf65048cd08609504b68479ee0fd18a7e68f14decc50fb96dcf1583b0",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/0/feature-near-miss.test-0/rejected-1/woven-800.png": "48b66fb413c7f7dde3a655344f0ebb75c3dd0a66f3d50d51afc27e53418b59d1",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/0/feature-near-miss.test-0/rejected-2/woven-400.png": "ac4a30c0305a3129c3259f67b3ba4a14ff007e43f8d00caa8c71aded20f9d189",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/0/feature-near-miss.test-0/rejected-2/audit.json": "3b002bc88ed4d6fa27b42e8e3fe43ff2cb8a6a1b7790904c640f2ae306231bce",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/0/feature-near-miss.test-0/rejected-2/cut_geometry.json": "82c4e75b4512fa7fdc075cf68e3840851d3701c557dda03a23597ca29842182e",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/0/feature-near-miss.test-0/rejected-2/replay.json": "59cd11e5401557bb36c881ff09368e9ba30f14ef2536ce7e690606eb2911ad68",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/0/feature-near-miss.test-0/rejected-2/paper-1.png": "52e8c018210b464bcd832a5bcbb2fa7771dc772a8541c959d69bf0660339228d",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/0/feature-near-miss.test-0/rejected-2/paper-0.png": "4a915a4cb0eb175f9a1fb18864e85cdac600bc81ae11000c143fccf1e54e4673",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/0/feature-near-miss.test-0/rejected-2/woven-800.png": "1ad83b94d8ca277d5458ff731f4e25b30f21f56bd6cf52fd6e3f8d7b4c0da223",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/1/test.log": "5eb766ff28bac4340fe5515d7f776ee8be164926f89d02b8a591d669bea4b3e8",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/1/feature-near-miss.test-0/woven-400.png": "ea51987697c959f2dea0cc824f187decc10b67a1f0ae4e685adcd5ba466a6a8a",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/1/feature-near-miss.test-0/refinements.json": "fc9e7d3d8b3668702820243fbffe075cef7d2596760920450e04b41302106ed4",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/1/feature-near-miss.test-0/report.json": "c204a31c1579c2f7fc734f81492fda6b8b64f3ddcd3d7b5926d09dc089e22520",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/1/feature-near-miss.test-0/result.json": "c4f276e99de7dc2f78402dd26b5ad14414c65a4f39599232a233a8fa09e8b860",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/1/feature-near-miss.test-0/events.json": "5422ffbc5555877206b50fbc1531c15cba601ce1a461188ec55cad4e6788a422",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/1/feature-near-miss.test-0/cut_geometry.json": "9cc92c1f2ba2f218c4ff283cc2bdd19169a199dc4fb749441c961b46ad280c7c",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/1/feature-near-miss.test-0/rejected-summary.json": "5b0e4e1b42640c2f826061b19680d13f0290673e80a04c4dee7ef842fbe30e6f",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/1/feature-near-miss.test-0/woven-800.png": "2269c5198e995234233e77045de542557c52fd0ad9adcddfdb2545090a3c9de3",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/1/feature-near-miss.test-0/rejected-0/woven-400.png": "920cd0202416aadc62cfbeedd6f309de96fba52a8aa47ea1fb067c029522eca0",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/1/feature-near-miss.test-0/rejected-0/audit.json": "ef01d764525437cc6d956f3131521521edb49c6374dcec9fa1f56cf799d66336",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/1/feature-near-miss.test-0/rejected-0/cut_geometry.json": "3aa4ce6793cb1649e7e1624bebe2610fe16cde1b361d1d0b01036099a3b25642",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/1/feature-near-miss.test-0/rejected-0/replay.json": "78e961f4afc65364642e740932cf418053728d78149aede73517b575c1dc35ce",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/1/feature-near-miss.test-0/rejected-0/paper-1.png": "06dbc5d6a7913e0dd424c4d2ce449d6e420bbd7cae0736ea3da9d5e2f679e0e3",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/1/feature-near-miss.test-0/rejected-0/paper-0.png": "f1dcaccdab87c530abe6d2ff4f0d09ace89b81651d84fbd8c5af842b1eb29670",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/1/feature-near-miss.test-0/rejected-0/woven-800.png": "540553344f0b0e297fa15f2b60c7cfa693faf24d6f17630c2714d4808ac595bf",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/1/feature-near-miss.test-0/rejected-1/woven-400.png": "3399acd3c70ddb7b8c7078671172e2c843e4110922cbc4213e041b7e06b57202",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/1/feature-near-miss.test-0/rejected-1/audit.json": "f6cde99337801b800a861f28664eb8987d91c7cd83028699384de5ce28d4a625",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/1/feature-near-miss.test-0/rejected-1/cut_geometry.json": "d18ca74762770fa9eef045030bc6a04d23655f68a7269ffeb94f6dd4278867dd",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/1/feature-near-miss.test-0/rejected-1/replay.json": "3976f21267896caac86adb5b24226b5acc732d7ba4ebebea6d5e3bd3a38b3b73",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/1/feature-near-miss.test-0/rejected-1/paper-1.png": "5464446d25c9c7c12308200df5214477be2dc229e7dbd1fb901c046723e9fe0e",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/1/feature-near-miss.test-0/rejected-1/paper-0.png": "acecf3eaf65048cd08609504b68479ee0fd18a7e68f14decc50fb96dcf1583b0",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/1/feature-near-miss.test-0/rejected-1/woven-800.png": "48b66fb413c7f7dde3a655344f0ebb75c3dd0a66f3d50d51afc27e53418b59d1",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/1/feature-near-miss.test-0/rejected-2/woven-400.png": "5ead05aa591a600b09241d45f1d3f888705849b72c757bb6ba2d509ca17151d9",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/1/feature-near-miss.test-0/rejected-2/audit.json": "17b109a1db8186d2b7a9a8f3640dd030c0d5cfbd815024b2ca3448fd1b0a7f7d",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/1/feature-near-miss.test-0/rejected-2/cut_geometry.json": "7641e438cca978b830a2966974b68eb8bdc70bc06293605c99db4fb2a2a0852b",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/1/feature-near-miss.test-0/rejected-2/replay.json": "a5ee1dc247701ba8f11f96e41ef5a44590e6a90ebfd036d33777cda8f7cb3a53",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/1/feature-near-miss.test-0/rejected-2/paper-1.png": "e0fb05b0192040372eaf13e982add969cf10fba2e2803b81f0e8b2bb8001a269",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/1/feature-near-miss.test-0/rejected-2/paper-0.png": "36153a5f4a2f8b62cd15abc119e092961e1f9880e48b29a5b399e7290a1c304f",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/1/feature-near-miss.test-0/rejected-2/woven-800.png": "8cf7f499273c59545377a76d33456add42208588a9e19e44e7f09e7ba96230b6",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/fixed-work/checkpoint-10-rate-0.035-400.png": "6ef340ac19b0af40aebc2ecd0435c1b6f13ad36e654151f4f1e9c8fe88b999d7",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/fixed-work/summary.json": "57a8d3261a7b60fe281c2492fa39cbb4931a2c5e00ddc64e83e945f60918c3ed",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/fixed-work/checkpoint-4-rate-0.035-800.png": "ce9b21003641d80cabbd930ab49e825b6a0a5c8d4d7b9b872ed91bac1640cb89",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/fixed-work/checkpoint-40-rate-0.035-400.png": "a47e1dde821a55ed8d510c842a17e2499545ead3467d8ffaa185519f09a4f9c1",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/fixed-work/checkpoint-10-rate-0.015.json": "9b4912b611d3ada35d85b1e60635e8ba65c489fddd19ae28758694a1611f81e7",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/fixed-work/checkpoint-10-rate-0.035.json": "741364ad2dccae9e50853a8d2e18ea7efae742c3b094ac86b6017c958c08a17c",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/fixed-work/checkpoint-40-rate-0.035.json": "08343ae00ad4bc3e628e9d8dc233a623e4c9929646a4231dea50be0896339aa0",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/fixed-work/checkpoint-10-rate-0.015-800.png": "1f1c782f80994bf92f23c72c2ccc652d650d8c25d3fbce24f64b0433b9dcf474",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/fixed-work/checkpoint-40-rate-0.015.json": "24fb86147bbdfd76447c9c9d2291de4f4db6564bf99baf86321a39c4b87fe740",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/fixed-work/checkpoint-40-rate-0.015-800.png": "cd1d072e631241ee737530905c67e732b11e2c33606ab4c4c6ee937d066bad46",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/fixed-work/checkpoint-4-rate-0.035.json": "6ccb9e3d21ae3b0130495b97e70285b26256e8d24913bc48a900841db80ae3aa",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/fixed-work/checkpoint-40-rate-0.015-400.png": "15c389884cff2cdc97d92c19cab2e2ff7878de25e5eda7ca1f0fd24703fd1db2",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/fixed-work/checkpoint-10-rate-0.015-400.png": "b25e4a3037f02b9a779731a98d774af819e2b609c672cdfe52b87d0d9c5ad346",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/fixed-work/checkpoint-40-rate-0.035-800.png": "859ed8c94a7bed99de8adaad7e883327c06072f5592f2200955d8be13c7c8fdc",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/fixed-work/checkpoint-4-rate-0.035-400.png": "7cba49c38fd011d48af7261d3f41879edd3c44d676500138cad2deef65e1310f",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/fixed-work/checkpoint-10-rate-0.035-800.png": "aea97d77498eb8d3e92ec687c41fff243d86e54b953de53560a5f76aae0abc37",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/fixed-work-locality-three/summary.json": "67399ce2a6b42d26811995a3b1aba69f11361b0b0f21007cb3c8e054b6fb7ef4",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/fixed-work-locality-three/locality-3-checkpoint-40-rate-0.035-800.png": "6c35cfefeecca422c92cb0685fafe6930e9b9caf083e14c47f1cd23a2cb3033f",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/fixed-work-locality-three/locality-3-checkpoint-40-rate-0.035.json": "67b291039803b1963131c51b8c6ead1db6556937fd7baa536c25d4e091da031c",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/fixed-work-locality-three/locality-3-checkpoint-40-rate-0.035-400.png": "4a4998c16371142758027bc02e9123887a6b8a226973cbb87f9fdc269741eff6",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/fixed-work-adaptive-three/summary.json": "39bd01b2a43ca914941d0e4f08426b22be1d17995e18c59ce593d1e25e15b1ff",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/fixed-work-adaptive-three/checkpoint-40-rate-0.035-400.png": "c4bde16f1695ea717a19055df0568ed317964d8542fd034f0488bc6bc5c806cb",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/fixed-work-adaptive-three/checkpoint-40-rate-0.035.json": "b9148138b0c9b5ab44d64ed96693c29b1256c762210cb4b3247737ef6b35fd2f",
+    "tmp/heart-learning/near-miss-paper-checkpoints-v1/fixed-work-adaptive-three/checkpoint-40-rate-0.035-800.png": "37d1fd978993696362e8a0931eedad10a17fc74e647dab2d2535882f23bf0c31"
+  },
+  "releaseClaim": "None; no production algorithm or validity change.",
+  "capturedSettingsCorrection": "The first diagnostic prose confused the general default of three with the actual captured automatic setting of eight. Every executed baseline uses the actual saved settings; no result or geometry was changed by correcting this explanation."
+}

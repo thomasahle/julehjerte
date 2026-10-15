@@ -260,6 +260,18 @@ source arrays, the solver report and byte-identical cut geometry on failure.
 Neither the successful replays nor this diagnostic helper cancel the failed
 full-suite result. Native corpus and browser stages have not run.
 
+The [count-order comparison](base-count-near-miss-probe.json) retains all 28
+checked outputs but does not repeatably improve the difficult short-budget
+case, so that shortcut is not integrated. A separate
+[checkpoint capture](near-miss-paper-checkpoints.json) reproduces the failure
+and locates a pinched hook whose paper-core failure persists at 1400 cells.
+The automatic fit's separation force ignores nearby portions of one slit over
+eight nominal widths. A shorter exclusion recovers quality in an equal-work
+replay, but [applying it throughout polishing](outline-separation-force-probe.json)
+damages neighbouring motifs. That version is rejected. A fallback triggered by
+an actual failed refinement block remains under isolated evaluation; neither
+the physical checks nor the fidelity limits have been weakened.
+
 The latest validated solver revision is `c000d30`. Its
 [release record](return-projection-speed.json) passes **22/22 regular Hunodan
 designs below ten seconds**, with a maximum of **8.100 seconds**. Automatic
