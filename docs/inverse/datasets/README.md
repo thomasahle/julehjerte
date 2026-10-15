@@ -30,6 +30,16 @@ The inventory, with material annotations updated on 2026-10-15, contains:
 
 ## Current results and limits
 
+**Source correction:** the four little hearts in Pinterest source
+`real-8c875dd0f298b5a4` are printed on white paper. The
+[verified publisher pattern](printed-heart-source-correction.json) has three
+straight cuts per sheet. Earlier descriptions calling these shapes apertures
+were incorrect. The fixed-crop and neck studies below measure an appearance
+reinterpretation, not recovery of that photograph's published cutting paths.
+Their numerical results remain recorded. Existing partial labels excluded
+these motifs; explicit printed-paper supervision and corrected descriptions
+are still needed. The 22 Hunodan and 31 hard-photo benchmark counts are unaffected.
+
 A [boundary preparation refactor](boundary-trace-reuse.json) reuses cleanup and
 pixel chains when trying several tracing tolerances. Across 29 photographic
 masks and five border radii, all 145 resulting boundaries retain every control
@@ -63,7 +73,8 @@ apart. Snapping them together would violate same-sheet clearance. Closing
 these motifs requires a different routing or cut assignment. The four large
 heart regions pass colour retention but exceed the current small-enclosure
 gate's area limit; source-stability analysis detects the lost enclosures.
-Fresh RGB-boundary routing experiments are prepared but have not run.
+The proposed RGB-boundary routing experiment was retired before execution
+after the publisher confirmed that these motifs are printed decoration.
 
 A [clearance-initializer robustness fix](clearance-feature-recovery.json)
 addresses a 116-pixel change in a fixed 400-pixel stacked-heart mask. A valid

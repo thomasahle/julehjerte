@@ -1,6 +1,6 @@
 {
   "schema": "fixed-crop-motif-neck-diagnosis-1",
-  "scope": "Inspect the already exported RGB fit from the fixed-crop material experiment. No new fitted candidate and no changes to production acceptance.",
+  "scope": "Historical geometry diagnosis of an appearance-mask reinterpretation. Primary publisher verification subsequently established that the small hearts are printed decoration; see printed-heart-source-correction.json. No known cutting-path recovery failure is established by these necks.",
   "source": "docs/inverse/datasets/fixed-crop-material-diagnosis.json",
   "configuration": {
     "width": 100,
@@ -86,11 +86,11 @@
     "The legal five-by-three grid fit is therefore not a faithful motif reconstruction even though its independent whole-mask error is only 1.724375%."
   ],
   "nextExperiment": {
-    "status": "prepared-not-run",
+    "status": "retired-before-execution",
     "plan": {
       "path": "tmp/heart-learning/rgb-border-routing-v1/plan.json",
-      "sha256": "2bb27833a35394075e1cfabccea5458c9e46e81623a6e6faa224b24daeca9b3a",
-      "bytes": 1266
+      "sha256": "53096a740a27548b869fb4705d5ba6cd976a98b2bf6497e73bf2f2bd070abec7",
+      "bytes": 1449
     },
     "scope": "Fresh source tracing/MILP proposals from the better RGB mask, with four border radii and two tracing tolerances; score against the unchanged source and check all four motif enclosures. Use the existing independent renderer and geometry/paper checks.",
     "preprocessing": [
@@ -203,7 +203,8 @@
         }
       }
     ],
-    "deferredUntil": "The live full QA and native benchmarks and the queued initializer comparison have terminated."
+    "deferredUntil": "The live full QA and native benchmarks and the queued initializer comparison have terminated.",
+    "reason": "The raw RGB-classified target deliberately includes red ink. Fitting it as a two-paper weave is an artwork reinterpretation, not recovery of this photograph\u2019s published cutting template."
   },
   "artifacts": [
     {
@@ -237,5 +238,6 @@
       "bytes": 4268
     }
   ],
-  "smallEnclosureMaximumAreaMm2": 25.100300802004814
+  "smallEnclosureMaximumAreaMm2": 25.100300802004814,
+  "sourceCorrection": "docs/inverse/datasets/printed-heart-source-correction.json"
 }

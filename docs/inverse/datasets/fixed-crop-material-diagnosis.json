@@ -704,5 +704,9 @@
       "notes": "RGB retains much straighter checker cells and almost all four photographed heart interiors. Its final fit joins the first and fourth hearts to the border through narrow necks; neural fitting splits the second heart and joins the third to a checker/border region. Both pass existing checks, so neither is a faithful-motif success. Common RGB disagreement is a shared proxy, not artwork ground truth."
     },
     "auditCorrection": "The first audit passed a Buffer to the independent renderer, which accepts JSON text or an object. Converting that Buffer to UTF-8 fixes the audit without rerunning either fit or changing its outputs. The failed log is preserved."
+  },
+  "sourceCorrection": {
+    "report": "docs/inverse/datasets/printed-heart-source-correction.json",
+    "finding": "The four little hearts are printed decoration on white paper. The RGB mask is an appearance proxy, not paper-identity ground truth. Preserve numerical results, but do not interpret their motif-enclosure errors as recovery failures against this source\u2019s published cuts."
   }
 }

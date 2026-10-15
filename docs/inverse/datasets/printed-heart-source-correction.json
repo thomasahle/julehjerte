@@ -1,0 +1,110 @@
+{
+  "schema": "published-photo-decoration-correction-1",
+  "status": "primary-source-verified",
+  "assetId": "real-8c875dd0f298b5a4",
+  "instanceId": "real-8c875dd0f298b5a4-body-1",
+  "publisher": "Aunt Annie\u2019s Crafts",
+  "sourcePage": "https://www.auntannie.com/Valentines/HeartBasket/",
+  "photoUrl": "https://www.auntannie.com/Valentines/HeartBasket/WovenHeartHearts440.jpg",
+  "patterns": [
+    {
+      "url": "https://www.auntannie.com/Valentines/HeartBasket/ValBasketHeartsClr.pdf",
+      "artifact": {
+        "path": "tmp/pdfs/aunt-annie-heart-source/ValBasketHeartsClr.pdf",
+        "sha256": "65924e03ec14c3bdc00e605fc8e4aea94c9b55be5fc91c2344f93cdf84ca7bd0",
+        "bytes": 14990
+      },
+      "render": {
+        "path": "tmp/pdfs/aunt-annie-heart-source/colored-pattern.png",
+        "sha256": "7a1d5c5b5087a1d226b1562eb4f93e104106ab9a3566b8c697811a8c4a5616a5",
+        "bytes": 71479
+      }
+    },
+    {
+      "url": "https://www.auntannie.com/Valentines/HeartBasket/ValBasketHearts.pdf",
+      "artifact": {
+        "path": "tmp/pdfs/aunt-annie-heart-source/ValBasketHearts.pdf",
+        "sha256": "f81e642e1eac2e5cd4a8ff9953697dbfae8b0584ad4a413aa801e5e675f0c5c0",
+        "bytes": 15081
+      },
+      "render": {
+        "path": "tmp/pdfs/aunt-annie-heart-source/outline-pattern.png",
+        "sha256": "6062222bf92880406eb094dc1f52dfc70402ef649cd8a8e107f603e5f09d8a33",
+        "bytes": 69918
+      }
+    }
+  ],
+  "sourceVerification": {
+    "photoComparison": {
+      "sameDimensions": [
+        440,
+        440
+      ],
+      "meanAbsoluteChannelDifference": [
+        4.224400826446281,
+        2.6848295454545457,
+        2.969039256198347
+      ],
+      "meanAbsoluteRGBDifference": 3.2927565426997245,
+      "visuallyReviewedSamePhotograph": true,
+      "interpretation": "Same photograph and framing with different JPEG bytes/encoding; visual comparison and pixel difference support the publisher association. Not an exact-byte duplicate."
+    },
+    "visualReview": "Both complete one-page patterns and the publisher photograph were inspected. The colored pattern prints red hearts on the white oval; the cut lines are three straight parallel lines per sheet. The instructions specify cutting those three lines and weaving four loops. The photograph matches the collected Pinterest image.",
+    "structuralGroundTruth": {
+      "slitsPerSheet": [
+        3,
+        3
+      ],
+      "cutStyle": "straight parallel cuts forming an ordinary checker weave",
+      "matchingSheets": true,
+      "littleHeartMotifs": "printed decoration on the white paper, not heart-shaped cutouts"
+    },
+    "limitations": "The published design establishes the intended cut structure and decoration. This review does not measure exact assembled-photo corner coordinates or assert pixel-perfect material labels from the PDF."
+  },
+  "corrections": [
+    "The earlier aperture interpretation of the four small hearts is incorrect. Colouring or printing on a sheet is not a change in paper identity.",
+    "The raw RGB-classified target deliberately includes red ink. Fitting it as a two-paper weave is an artwork reinterpretation, not recovery of this photograph\u2019s published cutting template.",
+    "The neural mask still visibly narrows checker cells, but neither its total red coverage nor the RGB appearance-mask error is sufficient evidence of physical paper-identity accuracy.",
+    "The geometric neck analysis is valid for the attempted appearance reconstruction; it does not establish a failure to recover a known woven heart motif.",
+    "Existing partial material polygons explicitly omit the little hearts. No known supervised pixels in those motifs are contradicted by this discovery, but descriptions calling them apertures need correction.",
+    "Keep the image as a genuine photographed decorated woven heart; distinguish printed-paper identity supervision from appearance segmentation."
+  ],
+  "benchmarkImpact": {
+    "regularHunodan22": "unchanged",
+    "hardPhotographs31": "unchanged; the collage stacked-hearts case is a different photograph",
+    "learnedPilot17": "Historical derived-mask outcomes retained; this source is not evidence of recovering the published cutting paths. Reevaluate against material-identity labels before making that claim."
+  },
+  "pendingCorrections": [
+    "After the frozen full-QA run and queued initializer study terminate, correct the current annotation descriptions and add publisher/template provenance. Preserve old training labels and reports.",
+    "Add explicit white-paper labels within the printed motifs, with source-boundary uncertainty handled separately. Keep all crops in the existing source/motif group.",
+    "Use the published three-cut structure for evaluation only; do not provide it to blind photo reconstruction."
+  ],
+  "retiredExperiment": "tmp/heart-learning/rgb-border-routing-v1",
+  "artifacts": [
+    {
+      "path": "tmp/pdfs/aunt-annie-heart-source/downloads.json",
+      "sha256": "88e6778b2189dcd3146fb7599cad8eae28bacca899b27eadec866c022f670d07",
+      "bytes": 1128
+    },
+    {
+      "path": "tmp/pdfs/aunt-annie-heart-source/source-page.json",
+      "sha256": "06c1727c409b373412f46f76de2ab49a20ddd0be1f54c39f5a6e0640d7e5a92d",
+      "bytes": 216
+    },
+    {
+      "path": "tmp/pdfs/aunt-annie-heart-source/source-page.html",
+      "sha256": "48dd0a387d13311768a639915a734b484c3d394048070fe208c29b31e96b4093",
+      "bytes": 39799
+    },
+    {
+      "path": "tmp/pdfs/aunt-annie-heart-source/photo-comparison.json",
+      "sha256": "832cee6098063390c892e4c0a3e69fb860fbc2e176bca689658a3fee5504d910",
+      "bytes": 441
+    },
+    {
+      "path": "tmp/pdfs/aunt-annie-heart-source/WovenHeartHearts440.jpg",
+      "sha256": "63bb40acd2bbcaced06d0f3ab279c3df924769a72dc5429bf6980a002b02b018",
+      "bytes": 64172
+    }
+  ]
+}
