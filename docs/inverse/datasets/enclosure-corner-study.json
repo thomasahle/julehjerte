@@ -1,0 +1,386 @@
+{
+  "schema": "woven-heart-enclosure-corner-study-1",
+  "status": "complete-offline-investigation",
+  "productionIntegration": false,
+  "scope": "Frozen estimated neural mask, existing saved benchmark exports and bounded diagnostic replays. No new end-to-end photograph success, no learned-model deployment and no artwork-ground-truth claim.",
+  "artifacts": {
+    "tmp/heart-learning/stacked-paper-diagnosis-v1/plan.json": "cded91b7805ce0cc1cff203d2a529ad2148b8887d8ddd2f786f46a2c20c6278d",
+    "tmp/heart-learning/stacked-paper-diagnosis-v1/report.json": "53c9cc92d83bc18421de6afb3afd053399bfbb647805428bd7d25c330bb84f79",
+    "tmp/heart-learning/stacked-paper-diagnosis-v1/editable/results.json": "12f0042e946a71fff82865ca0bf9db60ea6c1f4f10bd95286d9e5c9624642827",
+    "tmp/heart-learning/stacked-sharing-diagnosis-v1/run.mjs": "16870a1ef1fe0b317a458ca64ed4f853809f77bb0d44bf8dc88eb6105825872d",
+    "tmp/heart-learning/stacked-sharing-diagnosis-v1/report.json": "e3952c941399151bd724dabfd034a87bf0edeb89e4f2efd1f5933c7e840ae266",
+    "tmp/heart-learning/large-enclosure-study-v1/measure.mjs": "04d9b18d58d070b46d56d393d138c8cc598abeb7291b6bfb75cd858715c44c34",
+    "tmp/heart-learning/large-enclosure-study-v1/report.json": "2698921f381e336cebf0d9b82350b9c1d6702957aa46bb3325da04fa3bb5cffb",
+    "tmp/heart-learning/large-enclosure-study-v1/gallery.png": "7381247bce7a3b37c309a40e0a271f55b20c4370b603c7228af2477336ef4459",
+    "tmp/heart-learning/enclosure-sharing-v1/run.mjs": "263584c690fc472736cbebdc4853f51d4686baec41cf213acdd9e770d134c190",
+    "tmp/heart-learning/enclosure-sharing-v1/report.json": "28fa0be7adbab291446a426808d631c38eba18956f6c2d718008100839df0ff7",
+    "tmp/heart-learning/enclosure-gate-v1/run.mjs": "fe6ecc4fe3ea3fd94f8124b6b45183a48704ebdf0cc89b459bbe0e7f2e2d7901",
+    "tmp/heart-learning/enclosure-gate-v1/report.json": "8262f3f2c0b712e16e56d04c1b1c78bff83a8402ad0892cc0a95261b89d4b7a5",
+    "tmp/heart-learning/corner-fragment-routing-v1/report.json": "fea61df5c1f7280df43ca1a8786a78003a74f6d41e0220c42e7e215a90772ae3",
+    "tmp/heart-learning/corner-fragment-routing-v2/report.json": "f32a74b8c90ae69551cb15ced884ce2725bc968c048bfe4bb1103220852bffea",
+    "tmp/heart-learning/corner-fragment-qa-v1/checks.json": "205fe6d30e04f953721d10ecd2cf988bd7813b1d0e617af14b05dd82f6a810e0",
+    "tmp/heart-learning/corner-fragment-qa-v1/source.json": "298d671f42e8d3e85fc82ea3f19e0511893c1c4af1b01c3b040a991bc65ae78e",
+    "tmp/heart-learning/corner-fragment-qa-v1/running.json": "3269c514f07dc15f7c79038e2d0234bc91b0b03bb9bf8e49854461981d0f2d42",
+    "tmp/heart-learning/corner-fragment-qa-v1/focused.log": "df5b4e7ac3673adaacfd4b4f62d97c8985839934fa1575d3f4583ee92f458b8b",
+    "tmp/heart-learning/corner-fragment-qa-v1/app.log": "5e2b34fb521513948a5b6b762f0517d0ae1b4a9287531842a81e3476a4783c78"
+  },
+  "codeHashes": {
+    "static/inverse/core/corner-border-seeds.js": "37c9c93bfa2d2533d1811a354edce0f36c308e43a9b9d39252999af713447e4e",
+    "scripts/inverse/corner-border-seeds.test.mjs": "14b5c6f515f5a159077d34350b922fdb81bdc49a67864ea373250a1109036156",
+    "scripts/inverse/diagnostics/corner-fragment-routing.mjs": "e1ca37be402e4b47e58473efbf6551996234af04719b10babe0013e134802305",
+    "scripts/inverse/fixtures/stacked-hearts-corner-mask.json": "09f218ae8851f1f68c431a0111bb0986b7905a7f154ca30cd6651e52af9d8194"
+  },
+  "componentStudy": {
+    "savedExports": 55,
+    "corpora": {
+      "photos": 29,
+      "hunodan-editor-input": 22,
+      "stacked": 4
+    },
+    "sourceRegions": 181,
+    "visualReview": "Reviewed source, reconstructed weave and differences for floral checker, gingerbread, orb, Viking and hjfla-01, as well as all four frozen stacked-hearts runs. Large-motif openings occur, but exact raster connectivity also changes at ambiguous checkerboard corner contacts. These observations do not establish a universal new acceptance threshold."
+  },
+  "expandedEnclosureGate": [
+    {
+      "mode": "automatic",
+      "seconds": 29.354436583000002,
+      "independentImageError": 0.01200625,
+      "currentChecksPassed": false,
+      "independentOpenedComponents": 3
+    },
+    {
+      "mode": "three-by-three",
+      "seconds": 14.021125208,
+      "independentImageError": 0.01235,
+      "currentChecksPassed": false,
+      "independentOpenedComponents": 3
+    }
+  ],
+  "sharingProposals": [
+    {
+      "id": "automatic-30",
+      "radius": 0.6,
+      "minimumIndependentLength": 3,
+      "seconds": 0.040250999999999974,
+      "independentImageError": 0.0129875,
+      "independentOpenedComponents": 2,
+      "acceptedEdits": 0,
+      "geometryPassed": true,
+      "paperStatus": "pass"
+    },
+    {
+      "id": "three-by-three-10",
+      "radius": 0.6,
+      "minimumIndependentLength": 3,
+      "seconds": 0.16917766700000003,
+      "independentImageError": 0.01225,
+      "independentOpenedComponents": 3,
+      "acceptedEdits": 0,
+      "geometryPassed": true,
+      "paperStatus": "pass"
+    },
+    {
+      "id": "automatic-30",
+      "radius": 0.6,
+      "minimumIndependentLength": 1,
+      "seconds": 1.2120301670000002,
+      "independentImageError": 0.012975,
+      "independentOpenedComponents": 2,
+      "acceptedEdits": 3,
+      "geometryPassed": true,
+      "paperStatus": "pass"
+    },
+    {
+      "id": "three-by-three-10",
+      "radius": 0.6,
+      "minimumIndependentLength": 1,
+      "seconds": 2.0110835840000005,
+      "independentImageError": 0.0122625,
+      "independentOpenedComponents": 3,
+      "acceptedEdits": 7,
+      "geometryPassed": true,
+      "paperStatus": "pass"
+    },
+    {
+      "id": "automatic-30",
+      "radius": 1,
+      "minimumIndependentLength": 3,
+      "seconds": 0.03010712499999954,
+      "independentImageError": 0.0129875,
+      "independentOpenedComponents": 2,
+      "acceptedEdits": 0,
+      "geometryPassed": true,
+      "paperStatus": "pass"
+    },
+    {
+      "id": "three-by-three-10",
+      "radius": 1,
+      "minimumIndependentLength": 3,
+      "seconds": 0.1456255000000001,
+      "independentImageError": 0.01225,
+      "independentOpenedComponents": 3,
+      "acceptedEdits": 0,
+      "geometryPassed": true,
+      "paperStatus": "pass"
+    },
+    {
+      "id": "automatic-30",
+      "radius": 1,
+      "minimumIndependentLength": 1,
+      "seconds": 1.094040499999999,
+      "independentImageError": 0.012975,
+      "independentOpenedComponents": 2,
+      "acceptedEdits": 3,
+      "geometryPassed": true,
+      "paperStatus": "pass"
+    },
+    {
+      "id": "three-by-three-10",
+      "radius": 1,
+      "minimumIndependentLength": 1,
+      "seconds": 2.4725307920000006,
+      "independentImageError": 0.012075,
+      "independentOpenedComponents": 2,
+      "acceptedEdits": 10,
+      "geometryPassed": true,
+      "paperStatus": "pass"
+    },
+    {
+      "id": "automatic-30",
+      "radius": 1.5,
+      "minimumIndependentLength": 3,
+      "seconds": 0.031378958999999665,
+      "independentImageError": 0.0129875,
+      "independentOpenedComponents": 2,
+      "acceptedEdits": 0,
+      "geometryPassed": true,
+      "paperStatus": "pass"
+    },
+    {
+      "id": "three-by-three-10",
+      "radius": 1.5,
+      "minimumIndependentLength": 3,
+      "seconds": 0.1379007500000007,
+      "independentImageError": 0.01225,
+      "independentOpenedComponents": 3,
+      "acceptedEdits": 0,
+      "geometryPassed": true,
+      "paperStatus": "pass"
+    },
+    {
+      "id": "automatic-30",
+      "radius": 1.5,
+      "minimumIndependentLength": 1,
+      "seconds": 1.0898225000000001,
+      "independentImageError": 0.012975,
+      "independentOpenedComponents": 2,
+      "acceptedEdits": 3,
+      "geometryPassed": true,
+      "paperStatus": "pass"
+    },
+    {
+      "id": "three-by-three-10",
+      "radius": 1.5,
+      "minimumIndependentLength": 1,
+      "seconds": 2.5170434580000003,
+      "independentImageError": 0.012075,
+      "independentOpenedComponents": 2,
+      "acceptedEdits": 10,
+      "geometryPassed": true,
+      "paperStatus": "pass"
+    },
+    {
+      "id": "automatic-30",
+      "radius": 2,
+      "minimumIndependentLength": 3,
+      "seconds": 0.029198709000000236,
+      "independentImageError": 0.0129875,
+      "independentOpenedComponents": 2,
+      "acceptedEdits": 0,
+      "geometryPassed": true,
+      "paperStatus": "pass"
+    },
+    {
+      "id": "three-by-three-10",
+      "radius": 2,
+      "minimumIndependentLength": 3,
+      "seconds": 0.13780633399999898,
+      "independentImageError": 0.01225,
+      "independentOpenedComponents": 3,
+      "acceptedEdits": 0,
+      "geometryPassed": true,
+      "paperStatus": "pass"
+    },
+    {
+      "id": "automatic-30",
+      "radius": 2,
+      "minimumIndependentLength": 1,
+      "seconds": 1.123220707999999,
+      "independentImageError": 0.012975,
+      "independentOpenedComponents": 2,
+      "acceptedEdits": 3,
+      "geometryPassed": true,
+      "paperStatus": "pass"
+    },
+    {
+      "id": "three-by-three-10",
+      "radius": 2,
+      "minimumIndependentLength": 1,
+      "seconds": 2.554964334,
+      "independentImageError": 0.012075,
+      "independentOpenedComponents": 2,
+      "acceptedEdits": 10,
+      "geometryPassed": true,
+      "paperStatus": "pass"
+    }
+  ],
+  "cornerProposals": [
+    {
+      "method": "corner-fragments",
+      "initializationOnly": true,
+      "borderRadiusMm": 1,
+      "maximumCornerSpanMm": 5,
+      "corners": [
+        2
+      ],
+      "cornerPixelsChanged": 110,
+      "changedPixels": 689,
+      "changeFraction": 0.00430625,
+      "transitionsOriginal": [
+        9,
+        4,
+        6,
+        3
+      ],
+      "transitionsBefore": [
+        3,
+        4,
+        4,
+        3
+      ],
+      "transitionsAfter": [
+        3,
+        3,
+        3,
+        3
+      ]
+    }
+  ],
+  "freshRouting": [
+    {
+      "tolerance": 0.5,
+      "seconds": 3.790089584,
+      "traceError": 0.013825,
+      "endpointIssue": null,
+      "accepted": false,
+      "termination": "candidate_graph_exhausted"
+    },
+    {
+      "tolerance": 0.75,
+      "seconds": 20.067311541,
+      "traceError": 0.01810625,
+      "endpointIssue": null,
+      "accepted": false,
+      "termination": "time_limit"
+    },
+    {
+      "tolerance": 1,
+      "seconds": 20.467658,
+      "traceError": 0.020425,
+      "endpointIssue": null,
+      "accepted": false,
+      "termination": "time_limit"
+    }
+  ],
+  "validation": {
+    "focusedTestsPassed": 23,
+    "newTestsPassed": 5,
+    "applicationTestsPassed": 857,
+    "applicationTestsSkipped": 1,
+    "sourceFilesVerified": 657,
+    "stages": [
+      {
+        "stage": "replay",
+        "command": [
+          "node",
+          "scripts/inverse/diagnostics/corner-fragment-routing.mjs",
+          "--output=tmp/heart-learning/corner-fragment-routing-v2",
+          "--seconds=20"
+        ],
+        "exitCode": 0,
+        "seconds": 44.721024666999995
+      },
+      {
+        "stage": "focused",
+        "command": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "scripts/inverse/corner-border-seeds.test.mjs",
+          "scripts/inverse/border.test.mjs",
+          "scripts/inverse/border-profile-proposals.test.mjs",
+          "scripts/inverse/feature-shapes.test.mjs"
+        ],
+        "exitCode": 0,
+        "seconds": 4.731996833000004
+      },
+      {
+        "stage": "core-lint",
+        "command": [
+          "npx",
+          "eslint",
+          "--no-ignore",
+          "static/inverse/core/corner-border-seeds.js",
+          "scripts/inverse/corner-border-seeds.test.mjs",
+          "scripts/inverse/diagnostics/corner-fragment-routing.mjs"
+        ],
+        "exitCode": 0,
+        "seconds": 1.593078165999998
+      },
+      {
+        "stage": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 9.024776541999998
+      },
+      {
+        "stage": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 6.2532355000000095
+      },
+      {
+        "stage": "app",
+        "command": [
+          "npx",
+          "vitest",
+          "run",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 0,
+        "seconds": 22.295094333999998
+      },
+      {
+        "stage": "build",
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 11.441168415999996
+      }
+    ],
+    "fullInverseSuiteRerun": false,
+    "fullInverseNote": "The previous 866-test run remains recorded at 988bf53. This new helper has no production callers; focused border/feature/routing tests and full application QA were run for this change."
+  },
+  "next": "Use preserved original masks and integer-candidate diagnostics to investigate narrow returns after endpoint recovery; do not add search time to the automatic fitter before a complete-pipeline benefit is demonstrated."
+}

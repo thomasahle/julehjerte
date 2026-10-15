@@ -55,6 +55,14 @@ regress. Seven joint crops remain unresolved, including photos with almost zero
 observed material error. The model remains offline; these results do not replace
 the established solver benchmarks below.
 
+A [frozen stacked-hearts investigation](enclosure-corner-study.md) finds that
+low pixel error and the current feature gate can still admit unwanted channels
+from larger motifs to the background. It also isolates a corner fragment that
+adds endpoints on two adjacent sides. New bounded routing proposals restore
+consistent counts without changing the image reference, but later narrow-return
+failures remain. The proposals and new photographic regression fixture are
+offline; this is not an additional accepted-photo result.
+
 The latest validated solver revision is `c000d30`. Its
 [release record](return-projection-speed.json) passes **22/22 regular Hunodan
 designs below ten seconds**, with a maximum of **8.100 seconds**. Automatic
