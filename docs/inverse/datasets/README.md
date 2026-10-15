@@ -31,6 +31,19 @@ The inventory, with material annotations updated on 2026-10-15, contains:
 
 ## Current results and limits
 
+[Thirty-six fresh graph-order comparisons](topology-graph-budget-results.json)
+finish below ten seconds and pass the actual template and feature checks in all
+three arms. Trying detailed recovery first saves about two seconds on a shifted
+photo and the outlined star, but worsens the tree and larger individual-photo
+errors in both repeats. A sparse coarse graph halves the outlined-star error and
+preserves the tree result, but slightly worsens the individual photo and adds
+visible corner detail to the star. Both baseline and detailed-first switch between
+different leaf fits across repeats. All exported images were reviewed; neither
+policy is integrated. A saved-mask polarity mismatch stopped one harness attempt
+before fitting; the original hash caught it, the failure is preserved, and the
+remaining cases resumed with the correct original mask. Six cases include related
+perturbations and are not six independent photographs.
+
 [A contact-supervision audit](contact-supervision-audit.json) maps the nine reviewed
 orange/yellow checker junctions into the existing material labels. All 97 sampled
 pixels in those boxes at 256 resolution are known heart body but unknown paper
