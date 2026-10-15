@@ -98,7 +98,7 @@ export function curvePenalty(graph,points,cfg,{separationWeight=12}={}){
   return{loss,gradient,minRadius};
 }
 
-export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=40,deadline=Infinity,onProgress=()=>{},input={},rate=.035,identicalSheets=false,stopWhen=null,selection='boundary',weights=null,preferCheckpoint=null,skipRepeatedRollbacks=false,finalGeometry=true}={}){
+export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=40,deadline=Infinity,onProgress=()=>{},input={},rate=.035,identicalSheets=false,stopWhen=null,selection='boundary',weights=null,preferCheckpoint=null,skipRepeatedRollbacks=false,finalGeometry=true,resolvePaperBeforeRollback=false}={}){
   if(!Number.isInteger(checkpointEvery)||checkpointEvery<1)throw new RangeError('Checkpoint interval must be a positive integer.');
   // Compile the weighted force field once, not on every optimization step.
   const objective=boundaryObjective(prob,weights),force=objective.target;
@@ -140,9 +140,21 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=4
         const symmetry=symmetryReport(solution,cfg.symmetry);
         if(symmetry.honoured.length!==symmetry.requested.length){check.passed=false;check.issues.push('Requested cutting symmetries are not satisfied.');}
       }
-      const paper=check.passed?materialAudit(solution,cfg):null;
+      let paper=check.passed?materialAudit(solution,cfg):null;
+      // Coarse lattice uncertainty can repeatedly reset a useful trajectory
+      // to an older, much poorer fit. Verify the unchanged curves before that
+      // rollback, and carry the actual finer audit through Stop and export.
+      // Without a safe incumbent there is no rollback to prevent: introducing
+      // one early can interrupt exploration through provisional paper states.
+      if(resolvePaperBeforeRollback&&safe&&cfg.requireMaterialCore&&paper?.status==='uncertain'&&cfg.materialResolution<700&&deadline-performance.now()>250){
+        const fine=materialAudit(solution,{...cfg,materialResolution:700});
+        if(fine.passed){
+          value.paperVerification={requestedResolution:cfg.materialResolution,initialStatus:'uncertain',resolution:700,status:fine.status,source:'rollback-checkpoint'};
+          solution.report={...solution.report,paperVerification:value.paperVerification};paper=fine;
+        }
+      }
       value.validation=check;value.paper=paper?.summary;value.preferred=!preferCheckpoint||preferCheckpoint(value,solution);
-      const rec={step,error:value.error,score:value.score,primitives:value.primitives,straightened:value.straightened,geometry:check.passed,paper:paper?.status,...(preferCheckpoint?{preferred:value.preferred}:{}),issues:check.issues.slice(0,8),...(value.returnProjection?{returnProjection:value.returnProjection}:{})};history.push(rec);onProgress(rec,solution);
+      const rec={step,error:value.error,score:value.score,primitives:value.primitives,straightened:value.straightened,geometry:check.passed,paper:paper?.status,...(value.paperVerification?{paperVerification:value.paperVerification}:{}),...(preferCheckpoint?{preferred:value.preferred}:{}),issues:check.issues.slice(0,8),...(value.returnProjection?{returnProjection:value.returnProjection}:{})};history.push(rec);onProgress(rec,solution);
       if(!bestInvalid||value.error<bestInvalid.error)bestInvalid=value;
       // More optimization must not replace a geometry-valid uncertain paper
       // checkpoint with an illegal curve merely because its image error is

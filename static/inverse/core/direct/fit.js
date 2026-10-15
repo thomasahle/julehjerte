@@ -34,6 +34,7 @@ import {recoverCornerTopology} from './corner-topology.js';
 
 export {borderEvidence,supportedBorderCounts,gridCountLimit,gridFinalists} from './counts.js';
 const featureSeed=c=>['feature-weighted-grid','feature-preserving-grid','feature-sampling-grid','fitted-boundary-rerouting'].includes(c.seed);
+const finerRefinement=c=>['retained-refinement-alternative','rollback-checkpoint'].includes(c.paperVerification?.source);
 function refinementTimeLeft(deadline){
   const available=deadline-performance.now();
   return available-1700-Math.min(800,available*.15);
@@ -394,6 +395,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   };
   const addCandidate=c=>{
     c.matching=matchingSummary(c.graph.solution(c.points,c.phase,input));c.imagePassed=assess(c);
+    if(c.imagePassed&&c.paperVerification?.source==='rollback-checkpoint')verifiedAlternative=true;
     const proposals=[c];
     if(!c.imagePassed&&c.paperAlternative){
       const alternative={...c,...c.paperAlternative,paperAlternative:null,paperVerification:null};
@@ -589,7 +591,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     // Ordinary grids can also repeat an identical failed block after the
     // optimizer resets at its minimum rate. Preserve the final partial block
     // while freeing the redundant work for polishing the retained candidate.
-    let candidate=stage('directRefining',()=>refineCurves(graph,objectiveProb,n,clear.phase,{...refinementCfg,preferMatchingSheets:false},{deadline:end,input,weights:objectiveWeights,skipRepeatedRollbacks:true,preferCheckpoint:featureSeed(selected)?(_candidate,solution)=>auditFeatureFidelity(source,sampleWeave(solution,source.resolution),cfg,sourceFeatures).passed:null,rate:clear.model.counts[0]+clear.model.counts[1]>4?.05:.035,stopWhen:value=>{
+    let candidate=stage('directRefining',()=>refineCurves(graph,objectiveProb,n,clear.phase,{...refinementCfg,preferMatchingSheets:false},{deadline:end,input,weights:objectiveWeights,skipRepeatedRollbacks:true,resolvePaperBeforeRollback:true,preferCheckpoint:featureSeed(selected)?(_candidate,solution)=>auditFeatureFidelity(source,sampleWeave(solution,source.resolution),cfg,sourceFeatures).passed:null,rate:clear.model.counts[0]+clear.model.counts[1]>4?.05:.035,stopWhen:value=>{
       if(goodEnough(value))return true;
       if(!selected.protectFeatures||!earlyFeatureInitialization?.enclosurePending)return false;
       // Hand a checked colour-retaining fit to local shape refinement as soon
@@ -673,7 +675,10 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     // finalists earlier than before. Their initial grid error can conceal a
     // much better final fit (the candle's 1+1 layout is one such case).
     const ordinaryFinalistsRemain=candidate.paperVerification&&!featureSeed(candidate)&&fine.slice(i+1).some(r=>!featureSeed(r));
-    if(candidate.imagePassed&&!simplerRemaining&&!ordinaryFinalistsRemain)break;
+    // Resolving uncertainty inside refinement must retain the same simpler
+    // layout comparison as resolving its retained alternative afterwards.
+    const compareSimpler=i===fine.length-1&&!weights&&candidates.some(c=>c.imagePassed)&&!candidates.some(c=>c.imagePassed&&!finerRefinement(c))&&remainingSeeds.length;
+    if(candidate.imagePassed&&!simplerRemaining&&!ordinaryFinalistsRemain&&!compareSimpler)break;
     // Three seeds are the fast path, not evidence that other routings fail.
     // Spend a longer requested budget on an untried layout only when none of
     // the refined candidates passed the original image, feature and paper
@@ -683,11 +688,15 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     // Once all ordinary finalists have run, compare competitive simpler seeds
     // directly instead of exhausting the allowance on more elaborate grids.
     // Unresolved and weighted fits keep their original continuation order.
-    if(i===fine.length-1&&!candidates.some(c=>c.imagePassed&&c.paperVerification?.source!=='retained-refinement-alternative')&&remainingSeeds.length&&searchDeadline()-performance.now()>4500){
+    const comparisonTime=searchDeadline()-performance.now()>4500;
+    if(i===fine.length-1&&!candidates.some(c=>c.imagePassed&&!finerRefinement(c))&&remainingSeeds.length&&(compareSimpler||comparisonTime)){
       const acceptedCounts=candidates.filter(c=>c.imagePassed).map(c=>c.counts.slice()),simplify=acceptedCounts.length>0&&!weights;
       const next=simplify?simplerComparisonSeed(remainingSeeds,coarse,acceptedCounts):remainingSeeds[0];
-      extraGridComparisons.push({reason:simplify?'simpler-layout':'unresolved-fit',acceptedCounts,selectedCounts:next?.model.counts.slice()||null,phase:next?.phase??null});
-      if(next){remainingSeeds.splice(remainingSeeds.indexOf(next),1);fine.push(stage('directFitting',()=>fitSeed(next)));}
+      // Reviewing the existing scores is cheap even when another fit cannot
+      // start. Record a deferred candidate instead of hiding it or consuming
+      // the final polishing/export reserve.
+      extraGridComparisons.push({reason:simplify?'simpler-layout':'unresolved-fit',acceptedCounts,selectedCounts:next?.model.counts.slice()||null,phase:next?.phase??null,...(next&&!comparisonTime?{deferred:'budget'}:{})});
+      if(next&&comparisonTime){remainingSeeds.splice(remainingSeeds.indexOf(next),1);fine.push(stage('directFitting',()=>fitSeed(next)));}
     }
   }
   candidates.sort((a,b)=>Number(b.paperPassed)-Number(a.paperPassed)||Number(b.geometryPassed)-Number(a.geometryPassed)||Number(b.imagePassed)-Number(a.imagePassed)||a.selectionScore-b.selectionScore);

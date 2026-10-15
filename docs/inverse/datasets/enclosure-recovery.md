@@ -115,3 +115,34 @@ generated SvelteKit identifier changes from `__sveltekit_pcs580` to
 accounts for the size difference. Separate fresh Draw and Paint checks verify
 served bytes, no page errors and **zero initial solver/WASM requests**. The
 original strict failure is retained rather than overwritten.
+
+## Refinement rollback follow-up
+
+The [rollback study](paper-rollback.json) isolates another loss of useful work.
+A coarse paper audit can remain uncertain on curves that pass the independent
+700-cell audit. Refinement then repeatedly restores an older, much poorer safe
+checkpoint. Waiting until the stage ends to resolve that uncertainty wastes
+the intervening gradient steps.
+
+The fitter now tries the finer audit before such a rollback, only when a safe
+incumbent already exists and the audit reserve remains. The identical geometry
+must pass; no physical tolerance changes. Its verification resolution travels
+with progress snapshots, subsequent polishing and final export. A finer pass
+does not bypass source-image checks, other ordinary finalists or the existing
+comparison with simpler layouts. When time prevents another fit, the cheap
+comparison records its deferred candidate explicitly.
+
+The distinction between preventing a rollback and introducing one is material.
+An unrestricted prototype verified Viking's provisional shape too early,
+creating a safe rollback point that interrupted its useful search through later
+provisional states. Its independent error rose to 2.398125%. Requiring an existing
+safe incumbent restored the prior 2.056875% result in the five-case timing probe.
+Early stage handoffs were also rejected after inconsistent photographic results.
+
+With identical 201-step work, the floral-checker fixture improves from 4.611875%
+to 1.580625% independently rendered disagreement. The gift fixture, which has no
+safe incumbent, retains exactly the same coordinates. New tests replay the
+published progress geometry through the finer paper audit and preserve the
+remaining-time reserve. These are refinement diagnostics on fixed inputs, not
+new automatic-cropping or physical-assembly results. Full corpus and release QA
+for this follow-up are still pending.

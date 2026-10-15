@@ -1,0 +1,441 @@
+{
+  "baseCommit": "0837752",
+  "scope": "Fixed already-classified masks, ten-second search budgets; no cropping evaluation. Prototype files are retained locally; these hashes were collected after the completed runs, not before.",
+  "variants": [
+    {
+      "variant": 1,
+      "root": "tmp/heart-learning/paper-handoff-v1",
+      "hashes": {
+        "probe.mjs": "59e04393c3f42464a99b0f82a864e094816b1dcca4d151bc0f1cb9d2f15c95c7",
+        "report.json": "004e249b921b75eacbf59e1a5427741b39dc7effd4c0a23c5dfa0fc5e4a95dcd",
+        "runtime/inverse/core/direct/refine.js": "162bb9247bf023fdda5996be5c8dedb5c069ffd5aaf6a16a629d6ac84b618d91",
+        "runtime/inverse/core/direct/fit.js": "504915a21054306ae47ba2f2dd47f0c478c7b5a2044eed2369c1730f465da498"
+      },
+      "results": [
+        {
+          "id": "fine-checker",
+          "label": "before",
+          "maskSha256": "184fe9c3aaf1a4e8a3732e1180a17770ebb3ef60566861c89859bb5a1e36ad4a",
+          "seconds": 9.721940499999999,
+          "checked": true,
+          "error": 0.02281875
+        },
+        {
+          "id": "fine-checker",
+          "label": "after",
+          "maskSha256": "184fe9c3aaf1a4e8a3732e1180a17770ebb3ef60566861c89859bb5a1e36ad4a",
+          "seconds": 9.510221583,
+          "checked": true,
+          "error": 0.0221625
+        },
+        {
+          "id": "warped-checker",
+          "label": "before",
+          "maskSha256": "3508f08f46f539554f7fdab38f01f018bc7ec8d86db2309427b28e18b049c2de",
+          "seconds": 9.482989209000003,
+          "checked": true,
+          "error": 0.0184625
+        },
+        {
+          "id": "warped-checker",
+          "label": "after",
+          "maskSha256": "3508f08f46f539554f7fdab38f01f018bc7ec8d86db2309427b28e18b049c2de",
+          "seconds": 9.380179874999998,
+          "checked": true,
+          "error": 0.01711875
+        },
+        {
+          "id": "floral-checker",
+          "label": "before",
+          "maskSha256": "351a7a00b7aba431e393477f0ae7747c3b2dda9ad8a40fd086e625d3d6ccb6f7",
+          "seconds": 9.448824792,
+          "checked": true,
+          "error": 0.0189625
+        },
+        {
+          "id": "floral-checker",
+          "label": "after",
+          "maskSha256": "351a7a00b7aba431e393477f0ae7747c3b2dda9ad8a40fd086e625d3d6ccb6f7",
+          "seconds": 9.533371583000001,
+          "checked": true,
+          "error": 0.0181625
+        },
+        {
+          "id": "flettede-viking",
+          "label": "before",
+          "maskSha256": "7791de154fdbc94b618ece0bf018522573d57c231c46bc0385d24a9e2b9a9bb8",
+          "seconds": 9.397455500000003,
+          "checked": true,
+          "error": 0.02064375
+        },
+        {
+          "id": "flettede-viking",
+          "label": "after",
+          "maskSha256": "7791de154fdbc94b618ece0bf018522573d57c231c46bc0385d24a9e2b9a9bb8",
+          "seconds": 9.464553457999996,
+          "checked": true,
+          "error": 0.02089375
+        },
+        {
+          "id": "gingerbread",
+          "label": "before",
+          "maskSha256": "58e23488bf3ab6809c751f87de2cb7b7316aab8fc591b0c1c107ecbc2e64823e",
+          "seconds": 9.415730916999994,
+          "checked": true,
+          "error": 0.01468125
+        },
+        {
+          "id": "gingerbread",
+          "label": "after",
+          "maskSha256": "58e23488bf3ab6809c751f87de2cb7b7316aab8fc591b0c1c107ecbc2e64823e",
+          "seconds": 9.40589620799999,
+          "checked": true,
+          "error": 0.01468125
+        }
+      ]
+    },
+    {
+      "variant": 2,
+      "root": "tmp/heart-learning/paper-handoff-v2",
+      "hashes": {
+        "probe.mjs": "376f50f3cbf16f80a02d573480d105fcd201317f56aaedd8653434d9d2426737",
+        "report.json": "3033bea9f532a7a982ca895e844bcb8c26f60ef41f46e8b6b0f6d260078c500d",
+        "runtime/inverse/core/direct/refine.js": "c0d8854ee90cc147e578651f39340a0c7e9779b71c4bdac141bf4a48ac0ba2dc",
+        "runtime/inverse/core/direct/fit.js": "90a30905e09372f946a2d0fa00f7e4c3028b65b94dd6f335c785f814ae9f242d"
+      },
+      "results": [
+        {
+          "id": "fine-checker",
+          "label": "after",
+          "maskSha256": "184fe9c3aaf1a4e8a3732e1180a17770ebb3ef60566861c89859bb5a1e36ad4a",
+          "seconds": 9.598056875000001,
+          "checked": true,
+          "error": 0.02245
+        },
+        {
+          "id": "warped-checker",
+          "label": "after",
+          "maskSha256": "3508f08f46f539554f7fdab38f01f018bc7ec8d86db2309427b28e18b049c2de",
+          "seconds": 9.496487625000002,
+          "checked": true,
+          "error": 0.01729375
+        },
+        {
+          "id": "floral-checker",
+          "label": "after",
+          "maskSha256": "351a7a00b7aba431e393477f0ae7747c3b2dda9ad8a40fd086e625d3d6ccb6f7",
+          "seconds": 9.558060541,
+          "checked": true,
+          "error": 0.01889375
+        },
+        {
+          "id": "flettede-viking",
+          "label": "after",
+          "maskSha256": "7791de154fdbc94b618ece0bf018522573d57c231c46bc0385d24a9e2b9a9bb8",
+          "seconds": 9.507405750000002,
+          "checked": true,
+          "error": 0.02181875
+        },
+        {
+          "id": "gingerbread",
+          "label": "after",
+          "maskSha256": "58e23488bf3ab6809c751f87de2cb7b7316aab8fc591b0c1c107ecbc2e64823e",
+          "seconds": 9.315701957999998,
+          "checked": true,
+          "error": 0.02599375
+        }
+      ]
+    },
+    {
+      "variant": 3,
+      "root": "tmp/heart-learning/paper-handoff-v3",
+      "hashes": {
+        "probe.mjs": "a9f94dfaeb6a1cc4d68ff72ce80888ff3cac588bf23373b821c20d4c1aeaeebf",
+        "report.json": "681139c21b73b0b050c20bf2c460b04ca1d40db1779dac25d17b10be7e6d6a0d",
+        "runtime/inverse/core/direct/refine.js": "c0d8854ee90cc147e578651f39340a0c7e9779b71c4bdac141bf4a48ac0ba2dc",
+        "runtime/inverse/core/direct/fit.js": "082e49e0533bc90b9b13b17c2630cd0f4ac37120b0e61360b2be06a4030d635b"
+      },
+      "results": [
+        {
+          "id": "fine-checker",
+          "label": "after",
+          "maskSha256": "184fe9c3aaf1a4e8a3732e1180a17770ebb3ef60566861c89859bb5a1e36ad4a",
+          "seconds": 9.531776417,
+          "checked": true,
+          "error": 0.0216875
+        },
+        {
+          "id": "warped-checker",
+          "label": "after",
+          "maskSha256": "3508f08f46f539554f7fdab38f01f018bc7ec8d86db2309427b28e18b049c2de",
+          "seconds": 9.478669833,
+          "checked": true,
+          "error": 0.0151125
+        },
+        {
+          "id": "floral-checker",
+          "label": "after",
+          "maskSha256": "351a7a00b7aba431e393477f0ae7747c3b2dda9ad8a40fd086e625d3d6ccb6f7",
+          "seconds": 9.480561333,
+          "checked": true,
+          "error": 0.0159875
+        },
+        {
+          "id": "flettede-viking",
+          "label": "after",
+          "maskSha256": "7791de154fdbc94b618ece0bf018522573d57c231c46bc0385d24a9e2b9a9bb8",
+          "seconds": 9.375687458999996,
+          "checked": true,
+          "error": 0.0218125
+        },
+        {
+          "id": "gingerbread",
+          "label": "after",
+          "maskSha256": "58e23488bf3ab6809c751f87de2cb7b7316aab8fc591b0c1c107ecbc2e64823e",
+          "seconds": 9.271571374999999,
+          "checked": true,
+          "error": 0.0237125
+        }
+      ]
+    },
+    {
+      "variant": 4,
+      "root": "tmp/heart-learning/paper-handoff-v4",
+      "hashes": {
+        "probe.mjs": "be1978066cb88284c15dbbf2659f2b0d94dc9abf728af86e6979296968c78bbe",
+        "report.json": "a66d7bc4031e01f6d79e7e28e84c2c4f9e2b788238f9273b4b829c1023e8a3c6",
+        "runtime/inverse/core/direct/refine.js": "162bb9247bf023fdda5996be5c8dedb5c069ffd5aaf6a16a629d6ac84b618d91",
+        "runtime/inverse/core/direct/fit.js": "082e49e0533bc90b9b13b17c2630cd0f4ac37120b0e61360b2be06a4030d635b"
+      },
+      "results": [
+        {
+          "id": "fine-checker",
+          "label": "after",
+          "maskSha256": "184fe9c3aaf1a4e8a3732e1180a17770ebb3ef60566861c89859bb5a1e36ad4a",
+          "seconds": 9.461389084,
+          "checked": true,
+          "error": 0.0221625
+        },
+        {
+          "id": "warped-checker",
+          "label": "after",
+          "maskSha256": "3508f08f46f539554f7fdab38f01f018bc7ec8d86db2309427b28e18b049c2de",
+          "seconds": 9.578057916999999,
+          "checked": true,
+          "error": 0.01545
+        },
+        {
+          "id": "floral-checker",
+          "label": "after",
+          "maskSha256": "351a7a00b7aba431e393477f0ae7747c3b2dda9ad8a40fd086e625d3d6ccb6f7",
+          "seconds": 9.380981125000002,
+          "checked": true,
+          "error": 0.016275
+        },
+        {
+          "id": "flettede-viking",
+          "label": "after",
+          "maskSha256": "7791de154fdbc94b618ece0bf018522573d57c231c46bc0385d24a9e2b9a9bb8",
+          "seconds": 9.387313417000001,
+          "checked": true,
+          "error": 0.02089375
+        },
+        {
+          "id": "gingerbread",
+          "label": "after",
+          "maskSha256": "58e23488bf3ab6809c751f87de2cb7b7316aab8fc591b0c1c107ecbc2e64823e",
+          "seconds": 9.387511292000003,
+          "checked": true,
+          "error": 0.01468125
+        }
+      ]
+    },
+    {
+      "variant": 5,
+      "root": "tmp/heart-learning/paper-handoff-v5",
+      "hashes": {
+        "probe.mjs": "5c20fa71c4f2b084808b0b162077260ef24785649ce6300294a32fade943ba49",
+        "report.json": "4755f87ac250303498fdd322a3cb6d92adee5b0a813baff2c0eb71ab9b701aff",
+        "runtime/inverse/core/direct/refine.js": "6d7c3674c43643e821642d3a825a3d3ada3d2f4e8510160475689ef87da19cc9",
+        "runtime/inverse/core/direct/fit.js": "2e97dc52e36eef6219edf7310abf374e01f9ca2e38500b96221d141f39d59af7"
+      },
+      "results": [
+        {
+          "id": "fine-checker",
+          "label": "after",
+          "maskSha256": "184fe9c3aaf1a4e8a3732e1180a17770ebb3ef60566861c89859bb5a1e36ad4a",
+          "seconds": 9.428622167,
+          "checked": true,
+          "error": 0.02245
+        },
+        {
+          "id": "warped-checker",
+          "label": "after",
+          "maskSha256": "3508f08f46f539554f7fdab38f01f018bc7ec8d86db2309427b28e18b049c2de",
+          "seconds": 9.499572083,
+          "checked": true,
+          "error": 0.0136375
+        },
+        {
+          "id": "floral-checker",
+          "label": "after",
+          "maskSha256": "351a7a00b7aba431e393477f0ae7747c3b2dda9ad8a40fd086e625d3d6ccb6f7",
+          "seconds": 9.404568792000003,
+          "checked": true,
+          "error": 0.01315
+        },
+        {
+          "id": "flettede-viking",
+          "label": "after",
+          "maskSha256": "7791de154fdbc94b618ece0bf018522573d57c231c46bc0385d24a9e2b9a9bb8",
+          "seconds": 9.593943666,
+          "checked": true,
+          "error": 0.02398125
+        },
+        {
+          "id": "gingerbread",
+          "label": "after",
+          "maskSha256": "58e23488bf3ab6809c751f87de2cb7b7316aab8fc591b0c1c107ecbc2e64823e",
+          "seconds": 9.226716,
+          "checked": true,
+          "error": 0.01094375
+        }
+      ]
+    },
+    {
+      "variant": 6,
+      "root": "tmp/heart-learning/paper-handoff-v6",
+      "hashes": {
+        "probe.mjs": "cd78b1e9809db7c240566bf79b887ac9f1a9c411b2177c69a7941b1cf8e55be3",
+        "report.json": "0c1c10a9f3e2095ee6683874d756fdf8e4dd48bd4208cf4cc0d00cd914c94f9a",
+        "runtime/inverse/core/direct/refine.js": "63d9af9d73cdc66d54d84ca75b4186f3bae2e5a945be1e768eb3449f8202bb30",
+        "runtime/inverse/core/direct/fit.js": "2e97dc52e36eef6219edf7310abf374e01f9ca2e38500b96221d141f39d59af7"
+      },
+      "results": [
+        {
+          "id": "fine-checker",
+          "label": "after",
+          "maskSha256": "184fe9c3aaf1a4e8a3732e1180a17770ebb3ef60566861c89859bb5a1e36ad4a",
+          "seconds": 9.542058625000001,
+          "checked": true,
+          "error": 0.02245
+        },
+        {
+          "id": "warped-checker",
+          "label": "after",
+          "maskSha256": "3508f08f46f539554f7fdab38f01f018bc7ec8d86db2309427b28e18b049c2de",
+          "seconds": 9.529263375000001,
+          "checked": true,
+          "error": 0.0136
+        },
+        {
+          "id": "floral-checker",
+          "label": "after",
+          "maskSha256": "351a7a00b7aba431e393477f0ae7747c3b2dda9ad8a40fd086e625d3d6ccb6f7",
+          "seconds": 9.4306665,
+          "checked": true,
+          "error": 0.01315
+        },
+        {
+          "id": "flettede-viking",
+          "label": "after",
+          "maskSha256": "7791de154fdbc94b618ece0bf018522573d57c231c46bc0385d24a9e2b9a9bb8",
+          "seconds": 9.389315917000003,
+          "checked": true,
+          "error": 0.02056875
+        },
+        {
+          "id": "gingerbread",
+          "label": "after",
+          "maskSha256": "58e23488bf3ab6809c751f87de2cb7b7316aab8fc591b0c1c107ecbc2e64823e",
+          "seconds": 9.240676207999996,
+          "checked": true,
+          "error": 0.01094375
+        }
+      ]
+    }
+  ],
+  "schema": "paper-rollback-study-1",
+  "selectedPolicy": "Resolve uncertain paper on unchanged geometry at resolution 700 only when a safe incumbent already exists and more than 250 ms remain; otherwise keep the existing trajectory and retained alternative.",
+  "rejectedPolicies": [
+    {
+      "variants": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "reason": "Early coarse-stage handoff had inconsistent quality; immediate handoff regressed Viking and gingerbread."
+    },
+    {
+      "variants": [
+        5
+      ],
+      "reason": "Verifying every uncertain checkpoint created an early rollback position in Viking, interrupting its previously provisional trajectory and spending more time in audits."
+    }
+  ],
+  "fixedWork": [
+    {
+      "name": "floral-checker",
+      "fine": 0,
+      "seconds": 1.6187100420000002,
+      "geometryPassed": true,
+      "paperPassed": true,
+      "verification": null,
+      "paper700": "pass",
+      "error": 0.04611875
+    },
+    {
+      "name": "floral-checker",
+      "fine": 700,
+      "seconds": 2.1971784580000002,
+      "geometryPassed": true,
+      "paperPassed": true,
+      "verification": {
+        "requestedResolution": 360,
+        "initialStatus": "uncertain",
+        "resolution": 700,
+        "status": "pass",
+        "source": "refinement-checkpoint"
+      },
+      "paper700": "pass",
+      "error": 0.01580625
+    },
+    {
+      "name": "gift",
+      "fine": 0,
+      "seconds": 0.9147866669999994,
+      "geometryPassed": true,
+      "paperPassed": false,
+      "verification": null,
+      "paper700": "pass",
+      "error": 0.02694375
+    },
+    {
+      "name": "gift",
+      "fine": 700,
+      "seconds": 0.8725239999999994,
+      "geometryPassed": true,
+      "paperPassed": false,
+      "verification": null,
+      "paper700": "pass",
+      "error": 0.02694375
+    }
+  ],
+  "fixedWorkFile": {
+    "path": "tmp/heart-learning/paper-handoff-v6/fixed-steps.json",
+    "sha256": "01ac157a20106e02900f03168ed7a15325f9abdbb02df6c7b7f78384aea31d79",
+    "steps": 201
+  },
+  "productionValidation": {
+    "status": "pending",
+    "focusedLog": "tmp/heart-learning/paper-rollback-validation-v1/focused-final.log",
+    "nativeRun": "tmp/heart-learning/paper-rollback-native-v1",
+    "fullQaRun": "tmp/heart-learning/paper-rollback-qa-v1",
+    "focused": {
+      "passed": 7,
+      "failed": 0,
+      "sha256": "b9db5eb015c3820fd31d6f8c9cb51acd90728caa03a3fb00c8f2adf0f5d92320"
+    }
+  }
+}

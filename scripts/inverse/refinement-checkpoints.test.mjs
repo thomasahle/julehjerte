@@ -61,7 +61,7 @@ test('a coarse paper pass retains a better uncertain alternative without certify
   assert.equal(auditImageFeatures(source,rendered.mask).passed,true);
 });
 
-test('fresh photographic fitting selects and exports the finer-verified alternative',async()=>{
+test('fresh photographic fitting selects and exports finer-verified refinement',async()=>{
   const fixture=JSON.parse(await fs.readFile('scripts/inverse/fixtures/floral-checker-refinement-checkpoint.json'));
   const catalogue=JSON.parse(await fs.readFile(fixture.sourceCatalogue)),photo=await readHardPhoto(catalogue.source);
   const cfg={...AUTOMATIC_PRESET,trials:0,timeLimit:180,earlyStop:false},crop=prepare({...photo,quad:fixture.quad},cfg);
@@ -77,7 +77,7 @@ test('fresh photographic fitting selects and exports the finer-verified alternat
   assert.equal(budget.maximumSearchSeconds,25);
   assert.equal(budget.verifiedAlternative,true);
   assert.ok(answer.report.solver.seconds<32,'An accepted alternative must not wait for the full 180-second seed portfolio');
-  assert.ok(answer.report.solver.candidates.some(c=>c.paperVerification?.source==='retained-refinement-alternative'));
+  assert.ok(answer.report.solver.candidates.some(c=>c.paperVerification?.source==='rollback-checkpoint'));
   assert.ok(answer.report.solver.extraGridComparisons.some(r=>r.reason==='simpler-layout'&&r.selectedCounts===null),
     'After comparing the ordinary finalists, no competitive simpler grid remains.');
   assert.ok(packets.some(p=>p.materialResolution===700&&p.error<.03),'Stop must receive the now-verified alternative');
@@ -86,7 +86,7 @@ test('fresh photographic fitting selects and exports the finer-verified alternat
   assert.equal(auditImageFeatures(input.sourceImage,rendered.mask).passed,true);
 });
 
-test('an already acceptable polish retains its better finer-verified checkpoint',async()=>{
+test('a photographic fit keeps finer verification through subsequent polishing',async()=>{
   const fixture=JSON.parse(await fs.readFile('scripts/inverse/fixtures/blue-star-polishing.json'));
   const photo=await readHardPhoto(fixture.source),cfg={...AUTOMATIC_PRESET,trials:0,timeLimit:10};
   const crop=prepare({...photo,quad:fixture.quad},cfg),mask=crop.preview.mask.slice();
@@ -94,16 +94,17 @@ test('an already acceptable polish retains its better finer-verified checkpoint'
   const input=prepare({type:'mask',mask,resolution:crop.preview.resolution},{...cfg,invert:false,removeSpecks:0,fillHoles:0}).target;
   const answer=await design(input,cfg),verification=answer.report.solver.paperVerification;
   assert.equal(answer.report.templateChecksPassed,true);
-  assert.equal(verification?.source,'polishing-alternative');
+  assert.equal(verification?.source,'rollback-checkpoint');
   assert.equal(verification.initialStatus,'uncertain');assert.equal(verification.status,'pass');
   assert.equal(verification.requestedResolution,360);assert.equal(verification.resolution,700);
   assert.equal(answer.report.settings.materialResolution,700,'Export rechecks the same finer paper lattice');
   const requested=settings(cfg);
   for(const key of ['width','minWidth','cutError','kerf','geometryTolerance','nominalWidth'])assert.equal(answer.report.settings[key],requested[key]);
   const rendered=await renderExportedWeave(answer.files['cut_geometry.json'],mask.length**.5);
-  assert.equal(answer.report.solver.shortReturnRepair?.applied,true);
-  assert.equal(answer.report.solver.shortReturnRepair.visibleBoundaryContractions,2);
-  assert.ok(mismatch(rendered.mask,mask)<.0052,'The finer checkpoint and cross-sheet return cleanup must both survive the fresh solve');
+  // Earlier fine verification can avoid the two return contractions this
+  // fixture previously needed after polishing. Require the same exported
+  // quality and physical checks, rather than a particular repair route.
+  assert.ok(mismatch(rendered.mask,mask)<.0052,'The finer checkpoint must retain the independently measured photographic quality');
   assert.equal(auditImageFeatures(input.sourceImage,rendered.mask).passed,true);
   assert.deepEqual(mask,crop.preview.mask);assert.deepEqual(input.sourceImage.mask,mask);
 });
