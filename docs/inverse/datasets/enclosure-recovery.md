@@ -162,4 +162,20 @@ against estimated targets, not verified cutting artwork.
 The strict comparison against the older validated solver still fails for crown
 (2.411875% to 2.413125%) and Viking (2.024375% to 2.03625%). These small regressions
 remain recorded. Full repository QA and actual browser verification for this
-follow-up are running; this is not yet a validated release replacement.
+follow-up are incomplete; this is not yet a validated release replacement.
+
+The first full inverse run passes 884 tests and fails two assertions about which
+initializer or cut count must win. Captured replays reproduce both failures:
+the tree now selects a valid grid with 0.89875% independent disagreement and
+0.68229% disagreement in its central branch region; the maple keeps a checked
+three-cut candidate but selects a closer four-cut result at 0.881875% independent
+disagreement. Both outputs were visually inspected. The recorded failure is not
+discarded or treated as a passing full run.
+
+The corrected tests retain the existing independent image, feature, paper and
+branch-region limits. They require the tree's coarse proposal to remain available,
+and the maple's three-cut alternative to remain checked below its existing 1.2%
+source-error ceiling. Additional cuts must beat that retained alternative's
+original-source error. Both tests now retain actual curves on any subsequent
+assertion failure. All five focused tests and their lint pass; a fresh full-suite
+run and browser QA remain pending. No solver policy changed in this test correction.

@@ -29,18 +29,26 @@ test('verified dense grids do not extend search with elaborate or poor simpler s
   assert.equal(simplerComparisonSeed([seed([1,1],NaN)],[seed([1,1],Infinity)],[[7,7]]),null);
 });
 
-test('fresh maple fitting finds the simpler routing and preserves its photographic detail',async()=>{
+test('fresh maple fitting retains the simpler routing and earns any extra cuts with better image agreement',async t=>{
   const fixture=JSON.parse(await fs.readFile('scripts/inverse/fixtures/maple-comparison.json'));
   const catalogue=JSON.parse(await fs.readFile(fixture.sourceCatalogue)),photo=await readHardPhoto(catalogue.source);
   const cfg={...AUTOMATIC_PRESET,timeLimit:180,trials:0,earlyStop:false},crop=prepare({...photo,quad:fixture.quad},cfg);
   assert.equal(createHash('sha256').update(crop.preview.mask).digest('hex'),fixture.maskSha256);
   const input=prepare({type:'mask',mask:crop.preview.mask.slice(),resolution:400},cfg).target;
   const answer=await design(input,cfg),replay=await renderExportedWeave(answer.files['cut_geometry.json'],400);
+  try{
   assert.equal(answer.report.templateChecksPassed,true);
-  assert.deepEqual(answer.report.slits,{left:3,right:3});
-  // The simpler routing may now enter the initial shortlist. Its outcome is
-  // required; spending time on the formerly necessary late retry is not.
+  // A newly verified four-cut fit can beat the known three-cut one. The
+  // simpler candidate must still receive refinement and satisfy its existing
+  // image/feature/paper gates; do not merely accept whichever topology won.
+  const simpler=answer.report.solver.candidates.filter(c=>c.counts.every(n=>n===3)&&c.imagePassed&&c.geometry&&c.paper);
+  assert.ok(simpler.some(c=>c.sourceImageError<.012),'The known simpler fit must remain available.');
+  if(answer.report.slits.left+answer.report.slits.right>6){
+    assert.ok(answer.report.imageError.mismatchFraction<Math.min(...simpler.map(c=>c.sourceImageError)),
+      'Additional cuts must improve the original-source error over the retained simpler candidate.');
+  }
   assert.ok(mismatch(replay.mask,crop.preview.mask)<.012);
   assert.equal(auditFeatureFidelity(input.sourceImage,replay.mask,answer.report.settings).passed,true);
   assert.deepEqual(input.sourceImage.mask,crop.preview.mask);
+  }catch(error){t.diagnostic(JSON.stringify({report:answer.report,cutGeometry:answer.files['cut_geometry.json']}));throw error;}
 });

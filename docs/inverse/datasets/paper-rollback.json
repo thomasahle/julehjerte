@@ -428,7 +428,7 @@
     "steps": 201
   },
   "productionValidation": {
-    "status": "native-complete-full-qa-and-browser-pending",
+    "status": "native-complete-test-assumptions-corrected-full-qa-repeat-pending",
     "focusedLog": "tmp/heart-learning/paper-rollback-validation-v1/focused-final.log",
     "nativeRun": "tmp/heart-learning/paper-rollback-native-v1",
     "fullQaRun": "tmp/heart-learning/paper-rollback-qa-v1",
@@ -895,6 +895,206 @@
       "rectifiedPhotoViewed": true,
       "independentWeaveViewed": true,
       "finding": "The automatic crop remains visibly distorted and includes background near the bottom. A newly valid fit of its classified mask is not a faithful reconstruction of the original design. Cropping was unchanged by this work."
+    },
+    "firstFullQa": {
+      "checks": [
+        {
+          "stage": "core-lint",
+          "command": [
+            "npx",
+            "eslint",
+            "--no-ignore",
+            "static/inverse/core/direct/refine.js",
+            "static/inverse/core/direct/fit.js",
+            "scripts/inverse/paper-rollback.test.mjs",
+            "scripts/inverse/refinement-checkpoints.test.mjs",
+            "scripts/inverse/paint-browser-test.mjs"
+          ],
+          "exitCode": 0,
+          "seconds": 1.9237005829999998
+        },
+        {
+          "stage": "check",
+          "command": [
+            "npm",
+            "run",
+            "check"
+          ],
+          "exitCode": 0,
+          "seconds": 9.020347792
+        },
+        {
+          "stage": "lint",
+          "command": [
+            "npm",
+            "run",
+            "lint"
+          ],
+          "exitCode": 0,
+          "seconds": 5.993521874999999
+        },
+        {
+          "stage": "app",
+          "command": [
+            "npx",
+            "vitest",
+            "run",
+            "--maxWorkers=2"
+          ],
+          "exitCode": 0,
+          "seconds": 22.414326874999997
+        },
+        {
+          "stage": "build",
+          "command": [
+            "npm",
+            "run",
+            "build"
+          ],
+          "exitCode": 0,
+          "seconds": 12.126341624999995
+        },
+        {
+          "stage": "inverse",
+          "command": [
+            "npm",
+            "run",
+            "test:inverse"
+          ],
+          "exitCode": 1,
+          "seconds": 962.4661116249999
+        }
+      ],
+      "inversePassed": 884,
+      "inverseFailed": 2,
+      "sourceFilesVerified": 733,
+      "laterTestEditsVerifiedAgainstGit": [
+        "scripts/inverse/comparison-search.test.mjs",
+        "scripts/inverse/coarse-topology.test.mjs"
+      ],
+      "failureCauses": [
+        "Tree test required the older initializer to win despite a better valid grid.",
+        "Maple test required the retained three-cut candidate to win despite a lower-error valid four-cut fit."
+      ],
+      "diagnosticReplays": [
+        {
+          "case": "tree",
+          "templateChecksPassed": true,
+          "independentError": 0.0089875,
+          "centralIndependentError": 0.006822916666666666,
+          "slits": {
+            "left": 3,
+            "right": 3
+          },
+          "initialization": "grid",
+          "retainedCandidates": [
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "error": 0.0097198486328125,
+              "sourceImageError": 0.00895,
+              "imagePassed": true,
+              "featuresPassed": true,
+              "score": 0.014920855075977568,
+              "geometry": true,
+              "paper": true,
+              "paperVerification": {
+                "requestedResolution": 360,
+                "initialStatus": "uncertain",
+                "resolution": 700,
+                "status": "pass",
+                "source": "rollback-checkpoint"
+              }
+            },
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "error": 0.01213125,
+              "sourceImageError": 0.0120875,
+              "imagePassed": true,
+              "featuresPassed": true,
+              "score": 0.016730931191268165,
+              "geometry": true,
+              "paper": true
+            }
+          ],
+          "visualReview": "Independent output viewed; the maple also compared with the previous native exported weave."
+        },
+        {
+          "case": "maple",
+          "templateChecksPassed": true,
+          "independentError": 0.00881875,
+          "centralIndependentError": null,
+          "slits": {
+            "left": 4,
+            "right": 4
+          },
+          "initialization": "grid",
+          "retainedCandidates": [
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "error": 0.009521484375,
+              "sourceImageError": 0.0089,
+              "imagePassed": true,
+              "featuresPassed": true,
+              "score": 0.016400431262404314,
+              "geometry": true,
+              "paper": true,
+              "paperVerification": {
+                "requestedResolution": 360,
+                "initialStatus": "uncertain",
+                "resolution": 700,
+                "status": "pass",
+                "source": "rollback-checkpoint"
+              }
+            },
+            {
+              "counts": [
+                3,
+                3
+              ],
+              "error": 0.012603759765625,
+              "sourceImageError": 0.01185,
+              "imagePassed": true,
+              "featuresPassed": true,
+              "score": 0.017520607726455195,
+              "geometry": true,
+              "paper": true
+            }
+          ],
+          "visualReview": "Independent output viewed; the maple also compared with the previous native exported weave."
+        }
+      ],
+      "correctedFocusedTests": {
+        "passed": 5,
+        "failed": 0,
+        "qualityThresholdsUnchanged": true,
+        "newRequirement": "Retain a checked three-cut maple candidate below its existing 1.2% error ceiling; additional cuts must improve original-source error."
+      },
+      "artifacts": {
+        "tmp/heart-learning/paper-rollback-qa-v1/source.json": "5f832afe52a078140cc99cf98ad2b10a41cff821fc42e1446c0cdae9fd317275",
+        "tmp/heart-learning/paper-rollback-qa-v1/checks.json": "85aca09d7ed4cab2f3a09254c6ffd645b4b3dddd41a1d32fe8ede580837e0f8a",
+        "tmp/heart-learning/paper-rollback-qa-v1/running.json": "d4fbbae5ba35f408cca166c81f2a7356c490734cfb99d733ccf0ab9bcb8f2b3b",
+        "tmp/heart-learning/paper-rollback-qa-v1/inverse.log": "cfa4aadaec1770fa2316fb151c1c525b703822b70a0d2695dbc87b3840242aac",
+        "tmp/heart-learning/paper-rollback-regressions-v1/tests.log": "379a596bfe0b236ae3cd7a0dc8dcdfe4147446027766ba7f7bd1374821833763",
+        "tmp/heart-learning/paper-rollback-regressions-v1/tree-report.json": "ff811cd8b39ec8037fef2aab5b784749af27d10c46a6987077992b396e9b42a7",
+        "tmp/heart-learning/paper-rollback-regressions-v1/tree-cut_geometry.json": "4bb78a055070c01d0eadbf18d74ca677f5561d3a6ef37295e9322459ab554d6b",
+        "tmp/heart-learning/paper-rollback-regressions-v1/tree-image.json": "d76f5b45c8bbe1643e664b09f7bb12b01dcb1b48d8908f949aa3255ab0d8ad69",
+        "tmp/heart-learning/paper-rollback-regressions-v1/tree-weave.png": "89e8500b8a705220077550f648e883f6ddc32c986a84c4074c3474b50576d262",
+        "tmp/heart-learning/paper-rollback-regressions-v1/maple-report.json": "57bc2a400881c5053be51444fe944e7a29b831f41153d9edfdd85c788739079b",
+        "tmp/heart-learning/paper-rollback-regressions-v1/maple-cut_geometry.json": "b6b61b4af512b18b2b6cee4f02a64311ed51308d11f4bcfd4bf111d4fbf02d58",
+        "tmp/heart-learning/paper-rollback-regressions-v1/maple-image.json": "cbbdcfbb8cc75f645468c789116028bd322d234a9e3db8e119d79dc715351044",
+        "tmp/heart-learning/paper-rollback-regressions-v1/maple-weave.png": "f0645a97722dbdc12bed3ddb6c93e2da79074ffdd44a8634f95761915ad5fe3d",
+        "tmp/heart-learning/paper-rollback-regressions-v1/corrected-tests.log": "0253b245111c068ad8944da147fc1d6040054222c1cbb22ca55b029a71794357",
+        "tmp/heart-learning/paper-rollback-regressions-v1/lint.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
     }
   }
 }
