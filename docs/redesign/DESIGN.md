@@ -502,6 +502,13 @@ pass actually considered a fifth internal variant at some attachment; otherwise
 the extra pass cannot help. Repeated text retries failed cells individually and
 keeps completed cells intact. Failed figure layouts may use the wider search on
 their initial panel and four-port constructions, retaining the selected frame.
+For framed text that still fails, try moving a whole letter's opposite contacts
+together along their cell edges, by at most 20% of the cell width or height.
+The nine position pairs retain cyclic gate order and visible glyph contours.
+Use this only for whole-letter cells, since clipped neighbouring panels must
+agree on their seam contacts. Repeated glyphs reuse both the chosen routes and
+their shifted gates. Keep the full-sheet spacing check; skip it if no contacts
+moved, and only widen the attachment search when its earlier budget was crowded.
 Identical glyphs in the same position within a four-cell group reuse their cuts.
 This frame uses an n×n cut grid with a square physical overlap, up to the shared
 20-strip limit. Its thumbnail, shared link, editor and PDF use the same design.

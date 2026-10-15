@@ -1,6 +1,58 @@
 # Generator robustness results
 
-## Current coverage: independent letter contacts and filled panel seams
+## Current coverage: adaptive contacts for framed letters
+
+The current 3,150-configuration matrix has **2,723 accepted / 427 refused / zero
+invalid accepted results**. This batch retested all 291 previously refused
+non-repeating text configurations: **97 now pass and 194 remain refused**.
+Previously accepted layouts, the two repeat frames and the figures retain their
+preceding audit results; their successful construction paths are unchanged.
+
+| Corpus | Configurations | Accepted | Refused | Invalid accepted output |
+|---|---:|---:|---:|---:|
+| Text: 34 inputs, six fonts, ten frames | 2028 | 1701 | 327 | 0 |
+| Figures: 51 motifs, 22 templates | 1122 | 1022 | 100 | 0 |
+
+The combined record is `tmp/generator/text-gates-current.json`. All 2,723 accepted
+IDs are pinned in `scripts/generator/expected.json`; none were removed. The latest
+refusal retest is assembled from the 59-case probe, the saved 61-case remainder
+prefix and three complete 57-case tail shards, with no duplicate or missing IDs.
+The ordinary repeat and checkerboard results remain 135/198 and 128/198.
+
+- A final framed-text construction moves opposite connections along the cell
+  edges, by at most 20% of the cell width or height. The nine candidate position
+  pairs keep the font outlines, counters and connection order. Only whole-letter
+  cells use this operation; divided letters retain their shared seam contacts.
+- The cache copies both the chosen cuts and the shifted contacts when a letter
+  repeats. No full-sheet fit is repeated when all contacts retain their original
+  positions. Wider attachment search is conditional on an actually crowded
+  earlier search, and the full spacing and topology checks still apply.
+- Kalam handwriting gains 81 framed configurations, including names, Danish
+  letters and two- and three-line arrangements. Oswald gains nine, including
+  `juleman`, `æøå` and `Åse`; Righteous gains seven. No other font is substituted.
+  The new construction runs only after the established recipes fail.
+
+All **1,022 unit tests and 177 inverse tests** pass, along with type checking,
+lint and the production build. Six representative renders were inspected. The handwritten ANNA hexagon has a
+matching main preview and selected thumbnail and reaches the editor as a 6×6
+weave without warnings. The two-line handwritten ANNA/BO hexagon also has a
+matching preview/thumbnail and reaches the editor as a 7×7 weave without warnings.
+The corpus checks artwork fidelity, open cuts, clearance
+and both JSON/SVG handoffs. No physical weaving trial was performed.
+
+The goal remains unfinished: 427 tested configurations are still refused,
+including 194 non-repeating text cases (164 Cinzel, 14 Oswald, seven Bree Serif,
+and three each in Nunito, Kalam and Righteous). The rest of the searchable icon
+catalog and non-default figure scales remain outside this matrix. Difficult
+cases still take too long; these audit timings are not latency benchmarks.
+In the browser check, the two-line Kalam hexagon took roughly 109 seconds before
+thumbnail generation began, despite a 21 ms font load and a visible page. The
+same production worker bundle returned an accepted result in 4.78 seconds in
+Node, close to its 4.51-second source audit. The cause of this browser slowdown
+is unresolved; no browser throttling or settings were changed. These concurrent
+single runs are diagnostic observations, not performance guarantees.
+
+## Previous coverage: independent letter contacts and filled panel seams
 
 The current 3,150-configuration matrix has **2,626 accepted / 524 refused / zero
 invalid accepted results**, with no regressions. This batch freshly reran all

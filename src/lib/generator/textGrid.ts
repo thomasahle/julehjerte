@@ -12,6 +12,7 @@ import {
 	ray,
 	distance,
 	fourPortMotif,
+	usableMotif,
 	add,
 	compile,
 	connectCellGrid
@@ -24,7 +25,7 @@ export function generateTextGrid(
 	font: Font,
 	air = false,
 	frame?: Frame,
-	layout: { padding?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void } = {}
+	layout: { padding?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; adaptGates?: boolean; onGateChange?: () => void } = {}
 ) {
 	const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n');
 	const cols = Math.max(...lines.map((l) => [...l].length)),
@@ -77,8 +78,11 @@ export function generateTextGrid(
 	const artwork: Ring[] = [],
 		cells: Point[][][] = [],
 		background: Ring[] = [];
-	const cached = new Map<string, { x: number; y: number; edges: Edge[] }>();
+	const cached = new Map<string, { x: number; y: number; edges: Edge[]; gates?: Point[]; shifted?: boolean }>();
 	const margin = gridClearance(cols * columns + rows * slices + 1);
+	// A divided glyph must keep both neighbours' seam contacts aligned.
+	// Independent shifts are only safe for whole-letter cells.
+	const adaptive = layout.adaptGates && columns === 1 && slices === 1;
 	for (let row = 0; row < rows * slices; row++) {
 		cells.push([]);
 		let cursor = -span / 2;
@@ -143,6 +147,8 @@ export function generateTextGrid(
 					p[0] + (dx + dy) * Math.SQRT1_2,
 					p[1] + (dy - dx) * Math.SQRT1_2
 				];
+				if (prior.gates) gates.splice(0, gates.length, ...prior.gates.map(move));
+				if (prior.shifted) layout.onGateChange?.();
 				edges.push(
 					...prior.edges.map((e) => ({
 						...e,
@@ -151,16 +157,40 @@ export function generateTextGrid(
 					}))
 				);
 			} else {
-				const local: Edge[] = [];
-				fourPortMotif(
-					local,
-					contours,
-					gates,
-					[Math.PI / 4, (3 * Math.PI) / 4, (-3 * Math.PI) / 4, -Math.PI / 4],
-					margin,
-					[0, 1, 2, 3], undefined, { practical: layout.practical, compound: layout.compound, onCompound: layout.onCompound, balanced: layout.balanced, onCrowded: layout.onCrowded }
-				);
-				cached.set(key, { x, y, edges: local });
+				const construct = () => {
+					const local: Edge[] = [];
+					fourPortMotif(
+						local, contours, gates,
+						[Math.PI / 4, (3 * Math.PI) / 4, (-3 * Math.PI) / 4, -Math.PI / 4],
+						margin, [0, 1, 2, 3], undefined,
+						{ practical: layout.practical, compound: layout.compound, onCompound: layout.onCompound, balanced: layout.balanced, onCrowded: layout.onCrowded }
+					);
+					return local;
+				};
+				let local: Edge[] | undefined, shifted = false;
+				if (adaptive) {
+					// Move opposite contacts together along the cell edges. This
+					// keeps their cyclic order and all visible letter contours.
+					for (const [dx, dy] of [[0, 0], [-.2, 0], [.2, 0], [0, -.2], [0, .2], [-.2, -.2], [.2, .2], [-.2, .2], [.2, -.2]]) {
+						gates.splice(0, gates.length, ...[
+							[x + dx * w, y - h / 2], [x + w / 2, y + dy * h],
+							[x + dx * w, y + h / 2], [x - w / 2, y + dy * h]
+						].map(p => uprightToSheet(p as Point)));
+						try {
+							const candidate = construct();
+							if (usableMotif(candidate, gates, margin)) {
+								local = candidate;
+								shifted = dx !== 0 || dy !== 0;
+								break;
+							}
+						} catch (error) {
+							if (!(error instanceof ConstructionError)) throw error;
+						}
+					}
+					if (!local) throw new ConstructionError('clearance', 'No clear letter connections');
+				} else local = construct();
+				if (shifted) layout.onGateChange?.();
+				cached.set(key, { x, y, edges: local, gates: adaptive ? gates : undefined, shifted });
 				edges.push(...local);
 			}
 		}

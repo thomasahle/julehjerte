@@ -409,6 +409,17 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		recipes.push(() => crowded ? generateTextGrid(text, font, frame === 'air', shape, {
 			spread: true, practical: true, compound: true, balanced: true
 		}) : undefined);
+		let gateCrowded = false;
+		const adaptGates = (balanced = false) => {
+			let moved = false;
+			const result = generateTextGrid(text, font, frame === 'air', shape, {
+				spread: true, practical: true, compound: true, balanced, adaptGates: true,
+				onGateChange: () => { moved = true; }, onCrowded: () => { gateCrowded = true; }
+			});
+			// The unchanged recipe has already failed its full-sheet check.
+			return moved ? result : undefined;
+		};
+		recipes.push(() => adaptGates(), () => gateCrowded ? adaptGates(true) : undefined);
 		let last: unknown;
 		for (const construct of recipes) {
 			try {

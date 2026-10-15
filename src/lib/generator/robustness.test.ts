@@ -81,7 +81,15 @@ describe('generator robustness regressions', () => {
 		['breeserif', 'Anna', 'repeat-check'], ['breeserif', 'M&M', 'repeat-check'],
 		['oswald', 'William', 'repeat-check'], ['oswald', 'ANNA\nBO', 'repeat-check'],
 		['kalam', 'ANNA', 'repeat-check'], ['kalam', 'A\u030A', 'repeat-check'],
-		['righteous', 'Sofie', 'repeat-check']
+		['righteous', 'Sofie', 'repeat-check'],
+		['oswald', 'anna', 'scalloped'], ['oswald', 'juleman', 'hexagon'],
+		['oswald', 'æøå', 'woven'], ['oswald', 'Åse', 'hexagon'],
+		['kalam', 'ANNA', 'air'], ['kalam', 'ANNA', 'hexagon'],
+		['kalam', 'ANNA', 'scalloped'], ['kalam', 'anna', 'oval'],
+		['kalam', 'ÆØÅ', 'circle'], ['kalam', 'JULE\nMAND', 'hexagon'],
+		['kalam', 'ANNA\nBO', 'hexagon'], ['kalam', 'A\nB\nO', 'air'],
+		['righteous', 'ÆØÅ', 'hexagon'], ['righteous', 'æøå', 'scalloped'],
+		['righteous', 'Hej!', 'air']
 	] as [string, string, TextFrame][])
 		it(`keeps ${text} in ${fontId} through the ${textFrame} frame`, () => {
 			validateHandoffs(generate({ mode: 'text', name: text, text, font: fonts[fontId], textFrame, colors }).design);
