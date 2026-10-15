@@ -176,7 +176,12 @@ fixed masks and two AB/BA rounds, acceptance rises from 4/8 to 6/8. The cropped
 tree still fails; some accepted-case errors increase, so this is not a strict
 no-regression result. A real-MILP controlled-delay regression fails before the
 change and passes after it, including a no-borrow control. All eleven focused
-integration tests pass. Full repository, corpus and browser QA remain pending.
+integration tests pass. The subsequent full run passes 896/897 inverse tests,
+857 application tests, type checking, lint and build; all 738 pinned source files
+are verified. The remaining failure times out while seeking matching sheets,
+after the independent pair passes template and paper checks. Native corpus and
+browser stages did not start. That scheduling failure remains under investigation;
+this is not a completed release validation.
 A separate coarser-initializer experiment was not integrated because it did not
 repeatably resolve the primary failure. The calibration comparison's remaining
 13 tests were also replayed twice per runtime: 21/26 passes before and 22/26 after,

@@ -1023,7 +1023,53 @@
       "static/inverse/core/feature-recovery.js",
       "scripts/inverse/late-routing-repair.test.mjs"
     ],
-    "fullRepositoryAndCorpusQa": "pending",
+    "fullRepositoryAndCorpusQa": {
+      "status": "repository_qa_failed",
+      "revision": "4359175",
+      "sourceFilesVerified": 738,
+      "inverseTests": {
+        "total": 897,
+        "passed": 896,
+        "failed": 1,
+        "seconds": 1042.696780125
+      },
+      "failure": {
+        "file": "scripts/inverse/matching-seeds.test.mjs",
+        "test": "the matching preference can change cut count and colour phase without forcing or editing the mask",
+        "expected": "matched",
+        "actual": "matching_budget_exhausted",
+        "note": "The test passed template and paper checks before failing the matching-status assertion. The full-suite failure does not prove this revision introduced the scheduling limitation."
+      },
+      "otherChecks": [
+        {
+          "stage": "core-lint",
+          "exitCode": 0,
+          "seconds": 1.934183417
+        },
+        {
+          "stage": "check",
+          "exitCode": 0,
+          "seconds": 9.999778000000001
+        },
+        {
+          "stage": "lint",
+          "exitCode": 0,
+          "seconds": 7.146823541999998
+        },
+        {
+          "stage": "app",
+          "exitCode": 0,
+          "seconds": 24.800727833999996
+        },
+        {
+          "stage": "build",
+          "exitCode": 0,
+          "seconds": 15.491826333000006
+        }
+      ],
+      "native": "not_started",
+      "browser": "not_started"
+    },
     "tests": 11,
     "passed": 11,
     "checks": [
@@ -1115,6 +1161,34 @@
     {
       "path": "tmp/heart-learning/available-repair-tail-v1/integration/state.json",
       "sha256": "c0c359bd44f6f8aacd20700abf844c9c05ee1c7140b17d270ef93d8bde6764df"
+    },
+    {
+      "path": "tmp/heart-learning/repair-tail-release-v1/source.json",
+      "sha256": "bf69e3920faffa749ba153744b7a67fb77cc4bd8cb435ff37e378149d6ad6394"
+    },
+    {
+      "path": "tmp/heart-learning/repair-tail-release-v1/state.json",
+      "sha256": "1f8f9347ef767e22673e31ed51f5a4ddfae173efb6e1f95d404090bfebcc4eab"
+    },
+    {
+      "path": "tmp/heart-learning/repair-tail-release-v1/checks.json",
+      "sha256": "d9bb98353156db6dca6e8f3ed6c274cafed06a2d792226f115cde9844c0f4f0f"
+    },
+    {
+      "path": "tmp/heart-learning/repair-tail-release-v1/qa/checks.json",
+      "sha256": "c84218302a72106807cc9c01241a0481f64d4d6fb2ec88bd4f4c5660c09fa58e"
+    },
+    {
+      "path": "tmp/heart-learning/repair-tail-release-v1/qa/inverse.log",
+      "sha256": "9b2d71750a3a1bd6fd51a4b261a42b2fc43d2edd226b65b4449dbdba8227c087"
+    },
+    {
+      "path": "tmp/heart-learning/repair-tail-release-v1/qa/app.log",
+      "sha256": "31f39c9595698a4ff54180736b250a77360ce610ebcec741f38d83389a0f29f6"
+    },
+    {
+      "path": "tmp/heart-learning/repair-tail-release-v1/qa/running.json",
+      "sha256": "d4fbbae5ba35f408cca166c81f2a7356c490734cfb99d733ccf0ab9bcb8f2b3b"
     }
   ]
 }
