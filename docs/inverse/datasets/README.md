@@ -26,7 +26,7 @@ The inventory, with material annotations updated on 2026-10-15, contains:
 | Training scene variants | 2,448 | Neighbours and handles paired with all six backgrounds for the same 408 training views; no new geometry families. |
 | Source-photo material QA samples | 78 integrated + 25 new | Four hearts in two reserved photographs; sparse assistant-reviewed development observations, not dense labels or training data. The new jigsaw review is not yet in the common benchmark fixture. |
 | Real visible-body annotations | 18 | Seventeen instances in fifteen groups outside source QA, plus one reserved gold-angel instance. Uncertain pixels are excluded; the eight additions to the original ten-instance pilot have not entered training. |
-| Real partial paper-material annotations | 10 existing heart instances | Nine instances in the existing pilots plus one newly labelled protruding motif. Separate body and material uncertainty; no additional photographs. The tenth material annotation has not entered training. |
+| Real partial paper-material annotations | 11 existing heart instances | Nine instances in the existing pilots plus newly labelled protruding and curved-checker motifs. Separate body and material uncertainty; no additional photographs. The two newest annotations have not entered training. |
 
 ## Current results and limits
 
@@ -64,6 +64,15 @@ exports. Seams, fine tips, the handle, shadows and uncertain body regions remain
 unlabelled. This brings the material inventory to ten existing heart instances;
 the new labels have not entered training, and this previously used foreground
 development photograph is not a new held-out test.
+
+A [curved-checker material annotation](curved-material-labels.json) adds eleven
+conservative red/white regions on an existing development photograph with a
+painted background. Source and compiled overlays at 256 and 768 pixels were
+visually reviewed; admitted PNGs reproduce those overlays exactly, and the
+256-pixel RGB/body files match the previous training exports byte for byte.
+This is the eleventh material-labelled instance and has not entered training.
+A hand-held printed heart was excluded because its pale ink could not be
+confidently identified as a second sheet.
 
 A [frozen stacked-hearts investigation](enclosure-corner-study.md) finds that
 low pixel error and the current feature gate can still admit unwanted channels
