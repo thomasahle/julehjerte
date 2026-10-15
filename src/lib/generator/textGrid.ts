@@ -18,14 +18,14 @@ import {
 	connectCellGrid
 } from './geometry';
 import { gridClearance } from '$lib/geometry/clearance';
-import { clipContours, stitch } from './panels';
+import { clipContours, stitch, filledSeamGate } from './panels';
 
 export function generateTextGrid(
 	text: string,
 	font: Font,
 	air = false,
 	frame?: Frame,
-	layout: { padding?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; adaptGates?: boolean; onGateChange?: () => void } = {}
+	layout: { padding?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; adaptGates?: boolean; onGateChange?: () => void; filled?: boolean; onSeamChange?: () => void } = {}
 ) {
 	const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n');
 	const cols = Math.max(...lines.map((l) => [...l].length)),
@@ -135,6 +135,20 @@ export function generateTextGrid(
 				if (row % slices) upright = clipContours(upright.map(swap), y - h / 2, false).map(swap);
 				if (row % slices < slices - 1) upright = clipContours(upright.map(swap), y + h / 2, true).map(swap);
 				if (!upright.length) throw new ConstructionError('topology', 'Empty text panel');
+			}
+			if (layout.filled) {
+				// Both sides choose the same solid interval of their shared seam.
+				// A centre attachment can otherwise land inside a letter counter.
+				const seam = (index: number, axis: 0 | 1, value: number, target: number) => {
+					const point = filledSeamGate(upright, axis, value, target);
+					if (!point) return;
+					if (distance(gates[index], point) > 1e-6) layout.onSeamChange?.();
+					gates[index] = point;
+				};
+				if (row % slices) seam(0, 1, y - h / 2, x);
+				if (row % slices < slices - 1) seam(2, 1, y + h / 2, x);
+				if (col % columns) seam(3, 0, x - w / 2, y);
+				if (col % columns < columns - 1) seam(1, 0, x + w / 2, y);
 			}
 			const contours = upright.map(r => r.map(uprightToSheet));
 			// Identical cells share routing across rows and columns.

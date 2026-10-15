@@ -3,6 +3,7 @@ import { generate } from './generate';
 import {
 	compile,
 	fourPortMotif,
+	ray,
 	hasCounterContact,
 	ConstructionError,
 	generateFigure,
@@ -65,6 +66,12 @@ const circle = (radius: number, x = 0, y = 0): Ring =>
 	]);
 
 describe('constructive figure generator', () => {
+	it('keeps the first forward ray hit and reports a missing visible attachment', () => {
+		const ring: Ring = [[0, 0], [10, 0], [10, 10], [0, 10]];
+		expect(ray(ring, [-2, 5], 0).point).toEqual([0, 5]);
+		expect(ray(ring, [0, 5], 0).point).toEqual([10, 5]);
+		expect(() => ray(ring, [0, 5], Math.PI)).toThrow('No visible contour port');
+	});
 	it('distinguishes a touching counter from separate touching silhouettes', () => {
 		const square: Ring = [[0, 0], [10, 0], [10, 10], [0, 10]];
 		const touching: Ring = [[5, 0], [7, 3], [3, 3]];

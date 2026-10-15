@@ -114,7 +114,8 @@ export function arc(r: Ring, a: Port, b: Port): Ring {
 	points.push(b.point);
 	return points.filter((p, i) => !i || !near(p, points[i - 1]));
 }
-export function ray(r: Ring, origin: Point, angle: number): Port {
+/** A missed trial ray is routine while placing connections, not an exception. */
+function rayHit(r: Ring, origin: Point, angle: number): Port | null {
 	const v = direction(angle),
 		hits: (Port & { d: number })[] = [];
 	r.forEach((p, i) => {
@@ -132,9 +133,13 @@ export function ray(r: Ring, origin: Point, angle: number): Port {
 			});
 	});
 	hits.sort((a, b) => a.d - b.d);
-	if (!hits.length)
+	return hits[0] ?? null;
+}
+export function ray(r: Ring, origin: Point, angle: number): Port {
+	const hit = rayHit(r, origin, angle);
+	if (!hit)
 		throw new ConstructionError('topology', 'No visible contour port');
-	return hits[0];
+	return hit;
 }
 /** Extreme support point, using the middle of a flat supporting edge. The ray
  * leading away from it cannot cross the same contour, even on a concave motif. */
@@ -740,13 +745,8 @@ function contourMotif(
 		}
 
 		const result: Array<Port | null> = [];
-		for (const offset of [0, -0.28, 0.28]) {
-			try {
-				result.push(ray(base.ring, p, angles[j] + offset));
-			} catch {
-				result.push(null);
-			}
-		}
+		for (const offset of [0, -0.28, 0.28])
+			result.push(rayHit(base.ring, p, angles[j] + offset));
 		// A sharp inward corner otherwise leaves a tiny hooked strip (e.g. the
 		// shoulder of a lowercase a). Let a shared spoke end exactly there.
 		const notches = base.ring
@@ -1001,7 +1001,8 @@ function* relieveNotches(edges: Edge[], ring: Ring, ports: Port[], allowed: read
 			continue;
 		for (let j = 0; j < 32 + notches.length; j++) {
 			try {
-				const b = j < 32 ? ray(ring, p, j * Math.PI / 16) : notches[j - 32];
+				const b = j < 32 ? rayHit(ring, p, j * Math.PI / 16) : notches[j - 32];
+				if (!b) continue;
 				if (near(p, b.point)) continue;
 				if (!inside(mix(p, b.point, .5), ring))
 					continue;

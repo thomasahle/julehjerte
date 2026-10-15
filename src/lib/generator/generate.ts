@@ -420,6 +420,14 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 			return moved ? result : undefined;
 		};
 		recipes.push(() => adaptGates(), () => gateCrowded ? adaptGates(true) : undefined);
+		for (const columns of [1, 2]) recipes.push(() => {
+			let moved = false;
+			const result = generateTextGrid(text, font, frame === 'air', shape, {
+				columns, slices: 3, spread: true, filled: true, onSeamChange: () => { moved = true; }
+			});
+			// The one-column layout was already tried with centred contacts.
+			return columns > 1 || moved ? result : undefined;
+		});
 		let last: unknown;
 		for (const construct of recipes) {
 			try {

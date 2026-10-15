@@ -1,6 +1,58 @@
 # Generator robustness results
 
-## Current coverage: adaptive contacts for framed letters
+## Current coverage: solid seams in divided letters
+
+The current 3,150-configuration matrix has **2,729 accepted / 421 refused / zero
+invalid accepted results**. This batch freshly retested all 120 B/BO configurations
+across six fonts and ten frames: **109 accepted / 11 refused**, with six gains
+and no regressions. The remaining 3,030 records retain their preceding audit
+results; this was not a fresh full-matrix run.
+
+| Corpus | Configurations | Accepted | Refused | Invalid accepted output |
+|---|---:|---:|---:|---:|
+| Text: 34 inputs, six fonts, ten frames | 2028 | 1707 | 321 | 0 |
+| Figures: 51 motifs, 22 templates | 1122 | 1022 | 100 | 0 |
+
+The combined record is `tmp/generator/stem-current.json`. All 2,729 accepted IDs
+are pinned in `scripts/generator/expected.json`; none were removed. The two fresh
+reports are `stem-final-b.json` and `stem-final-bo.json` in the same directory.
+The ordinary repeat and checkerboard results remain 135/198 and 128/198.
+
+- Two final text layouts divide each letter into three horizontal panels, with
+  either one or two columns. Internal connections move into the widest solid
+  interval of the shared seam, avoiding counters. Neighbouring panels agree on
+  the connection; the visible outline, selected font, frame and spacing checks
+  remain unchanged. The one-column layout skips its full-sheet fit if no seam
+  connection moved. These layouts run only after the earlier recipes fail.
+- Cinzel B now works in woven, air, circle, rounded and scalloped frames; Cinzel
+  BO also works in rounded. The results use 5×5, 6×6 and 8×8 grids. An exploratory
+  run over all 194 previously refused non-repeating text configurations found
+  these same six gains, but only the final production B/BO runs replace records
+  in the combined report.
+- Trial rays that miss a contour now return a missing result directly instead
+  of throwing a routine exception. The public ray operation still throws on
+  failure. Five compiled-worker comparisons returned byte-identical results
+  before and after this change. Single-run Node timings were mixed; this is not
+  a latency guarantee and did not resolve the browser slowdown.
+
+All **1,029 unit tests and 177 inverse tests** pass, along with type checking,
+lint and the production build. Six representative finished-heart renders and
+both paper templates for B/circle and BO/rounded were inspected. These preserve
+the serif details and have no closed cutout loops, but remain intricate patterns.
+The final interface check could not run because the browser-control inventory
+returned no available browsers. The previous two-line Kalam check on the ray-only build
+reached a valid result but still took about 141 seconds before thumbnail work
+began, while Node took 4.37 seconds. These concurrent observations do not isolate
+the cause; no browser settings were changed.
+
+The goal remains unfinished: 421 tested configurations are still refused,
+including 188 non-repeating text cases (158 Cinzel, 14 Oswald, seven Bree Serif,
+and three each in Nunito, Kalam and Righteous). The rest of the searchable icon
+catalog and non-default figure scales remain outside this matrix. Difficult
+cases still take too long. Artwork fidelity, open cuts, clearance and JSON/SVG
+handoffs are checked digitally; no physical weaving trial was performed.
+
+## Previous coverage: adaptive contacts for framed letters
 
 The current 3,150-configuration matrix has **2,723 accepted / 427 refused / zero
 invalid accepted results**. This batch retested all 291 previously refused

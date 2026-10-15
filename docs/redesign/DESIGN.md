@@ -509,6 +509,12 @@ Use this only for whole-letter cells, since clipped neighbouring panels must
 agree on their seam contacts. Repeated glyphs reuse both the chosen routes and
 their shifted gates. Keep the full-sheet spacing check; skip it if no contacts
 moved, and only widen the attachment search when its earlier budget was crowded.
+If those whole-letter routes still fail, divide letters into three horizontal
+panels, with either one or two columns. Place each internal contact in the
+widest solid interval of its seam, so it cannot land inside a counter; both
+neighbours must choose the same point. These final layouts keep the font
+outline, frame and spacing checks. Skip the repeated full-sheet fit for the
+one-column layout when no seam contact moved.
 Identical glyphs in the same position within a four-cell group reuse their cuts.
 This frame uses an n×n cut grid with a square physical overlap, up to the shared
 20-strip limit. Its thumbnail, shared link, editor and PDF use the same design.
