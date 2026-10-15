@@ -1,0 +1,143 @@
+{
+  "schema": "woven-heart-contact-supervision-audit-1",
+  "status": "complete; all_seventeen_source_label_probability_panels_visually_reviewed",
+  "source": {
+    "assetId": "real-e936e08ac62db19b",
+    "file": "tmp/heart-training-real/assets/e936e08ac62db19b9b12cf9ce4e1a0b10fbb50023316daaee6f36747beae5643.jpg",
+    "sha256": "e936e08ac62db19b9b12cf9ce4e1a0b10fbb50023316daaee6f36747beae5643",
+    "size": [
+      1280,
+      720
+    ],
+    "splitGroupId": "real-split-72d2783b2c260682",
+    "splitStatus": "unassigned",
+    "familyId": null,
+    "sourcePages": [
+      "https://dk.pinterest.com/pin/581175526900721056/"
+    ],
+    "existingBodyInstance": "real-e936e08ac62db19b-body-1"
+  },
+  "scope": "One already-studied development photo; sparse neighbourhood coverage, not exact contact-topology accuracy. No labels, model, source split, inference or runtime changes.",
+  "method": "Count compiled material-label pixel centres in the reviewed half-open source rectangles; reproduce current 256 labels exactly and independently rasterize the same polygons at 768. Representative points are not exact joins.",
+  "folds": {
+    "baseline": {
+      "trainIds": [
+        "real-2044b1d98ed6f262-body-1",
+        "real-340f5e5b0f447889-body-1",
+        "real-3f7b76e1a98e808f-body-1",
+        "real-45744a03afddccb1-body-1",
+        "real-5330aa8b62176216-body-1",
+        "real-abf590088db891f9-body-1"
+      ],
+      "checkpointSha256": "bd12c8db06203e85f1ea9dc6d5f8a484c7d28e886b9da00c3f6b1dc5b3ef1883",
+      "id": "fold-cfc2f72cf538",
+      "reportSha256": "e73e387e2a053635e09cbad993357381200489051dd67487bcd40e3b78429399",
+      "phaseExchanged": false
+    },
+    "candidate": {
+      "trainIds": [
+        "real-2044b1d98ed6f262-body-1",
+        "real-340f5e5b0f447889-body-1",
+        "real-3f7b76e1a98e808f-body-1",
+        "real-45744a03afddccb1-body-1",
+        "real-5330aa8b62176216-body-1",
+        "real-abf590088db891f9-body-1"
+      ],
+      "checkpointSha256": "bd12c8db06203e85f1ea9dc6d5f8a484c7d28e886b9da00c3f6b1dc5b3ef1883",
+      "id": "fold-dd50f2256463",
+      "reportSha256": "47b1b5e1f8a50d53152a744d00b3750b7c1e96ca0d88511662fb4e1778122a29",
+      "phaseExchanged": false
+    }
+  },
+  "predictionsIdentical": true,
+  "summary": {
+    "alternating-four-sector-neighbourhood": {
+      "256": {
+        "regions": 9,
+        "pixelCentersInRegions": 97,
+        "knownMaterialPixels": 0,
+        "knownMaterialFraction": 0.0,
+        "regionsWithoutAnyMaterialLabel": 9,
+        "knownRepresentativePoints": 0,
+        "knownBodyPixels": 97
+      },
+      "768": {
+        "regions": 9,
+        "pixelCentersInRegions": 831,
+        "knownMaterialPixels": 0,
+        "knownMaterialFraction": 0.0,
+        "regionsWithoutAnyMaterialLabel": 9,
+        "knownRepresentativePoints": 0,
+        "knownBodyPixels": 831
+      }
+    },
+    "two-sector-boundary-neighbourhood": {
+      "256": {
+        "regions": 8,
+        "pixelCentersInRegions": 81,
+        "knownMaterialPixels": 1,
+        "knownMaterialFraction": 0.012345679012345678,
+        "regionsWithoutAnyMaterialLabel": 7,
+        "knownRepresentativePoints": 0,
+        "knownBodyPixels": 81
+      },
+      "768": {
+        "regions": 8,
+        "pixelCentersInRegions": 770,
+        "knownMaterialPixels": 1,
+        "knownMaterialFraction": 0.0012987012987012987,
+        "regionsWithoutAnyMaterialLabel": 7,
+        "knownRepresentativePoints": 0,
+        "knownBodyPixels": 770
+      }
+    }
+  },
+  "visualReview": {
+    "panels": [
+      "contacts.png",
+      "controls.png"
+    ],
+    "observed": "All nine contact neighbourhoods lose the approach of the yellow/cyan tips in the saved thresholded output. Ordinary edge controls retain a broadly plausible single-boundary arrangement. Grey label panels confirm the unsupervised junction and boundary bands.",
+    "qualification": "This is qualitative appearance inspection of one development source, not exact physical joining or junction-accuracy ground truth. Baseline and candidate use the same held-out checkpoint, so this does not measure the benefit of the later dataset additions."
+  },
+  "conclusion": "The real material labels supply paper interiors but no material supervision in any of the nine reviewed junction boxes. Increasing raster resolution alone does not recover missing labels. A separate location target can use uncertain four-sector neighbourhoods without inventing exact topology; its benefit requires a future grouped controlled study.",
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/contact-supervision-audit-v1/run.py",
+      "sha256": "e367b70c5f838ebc76df6e0d57f188535d6429a4f838677744fe185fa7605f2d"
+    },
+    {
+      "path": "docs/inverse/datasets/orange-contact-observations.json",
+      "sha256": "eb0afad696ef5a0d66c6f425aa147604b0a1d90cc4d222ae8397a8c8ab3882c9"
+    },
+    {
+      "path": "scripts/inverse/datasets/real-materials-palettes.json",
+      "sha256": "0269eaf9a4ef159b41b4b7e2717afe5254e8fac3b9eeeb5e434cbc81745accba"
+    },
+    {
+      "path": "scripts/inverse/datasets/real-annotations-palettes.json",
+      "sha256": "2b8c2f11b6390608cee50c5adfb42280a2f72ca3d6309f4aad6ffc7ae081fd4f"
+    },
+    {
+      "path": "tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-palettes/manifest.json",
+      "sha256": "578a0eb0f03fe083903640ee2ffe586686c316c2faaaf56b3a792a82ca790ba3"
+    },
+    {
+      "path": "tmp/heart-learning/material-corrected-scenes-v1/probe/manifest.json",
+      "sha256": "276db507f6a4ebcf94ec74b80347d450713249205b8cf36509e350cab0f940f5"
+    },
+    {
+      "path": "tmp/heart-learning/contact-supervision-audit-v1/contacts.png",
+      "sha256": "3b4a4d9a0035b0dbf1fc85926d27b4b7fb66a33f620a27078080208c16bfff8d"
+    },
+    {
+      "path": "tmp/heart-learning/contact-supervision-audit-v1/controls.png",
+      "sha256": "9e432664997260d5caad6905cd5387ec6d1a4f40f461f144b29ba757a166b49e"
+    }
+  ],
+  "resolutionQualification": "The 16-source-pixel observation width is 3.2 pixels on the 256 grid. The 768 rerasterization measures label coverage only; no 768 model inference was performed.",
+  "completeMeasurements": {
+    "path": "tmp/heart-learning/contact-supervision-audit-v1/results.json",
+    "sha256": "f0141935665dc22e0ba3c779fed6bbad29a95249db8a147ec8917c9c3a02561a"
+  }
+}

@@ -31,6 +31,20 @@ The inventory, with material annotations updated on 2026-10-15, contains:
 
 ## Current results and limits
 
+[A contact-supervision audit](contact-supervision-audit.json) maps the nine reviewed
+orange/yellow checker junctions into the existing material labels. All 97 sampled
+pixels in those boxes at 256 resolution are known heart body but unknown paper
+identity; rerasterizing at 768 leaves all 831 sampled pixels unknown too. Eight
+ordinary-edge controls have only one labelled material pixel in total at each
+resolution. The uncertainty band is therefore a missing-supervision
+issue, not just low raster resolution. Source, compiled input, labels and saved
+probabilities were inspected for all seventeen regions. The thresholded model
+loses the approaching yellow tips at the contacts. This is one development photo,
+not exact physical-joining ground truth or evidence that extra labels improve
+the solver. Both model arms used the same held-out checkpoint on this checker
+family. A future junction-location target must preserve that grouped treatment
+and the uncertainty of the observed meeting points.
+
 [Nine additional four-sector observations and eight ordinary-edge controls](orange-contact-observations.json)
 cover an existing orange/yellow checker photograph. The full source, numbered
 overview and all seventeen local patches were inspected. The controls distinguish
