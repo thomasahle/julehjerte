@@ -18,7 +18,10 @@ export function finalizeFittedSolution(solution,cfg,{startedAt=performance.now()
   // verified checkpoint before the overall export reserve begins.
   const visibleDeadline=completionDeadline-500;
   const independent=finalizeShortReturns(solution,cfg,{deadline:Math.min(completionDeadline,performance.now()+1000),completionDeadline,visibleDeadline,onProgress});
-  const matching=searchMatching?preferMatchingSolution(independent,cfg,{deadline:startedAt+Math.min(timeLimit,10)*1000-400,onProgress,gridSeeds:matchingSeeds}):independent;
+  // The independent fit may need more than its initial ten-second phase.
+  // Matching still owns the remaining requested time and the same export
+  // reserve; an already elapsed fast-phase deadline must not suppress it.
+  const matching=searchMatching?preferMatchingSolution(independent,cfg,{deadline:startedAt+timeLimit*1000-400,onProgress,gridSeeds:matchingSeeds}):independent;
   // A replacement pair can introduce different returns and shared seams.
   // Repair that selected geometry too, within the same export reserve.
   const repaired=matching===independent?matching:finalizeShortReturns(matching,cfg,{deadline:Math.min(completionDeadline,performance.now()+1000),completionDeadline,visibleDeadline,onProgress});
