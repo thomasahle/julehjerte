@@ -126,3 +126,35 @@ test('an unresolved quick timing stays bounded and a bad refinement result is re
   assert.ok(backend.report()[0].initialTimings);const before=nativeCalls;
   backend.run(1000,js,native);assert.equal(nativeCalls,before);
 });
+
+test('cross-call calibration reverses order, verifies each new input and retains no result',()=>{
+ let clock=0,value=2;const calls=[],backend=measuredKernel(sameArray,{now:()=>clock,calibrateAcrossCalls:true});
+ const js=()=>{calls.push('js');clock+=5;return Float64Array.of(value);},wasm=()=>{calls.push('wasm');clock+=2;return Float64Array.of(value);};
+ const first=backend.run(40000,js,wasm);assert.equal(backend.report()[0].calibrating,true);assert.deepEqual(calls,['js','wasm']);
+ value=7;const second=backend.run(40000,js,wasm);assert.deepEqual(calls,['js','wasm','wasm','js']);assert.equal(backend.report()[0].backend,'wasm');
+ value=11;assert.deepEqual(backend.run(40000,js,wasm),Float64Array.of(11));assert.equal(calls.length,5);
+ assert.deepEqual(first,Float64Array.of(2));assert.deepEqual(second,Float64Array.of(7));
+ const report=backend.report();report[0].timings[0].wasm=1000;assert.equal(backend.report()[0].timings[0].wasm,2);
+});
+
+test('cross-call calibration rejects a mismatch on either input and never resumes native calls',()=>{
+ for(const badCall of [1,2]){
+  let clock=0,value=1,nativeCalls=0;const backend=measuredKernel(sameArray,{now:()=>clock,calibrateAcrossCalls:true});
+  const js=()=>{clock+=5;return [value];},wasm=()=>{clock++;nativeCalls++;return [nativeCalls===badCall?-1:value];};
+  for(value=1;value<=3;value++)assert.deepEqual(backend.run(40000,js,wasm),[value]);
+  assert.equal(nativeCalls,badCall);assert.equal(backend.report()[0].reason,'different_results');
+ }
+});
+
+test('cross-call calibration requires gains on both inputs and separates workload buckets',()=>{
+ for(const costs of [[0,0,0,0],[5,2,5,7],[5,5,5,5]]){
+  let clock=0,index=0;const backend=measuredKernel(sameArray,{now:()=>clock,calibrateAcrossCalls:true});
+  for(const round of [0,1])backend.run(40000,()=>{clock+=costs[2*round];return [round];},()=>{clock+=costs[2*round+1];index++;return [round];});
+  assert.equal(backend.report()[0].backend,'javascript');backend.run(40000,()=>[9],()=>{throw new Error('Rejected native backend was used');});assert.equal(index,2);
+ }
+ let clock=0;const backend=measuredKernel(sameArray,{now:()=>clock,calibrateAcrossCalls:true}),js=()=>{clock+=5;return [1];},wasm=()=>{clock+=2;return [1];};
+ backend.run(40000,js,wasm);backend.run(400000,js,wasm);assert.ok(backend.report().every(r=>r.calibrating));
+ backend.run(40000,js,wasm);assert.equal(backend.report()[0].backend,'wasm');assert.equal(backend.report()[1].calibrating,true);
+ for(let i=0;i<20;i++)backend.run(2**i,js,wasm);assert.equal(backend.report().length,8);
+ for(const options of [{repetitions:2},{minimumBatchMilliseconds:1},{quickDecision:true},{calibrateAcrossCalls:'yes'}])assert.throws(()=>measuredKernel(sameArray,{calibrateAcrossCalls:true,...options}),RangeError);
+});

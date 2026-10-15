@@ -115,6 +115,18 @@ test('outline reuse preserves audits after width, resolution and cut changes',as
   }
 });
 
+test('automatic calibration preserves changing paper maps at the finest supported resolution',async()=>{
+  await loadNumericalKernel();
+  const cfg=settings({width:60,materialResolution:1000,minWidth:3,cutError:0,printShrinkPercent:0}),saved=[];
+  for(const name of ['straight','neck','thin','straight']){
+    const solution=fixture(name),actual=withoutTime(materialAudit(solution,cfg,{includeMaps:true}));
+    const expected=withoutTime(materialAudit(solution,cfg,{includeMaps:true,native:false}));
+    assert.deepEqual(actual,expected,`All fields and map pixels must match for ${name}.`);
+    saved.push({actual,expected});
+  }
+  for(const {actual,expected}of saved)assert.deepEqual(actual,expected,'Later inputs cannot change earlier returned maps.');
+});
+
 test('padded tile indexing preserves complete audits of outlying trial cuts',async()=>{
   await loadNumericalKernel();
   // Full-map hashes from d623294's unbounded string-key index. These internal

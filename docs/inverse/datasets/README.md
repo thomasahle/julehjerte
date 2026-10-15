@@ -146,6 +146,19 @@ That production repair limitation remains; fixing the unit test does not cure
 it. Default resolution and physical tolerances are unchanged. The timed
 historical error regressions remain recorded, not explained away by this test.
 
+A [paper-calibration change](paper-calibration-calls.json) spreads backend
+measurements across two real audit requests, comparing both outputs on each
+input before selecting WebAssembly. It retains only timings. Across seven
+geometries, four alternating-order rounds in Node and Chromium preserve every
+paper-map pixel and audit field in all 560 timed complete audits. Chromium's
+median first-audit saving ranges from 21% to 43%; the first audit plus four
+follow-ups saves 10% to 20%. Deferred work makes some follow-up batches slower,
+so these are not uniform per-call gains. Eight cold leaf-repair runs are faster
+with the new policy but all still fail the 700-resolution paper check. The
+change is integrated locally after 33 focused tests; full repository, fresh
+corpus and browser/export QA remain pending. This does not establish additional
+successful reconstructions or fix the repair's finer-verification limitation.
+
 The latest validated solver revision is `c000d30`. Its
 [release record](return-projection-speed.json) passes **22/22 regular Hunodan
 designs below ten seconds**, with a maximum of **8.100 seconds**. Automatic

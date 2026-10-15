@@ -18,7 +18,7 @@ import {fixture} from './fixtures.mjs';
 const output=process.env.INVERSE_CALIBRATION_OUT||'tmp/paper-calibration',origin=process.env.INVERSE_TEST_URL||'http://127.0.0.1:5232';
 const names=(process.env.INVERSE_TEST_BROWSERS||'node').split(','),rounds=4,followups=16;
 const reference=process.env.INVERSE_CALIBRATION_REFERENCE;
-const availablePolicies={legacy:{repetitions:1,minimumBatchMilliseconds:0},batch4:{repetitions:16,minimumBatchMilliseconds:4},batch8:{repetitions:32,minimumBatchMilliseconds:8},selective8:{repetitions:32,minimumBatchMilliseconds:8,quickDecision:true},...(reference?{reference:{reference}}:{})};
+const availablePolicies={acrossCalls:{calibrateAcrossCalls:true},legacy:{repetitions:1,minimumBatchMilliseconds:0},batch4:{repetitions:16,minimumBatchMilliseconds:4},batch8:{repetitions:32,minimumBatchMilliseconds:8},selective8:{repetitions:32,minimumBatchMilliseconds:8,quickDecision:true},...(reference?{reference:{reference}}:{})};
 const policyNames=(process.env.INVERSE_CALIBRATION_POLICIES||'legacy,batch4,batch8,selective8').split(',');
 assert.ok(policyNames.length>1&&new Set(policyNames).size===policyNames.length&&policyNames.every(name=>availablePolicies[name]),'Choose distinct available calibration policies');
 const policies=Object.fromEntries(policyNames.map(name=>[name,availablePolicies[name]]));

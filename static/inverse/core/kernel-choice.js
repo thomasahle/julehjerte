@@ -1,18 +1,35 @@
-/** Select an optional kernel from repeated measurements of the current input.
- * Keep only bounded timing records. Comparisons happen outside the timers;
- * every result in a timed batch must agree before the native kernel is used.
+/** Select an optional kernel using paired measurements of the same input.
+ * Calibration can be batched on one request or spread across two requests.
+ * Every measured native result must agree; retain only bounded timing records.
  */
-export function measuredKernel(equal,{now=()=>performance.now(),key=size=>Math.floor(Math.log2(size)),describe=size=>({size}),repetitions=1,minimumBatchMilliseconds=0,quickDecision=false}={}){
+export function measuredKernel(equal,{now=()=>performance.now(),key=size=>Math.floor(Math.log2(size)),describe=size=>({size}),repetitions=1,minimumBatchMilliseconds=0,quickDecision=false,calibrateAcrossCalls=false}={}){
   if(!Number.isInteger(repetitions)||repetitions<1||repetitions>64)throw new RangeError('Kernel timing requires 1–64 repetitions.');
   if(!Number.isFinite(minimumBatchMilliseconds)||minimumBatchMilliseconds<0||minimumBatchMilliseconds>100)throw new RangeError('Kernel timing requires a batch target between 0 and 100 milliseconds.');
+  if(typeof calibrateAcrossCalls!=='boolean'||calibrateAcrossCalls&&(repetitions!==1||minimumBatchMilliseconds!==0||quickDecision))throw new RangeError('Cross-call calibration requires single-call timing without batching.');
   const choices=new Map();
   const remember=(bucket,value)=>{choices.set(bucket,value);if(choices.size>8)choices.delete(choices.keys().next().value);};
   return{
     run(size,javascript,native){
       const bucket=key(size),selected=choices.get(bucket);
-      if(selected)return selected.backend==='wasm'?native():javascript();
+      if(selected&&!selected.calibrating)return selected.backend==='wasm'?native():javascript();
       const quick=quickDecision&&minimumBatchMilliseconds>0&&repetitions>1;
       const details={...describe(size),...(minimumBatchMilliseconds?{maximumTimingRepetitions:repetitions,minimumBatchMilliseconds}:repetitions>1?{timingRepetitions:repetitions}:{}),...(quick?{quickDecision:true}:{})};
+      if(calibrateAcrossCalls){
+        // Each actual request supplies one paired observation. Reverse order
+        // on the next request; retain timings only, never inputs or results.
+        const values={},timing={};
+        for(const name of selected?['wasm','javascript']:['javascript','wasm']){
+          const start=now();values[name]=(name==='wasm'?native:javascript)();timing[name]=now()-start;
+        }
+        const timings=[...(selected?.timings||[]),timing],details={...describe(size),calibrationCalls:2};
+        if(!equal(values.javascript,values.wasm))remember(bucket,{...details,backend:'javascript',reason:'different_results',timings});
+        else if(timings.length<2)remember(bucket,{...details,backend:'javascript',reason:'awaiting_second_input',calibrating:true,timings});
+        else{
+          const faster=timings.every(t=>t.wasm<t.javascript*.9);
+          remember(bucket,{...details,backend:faster?'wasm':'javascript',reason:faster?'measured_faster':'no_consistent_gain',timings});
+        }
+        return values.javascript;
+      }
       const warm=javascript(),candidate=native();
       if(!equal(warm,candidate)){remember(bucket,{...details,backend:'javascript',reason:'different_results'});return warm;}
       const measure=(limit,minimum)=>{
