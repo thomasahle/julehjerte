@@ -47,6 +47,15 @@ new paired study below uses the correction in training the opposite-family
 model; this photo remains held out from its own inference model. The 22 Hunodan
 and 31 hard-photo benchmark counts are unaffected.
 
+**Construction review:** the publisher's bicycle and sloth templates use closed
+interior cut-outs, as verified in the [source review](krymmel-cutout-source-review.json).
+They remain useful photographs for body and material identification, but their
+original cutting paths are outside the regular-slit model. The historical
+nineteen-photo studies retain all outcomes and their original denominators;
+future regular-template comparisons should identify these cases separately.
+This does not prove that every alternative regular construction of the same
+visible design is impossible.
+
 The source correction also changes real-photo family grouping. Earlier material
 pilots placed the printed checker in the framed-motif family, so it could train
 the model evaluated on the other checker photographs. Source/duplicate separation

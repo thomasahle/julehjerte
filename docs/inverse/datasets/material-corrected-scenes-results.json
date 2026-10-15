@@ -429,5 +429,13 @@
       "path": "tmp/heart-learning/material-corrected-scenes-v1/finalize.py",
       "sha256": "6b7b098f83aea71789e576ea02d95d7ae3123f312ffe92279b4f93724d3885ed"
     }
-  ]
+  ],
+  "constructionQualification": {
+    "report": "docs/inverse/datasets/krymmel-cutout-source-review.json",
+    "appliesTo": [
+      "real-5330aa8b62176216",
+      "real-abf590088db891f9"
+    ],
+    "finding": "Subsequent primary-source verification identifies closed cut-outs in the bicycle and sloth published templates. Historical derived-mask counts remain unchanged, but these are not regular-slit ground-truth recovery cases. No inference about impossibility of alternative constructions is made."
+  }
 }
