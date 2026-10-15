@@ -1,0 +1,2203 @@
+{
+  "schema": "woven-heart-expanded-material-results-1",
+  "status": "complete-offline-development-study",
+  "sourceCommit": "64eb68e136ce07e13d41938cf53af2d2282c8129",
+  "scope": "Seventeen previously inspected, partially labelled development photographs. One seed, fixed 240 updates and two whole-family folds. No model integration, ONNX, deployment or unseen-test claim.",
+  "plan": "docs/inverse/datasets/material-expanded-plan.json",
+  "evidence": {
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-expanded-pilot-v1/run-v1/report.json": "0b90911108122dd967b56be8257c1c8f8d4a86b73063f09828cc07cd98209947",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-expanded-pilot-v1/audit-v1/audit.json": "8fb696a9cee14037848d52f7dbed130ea7689b6b25e41e9468f3c6ee7e73e1a9",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-expanded-pilot-v1/checks.json": "cf5e6e097afce54ac20b6a8379633edfae383f95ae0e0f6a0e948d755b96a867",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-expanded-pilot-v1/cohorts.json": "d6ce56899448ac7dad4b240a95981835cc61598dd99e3f1f93bc4a844b601246",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-expanded-pilot-v1/previous-evaluation-plan.json": "5c8c28843d882b35a3e039c267bad0a73f78fa7b3a9a743be415b71897d04d19",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-expanded-pilot-v1/previous-on-expanded-v1/audit.json": "d8cf9759e40cf71450c3c6f6e98e0d8801d8d0c01b52b1a1b7368c56eff85d93",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-expanded-pilot-v1/pipeline-v1/report.json": "7e08e0f7d594faca7ffcb87e1e04860aa008743b6fc0f4ec32292937569d1cfe",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-expanded-pilot-v1/editable-v1/results.json": "984982761fbd140deb62b6fd67277c57a2fd068cb71e997d009e6dfff6a7f9a1",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-expanded-pilot-v1/replay-checks.json": "1d4b388d99e0366b840e732177b1b0d7d4c7212581951cf7dcef414d91f6ca1c",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-expanded-pilot-v1/previous-pipeline-v1/report.json": "e8dbb89a91a2bf2dbe9c036b8d45eef4d00c5f0af828987d81e65687eec45c75",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-expanded-pilot-v1/previous-editable-v1/results.json": "6909422d54014003a8e0597718702f3b3c78d709ab836dd6dabb1b15c2753596",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-expanded-pilot-v1/previous-replay-checks.json": "29bb88ae1e2473549674356f3c9d3180eeaee32ef70b03c2a8c048590f64a28b",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-expanded-pilot-v1/visual-review.json": "b043b776bf7044e2c0834996c5f40744cf5bf80511f4800d32c7f84a6027f668",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-expanded-pilot-v1/compare-cohorts.py": "4a93d622568a2126419025014e9f70f0fa89b534ab4cf2f0e8a3165e75475bfb",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-expanded-pilot-v1/evaluate-previous.py": "79dc7a3699997543e3a0ca0c18c88b7592ce992a658d252de238f78b38b0ddbc",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-expanded-pilot-v1/prepare-replay.py": "7ffbc5b644536f2d45e89438c3b2bb74a8738abacf2304d39f28cf4d594572f3",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-expanded-pilot-v1/run-replay.py": "6a8f2eeb148e8d50b1cb270514e73ee6390a438913d50ea1b87e46e440090f92",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-expanded-pilot-v1/prepare-previous-replay.py": "7fd7426100c53a3aecf2f79a6d78e7e0a1e952cb4bb8d1bd24888ec43139387f",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-expanded-pilot-v1/run-previous-replay.py": "e907bc4712f6f81ae0cac78c4ad0f8ed15a746cbdc0e6bbc2aaac1316a4c3476",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-expanded-pilot-v1/review-reconstructions.py": "0a794167721fdfdc560a58f596098cc9f832fdac4f569d894952c00d19c04a2d",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-expanded-pilot-v1/record-results.py": "08440d7117a33d297c2b6b4bc9ede388edbfe6cf7bd158b7bc9a6b64de63fd3a"
+  },
+  "invariants": {
+    "identicalTrainingFields": [
+      "syntheticReplay",
+      "syntheticInputHashes",
+      "drawsSha256",
+      "initialization",
+      "printedReplay"
+    ],
+    "identicalProtocol": true,
+    "identicalOriginalInputRecords": 9,
+    "identicalControlTensors": 254,
+    "identicalOriginalControlPredictions": 9,
+    "commonPipelineSourcesVerified": 103,
+    "sameCurrentSolverConfiguration": true,
+    "sameFullSourcePhotosAndWindows": true,
+    "previousOriginalNinePredictionsExactlyReproduced": true
+  },
+  "cohorts": {
+    "original9": {
+      "count": 9,
+      "ids": [
+        "real-2044b1d98ed6f262-body-1",
+        "real-45744a03afddccb1-body-1",
+        "real-8c875dd0f298b5a4-body-1",
+        "real-3f7b76e1a98e808f-body-1",
+        "real-995899fe049540ed-body-1",
+        "real-b87b0b19f12724f3-body-1",
+        "real-cf2d0fcff65d7386-body-1",
+        "real-cdae5c890b6933cd-body-1",
+        "real-68d8f25d8891df62-body-1"
+      ],
+      "neutral": {
+        "bodyIoU": 0.8658223781426478,
+        "materialPixelError": 0.45130357521126385,
+        "materialJointError": 0.46775917511139453,
+        "balancedMaterialJointError": 0.5140584615830016
+      },
+      "synthetic-control": {
+        "bodyIoU": 0.833474439967165,
+        "materialPixelError": 0.2568153409390696,
+        "materialJointError": 0.26831355457562134,
+        "balancedMaterialJointError": 0.25574815687244357
+      },
+      "mixed-out-of-fold": {
+        "bodyIoU": 0.8335785928728855,
+        "materialPixelError": 0.12558158266732525,
+        "materialJointError": 0.14368504555433878,
+        "balancedMaterialJointError": 0.1569518740830474
+      },
+      "previous-mixed": {
+        "bodyIoU": 0.8237612685624682,
+        "materialPixelError": 0.15405135165603534,
+        "materialJointError": 0.16748486964687553,
+        "balancedMaterialJointError": 0.17324807813124796
+      }
+    },
+    "added8": {
+      "count": 8,
+      "ids": [
+        "real-5330aa8b62176216-body-1",
+        "real-abf590088db891f9-body-1",
+        "real-990ac34431be87fe-body-1",
+        "real-12ce3c9180f7f317-body-1",
+        "real-d5b0aa8d4d2465ee-body-1",
+        "real-39f3a1ba97852876-body-1",
+        "real-e936e08ac62db19b-body-1",
+        "real-340f5e5b0f447889-body-1"
+      ],
+      "neutral": {
+        "bodyIoU": 0.8761119426790409,
+        "materialPixelError": 0.4429461062991988,
+        "materialJointError": 0.4544579717714603,
+        "balancedMaterialJointError": 0.5101482405098365
+      },
+      "synthetic-control": {
+        "bodyIoU": 0.7655873426268871,
+        "materialPixelError": 0.15544004570749545,
+        "materialJointError": 0.16582093224698014,
+        "balancedMaterialJointError": 0.17421636032472862
+      },
+      "mixed-out-of-fold": {
+        "bodyIoU": 0.8010104317913428,
+        "materialPixelError": 0.1753629948494722,
+        "materialJointError": 0.18353524064548038,
+        "balancedMaterialJointError": 0.18116136834728433
+      },
+      "previous-mixed": {
+        "bodyIoU": 0.8546729644990376,
+        "materialPixelError": 0.23933126266848567,
+        "materialJointError": 0.2598236202947801,
+        "balancedMaterialJointError": 0.2613038153220448
+      }
+    },
+    "all17": {
+      "count": 17,
+      "ids": [
+        "real-2044b1d98ed6f262-body-1",
+        "real-45744a03afddccb1-body-1",
+        "real-8c875dd0f298b5a4-body-1",
+        "real-3f7b76e1a98e808f-body-1",
+        "real-995899fe049540ed-body-1",
+        "real-b87b0b19f12724f3-body-1",
+        "real-cf2d0fcff65d7386-body-1",
+        "real-cdae5c890b6933cd-body-1",
+        "real-68d8f25d8891df62-body-1",
+        "real-5330aa8b62176216-body-1",
+        "real-abf590088db891f9-body-1",
+        "real-990ac34431be87fe-body-1",
+        "real-12ce3c9180f7f317-body-1",
+        "real-d5b0aa8d4d2465ee-body-1",
+        "real-39f3a1ba97852876-body-1",
+        "real-e936e08ac62db19b-body-1",
+        "real-340f5e5b0f447889-body-1"
+      ],
+      "neutral": {
+        "bodyIoU": 0.8706645261597741,
+        "materialPixelError": 0.44737064866440973,
+        "materialJointError": 0.46149978530436675,
+        "balancedMaterialJointError": 0.5122183575485709
+      },
+      "synthetic-control": {
+        "bodyIoU": 0.8015275706305636,
+        "materialPixelError": 0.20910931965362292,
+        "materialJointError": 0.22008173230331957,
+        "balancedMaterialJointError": 0.21738025261469537
+      },
+      "mixed-out-of-fold": {
+        "bodyIoU": 0.8182523994227479,
+        "materialPixelError": 0.14900812957657086,
+        "materialJointError": 0.16243807853840542,
+        "balancedMaterialJointError": 0.1683445772662177
+      },
+      "previous-mixed": {
+        "bodyIoU": 0.8383079490032068,
+        "materialPixelError": 0.1941830744854237,
+        "materialJointError": 0.21093839936353648,
+        "balancedMaterialJointError": 0.21468607210338767
+      }
+    },
+    "held-out-fold-ff2e73adae8b": {
+      "count": 10,
+      "ids": [
+        "real-12ce3c9180f7f317-body-1",
+        "real-39f3a1ba97852876-body-1",
+        "real-68d8f25d8891df62-body-1",
+        "real-990ac34431be87fe-body-1",
+        "real-995899fe049540ed-body-1",
+        "real-b87b0b19f12724f3-body-1",
+        "real-cdae5c890b6933cd-body-1",
+        "real-cf2d0fcff65d7386-body-1",
+        "real-d5b0aa8d4d2465ee-body-1",
+        "real-e936e08ac62db19b-body-1"
+      ],
+      "neutral": {
+        "bodyIoU": 0.850491295563035,
+        "materialPixelError": 0.45655577183892404,
+        "materialJointError": 0.47047546284124075,
+        "balancedMaterialJointError": 0.5118757544334933
+      },
+      "synthetic-control": {
+        "bodyIoU": 0.7390644710688969,
+        "materialPixelError": 0.26284489319824733,
+        "materialJointError": 0.2723317164213553,
+        "balancedMaterialJointError": 0.27500238731943527
+      },
+      "mixed-out-of-fold": {
+        "bodyIoU": 0.7780550728712432,
+        "materialPixelError": 0.1625094276197566,
+        "materialJointError": 0.17047713284843424,
+        "balancedMaterialJointError": 0.17316805867842427
+      },
+      "previous-mixed": {
+        "bodyIoU": 0.8154058517606468,
+        "materialPixelError": 0.18068148295797115,
+        "materialJointError": 0.19032146505100828,
+        "balancedMaterialJointError": 0.1972567300126929
+      }
+    },
+    "held-out-fold-6508a69311e9": {
+      "count": 7,
+      "ids": [
+        "real-2044b1d98ed6f262-body-1",
+        "real-340f5e5b0f447889-body-1",
+        "real-3f7b76e1a98e808f-body-1",
+        "real-45744a03afddccb1-body-1",
+        "real-5330aa8b62176216-body-1",
+        "real-8c875dd0f298b5a4-body-1",
+        "real-abf590088db891f9-body-1"
+      ],
+      "neutral": {
+        "bodyIoU": 0.8994834270122584,
+        "materialPixelError": 0.4342490441293891,
+        "materialJointError": 0.4486773888231178,
+        "balancedMaterialJointError": 0.5127077905701104
+      },
+      "synthetic-control": {
+        "bodyIoU": 0.890760570004373,
+        "materialPixelError": 0.1323442145898737,
+        "materialJointError": 0.14543889784898292,
+        "balancedMaterialJointError": 0.1350629173222098
+      },
+      "mixed-out-of-fold": {
+        "bodyIoU": 0.8756771516391826,
+        "materialPixelError": 0.12972056094344836,
+        "materialJointError": 0.15095371523836423,
+        "balancedMaterialJointError": 0.1614538895344941
+      },
+      "previous-mixed": {
+        "bodyIoU": 0.8710252307782923,
+        "materialPixelError": 0.21347106238178454,
+        "materialJointError": 0.2403911626671482,
+        "balancedMaterialJointError": 0.23958513223295158
+      }
+    }
+  },
+  "pipeline": {
+    "expanded-mixed-body": {
+      "cases": 17,
+      "crops": 2,
+      "checkedDerivedMaskPairs": 2,
+      "completeEditablePasses": 2,
+      "passedIds": [
+        "real-8c875dd0f298b5a4-body-1",
+        "real-cf2d0fcff65d7386-body-1"
+      ],
+      "failureStages": {
+        "crop-unresolved": 15
+      }
+    },
+    "expanded-mixed-joint": {
+      "cases": 17,
+      "crops": 3,
+      "checkedDerivedMaskPairs": 3,
+      "completeEditablePasses": 3,
+      "passedIds": [
+        "real-45744a03afddccb1-body-1",
+        "real-8c875dd0f298b5a4-body-1",
+        "real-cf2d0fcff65d7386-body-1"
+      ],
+      "failureStages": {
+        "crop-unresolved": 14
+      }
+    },
+    "expanded-production": {
+      "cases": 17,
+      "crops": 7,
+      "checkedDerivedMaskPairs": 6,
+      "completeEditablePasses": 6,
+      "passedIds": [
+        "real-8c875dd0f298b5a4-body-1",
+        "real-b87b0b19f12724f3-body-1",
+        "real-cf2d0fcff65d7386-body-1",
+        "real-abf590088db891f9-body-1",
+        "real-d5b0aa8d4d2465ee-body-1",
+        "real-39f3a1ba97852876-body-1"
+      ],
+      "failureStages": {
+        "crop-unresolved": 10,
+        "review-required": 1
+      }
+    },
+    "expanded-synthetic-joint": {
+      "cases": 17,
+      "crops": 1,
+      "checkedDerivedMaskPairs": 0,
+      "completeEditablePasses": 0,
+      "passedIds": [],
+      "failureStages": {
+        "crop-unresolved": 16,
+        "review-required": 1
+      }
+    },
+    "previous-mixed-joint": {
+      "cases": 17,
+      "crops": 2,
+      "checkedDerivedMaskPairs": 2,
+      "completeEditablePasses": 2,
+      "passedIds": [
+        "real-2044b1d98ed6f262-body-1",
+        "real-cf2d0fcff65d7386-body-1"
+      ],
+      "failureStages": {
+        "crop-unresolved": 15
+      }
+    }
+  },
+  "perInstance": [
+    {
+      "id": "real-2044b1d98ed6f262-body-1",
+      "cohort": "original9",
+      "motif": {
+        "candidateFamily": "boar-framed-silhouette",
+        "crossCorpusReview": "pending"
+      },
+      "before": {
+        "bodyIoU": 0.9721082043420207,
+        "materialPixelError": 0.0008334876829042416,
+        "materialJointError": 0.004167438414521208
+      },
+      "after": {
+        "bodyIoU": 0.9045765801270998,
+        "materialPixelError": 0.34108168179292464,
+        "materialJointError": 0.36969809223930356,
+        "balancedMaterialJointError": 0.4684740149826348
+      },
+      "visualReview": "Boar: previous paper separation and reconstruction are clear; expanded model mixes most of the green sheet into red, including the right lobe. Crop rejected for inconsistent lobe colors/support.",
+      "pipeline": {
+        "expanded-production": {
+          "status": "crop-unresolved",
+          "cropSeconds": 3.0825945420000003,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "Crowded frame: select one heart with a rough rectangle",
+          "cropEvidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        },
+        "expanded-mixed-body": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.990532834,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.8529411764705882,
+              0.9558823529411765
+            ],
+            "lobeOutlineSupport": [
+              0.4444444444444444,
+              0.4166666666666667
+            ],
+            "capColourLoss": [
+              0.7795678215636019,
+              0.7392915738472569
+            ]
+          }
+        },
+        "expanded-synthetic-joint": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.561614041000001,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              1,
+              0.7278911564625851
+            ],
+            "lobeOutlineSupport": [
+              0.6944444444444444,
+              0.5833333333333334
+            ],
+            "capColourLoss": [
+              0.0186502604193278,
+              0.5626283493611461
+            ]
+          }
+        },
+        "expanded-mixed-joint": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.6475492090000006,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.8529411764705882,
+              0.9558823529411765
+            ],
+            "lobeOutlineSupport": [
+              0.7222222222222222,
+              0.5277777777777778
+            ],
+            "capColourLoss": [
+              0.2320596613464934,
+              0.7838554519989361
+            ]
+          }
+        },
+        "previous-mixed-joint": {
+          "status": "checked-derived-mask",
+          "cropSeconds": 0.506785292,
+          "solveSeconds": 9.520440082999999,
+          "independentImageError": 0.00891875,
+          "reason": null,
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.8125,
+              0.8125
+            ],
+            "lobeOutlineSupport": [
+              0.8333333333333334,
+              0.8055555555555556
+            ],
+            "capColourLoss": [
+              0.015055001523656056,
+              0.06326345241635586
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "real-45744a03afddccb1-body-1",
+      "cohort": "original9",
+      "motif": {
+        "candidateFamily": "rabbit-framed-silhouette",
+        "crossCorpusReview": "pending"
+      },
+      "before": {
+        "bodyIoU": 0.8190783807062877,
+        "materialPixelError": 0.0067931405848728355,
+        "materialJointError": 0.02394167840278353
+      },
+      "after": {
+        "bodyIoU": 0.8850343473994112,
+        "materialPixelError": 0.005964708806229807,
+        "materialJointError": 0.02965785767542043,
+        "balancedMaterialJointError": 0.030596726971085914
+      },
+      "visualReview": "Rabbit: fewer background false positives and newly supported crop. Neural mask rounds or loses thin ears/frame details; fitted border is visibly distorted despite passing derived-mask checks.",
+      "pipeline": {
+        "expanded-mixed-body": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.6562816249999996,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.6616541353383458,
+              0.849624060150376
+            ],
+            "lobeOutlineSupport": [
+              0.4444444444444444,
+              0.1388888888888889
+            ],
+            "capColourLoss": [
+              0.7229785552222369,
+              0.7275729503351525
+            ]
+          }
+        },
+        "expanded-synthetic-joint": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.4969221659999983,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.5034965034965035,
+              0.9090909090909091
+            ],
+            "lobeOutlineSupport": [
+              0.5,
+              0.5
+            ],
+            "capColourLoss": [
+              0.009994084026182558,
+              0.0339738433493971
+            ]
+          }
+        },
+        "expanded-mixed-joint": {
+          "status": "checked-derived-mask",
+          "cropSeconds": 0.3958764169999995,
+          "solveSeconds": 10.014099624999998,
+          "independentImageError": 0.0177125,
+          "reason": null,
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.6616541353383458,
+              0.849624060150376
+            ],
+            "lobeOutlineSupport": [
+              0.7222222222222222,
+              0.7777777777777778
+            ],
+            "capColourLoss": [
+              0.04160925419329266,
+              0.058984934921282935
+            ]
+          }
+        },
+        "expanded-production": {
+          "status": "crop-unresolved",
+          "cropSeconds": 4.196149416999997,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+          "cropEvidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        },
+        "previous-mixed-joint": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.635045666,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.46153846153846156,
+              0.6474358974358975
+            ],
+            "lobeOutlineSupport": [
+              0.5555555555555556,
+              0.5
+            ],
+            "capColourLoss": [
+              0.0869505453808086,
+              0.03549149907897189
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "real-8c875dd0f298b5a4-body-1",
+      "cohort": "original9",
+      "motif": {
+        "candidateFamily": "small-hearts-in-checker-frame",
+        "crossCorpusReview": "pending"
+      },
+      "before": {
+        "bodyIoU": 0.8033991731740928,
+        "materialPixelError": 0.2963900260513584,
+        "materialJointError": 0.3004093784890212
+      },
+      "after": {
+        "bodyIoU": 0.9682582536254243,
+        "materialPixelError": 0.000595459620394492,
+        "materialJointError": 0.01391886862672125,
+        "balancedMaterialJointError": 0.013027100886275617
+      },
+      "visualReview": "Stacked hearts: material separation improves greatly and automatic crop succeeds. The neural mask rounds grid corners; fitted motifs develop channels to neighboring cells. Current production also opens enclosed motifs. Pixel/physical checks do not establish topology preservation.",
+      "pipeline": {
+        "expanded-synthetic-joint": {
+          "status": "review-required",
+          "cropSeconds": 0.32685349999999747,
+          "solveSeconds": 9.924852667,
+          "independentImageError": 0.03204375,
+          "reason": null,
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.8454545454545455,
+              0.8090909090909091
+            ],
+            "lobeOutlineSupport": [
+              0.8611111111111112,
+              0.8333333333333334
+            ],
+            "capColourLoss": [
+              0.1953689146217715,
+              0.1328635573062873
+            ]
+          }
+        },
+        "expanded-mixed-joint": {
+          "status": "checked-derived-mask",
+          "cropSeconds": 0.3682389580000017,
+          "solveSeconds": 9.627457208,
+          "independentImageError": 0.01365625,
+          "reason": null,
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.990990990990991,
+              0.7477477477477478
+            ],
+            "lobeOutlineSupport": [
+              0.8611111111111112,
+              0.8055555555555556
+            ],
+            "capColourLoss": [
+              0.1292552999179143,
+              0.06675312758680174
+            ]
+          }
+        },
+        "expanded-production": {
+          "status": "checked-derived-mask",
+          "cropSeconds": 4.223172415999994,
+          "solveSeconds": 9.922659125000006,
+          "independentImageError": 0.02124375,
+          "reason": null,
+          "cropEvidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        },
+        "expanded-mixed-body": {
+          "status": "checked-derived-mask",
+          "cropSeconds": 0.4402011249999923,
+          "solveSeconds": 10.493514249999993,
+          "independentImageError": 0.0144875,
+          "reason": null,
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.990990990990991,
+              0.7477477477477478
+            ],
+            "lobeOutlineSupport": [
+              0.8333333333333334,
+              0.8333333333333334
+            ],
+            "capColourLoss": [
+              0.05703157005745411,
+              0.01729868572517004
+            ]
+          }
+        },
+        "previous-mixed-joint": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.6116874169999993,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.5258620689655172,
+              0.5431034482758621
+            ],
+            "lobeOutlineSupport": [
+              0.9166666666666666,
+              0.3333333333333333
+            ],
+            "capColourLoss": [
+              0.08931800857773714,
+              0.5695809857732123
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "real-3f7b76e1a98e808f-body-1",
+      "cohort": "original9",
+      "motif": {
+        "candidateFamily": "four-point-star-frame",
+        "crossCorpusReview": "pending"
+      },
+      "before": {
+        "bodyIoU": 0.9336448178264971,
+        "materialPixelError": 0.48393906020558003,
+        "materialJointError": 0.48393906020558003
+      },
+      "after": {
+        "bodyIoU": 0.8584326135517498,
+        "materialPixelError": 0.07195301027900147,
+        "materialJointError": 0.08957415565345081,
+        "balancedMaterialJointError": 0.08627787060972446
+      },
+      "visualReview": "Dark star: observed material error improves but much of the star and outer shape remains missing or wrongly connected. No lower-edge pair is identified.",
+      "pipeline": {
+        "expanded-mixed-joint": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.169910375000007,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+          "cropEvidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        },
+        "expanded-production": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.422974709000002,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "Multiple substantial foreground components",
+          "cropEvidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        },
+        "expanded-mixed-body": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.664450749999989,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+          "cropEvidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        },
+        "expanded-synthetic-joint": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.260699166999999,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+          "cropEvidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        },
+        "previous-mixed-joint": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.304495332999999,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "No nondegenerate heart-shape fit",
+          "cropEvidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        }
+      }
+    },
+    {
+      "id": "real-995899fe049540ed-body-1",
+      "cohort": "original9",
+      "motif": {
+        "candidateFamily": "patterned-three-by-three",
+        "crossCorpusReview": "pending"
+      },
+      "before": {
+        "bodyIoU": 0.9426037352504493,
+        "materialPixelError": 0.13088805543194965,
+        "materialJointError": 0.1369906553938084
+      },
+      "after": {
+        "bodyIoU": 0.9584062196307094,
+        "materialPixelError": 0.13902485538109466,
+        "materialJointError": 0.14048693662195666,
+        "balancedMaterialJointError": 0.1353532995125522
+      },
+      "visualReview": "Floral/striped checker: both models still classify several ink stripes as different paper. Lobe-color support rejects the crop.",
+      "pipeline": {
+        "expanded-production": {
+          "status": "crop-unresolved",
+          "cropSeconds": 3.8030749170000053,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "Crowded frame: select one heart with a rough rectangle",
+          "cropEvidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        },
+        "expanded-mixed-body": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.6754002499999916,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.7678571428571429,
+              0.6666666666666666
+            ],
+            "lobeOutlineSupport": [
+              0.6388888888888888,
+              0.6111111111111112
+            ],
+            "capColourLoss": [
+              0.16253489888264194,
+              0.4328786474363905
+            ]
+          }
+        },
+        "expanded-synthetic-joint": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.5159983750000103,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.7012195121951219,
+              0.5548780487804879
+            ],
+            "lobeOutlineSupport": [
+              0.7777777777777778,
+              0.9166666666666666
+            ],
+            "capColourLoss": [
+              0.4282895215571654,
+              0.34357793048151203
+            ]
+          }
+        },
+        "expanded-mixed-joint": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.5952785000000005,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.7678571428571429,
+              0.6666666666666666
+            ],
+            "lobeOutlineSupport": [
+              0.6944444444444444,
+              0.9722222222222222
+            ],
+            "capColourLoss": [
+              0.5700836852439125,
+              0.6566854372018577
+            ]
+          }
+        },
+        "previous-mixed-joint": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.566707708000002,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.6363636363636364,
+              0.5878787878787879
+            ],
+            "lobeOutlineSupport": [
+              0.4444444444444444,
+              0.5
+            ],
+            "capColourLoss": [
+              0.5359760427043334,
+              0.483448472903286
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "real-b87b0b19f12724f3-body-1",
+      "cohort": "original9",
+      "motif": {
+        "candidateFamily": "three-by-three-open-pink",
+        "crossCorpusReview": "pending"
+      },
+      "before": {
+        "bodyIoU": 0.4947354211663067,
+        "materialPixelError": 0.00028506271379703536,
+        "materialJointError": 0.00028506271379703536
+      },
+      "after": {
+        "bodyIoU": 0.49160848549946295,
+        "materialPixelError": 0.11830102622576967,
+        "materialJointError": 0.11830102622576967,
+        "balancedMaterialJointError": 0.125453446191052
+      },
+      "visualReview": "Bowed red/pink checker: paper classification regresses; chocolates/table remain in the body prediction. Production reconstructs it; neural locator cannot identify both lower edges.",
+      "pipeline": {
+        "expanded-mixed-body": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.249135541999989,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+          "cropEvidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        },
+        "expanded-synthetic-joint": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.540338374999992,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.6,
+              0.8181818181818182
+            ],
+            "lobeOutlineSupport": [
+              0.5833333333333334,
+              0.4444444444444444
+            ],
+            "capColourLoss": [
+              0.1370511066679771,
+              0.28782092220914424
+            ]
+          }
+        },
+        "expanded-mixed-joint": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.307255667000005,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+          "cropEvidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        },
+        "expanded-production": {
+          "status": "checked-derived-mask",
+          "cropSeconds": 0.6789687909999921,
+          "solveSeconds": 8.166744707999998,
+          "independentImageError": 0.00426875,
+          "reason": null,
+          "cropEvidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        },
+        "previous-mixed-joint": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.169445374999999,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+          "cropEvidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        }
+      }
+    },
+    {
+      "id": "real-cf2d0fcff65d7386-body-1",
+      "cohort": "original9",
+      "motif": {
+        "candidateFamily": "regular-checkerboard",
+        "crossCorpusReview": "pending"
+      },
+      "before": {
+        "bodyIoU": 0.9836942858169019,
+        "materialPixelError": 0.0,
+        "materialJointError": 0.0
+      },
+      "after": {
+        "bodyIoU": 0.98419452887538,
+        "materialPixelError": 0.0,
+        "materialJointError": 0.0,
+        "balancedMaterialJointError": 0.0
+      },
+      "visualReview": "Blue/yellow checker: near-zero observed material errors in both models, and both yield checked pairs. Rounded cells and missing narrow boundary detail are visible outside sparse scored interiors.",
+      "pipeline": {
+        "expanded-synthetic-joint": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.4985817499999974,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.7215189873417721,
+              0.9113924050632911
+            ],
+            "lobeOutlineSupport": [
+              0.5555555555555556,
+              0.8333333333333334
+            ],
+            "capColourLoss": [
+              0.6887046947233485,
+              0.09651676665687
+            ]
+          }
+        },
+        "expanded-mixed-joint": {
+          "status": "checked-derived-mask",
+          "cropSeconds": 0.49005591599999754,
+          "solveSeconds": 9.478175334000014,
+          "independentImageError": 0.00989375,
+          "reason": null,
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.7388535031847133,
+              0.7070063694267515
+            ],
+            "lobeOutlineSupport": [
+              1,
+              0.9722222222222222
+            ],
+            "capColourLoss": [
+              0.044191625503471,
+              0.06876085103409649
+            ]
+          }
+        },
+        "expanded-production": {
+          "status": "checked-derived-mask",
+          "cropSeconds": 0.8576422080000048,
+          "solveSeconds": 9.611925915999977,
+          "independentImageError": 0.0135375,
+          "reason": null,
+          "cropEvidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        },
+        "expanded-mixed-body": {
+          "status": "checked-derived-mask",
+          "cropSeconds": 0.6815907920000027,
+          "solveSeconds": 9.585804583999998,
+          "independentImageError": 0.012925,
+          "reason": null,
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.7388535031847133,
+              0.7070063694267515
+            ],
+            "lobeOutlineSupport": [
+              0.9444444444444444,
+              0.6944444444444444
+            ],
+            "capColourLoss": [
+              0.0007387817287598088,
+              0.0043002354158347845
+            ]
+          }
+        },
+        "previous-mixed-joint": {
+          "status": "checked-derived-mask",
+          "cropSeconds": 0.8888526669999992,
+          "solveSeconds": 9.552798709000003,
+          "independentImageError": 0.01011875,
+          "reason": null,
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.9675324675324676,
+              0.7987012987012987
+            ],
+            "lobeOutlineSupport": [
+              1,
+              0.6944444444444444
+            ],
+            "capColourLoss": [
+              0.03932089664080686,
+              0.07815342921359608
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "real-cdae5c890b6933cd-body-1",
+      "cohort": "original9",
+      "motif": {
+        "candidateFamily": "decorative-two-paper-checkerboard",
+        "crossCorpusReview": "pending"
+      },
+      "before": {
+        "bodyIoU": 0.6175012944744434,
+        "materialPixelError": 0.4666997190547017,
+        "materialJointError": 0.48405222277309534
+      },
+      "after": {
+        "bodyIoU": 0.6193884189980482,
+        "materialPixelError": 0.45331350190051234,
+        "materialJointError": 0.4638902660717237,
+        "balancedMaterialJointError": 0.49698498875907327
+      },
+      "visualReview": "Hand-held printed checker: both models largely collapse to one paper and absorb fingers. Missing material separation prevents useful crop evidence.",
+      "pipeline": {
+        "expanded-mixed-joint": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.1279342910000123,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+          "cropEvidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        },
+        "expanded-production": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.8253796659999932,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "Multiple substantial foreground components",
+          "cropEvidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        },
+        "expanded-mixed-body": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.3291324160000078,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+          "cropEvidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        },
+        "expanded-synthetic-joint": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.4291351250000006,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+          "cropEvidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        },
+        "previous-mixed-joint": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.1545292919999994,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+          "cropEvidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        }
+      }
+    },
+    {
+      "id": "real-68d8f25d8891df62-body-1",
+      "cohort": "original9",
+      "motif": {
+        "candidateFamily": "floral-blue-gold",
+        "crossCorpusReview": "pending"
+      },
+      "before": {
+        "bodyIoU": 0.8470861043052152,
+        "materialPixelError": 0.0006336131791541264,
+        "materialJointError": 0.07357833042927293
+      },
+      "after": {
+        "bodyIoU": 0.8323078881486825,
+        "materialPixelError": 0.0,
+        "materialJointError": 0.067638206874703,
+        "balancedMaterialJointError": 0.0563994188350284
+      },
+      "visualReview": "Blue printed/gold heart: observed material identity is almost perfect but occlusion/clutter and outline errors remain. No supported crop; material score alone is insufficient.",
+      "pipeline": {
+        "expanded-production": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.5865992909999913,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "Multiple substantial foreground components",
+          "cropEvidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        },
+        "expanded-mixed-body": {
+          "status": "crop-unresolved",
+          "cropSeconds": 1.7574518340000067,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+          "cropEvidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        },
+        "expanded-synthetic-joint": {
+          "status": "crop-unresolved",
+          "cropSeconds": 1.8147360840000037,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "No nondegenerate heart-shape fit",
+          "cropEvidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        },
+        "expanded-mixed-joint": {
+          "status": "crop-unresolved",
+          "cropSeconds": 1.6345979999999982,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+          "cropEvidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        },
+        "previous-mixed-joint": {
+          "status": "crop-unresolved",
+          "cropSeconds": 1.681054458999999,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+          "cropEvidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        }
+      }
+    },
+    {
+      "id": "real-5330aa8b62176216-body-1",
+      "cohort": "added8",
+      "motif": {
+        "candidateFamily": "bicycle-medallion",
+        "crossCorpusReview": "pending"
+      },
+      "before": {
+        "bodyIoU": 0.9506791223649438,
+        "materialPixelError": 0.29568637089836547,
+        "materialJointError": 0.29568637089836547
+      },
+      "after": {
+        "bodyIoU": 0.9145832053565944,
+        "materialPixelError": 0.28057023473024456,
+        "materialJointError": 0.28057023473024456,
+        "balancedMaterialJointError": 0.2848727499273366
+      },
+      "visualReview": "Bicycle medallion: expanded model loses the bicycle strokes and mixes the white lobe. The synthetic control visually separates paper better. Production gets a crop, but its fitted pair loses the bicycle and is rejected.",
+      "pipeline": {
+        "expanded-mixed-body": {
+          "status": "crop-unresolved",
+          "cropSeconds": 1.128973667000013,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.8307692307692308,
+              0.5076923076923077
+            ],
+            "lobeOutlineSupport": [
+              0.6944444444444444,
+              0.75
+            ],
+            "capColourLoss": [
+              0.003069914570209547,
+              0.02184992738689656
+            ]
+          }
+        },
+        "expanded-synthetic-joint": {
+          "status": "crop-unresolved",
+          "cropSeconds": 0.8956474170000002,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.8115942028985508,
+              0.463768115942029
+            ],
+            "lobeOutlineSupport": [
+              0.9166666666666666,
+              0.75
+            ],
+            "capColourLoss": [
+              0.029617356824,
+              0.16601162996040367
+            ]
+          }
+        },
+        "expanded-mixed-joint": {
+          "status": "crop-unresolved",
+          "cropSeconds": 1.0579303329999965,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.8307692307692308,
+              0.5076923076923077
+            ],
+            "lobeOutlineSupport": [
+              0.6388888888888888,
+              0.6388888888888888
+            ],
+            "capColourLoss": [
+              0.18419414499513984,
+              0.442865535800449
+            ]
+          }
+        },
+        "expanded-production": {
+          "status": "review-required",
+          "cropSeconds": 0.566707624999981,
+          "solveSeconds": 9.804270459000021,
+          "independentImageError": 0.07688,
+          "reason": null,
+          "cropEvidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        },
+        "previous-mixed-joint": {
+          "status": "crop-unresolved",
+          "cropSeconds": 1.2542234580000005,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.6086956521739131,
+              0.6811594202898551
+            ],
+            "lobeOutlineSupport": [
+              0.5833333333333334,
+              0.3611111111111111
+            ],
+            "capColourLoss": [
+              0.5694073601293849,
+              0.3888952040007193
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "real-abf590088db891f9-body-1",
+      "cohort": "added8",
+      "motif": {
+        "candidateFamily": "sloth-silhouette",
+        "crossCorpusReview": "pending"
+      },
+      "before": {
+        "bodyIoU": 0.9639330987012178,
+        "materialPixelError": 0.0,
+        "materialJointError": 0.0008082622361921868
+      },
+      "after": {
+        "bodyIoU": 0.9583034907981192,
+        "materialPixelError": 0.13102828917826673,
+        "materialJointError": 0.13102828917826673,
+        "balancedMaterialJointError": 0.11612831350864841
+      },
+      "visualReview": "Sloth: previous mixed field is visibly cleaner than expanded; new field breaks the branch/figure and lobe. Neither neural model supplies an accepted crop. Production produces a checked fit with visible narrow distortions.",
+      "pipeline": {
+        "expanded-synthetic-joint": {
+          "status": "crop-unresolved",
+          "cropSeconds": 0.8802491670000018,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.8260869565217391,
+              0.5797101449275363
+            ],
+            "lobeOutlineSupport": [
+              0.4166666666666667,
+              0.7222222222222222
+            ],
+            "capColourLoss": [
+              0.2507800310802891,
+              0.1855615303876585
+            ]
+          }
+        },
+        "expanded-mixed-joint": {
+          "status": "crop-unresolved",
+          "cropSeconds": 0.8765157500000205,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.96875,
+              0.96875
+            ],
+            "lobeOutlineSupport": [
+              0.6388888888888888,
+              0.75
+            ],
+            "capColourLoss": [
+              0.19256672782088907,
+              0.35059538515555383
+            ]
+          }
+        },
+        "expanded-production": {
+          "status": "checked-derived-mask",
+          "cropSeconds": 0.6153726660000102,
+          "solveSeconds": 9.903295957999973,
+          "independentImageError": 0.016784,
+          "reason": null,
+          "cropEvidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        },
+        "expanded-mixed-body": {
+          "status": "crop-unresolved",
+          "cropSeconds": 0.96623887500001,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.96875,
+              0.96875
+            ],
+            "lobeOutlineSupport": [
+              0.6111111111111112,
+              0.9166666666666666
+            ],
+            "capColourLoss": [
+              0.02298484520986304,
+              0.00016510879551475923
+            ]
+          }
+        },
+        "previous-mixed-joint": {
+          "status": "crop-unresolved",
+          "cropSeconds": 0.7579652500000011,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.8450704225352113,
+              0.6338028169014085
+            ],
+            "lobeOutlineSupport": [
+              0.5555555555555556,
+              0.8055555555555556
+            ],
+            "capColourLoss": [
+              0.08823196189404153,
+              0.08695624941069144
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "real-990ac34431be87fe-body-1",
+      "cohort": "added8",
+      "motif": {
+        "candidateFamily": "regular-checkerboard",
+        "crossCorpusReview": "pending"
+      },
+      "before": {
+        "bodyIoU": 0.7585896596858639,
+        "materialPixelError": 0.09,
+        "materialJointError": 0.09
+      },
+      "after": {
+        "bodyIoU": 0.6766873403867202,
+        "materialPixelError": 0.0,
+        "materialJointError": 0.0,
+        "balancedMaterialJointError": 0.0
+      },
+      "visualReview": "Decorated red/white checker: low observed material error masks substantial handle/decorative-foliage foreground. No supported crop.",
+      "pipeline": {
+        "expanded-mixed-joint": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.6736408330000123,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.7380952380952381,
+              0.6825396825396826
+            ],
+            "lobeOutlineSupport": [
+              0.75,
+              0.5277777777777778
+            ],
+            "capColourLoss": [
+              0.2400468804061114,
+              0.0290519671073358
+            ]
+          }
+        },
+        "expanded-production": {
+          "status": "crop-unresolved",
+          "cropSeconds": 4.420354292000003,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "Crowded frame: select one heart with a rough rectangle",
+          "cropEvidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        },
+        "expanded-mixed-body": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.549608957999997,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.7380952380952381,
+              0.6825396825396826
+            ],
+            "lobeOutlineSupport": [
+              0.7777777777777778,
+              0.4166666666666667
+            ],
+            "capColourLoss": [
+              0.0005088945861462616,
+              0.004946872496219785
+            ]
+          }
+        },
+        "expanded-synthetic-joint": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.595682084,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.6101694915254238,
+              0.8135593220338984
+            ],
+            "lobeOutlineSupport": [
+              0.6111111111111112,
+              0.4166666666666667
+            ],
+            "capColourLoss": [
+              0.05706304673505959,
+              0.06834744988855207
+            ]
+          }
+        },
+        "previous-mixed-joint": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.462334041999995,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.7864077669902912,
+              0.912621359223301
+            ],
+            "lobeOutlineSupport": [
+              0.75,
+              0.6944444444444444
+            ],
+            "capColourLoss": [
+              0.313035671441549,
+              0.09862347892032756
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "real-12ce3c9180f7f317-body-1",
+      "cohort": "added8",
+      "motif": {
+        "candidateFamily": "five-by-five-checker",
+        "crossCorpusReview": "pending"
+      },
+      "before": {
+        "bodyIoU": 0.9681476136480776,
+        "materialPixelError": 0.4496489688459851,
+        "materialJointError": 0.4496489688459851
+      },
+      "after": {
+        "bodyIoU": 0.9637388926862611,
+        "materialPixelError": 0.027863097849934182,
+        "materialJointError": 0.027863097849934182,
+        "balancedMaterialJointError": 0.030324737344794652
+      },
+      "visualReview": "Yellow/teal checker: previous model collapses toward one paper; expanded model restores much of the checker but retains major wrong regions and rounded cells. No supported crop.",
+      "pipeline": {
+        "expanded-production": {
+          "status": "crop-unresolved",
+          "cropSeconds": 5.490625625000015,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+          "cropEvidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        },
+        "expanded-mixed-body": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.7962251669999967,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.8114285714285714,
+              0.6114285714285714
+            ],
+            "lobeOutlineSupport": [
+              0.9722222222222222,
+              0.75
+            ],
+            "capColourLoss": [
+              0.01342915381972711,
+              0.035402932380435605
+            ]
+          }
+        },
+        "expanded-synthetic-joint": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.4864024999999965,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.8011363636363636,
+              0.8522727272727273
+            ],
+            "lobeOutlineSupport": [
+              0.7777777777777778,
+              0.8888888888888888
+            ],
+            "capColourLoss": [
+              0.12769972483737213,
+              0.3690531265894025
+            ]
+          }
+        },
+        "expanded-mixed-joint": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.5998999579999946,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.8114285714285714,
+              0.6114285714285714
+            ],
+            "lobeOutlineSupport": [
+              0.9722222222222222,
+              0.7222222222222222
+            ],
+            "capColourLoss": [
+              0.10213405636290743,
+              0.3578058490118168
+            ]
+          }
+        },
+        "previous-mixed-joint": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.6096643330000004,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.8636363636363636,
+              0.7954545454545454
+            ],
+            "lobeOutlineSupport": [
+              0.8888888888888888,
+              0.8055555555555556
+            ],
+            "capColourLoss": [
+              0.14574777116194484,
+              0.6278337864327733
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "real-d5b0aa8d4d2465ee-body-1",
+      "cohort": "added8",
+      "motif": {
+        "candidateFamily": "four-by-four-tree",
+        "crossCorpusReview": "pending"
+      },
+      "before": {
+        "bodyIoU": 0.8542559706062461,
+        "materialPixelError": 0.00468557336621455,
+        "materialJointError": 0.00468557336621455
+      },
+      "after": {
+        "bodyIoU": 0.771830639709949,
+        "materialPixelError": 0.21948212083847102,
+        "materialJointError": 0.21948212083847102,
+        "balancedMaterialJointError": 0.18752633796881585
+      },
+      "visualReview": "Curved checker with painted/leafy background: expanded material classification regresses on the left lobe and foreground includes neighboring details. Production yields a recognizable checked checker.",
+      "pipeline": {
+        "expanded-mixed-body": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.549189249999996,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.4566929133858268,
+              0.47244094488188976
+            ],
+            "lobeOutlineSupport": [
+              0.5833333333333334,
+              0.25
+            ],
+            "capColourLoss": [
+              0.01340975561268014,
+              0.0010852297796322438
+            ]
+          }
+        },
+        "expanded-synthetic-joint": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.416744417000009,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.9781021897810219,
+              0.5985401459854015
+            ],
+            "lobeOutlineSupport": [
+              0.6111111111111112,
+              0.75
+            ],
+            "capColourLoss": [
+              0.21339060729999593,
+              0.3014188059583766
+            ]
+          }
+        },
+        "expanded-mixed-joint": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.368265416000009,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.4566929133858268,
+              0.47244094488188976
+            ],
+            "lobeOutlineSupport": [
+              0.3611111111111111,
+              0.2777777777777778
+            ],
+            "capColourLoss": [
+              0.3421523770060181,
+              0.11161280829029131
+            ]
+          }
+        },
+        "expanded-production": {
+          "status": "checked-derived-mask",
+          "cropSeconds": 1.7703959170000163,
+          "solveSeconds": 8.50103358300001,
+          "independentImageError": 0.0061875,
+          "reason": null,
+          "cropEvidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        },
+        "previous-mixed-joint": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.4396168749999996,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.6178861788617886,
+              0.5528455284552846
+            ],
+            "lobeOutlineSupport": [
+              0.5833333333333334,
+              0.8333333333333334
+            ],
+            "capColourLoss": [
+              0.21462766049992574,
+              0.0026528510679812126
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "real-39f3a1ba97852876-body-1",
+      "cohort": "added8",
+      "motif": {
+        "candidateFamily": "curved-checker",
+        "crossCorpusReview": "pending"
+      },
+      "before": {
+        "bodyIoU": 0.8853868194842407,
+        "materialPixelError": 0.19348565872630044,
+        "materialJointError": 0.19348565872630044
+      },
+      "after": {
+        "bodyIoU": 0.7302813017098732,
+        "materialPixelError": 0.27418570734078757,
+        "materialJointError": 0.27418570734078757,
+        "balancedMaterialJointError": 0.31756756756756754
+      },
+      "visualReview": "Hanging curved checker: expanded prediction adds background and retains wrong lobe colors. Production yields a recognizable checked curved grid.",
+      "pipeline": {
+        "expanded-synthetic-joint": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.106393541999976,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.9027777777777778,
+              0.6666666666666666
+            ],
+            "lobeOutlineSupport": [
+              0.7222222222222222,
+              0.4444444444444444
+            ],
+            "capColourLoss": [
+              0.6278061813808296,
+              0.5044870550954907
+            ]
+          }
+        },
+        "expanded-mixed-joint": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.315990916999988,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.37362637362637363,
+              0.5714285714285714
+            ],
+            "lobeOutlineSupport": [
+              0.5555555555555556,
+              0.8055555555555556
+            ],
+            "capColourLoss": [
+              0.06808476082741527,
+              0.5441144325067439
+            ]
+          }
+        },
+        "expanded-production": {
+          "status": "checked-derived-mask",
+          "cropSeconds": 0.14029291599997668,
+          "solveSeconds": 4.023665000000008,
+          "independentImageError": 0.004588888888888889,
+          "reason": null,
+          "cropEvidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        },
+        "expanded-mixed-body": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.455876457999984,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.37362637362637363,
+              0.5714285714285714
+            ],
+            "lobeOutlineSupport": [
+              0.5555555555555556,
+              0.6944444444444444
+            ],
+            "capColourLoss": [
+              0.0002831267510923836,
+              0.07479996473978939
+            ]
+          }
+        },
+        "previous-mixed-joint": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.2920485419999967,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.8876404494382022,
+              0.4157303370786517
+            ],
+            "lobeOutlineSupport": [
+              0.6944444444444444,
+              0.5555555555555556
+            ],
+            "capColourLoss": [
+              0.023807305828022953,
+              0.4279199339762032
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "real-e936e08ac62db19b-body-1",
+      "cohort": "added8",
+      "motif": {
+        "candidateFamily": "regular-checkerboard",
+        "crossCorpusReview": "pending"
+      },
+      "before": {
+        "bodyIoU": 0.8020576131687243,
+        "materialPixelError": 0.4704881782616091,
+        "materialJointError": 0.4704881782616091
+      },
+      "after": {
+        "bodyIoU": 0.7521070130673471,
+        "materialPixelError": 0.39292396666099677,
+        "materialJointError": 0.39292396666099677,
+        "balancedMaterialJointError": 0.3820707906053589
+      },
+      "visualReview": "Orange/yellow checker: expanded model recovers some checker cells but still largely merges the two papers and includes feather/decorative clutter. No supported crop.",
+      "pipeline": {
+        "expanded-mixed-joint": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.651608540999994,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.8913043478260869,
+              0.6739130434782609
+            ],
+            "lobeOutlineSupport": [
+              0.9444444444444444,
+              0.5277777777777778
+            ],
+            "capColourLoss": [
+              0.5330292859571937,
+              0.07749486277405278
+            ]
+          }
+        },
+        "expanded-production": {
+          "status": "crop-unresolved",
+          "cropSeconds": 3.598847207999992,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "Crowded frame: select one heart with a rough rectangle",
+          "cropEvidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        },
+        "expanded-mixed-body": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.679422749999969,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.8913043478260869,
+              0.6739130434782609
+            ],
+            "lobeOutlineSupport": [
+              0.3611111111111111,
+              0.6388888888888888
+            ],
+            "capColourLoss": [
+              0.19968636000419612,
+              0.1684230615691662
+            ]
+          }
+        },
+        "expanded-synthetic-joint": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.5128455419999662,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.48695652173913045,
+              0.5391304347826087
+            ],
+            "lobeOutlineSupport": [
+              0.6944444444444444,
+              0.3055555555555556
+            ],
+            "capColourLoss": [
+              0.6616329350202104,
+              0.22707327218678364
+            ]
+          }
+        },
+        "previous-mixed-joint": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.636040417000004,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.631578947368421,
+              0.5964912280701754
+            ],
+            "lobeOutlineSupport": [
+              0.6111111111111112,
+              0.5277777777777778
+            ],
+            "capColourLoss": [
+              0.5803135491040278,
+              0.06021481757533628
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "real-340f5e5b0f447889-body-1",
+      "cohort": "added8",
+      "motif": {
+        "candidateFamily": "dragonfly-protrusions",
+        "crossCorpusReview": "pending"
+      },
+      "before": {
+        "bodyIoU": 0.6543338183329869,
+        "materialPixelError": 0.41065535124941066,
+        "materialJointError": 0.5737859500235738
+      },
+      "after": {
+        "bodyIoU": 0.6405515706158793,
+        "materialPixelError": 0.07685054219707685,
+        "materialJointError": 0.14222850856514224,
+        "balancedMaterialJointError": 0.13080044985575276
+      },
+      "visualReview": "Protruding motif: partial material error improves but the body is severely mislocalized and the main silhouette is absent. Lower-edge crop failure remains.",
+      "pipeline": {
+        "expanded-production": {
+          "status": "crop-unresolved",
+          "cropSeconds": 3.640519333000004,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "Crowded frame: select one heart with a rough rectangle",
+          "cropEvidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        },
+        "expanded-mixed-body": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.790715582999983,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              1,
+              0.782608695652174
+            ],
+            "lobeOutlineSupport": [
+              0.3055555555555556,
+              0.4722222222222222
+            ],
+            "capColourLoss": [
+              0.013981782905300284,
+              0.2013262716346621
+            ]
+          }
+        },
+        "expanded-synthetic-joint": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.506476332999999,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              0.8217821782178217,
+              0.43564356435643564
+            ],
+            "lobeOutlineSupport": [
+              0.08333333333333333,
+              0.3611111111111111
+            ],
+            "capColourLoss": [
+              0.44897258423647496,
+              0.2798058845769981
+            ]
+          }
+        },
+        "expanded-mixed-joint": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.5986681249999672,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "cropEvidence": {
+            "lowerEdgeSupport": [
+              1,
+              0.782608695652174
+            ],
+            "lobeOutlineSupport": [
+              0.1388888888888889,
+              0.6944444444444444
+            ],
+            "capColourLoss": [
+              0.32389058693817196,
+              0.2287863318301732
+            ]
+          }
+        },
+        "previous-mixed-joint": {
+          "status": "crop-unresolved",
+          "cropSeconds": 2.254837958999997,
+          "solveSeconds": null,
+          "independentImageError": null,
+          "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+          "cropEvidence": {
+            "lowerEdgeSupport": null,
+            "lobeOutlineSupport": null,
+            "capColourLoss": null
+          }
+        }
+      }
+    }
+  ],
+  "validation": {
+    "independentModelInferenceMaxDifference": 0.0,
+    "fullPipelineAttempts": 85,
+    "editableConversions": 15,
+    "editableConversionsPassed": 15,
+    "completeEditablePasses": 13,
+    "sourcePredictionInstancesVisuallyReviewed": 17,
+    "reconstructionRowsVisuallyReviewed": 15,
+    "repositoryQa": "No production source changed. Latest repository QA remains docs/inverse/datasets/editable-paper-qa.json: 924/925 inverse tests, unresolved short-routing timeout; no new green suite claimed."
+  },
+  "findings": [
+    "Expanded real supervision improves average material identity on the original nine and added eight, but lowers body IoU across all seventeen.",
+    "Current-solver replay improves learned joint acceptance from 2/17 to 3/17, losing boar while adding rabbit and stacked hearts. Production reaches 6/17 on this same dataset.",
+    "All fourteen expanded-joint failures stop at crop selection, not at template search. Some have almost zero observed material error, so lower-edge/lobe support and foreground quality remain separate limits.",
+    "Low error and physical legality can coexist with lost fine strokes or opened enclosed motifs. Derived-mask acceptance is not artwork or topology accuracy.",
+    "Sparse conservative labels omit many cutting boundaries; near-zero observed errors do not certify a usable full mask.",
+    "Additional photographs alone did not fix printed ink, similar paper colors, clutter, occlusions or fine details. No replacement model is justified."
+  ],
+  "nextWork": [
+    "Measure controlled appearance sensitivity without changing geometry or labels, then test photo-conditioned paper identity or color augmentation on fixed grouped folds.",
+    "Use crop proposals and source-aware local refinement to retain high-resolution boundaries; do not accept failed geometry just because the neural fields have a low pixel score.",
+    "Address enclosure preservation and narrow boundary features in ordinary fitting and final exported-mask checks."
+  ]
+}

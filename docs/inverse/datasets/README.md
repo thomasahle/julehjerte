@@ -20,13 +20,13 @@ The inventory, with material annotations updated on 2026-10-15, contains:
 | Trained proposal models | 4 | Same 880,466-parameter network: random/ImageNet, balanced loss, and broader corner data; synthetic-only, offline. |
 | Trained foreground models | 5 | RGB-only, 880,449 parameters; random/ImageNet, background augmentation, and paired clutter/control runs, all offline. |
 | Decoder-adaptation checkpoints | 4 | One synthetic control and three grouped real/synthetic folds; no all-data or deployed model. |
-| Material-pilot checkpoints | 9, plus 2 synthetic diagnostics | Three grouped pilots independently audited. Printed-paper augmentation improves some material identities but has large per-photo regressions; no integration. |
+| Material-pilot checkpoints | 12, plus 2 synthetic diagnostics | Four grouped pilots independently audited. The expanded pilot reproduces the preceding synthetic control exactly; no integration. |
 | Printed-paper photographic variants | 96 | Three ink recipes on the same 32 training replay geometries, plus 32 byte-identical controls. Exact body, material and graph labels retained. |
 | Training background variants | 2,040 | Five changes to each of 408 original training views; geometry labels and split groups unchanged. |
 | Training scene variants | 2,448 | Neighbours and handles paired with all six backgrounds for the same 408 training views; no new geometry families. |
 | Source-photo material QA samples | 78 integrated + 25 new | Four hearts in two reserved photographs; sparse assistant-reviewed development observations, not dense labels or training data. The new jigsaw review is not yet in the common benchmark fixture. |
-| Real visible-body annotations | 19 | Eighteen instances in sixteen groups outside source QA, plus one reserved gold-angel instance. Uncertain pixels are excluded; the nine additions to the original ten-instance pilot have not entered training. |
-| Real partial paper-material annotations | 17 heart instances | Nine instances in the existing pilots plus eight additional reviewed instances. Separate body and material uncertainty; the eight additions have not entered training. |
+| Real visible-body annotations | 19 | Eighteen instances in sixteen groups outside source QA, plus one reserved gold-angel instance. Uncertain pixels are excluded; seventeen instances enter the expanded grouped material pilot. |
+| Real partial paper-material annotations | 17 heart instances | All seventeen enter the expanded grouped pilot, with whole motif families kept apart. Separate body and material uncertainty; these are previously inspected development examples. |
 
 ## Current results and limits
 
@@ -37,11 +37,24 @@ coordinates at the existing 40-step interval. Halving that interval adds work
 without improving this fit; checking every ten steps slightly worsens independent
 rendered error. No cadence change is integrated.
 
-The [next material-learning plan](material-expanded-plan.json) expands the
-reviewed real pool from nine to seventeen instances while preserving the two
-whole motif-family groups, synthetic replay, initial model and update budget.
-Results will separate the original nine from the eight additions. This is a
-declared offline experiment, not a trained or deployed model result.
+The [expanded material experiment](material-expanded-results.json) completes the
+[seventeen-photo plan](material-expanded-plan.json), independent checkpoint audit,
+visual review and 85 full-pipeline attempts. Evaluating both the previous and new
+models on the same seventeen photos reduces observed material disagreement from
+19.42% to 14.90%, while body IoU falls from 83.83% to 81.83%. On the original nine,
+material disagreement improves from 15.41% to 12.56%; results for the eight
+additions and both held-out families are recorded separately. Synthetic control
+tensors, shared predictions and original input labels remain exactly identical.
+
+With the same current solver, the learned joint pipeline increases checked
+editable pairs from 2/17 to 3/17, losing the boar and adding rabbit and stacked
+hearts. Production reaches 6/17. All fourteen expanded-joint failures stop at
+cropping; some have almost zero observed material error but still lack usable
+outline/lobe evidence. The fifteen available reconstructions were visually
+reviewed, including rejected candidates. Opened heart motifs, lost thin strokes
+and rounded cells remain visible in some accepted outputs. These counts measure
+derived-mask and paper checks, not faithful recovery of original artwork. The
+model remains offline, and this experiment does not replace the corpus benchmarks.
 
 The [latest export-audit QA](editable-paper-qa.json) passes all 60 saved SVGs
 through the stronger paper check, 857 application tests, type checking, lint,
@@ -55,7 +68,8 @@ A [new orange/yellow Pinterest checker](palette-photo-labels.json) adds one
 previously unlabelled photograph with body and partial paper-identity labels.
 Source outlines and overlays at 256 and 768 pixels were reviewed; compilation
 from the admitted sidecars reproduces every reviewed PNG byte. The source group
-remains unassigned, with no training or new model result. A duplicate star draft
+remains unassigned in the source inventory; it now enters the expanded grouped
+development experiment above. A duplicate star draft
 was excluded and a reserved QA photograph was kept out of training admission.
 
 [Five additional material annotations](additional-material-labels.json) cover a
@@ -66,8 +80,9 @@ and compiled at 256 and 768 pixels. The compiler verifies every pixel, and RGB
 and body assets remain byte-identical to the previous exports. One sloth
 polygon initially crossed a paper boundary; it was corrected and re-reviewed.
 Fine bicycle strokes, handles, occlusions, seams and uncertain material remain
-unlabelled. These five labels are not new held-out photographs and have not
-entered training. The material inventory is now sixteen instances.
+unlabelled. These five labels are not new held-out photographs; they now enter
+the expanded grouped experiment above. At admission the material inventory was
+sixteen instances.
 
 The first [joint material pilot](material-pilot-results.md) has completed all
 three training runs and its independent checkpoint audit. Mixed out-of-fold
@@ -100,16 +115,16 @@ motif pieces and a yellow background. Both 256- and 768-pixel overlays were
 visually reviewed and pass the compiler's source, grouping and pixel checks.
 The 256-pixel RGB and body PNGs are byte-identical to the earlier body-training
 exports. Seams, fine tips, the handle, shadows and uncertain body regions remain
-unlabelled. This brings the material inventory to ten existing heart instances;
-the new labels have not entered training, and this previously used foreground
-development photograph is not a new held-out test.
+unlabelled. This brought the material inventory to ten existing heart instances.
+The labels now enter the expanded grouped experiment; this previously used
+foreground development photograph is not a new held-out test.
 
 A [curved-checker material annotation](curved-material-labels.json) adds eleven
 conservative red/white regions on an existing development photograph with a
 painted background. Source and compiled overlays at 256 and 768 pixels were
 visually reviewed; admitted PNGs reproduce those overlays exactly, and the
 256-pixel RGB/body files match the previous training exports byte for byte.
-This is the eleventh material-labelled instance and has not entered training.
+This was the eleventh material-labelled instance and now enters the expanded pilot.
 A hand-held printed heart was excluded because its pale ink could not be
 confidently identified as a second sheet.
 
