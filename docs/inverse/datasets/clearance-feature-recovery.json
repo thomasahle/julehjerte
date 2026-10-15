@@ -2013,7 +2013,7 @@
     "regressionTest": "scripts/inverse/clearance-feature-budget.test.mjs"
   },
   "continuation": {
-    "status": "focused-verified-full-qa-pending",
+    "status": "focused-and-browser-verified-full-qa-one-routing-failure",
     "cause": "The bounded helper required a finished image error before handing a starting shape to the main fit. In the full-suite failure, 50 updates produced legal, colour-retaining checkpoints at 3.13% and 3.47% but both were discarded by the 3% final image limit. The unchanged crop was not responsible for this rejection.",
     "change": "Feature recovery may return a distinct continuation only after geometry, paper and source-feature checks pass and original-source error improves. It does not return an accepted candidate above the final limit. The main fitter resumes from those verified coordinates within its existing deadline; final source-image, feature, geometry and paper gates remain unchanged. The Viking pre-clearance feature guard remains in force.",
     "regressions": [
@@ -2119,8 +2119,55 @@
       "bytes": 18527
     },
     "qa": {
-      "status": "pending",
-      "root": "tmp/heart-learning/initializer-perturbation-v1/qa-continuation"
+      "status": "failed",
+      "root": "tmp/heart-learning/initializer-perturbation-v1/qa-continuation",
+      "checks": {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/qa-continuation/qa-checks.json",
+        "sha256": "587ee29a966b2bcd3dc8918350acbbad1142dd36b5b0786954d137439b385cf6",
+        "bytes": 997
+      },
+      "testLog": {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/qa-continuation/test.log",
+        "sha256": "17a240753e4835f3efce752045cf12ff00393a71c82a43c4f865b4f13012eaf1",
+        "bytes": 159441
+      },
+      "sourceHashes": {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/qa-continuation/qa-source.json",
+        "sha256": "baa83cf651c6cf99113ff7186c5e1dedb2edf8dbf12a4f0b9baf6c7e78a82c13",
+        "bytes": 89413
+      },
+      "inverseTests": {
+        "total": 936,
+        "passed": 935,
+        "failed": 1
+      },
+      "failure": {
+        "name": "fresh synthetic-control routing retains time for a valid template without changing the mask",
+        "report": {
+          "path": "tmp/heart-learning/initializer-perturbation-v1/qa-continuation/sloth-failure/report.json",
+          "sha256": "99f80cb106ca533d41c1a68ebb5e698602d848e78725b2110b6d3b6167db0715",
+          "bytes": 53242
+        },
+        "cuts": {
+          "path": "tmp/heart-learning/initializer-perturbation-v1/qa-continuation/sloth-failure/cut_geometry.json",
+          "sha256": "2af53fb9c071db72fec6f52be346e1c05854c38c09f11856398a408f684b6023",
+          "bytes": 36283
+        },
+        "clearanceComparison": null,
+        "nativePointSampleError": 0.053536,
+        "termination": "geometry_failure",
+        "initialRoutingSeconds": 2.510760415999999,
+        "initialRoutingTermination": "time_limit",
+        "recoveryRoutingSeconds": 4.099972500000002,
+        "recoveryRoutingTermination": "time_limit"
+      },
+      "externalLoadAfterRun": {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/qa-continuation/sloth-failure/external-load-after.json",
+        "sha256": "d917095a341e68873e9259f955ccd9e121f6a92187ed60a795d416ab0fd01730",
+        "bytes": 570
+      },
+      "interpretation": "The failed solve never entered the changed clearance-handoff branch. Both initial and sparse feature-recovery MILPs reached their limits without an integer candidate. Other-worktree CPU load was observed afterward, but is not telemetry during the failed solve and does not establish causation. The failure remains recorded even if a focused retry passes.",
+      "nativeBenchmark": "Deferred by full-QA driver; now scheduled separately as a diagnostic without changing the failed QA status."
     },
     "timingQualification": "The forced-handoff diagnostic advances the global clock once after the first 40-step checkpoint, reducing all later remaining allowances. Its measured runtime and clock advance are separately recorded; the ordinary runs use an unchanged wall clock."
   }

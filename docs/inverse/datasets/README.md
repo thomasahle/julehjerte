@@ -42,8 +42,9 @@ The partial material annotations cover only 26.25% of this crop, excluding
 apertures, dark rims, seams and boundaries. Neural error on those conservative
 interiors is just 0.057%, despite the visible boundary distortion; RGB has no
 errors on that subset. This exposes a limitation of the annotation coverage and
-metric. Fresh fitting on these two exact-crop targets is planned after the current
-serial QA run; no new reconstruction result is claimed from this diagnosis.
+metric. Fresh fitting on these two exact-crop targets is queued after a focused
+routing replay and the corpus diagnostics. Full QA terminated with the separately
+recorded failure below; no new reconstruction result is claimed from this diagnosis.
 
 A [clearance-initializer robustness fix](clearance-feature-recovery.json)
 addresses a 116-pixel change in a fixed 400-pixel stacked-heart mask. A valid
@@ -77,7 +78,12 @@ early-handoff integration test pass. Fresh original/resampled fits reach 1.23%
 and 1.35% disagreement; the forced handoff improves a 3.31% intermediate shape
 to 1.39%. All three editable exports pass. The forced run advances the global
 clock once, so it is a scheduling regression check, not a throughput benchmark.
-Complete QA of this correction is pending.
+Complete QA passes 935/936 inverse tests. The stacked-heart regressions pass,
+but the synthetic-control sloth times out in both MILP attempts and returns an
+invalid grid fallback. That solve does not enter the changed clearance-handoff
+branch. The failure is retained while its four-case scheduling regression is
+replayed in order and the corpus benchmarks run separately. These diagnostics
+do not turn the failed full-QA result into a pass.
 
 The stacked-heart fit still needs improvement despite its lower mask error.
 One heart remains connected to the border; another is split, with only 67% of

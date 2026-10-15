@@ -277,7 +277,7 @@
       "bytes": 1123
     },
     {
-      "path": "tmp/heart-learning/fixed-crop-material-v1/fit.py",
+      "path": "tmp/heart-learning/fixed-crop-material-v1/fit-qa-gated.py",
       "sha256": "4310308f05ad19d6a840520f88a41aac904f114aaf07da1e0c51bc6fb51255dd",
       "bytes": 1831
     },
@@ -285,6 +285,12 @@
       "path": "tmp/heart-learning/fixed-crop-material-v1/audit.mjs",
       "sha256": "f684fc0395fd93c3e92b7e53d68da0a987f058507867c3563811444eca4adb7c",
       "bytes": 6056
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/fit.py",
+      "sha256": "24c4a6017d12b831a58ee3b2fa7a7a757bb0f387a4ace1351dffbc51cedea206",
+      "bytes": 1844
     }
-  ]
+  ],
+  "executionPrerequisite": "The full QA process has terminated with one separately recorded routing failure. Diagnostic fitting may follow terminal QA without implying it passed; the coordinator verifies old process exit and unchanged runtime hashes, and runs all expensive stages serially."
 }
