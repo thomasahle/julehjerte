@@ -1,0 +1,153 @@
+{
+  "schema": "woven-heart-material-pilot-results-1",
+  "status": "training-and-independent-audit-complete-pipeline-running",
+  "planSha256": "ef254bfa8958cfb824a645e37c51261527cbf5341bd935b0930142a2269b94e4",
+  "runs": [
+    {
+      "run": "synthetic-control",
+      "updates": 240,
+      "heldOutIds": [
+        "real-2044b1d98ed6f262-body-1",
+        "real-45744a03afddccb1-body-1",
+        "real-8c875dd0f298b5a4-body-1",
+        "real-3f7b76e1a98e808f-body-1",
+        "real-995899fe049540ed-body-1",
+        "real-b87b0b19f12724f3-body-1",
+        "real-cf2d0fcff65d7386-body-1",
+        "real-cdae5c890b6933cd-body-1",
+        "real-68d8f25d8891df62-body-1"
+      ],
+      "sourceSeparationPassed": true,
+      "encoderTensorsIdentical": true,
+      "checkpointPredictionsMaxAbsoluteDifference": 0.0
+    },
+    {
+      "run": "fold-bed20937384f",
+      "updates": 240,
+      "heldOutIds": [
+        "real-2044b1d98ed6f262-body-1",
+        "real-3f7b76e1a98e808f-body-1",
+        "real-45744a03afddccb1-body-1",
+        "real-8c875dd0f298b5a4-body-1"
+      ],
+      "sourceSeparationPassed": true,
+      "encoderTensorsIdentical": true,
+      "checkpointPredictionsMaxAbsoluteDifference": 0.0
+    },
+    {
+      "run": "fold-da2b900600dc",
+      "updates": 240,
+      "heldOutIds": [
+        "real-68d8f25d8891df62-body-1",
+        "real-995899fe049540ed-body-1",
+        "real-b87b0b19f12724f3-body-1",
+        "real-cdae5c890b6933cd-body-1",
+        "real-cf2d0fcff65d7386-body-1"
+      ],
+      "sourceSeparationPassed": true,
+      "encoderTensorsIdentical": true,
+      "checkpointPredictionsMaxAbsoluteDifference": 0.0
+    }
+  ],
+  "metrics": {
+    "neutral": {
+      "bodyIoU": 0.8658223781426478,
+      "bodyPixelError": 0.0499981215692644,
+      "bodyFalseNegative": 0.05262898226793817,
+      "backgroundFalsePositive": 0.03555732549404603,
+      "materialPixelError": 0.45130357521126385,
+      "materialJointError": 0.4677591751113945,
+      "jointRegionPixelError": 0.16208521030472434,
+      "balancedMaterialJointError": 0.5140584615830016
+    },
+    "synthetic-control": {
+      "bodyIoU": 0.8629532874562273,
+      "bodyPixelError": 0.05124896054533363,
+      "bodyFalseNegative": 0.06475119049075105,
+      "backgroundFalsePositive": 0.029953919117393715,
+      "materialPixelError": 0.45239480070130916,
+      "materialJointError": 0.47595615607800845,
+      "jointRegionPixelError": 0.16015520533010102,
+      "balancedMaterialJointError": 0.5017914417671627
+    },
+    "mixed-out-of-fold": {
+      "bodyIoU": 0.8542457648942895,
+      "bodyPixelError": 0.054604938559113754,
+      "bodyFalseNegative": 0.05890887298176598,
+      "backgroundFalsePositive": 0.03910852711895361,
+      "materialPixelError": 0.46106597744832656,
+      "materialJointError": 0.4699605762254017,
+      "jointRegionPixelError": 0.16487629967299902,
+      "balancedMaterialJointError": 0.5161218508271022
+    }
+  },
+  "sourcePhotographs": 9,
+  "updatesPerRun": 240,
+  "trainingSeconds": {
+    "synthetic-control": 48.711329916,
+    "fold-bed20937384f": 56.342591791000004,
+    "fold-da2b900600dc": 53.89462804200001
+  },
+  "initialization": {
+    "parentReportSha256": "f3a71ff6de0cb0a00fe8db15051631d131b6cbd71bf607bd607acae5d101929c",
+    "parentCheckpointSha256": "3e94244975ee6641626b5b93c3948974bfa33609f461aae828e40bdf0a889fe6",
+    "encoder": {
+      "name": "imagenet",
+      "torchvision": "0.23.0",
+      "url": "https://download.pytorch.org/models/mobilenet_v3_small-047dcff4.pth",
+      "sha256": "047dcff4addef86ea5bc2eff13c9614dc11f47ab1160d0a71a25e7db994f4e1f",
+      "bytes": 10306551,
+      "weights": "TorchVision MobileNet_V3_Small_Weights.IMAGENET1K_V1",
+      "note": "Different checkpoint from the researched timm LAMB weights; TorchVision is already installed."
+    },
+    "materialHead": "Zero logits; retained foreground output",
+    "encoderSha256": "b1cf55565050946ed39b0ade833321736a6c34fc053fa6a3ed5c4a9090675481"
+  },
+  "sourcePromotions": {
+    "material_pilot.py": {
+      "staged": "tmp/heart-learning/material-pilot-v1/material_pilot.py",
+      "committed": "scripts/inverse/learning/material_pilot.py",
+      "sha256": "d365d74cb838756b2ff730b8b3003da8fd68a768a9e3e05a0c1264f2e37f36a9"
+    },
+    "material_pilot.test.py": {
+      "staged": "tmp/heart-learning/material-pilot-v1/material_pilot.test.py",
+      "committed": "scripts/inverse/learning/material_pilot.test.py",
+      "sha256": "3424883ec752a9022a323a1e620a77f5f7bf494eb6f929fcb99564424c1ff588"
+    },
+    "train-material-pilot.py": {
+      "staged": "tmp/heart-learning/material-pilot-v1/train-material-pilot.py",
+      "committed": "scripts/inverse/learning/train-material-pilot.py",
+      "sha256": "300b8dabd2087e59d2af7b91ae23ff0dd3552b9e08609352b689fd72cf21de16"
+    }
+  },
+  "checks": {
+    "inputUnitTests": 4,
+    "checkpointInferenceReplayed": true,
+    "independentMetricsAgree": true,
+    "heldOutTrainingExclusionVerified": true,
+    "encoderTensorsUnchanged": true
+  },
+  "visualReview": {
+    "reviewedInstances": [
+      "real-995899fe049540ed-body-1",
+      "real-3f7b76e1a98e808f-body-1",
+      "real-cf2d0fcff65d7386-body-1"
+    ],
+    "findings": "Printed floral/stripe, dark star and blue/yellow checker all exhibit almost single-paper material predictions. The star and checker bodies are recognizable; the printed floral outline has holes/notches. Remaining galleries and full reconstruction outputs still require review."
+  },
+  "conclusion": "Reject browser integration of these material checkpoints. Material discrimination is weak in both controls and mixed runs; no full-pipeline gain claimed.",
+  "nextDiagnosis": "Measure material loss and logit/class distributions on the exact synthetic training replay to distinguish optimization/representation failure from real-photo transfer failure.",
+  "artifacts": {
+    "tmp/heart-learning/material-pilot-v1/checks.json": "aa71acbc34d191280def19f7a2cf0027dadadca0be7cdb802af16858f391f1a2",
+    "tmp/heart-learning/material-pilot-v1/input-tests.log": "66d6e314674f6e6ea71cf48674237688347597b068c9457453dcd6ce6dfe124b",
+    "tmp/heart-learning/material-pilot-v1/run-v1/report.json": "83d8ee7b4ed1b7c86307809021f8f077e16646ea672dbf36430fad31f904423e",
+    "tmp/heart-learning/material-pilot-review-v1/review-v1/audit.json": "f3d7558687d4a46d205f5effc75d87852c71abe0e8fb944c1c3027cdfd97b6ce",
+    "tmp/heart-learning/material-pilot-review-v1/review-v1/index.html": "82e47ceeafe0de0b3b2ffa95ede4ffd9abbe25a982c222c868b39986ba28fa3e"
+  },
+  "limits": [
+    "Previously inspected partial annotations; this is grouped development evaluation, not an unseen test.",
+    "Declared motif/source groups are conservative but not topology-disjoint, and synthetic replay includes checker weaving.",
+    "Unknown boundaries do not receive labels or scores. Body/material scores do not establish correct crops or cutting templates.",
+    "One seed and a fixed update budget; no all-data model, ONNX export or browser deployment."
+  ]
+}
