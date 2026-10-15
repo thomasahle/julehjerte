@@ -30,6 +30,27 @@ The inventory, with material annotations updated on 2026-10-15, contains:
 
 ## Current results and limits
 
+A [clearance-initializer robustness fix](clearance-feature-recovery.json)
+addresses a 116-pixel change in a fixed 400-pixel stacked-heart mask. A valid
+but incomplete alternative previously missed the bounded refinement that an
+invalid alternative received; coarse paper uncertainty then repeatedly erased
+useful progress. The helper now verifies uncertain checkpoints, including the
+last retained alternative, before accepting their unchanged curves. A fresh
+perturbed solve passes at 1.36% disagreement within ten seconds, with the same
+geometry and paper rules. The controlled regression and both fresh masks pass;
+type checking, lint, build and private star/hat browser checks pass. Full tests
+and corpus QA are still running. Visual inspection still finds split heart
+motifs and imperfect borders, so this is not complete artwork recovery.
+
+The [guided-field experiment](guided-material-fields.json) is complete and
+remains offline. Across seventeen development photos, RGB-guided sharpening
+produces 2--4 supported crops depending on radius, versus three baseline crops.
+All eleven available reconstructions and editable conversions were inspected.
+The newly supported decorated checker has a displaced crop despite a low
+derived-mask error; other fits still lose thin features or open heart motifs.
+No guided filter is integrated. Its unfiltered control also exposed the small
+resampling perturbation investigated by the initializer fix above.
+
 Two [new Pinterest paper-scene annotations](paper-scene-labels.json) add a
 hand-held red/green checker and a painted purple/pink and white checker.
 The labels distinguish paper identity from paint variation and exclude

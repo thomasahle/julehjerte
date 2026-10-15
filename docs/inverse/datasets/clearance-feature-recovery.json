@@ -1,0 +1,668 @@
+{
+  "schema": "clearance-feature-recovery-1",
+  "status": "implemented-qa-in-progress",
+  "commit": "423462a",
+  "scope": "Robustness to a 116-pixel (0.0725%) resampling perturbation in a fixed 400x400 learned development mask; cropping and slit-count candidates held unchanged. Not an original-artwork accuracy claim.",
+  "findings": [
+    "The perturbed 4x4 alternative has a lower clearance score but misses a source colour region; the old feature-retention gate prevents its bounded repair.",
+    "Simply enabling refinement is insufficient: its initially valid paper creates a safe rollback point. Useful later checkpoints are uncertain at 360px, and repeated rollbacks discard their progress.",
+    "A fixed 125-step comparison on identical curves reduces independent error from 6.9475% to 1.849375% when the existing finer paper verification is enabled.",
+    "A final uncertain checkpoint can miss the in-loop time reserve. The helper now evaluates this retained candidate against the original source and independently audits its actual curves at 700px before accepting it."
+  ],
+  "changes": [
+    "Allow one lower-scoring, geometry-valid alternative with missing source colours into the bounded helper when no image-passing candidate exists. Immediate promotion still requires retained features.",
+    "Use the main fitter's paper verification before rollback; preserve the same 1.2-second overall helper cap and ten-second search deadline.",
+    "Compare the retained uncertain checkpoint and incumbent using original-source error; retain complete geometry, feature and material checks. Crossings, weighted borders and requested symmetry remain excluded."
+  ],
+  "runs": [
+    {
+      "name": "original-control",
+      "artifact": {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/original-control/report.json",
+        "sha256": "6f054ac426c6852229375c379c6089e99a142cafc4aca5f98a13851cd1af943b",
+        "bytes": 137006
+      },
+      "status": "complete",
+      "seconds": 9.686700167000001,
+      "independentImageError": 0.012375,
+      "checkedPair": true,
+      "comparison": {
+        "initialCounts": [
+          3,
+          5
+        ],
+        "initialGridError": 0.060455322265625,
+        "initialClearanceError": 0.08343505859375,
+        "alternativeCounts": [
+          4,
+          4
+        ],
+        "alternativeGridError": 0.0612030029296875,
+        "alternativeClearanceError": 0.0753936767578125,
+        "initialColours": true,
+        "alternativeColours": true,
+        "alternativeGeometry": false,
+        "seconds": 1.3417075420000002,
+        "preferred": true
+      },
+      "repair": {
+        "accepted": true,
+        "method": "clearance-initializer-refinement",
+        "steps": 85,
+        "imageError": 0.02536875,
+        "paperVerification": {
+          "requestedResolution": 360,
+          "initialStatus": "uncertain",
+          "resolution": 700,
+          "status": "pass",
+          "source": "clearance-initializer-refinement"
+        },
+        "seconds": 1.007313792
+      }
+    },
+    {
+      "name": "resampled-control",
+      "artifact": {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/resampled-control/report.json",
+        "sha256": "e9b0e2d550b29d0773c4a72b5dd7221c91c2e706576db8891ad9b1acf19908ef",
+        "bytes": 125561
+      },
+      "status": "complete",
+      "seconds": 9.546484083,
+      "independentImageError": 0.030375,
+      "checkedPair": false,
+      "comparison": {
+        "initialCounts": [
+          3,
+          5
+        ],
+        "initialGridError": 0.060638427734375,
+        "initialClearanceError": 0.0811920166015625,
+        "alternativeCounts": [
+          4,
+          4
+        ],
+        "alternativeGridError": 0.062835693359375,
+        "alternativeClearanceError": 0.074920654296875,
+        "initialColours": true,
+        "alternativeColours": false,
+        "alternativeGeometry": true,
+        "alternativePaper": "pass",
+        "seconds": 0.4661776669999999,
+        "preferred": false
+      },
+      "repair": {}
+    },
+    {
+      "name": "resampled-prototype",
+      "artifact": {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/resampled-prototype/report.json",
+        "sha256": "7ff175c02f505584cb555864d3b9955c305bbde9a0e289162185dcbe50e9ddda",
+        "bytes": 133382
+      },
+      "status": "complete",
+      "seconds": 9.574842917,
+      "independentImageError": 0.03155625,
+      "checkedPair": false,
+      "comparison": {
+        "initialCounts": [
+          3,
+          5
+        ],
+        "initialGridError": 0.060638427734375,
+        "initialClearanceError": 0.0811920166015625,
+        "alternativeCounts": [
+          4,
+          4
+        ],
+        "alternativeGridError": 0.062835693359375,
+        "alternativeClearanceError": 0.074920654296875,
+        "initialColours": true,
+        "alternativeColours": false,
+        "alternativeGeometry": true,
+        "alternativePaper": "pass",
+        "seconds": 1.1025353340000001,
+        "preferred": false
+      },
+      "repair": {
+        "accepted": false,
+        "method": "clearance-initializer-refinement",
+        "trigger": "missing-source-feature",
+        "steps": 125,
+        "imageError": 0.06956875,
+        "reason": "refinement_rejected",
+        "seconds": 0.6695945839999995
+      }
+    },
+    {
+      "name": "original-prototype",
+      "artifact": {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/original-prototype/report.json",
+        "sha256": "f52ffd75a328960473a975b2ca72adb56f5d28bdf266ad512929f819929fef80",
+        "bytes": 122102
+      },
+      "status": "complete",
+      "seconds": 9.723794416999999,
+      "independentImageError": 0.02373125,
+      "checkedPair": true,
+      "comparison": {
+        "initialCounts": [
+          3,
+          5
+        ],
+        "initialGridError": 0.060455322265625,
+        "initialClearanceError": 0.08343505859375,
+        "alternativeCounts": [
+          4,
+          4
+        ],
+        "alternativeGridError": 0.0612030029296875,
+        "alternativeClearanceError": 0.0753936767578125,
+        "initialColours": true,
+        "alternativeColours": true,
+        "alternativeGeometry": false,
+        "seconds": 0.9828972920000005,
+        "preferred": false
+      },
+      "repair": {
+        "accepted": false,
+        "method": "clearance-initializer-refinement",
+        "trigger": "inter-slit-clearance",
+        "steps": 55,
+        "imageError": 0.03211875,
+        "reason": "refinement_rejected",
+        "seconds": 0.6453445419999998
+      }
+    },
+    {
+      "name": "resampled-verified-prototype",
+      "artifact": {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/resampled-verified-prototype/report.json",
+        "sha256": "a687a0de4bd1e9928d79bca61ffce3aa934e1a2d5297dc8c44062dc60b5506b1",
+        "bytes": 134939
+      },
+      "status": "complete",
+      "seconds": 9.549363332999999,
+      "independentImageError": 0.03240625,
+      "checkedPair": false,
+      "comparison": {
+        "initialCounts": [
+          3,
+          5
+        ],
+        "initialGridError": 0.060638427734375,
+        "initialClearanceError": 0.0811920166015625,
+        "alternativeCounts": [
+          4,
+          4
+        ],
+        "alternativeGridError": 0.062835693359375,
+        "alternativeClearanceError": 0.074920654296875,
+        "initialColours": true,
+        "alternativeColours": false,
+        "alternativeGeometry": true,
+        "alternativePaper": "pass",
+        "seconds": 1.318437709,
+        "preferred": false
+      },
+      "repair": {
+        "accepted": false,
+        "method": "clearance-initializer-refinement",
+        "trigger": "missing-source-feature",
+        "steps": 85,
+        "imageError": 0.0347125,
+        "reason": "refinement_rejected",
+        "seconds": 0.8551510420000004
+      }
+    },
+    {
+      "name": "resampled-alternative-prototype",
+      "artifact": {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/resampled-alternative-prototype/report.json",
+        "sha256": "24087bc489a7dc8d7a92815af2814336873002ea0c84d841bd7543233ba4faa7",
+        "bytes": 137459
+      },
+      "status": "complete",
+      "seconds": 9.700219875,
+      "independentImageError": 0.01330625,
+      "checkedPair": true,
+      "comparison": {
+        "initialCounts": [
+          3,
+          5
+        ],
+        "initialGridError": 0.060638427734375,
+        "initialClearanceError": 0.0811920166015625,
+        "alternativeCounts": [
+          4,
+          4
+        ],
+        "alternativeGridError": 0.062835693359375,
+        "alternativeClearanceError": 0.074920654296875,
+        "initialColours": true,
+        "alternativeColours": false,
+        "alternativeGeometry": true,
+        "alternativePaper": "pass",
+        "seconds": 1.4731782920000005,
+        "preferred": true
+      },
+      "repair": {
+        "accepted": true,
+        "method": "clearance-initializer-refinement",
+        "trigger": "missing-source-feature",
+        "steps": 85,
+        "usedPaperAlternative": true,
+        "imageError": 0.02341875,
+        "paperVerification": {
+          "requestedResolution": 360,
+          "initialStatus": "uncertain",
+          "resolution": 700,
+          "status": "pass",
+          "source": "clearance-initializer-refinement"
+        },
+        "seconds": 0.9915622089999997
+      }
+    },
+    {
+      "name": "resampled-integrated",
+      "artifact": {
+        "path": "tmp/heart-learning/initializer-perturbation-v1/resampled-integrated/report.json",
+        "sha256": "0c9cfa75560a747d188f5274e829f83b9a09f0b3ccabf84c0c117da05fe314e8",
+        "bytes": 131285
+      },
+      "status": "complete",
+      "seconds": 9.709506333000002,
+      "independentImageError": 0.0135875,
+      "checkedPair": true,
+      "comparison": {
+        "initialCounts": [
+          3,
+          5
+        ],
+        "initialGridError": 0.060638427734375,
+        "initialClearanceError": 0.0811920166015625,
+        "alternativeCounts": [
+          4,
+          4
+        ],
+        "alternativeGridError": 0.062835693359375,
+        "alternativeClearanceError": 0.074920654296875,
+        "initialColours": true,
+        "alternativeColours": false,
+        "alternativeGeometry": true,
+        "alternativePaper": "pass",
+        "seconds": 1.493566667,
+        "preferred": true
+      },
+      "repair": {
+        "accepted": true,
+        "method": "clearance-initializer-refinement",
+        "trigger": "missing-source-feature",
+        "steps": 75,
+        "checkpoints": [
+          {
+            "imageError": 0.024475,
+            "featuresPassed": true,
+            "geometryPassed": true,
+            "paperAlternative": true,
+            "paper": "pass"
+          }
+        ],
+        "imageError": 0.024475,
+        "paperVerification": {
+          "requestedResolution": 360,
+          "initialStatus": "uncertain",
+          "resolution": 700,
+          "status": "pass",
+          "source": "clearance-initializer-refinement"
+        },
+        "usedPaperAlternative": true,
+        "seconds": 0.9755560409999998
+      }
+    }
+  ],
+  "fixedWork": {
+    "artifact": {
+      "path": "tmp/heart-learning/initializer-perturbation-v1/frozen-refinement/report.json",
+      "sha256": "4d74bb8684a77ec4e6fc211ccb1e877d290d13ad76b1a8df7a2895258db9afa1",
+      "bytes": 20686
+    },
+    "rows": [
+      {
+        "verifyBeforeRollback": false,
+        "steps": 125,
+        "seconds": 0.7953971660000001,
+        "independentImageError": 0.069475,
+        "featuresPassed": false,
+        "geometryPassed": true,
+        "paper": {
+          "status": "pass",
+          "requiredRemainingWidth": 2,
+          "nominalDiameter": 2.50501002004008,
+          "gridSpacing": 0.2777777777777778,
+          "clearanceGuard": 0.20641855032959658,
+          "families": [
+            {
+              "family": 0,
+              "status": "pass",
+              "detachedCertainCoreIslands": 0,
+              "detachedPossibleCoreIslands": 0,
+              "detachedPossibleArea": 0,
+              "foldIntervals": [
+                {
+                  "interval": [
+                    0,
+                    22.87104764666868
+                  ],
+                  "certainCoreLength": 20.000000000000032,
+                  "possibleCoreLength": 20.55555555555559
+                },
+                {
+                  "interval": [
+                    22.87104764666868,
+                    52.51889351234684
+                  ],
+                  "certainCoreLength": 26.38888888888894,
+                  "possibleCoreLength": 27.500000000000053
+                },
+                {
+                  "interval": [
+                    52.51889351234684,
+                    71.67573874842034
+                  ],
+                  "certainCoreLength": 16.38888888888891,
+                  "possibleCoreLength": 16.944444444444468
+                },
+                {
+                  "interval": [
+                    71.67573874842034,
+                    96.73215287930073
+                  ],
+                  "certainCoreLength": 20.833333333333368,
+                  "possibleCoreLength": 21.944444444444482
+                },
+                {
+                  "interval": [
+                    96.73215287930073,
+                    100
+                  ],
+                  "certainCoreLength": 0.5555555555555556,
+                  "possibleCoreLength": 1.1111111111111112
+                }
+              ]
+            },
+            {
+              "family": 1,
+              "status": "pass",
+              "detachedCertainCoreIslands": 0,
+              "detachedPossibleCoreIslands": 0,
+              "detachedPossibleArea": 0,
+              "foldIntervals": [
+                {
+                  "interval": [
+                    0,
+                    4.900231825383484
+                  ],
+                  "certainCoreLength": 1.9444444444444442,
+                  "possibleCoreLength": 2.7777777777777772
+                },
+                {
+                  "interval": [
+                    4.900231825383484,
+                    56.792517348132826
+                  ],
+                  "certainCoreLength": 35.83333333333341,
+                  "possibleCoreLength": 39.16666666666675
+                },
+                {
+                  "interval": [
+                    56.792517348132826,
+                    60.026554916903486
+                  ],
+                  "certainCoreLength": 0.2777777777777778,
+                  "possibleCoreLength": 1.1111111111111112
+                },
+                {
+                  "interval": [
+                    60.026554916903486,
+                    96.73215287930073
+                  ],
+                  "certainCoreLength": 26.944444444444496,
+                  "possibleCoreLength": 28.888888888888946
+                },
+                {
+                  "interval": [
+                    96.73215287930073,
+                    100
+                  ],
+                  "certainCoreLength": 0.5555555555555556,
+                  "possibleCoreLength": 1.1111111111111112
+                }
+              ]
+            }
+          ],
+          "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+          "seconds": 0.022748207999999978,
+          "limitations": [
+            "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+            "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+            "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+            "Small tips and features below the explicitly stated area threshold are not certified."
+          ]
+        }
+      },
+      {
+        "verifyBeforeRollback": true,
+        "steps": 125,
+        "seconds": 1.238350792,
+        "independentImageError": 0.01849375,
+        "featuresPassed": true,
+        "geometryPassed": true,
+        "paper": {
+          "status": "pass",
+          "requiredRemainingWidth": 2,
+          "nominalDiameter": 2.50501002004008,
+          "gridSpacing": 0.14285714285714285,
+          "clearanceGuard": 0.11101525445522108,
+          "families": [
+            {
+              "family": 0,
+              "status": "pass",
+              "detachedCertainCoreIslands": 0,
+              "detachedPossibleCoreIslands": 0,
+              "detachedPossibleArea": 0,
+              "foldIntervals": [
+                {
+                  "interval": [
+                    0,
+                    22.718080586508147
+                  ],
+                  "certainCoreLength": 19.857142857142826,
+                  "possibleCoreLength": 20.428571428571395
+                },
+                {
+                  "interval": [
+                    22.718080586508147,
+                    53.139248679897655
+                  ],
+                  "certainCoreLength": 26.71428571428566,
+                  "possibleCoreLength": 27.285714285714228
+                },
+                {
+                  "interval": [
+                    53.139248679897655,
+                    72.15204906830424
+                  ],
+                  "certainCoreLength": 16.285714285714267,
+                  "possibleCoreLength": 16.714285714285694
+                },
+                {
+                  "interval": [
+                    72.15204906830424,
+                    96.73215287930073
+                  ],
+                  "certainCoreLength": 21.142857142857107,
+                  "possibleCoreLength": 21.571428571428534
+                },
+                {
+                  "interval": [
+                    96.73215287930073,
+                    100
+                  ],
+                  "certainCoreLength": 0.42857142857142855,
+                  "possibleCoreLength": 0.9999999999999998
+                }
+              ]
+            },
+            {
+              "family": 1,
+              "status": "pass",
+              "detachedCertainCoreIslands": 0,
+              "detachedPossibleCoreIslands": 0,
+              "detachedPossibleArea": 0,
+              "foldIntervals": [
+                {
+                  "interval": [
+                    0,
+                    3.2678471206992734
+                  ],
+                  "certainCoreLength": 0.42857142857142855,
+                  "possibleCoreLength": 0.9999999999999998
+                },
+                {
+                  "interval": [
+                    3.2678471206992734,
+                    56.83868353939625
+                  ],
+                  "certainCoreLength": 33.57142857142853,
+                  "possibleCoreLength": 37.28571428571432
+                },
+                {
+                  "interval": [
+                    56.83868353939625,
+                    60.085512599185016
+                  ],
+                  "certainCoreLength": 0.5714285714285714,
+                  "possibleCoreLength": 0.9999999999999998
+                },
+                {
+                  "interval": [
+                    60.085512599185016,
+                    96.73215287930073
+                  ],
+                  "certainCoreLength": 28.71428571428565,
+                  "possibleCoreLength": 29.999999999999932
+                },
+                {
+                  "interval": [
+                    96.73215287930073,
+                    100
+                  ],
+                  "certainCoreLength": 0.42857142857142855,
+                  "possibleCoreLength": 0.9999999999999998
+                }
+              ]
+            }
+          ],
+          "method": "Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.",
+          "seconds": 0.07575437500000044,
+          "limitations": [
+            "This replaces the Python GEOS offset implementation; numerical results are not identical.",
+            "Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.",
+            "Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.",
+            "Small tips and features below the explicitly stated area threshold are not certified."
+          ]
+        }
+      }
+    ]
+  },
+  "tests": {
+    "fixedWork": {
+      "path": "tmp/heart-learning/initializer-perturbation-v1/fixed-work.log",
+      "sha256": "daf1e981853dfe6c3c6b7ffd9e7df2b9e33cfb8f6ade70d103aa876cefdb0445",
+      "bytes": 237
+    },
+    "initialFocused": {
+      "path": "tmp/heart-learning/initializer-perturbation-v1/focused.log",
+      "sha256": "3641bae824cd83032111381f27f5e78bbcc4e3096e0412a6d61a4aaa5b65e928",
+      "bytes": 1746
+    },
+    "initialFailure": "The clock-controlled test expected 81 updates, but the existing batched deadline check completes 85. Its expected work count was corrected; the fresh-fit and prior-clearance tests passed on that first focused run.",
+    "fixtures": [
+      "scripts/inverse/fixtures/clearance-feature-initializer.json",
+      "scripts/inverse/clearance-feature-geometry.test.mjs",
+      "scripts/inverse/clearance-feature.test.mjs"
+    ]
+  },
+  "visualReview": {
+    "artifact": {
+      "path": "tmp/heart-learning/initializer-perturbation-v1/integrated-comparison.png",
+      "sha256": "af7d7dc56f8d9c81664906650496c86fd586f62c52c1127d38f6a9f553a44931",
+      "bytes": 25830
+    },
+    "observation": "The integrated resampled fit has smaller broad deformations and 1.35875% derived-mask disagreement, but the middle hearts still contain unwanted splits/channels and the border remains imperfect. Existing colour-retention checks do not certify faithful large enclosed motifs."
+  },
+  "qa": {
+    "state": {
+      "status": "running",
+      "stage": "test",
+      "pid": 96138,
+      "controllerPid": 93734
+    },
+    "checks": [
+      {
+        "stage": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 10.741588916000001
+      },
+      {
+        "stage": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 7.833285666999998
+      },
+      {
+        "stage": "build",
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 16.079859791999997
+      },
+      {
+        "stage": "preview",
+        "command": [
+          "python3",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/initializer-perturbation-v1/qa/restart-preview.py"
+        ],
+        "exitCode": 0,
+        "seconds": 1.2549954159999999
+      },
+      {
+        "stage": "browser",
+        "command": [
+          "node",
+          "scripts/inverse/paint-browser-test.mjs"
+        ],
+        "exitCode": 0,
+        "seconds": 20.653928333000003
+      }
+    ]
+  },
+  "limitations": [
+    "Fresh deadline-bound controls vary: the same resampled baseline previously gave 7.439375%, while the new cold control gives 3.0375% and still fails paper. The exact 7.4% outcome is not presented as deterministic.",
+    "Independent geometry checks and a low total pixel error do not prove that all heart silhouettes are faithfully reconstructed.",
+    "Full-corpus no-regression status remains pending until the current serial QA finishes."
+  ]
+}

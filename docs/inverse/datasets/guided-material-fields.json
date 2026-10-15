@@ -1,0 +1,277 @@
+{
+  "schema": "guided-material-fields-study-1",
+  "status": "complete-not-integrated",
+  "scope": "Fixed frozen expanded-pilot predictions on the same 17 repeatedly inspected development photos; 68 crop attempts, all 11 available fits and editable conversions retained. No new training or unseen-test claim.",
+  "method": {
+    "reference": "https://people.csail.mit.edu/kaiming/publications/eccv10guidedfilter.pdf",
+    "implementation": "Independent color guided filter, equations 14-16; RGB ridge regression with clipped-window box means; both body and material fields refined. Radii 8,16,32 at 650px work scale; epsilon 0.02 squared.",
+    "tests": "Six tests, including an independent direct ridge-regression oracle, passed before the experiment."
+  },
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/guided-fields-v1/plan.json",
+      "sha256": "d67067041824158f60a2e5b97477789c07cd9aa285b345d8486dc40268acfaae",
+      "bytes": 2607
+    },
+    {
+      "path": "tmp/heart-learning/guided-fields-v1/run.mjs",
+      "sha256": "9f79d5441f68e0dc011a247a17b8ab323c5c07d35c0268315670aed1419fd159",
+      "bytes": 8625
+    },
+    {
+      "path": "tmp/heart-learning/guided-fields-v1/guided-filter.mjs",
+      "sha256": "6962237f91dc247909c542f0e96db009bacad2357ffea74d61fec406461b731f",
+      "bytes": 6059
+    },
+    {
+      "path": "tmp/heart-learning/guided-fields-v1/guided-filter.test.mjs",
+      "sha256": "7e004a58c9286db256a003ee35dcbabe01d60e0d798ab9e4ee09c7367caae00f",
+      "bytes": 5562
+    },
+    {
+      "path": "tmp/heart-learning/guided-fields-v1/unit.log",
+      "sha256": "2ce02751c2c986e43d5cc551e2ddcbda86d7653551e24b3d9706a82b2e5d11f3",
+      "bytes": 727
+    },
+    {
+      "path": "tmp/heart-learning/guided-fields-v1/metrics.json",
+      "sha256": "5c16f6b4414164c0638bf7ca9c62f989a26d8d65f36208d4a0dbf1ff0014f912",
+      "bytes": 79271
+    },
+    {
+      "path": "tmp/heart-learning/guided-fields-v1/results-v1/report.json",
+      "sha256": "88464922f11e46ef2c78b07dd3df697d6c4f942289eab1126b0d4605212dea51",
+      "bytes": 1104450
+    },
+    {
+      "path": "tmp/heart-learning/guided-fields-v1/pipeline-v1/report.json",
+      "sha256": "c319f20f5868291a62f2375f0f7ea37d7622b83ecd20726f56e251930f5f0d9d",
+      "bytes": 2109245
+    },
+    {
+      "path": "tmp/heart-learning/guided-fields-v1/editable-v1/results.json",
+      "sha256": "86dc045dcba56513b0484ac67d2bbab9b986211aba41a8446365dd4281dcf5bb",
+      "bytes": 222189
+    },
+    {
+      "path": "tmp/heart-learning/guided-fields-v1/pipeline-figures.json",
+      "sha256": "68310ab2cdbbff3e3321fe16f068e7d5b8fc27997445d90a6189f251bec3d299",
+      "bytes": 271
+    }
+  ],
+  "summary": [
+    {
+      "arm": "baseline",
+      "cases": 17,
+      "supported": 3,
+      "ids": [
+        "real-45744a03afddccb1-body-1",
+        "real-8c875dd0f298b5a4-body-1",
+        "real-cf2d0fcff65d7386-body-1"
+      ],
+      "meanSeconds": 1.910109715823531,
+      "checkedFits": 2,
+      "checkedEditablePairs": 2,
+      "partialLabelMetrics": {
+        "bodyIoU": 0.8184019829909028,
+        "bodyPixelError": 0.06829114409940894,
+        "bodyFalseNegative": 0.04871539459403604,
+        "backgroundFalsePositive": 0.064747873595003,
+        "materialPixelError": 0.14908409396544772,
+        "materialJointError": 0.162508791423152,
+        "jointRegionPixelError": 0.08745877078496755
+      }
+    },
+    {
+      "arm": "guided-8",
+      "cases": 17,
+      "supported": 2,
+      "ids": [
+        "real-8c875dd0f298b5a4-body-1",
+        "real-cf2d0fcff65d7386-body-1"
+      ],
+      "meanSeconds": 2.3518956715294133,
+      "checkedFits": 2,
+      "checkedEditablePairs": 2,
+      "partialLabelMetrics": {
+        "bodyIoU": 0.826342702670545,
+        "bodyPixelError": 0.06448073328461996,
+        "bodyFalseNegative": 0.046106891420519824,
+        "backgroundFalsePositive": 0.06094070215316201,
+        "materialPixelError": 0.15166498271106718,
+        "materialJointError": 0.16526543295448987,
+        "jointRegionPixelError": 0.08465503111527166
+      }
+    },
+    {
+      "arm": "guided-16",
+      "cases": 17,
+      "supported": 4,
+      "ids": [
+        "real-45744a03afddccb1-body-1",
+        "real-8c875dd0f298b5a4-body-1",
+        "real-cf2d0fcff65d7386-body-1",
+        "real-990ac34431be87fe-body-1"
+      ],
+      "meanSeconds": 2.1150946422352956,
+      "checkedFits": 3,
+      "checkedEditablePairs": 3,
+      "partialLabelMetrics": {
+        "bodyIoU": 0.8384492424117065,
+        "bodyPixelError": 0.05890366234325158,
+        "bodyFalseNegative": 0.04195707921990055,
+        "backgroundFalsePositive": 0.055901034212204014,
+        "materialPixelError": 0.15369533713434666,
+        "materialJointError": 0.16650370886442842,
+        "jointRegionPixelError": 0.08041676971296481
+      }
+    },
+    {
+      "arm": "guided-32",
+      "cases": 17,
+      "supported": 2,
+      "ids": [
+        "real-8c875dd0f298b5a4-body-1",
+        "real-cf2d0fcff65d7386-body-1"
+      ],
+      "meanSeconds": 2.314533127647059,
+      "checkedFits": 1,
+      "checkedEditablePairs": 1,
+      "partialLabelMetrics": {
+        "bodyIoU": 0.8546853079834172,
+        "bodyPixelError": 0.051733444142529915,
+        "bodyFalseNegative": 0.033469072985675856,
+        "backgroundFalsePositive": 0.05108383916527583,
+        "materialPixelError": 0.1456795198013237,
+        "materialJointError": 0.1572320355789348,
+        "jointRegionPixelError": 0.07346136972806894
+      }
+    }
+  ],
+  "baselineReproducedAllHistoricalCropDecisionsAndCoordinates": true,
+  "projectionQualification": "Every arm, including the baseline, passes through the 650px work grid before 400px rectification. Baseline masks therefore differ slightly from earlier direct 256-to-400 projections. The stacked-hearts mask changes 116/160000 pixels without changing the crop. Historical fitted scores are not a pure guided-filter comparison.",
+  "fits": [
+    {
+      "id": "real-45744a03afddccb1-body-1",
+      "arm": "guided-16",
+      "status": "checked-derived-mask",
+      "seconds": 5.087667125,
+      "independentImageError": 0.01578125,
+      "checkedPair": true
+    },
+    {
+      "id": "real-45744a03afddccb1-body-1",
+      "arm": "baseline",
+      "status": "checked-derived-mask",
+      "seconds": 9.578343499999999,
+      "independentImageError": 0.01735625,
+      "checkedPair": true
+    },
+    {
+      "id": "real-8c875dd0f298b5a4-body-1",
+      "arm": "guided-16",
+      "status": "review-required",
+      "seconds": 9.956364874999997,
+      "independentImageError": 0.07468125,
+      "checkedPair": false
+    },
+    {
+      "id": "real-8c875dd0f298b5a4-body-1",
+      "arm": "guided-32",
+      "status": "review-required",
+      "seconds": 10.577454041999998,
+      "independentImageError": 0.0330625,
+      "checkedPair": false
+    },
+    {
+      "id": "real-8c875dd0f298b5a4-body-1",
+      "arm": "baseline",
+      "status": "review-required",
+      "seconds": 9.937302791999995,
+      "independentImageError": 0.07439375,
+      "checkedPair": false
+    },
+    {
+      "id": "real-8c875dd0f298b5a4-body-1",
+      "arm": "guided-8",
+      "status": "checked-derived-mask",
+      "seconds": 9.705367292000002,
+      "independentImageError": 0.02673125,
+      "checkedPair": true
+    },
+    {
+      "id": "real-cf2d0fcff65d7386-body-1",
+      "arm": "guided-16",
+      "status": "checked-derived-mask",
+      "seconds": 8.687345542000003,
+      "independentImageError": 0.01423125,
+      "checkedPair": true
+    },
+    {
+      "id": "real-cf2d0fcff65d7386-body-1",
+      "arm": "guided-32",
+      "status": "checked-derived-mask",
+      "seconds": 9.434813458000004,
+      "independentImageError": 0.01066875,
+      "checkedPair": true
+    },
+    {
+      "id": "real-cf2d0fcff65d7386-body-1",
+      "arm": "baseline",
+      "status": "checked-derived-mask",
+      "seconds": 9.602146792,
+      "independentImageError": 0.0092,
+      "checkedPair": true
+    },
+    {
+      "id": "real-cf2d0fcff65d7386-body-1",
+      "arm": "guided-8",
+      "status": "checked-derived-mask",
+      "seconds": 9.575402624999988,
+      "independentImageError": 0.00789375,
+      "checkedPair": true
+    },
+    {
+      "id": "real-990ac34431be87fe-body-1",
+      "arm": "guided-16",
+      "status": "checked-derived-mask",
+      "seconds": 8.814180083,
+      "independentImageError": 0.0081125,
+      "checkedPair": true
+    }
+  ],
+  "visualReview": {
+    "allSeventeenFieldPanelsReviewed": true,
+    "allElevenFitComparisonsReviewed": true,
+    "notes": {
+      "rabbit": "Guided-16 improves the rectangular border, but the ears and silhouette remain rounded. Baseline has uneven border width and visible seams after fitting.",
+      "stacked-hearts": "All four photographed crops contain the motif. Guided-16 and baseline fits lose the small hearts in large diagonal deformations; guided-32 and guided-8 retain more shape but show channels and distorted motifs. Guided-8 passes numerical checks despite visible defects.",
+      "blue-yellow-checker": "Guidance straightens many classified boundaries; the fits remain uneven near the bottom/right border. Baseline fits a rounded, already distorted learned mask. Lower derived-mask error does not establish better artwork recovery.",
+      "decorated-checker": "The newly supported guided-16 crop extends below the paper tip. Classification and fitting retain the displaced/jagged middle and lower border. The 0.81% agreement score does not certify this as a correct crop.",
+      "field-review": "All seventeen source/field comparisons were inspected. Sharpening can improve outlines, but it cannot reconstruct missing bicycle/animal details or resolve incorrect paper identities. Some larger-radius results gain printed texture edges or merge checker cells."
+    },
+    "figures": [
+      {
+        "path": "tmp/heart-learning/guided-fields-v1/pipeline-comparison-1.png",
+        "sha256": "286d4faa67fe60c9ec76372ce469ed8a98a59c0bc24002f14a0607d61a0ccd7f",
+        "bytes": 546562
+      },
+      {
+        "path": "tmp/heart-learning/guided-fields-v1/pipeline-comparison-2.png",
+        "sha256": "cc62b7e615b43d5e6aecd23ad465b872171b7fc1f64a614e59f0f890464e5e5b",
+        "bytes": 620818
+      },
+      {
+        "path": "tmp/heart-learning/guided-fields-v1/pipeline-comparison-3.png",
+        "sha256": "1cda19cfa2c5f275f85e212dcf9f5eca6aa9b3b12c78b602185a69a3f9534a91",
+        "bytes": 600526
+      },
+      {
+        "path": "tmp/heart-learning/guided-fields-v1/pipeline-comparison-4.png",
+        "sha256": "cfcfa22cd4b1f1099bdd864340e97fa87f4bb9cb7930453f16e5ba76c38103b0",
+        "bytes": 385600
+      }
+    ]
+  },
+  "decision": "Do not integrate guided filtering or claim an improved crop/solver success rate. The newly supported crop is displaced; pixel metrics and derived-mask acceptance do not establish faithful recovery. Investigate the separately reproduced initialization sensitivity exposed by the baseline resampling."
+}
