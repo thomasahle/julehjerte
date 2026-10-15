@@ -9,6 +9,7 @@ import { cutTipCounts, fewerCutTips } from './cutQuality';
 import { normalizeContours } from './contours';
 import { gridClearanceScale } from '$lib/geometry/clearance';
 import { generatePanelFigure } from './panels';
+import { generateComponentFigure } from './components';
 import {
 	convertValidatedCutGeometry,
 	CutGeometryError,
@@ -24,6 +25,7 @@ import {
 	fourPortMotif,
 	originalFourPortMotif,
 	balancedFourPortMotif,
+	bentFourPortMotif,
 	touchingFourPortMotif,
 	hasCounterContact,
 	generateCheckedText,
@@ -486,12 +488,14 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 	}
 	if (request.style === 'corners') {
 		let last: unknown;
-		for (const [routing, fitBorder] of [
-			['chain', false], ['practical', false], ['separated', false],
-			['practical', true], ['separated', true]
+		for (const [routing, fitBorder, bentSpokes] of [
+			['chain', false, false], ['practical', false, false], ['separated', false, false],
+			['practical', true, false], ['separated', true, false],
+			['practical', false, true], ['separated', false, true],
+			['practical', true, true], ['separated', true, true]
 		] as const) {
 			try {
-				const result = generateCornerChecks(request.contours ?? [], request.frameSize, request.scale, routing, fitBorder);
+				const result = generateCornerChecks(request.contours ?? [], request.frameSize, request.scale, routing, fitBorder, bentSpokes);
 				// Keep the established frame and skip another fit when moving
 				// separate components did not change any lane or connection.
 				if (routing === 'separated' && !result.separated || fitBorder && !result.borderAdjusted) continue;
@@ -612,6 +616,24 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 			errors.push(error);
 		}
+	}
+	// A short outward approach can avoid a narrow shoulder. Keep this last so
+	// all previously successful layouts retain their established cuts.
+	for (const construct of balancedRecipes) {
+		try {
+			const construction = construct(bentFourPortMotif);
+			return finish(sunburst ? sunburstBorder(construction, outerSize) : construction, rings.length === 1 ? 'silhouette' : 'nested');
+		} catch (error) {
+			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			errors.push(error);
+		}
+	}
+	try {
+		const construction = generateComponentFigure(rings, shape, size, scale, style);
+		return finish(sunburst ? sunburstBorder(construction, outerSize) : construction, 'nested');
+	} catch (error) {
+		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		errors.push(error);
 	}
 	const last = errors.at(-1)!;
 	throw new ConstructionError(

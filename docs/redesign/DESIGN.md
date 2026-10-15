@@ -444,6 +444,20 @@ avoiding counters. Keep both complete outer bands and validate the joined cuts.
 General framed figures can also use filled seam intervals after their existing
 layouts fail. Try bounded 2×2 and spread 5×2 panel layouts; both neighbours must
 agree on each shared gate. Keep the selected frame and the motif's visible shape.
+If those layouts fail, separate islands may occupy their own cells in a two-column
+grid. Keep counters with their parent island; for an odd island count, split the
+largest island into two and stitch its artificial seam. This construction handles
+two to eight islands and retains the original artwork, frame and grid clearance.
+Neighbouring cells share a gate between their nearest boundaries. If a third
+island occupies that gate, move it into the surrounding space. Shared A/B cuts
+can then detour around other cuts using a bounded geometric visibility graph:
+at most 240 offset vertices inside the connection’s bounding box expanded by
+seven clearances.
+Keep every endpoint and visible outline fixed. Reject crossings and overlapping
+segments while routing, then apply the full topology, spacing and fidelity checks.
+If no detour exists, the unchanged connection must still pass those checks.
+These are final fallback constructions, so established successful layouts retain
+their cuts. No raster image solve or detached cutout is involved.
 The checked-tip figure frame retains its three lanes and two outer cuts. When
 its original contour chain fails, each occupied lane may use practical two-port
 routing, including shared counter bridges and shoulder relief. A final island
@@ -458,6 +472,9 @@ inside those bands and shorten its vertical range accordingly; preserve the
 selected motif size, the checked tips and the six-strip layout. These are final
 fallbacks after the established constructions, with the same full-sheet topology,
 spacing and artwork checks.
+Checked-tip lanes may also use short bent approaches to the motif outline after
+the straight connections fail. General framed figures use the same option on
+their initial panel and four-port layouts, after their established recipes fail.
 
 “Gentag som mønster” is a text frame, not a separate mode or control. It makes one n×n square
 of cyclic letter shifts: ANNA / NNAA / NAAN / AANN, with no surrounding checkerboard cells.

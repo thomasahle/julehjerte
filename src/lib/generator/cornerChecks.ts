@@ -9,7 +9,7 @@ import { gridClearance } from '$lib/geometry/clearance';
 const contoursOf = (node: Contour): Ring[] => [node.ring, ...node.children.flatMap(contoursOf)];
 
 export function generateCornerChecks(rings: Ring[], size = 70, scale = .7,
-	routing: 'chain' | 'practical' | 'separated' = 'chain', fitBorder = false) {
+	routing: 'chain' | 'practical' | 'separated' = 'chain', fitBorder = false, bentSpokes = false) {
 	const points = rings.flat();
 	if (!points.length) throw new ConstructionError('empty', 'No contour');
 	const artwork = rings.map(r => r.map(([x, y]) => uprightToSheet([x * size * scale, y * size * scale])));
@@ -54,7 +54,7 @@ export function generateCornerChecks(rings: Ring[], size = 70, scale = .7,
 				// shoulders can use the same coincident bridges as repeated letters.
 				// Three lanes plus two outer cuts give a six-strip grid.
 				twoPortMotif(edges, lanes[col].flatMap(contoursOf), [entry, exit], margin, {
-					compound: true, balanced: true
+					compound: true, balanced: true, bentSpokes
 				});
 			} else add(edges, [entry, exit], 'AB', 'shared');
 		};

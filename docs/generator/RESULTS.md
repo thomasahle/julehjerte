@@ -1,6 +1,82 @@
 # Generator robustness results
 
-## Current coverage: bent shared connections
+## Current coverage: separate figure components and shared-cut detours
+
+The current default-size matrix has **2,758 accepted / 392 refused / zero invalid
+accepted results**. This batch freshly tested 179 distinct figure configurations:
+all 86 previous figure refusals, all checked-tip and sunburst figures, and all
+previous bicycle successes. There are **11 gains and no regressions** in that
+scope: 104 accepted, 75 refused. The other 2,971 records retain their preceding
+audit results; this was not a fresh full-matrix run.
+
+| Corpus | Configurations | Accepted | Refused | Invalid accepted output |
+|---|---:|---:|---:|---:|
+| Text: 34 inputs, six fonts, ten frames | 2028 | 1711 | 317 | 0 |
+| Figures: 51 motifs, 22 templates | 1122 | 1047 | 75 | 0 |
+
+The combined report is `tmp/generator/components-current.json`. Fresh reports are
+`components-final.json`, `bent-corner-final.json` and `bent-sunburst-final.json`;
+the 90-case component report takes precedence where their scopes overlap.
+All 2,758 accepted IDs are pinned in `scripts/generator/expected.json`; none were
+removed. Ordinary and checkerboard repeat remain at 137/198 and 128/198.
+
+- Separate figure islands can occupy individual cells in a two-column grid.
+  Counters stay with their parent island. If the island count is odd, the largest
+  is split into two cells and its artificial seam is stitched away. The original
+  visible artwork is retained. This recovers the bicycle in the rays, checked
+  and plain variants of the circle, hexagon and rounded frames, using 4×4 grids.
+- Adjacent cells share gates near their outlines, avoiding intervening islands.
+  Coincident A/B connections can detour around other cuts using a bounded
+  visibility graph. Only shared connections move; endpoints and visible outlines
+  stay fixed. Crossing, topology, spacing and artwork validation still apply to
+  the complete sheets and their JSON/SVG/editor round trips.
+- Bent outline approaches also recover Phosphor sailboat in the six-strip
+  checked-tip frame and Tabler gift in the five-strip sunburst frame. All these
+  constructions are final fallbacks, preserving earlier successful layouts.
+
+A separate fresh audit tested all 51 checked-tip figures at three non-default
+sizes. These 153 cases are outside the matrix above:
+
+| Motif size | Accepted | Refused | Invalid accepted output |
+|---|---:|---:|---:|
+| 45% | 48 | 3 | 0 |
+| 55% | 48 | 3 | 0 |
+| 85% | 47 | 4 | 0 |
+
+The 45% bicycle is newly accepted; no earlier success was lost. Reports are
+`tmp/generator/bent-corners-scale-{45,55,85}.json`. These checks do not cover all
+slider values or non-default sizes in the other frames.
+
+The bicycle, sailboat and gift hearts and both cutting templates for each were
+rendered and inspected in `tmp/generator/component-hearts-and-cuts.png`. Their
+cut-tip counts below 30°/45° are 1/1, 0/0 and 0/0, respectively. The cuts remain
+intricate; there has been no physical cutting or weaving trial. Browser inventory
+returned no available app or browser, so no live interface check was possible.
+
+All **1,048 unit tests and 177 inverse tests** pass, along with type checking,
+lint and the production build. Type checking reports the seven existing
+warnings. Logs are `tmp/generator/components-{tests,check,lint,build}.log`.
+The newly recovered bicycle layouts took roughly 4.2–4.8 seconds in the local
+production audit; this is still too slow for smooth iteration and is not a
+browser latency measurement.
+
+The goal remains unfinished: 392 default-size matrix cases are refused, and the
+rest of the searchable catalog and most non-default sizes remain unverified.
+Difficult-case latency and the earlier browser slowdown remain unresolved.
+
+### Additional investigations, not shipped
+
+- Trying each root island as the contour-chain anchor did not recover the
+  probed paw, coffee or bicycle cases. Changing the component routing to the
+  practical or balanced variants added no gains over the ordinary route.
+- The Tabler paw's nearly touching upper pads remain separated even when its
+  original SVG is flattened at much finer tolerances. This is not simply a
+  stored-coordinate rounding contact; the artwork was not merged or smoothed.
+- Paw routes can be topologically valid yet fail spacing near a pad tip. Moving
+  the gate alone trades that pinch for an intersection elsewhere. The current
+  shared-cut detours recover the bicycle but still do not resolve the paw.
+
+## Previous coverage: bent shared connections
 
 The current default-size matrix has **2,747 accepted / 403 refused / zero invalid
 accepted results**. This batch freshly tested 93 previously refused text cases:

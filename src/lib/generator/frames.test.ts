@@ -19,11 +19,12 @@ import sun from '../../../static/generator/motifs/ph-sun.json';
 import bicycle from '../../../static/generator/motifs/ph-bicycle.json';
 import coffee from '../../../static/generator/motifs/ph-coffee.json';
 import snow from '../../../static/generator/motifs/snow.json';
+import sailboat from '../../../static/generator/motifs/ph-sailboat.json';
 const colors = { left: '#fff', right: '#b91313' };
 const examples = { tree, horse, bird, star, snowflake };
 
 describe('complete motif frames', () => {
- for (const [name, motif] of Object.entries({ gift, bicycle, coffee, snow })) {
+ for (const [name, motif] of Object.entries({ gift, bicycle, coffee, snow, sailboat })) {
   it(`keeps ${name} and its counters in the six-strip checked-tip frame`, () => {
    const { design } = generate({ mode: 'figure', name, contours: motif.contours as Ring[], colors, style: 'corners' });
    expect(design.gridSize).toEqual({ x: 6, y: 6 });

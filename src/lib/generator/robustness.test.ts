@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { generate } from './generate';
+import { generateComponentFigure } from './components';
+import { convertValidatedCutGeometry } from '$lib/inverse/toHeartDesign';
 import type { Font, TextFrame, Ring } from './geometry';
 import { TEXT_TEMPLATES } from './templates';
 import { inferOverlapRect } from '$lib/utils/overlapRect';
@@ -45,6 +47,28 @@ function validateHandoffs(design: HeartDesign) {
 // These are expected successes, never a test that passes by accepting a refusal.
 // The larger offline corpus covers 2,028 text and 1,122 figure configurations.
 describe('generator robustness regressions', () => {
+	it('joins an odd number of separate islands without creating detached paper', () => {
+		const rings: Ring[] = [[-.2, -.22, .13], [.2, -.22, .13], [0, .2, .25]].map(([x, y, r]) =>
+			Array.from({ length: 48 }, (_, i) => [x + r * Math.cos(i * Math.PI / 24), y + r * Math.sin(i * Math.PI / 24)]));
+		const result = generateComponentFigure(rings);
+		const { design } = convertValidatedCutGeometry(result.geometry, {
+			name: 'Three islands', tolerance: .025, clearanceScale: gridClearanceScale(5, 5)
+		});
+		expect(design.gridSize).toEqual({ x: 5, y: 5 });
+		expect(result.artwork).toHaveLength(3);
+		validateHandoffs(design);
+	});
+	for (const [frame, style] of [['circle', 'rays'], ['hexagon', 'check'], ['rounded', 'plain']] as const)
+		it(`routes the bicycle's separate components through ${frame}-${style}`, () => {
+			const { design } = generate({ mode: 'figure', name: 'Bicycle', contours: bicycle.contours as Ring[], frame, style, colors });
+			expect(design.gridSize).toEqual({ x: 4, y: 4 });
+			validateHandoffs(design);
+		}, 20000);
+	it('keeps the gift bow and both papers intact inside the sunburst frame', () => {
+		const { design } = generate({ mode: 'figure', name: 'Gift', contours: tablerGift.contours as Ring[], style: 'sunburst', colors });
+		expect(design.gridSize).toEqual({ x: 5, y: 5 });
+		validateHandoffs(design);
+	}, 20000);
 	it('opens the counter of Cinzel P with clear shared connections', () => {
 		const { design } = generate({ mode: 'text', name: 'P', text: 'P', textFrame: 'air', font: fonts.cinzel, colors });
 		expect(design.gridSize).toEqual({ x: 3, y: 3 });

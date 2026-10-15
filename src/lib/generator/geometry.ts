@@ -958,6 +958,13 @@ export function balancedFourPortMotif(...args: Parameters<typeof contourMotif>) 
 	return contourMotif(...args);
 }
 
+/** A shared connection can turn before meeting the outline instead of grazing
+ * a narrow shoulder. Keep the same four open pairs and visible contour. */
+export function bentFourPortMotif(...args: Parameters<typeof contourMotif>) {
+	args[7] = { ...args[7], bentSpokes: true };
+	return contourMotif(...args);
+}
+
 /** A counter touching its parent can use that existing junction as one
  * connection, with a coincident A/B bridge on the other side of the gate. */
 export function touchingFourPortMotif(...args: Parameters<typeof contourMotif>) {
@@ -974,7 +981,7 @@ export function hasCounterContact(rings: Ring[]): boolean {
 /** A checkerboard junction can feed one letter through two shared bridges.
  * Counters may bracket either bridge; they are never removed from the sheet. */
 export function twoPortMotif(edges: Edge[], contours: Ring[], gates: Point[], margin: number,
-	options: { balanced?: boolean; compound?: boolean; onCrowded?: () => void } = {}) {
+	options: { balanced?: boolean; compound?: boolean; onCrowded?: () => void; bentSpokes?: boolean } = {}) {
 	const center = centroid(contours.flat());
 	try {
 		contourMotif(edges, contours, gates, gates.map(p => Math.atan2(center[1] - p[1], center[0] - p[0])), margin, [0, 1], undefined, { practical: true, ...options });
