@@ -139,7 +139,8 @@ export function generatePanelFigure(
 	count = 2,
 	style: 'rays' | 'check' | 'plain' = 'rays',
 	rows = 1,
-	spread = false
+	spread = false,
+	route = fourPortMotif
 ) {
 	const factor = size * scale * (frame === 'oval' ? 0.75 : 1);
 	const upright = rings.map((r) =>
@@ -188,7 +189,7 @@ export function generatePanelFigure(
 				[x, down],
 				[lo, y]
 			].map((p) => uprightToSheet(p as Point));
-			fourPortMotif(
+			route(
 				edges,
 				parts.map((r) => r.map(uprightToSheet)),
 				gates,

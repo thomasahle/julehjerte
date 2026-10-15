@@ -400,6 +400,11 @@ or grey areas to remove from a PDF. In a four-port cell, a pair of interior conn
 external port, preserving the open path pairings. Nested contours recurse, and sibling holes may
 share a chain. The compiler rejects branches, closed cycles and paths ending on the wrong edge;
 geometric clearance and artwork fidelity are checked before a result can be saved or downloaded.
+Imported figure walks are split at exactly repeated vertices, and collapsed
+loops are removed without changing the even-odd fill or moving any outline.
+If a newer local attachment route fails after cells are joined or the full
+sheet is validated, try the original route too. Skip this extra attempt when
+the local construction itself failed; keep all clearance and fidelity checks.
 Both generators offer circle, diamond, hexagon, oval, soft diamond and scalloped frames. Text also
 has close and spacious letter-cell framing. Figure choices combine the frame and outside weave
 into complete templates. Their thumbnails render the actual generated heart in the current colours,
@@ -446,6 +451,10 @@ short sharp steps and hairpin turns; an extra coincident chord may split a
 fragile tongue between the sheets. Keep the glyph outline unchanged. If these
 routes cannot pass spacing validation, retain the original contour construction
 for that letter.
+Framed text may also use this ranking as a final construction when the ordinary
+letter-cell and panel layouts fail. In a 2×2 checkerboard field, one additional
+spacing of the shared grid attachments can provide a clear route to detached
+accents; the letter outline stays unchanged.
 Identical glyphs in the same position within a four-cell group reuse their cuts.
 This frame uses an n×n cut grid with a square physical overlap, up to the shared
 20-strip limit. Its thumbnail, shared link, editor and PDF use the same design.

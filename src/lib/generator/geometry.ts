@@ -37,6 +37,10 @@ export class ConstructionError extends Error {
 		super(message);
 	}
 }
+/** The local pieces exist, but joining them did not produce open paper strips. */
+export class CompilationError extends ConstructionError {
+	constructor(message: string) { super('topology', message); }
+}
 const EPS = 1e-7;
 export const mix = (a: Point, b: Point, t: number): Point => [
 	a[0] + (b[0] - a[0]) * t,
@@ -356,8 +360,7 @@ export function compile(edges: Edge[], phase: 0 | 1 = 1): CutGeometry {
 			const p = k.split(',').map(Number),
 				boundary = p[axis] === 0 || p[axis] === 100;
 			if (v.length !== (boundary ? 1 : 2))
-				throw new ConstructionError(
-					'topology',
+				throw new CompilationError(
 					`Invalid ${family} degree at ${k}`
 				);
 		}
@@ -379,14 +382,13 @@ export function compile(edges: Edge[], phase: 0 | 1 = 1): CutGeometry {
 				at = key(reverse ? e.from : e.to);
 			}
 			if (+at.split(',')[axis] !== 100)
-				throw new ConstructionError(
-					'topology',
+				throw new CompilationError(
 					`${family} path ends on the wrong edge`
 				);
 			paths.push(path);
 		}
 		if (seen.size !== ids.length)
-			throw new ConstructionError('topology', `Closed ${family} cutting cycle`);
+			throw new CompilationError(`Closed ${family} cutting cycle`);
 		families.push(paths);
 	}
 	return {
@@ -673,7 +675,7 @@ function contourMotif(
 	margin = 1.5,
 	bridgePorts: readonly number[] = [0, 1, 2, 3],
 	acceptRoutes?: (routes: Ring[]) => boolean,
-	options: { root?: Ring; visibleIslands?: boolean; strict?: boolean; practical?: boolean } = {}
+	options: { root?: Ring; visibleIslands?: boolean; strict?: boolean; practical?: boolean; originalOnly?: boolean } = {}
 ) {
 	const count = gates.length;
 	const nodes = forest(contours).sort(
@@ -834,7 +836,7 @@ function contourMotif(
 		contourMotif(edges, contours, gates, angles, margin, bridgePorts, acceptRoutes, { ...options, practical: false });
 		return;
 	}
-	if (!options.visibleIslands && nodes.length > 1) {
+	if (!options.originalOnly && !options.visibleIslands && nodes.length > 1) {
 		try {
 			contourMotif(edges, contours, gates, angles, margin, bridgePorts, acceptRoutes, { ...options, visibleIslands: true, strict: true });
 			return;
@@ -851,6 +853,13 @@ function contourMotif(
 }
 
 export const fourPortMotif = contourMotif;
+
+/** Keep the original attachment recipe available when a locally valid visible
+ * island route fails after neighbouring cells are joined and curves fitted. */
+export function originalFourPortMotif(...args: Parameters<typeof contourMotif>) {
+	args[7] = { ...args[7], originalOnly: true };
+	return contourMotif(...args);
+}
 
 /** A checkerboard junction can feed one letter through two shared bridges.
  * Counters may bracket either bridge; they are never removed from the sheet. */
@@ -1197,7 +1206,8 @@ export function generateFourPortFigure(
 	shape: Frame = 'circle',
 	size = 70,
 	scale = 0.7,
-	style: 'rays' | 'check' | 'plain' = 'rays'
+	style: 'rays' | 'check' | 'plain' = 'rays',
+	route = fourPortMotif
 ) {
 	const artwork = rings.map((r) =>
 			r.map((p) =>
@@ -1209,7 +1219,7 @@ export function generateFourPortFigure(
 		),
 		edges: Edge[] = [];
 	const gates = outerFrame(edges, frameRing(shape, size), [2, 3, 0, 1], style);
-	fourPortMotif(
+	route(
 		edges,
 		artwork,
 		gates.map((g) => g.point),

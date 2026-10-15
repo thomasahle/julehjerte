@@ -24,7 +24,7 @@ export function generateTextGrid(
 	font: Font,
 	air = false,
 	frame?: Frame,
-	layout: { padding?: number; spread?: boolean; slices?: number; columns?: number } = {}
+	layout: { padding?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean } = {}
 ) {
 	const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n');
 	const cols = Math.max(...lines.map((l) => [...l].length)),
@@ -157,7 +157,8 @@ export function generateTextGrid(
 					contours,
 					gates,
 					[Math.PI / 4, (3 * Math.PI) / 4, (-3 * Math.PI) / 4, -Math.PI / 4],
-					margin
+					margin,
+					[0, 1, 2, 3], undefined, { practical: layout.practical }
 				);
 				cached.set(key, { x, y, edges: local });
 				edges.push(...local);

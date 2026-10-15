@@ -5,6 +5,7 @@ import { sunburstBorder } from './sunburst';
 import { generateTextGrid } from './textGrid';
 import { generateRepeatedGrid } from './repeatedGrid';
 import { generateCheckeredGrid } from './checkeredGrid';
+import { normalizeContours } from './contours';
 import { gridClearanceScale } from '$lib/geometry/clearance';
 import { generatePanelFigure } from './panels';
 import {
@@ -16,8 +17,11 @@ import type { HeartColors, HeartDesign } from '$lib/types/heart';
 import { rasterizeDesign } from '$lib/paint/rasterize';
 import {
 	ConstructionError,
+	CompilationError,
 	generateFigure,
 	generateFourPortFigure,
+	fourPortMotif,
+	originalFourPortMotif,
 	generateCheckedText,
 	inside,
 	distance,
@@ -261,6 +265,11 @@ function fidelity(
 		}
 }
 export function generate(request: GeneratorRequest): GeneratorResult {
+	if (request.mode === 'figure') {
+		const contours = normalizeContours(request.contours ?? []);
+		if (!contours.length) throw new ConstructionError('empty', 'No contour');
+		request = { ...request, contours };
+	}
 	const finish = (
 		r: ReturnType<typeof generateFigure> & {
 			domain?: Ring[];
@@ -297,8 +306,18 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 	if (request.mode === 'text') {
 		if (!request.font) throw new ConstructionError('empty', 'No font');
 		const frame = request.textFrame ?? 'woven';
-		if (frame === 'repeat-check')
-			return finish(generateCheckeredGrid(request.text ?? '', request.font), 'letters');
+		if (frame === 'repeat-check') {
+			const text = request.text ?? '';
+			try { return finish(generateCheckeredGrid(text, request.font), 'letters'); }
+			catch (error) {
+				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+				if (error instanceof ConstructionError && ['empty', 'character'].includes(error.code)) throw error;
+				if ([...text.normalize('NFC').replace(/\s/g, '')].length > 2) throw error;
+				// A 2×2 field has room to separate its shared grid attachments.
+				// This gives detached accents a different approach to the letter.
+				return finish(generateCheckeredGrid(text, request.font, .82, .25), 'letters');
+			}
+		}
 		if (frame === 'repeat')
 			return finish(generateRepeatedGrid(request.text ?? '', request.font), 'letters');
 		const text = request.text ?? '';
@@ -318,6 +337,7 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 			}));
 		for (const [columns, slices] of [[2, 1], [1, 2], [2, 2], [1, 3]])
 			recipes.push(() => generateTextGrid(text, font, frame === 'air', shape, { columns, slices, spread: true }));
+		recipes.push(() => generateTextGrid(text, font, frame === 'air', shape, { spread: true, practical: true }));
 		let last: unknown;
 		for (const construct of recipes) {
 			try { return finish(construct(), 'letters'); }
@@ -339,11 +359,23 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 			generateCornerChecks(request.contours ?? [], request.frameSize, request.scale),
 			'silhouette'
 		);
-	if (request.style === 'fitted')
-		return finish(
-			generateFittedFigure(request.contours ?? [], request.frameSize, request.scale),
-			'silhouette'
-		);
+	if (request.style === 'fitted') {
+		let last: unknown;
+		for (const route of [fourPortMotif, originalFourPortMotif]) {
+			let constructed = false;
+			try {
+				const result = generateFittedFigure(request.contours ?? [], request.frameSize, request.scale, route);
+				constructed = true;
+				return finish(result, 'silhouette');
+			}
+			catch (error) {
+				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+				if (!constructed && !(error instanceof CompilationError)) throw error;
+				last = error;
+			}
+		}
+		throw last;
+	}
 	const sunburst = request.style === 'sunburst';
 	const outerSize = request.frameSize ?? 70;
 	const rings = request.contours ?? [],
@@ -354,40 +386,48 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 			? 'rays'
 			: ((request.style as 'rays' | 'check' | 'plain') ?? 'rays');
 	// Spread complex artwork over a larger grid before considering a single cell.
-	// Each construction is attempted once; invalid recipes never become exports.
-	const recipes =
+	// Each routing variant is attempted once; invalid recipes never become exports.
+	const baseFigure = () => generateFigure(rings, shape, size, scale, style);
+	const recipes: ((route: typeof fourPortMotif) => ReturnType<typeof generateFigure>)[] =
 		rings.length > 1
 			? [
-					() => generatePanelFigure(rings, shape, size, scale, 2, style),
-					() => generatePanelFigure(rings, shape, size, scale, 2, style, 2),
-					() => generateFourPortFigure(rings, shape, size, scale, style),
-					() => generateFigure(rings, shape, size, scale, style)
+					(route) => generatePanelFigure(rings, shape, size, scale, 2, style, 1, false, route),
+					(route) => generatePanelFigure(rings, shape, size, scale, 2, style, 2, false, route),
+					(route) => generateFourPortFigure(rings, shape, size, scale, style, route),
+					baseFigure
 				]
 			: [
-					() => generateFigure(rings, shape, size, scale, style),
-					() => generateFourPortFigure(rings, shape, size, scale, style)
+					baseFigure,
+					(route) => generateFourPortFigure(rings, shape, size, scale, style, route)
 				];
 	// Concave silhouettes also benefit from several cells: a snowflake or an
 	// animal can have no holes and still need more than four attachment points.
 	// Keep the chosen frame and the exact artwork when distributing its cuts.
 	recipes.push(
-		() => generatePanelFigure(rings, shape, size, scale, 3, style),
-		() => generatePanelFigure(rings, shape, size, scale, 3, style, 2),
-		() => generatePanelFigure(rings, shape, size, scale, 3, style, 3),
-		() => generatePanelFigure(rings, shape, size, scale, 2, style, 2, true)
+		(route) => generatePanelFigure(rings, shape, size, scale, 3, style, 1, false, route),
+		(route) => generatePanelFigure(rings, shape, size, scale, 3, style, 2, false, route),
+		(route) => generatePanelFigure(rings, shape, size, scale, 3, style, 3, false, route),
+		(route) => generatePanelFigure(rings, shape, size, scale, 2, style, 2, true, route)
 	);
 	for (const [columns, rows] of [[4, 1], [5, 1], [4, 2], [2, 4], [5, 2], [4, 3], [3, 4], [4, 4]])
-		recipes.push(() => generatePanelFigure(rings, shape, size, scale, columns, style, rows, true));
+		recipes.push((route) => generatePanelFigure(rings, shape, size, scale, columns, style, rows, true, route));
 	const errors: Error[] = [];
-	for (const construct of recipes) {
+	// A local construction failure cannot improve by disabling its extra route.
+	// Retry only pieces that existed but failed joining or full-sheet validation.
+	const retryOriginal = new Set<(typeof recipes)[number]>();
+	for (const route of [fourPortMotif, originalFourPortMotif]) for (const construct of recipes) {
+		if (route === originalFourPortMotif && (!retryOriginal.has(construct) || construct === baseFigure)) continue;
+		let constructed = false;
 		try {
-			const construction = construct();
+			const construction = construct(route);
+			constructed = true;
 			return finish(
 				sunburst ? sunburstBorder(construction, outerSize) : construction,
 				rings.length === 1 ? 'silhouette' : 'nested'
 			);
 		} catch (e) {
 			if (!(e instanceof ConstructionError) && !(e instanceof CutGeometryError)) throw e;
+			if (constructed || e instanceof CompilationError) retryOriginal.add(construct);
 			errors.push(e);
 		}
 	}

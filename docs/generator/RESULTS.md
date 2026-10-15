@@ -1,5 +1,39 @@
 # Generator robustness results
 
+## Follow-up: imported contours and alternative cut routes
+
+The figure sweep now accepts **956 of 1,122 combinations**, with **166 refused,
+zero invalid accepted results and no regressions** against the preceding
+acceptance list. This combines a full sweep with a retest of its refusals after
+repairing the three oval paw frames. It verifies 71 additional figure cases,
+including rabbit, sun, coffee and butterfly frames.
+
+Imported contours are split at exactly repeated vertices, and collapsed loops
+are removed without moving their edges or changing their even-odd fill. A
+locally valid route can still fail when joined to neighbouring cells; in that
+case the figure generator retains the original attachment route as a bounded
+fallback. Local construction failures do not trigger this redundant retry.
+
+The cleaner-cut ranking introduced for checkerboard letters is also available
+as a final framed-text construction. A focused retest of 194 previous text
+refusals accepted 30 and refused 164, with no invalid accepted output. Of these,
+26 were not already pinned, including Kalam `juleman`, Bree Serif `ÆØÅ` and
+Nunito `æøå` in several frames. This was a refusal retest, not a new full text
+sweep. A separate 2×2 checkerboard fallback spaces shared attachments farther
+apart and recovers Nunito `Å` with its ring intact.
+
+These runs add **98 verified configurations**, bringing the acceptance list to
+**1,630**. Every accepted case passed artwork fidelity, clearance and JSON/SVG
+handoff checks. Rendered inspection covered eight recovered text and figure
+examples. These are digital checks; there has been no physical weaving trial.
+Full text and checkerboard coverage remains unfinished, as do the 166 figure
+refusals.
+
+All **926 unit tests and 177 inverse tests** pass, along with type checking,
+lint and the production build. Browser verification covered the recovered
+rabbit preview and thumbnail, the accented checkerboard's 2×2 editor handoff,
+and ANNA's unchanged alternating letter field.
+
 ## Focused follow-up: checkerboard text and practical cuts
 
 The new `repeat-check` frame ("Gentag med tern") builds alternating backgrounds

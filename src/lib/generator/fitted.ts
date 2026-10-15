@@ -6,7 +6,7 @@ import {
 } from './geometry';
 import { gridClearance } from '$lib/geometry/clearance';
 
-export function generateFittedFigure(rings: Ring[], size = 70, scale = .7) {
+export function generateFittedFigure(rings: Ring[], size = 70, scale = .7, route = fourPortMotif) {
 	const artwork = rings.filter(r => r.length).map(r =>
 		r.map(p => uprightToSheet([p[0] * size * scale, p[1] * size * scale]))
 	);
@@ -17,7 +17,7 @@ export function generateFittedFigure(rings: Ring[], size = 70, scale = .7) {
 		.reduce((a, b) => dot(a, direction(angle)) > dot(b, direction(angle)) ? a : b));
 	// Each support point has clear outward horizontal and vertical projections.
 	const edges: Edge[] = [];
-	fourPortMotif(edges, artwork, gates, angles.map(a => a + Math.PI), gridClearance(5));
+	route(edges, artwork, gates, angles.map(a => a + Math.PI), gridClearance(5));
 	for (const [i, p] of gates.entries()) {
 		add(edges, [[p[0], i < 2 ? 0 : 100], p], 'A', 'frame');
 		add(edges, [[i === 0 || i === 3 ? 0 : 100, p[1]], p], 'B', 'frame');

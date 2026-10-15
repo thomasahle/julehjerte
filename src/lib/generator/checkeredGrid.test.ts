@@ -43,7 +43,7 @@ describe('repeated letters with alternating backgrounds', () => {
 		expect(turns.filter(turn => turn > 135).length).toBeLessThanOrEqual(16);
 		expect(Math.max(...turns)).toBeLessThan(150);
 	}, 20000);
-	for (const [text, n] of [['ANNA', 4], ['JUL', 6], ['O', 2], ['anna', 4], ['SØREN', 10], ['M&M', 6]] as const)
+	for (const [text, n] of [['ANNA', 4], ['JUL', 6], ['O', 2], ['anna', 4], ['SØREN', 10], ['M&M', 6], ['A\u030A', 2]] as const)
 		it(`preserves ${text} and its checkerboard through JSON and SVG`, () => {
 			const design = make(text), original = rasterizeDesign(design, 160).data;
 			expect(design.gridSize).toEqual({ x: n, y: n });

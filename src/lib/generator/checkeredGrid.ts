@@ -9,7 +9,7 @@ import {
 	twoPortMotif, add, compile
 } from './geometry';
 
-export function generateCheckeredGrid(text: string, font: Font, fill = .82) {
+export function generateCheckeredGrid(text: string, font: Font, fill = .82, contactInset = .35) {
 	const repeated = repeatedText(text);
 	if (!repeated) throw new ConstructionError('empty', 'Empty text');
 	const word = repeated.split('\n')[0];
@@ -37,7 +37,7 @@ export function generateCheckeredGrid(text: string, font: Font, fill = .82) {
 		for (const [index, [row, col]] of owner.cells.entries()) {
 			const q = quadrants[index];
 			const contact = (ray: number, start: boolean): Point => {
-				const d = cell * (start ? .35 : .65);
+				const d = cell * (start ? contactInset : 1 - contactInset);
 				const origin: Point = [owner.x * cell, owner.y * cell];
 				const p: Point = [origin[0] + [1, 0, -1, 0][ray] * d, origin[1] + [0, 1, 0, -1][ray] * d];
 				const axis = ray % 2 ? 1 : 0;
