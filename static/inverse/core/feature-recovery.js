@@ -68,15 +68,18 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{},{
           (attempt.rejectedCandidates??=[]).push(observation);
           try{
             if(rejectedRepairUsed){observation.reason='repair_already_attempted';return false;}
-            if(seedRemaining()<.75){observation.reason='insufficient_phase_time';return false;}
+            // Eligibility includes the same bounded tail that will fund the
+            // repair. The routing phase alone can be nearly over while its
+            // caller still reserves enough time to repair and verify a route.
+            const phaseDeadline=Math.min(start+seconds*1000,seedStarted+maximumSeconds*1000);
+            const deadline=Math.max(phaseDeadline,Math.min(repairDeadline??phaseDeadline,phaseDeadline+500));
+            if(deadline-performance.now()<750){observation.reason='insufficient_phase_time';return false;}
             const quality=rejectedRoutingQuality(proposal,cfg);
             if(!quality.repairable){observation.reason='geometry_not_repairable';return false;}
             rejectedRepairUsed=true;
-            const phaseDeadline=Math.min(start+seconds*1000,seedStarted+maximumSeconds*1000);
             // The caller can lend a bounded tail from its remaining search
             // allowance to repair and verify this image-faithful candidate.
             // It never extends the discrete routing search or caller deadline.
-            const deadline=Math.max(phaseDeadline,Math.min(repairDeadline??phaseDeadline,phaseDeadline+500));
             observation.reason='repair_attempted';observation.repairBudgetSeconds=(deadline-performance.now())/1000;
             const repaired=repairRejectedRouting(proposal,input,cfg,{deadline,quality});
             attempt.continuousRepair={...repaired.report,additionalBudgetSeconds:(deadline-phaseDeadline)/1000,integerCandidateSeconds:timing.elapsedSeconds};

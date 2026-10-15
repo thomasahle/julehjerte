@@ -167,6 +167,22 @@ All eight affected tests pass. Other failures remain unresolved. This does not
 establish additional successful reconstructions or fix the repair's finer-verification
 limitation.
 
+A [repair-budget correction](available-repair-tail.json) now includes the
+caller-provided verification tail when deciding whether continuous repair can
+start. The previous guard ignored this already allocated time. Two fresh
+silhouette fits improve from rejection at 5.3472% mask disagreement to checked
+pairs at 1.6064%, with no source changes or larger overall deadline. Across four
+fixed masks and two AB/BA rounds, acceptance rises from 4/8 to 6/8. The cropped
+tree still fails; some accepted-case errors increase, so this is not a strict
+no-regression result. A real-MILP controlled-delay regression fails before the
+change and passes after it, including a no-borrow control. All eleven focused
+integration tests pass. Full repository, corpus and browser QA remain pending.
+A separate coarser-initializer experiment was not integrated because it did not
+repeatably resolve the primary failure. The calibration comparison's remaining
+13 tests were also replayed twice per runtime: 21/26 passes before and 22/26 after,
+with failures shared across revisions. Those focused runs do not replace the
+failed full-suite record.
+
 The latest validated solver revision is `c000d30`. Its
 [release record](return-projection-speed.json) passes **22/22 regular Hunodan
 designs below ten seconds**, with a maximum of **8.100 seconds**. Automatic

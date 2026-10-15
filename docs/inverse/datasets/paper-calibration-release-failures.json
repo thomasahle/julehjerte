@@ -1136,6 +1136,132 @@
     {
       "path": "tmp/heart-learning/paper-calibration-failures-v1/corrections/source.json",
       "sha256": "6ae16614bffea4dda561a3d60789195a9c715cea1d17349929195d2251ac5967"
+    },
+    {
+      "path": "tmp/heart-learning/paper-calibration-remaining-v1/cases.json",
+      "sha256": "ed20b13a1f4b3692bccc0a1e1114364323267f905695469cd5f127c0e4f29f85"
+    },
+    {
+      "path": "tmp/heart-learning/paper-calibration-remaining-v1/checks.json",
+      "sha256": "8238677e2822ddfd97373ca74964f65bddfc86db8af494d435ca0436f1d206d6"
+    },
+    {
+      "path": "tmp/heart-learning/paper-calibration-remaining-v1/source.json",
+      "sha256": "524f306624d5e8ffe6ff824842e24cd087cbbc4d24dfc8bc0b22bd7d0779a978"
+    },
+    {
+      "path": "tmp/heart-learning/paper-calibration-remaining-v1/state.json",
+      "sha256": "8416d97f4d1137ac9b511e322084a74eeb3b3a3d9190aef2cf27b9ba654201e6"
+    },
+    {
+      "path": "tmp/heart-learning/paper-calibration-remaining-v1/backend-summary.json",
+      "sha256": "027bbcf3c6e6d4ddfb4f823d06ed6f6d8c1fc87edafa7846130c642c4d1ade47"
+    },
+    {
+      "path": "tmp/heart-learning/paper-calibration-remaining-v1/run.py",
+      "sha256": "d38cf4fd937614b303ea1a03dd6d2f8f382a290318eb3c8db13dbad9f043f9b7"
     }
-  ]
+  ],
+  "remainingFailureReplay": {
+    "method": "Thirteen remaining failed tests, selected by exact names, in fresh file processes. Two AB/BA rounds with immutable before/after runtime snapshots. This is a focused replay, not a full-suite rerun.",
+    "sourceFilesVerified": 681,
+    "referencePassed": 21,
+    "currentPassed": 22,
+    "attemptsPerVariant": 26,
+    "runs": [
+      {
+        "round": 0,
+        "variant": "before",
+        "exitCode": 1,
+        "seconds": 112.812548875,
+        "passed": [
+          "ok 1 - bounded repair resolves a nonlocal slit neck without changing the x-plus-1 artwork",
+          "ok 2 - fresh y-minus-1 fitting carries repaired clearance through final export",
+          "ok 3 - the vertical near-miss layout produces checked exports within the original short search (1x clock)",
+          "ok 4 - the original near-miss layout produces checked exports within the original short search (1.5x clock)",
+          "ok 6 - an ordinary refinement checkpoint repairs hidden connectors without changing the exported image",
+          "ok 7 - small resolution changes retain a checked three-cut flower instead of crowding it out",
+          "ok 8 - a fresh shifted bird fit reroutes its rejected eye with a 10-second allowance",
+          "ok 9 - the matching preference can change cut count and colour phase without forcing or editing the mask",
+          "ok 11 - crown retains its interior detail in a fresh fit (10s allowance)",
+          "ok 12 - the photographed gold heart retains its shape through sparse routing and refinement",
+          "ok 13 - a speculative weak-region grid cannot hide the dense checker layout after clearance changes its ranking"
+        ],
+        "failed": [
+          "not ok 5 - an actual cropped upload recovers its template when one edge hides slit endpoints",
+          "not ok 10 - fresh synthetic-control routing retains time for a valid template without changing the mask"
+        ]
+      },
+      {
+        "round": 0,
+        "variant": "after",
+        "exitCode": 1,
+        "seconds": 113.77775262499999,
+        "passed": [
+          "ok 1 - bounded repair resolves a nonlocal slit neck without changing the x-plus-1 artwork",
+          "ok 2 - fresh y-minus-1 fitting carries repaired clearance through final export",
+          "ok 3 - the vertical near-miss layout produces checked exports within the original short search (1x clock)",
+          "ok 4 - the original near-miss layout produces checked exports within the original short search (1.5x clock)",
+          "ok 6 - an ordinary refinement checkpoint repairs hidden connectors without changing the exported image",
+          "ok 7 - small resolution changes retain a checked three-cut flower instead of crowding it out",
+          "ok 8 - a fresh shifted bird fit reroutes its rejected eye with a 10-second allowance",
+          "ok 9 - the matching preference can change cut count and colour phase without forcing or editing the mask",
+          "ok 11 - crown retains its interior detail in a fresh fit (10s allowance)",
+          "ok 12 - the photographed gold heart retains its shape through sparse routing and refinement",
+          "ok 13 - a speculative weak-region grid cannot hide the dense checker layout after clearance changes its ranking"
+        ],
+        "failed": [
+          "not ok 5 - an actual cropped upload recovers its template when one edge hides slit endpoints",
+          "not ok 10 - fresh synthetic-control routing retains time for a valid template without changing the mask"
+        ]
+      },
+      {
+        "round": 1,
+        "variant": "after",
+        "exitCode": 1,
+        "seconds": 112.87437312499998,
+        "passed": [
+          "ok 1 - bounded repair resolves a nonlocal slit neck without changing the x-plus-1 artwork",
+          "ok 2 - fresh y-minus-1 fitting carries repaired clearance through final export",
+          "ok 3 - the vertical near-miss layout produces checked exports within the original short search (1x clock)",
+          "ok 4 - the original near-miss layout produces checked exports within the original short search (1.5x clock)",
+          "ok 6 - an ordinary refinement checkpoint repairs hidden connectors without changing the exported image",
+          "ok 7 - small resolution changes retain a checked three-cut flower instead of crowding it out",
+          "ok 8 - a fresh shifted bird fit reroutes its rejected eye with a 10-second allowance",
+          "ok 9 - the matching preference can change cut count and colour phase without forcing or editing the mask",
+          "ok 11 - crown retains its interior detail in a fresh fit (10s allowance)",
+          "ok 12 - the photographed gold heart retains its shape through sparse routing and refinement",
+          "ok 13 - a speculative weak-region grid cannot hide the dense checker layout after clearance changes its ranking"
+        ],
+        "failed": [
+          "not ok 5 - an actual cropped upload recovers its template when one edge hides slit endpoints",
+          "not ok 10 - fresh synthetic-control routing retains time for a valid template without changing the mask"
+        ]
+      },
+      {
+        "round": 1,
+        "variant": "before",
+        "exitCode": 1,
+        "seconds": 118.47402449999998,
+        "passed": [
+          "ok 1 - bounded repair resolves a nonlocal slit neck without changing the x-plus-1 artwork",
+          "ok 2 - fresh y-minus-1 fitting carries repaired clearance through final export",
+          "ok 3 - the vertical near-miss layout produces checked exports within the original short search (1x clock)",
+          "ok 4 - the original near-miss layout produces checked exports within the original short search (1.5x clock)",
+          "ok 5 - an actual cropped upload recovers its template when one edge hides slit endpoints",
+          "ok 6 - an ordinary refinement checkpoint repairs hidden connectors without changing the exported image",
+          "ok 7 - small resolution changes retain a checked three-cut flower instead of crowding it out",
+          "ok 8 - a fresh shifted bird fit reroutes its rejected eye with a 10-second allowance",
+          "ok 12 - the photographed gold heart retains its shape through sparse routing and refinement",
+          "ok 13 - a speculative weak-region grid cannot hide the dense checker layout after clearance changes its ranking"
+        ],
+        "failed": [
+          "not ok 9 - the matching preference can change cut count and colour phase without forcing or editing the mask",
+          "not ok 10 - fresh synthetic-control routing retains time for a valid template without changing the mask",
+          "not ok 11 - crown retains its interior detail in a fresh fit (10s allowance)"
+        ]
+      }
+    ],
+    "finding": "The fixed synthetic-control mask fails in all four runs. The cropped tree fails in three; baseline matching and crown each fail once. No current-only failing case is established by these two paired rounds. The full-suite failure remains unresolved as a release gate."
+  }
 }

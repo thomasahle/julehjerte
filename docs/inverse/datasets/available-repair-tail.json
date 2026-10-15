@@ -1,0 +1,1120 @@
+{
+  "schema": 1,
+  "baseCommit": "c31730d",
+  "scope": "Use an already allocated continuous-repair tail when checking eligibility; no extra caller time, native MILP budget, source-image edits or tolerance changes.",
+  "rootCause": "Eligibility previously required 750 ms left in the discrete routing phase before considering the caller-provided repair tail. A rejected candidate with 666\u2013704 ms of phase time was skipped despite enough already allocated time to repair and audit it.",
+  "change": "Compute the existing capped repair deadline before eligibility. Require 750 ms until that deadline. Keep the 500 ms maximum borrowed tail, caller deadline, one-repair limit and all original final checks.",
+  "pairedFreshFits": {
+    "cases": [
+      "synthetic-control",
+      "frozen",
+      "y-plus-1",
+      "cropped-tree"
+    ],
+    "rounds": 2,
+    "order": "AB/BA, fresh process per case and policy",
+    "sourceFilesVerified": 219,
+    "baselineAccepted": 4,
+    "candidateAccepted": 6,
+    "attemptsPerVariant": 8,
+    "rows": [
+      {
+        "run": "0-cropped-tree-baseline",
+        "variant": "baseline",
+        "id": "cropped-tree",
+        "milliseconds": 9130.900208000001,
+        "maskSha256": "5a60916399cc8036f9a416c3229b971efc28790636f620e765cc10f803d80d5f",
+        "geometrySha256": "6184449e518f818f8e1c0565c8360f4a4a50b684420929ca5987f1f2d06caeaf",
+        "templateChecks": false,
+        "geometryPassed": true,
+        "paper": "uncertain",
+        "renders": [
+          {
+            "resolution": 400,
+            "error": 0.10055,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 800,
+            "error": 0.1008015625,
+            "featuresPassed": true
+          }
+        ],
+        "rejectedCandidates": [],
+        "repairs": []
+      },
+      {
+        "run": "0-cropped-tree-repair-tail",
+        "variant": "repair-tail",
+        "id": "cropped-tree",
+        "milliseconds": 8323.872833,
+        "maskSha256": "5a60916399cc8036f9a416c3229b971efc28790636f620e765cc10f803d80d5f",
+        "geometrySha256": "0dab051bff4d7d82056f059c74d30810b5e789e3e977f468d26ef13692b49f51",
+        "templateChecks": false,
+        "geometryPassed": true,
+        "paper": "uncertain",
+        "renders": [
+          {
+            "resolution": 400,
+            "error": 0.0788875,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 800,
+            "error": 0.0792671875,
+            "featuresPassed": true
+          }
+        ],
+        "rejectedCandidates": [
+          {
+            "round": 1,
+            "integerCandidateSeconds": 1.7303125409999998,
+            "remainingSeconds": 2.8580455286818043,
+            "reason": "repair_attempted",
+            "repairBudgetSeconds": 2.8263422786818047
+          },
+          {
+            "round": 2,
+            "integerCandidateSeconds": 3.0633825000000003,
+            "remainingSeconds": 1.5250662366818042,
+            "reason": "repair_already_attempted"
+          },
+          {
+            "round": 3,
+            "integerCandidateSeconds": 3.676603791,
+            "remainingSeconds": 0.9118471946818048,
+            "reason": "repair_already_attempted"
+          }
+        ],
+        "repairs": [
+          {
+            "accepted": false,
+            "reason": "initial_image",
+            "steps": null,
+            "seconds": 0.010315625000000182,
+            "additionalBudgetSeconds": 0,
+            "integerCandidateSeconds": 1.7303125409999998
+          }
+        ]
+      },
+      {
+        "run": "0-frozen-baseline",
+        "variant": "baseline",
+        "id": "frozen",
+        "milliseconds": 9115.7435,
+        "maskSha256": "a8982a2283b5456498b52de1ec512872810276a52fc944e40acf550a4265ddfc",
+        "geometrySha256": "3178526ec28ef9c1f8efb14d6445bf51ec69ee8a3fee04950effd9e5879d8e39",
+        "templateChecks": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "renders": [
+          {
+            "resolution": 250,
+            "error": 0.006,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 500,
+            "error": 0.009516,
+            "featuresPassed": true
+          }
+        ],
+        "rejectedCandidates": [
+          {
+            "round": 1,
+            "integerCandidateSeconds": 2.548316042,
+            "remainingSeconds": 2.0325073843000014,
+            "reason": "repair_attempted",
+            "repairBudgetSeconds": 2.505648759300001
+          }
+        ],
+        "repairs": [
+          {
+            "accepted": true,
+            "reason": null,
+            "steps": 140,
+            "seconds": 1.600349666,
+            "additionalBudgetSeconds": 0.5,
+            "integerCandidateSeconds": 2.548316042
+          }
+        ]
+      },
+      {
+        "run": "0-frozen-repair-tail",
+        "variant": "repair-tail",
+        "id": "frozen",
+        "milliseconds": 9128.519957999999,
+        "maskSha256": "a8982a2283b5456498b52de1ec512872810276a52fc944e40acf550a4265ddfc",
+        "geometrySha256": "6f2f41bc6223b0501f70ee657c3f06c8bf2280aa0e37de006f5e21d052a4aa0e",
+        "templateChecks": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "renders": [
+          {
+            "resolution": 250,
+            "error": 0.011552,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 500,
+            "error": 0.014008,
+            "featuresPassed": true
+          }
+        ],
+        "rejectedCandidates": [
+          {
+            "round": 1,
+            "integerCandidateSeconds": 2.602737667,
+            "remainingSeconds": 1.8929986916000012,
+            "reason": "repair_attempted",
+            "repairBudgetSeconds": 2.3647036916000017
+          }
+        ],
+        "repairs": [
+          {
+            "accepted": true,
+            "reason": null,
+            "steps": 85,
+            "seconds": 1.6468941670000004,
+            "additionalBudgetSeconds": 0.5,
+            "integerCandidateSeconds": 2.602737667
+          }
+        ]
+      },
+      {
+        "run": "0-synthetic-control-baseline",
+        "variant": "baseline",
+        "id": "synthetic-control",
+        "milliseconds": 9117.58325,
+        "maskSha256": "9d4accdee263a24380ff50f12f1739f29044b582e057c2835fe1b3461a6e62d3",
+        "geometrySha256": "2af53fb9c071db72fec6f52be346e1c05854c38c09f11856398a408f684b6023",
+        "templateChecks": false,
+        "geometryPassed": false,
+        "paper": "fail",
+        "renders": [
+          {
+            "resolution": 250,
+            "error": 0.053472,
+            "featuresPassed": false
+          },
+          {
+            "resolution": 500,
+            "error": 0.053736,
+            "featuresPassed": false
+          }
+        ],
+        "rejectedCandidates": [
+          {
+            "round": 1,
+            "integerCandidateSeconds": 3.5602233749999996,
+            "remainingSeconds": 0.6665803831000017,
+            "reason": "insufficient_phase_time"
+          }
+        ],
+        "repairs": []
+      },
+      {
+        "run": "0-synthetic-control-repair-tail",
+        "variant": "repair-tail",
+        "id": "synthetic-control",
+        "milliseconds": 9032.11275,
+        "maskSha256": "9d4accdee263a24380ff50f12f1739f29044b582e057c2835fe1b3461a6e62d3",
+        "geometrySha256": "8fad6042208af3ad4b1cbc5f70d6603647f257adf6d09ffe8bf28376152ac8c8",
+        "templateChecks": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "renders": [
+          {
+            "resolution": 250,
+            "error": 0.016064,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 500,
+            "error": 0.01728,
+            "featuresPassed": true
+          }
+        ],
+        "rejectedCandidates": [
+          {
+            "round": 1,
+            "integerCandidateSeconds": 3.5185869579999998,
+            "remainingSeconds": 0.703911157999999,
+            "reason": "repair_attempted",
+            "repairBudgetSeconds": 1.1650788329999995
+          }
+        ],
+        "repairs": [
+          {
+            "accepted": true,
+            "reason": null,
+            "steps": 20,
+            "seconds": 0.7894559579999996,
+            "additionalBudgetSeconds": 0.48537692500000046,
+            "integerCandidateSeconds": 3.5185869579999998
+          }
+        ]
+      },
+      {
+        "run": "0-y-plus-1-baseline",
+        "variant": "baseline",
+        "id": "y-plus-1",
+        "milliseconds": 9145.145625000001,
+        "maskSha256": "69d731a527592afab42c30f570d54e70c3a9d874837ded7fbfe75e9530295412",
+        "geometrySha256": "c3872962ad97ce29f83a1bc57e71bb624e84ba15139aa1a85fa28fb51e66cc65",
+        "templateChecks": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "renders": [
+          {
+            "resolution": 250,
+            "error": 0.007504,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 500,
+            "error": 0.010236,
+            "featuresPassed": true
+          }
+        ],
+        "rejectedCandidates": [],
+        "repairs": []
+      },
+      {
+        "run": "0-y-plus-1-repair-tail",
+        "variant": "repair-tail",
+        "id": "y-plus-1",
+        "milliseconds": 9287.39575,
+        "maskSha256": "69d731a527592afab42c30f570d54e70c3a9d874837ded7fbfe75e9530295412",
+        "geometrySha256": "9ef5465221dd0fd9089bce372d640509c1d8bafe9510178f40a6abddb92390d9",
+        "templateChecks": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "renders": [
+          {
+            "resolution": 250,
+            "error": 0.007536,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 500,
+            "error": 0.010192,
+            "featuresPassed": true
+          }
+        ],
+        "rejectedCandidates": [],
+        "repairs": []
+      },
+      {
+        "run": "1-cropped-tree-baseline",
+        "variant": "baseline",
+        "id": "cropped-tree",
+        "milliseconds": 9143.619667,
+        "maskSha256": "5a60916399cc8036f9a416c3229b971efc28790636f620e765cc10f803d80d5f",
+        "geometrySha256": "eeb87683c8b34a8a470ec50eda63e30a62d63486480ab527b108e09919252ad1",
+        "templateChecks": false,
+        "geometryPassed": true,
+        "paper": "pass",
+        "renders": [
+          {
+            "resolution": 400,
+            "error": 0.07605,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 800,
+            "error": 0.0767578125,
+            "featuresPassed": true
+          }
+        ],
+        "rejectedCandidates": [
+          {
+            "round": 1,
+            "integerCandidateSeconds": 1.6817604999999998,
+            "remainingSeconds": 3.0945131999803404,
+            "reason": "repair_attempted",
+            "repairBudgetSeconds": 3.0657648249803398
+          },
+          {
+            "round": 2,
+            "integerCandidateSeconds": 2.9753354999999995,
+            "remainingSeconds": 1.8010240329803398,
+            "reason": "repair_already_attempted"
+          },
+          {
+            "round": 3,
+            "integerCandidateSeconds": 3.592373333,
+            "remainingSeconds": 1.1839911579803406,
+            "reason": "repair_already_attempted"
+          }
+        ],
+        "repairs": [
+          {
+            "accepted": false,
+            "reason": "initial_image",
+            "steps": null,
+            "seconds": 0.01000774999999976,
+            "additionalBudgetSeconds": 0,
+            "integerCandidateSeconds": 1.6817604999999998
+          }
+        ]
+      },
+      {
+        "run": "1-cropped-tree-repair-tail",
+        "variant": "repair-tail",
+        "id": "cropped-tree",
+        "milliseconds": 8349.197375,
+        "maskSha256": "5a60916399cc8036f9a416c3229b971efc28790636f620e765cc10f803d80d5f",
+        "geometrySha256": "0dab051bff4d7d82056f059c74d30810b5e789e3e977f468d26ef13692b49f51",
+        "templateChecks": false,
+        "geometryPassed": true,
+        "paper": "uncertain",
+        "renders": [
+          {
+            "resolution": 400,
+            "error": 0.0788875,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 800,
+            "error": 0.0792671875,
+            "featuresPassed": true
+          }
+        ],
+        "rejectedCandidates": [
+          {
+            "round": 1,
+            "integerCandidateSeconds": 1.6994647500000002,
+            "remainingSeconds": 3.037022529658212,
+            "reason": "repair_attempted",
+            "repairBudgetSeconds": 3.0034076966582126
+          },
+          {
+            "round": 2,
+            "integerCandidateSeconds": 3.000595375,
+            "remainingSeconds": 1.7359892376582118,
+            "reason": "repair_already_attempted"
+          },
+          {
+            "round": 3,
+            "integerCandidateSeconds": 3.613846667,
+            "remainingSeconds": 1.1227384466582127,
+            "reason": "repair_already_attempted"
+          }
+        ],
+        "repairs": [
+          {
+            "accepted": false,
+            "reason": "initial_image",
+            "steps": null,
+            "seconds": 0.013659834000000046,
+            "additionalBudgetSeconds": 0,
+            "integerCandidateSeconds": 1.6994647500000002
+          }
+        ]
+      },
+      {
+        "run": "1-frozen-baseline",
+        "variant": "baseline",
+        "id": "frozen",
+        "milliseconds": 9124.772625,
+        "maskSha256": "a8982a2283b5456498b52de1ec512872810276a52fc944e40acf550a4265ddfc",
+        "geometrySha256": "47180cb09372d6eb6b1604586ed009afd3ea88fd1ec0f938d0048875f94e4359",
+        "templateChecks": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "renders": [
+          {
+            "resolution": 250,
+            "error": 0.006016,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 500,
+            "error": 0.009508,
+            "featuresPassed": true
+          }
+        ],
+        "rejectedCandidates": [
+          {
+            "round": 1,
+            "integerCandidateSeconds": 2.6398973749999994,
+            "remainingSeconds": 1.9130731872000002,
+            "reason": "repair_attempted",
+            "repairBudgetSeconds": 2.3845486871999992
+          }
+        ],
+        "repairs": [
+          {
+            "accepted": true,
+            "reason": null,
+            "steps": 160,
+            "seconds": 1.606014083,
+            "additionalBudgetSeconds": 0.5,
+            "integerCandidateSeconds": 2.6398973749999994
+          }
+        ]
+      },
+      {
+        "run": "1-frozen-repair-tail",
+        "variant": "repair-tail",
+        "id": "frozen",
+        "milliseconds": 9145.884375,
+        "maskSha256": "a8982a2283b5456498b52de1ec512872810276a52fc944e40acf550a4265ddfc",
+        "geometrySha256": "c1db426b7f25e9dce08faf565edb66a9ac49cd4e65be0eb5caed7af10745f1e4",
+        "templateChecks": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "renders": [
+          {
+            "resolution": 250,
+            "error": 0.006592,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 500,
+            "error": 0.0099,
+            "featuresPassed": true
+          }
+        ],
+        "rejectedCandidates": [
+          {
+            "round": 1,
+            "integerCandidateSeconds": 2.6399764169999993,
+            "remainingSeconds": 1.8994296076999992,
+            "reason": "repair_attempted",
+            "repairBudgetSeconds": 2.367430649699999
+          }
+        ],
+        "repairs": [
+          {
+            "accepted": true,
+            "reason": null,
+            "steps": 85,
+            "seconds": 1.6040061669999996,
+            "additionalBudgetSeconds": 0.5,
+            "integerCandidateSeconds": 2.6399764169999993
+          }
+        ]
+      },
+      {
+        "run": "1-synthetic-control-baseline",
+        "variant": "baseline",
+        "id": "synthetic-control",
+        "milliseconds": 9188.912542,
+        "maskSha256": "9d4accdee263a24380ff50f12f1739f29044b582e057c2835fe1b3461a6e62d3",
+        "geometrySha256": "2af53fb9c071db72fec6f52be346e1c05854c38c09f11856398a408f684b6023",
+        "templateChecks": false,
+        "geometryPassed": false,
+        "paper": "fail",
+        "renders": [
+          {
+            "resolution": 250,
+            "error": 0.053472,
+            "featuresPassed": false
+          },
+          {
+            "resolution": 500,
+            "error": 0.053736,
+            "featuresPassed": false
+          }
+        ],
+        "rejectedCandidates": [
+          {
+            "round": 1,
+            "integerCandidateSeconds": 3.7137166669999995,
+            "remainingSeconds": 0.47939396509999943,
+            "reason": "insufficient_phase_time"
+          }
+        ],
+        "repairs": []
+      },
+      {
+        "run": "1-synthetic-control-repair-tail",
+        "variant": "repair-tail",
+        "id": "synthetic-control",
+        "milliseconds": 9060.696458,
+        "maskSha256": "9d4accdee263a24380ff50f12f1739f29044b582e057c2835fe1b3461a6e62d3",
+        "geometrySha256": "572c674c21db3744d014d9a66790fcd246c68ede2f43582564cf981531369da6",
+        "templateChecks": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "renders": [
+          {
+            "resolution": 250,
+            "error": 0.016064,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 500,
+            "error": 0.01728,
+            "featuresPassed": true
+          }
+        ],
+        "rejectedCandidates": [
+          {
+            "round": 1,
+            "integerCandidateSeconds": 3.6981515,
+            "remainingSeconds": 0.4754312324000014,
+            "reason": "repair_attempted",
+            "repairBudgetSeconds": 0.9310786660000012
+          }
+        ],
+        "repairs": [
+          {
+            "accepted": true,
+            "reason": null,
+            "steps": 0,
+            "seconds": 0.5400071659999994,
+            "additionalBudgetSeconds": 0.47974647559999906,
+            "integerCandidateSeconds": 3.6981515
+          }
+        ]
+      },
+      {
+        "run": "1-y-plus-1-baseline",
+        "variant": "baseline",
+        "id": "y-plus-1",
+        "milliseconds": 9151.79525,
+        "maskSha256": "69d731a527592afab42c30f570d54e70c3a9d874837ded7fbfe75e9530295412",
+        "geometrySha256": "ade181603f9a656db1993b0f423b12aeeca27d2064bbd22c30de3358afb5a1a4",
+        "templateChecks": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "renders": [
+          {
+            "resolution": 250,
+            "error": 0.006144,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 500,
+            "error": 0.009184,
+            "featuresPassed": true
+          }
+        ],
+        "rejectedCandidates": [],
+        "repairs": []
+      },
+      {
+        "run": "1-y-plus-1-repair-tail",
+        "variant": "repair-tail",
+        "id": "y-plus-1",
+        "milliseconds": 8784.625458,
+        "maskSha256": "69d731a527592afab42c30f570d54e70c3a9d874837ded7fbfe75e9530295412",
+        "geometrySha256": "a81039366953d57ed44f8e865aeb1915f17af67816e4bf1e8d9c9917000d92da",
+        "templateChecks": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "renders": [
+          {
+            "resolution": 250,
+            "error": 0.004736,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 500,
+            "error": 0.007908,
+            "featuresPassed": true
+          }
+        ],
+        "rejectedCandidates": [],
+        "repairs": []
+      }
+    ],
+    "limits": "The synthetic-control silhouette gains two accepted fits; the cropped tree fails both policies. Some accepted frozen/shifted errors get worse, others improve. Timing-dependent differences remain even where both policies take the same repair path; this does not establish no-regression corpus performance."
+  },
+  "rejectedCoarserInitializer": {
+    "sourceFilesVerified": 219,
+    "rows": [
+      {
+        "run": "0-cropped-tree-baseline",
+        "variant": "baseline",
+        "id": "cropped-tree",
+        "milliseconds": 8322.712167,
+        "maskSha256": "5a60916399cc8036f9a416c3229b971efc28790636f620e765cc10f803d80d5f",
+        "geometrySha256": "0dab051bff4d7d82056f059c74d30810b5e789e3e977f468d26ef13692b49f51",
+        "templateChecks": false,
+        "geometryPassed": true,
+        "paper": "uncertain",
+        "renders": [
+          {
+            "resolution": 400,
+            "error": 0.0788875,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 800,
+            "error": 0.0792671875,
+            "featuresPassed": true
+          }
+        ],
+        "rejectedCandidates": [
+          {
+            "round": 1,
+            "integerCandidateSeconds": 1.6808836660000006,
+            "remainingSeconds": 3.0616782406378498,
+            "reason": "repair_attempted",
+            "repairBudgetSeconds": 3.0329179906378494
+          },
+          {
+            "round": 2,
+            "integerCandidateSeconds": 2.9482642500000003,
+            "remainingSeconds": 1.7943833656378505,
+            "reason": "repair_already_attempted"
+          },
+          {
+            "round": 3,
+            "integerCandidateSeconds": 3.5727967500000006,
+            "remainingSeconds": 1.1698489486378492,
+            "reason": "repair_already_attempted"
+          }
+        ],
+        "repairs": [
+          {
+            "accepted": false,
+            "reason": "initial_image",
+            "steps": null,
+            "seconds": 0.009519125000000713,
+            "additionalBudgetSeconds": 0,
+            "integerCandidateSeconds": 1.6808836660000006
+          }
+        ]
+      },
+      {
+        "run": "0-cropped-tree-coarser",
+        "variant": "coarser",
+        "id": "cropped-tree",
+        "milliseconds": 8467.30025,
+        "maskSha256": "5a60916399cc8036f9a416c3229b971efc28790636f620e765cc10f803d80d5f",
+        "geometrySha256": "1688b5b5aadf8884f9a38bd6e4cfa9df1b7d5e3afd17836fbc441a69d7869b18",
+        "templateChecks": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "renders": [
+          {
+            "resolution": 400,
+            "error": 0.02358125,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 800,
+            "error": 0.0249609375,
+            "featuresPassed": true
+          }
+        ],
+        "rejectedCandidates": [
+          {
+            "round": 1,
+            "integerCandidateSeconds": 1.6520365840000004,
+            "remainingSeconds": 3.3225114952473143,
+            "reason": "repair_attempted",
+            "repairBudgetSeconds": 3.2941011202473147
+          },
+          {
+            "round": 2,
+            "integerCandidateSeconds": 2.9389007499999997,
+            "remainingSeconds": 2.035735204247314,
+            "reason": "repair_already_attempted"
+          },
+          {
+            "round": 3,
+            "integerCandidateSeconds": 3.5423544590000002,
+            "remainingSeconds": 1.432281120247314,
+            "reason": "repair_already_attempted"
+          }
+        ],
+        "repairs": [
+          {
+            "accepted": false,
+            "reason": "initial_image",
+            "steps": null,
+            "seconds": 0.011635209000000032,
+            "additionalBudgetSeconds": 0,
+            "integerCandidateSeconds": 1.6520365840000004
+          }
+        ]
+      },
+      {
+        "run": "0-synthetic-control-baseline",
+        "variant": "baseline",
+        "id": "synthetic-control",
+        "milliseconds": 9138.092042,
+        "maskSha256": "9d4accdee263a24380ff50f12f1739f29044b582e057c2835fe1b3461a6e62d3",
+        "geometrySha256": "2af53fb9c071db72fec6f52be346e1c05854c38c09f11856398a408f684b6023",
+        "templateChecks": false,
+        "geometryPassed": false,
+        "paper": "fail",
+        "renders": [
+          {
+            "resolution": 250,
+            "error": 0.053472,
+            "featuresPassed": false
+          },
+          {
+            "resolution": 500,
+            "error": 0.053736,
+            "featuresPassed": false
+          }
+        ],
+        "rejectedCandidates": [
+          {
+            "round": 1,
+            "integerCandidateSeconds": 4.0684422499999995,
+            "remainingSeconds": 0.15617430450000125,
+            "reason": "insufficient_phase_time"
+          }
+        ],
+        "repairs": []
+      },
+      {
+        "run": "0-synthetic-control-coarser",
+        "variant": "coarser",
+        "id": "synthetic-control",
+        "milliseconds": 9232.781083,
+        "maskSha256": "9d4accdee263a24380ff50f12f1739f29044b582e057c2835fe1b3461a6e62d3",
+        "geometrySha256": "2af53fb9c071db72fec6f52be346e1c05854c38c09f11856398a408f684b6023",
+        "templateChecks": false,
+        "geometryPassed": false,
+        "paper": "fail",
+        "renders": [
+          {
+            "resolution": 250,
+            "error": 0.053472,
+            "featuresPassed": false
+          },
+          {
+            "resolution": 500,
+            "error": 0.053736,
+            "featuresPassed": false
+          }
+        ],
+        "rejectedCandidates": [
+          {
+            "round": 1,
+            "integerCandidateSeconds": 3.773819875,
+            "remainingSeconds": 0.29794194680000086,
+            "reason": "insufficient_phase_time"
+          }
+        ],
+        "repairs": []
+      },
+      {
+        "run": "1-cropped-tree-baseline",
+        "variant": "baseline",
+        "id": "cropped-tree",
+        "milliseconds": 8624.308708,
+        "maskSha256": "5a60916399cc8036f9a416c3229b971efc28790636f620e765cc10f803d80d5f",
+        "geometrySha256": "c58bd1848f8f81fe9f3bcc60408e2d21a83d17b70a491c33a08500c1b5eacc64",
+        "templateChecks": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "renders": [
+          {
+            "resolution": 400,
+            "error": 0.02368125,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 800,
+            "error": 0.0250203125,
+            "featuresPassed": true
+          }
+        ],
+        "rejectedCandidates": [
+          {
+            "round": 1,
+            "integerCandidateSeconds": 1.652406,
+            "remainingSeconds": 3.2335483557563727,
+            "reason": "repair_attempted",
+            "repairBudgetSeconds": 3.204868605756373
+          },
+          {
+            "round": 2,
+            "integerCandidateSeconds": 2.923076,
+            "remainingSeconds": 1.9629590647563724,
+            "reason": "repair_already_attempted"
+          },
+          {
+            "round": 3,
+            "integerCandidateSeconds": 3.528877541,
+            "remainingSeconds": 1.3571576057563721,
+            "reason": "repair_already_attempted"
+          }
+        ],
+        "repairs": [
+          {
+            "accepted": false,
+            "reason": "initial_image",
+            "steps": null,
+            "seconds": 0.009650042000000213,
+            "additionalBudgetSeconds": 0,
+            "integerCandidateSeconds": 1.652406
+          }
+        ]
+      },
+      {
+        "run": "1-cropped-tree-coarser",
+        "variant": "coarser",
+        "id": "cropped-tree",
+        "milliseconds": 8558.794333,
+        "maskSha256": "5a60916399cc8036f9a416c3229b971efc28790636f620e765cc10f803d80d5f",
+        "geometrySha256": "1688b5b5aadf8884f9a38bd6e4cfa9df1b7d5e3afd17836fbc441a69d7869b18",
+        "templateChecks": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "renders": [
+          {
+            "resolution": 400,
+            "error": 0.02358125,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 800,
+            "error": 0.0249609375,
+            "featuresPassed": true
+          }
+        ],
+        "rejectedCandidates": [
+          {
+            "round": 1,
+            "integerCandidateSeconds": 1.662847792,
+            "remainingSeconds": 3.3149867253733416,
+            "reason": "repair_attempted",
+            "repairBudgetSeconds": 3.2869572663733417
+          },
+          {
+            "round": 2,
+            "integerCandidateSeconds": 2.9360573339999996,
+            "remainingSeconds": 2.0418753913733414,
+            "reason": "repair_already_attempted"
+          },
+          {
+            "round": 3,
+            "integerCandidateSeconds": 3.539795125,
+            "remainingSeconds": 1.4381378083733418,
+            "reason": "repair_already_attempted"
+          }
+        ],
+        "repairs": [
+          {
+            "accepted": false,
+            "reason": "initial_image",
+            "steps": null,
+            "seconds": 0.010123165999999401,
+            "additionalBudgetSeconds": 0,
+            "integerCandidateSeconds": 1.662847792
+          }
+        ]
+      },
+      {
+        "run": "1-synthetic-control-baseline",
+        "variant": "baseline",
+        "id": "synthetic-control",
+        "milliseconds": 9003.3125,
+        "maskSha256": "9d4accdee263a24380ff50f12f1739f29044b582e057c2835fe1b3461a6e62d3",
+        "geometrySha256": "8fad6042208af3ad4b1cbc5f70d6603647f257adf6d09ffe8bf28376152ac8c8",
+        "templateChecks": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "renders": [
+          {
+            "resolution": 250,
+            "error": 0.016064,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 500,
+            "error": 0.01728,
+            "featuresPassed": true
+          }
+        ],
+        "rejectedCandidates": [
+          {
+            "round": 1,
+            "integerCandidateSeconds": 3.457894666,
+            "remainingSeconds": 0.8132558781999988,
+            "reason": "repair_attempted",
+            "repairBudgetSeconds": 1.2793077079999984
+          }
+        ],
+        "repairs": [
+          {
+            "accepted": true,
+            "reason": null,
+            "steps": 45,
+            "seconds": 0.8881414589999995,
+            "additionalBudgetSeconds": 0.4897677457999998,
+            "integerCandidateSeconds": 3.457894666
+          }
+        ]
+      },
+      {
+        "run": "1-synthetic-control-coarser",
+        "variant": "coarser",
+        "id": "synthetic-control",
+        "milliseconds": 9061.189375,
+        "maskSha256": "9d4accdee263a24380ff50f12f1739f29044b582e057c2835fe1b3461a6e62d3",
+        "geometrySha256": "ed359af2206c5d3a1887abc0efa8b51a69e12a66b26731ffeb07c7971ed89ce6",
+        "templateChecks": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "renders": [
+          {
+            "resolution": 250,
+            "error": 0.009312,
+            "featuresPassed": true
+          },
+          {
+            "resolution": 500,
+            "error": 0.011924,
+            "featuresPassed": true
+          }
+        ],
+        "rejectedCandidates": [
+          {
+            "round": 1,
+            "integerCandidateSeconds": 3.362007833,
+            "remainingSeconds": 0.931695228200002,
+            "reason": "repair_attempted",
+            "repairBudgetSeconds": 1.3955618750000012
+          }
+        ],
+        "repairs": [
+          {
+            "accepted": true,
+            "reason": null,
+            "steps": 85,
+            "seconds": 1.0277009579999994,
+            "additionalBudgetSeconds": 0.49087193780000055,
+            "integerCandidateSeconds": 3.362007833
+          }
+        ]
+      }
+    ],
+    "decision": "Not integrated. Increasing only initialization trace tolerance reduced graph size but did not yield an accepted preliminary topology or repeatably fix the primary failure. The eight trials show timing variability, not a reliable causal quality improvement."
+  },
+  "regression": {
+    "method": "A real HiGHS candidate receives a controlled scheduling delay just before validation. The clock keeps running during repair and backend calibration. Verify borrowed-time acceptance, unchanged half-second cap, final geometry/paper and a no-borrow control.",
+    "results": [
+      {
+        "variant": "baseline",
+        "exitCode": 1,
+        "seconds": 13.103165833
+      },
+      {
+        "variant": "repair-tail",
+        "exitCode": 0,
+        "seconds": 13.742024167000002
+      }
+    ],
+    "reference": {
+      "passed": 1,
+      "failed": 1
+    },
+    "candidate": {
+      "passed": 2,
+      "failed": 0
+    }
+  },
+  "integration": {
+    "status": "focused_checks_pass",
+    "files": [
+      "static/inverse/core/feature-recovery.js",
+      "scripts/inverse/late-routing-repair.test.mjs"
+    ],
+    "fullRepositoryAndCorpusQa": "pending",
+    "tests": 11,
+    "passed": 11,
+    "checks": [
+      {
+        "stage": "lint",
+        "exitCode": 0,
+        "seconds": 2.023901916
+      },
+      {
+        "stage": "focused",
+        "exitCode": 0,
+        "seconds": 71.36261133299999
+      }
+    ]
+  },
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/available-repair-tail-v1/source.json",
+      "sha256": "397aa3e2783c4a7c1250ce80e84358116e773b76b5a6473bdfd62638ce5ec835"
+    },
+    {
+      "path": "tmp/heart-learning/available-repair-tail-v1/checks.json",
+      "sha256": "1ac7fee47b4f1c83e3f9c309376962acae067830ab3746b684cf4c67672f4ac1"
+    },
+    {
+      "path": "tmp/heart-learning/available-repair-tail-v1/state.json",
+      "sha256": "e56a684deccf4d1b825eb149265246b735a8d38fed612f3f1a615ac3c63a9564"
+    },
+    {
+      "path": "tmp/heart-learning/available-repair-tail-v1/regression-checks.json",
+      "sha256": "2cb2525baeae528584b80b1ecd9c124df7557cf98d9401c33f975390209045c7"
+    },
+    {
+      "path": "tmp/heart-learning/available-repair-tail-v1/regression-baseline/test.log",
+      "sha256": "d84ef1695d9f4652a851d63954ee98570088bf93f9f6c932aaf1aadf4c436907"
+    },
+    {
+      "path": "tmp/heart-learning/available-repair-tail-v1/regression-repair-tail/test.log",
+      "sha256": "40f233409390f46fefcfd142505fe9afe39652e875bf0147449e890e0694665f"
+    },
+    {
+      "path": "tmp/heart-learning/available-repair-tail-v1/solve.mjs",
+      "sha256": "5f7954f10e8dee4f2eacdc810bb4a89c0917a5bebf18ef602a6fb757448e2402"
+    },
+    {
+      "path": "tmp/heart-learning/available-repair-tail-v1/run.py",
+      "sha256": "23fbd2c3a494f8adf739c6716623df4dca62e419636dc06ccf15aea2591d0024"
+    },
+    {
+      "path": "tmp/heart-learning/available-repair-tail-v1/late-repair.test.mjs",
+      "sha256": "f5a1807c0939ad66d7e411df22f53b669f3d97bef75e6c890c01287364042e0b"
+    },
+    {
+      "path": "tmp/heart-learning/simpler-topology-seed-v1/source.json",
+      "sha256": "5fe11b3e504ed5a547d95e96a3683d853236f688cd022e3b7060a132d655fefb"
+    },
+    {
+      "path": "tmp/heart-learning/simpler-topology-seed-v1/checks.json",
+      "sha256": "2179ffc513bca6bc69553ed2ff2cc1d022510af6aa295e588a77b3ab146d9d9e"
+    },
+    {
+      "path": "tmp/heart-learning/simpler-topology-seed-v1/state.json",
+      "sha256": "e56a684deccf4d1b825eb149265246b735a8d38fed612f3f1a615ac3c63a9564"
+    },
+    {
+      "path": "tmp/heart-learning/simpler-topology-seed-v1/solve.mjs",
+      "sha256": "e0c6982db60541dafc6b61a426b2ea095ac9ee275c8e0ad7898d1d945f7c1517"
+    },
+    {
+      "path": "tmp/heart-learning/simpler-topology-seed-v1/run.py",
+      "sha256": "05bd041a22c06a8f71fdafccf54bb798d357f8a6f9af30da99dcd1232cf16af1"
+    },
+    {
+      "path": "tmp/heart-learning/available-repair-tail-v1/integration/focused.log",
+      "sha256": "30897fa1dd8254781e2044d74643b5e716dfb2c7d0d184d128c0b633ec7129c9"
+    },
+    {
+      "path": "tmp/heart-learning/available-repair-tail-v1/integration/lint.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "tmp/heart-learning/available-repair-tail-v1/integration/source.json",
+      "sha256": "47bcbab5c37b8f4335f56a50c620f7e15831fe5efd8d0264b5b57735d5e98ab7"
+    },
+    {
+      "path": "tmp/heart-learning/available-repair-tail-v1/integration/checks.json",
+      "sha256": "6c27354485be32b4e92e1134cc01c8c36bce198e85d2529bcc8d73ea1bfc68f3"
+    },
+    {
+      "path": "tmp/heart-learning/available-repair-tail-v1/integration/state.json",
+      "sha256": "c0c359bd44f6f8aacd20700abf844c9c05ee1c7140b17d270ef93d8bde6764df"
+    }
+  ]
+}
