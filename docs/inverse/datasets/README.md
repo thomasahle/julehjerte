@@ -248,6 +248,12 @@ editable conversions. Four accepted photo errors increase against the pinned
 comparison, so strict quality still fails. All seven changed outputs were visually
 reviewed; fine contact/seam defects and the rejected bauble's broken frame remain.
 All 785 pinned source files stayed unchanged through the full run.
+The leaf integration test now reloads and checks the exported geometry and paper,
+independently renders its image, requires less than 2% disagreement and retained
+features, and records full output on any failure. It accepts whichever valid
+route wins; the deterministic repair-specific tests remain. All eight focused
+tests pass. This later replay cannot establish the uncaptured earlier output's
+quality, and the full-suite failure record remains intact.
 
 A [fixed routing-checkpoint follow-up](routing-paper-continuation-results.json)
 finds that the 81-step repair passes actual paper verification at 1000 pixels;

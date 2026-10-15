@@ -560,5 +560,30 @@
         "sha256": "2c96e333c264222634bac80a97ee9a4a4498a768b5b53df467497b42329a74f8"
       }
     ]
+  },
+  "routeIndependentTestFollowup": {
+    "change": "The upward-leaf integration test accepts any successful fresh route, then reloads exported controls and reruns final geometry, actual paper, independent SVG-image error below 2%, feature retention and input-identity checks. Full report and exported cuts are emitted for any failed assertion. It no longer requires one internal repair to be accepted or a specific paper-resolution route.",
+    "focusedTests": 8,
+    "passed": 8,
+    "seconds": 34.88725325,
+    "qualification": "This later fresh replay does not establish the uncaptured full-suite leaf output quality and does not fix or erase the other routing failure. Deterministic bounded-repair/deadline regressions remain unchanged. Full-suite results above retain the original test assertions.",
+    "artifacts": [
+      {
+        "path": "tmp/heart-learning/clearance-handoff-regression-v1/route-checks/source.json",
+        "sha256": "4f0b15666beafbeeace5c8d11a2bb32ad381804aeacbc06d77b82e78a88eb3ae"
+      },
+      {
+        "path": "tmp/heart-learning/clearance-handoff-regression-v1/route-checks/state.json",
+        "sha256": "e3085cee205f3484fc2a049e89864650189e0f92e9abb0d810bc485d7c80f32b"
+      },
+      {
+        "path": "tmp/heart-learning/clearance-handoff-regression-v1/route-checks/tests.log",
+        "sha256": "de844ed106436261e308938f8bb91676a455cd3270e238e34a062eff8d47bb5b"
+      },
+      {
+        "path": "scripts/inverse/clearance-initializer.test.mjs",
+        "sha256": "324845dbbf0b99a6d77fe724d7e821ce1c1c67566ef3646d36728964e5b821f7"
+      }
+    ]
   }
 }

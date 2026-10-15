@@ -4,6 +4,11 @@ import {design} from '../../static/inverse/core/engine.js';
 import {Cubic} from '../../static/inverse/core/bezier.js';
 import {CurveGraph} from '../../static/inverse/core/direct/curves.js';
 import {repairClearanceInitializer} from '../../static/inverse/core/direct/clearance-repair.js';
+import {loadSolutionJSON} from '../../static/inverse/core/graph.js';
+import {settings} from '../../static/inverse/core/settings.js';
+import {validate} from '../../static/inverse/core/validate.js';
+import {materialAudit} from '../../static/inverse/core/material.js';
+import {auditFeatureFidelity} from '../../static/inverse/core/feature-shapes.js';
 import {renderExportedWeave} from './export-renderer.mjs';
 import {cfg,resolution,mask,input,initializer} from './leaf-clearance-fixture.mjs';
 
@@ -41,14 +46,24 @@ test('clearance repair leaves weighted borders and requested symmetry to their c
 
 test('fresh fitting finds a checked pair for the upward-shifted photograph without saved cuts',{timeout:20000},async t=>{
   const source=input(),answer=await design(source,cfg),report=answer.report;
-  if(!report.templateChecksPassed)t.diagnostic(JSON.stringify({termination:report.solver.termination,counts:report.slits,clearanceComparison:report.solver.clearanceComparison}));
-  assert.equal(report.templateChecksPassed,true);
-  assert.equal(report.solver.clearanceComparison.repair.accepted,true);
-  assert.ok(report.settings.materialResolution>=700);
-  assert.equal(report.solver.paperVerification.status,'pass');
-  const woven=await renderExportedWeave(answer.files['cut_geometry.json'],resolution);
-  assert.ok(woven.mask.reduce((sum,v,i)=>sum+Number(v!==mask[i]),0)/mask.length<.02);
-  assert.deepEqual(source.sourceImage.mask,mask);
+  try{
+    assert.equal(report.templateChecksPassed,true);
+    // Different valid routes can win a clock-limited fresh solve. Check the
+    // exported pair itself; the bounded repair has separate direct regressions.
+    const solution=loadSolutionJSON(answer.files['cut_geometry.json']),checkedCfg=settings(report.settings);
+    const geometry=validate(solution,checkedCfg,{checkImage:false,finalGeometry:true});
+    assert.equal(geometry.passed,true,JSON.stringify(geometry.issues));
+    const paper=materialAudit(solution,checkedCfg);
+    assert.equal(paper.passed,true,JSON.stringify(paper));
+    const woven=await renderExportedWeave(answer.files['cut_geometry.json'],resolution);
+    const error=woven.mask.reduce((sum,v,i)=>sum+Number(v!==mask[i]),0)/mask.length;
+    assert.ok(error<.02,`Independent exported image has ${(100*error).toFixed(3)}% disagreement.`);
+    assert.equal(auditFeatureFidelity(source.sourceImage,woven.mask,checkedCfg).passed,true);
+    assert.deepEqual(source.sourceImage.mask,mask);
+  }catch(error){
+    t.diagnostic(JSON.stringify({report,cuts:answer.files['cut_geometry.json']}));
+    throw error;
+  }
 });
 
 test('the ordinary search allowance also recovers the upward-shifted photograph',{timeout:40000},async t=>{
