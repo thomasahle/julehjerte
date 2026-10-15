@@ -29,6 +29,7 @@ import smiley from '../../../static/generator/motifs/ph-smiley.json';
 import palette from '../../../static/generator/motifs/tb-palette.json';
 import bicycle from '../../../static/generator/motifs/ph-bicycle.json';
 import moonStars from '../../../static/generator/motifs/ph-moon-stars.json';
+import tablerStars from '../../../static/generator/motifs/tb-stars.json';
 const colors = { left: '#fffdf5', right: '#b72f2b' };
 const fonts = { nunito, breeserif, oswald, kalam, cinzel, righteous } as unknown as Record<string, Font>;
 function validateHandoffs(design: HeartDesign) {
@@ -47,6 +48,17 @@ function validateHandoffs(design: HeartDesign) {
 // These are expected successes, never a test that passes by accepting a refusal.
 // The larger offline corpus covers 2,028 text and 1,122 figure configurations.
 describe('generator robustness regressions', () => {
+	for (const [name, motif, frame, style, size] of [
+		['stars', tablerStars, 'circle', 'corners', 6],
+		['palette', palette, 'circle', 'layers', 7],
+		['bicycle', bicycle, 'circle', 'sunburst', 5],
+		['bicycle', bicycle, 'scalloped', 'plain', 3]
+	] as const)
+		it(`detours shared cuts around neighbouring outlines for ${name}/${frame}-${style}`, () => {
+			const { design } = generate({ mode: 'figure', name, contours: motif.contours as Ring[], frame, style, colors });
+			expect(design.gridSize).toEqual({ x: size, y: size });
+			validateHandoffs(design);
+		}, 20000);
 	it('joins an odd number of separate islands without creating detached paper', () => {
 		const rings: Ring[] = [[-.2, -.22, .13], [.2, -.22, .13], [0, .2, .25]].map(([x, y, r]) =>
 			Array.from({ length: 48 }, (_, i) => [x + r * Math.cos(i * Math.PI / 24), y + r * Math.sin(i * Math.PI / 24)]));
@@ -69,11 +81,12 @@ describe('generator robustness regressions', () => {
 		expect(design.gridSize).toEqual({ x: 5, y: 5 });
 		validateHandoffs(design);
 	}, 20000);
-	it('opens the counter of Cinzel P with clear shared connections', () => {
-		const { design } = generate({ mode: 'text', name: 'P', text: 'P', textFrame: 'air', font: fonts.cinzel, colors });
-		expect(design.gridSize).toEqual({ x: 3, y: 3 });
-		validateHandoffs(design);
-	}, 20000);
+	for (const textFrame of ['air', 'woven', 'circle', 'diamond', 'rounded', 'scalloped'] as const)
+		it(`opens the counter of Cinzel P with clear shared connections in ${textFrame}`, () => {
+			const { design } = generate({ mode: 'text', name: 'P', text: 'P', textFrame, font: fonts.cinzel, colors });
+			expect(design.gridSize).toEqual({ x: 3, y: 3 });
+			validateHandoffs(design);
+		}, 20000);
 	for (const text of ['William', 'ÆØÅ'])
 		it(`retains the repeating ${text} field with bent shared connections`, () => {
 			const { design } = generate({ mode: 'text', name: text, text, textFrame: 'repeat', font: fonts.nunito, colors });

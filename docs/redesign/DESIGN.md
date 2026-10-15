@@ -458,6 +458,12 @@ segments while routing, then apply the full topology, spacing and fidelity check
 If no detour exists, the unchanged connection must still pass those checks.
 These are final fallback constructions, so established successful layouts retain
 their cuts. No raster image solve or detached cutout is involved.
+A figure layout that compiles but fails the complete sheet checks may reuse the
+same shared-cut detours after every established recipe has failed. Keep these
+completed layouts only for the current request. Skip an unchanged connection
+set, recompile changed edges, and run all original validation again. Apply this
+to checked-tip and layered frames as well as ordinary framed figures; preserve
+their domains, counters, frame geometry and earlier successful constructions.
 The checked-tip figure frame retains its three lanes and two outer cuts. When
 its original contour chain fails, each occupied lane may use practical two-port
 routing, including shared counter bridges and shoulder relief. A final island
@@ -550,6 +556,10 @@ Framed text combines this with the existing bounded contact shifts. Repeated
 text first reuses completed cells and rebuilds its failed cells with bent
 connections; if the failure was in joining completed cells, rebuild their
 connections too. These are fallback constructions, preserving earlier successes.
+Framed text may combine these bends with the air layout's wider letter-cell
+padding as a final fallback. Keep the selected frame and exact font outlines.
+Only repeat the wider attachment pass when its earlier budget was crowded; the
+air layout already has this padding and must not repeat an identical recipe.
 If those whole-letter routes still fail, divide letters into three horizontal
 panels, with either one or two columns. Place each internal contact in the
 widest solid interval of its seam, so it cannot land inside a counter; both

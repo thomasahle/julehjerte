@@ -10,6 +10,7 @@ import { normalizeContours } from './contours';
 import { gridClearanceScale } from '$lib/geometry/clearance';
 import { generatePanelFigure } from './panels';
 import { generateComponentFigure } from './components';
+import { rerouteSharedCuts } from './sharedCuts';
 import {
 	convertValidatedCutGeometry,
 	CutGeometryError,
@@ -22,6 +23,7 @@ import {
 	CompilationError,
 	generateFigure,
 	generateFourPortFigure,
+	compile,
 	fourPortMotif,
 	originalFourPortMotif,
 	balancedFourPortMotif,
@@ -270,44 +272,81 @@ function fidelity(
 				);
 		}
 }
+type Construction = ReturnType<typeof generateFigure> & {
+	domain?: Ring[];
+	background?: Ring[];
+	overlapAspectRatio?: number;
+};
+
+function finishConstruction(request: GeneratorRequest, r: Construction, recipe: GeneratorResult['recipe']): GeneratorResult {
+	audit(r.edges);
+	const clearanceScale = gridClearanceScale(
+		r.geometry.A_overlap_paths.length + 1,
+		r.geometry.B_overlap_paths.length + 1
+	);
+	// Avoid expensive curve fitting when cuts already leave a severe sliver.
+	if (request.mode !== 'text' && hasSeverePinch(r.geometry, clearanceScale))
+		throw new ConstructionError(
+			'clearance',
+			'The original cuts have a severe pinch'
+		);
+	orientForeground(r.geometry, r.artwork);
+	const { design } = convertValidatedCutGeometry(r.geometry, {
+		name: request.name,
+		colors: request.colors,
+		tolerance: 0.025,
+		clearanceScale,
+		overlapAspectRatio: r.overlapAspectRatio
+	});
+	const domain = r.domain ?? [
+		frameRing(request.frame ?? 'circle', request.frameSize ?? 70)
+	];
+	fidelity(design, r.artwork, domain, r.edges, r.background);
+	return { design, recipe };
+}
+
+/** Retry only completed figure constructions after all established recipes fail.
+ * Moving coincident cuts preserves the artwork and graph endpoints; the entire
+ * result must pass the same topology, spacing and fidelity checks again. */
 export function generate(request: GeneratorRequest): GeneratorResult {
+	const rejected: { construction: Construction; recipe: GeneratorResult['recipe'] }[] = [];
+	try {
+		return generateUsingRecipes(request, (construction, recipe) => {
+			if (request.mode === 'figure') rejected.push({ construction, recipe });
+		});
+	} catch (error) {
+		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		for (const { construction, recipe } of rejected) {
+			const margin = 1.5 * gridClearanceScale(
+				construction.geometry.A_overlap_paths.length + 1,
+				construction.geometry.B_overlap_paths.length + 1
+			);
+			const edges = rerouteSharedCuts(construction.edges, margin);
+			if (edges === construction.edges) continue;
+			try {
+				return finishConstruction(request, { ...construction, edges, geometry: compile(edges) }, recipe);
+			} catch (retryError) {
+				if (!(retryError instanceof ConstructionError) && !(retryError instanceof CutGeometryError)) throw retryError;
+			}
+		}
+		throw error;
+	}
+}
+
+function generateUsingRecipes(request: GeneratorRequest,
+	onRejected: (construction: Construction, recipe: GeneratorResult['recipe']) => void): GeneratorResult {
 	if (request.mode === 'figure') {
 		const contours = normalizeContours(request.contours ?? []);
 		if (!contours.length) throw new ConstructionError('empty', 'No contour');
 		request = { ...request, contours };
 	}
-	const finish = (
-		r: ReturnType<typeof generateFigure> & {
-			domain?: Ring[];
-			background?: Ring[];
-			overlapAspectRatio?: number;
-		},
-		recipe: GeneratorResult['recipe']
-	) => {
-		audit(r.edges);
-		const clearanceScale = gridClearanceScale(
-			r.geometry.A_overlap_paths.length + 1,
-			r.geometry.B_overlap_paths.length + 1
-		);
-		// Avoid expensive curve fitting when cuts already leave a severe sliver.
-		if (request.mode !== 'text' && hasSeverePinch(r.geometry, clearanceScale))
-			throw new ConstructionError(
-				'clearance',
-				'The original cuts have a severe pinch'
-			);
-		orientForeground(r.geometry, r.artwork);
-		const { design } = convertValidatedCutGeometry(r.geometry, {
-			name: request.name,
-			colors: request.colors,
-			tolerance: 0.025,
-			clearanceScale,
-			overlapAspectRatio: r.overlapAspectRatio
-		});
-		const domain = r.domain ?? [
-			frameRing(request.frame ?? 'circle', request.frameSize ?? 70)
-		];
-		fidelity(design, r.artwork, domain, r.edges, r.background);
-		return { design, recipe };
+	const finish = (construction: Construction, recipe: GeneratorResult['recipe']) => {
+		try { return finishConstruction(request, construction, recipe); }
+		catch (error) {
+			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			onRejected(construction, recipe);
+			throw error;
+		}
 	};
 	if (request.mode === 'text') {
 		if (!request.font) throw new ConstructionError('empty', 'No font');
@@ -452,12 +491,14 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 			}));
 		// A serif can need a more square approach than a straight shared spoke.
 		// Try bent connections only after the established constructions fail.
-		let bentCrowded = false;
-		for (const balanced of [false, true]) recipes.push(() => !balanced || bentCrowded
-			? generateTextGrid(text, font, frame === 'air', shape, {
-				spread: true, practical: true, compound: true, adaptGates: true,
-				bentSpokes: true, balanced, onCrowded: () => { bentCrowded = true; }
-			}) : undefined);
+		for (const padding of frame === 'air' ? [undefined] : [undefined, .5]) {
+			let bentCrowded = false;
+			for (const balanced of [false, true]) recipes.push(() => !balanced || bentCrowded
+				? generateTextGrid(text, font, frame === 'air', shape, {
+					padding, spread: true, practical: true, compound: true, adaptGates: true,
+					bentSpokes: true, balanced, onCrowded: () => { bentCrowded = true; }
+				}) : undefined);
+		}
 		let last: unknown;
 		for (const construct of recipes) {
 			try {

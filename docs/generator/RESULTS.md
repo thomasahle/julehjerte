@@ -1,6 +1,68 @@
 # Generator robustness results
 
-## Current coverage: separate figure components and shared-cut detours
+## Current coverage: repair complete layouts and give bent text connections room
+
+The current default-size matrix has **2,764 accepted / 386 refused / zero invalid
+accepted results**. This batch freshly retested all 75 previous figure refusals:
+**six now pass, 69 remain refused, and none produced invalid accepted output**.
+The other 3,075 records retain their preceding audit results; this was not a
+fresh full-matrix run.
+
+| Corpus | Configurations | Accepted | Refused | Invalid accepted output |
+|---|---:|---:|---:|---:|
+| Text: 34 inputs, six fonts, ten frames | 2028 | 1711 | 317 | 0 |
+| Figures: 51 motifs, 22 templates | 1122 | 1053 | 69 | 0 |
+
+The combined report is `tmp/generator/shared-current.json`; the fresh figure
+report is `shared-final.json`. All 2,764 accepted IDs are pinned in
+`scripts/generator/expected.json`; none were removed. Ordinary and checkerboard
+repeat remain at 137/198 and 128/198.
+
+- Complete figure layouts that fail spacing or crossing checks are retained
+  while the other recipes run. If every recipe fails, the bounded shared-cut
+  detours can repair these layouts too. Their visible contours, graph endpoints,
+  selected frame and artwork remain fixed. Changed cuts are recompiled and pass
+  all existing topology, spacing, fidelity and JSON/SVG/editor checks.
+- This recovers Tabler stars in the checked-tip frame (6×6), Tabler palette in
+  the layered frame (7×7), bicycle in the sunburst frame (5×5), and bicycle in
+  all three scalloped styles (3×3). Already successful constructions return
+  before these repairs; unchanged failed edges skip another fit.
+- Framed text can combine bent connections with the air layout's wider cell
+  padding. Outside the matrix, standalone Cinzel `P` now works in woven, circle,
+  diamond, rounded and scalloped frames, all with 3×3 grids. Its earlier air
+  success remains; hexagon and oval still refuse P. The counter remains part
+  of the paper through coincident cuts.
+- A direct probe of that wider text recipe covered all 165 previous non-repeating,
+  non-air text refusals plus those seven P frames. It recovered the five P cases
+  only. This does not establish support for arbitrary P-containing words, and
+  these recipe probes are not fresh full-generator matrix records.
+
+Five finished hearts and both templates for each were rendered and inspected in
+`tmp/generator/shared-hearts-and-cuts.png`: stars, palette, the two new bicycle
+frame families and P. The respective cut-tip counts below 30°/45° are 2/4, 4/6,
+2/2, 2/2 and 0/0. These remain intricate cuts, with no physical weaving trial.
+Browser inventory again returned no available app or browser, so there was no
+live interface check.
+
+All **1,057 unit tests and 177 inverse tests** pass, along with type checking,
+lint and the production build. Type checking reports seven existing warnings.
+Logs are `tmp/generator/shared-{tests,check,lint,build}.log`.
+
+The goal remains unfinished: 386 default-size matrix cases are refused, and the
+rest of the searchable catalog and most non-default sizes remain unverified.
+The newly accepted bicycle repairs still took roughly 5.8–7.4 seconds locally;
+difficult-case latency and the earlier browser slowdown remain unresolved.
+
+### Additional probes, not shipped
+
+- Routing shared cuts in four different orders while ignoring connections not
+  yet routed did not add gains in paw, coffee, bicycle, butterfly or moon/stars.
+  The paw's two middle connections still cross neighboring upper pads.
+- Combining bent connections with filled-seam letter panels added no gains in
+  120 direct probes: Cinzel P, E, R and PIP, three frames, five panel layouts and
+  two paddings. These extra combinations are not production fallbacks.
+
+## Previous coverage: separate figure components and shared-cut detours
 
 The current default-size matrix has **2,758 accepted / 392 refused / zero invalid
 accepted results**. This batch freshly tested 179 distinct figure configurations:
