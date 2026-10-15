@@ -106,8 +106,14 @@ fit time decreasing from 9.442 to 9.361 seconds. The dense-checker pair also
 improves its error, but two repetitions per condition do not establish broad
 speed or quality gains. The change is committed as `3997441`. Full repository
 QA passes 889 inverse tests, 857 application tests, type checking, lint and build;
-all 733 pinned source files were verified. Native-corpus and browser verification
-remain pending.
+all 733 pinned source files were verified. Native replay retains all 22 Hunodan
+errors from the preceding runtime and completes them within 9.323 seconds.
+Photographic checks remain 26/31, all 48 accepted editable pairs pass independent
+checks, and eleven browser workflows plus initial-loading checks pass. The strict
+historical photo-error gate still fails for crown: 2.411875% previously versus
+2.454375% now. Viking clears that historical comparison. Small additional error
+increases relative to the immediately preceding runtime are retained in the
+record; the cache does not make a timed optimizer's output invariant to speed.
 
 The latest validated solver revision is `c000d30`. Its
 [release record](return-projection-speed.json) passes **22/22 regular Hunodan
