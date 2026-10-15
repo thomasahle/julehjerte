@@ -1,0 +1,236 @@
+{
+  "schema": "fixed-crop-material-diagnosis-1",
+  "status": "classification-compared-fit-pending",
+  "scope": "Fixed source RGB and exact saved mixed-joint quad. Only material classification differs; no crop optimization, fitting, labels or saved templates are consulted.",
+  "source": {
+    "id": "real-8c875dd0f298b5a4-body-1",
+    "photoSha256": "d5279dae58f85dfeecc3984a8bbb0008759c1f26a226e57576856dddaaa0b1c4",
+    "decodedRGBSha256": "349457e27e34eb4e3bc34c0970acc10f30725cd82c57d79066112f007bb55996",
+    "quad": [
+      [
+        226.59531450456694,
+        140.99911505151235
+      ],
+      [
+        373.4961982719152,
+        280.70101733394137
+      ],
+      [
+        224.4445048266433,
+        432.7635640402018
+      ],
+      [
+        75.13388678528688,
+        282.2290207610812
+      ]
+    ],
+    "resolution": 400
+  },
+  "classification": {
+    "method": "lab",
+    "threshold": null,
+    "labCenters": [
+      [
+        47.90198220139519,
+        71.28243955624892,
+        25.714161848947903
+      ],
+      [
+        86.01776647985969,
+        4.576579573548226,
+        0.2844784258909703
+      ]
+    ],
+    "inverted": false,
+    "dither": false
+  },
+  "rows": [
+    {
+      "name": "neural-original",
+      "maskSha256": "9e52e7d9b61188cf5167b481f7e7dc28370f45f5279463164934b4b6cd5ffaa9",
+      "transitions": [
+        6,
+        0,
+        4,
+        6
+      ],
+      "differenceFromNeuralOriginal": 0,
+      "classOneFraction": 0.4789125
+    },
+    {
+      "name": "neural-resampled",
+      "maskSha256": "88a77851c564c157375f2c319f9a62b49799a7dfc710d7dde256afcb0d095ce7",
+      "transitions": [
+        6,
+        0,
+        4,
+        6
+      ],
+      "differenceFromNeuralOriginal": 0.000725,
+      "classOneFraction": 0.4782125
+    },
+    {
+      "name": "rgb-auto",
+      "maskSha256": "8a15961ca2b933c37b72496e5b6aba0172c1bc4eab0cff17affda1568bfad46c",
+      "transitions": [
+        0,
+        3,
+        9,
+        4
+      ],
+      "differenceFromNeuralOriginal": 0.1185375,
+      "classOneFraction": 0.59745
+    }
+  ],
+  "fixedCropComparison": {
+    "reference": "Two classifier outputs, neither original-artwork ground truth",
+    "strata": [
+      {
+        "minimumEdgeDistancePixels": [
+          0,
+          4
+        ],
+        "pixels": 6336,
+        "disagreementFraction": 0.375,
+        "neuralOneRgbZero": 0,
+        "neuralZeroRgbOne": 2376
+      },
+      {
+        "minimumEdgeDistancePixels": [
+          4,
+          12
+        ],
+        "pixels": 12288,
+        "disagreementFraction": 0.09049479166666667,
+        "neuralOneRgbZero": 0,
+        "neuralZeroRgbOne": 1112
+      },
+      {
+        "minimumEdgeDistancePixels": [
+          12,
+          200
+        ],
+        "pixels": 141376,
+        "disagreementFraction": 0.11027331371661385,
+        "neuralOneRgbZero": 0,
+        "neuralZeroRgbOne": 15590
+      }
+    ]
+  },
+  "partialLabelCheck": {
+    "scope": "Partial conservative material annotations only; heart apertures, dark outlines, seams and boundaries were deliberately unlabelled. No artwork or full-boundary accuracy claim. Four neighbouring source-label pixels must agree; output pixels oversample those labels and are not independent annotations.",
+    "phase": "Paper A is red (annotation 0 maps to mask 1); fixed from annotation descriptions, not optimized per prediction.",
+    "knownOutputPixels": 42001,
+    "knownOutputFraction": 0.26250625,
+    "contributingLabelPixels": 4494,
+    "rows": [
+      {
+        "name": "neural-original",
+        "knownPixels": 42001,
+        "wrongPixels": 24,
+        "error": 0.0005714149663103259,
+        "knownRed": 29732,
+        "knownWhite": 12269,
+        "falseRed": 0,
+        "missedRed": 24
+      },
+      {
+        "name": "neural-resampled",
+        "knownPixels": 42001,
+        "wrongPixels": 24,
+        "error": 0.0005714149663103259,
+        "knownRed": 29732,
+        "knownWhite": 12269,
+        "falseRed": 0,
+        "missedRed": 24
+      },
+      {
+        "name": "rgb-auto",
+        "knownPixels": 42001,
+        "wrongPixels": 0,
+        "error": 0,
+        "knownRed": 29732,
+        "knownWhite": 12269,
+        "falseRed": 0,
+        "missedRed": 0
+      }
+    ]
+  },
+  "visualReview": {
+    "inspected": true,
+    "finding": "On the same photographic crop, the learned mask narrows red checker cells and rounds their corners, introducing white gaps. RGB classification follows the photographed straight cell boundaries more closely. Both masks still have inconsistent exact edge transition counts; changing colour classification alone does not settle crop-edge correctness."
+  },
+  "interpretation": [
+    "Every one of the 19,078 differing pixels in the resampled-neural versus RGB comparison is red in RGB and white in the neural mask. This directional disagreement extends well inside the image; it is not explained by changing the crop, which is held identical.",
+    "RGB classification is not original-artwork ground truth. Dark outlines, seams and photographic blur remain potential classification errors.",
+    "Conservative annotations cover 26.25% of the rectified square and exclude motif apertures, rims, seams and boundaries. Neural error is only 24/42,001 sampled known pixels (0.057%), versus zero for RGB. Good partial-interior scores therefore do not establish correct boundary placement or faithful motifs.",
+    "The source-crop and label comparisons isolate an upstream material-mask defect in addition to the independently demonstrated fitter scheduling issue. Neither explains every remaining solver defect."
+  ],
+  "nextExperiment": {
+    "status": "planned-not-run",
+    "methods": [
+      "neural-resampled",
+      "rgb-auto"
+    ],
+    "sameCrop": true,
+    "secondsPerFreshFit": 10,
+    "scoring": "Each fit is scored against its own unmodified classified mask; percentages across the two targets are not directly comparable as artwork accuracy. Inspect both against the photograph, check source-stable enclosure preservation and audit editable exports. No original cutting paths are supplied."
+  },
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/prepare.mjs",
+      "sha256": "003cffd2a181eb66694f74730542f90874877dfcecb14e72a2fb6cda9397157e",
+      "bytes": 5052
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/prepare.log",
+      "sha256": "2634d6d87e6ae71310a78f2025025e3a06a678110dec2b6f5fb53e22da4a4c69",
+      "bytes": 819
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/report.json",
+      "sha256": "2506ed44e0c9033915069ca281a3478aeead8c937ae4868dce6a7df5126e5c91",
+      "bytes": 73069
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/labels.mjs",
+      "sha256": "c054ffc8388afdad3c7bbe8f97053f3c11b2d7f0f078e16c3817a01d476128f5",
+      "bytes": 3615
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/labels.log",
+      "sha256": "8ec3503d1a7db8523c0f277e978887451285fffdc9c1e8000e2527e79b531e31",
+      "bytes": 1342
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/label-check.json",
+      "sha256": "b2bce48e4ee6e724863d3476d8c7a1d280fe69097160a22bfdd06472ca41e617",
+      "bytes": 1652
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/comparison.png",
+      "sha256": "88b24032295a490c61ebd22157847ee7684f616862320464ee75e02c96bf66ff",
+      "bytes": 235920
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/known-materials.png",
+      "sha256": "ff95f5b4443797da2c3f26a1d5bb3a2ad1b03c936d13cd7fa4e9ded08f82ee5b",
+      "bytes": 5507
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/neural-original.u8",
+      "sha256": "9e52e7d9b61188cf5167b481f7e7dc28370f45f5279463164934b4b6cd5ffaa9",
+      "bytes": 160000
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/neural-resampled.u8",
+      "sha256": "88a77851c564c157375f2c319f9a62b49799a7dfc710d7dde256afcb0d095ce7",
+      "bytes": 160000
+    },
+    {
+      "path": "tmp/heart-learning/fixed-crop-material-v1/rgb-auto.u8",
+      "sha256": "8a15961ca2b933c37b72496e5b6aba0172c1bc4eab0cff17affda1568bfad46c",
+      "bytes": 160000
+    }
+  ]
+}

@@ -30,6 +30,21 @@ The inventory, with material annotations updated on 2026-10-15, contains:
 
 ## Current results and limits
 
+A [fixed-crop material diagnosis](fixed-crop-material-diagnosis.json) separates
+the learned mask from crop placement on the stacked-heart photograph. With
+identical corners and source RGB, red coverage is 47.82% in the resampled neural
+mask and 59.75% with existing RGB classification. All 19,078 disagreements are
+red pixels omitted by the neural mask; visual inspection shows narrowed checker
+cells and rounded corners well inside the crop. RGB is not artwork ground truth,
+and both masks still have inconsistent outermost edge counts.
+
+The partial material annotations cover only 26.25% of this crop, excluding
+apertures, dark rims, seams and boundaries. Neural error on those conservative
+interiors is just 0.057%, despite the visible boundary distortion; RGB has no
+errors on that subset. This exposes a limitation of the annotation coverage and
+metric. Fresh fitting on these two exact-crop targets is planned after the current
+serial QA run; no new reconstruction result is claimed from this diagnosis.
+
 A [clearance-initializer robustness fix](clearance-feature-recovery.json)
 addresses a 116-pixel change in a fixed 400-pixel stacked-heart mask. A valid
 but incomplete alternative previously missed a useful bounded refinement;
