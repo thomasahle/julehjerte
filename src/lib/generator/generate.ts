@@ -464,11 +464,25 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		}
 		throw last;
 	}
-	if (request.style === 'corners')
-		return finish(
-			generateCornerChecks(request.contours ?? [], request.frameSize, request.scale),
-			'silhouette'
-		);
+	if (request.style === 'corners') {
+		let last: unknown;
+		for (const [routing, fitBorder] of [
+			['chain', false], ['practical', false], ['separated', false],
+			['practical', true], ['separated', true]
+		] as const) {
+			try {
+				const result = generateCornerChecks(request.contours ?? [], request.frameSize, request.scale, routing, fitBorder);
+				// Keep the established frame and skip another fit when moving
+				// separate components did not change any lane or connection.
+				if (routing === 'separated' && !result.separated || fitBorder && !result.borderAdjusted) continue;
+				return finish(result, 'silhouette');
+			} catch (error) {
+				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+				last = error;
+			}
+		}
+		throw last;
+	}
 	if (request.style === 'fitted') {
 		for (const route of [fourPortMotif, originalFourPortMotif]) {
 			let constructed = false;

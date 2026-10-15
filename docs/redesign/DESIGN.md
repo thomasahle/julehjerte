@@ -444,6 +444,20 @@ avoiding counters. Keep both complete outer bands and validate the joined cuts.
 General framed figures can also use filled seam intervals after their existing
 layouts fail. Try bounded 2×2 and spread 5×2 panel layouts; both neighbours must
 agree on each shared gate. Keep the selected frame and the motif's visible shape.
+The checked-tip figure frame retains its three lanes and two outer cuts. When
+its original contour chain fails, each occupied lane may use practical two-port
+routing, including shared counter bridges and shoulder relief. A final island
+layout assigns off-centre components to the side lanes sooner and approaches
+them at their own heights, continuing outside the whole motif rather than
+diagonally through a different component. Skip another fit if this leaves the
+lanes and connections unchanged.
+Large motifs may need the same frame's outside routes fitted into the available
+border space. Place each outer band at most halfway between the artwork and the
+paper edge, retaining at least the six-strip clearance. Clamp the corner bypass
+inside those bands and shorten its vertical range accordingly; preserve the
+selected motif size, the checked tips and the six-strip layout. These are final
+fallbacks after the established constructions, with the same full-sheet topology,
+spacing and artwork checks.
 
 “Gentag som mønster” is a text frame, not a separate mode or control. It makes one n×n square
 of cyclic letter shifts: ANNA / NNAA / NAAN / AANN, with no surrounding checkerboard cells.

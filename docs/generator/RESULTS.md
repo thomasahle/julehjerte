@@ -1,6 +1,86 @@
 # Generator robustness results
 
-## Current implementation: reuse curve-fitting calculations
+## Current coverage: checked-tip routing and border space
+
+The current default-size matrix has **2,745 accepted / 405 refused / zero invalid
+accepted results**. This batch freshly tested all 51 figures in the checked-tip
+frame: **47 accepted / four refused**, recovering 14 configurations with no
+regressions. The other 3,099 records retain their preceding audit results; this
+was not a fresh full-matrix run.
+
+| Corpus | Configurations | Accepted | Refused | Invalid accepted output |
+|---|---:|---:|---:|---:|
+| Text: 34 inputs, six fonts, ten frames | 2028 | 1709 | 319 | 0 |
+| Figures: 51 motifs, 22 templates | 1122 | 1036 | 86 | 0 |
+
+The combined report is `tmp/generator/corner-current.json`; the fresh report is
+`corner-final.json`. All 2,745 accepted default-size IDs are pinned in
+`scripts/generator/expected.json`; none were removed. Both repeat-text results
+remain unchanged at 135/198 and 128/198.
+
+- The checked-tip frame now tries practical two-port routing after its old
+  three-lane contour chain fails. Counters use coincident A/B bridges, and each
+  lane still provides one open cut in each sheet. This recovers both gifts,
+  cookie, moon and stars, the authored snowflake, cat, butterfly, rabbit, paw
+  print, bicycle, smiley, Tabler butterfly and palette.
+- Coffee additionally needs its steam curls in the side lanes. Connections
+  approach each side lane's artwork near its own vertical extent, then continue
+  outside the whole motif. They no longer run diagonally through the cup.
+- At large motif sizes, fixed outside routes could cross the outer bands. Two
+  final constructions fit those routes into the available border space. Band
+  widths retain at least the grid clearance, and the bypass stays inside them.
+  The motif size, selected frame and six-strip layout remain. Unchanged fallback
+  constructions skip repeated curve fitting.
+
+A separate fresh audit tested the same 51 figures at three non-default sizes:
+
+| Motif size | Accepted | Refused | Invalid accepted output |
+|---|---:|---:|---:|
+| 45% | 47 | 4 | 0 |
+| 55% | 48 | 3 | 0 |
+| 85% | 47 | 4 | 0 |
+
+These 153 cases are outside the default-size matrix. Fitting the border recovered
+41 of the 45 previously refused cases at 85%, with no loss of earlier successes
+at any of these three sizes. The reports are `corner-scale-final-{45,55,85}.json`
+in `tmp/generator`. This does not cover all slider values or the other frames at
+non-default sizes.
+
+Eight finished hearts and both paper templates for gift, coffee, bicycle and a
+large gift were rendered and inspected. The artifacts are `corner-hearts.png`
+and `corner-cuts.png` in `tmp/generator`. The cuts remain intricate; no physical
+weaving trial has been performed.
+
+All **1,036 unit tests and 177 inverse tests** pass, along with type checking,
+lint and the production build. Type checking reports the seven existing
+warnings. Logs are `tmp/generator/corner-{tests,check,lint,build}.log`. Browser
+inventory still returns no available app or browser, so the live interface
+check could not run.
+
+The goal remains unfinished. At the default size the checked-tip frame still
+refuses Tabler stars, sailboat, crown and Tabler paw. The combined matrix still
+has 405 refusals, and the rest of the searchable catalog and most non-default
+sizes are unverified. Browser latency remains unresolved.
+
+### Additional investigations, not shipped
+
+- Allowing even-degree shared-point vertices in clipping did not recover the
+  tested coffee/circle-rays case. Rejecting collinear shared-cut overlaps,
+  considering convex as well as concave relief corners, and independently
+  placing whole-letter gates using filled scan intervals did not recover the
+  separately tested Cinzel P, E or R.
+- The saved divided R network has cycle rank 17. Exhausting all 131,072
+  parity-preserving cycle assignments on those existing edges produced 15,616
+  degree-valid graphs, but every one still connected an A path to the wrong
+  paper edge. This witness requires different connections; changing sheet
+  assignments or removing shared segments within that fixed network cannot
+  repair it. The diagnostic is `cycle-space-probe.log` in `tmp/generator`.
+- Flipping complete checked-tip lanes did not recover the five cases left by
+  practical routing. Splitting the motif into three two-port panels did not
+  recover the final four default-size refusals. Neither extra search is part of
+  the production fallback.
+
+## Previous implementation: reuse curve-fitting calculations
 
 Curve fitting now evaluates each Bernstein basis once for both coordinates and
 reuses derivative control points across the samples of each Newton pass. The

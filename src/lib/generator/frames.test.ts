@@ -16,10 +16,30 @@ import snowflake from '../../../static/generator/motifs/ph-snowflake.json';
 import gift from '../../../static/generator/motifs/gift.json';
 import female from '../../../static/generator/motifs/ph-gender-female.json';
 import sun from '../../../static/generator/motifs/ph-sun.json';
+import bicycle from '../../../static/generator/motifs/ph-bicycle.json';
+import coffee from '../../../static/generator/motifs/ph-coffee.json';
+import snow from '../../../static/generator/motifs/snow.json';
 const colors = { left: '#fff', right: '#b91313' };
 const examples = { tree, horse, bird, star, snowflake };
 
 describe('complete motif frames', () => {
+ for (const [name, motif] of Object.entries({ gift, bicycle, coffee, snow })) {
+  it(`keeps ${name} and its counters in the six-strip checked-tip frame`, () => {
+   const { design } = generate({ mode: 'figure', name, contours: motif.contours as Ring[], colors, style: 'corners' });
+   expect(design.gridSize).toEqual({ x: 6, y: 6 });
+   expect(design).not.toHaveProperty('rightCutouts');
+   expect(design).not.toHaveProperty('leftCutouts');
+   const restored = normalizeHeartDesign(serializeHeartDesign(design));
+   expect(restored).not.toBeNull();
+   expect(rasterizeDesign(restored!, 160).data).toEqual(rasterizeDesign(design, 160).data);
+  });
+ }
+ it('fits a large motif between the corner checks without crossing the outer bands', () => {
+  const { design } = generate({ mode: 'figure', name: 'Large gift', contours: gift.contours as Ring[], colors, style: 'corners', scale: .85 });
+  expect(design.gridSize).toEqual({ x: 6, y: 6 });
+  expect(design).not.toHaveProperty('rightCutouts');
+  expect(design).not.toHaveProperty('leftCutouts');
+ });
  for (const style of ['fitted', 'corners', 'layers'] as const) {
   for (const [name, motif] of Object.entries(examples)) {
    it(`constructs ${name} with ${style} using validated open cuts`, () => {
