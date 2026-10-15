@@ -1,6 +1,75 @@
 # Generator robustness results
 
-## Current coverage: solid seams in divided letters
+## Current coverage: divide the ink, retain the outer margin
+
+The current 3,150-configuration matrix has **2,731 accepted / 419 refused / zero
+invalid accepted results**. This batch freshly retested all 60 BO configurations
+across six fonts and ten frames: **54 accepted / six refused**, with two gains
+and no regressions. The other 3,090 records retain their preceding audit results;
+this was not a fresh full-matrix run.
+
+| Corpus | Configurations | Accepted | Refused | Invalid accepted output |
+|---|---:|---:|---:|---:|
+| Text: 34 inputs, six fonts, ten frames | 2028 | 1709 | 319 | 0 |
+| Figures: 51 motifs, 22 templates | 1122 | 1022 | 100 | 0 |
+
+The combined record is `tmp/generator/ink-current.json`; the fresh report is
+`ink-final-bo.json` in the same directory. All 2,731 accepted IDs are pinned in
+`scripts/generator/expected.json`; none were removed. Ordinary repeat and
+checkerboard results remain 135/198 and 128/198.
+
+- A final 2×5 panel layout places the internal seams over the letter's ink
+  dimensions, excluding its cell padding. The outside gates and margin remain.
+  Clipping and stitching use the same seam positions, and shared contacts still
+  land inside solid intervals. This avoids spending the extra panels on empty
+  margins. The layout is skipped if its grid would exceed the 20-strip limit.
+- Cinzel BO now works in circle and scalloped frames, using 10×10 grids. The
+  exact font contours and counters remain. The new recipe runs only after all
+  earlier constructions fail; established successful routes remain available.
+- An exploratory sweep of all 188 previously refused framed-text cases found
+  these two gains. Wider practical routing over the other 186 cases added none,
+  so that extra work is not part of the production fallback. The discarded
+  experiments are recorded below to guide further work.
+
+All **1,031 unit tests and 177 inverse tests** pass, along with type checking,
+lint and the production build. Both finished hearts and both paper templates for
+each new layout were inspected. The serif details remain intricate, and there
+has been no physical weaving trial. Browser-control inventory still returns no
+available browsers, so the final interface check could not run.
+
+The goal remains unfinished: 419 matrix configurations are refused, including
+186 non-repeating text cases (156 Cinzel, 14 Oswald, seven Bree Serif, and three
+each in Nunito, Kalam and Righteous). Separate probes also found that Cinzel P
+and R in the air frame remain refused; these single-letter inputs are outside
+the 34-text matrix. The rest of the searchable icon catalog and non-default
+figure scales remain unverified. Difficult-case latency and the earlier browser
+slowdown are unresolved. No claim of universal support follows from this matrix.
+
+### Exploratory results from this batch
+
+- Changing the paper assignment of separate motif components, with direct use
+  of existing contact points, did not recover the tested Tabler paw, Phosphor
+  coffee, fitted butterfly or bicycle. The paw's upper pads have a tiny gap in
+  the rounded source coordinates rather than one exact shared vertex. This is
+  distinct from the bicycle's and butterfly's exact contour contacts.
+- Empty figure panels with coincident elbow joins, larger uniform text grids,
+  multiple relief chords ranked by narrow gaps, and smooth-turn attachment
+  candidates did not recover the targeted failures. They were not shipped.
+- A four-bridge counter prototype has valid topology: on a synthetic annulus,
+  24 of 216 candidates had the prescribed open pairs, no crossing shared cuts
+  and valid clearance. It did not recover Cinzel 2026, P or R in the tested
+  layouts and is not in production. The next counter investigation should
+  examine the actual failing bridges and their parent-outline attachment
+  choices, rather than assuming that more bridges alone solve the pinch.
+- The saved R/air/2×5 edge witness has degree-four joins after stitching: some
+  contain two same-sheet outline edges plus two shared edges; others contain
+  four shared edges. Trying the next filled interval on either seam axis did
+  not repair this layout. This is a panel-topology problem, not a tolerance or
+  floating-point rounding problem. The witness is in
+  `tmp/generator/ink-witness-R.json`; `corner-bridges-setup.mjs` prepares a separate
+  parent-attachment experiment that has not yet been run.
+
+## Previous coverage: solid seams in divided letters
 
 The current 3,150-configuration matrix has **2,729 accepted / 421 refused / zero
 invalid accepted results**. This batch freshly retested all 120 B/BO configurations

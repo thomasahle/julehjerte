@@ -45,6 +45,12 @@ function validateHandoffs(design: HeartDesign) {
 // These are expected successes, never a test that passes by accepting a refusal.
 // The larger offline corpus covers 2,028 text and 1,122 figure configurations.
 describe('generator robustness regressions', () => {
+	for (const textFrame of ['circle', 'scalloped'] as const)
+		it(`divides the ink of Cinzel BO into useful panels in ${textFrame}`, () => {
+			const { design } = generate({ mode: 'text', name: 'BO', text: 'BO', textFrame, font: fonts.cinzel, colors });
+			expect(design.gridSize).toEqual({ x: 10, y: 10 });
+			validateHandoffs(design);
+		}, 20000);
 	for (const [text, textFrame, size] of [
 		['B', 'woven', 5], ['B', 'air', 6], ['B', 'circle', 6],
 		['B', 'rounded', 6], ['B', 'scalloped', 6], ['BO', 'rounded', 8]

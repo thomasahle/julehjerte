@@ -428,6 +428,14 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 			// The one-column layout was already tried with centred contacts.
 			return columns > 1 || moved ? result : undefined;
 		});
+		// A deeper grid divides the ink itself, retaining the ordinary margin
+		// outside it. Count the resulting strips before attempting construction.
+		const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n'),
+			letters = Math.max(...lines.map(line => [...line].length));
+		if (2 * letters + 5 * lines.length + 1 <= 20)
+			recipes.push(() => generateTextGrid(text, font, frame === 'air', shape, {
+				columns: 2, slices: 5, spread: true, filled: true, inkPanels: true
+			}));
 		let last: unknown;
 		for (const construct of recipes) {
 			try {

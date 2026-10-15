@@ -25,7 +25,7 @@ export function generateTextGrid(
 	font: Font,
 	air = false,
 	frame?: Frame,
-	layout: { padding?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; adaptGates?: boolean; onGateChange?: () => void; filled?: boolean; onSeamChange?: () => void } = {}
+	layout: { padding?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; adaptGates?: boolean; onGateChange?: () => void; filled?: boolean; onSeamChange?: () => void; inkPanels?: boolean } = {}
 ) {
 	const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n');
 	const cols = Math.max(...lines.map((l) => [...l].length)),
@@ -89,12 +89,24 @@ export function generateTextGrid(
 		for (let col = 0; col < cols * columns; col++) {
 			const sourceCol = Math.floor(col / columns);
 			const { char, glyph } = matrix[Math.floor(row / slices)][sourceCol];
-			const x = (cursor + widths[sourceCol] / columns / 2) * scale,
-				glyphX = (cursor + (.5 - (col % columns) / columns) * widths[sourceCol]) * scale,
-				y = (-fullHeight / 2 + (row + 0.5) * cellHeight / slices) * scale,
+			const glyphX = (cursor + (.5 - (col % columns) / columns) * widths[sourceCol]) * scale,
 				glyphY = (-fullHeight / 2 + (Math.floor(row / slices) + .5) * cellHeight) * scale;
-			const w = widths[sourceCol] * scale / columns,
+			let x = (cursor + widths[sourceCol] / columns / 2) * scale,
+				y = (-fullHeight / 2 + (row + 0.5) * cellHeight / slices) * scale;
+			let w = widths[sourceCol] * scale / columns,
 				h = cellHeight * scale / slices;
+			if (layout.inkPanels) {
+				// More panels should divide the letter, not its surrounding margin.
+				// Retain the outside gates and distribute only the internal seams
+				// over the ink dimensions. Blank cells still need positive widths.
+				const inkWidth = Math.max(height * .1, widths[sourceCol] - padding);
+				const xLine = (i: number) => glyphX + (i === 0 ? -widths[sourceCol] / 2 : i === columns ? widths[sourceCol] / 2 : (i / columns - .5) * inkWidth) * scale;
+				const yLine = (i: number) => glyphY + (i === 0 ? -cellHeight / 2 : i === slices ? cellHeight / 2 : (i / slices - .5) * height) * scale;
+				const lo = xLine(col % columns), hi = xLine(col % columns + 1),
+					up = yLine(row % slices), down = yLine(row % slices + 1);
+				x = (lo + hi) / 2; y = (up + down) / 2;
+				w = hi - lo; h = down - up;
+			}
 			cursor += widths[sourceCol] / columns;
 			const gates: Point[] = [
 				[x, y - h / 2],
@@ -211,13 +223,17 @@ export function generateTextGrid(
 	}
 	if (slices > 1) {
 		const dividers = Array.from({length: rows}, (_, row) => Array.from({length: slices - 1}, (_, i) =>
-			(-fullHeight / 2 + (row + (i + 1) / slices) * cellHeight) * scale)).flat();
+			(layout.inkPanels
+				? -fullHeight / 2 + (row + .5) * cellHeight + ((i + 1) / slices - .5) * height
+				: -fullHeight / 2 + (row + (i + 1) / slices) * cellHeight) * scale)).flat();
 		edges = stitch(edges, dividers, 1);
 	}
 	if (columns > 1) {
 		let cursor = -span / 2;
 		const dividers = widths.flatMap(width => {
-			const values = Array.from({length: columns - 1}, (_, i) => (cursor + (i + 1) * width / columns) * scale);
+			const values = Array.from({length: columns - 1}, (_, i) => (layout.inkPanels
+				? cursor + width / 2 + ((i + 1) / columns - .5) * Math.max(height * .1, width - padding)
+				: cursor + (i + 1) * width / columns) * scale);
 			cursor += width;
 			return values;
 		});

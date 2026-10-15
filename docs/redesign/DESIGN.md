@@ -515,6 +515,11 @@ widest solid interval of its seam, so it cannot land inside a counter; both
 neighbours must choose the same point. These final layouts keep the font
 outline, frame and spacing checks. Skip the repeated full-sheet fit for the
 one-column layout when no seam contact moved.
+A final 2×5 letter division places its internal seams over the ink dimensions,
+excluding the cell padding. Keep the outside gates and the ordinary margin;
+extra cuts must divide useful parts of the letter instead of creating empty
+outer panels. Both clipping and stitching use the same seam positions. Only
+attempt this layout when its resulting grid remains within the 20-strip limit.
 Identical glyphs in the same position within a four-cell group reuse their cuts.
 This frame uses an n×n cut grid with a square physical overlap, up to the shared
 20-strip limit. Its thumbnail, shared link, editor and PDF use the same design.
