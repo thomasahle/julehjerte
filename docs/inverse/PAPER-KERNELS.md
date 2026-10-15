@@ -1,5 +1,10 @@
 # Faster guarded paper-core checks
 
+The [October clearance follow-up](datasets/paper-clearance-kernel.json) adds
+native paper-mask classification with JavaScript fallback for ambiguous threshold
+comparisons. Its current validation status is recorded separately. The timings
+and suite counts below describe the initial distance/component-kernel release.
+
 A CPU profile of a fresh `hjcur-04` solve showed that paper-core analysis used
 roughly two seconds, beyond the time spent on curve-distance validation and
 image gradients. The paper checks run at many refinement checkpoints, so this

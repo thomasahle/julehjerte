@@ -30,6 +30,15 @@ The inventory, with material annotations updated on 2026-10-15, contains:
 
 ## Current results and limits
 
+A [guarded-clearance WASM follow-up](paper-clearance-kernel.json) accelerates the
+remaining paper-mask classification loop. Threshold ties and extreme distances
+return to the existing JavaScript `hypot` calculation. All 37 fixed-geometry cases
+retain every map pixel and audit field; complete audits are 18.8% faster at the
+median in this Node comparison. Eight private Chromium cases also match exactly,
+and the star and free-border hat workflows pass through editable SVG export.
+Full inverse QA and fresh corpus fits are still pending. This is an audit-cost
+improvement, not yet a measured reduction in complete solve time.
+
 A [fixed-input polishing study](polishing-work-study.json) isolates the Viking
 checkpoint from crop and initialization changes. With the production numerical
 WASM backend and 160 updates, the old and strengthened checks choose identical

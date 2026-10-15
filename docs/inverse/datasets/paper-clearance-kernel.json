@@ -1,0 +1,131 @@
+{
+  "schema": "woven-heart-paper-clearance-kernel-1",
+  "status": "preflight-complete-full-suite-and-corpus-pending",
+  "implementationCommit": "b869b20",
+  "referenceCommit": "fe64d5e",
+  "scope": "Exact guarded paper-mask acceleration. No change to distances, guard widths, fold anchoring, area thresholds, geometry gates or independent final offset audit. Fixed-geometry timings are not end-to-end solve speed.",
+  "method": [
+    "Classify ordinary lattice cells in the existing float64 freestanding WASM module.",
+    "Preserve original tile order and chord arithmetic; defer threshold ties, negative lower guards and extreme arithmetic to the original JavaScript hypot calculation.",
+    "Return owned masks and deferred indices; no cut clearances or geometry decisions are cached.",
+    "Use existing two-call opposite-order calibration, requiring identical outputs and more than ten-percent repeated gain. Missing kernel or unsupported inputs retain JavaScript."
+  ],
+  "evidence": {
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/benchmark.json": "ace30b01265da28f9e03b87efbeb65d02949bb44140ea1751eaee64b0aee98d5",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/browser-kernel.json": "7e177d9dfd04129aa3ee37dca9c4a01ba0ee31e5a827ceb2d77988d557610e5c",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/browser/results.json": "a883a6668456e39674e22f09256f5c6afad5e909ca84dbd353aa3ea1f18351bd",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/served-assets.json": "2d1dcd587b2f6c0dd1394663da40a65439c627aa02d172b1da8ff564fc048342",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/visual-review.json": "97443ac8e3b6eb68af2624e364e16ff356464a66d97bc3adf98bfbc27b874bca",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/benchmark.mjs": "25bf9313bf4385fb44a4e9cd48802ef96365e0f072bd5e3d403771c098ce9bc7",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/browser-kernel.mjs": "52e0a4c0ad5d7d8717a59817e1895fbd916bc27272ae0b0545e276c778015313",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/run-qa.py": "41c4542fe285c67e05f89a50ee6e3039c814e194951f118edddd9adbac2f3e3c",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/qa-source.json": "0e4af1f2c28cdba0e19f659a0b83e738f96b64690cfd4de94ffbbfef7538d84d",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/focused.log": "df4a4223f1972fc0ecc63366a880e7b87af063c5132a9f7ce983f38d97ead70b",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/record-preflight.py": "fd74189d09e7812cf4a9826228c297777ace1da2df708fab31c59f02bd257493"
+  },
+  "validation": {
+    "fixedGeometryCases": 37,
+    "roundsPerPolicy": 4,
+    "fixedGeometryCompleteMasksAndFieldsIdentical": true,
+    "nodeSummary": {
+      "cases": 37,
+      "allIdentical": true,
+      "medianPerCaseSaving": 0.1876304486759991,
+      "totalMedianBefore": 1.7911915425000022,
+      "totalMedianAfter": 1.4530024970000033,
+      "totalMedianAutomatic": 1.4378014169999946
+    },
+    "privateChromiumCases": 8,
+    "chromiumRoundsPerPolicy": 3,
+    "browserCompleteMasksAndFieldsIdentical": true,
+    "chromiumVersion": "145.0.7632.6",
+    "editableBrowserWorkflows": 2,
+    "editableBrowserWorkflowsPassed": 2,
+    "servedAssetsVerified": 172,
+    "focusedExistingTestsPassed": 17,
+    "newThresholdAndOwnershipTestsPassed": 5,
+    "applicationTestsPassed": 857,
+    "applicationTestsSkipped": 1,
+    "completedQaStages": [
+      {
+        "stage": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 11.763951583
+      },
+      {
+        "stage": "lint-final",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 7.465204541999999
+      },
+      {
+        "stage": "build",
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 16.629910333
+      },
+      {
+        "stage": "preview",
+        "command": [
+          "python3",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/restart-preview.py"
+        ],
+        "exitCode": 0,
+        "seconds": 1.0648757499999988
+      },
+      {
+        "stage": "browser-kernel",
+        "command": [
+          "node",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/browser-kernel.mjs"
+        ],
+        "exitCode": 0,
+        "seconds": 8.651829917
+      },
+      {
+        "stage": "browser",
+        "command": [
+          "node",
+          "scripts/inverse/paint-browser-test.mjs"
+        ],
+        "exitCode": 0,
+        "seconds": 18.10078933399999
+      },
+      {
+        "stage": "benchmark-final",
+        "command": [
+          "node",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/benchmark.mjs"
+        ],
+        "exitCode": 0,
+        "seconds": 25.29618445899999
+      }
+    ],
+    "remainingQa": "Full inverse suite is active. Fresh 22-Hunodan and automatic-photo corpus comparisons run serially afterward; their results are not yet claimed.",
+    "qaStatePath": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/qa-state.json",
+    "qaChecksPath": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/paper-clearance-kernel-v1/qa-checks.json"
+  },
+  "binaryBytes": {
+    "before": 6361,
+    "after": 7592
+  },
+  "limitations": [
+    "Calibration costs are included in fresh solves, not in the warm fixed-input comparison.",
+    "Timing and final optimized image error can change under a wall-clock budget even when all paper decisions agree.",
+    "The pre-existing strict photo-error regressions and intermittent short HiGHS timeout remain open until fresh evidence addresses them.",
+    "Discrete paper checks are not a physical assembly or tearing-strength proof."
+  ]
+}
