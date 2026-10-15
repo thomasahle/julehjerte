@@ -1,0 +1,35 @@
+{
+  "scope": "Current-runtime integration of the earlier long-budget routing interpolation experiment. No change to ten-second scheduling or final template acceptance.",
+  "status": "reproduced-failure-and-focused-tests-passed; full-corpus-and-browser-qa-pending",
+  "previousCommit": "b26e774",
+  "root": "tmp/heart-learning/long-budget-integration-v1",
+  "before": {
+    "failed": 1,
+    "milliseconds": 7326.151292,
+    "diagnostics": [
+      "\u2139 {\"error\":0.02253125,\"termination\":\"candidate_found\"}"
+    ]
+  },
+  "after": {
+    "passed": 11,
+    "failed": 0,
+    "milliseconds": 91412.282417,
+    "newLongAllowanceTestMilliseconds": 15658.345959,
+    "independentErrorUpperBound": 0.02,
+    "nominalAllowanceSeconds": 180
+  },
+  "sourceHashes": {
+    "static/inverse/core/direct/fit.js": "e91cfe8549ab9384b0ea20f04fb34c9119ed26b050d95fd38f372bab4b0b5f56",
+    "scripts/inverse/clearance-initializer.test.mjs": "5ad6df9f97ce30da596e85856c8c53f36d6c9be5fa8ff65337ea5d7d1d965d53"
+  },
+  "artifactsSha256": {
+    "tmp/heart-learning/long-budget-integration-v1/before.log": "13ef4a9e3c9f10055aa43cf0734e4190de2527e71c30e04fbe10afb07295c0c2",
+    "tmp/heart-learning/long-budget-integration-v1/after.log": "c338e76106e819846df3b495abc1d8b13b05f9bad98a0f569d57b83be609fb38"
+  },
+  "limitations": [
+    "The recorded long-budget test verifies below 2% disagreement, not exact original artwork.",
+    "More work can be justified by a better result; the longer test took about sixteen seconds, so this is not a universal latency improvement.",
+    "Missing features and feature-tradeoff grids retain routing priority.",
+    "Full native and actual browser comparisons are still required."
+  ]
+}

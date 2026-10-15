@@ -94,3 +94,13 @@ test('fresh fitting finds a checked pair for the upward-shifted photograph witho
   assert.ok(woven.mask.reduce((sum,v,i)=>sum+Number(v!==mask[i]),0)/mask.length<.02);
   assert.deepEqual(source.sourceImage.mask,mask);
 });
+
+test('the ordinary search allowance also recovers the upward-shifted photograph',{timeout:40000},async t=>{
+  const source=input(),answer=await design(source,{...cfg,timeLimit:180}),report=answer.report;
+  assert.equal(report.templateChecksPassed,true);
+  const woven=await renderExportedWeave(answer.files['cut_geometry.json'],resolution);
+  const error=woven.mask.reduce((sum,v,i)=>sum+Number(v!==mask[i]),0)/mask.length;
+  if(error>=.02)t.diagnostic(JSON.stringify({error,termination:report.solver.termination,initialization:report.solver.selectedInitialization,recovery:report.solver.featureRecovery?.reason}));
+  assert.ok(error<.02,'More search allowance must retain the recovered leaf silhouette.');
+  assert.deepEqual(source.sourceImage.mask,mask);
+});

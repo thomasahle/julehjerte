@@ -74,3 +74,25 @@ every result, including the failed short control, with rendered artifacts and
 source hashes. No production policy, cropper, classified mask, time limit or
 acceptance threshold was changed. Wider-corpus and browser checks remain
 necessary before adopting a scheduling change.
+
+## Integration after the new browser regression
+
+The newer browser QA reproduced the issue on a leaf shifted upward by one
+pixel: the ordinary allowance returned 2.225625% engine disagreement before
+trying the better clearance-grid fit, while the ten-second request recovered
+a much closer silhouette. A fresh mask-only test also fails before the change.
+
+Routing interpolation now uses the same image and feature evidence during
+longer searches. Missing source features and grids selected to preserve a
+feature at worse image error still retain routing priority. Final image, feature,
+geometry and paper checks are unchanged. The ten-second scheduling expression
+is unchanged.
+
+The regression now returns a checked pair below 2% independently rendered
+disagreement with the ordinary 180-second allowance. It takes about 15.7 seconds
+in this test, versus 7.1 seconds for the poorer result; the change improves
+quality rather than promising a faster answer for this input. All eleven focused
+clearance, photo-budget and protected-feature tests pass, including the Viking
+with a sixty-second allowance. The [integration record](long-budget-integration.json)
+retains the failing and passing logs. Full corpus and browser QA are queued;
+these focused results do not replace the last fully validated release.

@@ -245,12 +245,14 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   // Blend toward routing priority as its error grows to twice the limit.
   // A missing source region still needs routing: low aggregate error cannot
   // establish that local curve refinement can create the absent feature.
-  // This changes short-search scheduling only, never final acceptance.
+  // Apply the same evidence-based blend to longer allowances: otherwise
+  // an adequate traced fit can return before a more faithful grid is tried.
+  // This changes search scheduling only, never final acceptance.
   // A lower-error grid that loses a region cannot justify shortening routing
   // for the worse-fitting grid selected to preserve it. Those two different
   // candidates do not establish one promising local-refinement start.
   const featureTradeoff=finalistPreference?.before[0]?.featuresRetained===false&&!colourPreferredGrid;
-  const gridRoutingWeight=shortBudget&&features.passed&&!featureTradeoff&&cfg.maxImageError>0?Math.max(0,Math.min(1,Math.min(...fine.map(r=>r.error))/cfg.maxImageError-1)):1;
+  const gridRoutingWeight=features.passed&&!featureTradeoff&&cfg.maxImageError>0?Math.max(0,Math.min(1,Math.min(...fine.map(r=>r.error))/cfg.maxImageError-1)):1;
   const reservedRecoverySeconds=Math.max(0,(refinementTimeLeft(deadline)-2000)/1000),ordinaryRecoverySeconds=(deadline-performance.now())/1000*.9;
   const interpolatedRecoverySeconds=reservedRecoverySeconds+(ordinaryRecoverySeconds-reservedRecoverySeconds)*gridRoutingWeight;
   // Tracing/preflight must leave room for a small useful MILP. A shorter
