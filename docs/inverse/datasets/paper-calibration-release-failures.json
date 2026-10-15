@@ -1,0 +1,1141 @@
+{
+  "schema": 1,
+  "runtimeCommit": "c484669",
+  "referenceCommit": "da3cb2d",
+  "fullRelease": {
+    "stage": "qa",
+    "inverse": {
+      "tests": 895,
+      "passed": 880,
+      "failed": 15,
+      "failedTests": [
+        "not ok 151 - fresh fitting finds a checked pair for the upward-shifted photograph without saved cuts",
+        "not ok 154 - bounded repair resolves a nonlocal slit neck without changing the x-plus-1 artwork",
+        "not ok 157 - fresh y-minus-1 fitting carries repaired clearance through final export",
+        "not ok 167 - coarse routing remains available while common refinement preserves photographed tree branches",
+        "not ok 376 - the vertical near-miss layout produces checked exports within the original short search (1x clock)",
+        "not ok 378 - the original near-miss layout produces checked exports within the original short search (1.5x clock)",
+        "not ok 388 - an actual cropped upload recovers its template when one edge hides slit endpoints",
+        "not ok 409 - an ordinary refinement checkpoint repairs hidden connectors without changing the exported image",
+        "not ok 414 - small resolution changes retain a checked three-cut flower instead of crowding it out",
+        "not ok 417 - a fresh shifted bird fit reroutes its rejected eye with a 10-second allowance",
+        "not ok 535 - the matching preference can change cut count and colour phase without forcing or editing the mask",
+        "not ok 657 - fresh synthetic-control routing retains time for a valid template without changing the mask",
+        "not ok 800 - crown retains its interior detail in a fresh fit (10s allowance)",
+        "not ok 857 - the photographed gold heart retains its shape through sparse routing and refinement",
+        "not ok 866 - a speculative weak-region grid cannot hide the dense checker layout after clearance changes its ranking"
+      ]
+    },
+    "checks": [
+      {
+        "stage": "core-lint",
+        "command": [
+          "npx",
+          "eslint",
+          "--no-ignore",
+          "static/inverse/core/kernel-choice.js",
+          "static/inverse/core/paper-backend.js",
+          "scripts/inverse/kernel-choice.test.mjs",
+          "scripts/inverse/paper-backend.test.mjs",
+          "scripts/inverse/material-kernel.test.mjs",
+          "scripts/inverse/paper-calibration-benchmark.mjs"
+        ],
+        "exitCode": 0,
+        "seconds": 2.159819625
+      },
+      {
+        "stage": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 18.174465791
+      },
+      {
+        "stage": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 12.780852749999998
+      },
+      {
+        "stage": "app",
+        "command": [
+          "npx",
+          "vitest",
+          "run",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 0,
+        "seconds": 38.359940417
+      },
+      {
+        "stage": "build",
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 24.75843479199999
+      },
+      {
+        "stage": "inverse",
+        "command": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "--test-reporter=tap",
+          "scripts/inverse/anchor-perturbation.test.mjs",
+          "scripts/inverse/anchored-crop.test.mjs",
+          "scripts/inverse/automatic.test.mjs",
+          "scripts/inverse/background-crop.test.mjs",
+          "scripts/inverse/border-profile-proposals.test.mjs",
+          "scripts/inverse/border.test.mjs",
+          "scripts/inverse/boundary-preflight.test.mjs",
+          "scripts/inverse/boundary-value.test.mjs",
+          "scripts/inverse/box-pruning.test.mjs",
+          "scripts/inverse/chord-distance.test.mjs",
+          "scripts/inverse/chord-projection.test.mjs",
+          "scripts/inverse/chord-tangent.test.mjs",
+          "scripts/inverse/clamped-features.test.mjs",
+          "scripts/inverse/clearance-initializer.test.mjs",
+          "scripts/inverse/clearance-projection.test.mjs",
+          "scripts/inverse/clearance-routing.test.mjs",
+          "scripts/inverse/clearance-witnesses.test.mjs",
+          "scripts/inverse/closed-boundary.test.mjs",
+          "scripts/inverse/coarse-topology.test.mjs",
+          "scripts/inverse/comparison-search.test.mjs",
+          "scripts/inverse/compute-worker.test.mjs",
+          "scripts/inverse/connector-budget.test.mjs",
+          "scripts/inverse/connector-subdivision.test.mjs",
+          "scripts/inverse/core.test.mjs",
+          "scripts/inverse/corner-border-seeds.test.mjs",
+          "scripts/inverse/corner-topology.test.mjs",
+          "scripts/inverse/count-strategy.test.mjs",
+          "scripts/inverse/crop-evidence.test.mjs",
+          "scripts/inverse/crop.test.mjs",
+          "scripts/inverse/curve-rendering.test.mjs",
+          "scripts/inverse/curve-topology.test.mjs",
+          "scripts/inverse/datasets/app-baseline.test.mjs",
+          "scripts/inverse/datasets/foreground-labels.test.mjs",
+          "scripts/inverse/datasets/photo-labels.test.mjs",
+          "scripts/inverse/datasets/synthetic-interventions.test.mjs",
+          "scripts/inverse/datasets/synthetic-motif.test.mjs",
+          "scripts/inverse/datasets/synthetic-print.test.mjs",
+          "scripts/inverse/datasets/synthetic-training.test.mjs",
+          "scripts/inverse/direct.test.mjs",
+          "scripts/inverse/edge-topology.test.mjs",
+          "scripts/inverse/editable-paper-audit.test.mjs",
+          "scripts/inverse/export-renderer.test.mjs",
+          "scripts/inverse/feature-details.test.mjs",
+          "scripts/inverse/feature-enclosure.test.mjs",
+          "scripts/inverse/feature-enclosures.test.mjs",
+          "scripts/inverse/feature-near-miss.test.mjs",
+          "scripts/inverse/feature-refinement.test.mjs",
+          "scripts/inverse/feature-seeds.test.mjs",
+          "scripts/inverse/feature-shapes.test.mjs",
+          "scripts/inverse/final-return-repair.test.mjs",
+          "scripts/inverse/finalist-diversity.test.mjs",
+          "scripts/inverse/fitted-rerouting.test.mjs",
+          "scripts/inverse/foreground-crop.test.mjs",
+          "scripts/inverse/foreground-probe-origin.test.mjs",
+          "scripts/inverse/foreground-refine.test.mjs",
+          "scripts/inverse/graph-boundary-ablations.test.mjs",
+          "scripts/inverse/graph-oracle.test.mjs",
+          "scripts/inverse/grid-parity.test.mjs",
+          "scripts/inverse/hard-photo-data.test.mjs",
+          "scripts/inverse/hard-photo-report.test.mjs",
+          "scripts/inverse/hard-photo-target.test.mjs",
+          "scripts/inverse/identical-paper.test.mjs",
+          "scripts/inverse/image-features.test.mjs",
+          "scripts/inverse/initialization-image.test.mjs",
+          "scripts/inverse/initialization.test.mjs",
+          "scripts/inverse/integration.test.mjs",
+          "scripts/inverse/interior-palette-crop.test.mjs",
+          "scripts/inverse/intersection-endpoints.test.mjs",
+          "scripts/inverse/isometry-projection.test.mjs",
+          "scripts/inverse/junction-routing.test.mjs",
+          "scripts/inverse/junctions.test.mjs",
+          "scripts/inverse/kernel-choice.test.mjs",
+          "scripts/inverse/linear-controls.test.mjs",
+          "scripts/inverse/lobe-crop.test.mjs",
+          "scripts/inverse/lower-edge-support.test.mjs",
+          "scripts/inverse/mask-comparison.test.mjs",
+          "scripts/inverse/mask-preview.test.mjs",
+          "scripts/inverse/matching-seeds.test.mjs",
+          "scripts/inverse/matching.test.mjs",
+          "scripts/inverse/material-index.test.mjs",
+          "scripts/inverse/material-kernel.test.mjs",
+          "scripts/inverse/mixed-primitives.test.mjs",
+          "scripts/inverse/native-boundary.test.mjs",
+          "scripts/inverse/neighbor-retry-scheduling.test.mjs",
+          "scripts/inverse/numerical-speed.test.mjs",
+          "scripts/inverse/oriented-crop.test.mjs",
+          "scripts/inverse/outline-details.test.mjs",
+          "scripts/inverse/paint-observer.test.mjs",
+          "scripts/inverse/paper-backend.test.mjs",
+          "scripts/inverse/paper-rollback.test.mjs",
+          "scripts/inverse/paper-verification.test.mjs",
+          "scripts/inverse/photo-counts.test.mjs",
+          "scripts/inverse/photo-material-samples.test.mjs",
+          "scripts/inverse/photographic-refinement-budget.test.mjs",
+          "scripts/inverse/polishing-paper.test.mjs",
+          "scripts/inverse/primitive-selection.test.mjs",
+          "scripts/inverse/progress.test.mjs",
+          "scripts/inverse/reference.test.mjs",
+          "scripts/inverse/refinement-budget.test.mjs",
+          "scripts/inverse/refinement-checkpoints.test.mjs",
+          "scripts/inverse/rejected-routing.test.mjs",
+          "scripts/inverse/relaxation.test.mjs",
+          "scripts/inverse/row-kernel.test.mjs",
+          "scripts/inverse/sampling-rollback.test.mjs",
+          "scripts/inverse/search-scheduling.test.mjs",
+          "scripts/inverse/self-intersections.test.mjs",
+          "scripts/inverse/self-return-projection.test.mjs",
+          "scripts/inverse/self-return-subdivision.test.mjs",
+          "scripts/inverse/self-returns.test.mjs",
+          "scripts/inverse/shadow-crop.test.mjs",
+          "scripts/inverse/shared-return-search.test.mjs",
+          "scripts/inverse/shared-sampling.test.mjs",
+          "scripts/inverse/shared-simplification.test.mjs",
+          "scripts/inverse/sharing-orbit.test.mjs",
+          "scripts/inverse/sharing-order.test.mjs",
+          "scripts/inverse/sharing-paired-knots.test.mjs",
+          "scripts/inverse/sharing.test.mjs",
+          "scripts/inverse/short-budget-features.test.mjs",
+          "scripts/inverse/short-return-audits.test.mjs",
+          "scripts/inverse/short-returns.test.mjs",
+          "scripts/inverse/solver-clock.test.mjs",
+          "scripts/inverse/spatial-color.test.mjs",
+          "scripts/inverse/stopped.test.mjs",
+          "scripts/inverse/straight-artwork.test.mjs",
+          "scripts/inverse/symmetry-fit.test.mjs",
+          "scripts/inverse/topology-phases.test.mjs",
+          "scripts/inverse/trace-order.test.mjs",
+          "scripts/inverse/turn-limit-refinement.test.mjs",
+          "scripts/inverse/unmix.test.mjs",
+          "scripts/inverse/weak-feature-routing.test.mjs",
+          "scripts/inverse/weighted-image.test.mjs",
+          "scripts/inverse/weighted-pipeline.test.mjs",
+          "scripts/inverse/whole-return-editor.test.mjs",
+          "scripts/inverse/worker-controller.test.mjs"
+        ],
+        "exitCode": 1,
+        "seconds": 1170.830031208
+      }
+    ],
+    "sourceFilesVerified": 735,
+    "changedSources": [],
+    "nativeStarted": false,
+    "browserStarted": false
+  },
+  "pairedFocusedReplay": {
+    "method": "Two rounds in AB/BA order, using immutable snapshots differing only in calibration source. Original test inputs, constraints and budgets. With-clock group runs four selected tests; fresh-leaf group runs just the photograph test in a new process. Empty test-file wrapper records are excluded.",
+    "sourceFilesVerified": 217,
+    "runs": [
+      {
+        "round": 0,
+        "group": "with-clock-test",
+        "variant": "before",
+        "exitCode": 1,
+        "seconds": 26.121211500000015,
+        "passed": [
+          "ok 1 - the common fitter repairs a rejected initializer and preserves its finer paper check through polishing",
+          "ok 3 - bounded repair resolves a nonlocal slit neck without changing the x-plus-1 artwork",
+          "ok 4 - coarse routing remains available while common refinement preserves photographed tree branches"
+        ],
+        "failed": [
+          "not ok 2 - fresh fitting finds a checked pair for the upward-shifted photograph without saved cuts"
+        ]
+      },
+      {
+        "round": 0,
+        "group": "with-clock-test",
+        "variant": "after",
+        "exitCode": 1,
+        "seconds": 22.860611584000026,
+        "passed": [
+          "ok 1 - the common fitter repairs a rejected initializer and preserves its finer paper check through polishing",
+          "ok 2 - fresh fitting finds a checked pair for the upward-shifted photograph without saved cuts",
+          "ok 3 - bounded repair resolves a nonlocal slit neck without changing the x-plus-1 artwork"
+        ],
+        "failed": [
+          "not ok 4 - coarse routing remains available while common refinement preserves photographed tree branches"
+        ]
+      },
+      {
+        "round": 0,
+        "group": "fresh-leaf",
+        "variant": "before",
+        "exitCode": 0,
+        "seconds": 10.332912542000031,
+        "passed": [
+          "ok 1 - fresh fitting finds a checked pair for the upward-shifted photograph without saved cuts"
+        ],
+        "failed": []
+      },
+      {
+        "round": 0,
+        "group": "fresh-leaf",
+        "variant": "after",
+        "exitCode": 0,
+        "seconds": 10.250895416999981,
+        "passed": [
+          "ok 1 - fresh fitting finds a checked pair for the upward-shifted photograph without saved cuts"
+        ],
+        "failed": []
+      },
+      {
+        "round": 1,
+        "group": "with-clock-test",
+        "variant": "after",
+        "exitCode": 0,
+        "seconds": 25.721185790999982,
+        "passed": [
+          "ok 1 - the common fitter repairs a rejected initializer and preserves its finer paper check through polishing",
+          "ok 2 - fresh fitting finds a checked pair for the upward-shifted photograph without saved cuts",
+          "ok 3 - bounded repair resolves a nonlocal slit neck without changing the x-plus-1 artwork",
+          "ok 4 - coarse routing remains available while common refinement preserves photographed tree branches"
+        ],
+        "failed": []
+      },
+      {
+        "round": 1,
+        "group": "with-clock-test",
+        "variant": "before",
+        "exitCode": 0,
+        "seconds": 25.641187417000026,
+        "passed": [
+          "ok 1 - the common fitter repairs a rejected initializer and preserves its finer paper check through polishing",
+          "ok 2 - fresh fitting finds a checked pair for the upward-shifted photograph without saved cuts",
+          "ok 3 - bounded repair resolves a nonlocal slit neck without changing the x-plus-1 artwork",
+          "ok 4 - coarse routing remains available while common refinement preserves photographed tree branches"
+        ],
+        "failed": []
+      },
+      {
+        "round": 1,
+        "group": "fresh-leaf",
+        "variant": "after",
+        "exitCode": 0,
+        "seconds": 10.079284041999983,
+        "passed": [
+          "ok 1 - fresh fitting finds a checked pair for the upward-shifted photograph without saved cuts"
+        ],
+        "failed": []
+      },
+      {
+        "round": 1,
+        "group": "fresh-leaf",
+        "variant": "before",
+        "exitCode": 0,
+        "seconds": 10.11061354200001,
+        "passed": [
+          "ok 1 - fresh fitting finds a checked pair for the upward-shifted photograph without saved cuts"
+        ],
+        "failed": []
+      }
+    ],
+    "leafBackendChoices": [
+      {
+        "run": "0-fresh-leaf-after",
+        "backends": {
+          "distanceTransform": [
+            {
+              "cells": 160000,
+              "backend": "wasm",
+              "reason": "measured_faster",
+              "timings": [
+                {
+                  "javascript": 7.849249999999984,
+                  "wasm": 2.9958330000000046
+                },
+                {
+                  "wasm": 1.9772500000000264,
+                  "javascript": 10.09050000000002
+                }
+              ]
+            },
+            {
+              "cells": 388800,
+              "backend": "wasm",
+              "reason": "measured_faster",
+              "timings": [
+                {
+                  "javascript": 24.938375000000633,
+                  "wasm": 5.143207999999504
+                },
+                {
+                  "wasm": 4.87604199999987,
+                  "javascript": 14.816249999999854
+                }
+              ]
+            },
+            {
+              "cells": 1470000,
+              "backend": "wasm",
+              "reason": "measured_faster",
+              "timings": [
+                {
+                  "javascript": 49.348417000000154,
+                  "wasm": 20.653124999999818
+                },
+                {
+                  "wasm": 17.478833000000122,
+                  "javascript": 45.759375000000546
+                }
+              ]
+            }
+          ],
+          "components": [
+            {
+              "cells": 388800,
+              "backend": "wasm",
+              "reason": "measured_faster",
+              "timings": [
+                {
+                  "javascript": 13.997832999999446,
+                  "wasm": 3.137499999999818
+                },
+                {
+                  "wasm": 1.7584579999993366,
+                  "javascript": 5.600416999999652
+                }
+              ]
+            },
+            {
+              "cells": 1470000,
+              "backend": "wasm",
+              "reason": "measured_faster",
+              "timings": [
+                {
+                  "javascript": 21.36041699999987,
+                  "wasm": 9.923917000000074
+                },
+                {
+                  "wasm": 7.2615420000001905,
+                  "javascript": 22.581583000000137
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "run": "0-fresh-leaf-before",
+        "backends": {
+          "distanceTransform": [
+            {
+              "cells": 160000,
+              "backend": "wasm",
+              "reason": "measured_faster",
+              "timings": [
+                {
+                  "javascript": 9.816624999999988,
+                  "wasm": 1.9423329999999623
+                },
+                {
+                  "wasm": 1.7995839999999816,
+                  "javascript": 5.014999999999986
+                }
+              ]
+            },
+            {
+              "cells": 388800,
+              "backend": "wasm",
+              "reason": "measured_faster",
+              "timings": [
+                {
+                  "javascript": 12.434417000000394,
+                  "wasm": 5.196791999999732
+                },
+                {
+                  "wasm": 4.445166000000427,
+                  "javascript": 12.725499999999556
+                }
+              ]
+            },
+            {
+              "cells": 1470000,
+              "backend": "wasm",
+              "reason": "measured_faster",
+              "timings": [
+                {
+                  "javascript": 49.64454099999966,
+                  "wasm": 18.419165999999677
+                },
+                {
+                  "wasm": 17.858500000000276,
+                  "javascript": 53.95337500000005
+                }
+              ]
+            }
+          ],
+          "components": [
+            {
+              "cells": 388800,
+              "backend": "wasm",
+              "reason": "measured_faster",
+              "timings": [
+                {
+                  "javascript": 5.294791999999688,
+                  "wasm": 1.8832080000001952
+                },
+                {
+                  "wasm": 1.463792000000467,
+                  "javascript": 3.0397920000004888
+                }
+              ]
+            },
+            {
+              "cells": 1470000,
+              "backend": "wasm",
+              "reason": "measured_faster",
+              "timings": [
+                {
+                  "javascript": 18.940207999999984,
+                  "wasm": 7.290417000000161
+                },
+                {
+                  "wasm": 7.384665999999925,
+                  "javascript": 14.88012499999968
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "run": "0-with-clock-test-after",
+        "backends": {
+          "distanceTransform": [
+            {
+              "cells": 388800,
+              "backend": "javascript",
+              "reason": "no_consistent_gain",
+              "timings": [
+                {
+                  "javascript": 0,
+                  "wasm": 0
+                },
+                {
+                  "wasm": 0,
+                  "javascript": 0
+                }
+              ]
+            },
+            {
+              "cells": 160000,
+              "backend": "javascript",
+              "reason": "no_consistent_gain",
+              "timings": [
+                {
+                  "javascript": 0,
+                  "wasm": 0
+                },
+                {
+                  "wasm": 0,
+                  "javascript": 0
+                }
+              ]
+            },
+            {
+              "cells": 1470000,
+              "backend": "javascript",
+              "reason": "no_consistent_gain",
+              "timings": [
+                {
+                  "javascript": 0,
+                  "wasm": 0
+                },
+                {
+                  "wasm": 0,
+                  "javascript": 0
+                }
+              ]
+            }
+          ],
+          "components": [
+            {
+              "cells": 388800,
+              "backend": "javascript",
+              "reason": "no_consistent_gain",
+              "timings": [
+                {
+                  "javascript": 0,
+                  "wasm": 0
+                },
+                {
+                  "wasm": 0,
+                  "javascript": 0
+                }
+              ]
+            },
+            {
+              "cells": 1470000,
+              "backend": "javascript",
+              "reason": "no_consistent_gain",
+              "timings": [
+                {
+                  "javascript": 0,
+                  "wasm": 0
+                },
+                {
+                  "wasm": 0,
+                  "javascript": 0
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "run": "0-with-clock-test-before",
+        "backends": {
+          "distanceTransform": [
+            {
+              "cells": 388800,
+              "backend": "javascript",
+              "reason": "no_consistent_gain",
+              "timings": [
+                {
+                  "javascript": 0,
+                  "wasm": 0
+                },
+                {
+                  "wasm": 0,
+                  "javascript": 0
+                }
+              ]
+            },
+            {
+              "cells": 160000,
+              "backend": "javascript",
+              "reason": "no_consistent_gain",
+              "timings": [
+                {
+                  "javascript": 0,
+                  "wasm": 0
+                },
+                {
+                  "wasm": 0,
+                  "javascript": 0
+                }
+              ]
+            },
+            {
+              "cells": 1470000,
+              "backend": "javascript",
+              "reason": "no_consistent_gain",
+              "timings": [
+                {
+                  "javascript": 0,
+                  "wasm": 0
+                },
+                {
+                  "wasm": 0,
+                  "javascript": 0
+                }
+              ]
+            }
+          ],
+          "components": [
+            {
+              "cells": 388800,
+              "backend": "javascript",
+              "reason": "no_consistent_gain",
+              "timings": [
+                {
+                  "javascript": 0,
+                  "wasm": 0
+                },
+                {
+                  "wasm": 0,
+                  "javascript": 0
+                }
+              ]
+            },
+            {
+              "cells": 1470000,
+              "backend": "javascript",
+              "reason": "no_consistent_gain",
+              "timings": [
+                {
+                  "javascript": 0,
+                  "wasm": 0
+                },
+                {
+                  "wasm": 0,
+                  "javascript": 0
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "run": "1-fresh-leaf-after",
+        "backends": {
+          "distanceTransform": [
+            {
+              "cells": 160000,
+              "backend": "wasm",
+              "reason": "measured_faster",
+              "timings": [
+                {
+                  "javascript": 7.016458,
+                  "wasm": 3.001000000000033
+                },
+                {
+                  "wasm": 1.6823330000000283,
+                  "javascript": 9.343542000000014
+                }
+              ]
+            },
+            {
+              "cells": 388800,
+              "backend": "wasm",
+              "reason": "measured_faster",
+              "timings": [
+                {
+                  "javascript": 25.421875,
+                  "wasm": 5.225916999999754
+                },
+                {
+                  "wasm": 4.981375000000298,
+                  "javascript": 12.974333000000115
+                }
+              ]
+            },
+            {
+              "cells": 1470000,
+              "backend": "wasm",
+              "reason": "measured_faster",
+              "timings": [
+                {
+                  "javascript": 45.97191699999985,
+                  "wasm": 20.457416000000194
+                },
+                {
+                  "wasm": 17.587166000000252,
+                  "javascript": 41.91508299999987
+                }
+              ]
+            }
+          ],
+          "components": [
+            {
+              "cells": 388800,
+              "backend": "wasm",
+              "reason": "measured_faster",
+              "timings": [
+                {
+                  "javascript": 13.1850000000004,
+                  "wasm": 3.0199170000005324
+                },
+                {
+                  "wasm": 1.7748750000000655,
+                  "javascript": 5.556833000000552
+                }
+              ]
+            },
+            {
+              "cells": 1470000,
+              "backend": "wasm",
+              "reason": "measured_faster",
+              "timings": [
+                {
+                  "javascript": 20.852209000000585,
+                  "wasm": 9.283833999999842
+                },
+                {
+                  "wasm": 6.7112080000006245,
+                  "javascript": 20.726208000000042
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "run": "1-fresh-leaf-before",
+        "backends": {
+          "distanceTransform": [
+            {
+              "cells": 160000,
+              "backend": "wasm",
+              "reason": "measured_faster",
+              "timings": [
+                {
+                  "javascript": 9.597249999999974,
+                  "wasm": 1.903708999999992
+                },
+                {
+                  "wasm": 1.7553330000000074,
+                  "javascript": 4.754665999999986
+                }
+              ]
+            },
+            {
+              "cells": 388800,
+              "backend": "wasm",
+              "reason": "measured_faster",
+              "timings": [
+                {
+                  "javascript": 11.661000000000058,
+                  "wasm": 4.6854580000008355
+                },
+                {
+                  "wasm": 4.762083999999959,
+                  "javascript": 11.817999999999302
+                }
+              ]
+            },
+            {
+              "cells": 1470000,
+              "backend": "wasm",
+              "reason": "measured_faster",
+              "timings": [
+                {
+                  "javascript": 47.985375000000204,
+                  "wasm": 17.696916000000783
+                },
+                {
+                  "wasm": 17.47333300000082,
+                  "javascript": 45.7432919999992
+                }
+              ]
+            }
+          ],
+          "components": [
+            {
+              "cells": 388800,
+              "backend": "wasm",
+              "reason": "measured_faster",
+              "timings": [
+                {
+                  "javascript": 5.297958999999537,
+                  "wasm": 1.7128749999992579
+                },
+                {
+                  "wasm": 1.4665830000003552,
+                  "javascript": 2.9524170000004233
+                }
+              ]
+            },
+            {
+              "cells": 1470000,
+              "backend": "wasm",
+              "reason": "measured_faster",
+              "timings": [
+                {
+                  "javascript": 18.72595799999999,
+                  "wasm": 6.646125000000211
+                },
+                {
+                  "wasm": 5.9658330000002024,
+                  "javascript": 13.260750000000371
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "run": "1-with-clock-test-after",
+        "backends": {
+          "distanceTransform": [
+            {
+              "cells": 388800,
+              "backend": "javascript",
+              "reason": "no_consistent_gain",
+              "timings": [
+                {
+                  "javascript": 0,
+                  "wasm": 0
+                },
+                {
+                  "wasm": 0,
+                  "javascript": 0
+                }
+              ]
+            },
+            {
+              "cells": 160000,
+              "backend": "javascript",
+              "reason": "no_consistent_gain",
+              "timings": [
+                {
+                  "javascript": 0,
+                  "wasm": 0
+                },
+                {
+                  "wasm": 0,
+                  "javascript": 0
+                }
+              ]
+            },
+            {
+              "cells": 1470000,
+              "backend": "javascript",
+              "reason": "no_consistent_gain",
+              "timings": [
+                {
+                  "javascript": 0,
+                  "wasm": 0
+                },
+                {
+                  "wasm": 0,
+                  "javascript": 0
+                }
+              ]
+            }
+          ],
+          "components": [
+            {
+              "cells": 388800,
+              "backend": "javascript",
+              "reason": "no_consistent_gain",
+              "timings": [
+                {
+                  "javascript": 0,
+                  "wasm": 0
+                },
+                {
+                  "wasm": 0,
+                  "javascript": 0
+                }
+              ]
+            },
+            {
+              "cells": 1470000,
+              "backend": "javascript",
+              "reason": "no_consistent_gain",
+              "timings": [
+                {
+                  "javascript": 0,
+                  "wasm": 0
+                },
+                {
+                  "wasm": 0,
+                  "javascript": 0
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "run": "1-with-clock-test-before",
+        "backends": {
+          "distanceTransform": [
+            {
+              "cells": 388800,
+              "backend": "javascript",
+              "reason": "no_consistent_gain",
+              "timings": [
+                {
+                  "javascript": 0,
+                  "wasm": 0
+                },
+                {
+                  "wasm": 0,
+                  "javascript": 0
+                }
+              ]
+            },
+            {
+              "cells": 160000,
+              "backend": "javascript",
+              "reason": "no_consistent_gain",
+              "timings": [
+                {
+                  "javascript": 0,
+                  "wasm": 0
+                },
+                {
+                  "wasm": 0,
+                  "javascript": 0
+                }
+              ]
+            },
+            {
+              "cells": 1470000,
+              "backend": "javascript",
+              "reason": "no_consistent_gain",
+              "timings": [
+                {
+                  "javascript": 0,
+                  "wasm": 0
+                },
+                {
+                  "wasm": 0,
+                  "javascript": 0
+                }
+              ]
+            }
+          ],
+          "components": [
+            {
+              "cells": 388800,
+              "backend": "javascript",
+              "reason": "no_consistent_gain",
+              "timings": [
+                {
+                  "javascript": 0,
+                  "wasm": 0
+                },
+                {
+                  "wasm": 0,
+                  "javascript": 0
+                }
+              ]
+            },
+            {
+              "cells": 1470000,
+              "backend": "javascript",
+              "reason": "no_consistent_gain",
+              "timings": [
+                {
+                  "javascript": 0,
+                  "wasm": 0
+                },
+                {
+                  "wasm": 0,
+                  "javascript": 0
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "independentFailedTreeReplay": [
+    {
+      "file": "qa-1066.json",
+      "source": "tmp/heart-learning/paper-calibration-release-v1/qa/inverse.log",
+      "maskSha256": "99fa80c07d5bccbb8354d2301e844e0231a84101b5f8d9351da0baf0747b5bb9",
+      "geometrySha256": "cf9a90a6f803e9f8966101a70a3c5c97dea1516484c83dbf05b8ce5d5147b496",
+      "error": 0.011375,
+      "centralError": 0.00375,
+      "checks": {
+        "reportedTemplateChecks": true,
+        "geometry": true,
+        "paper": true,
+        "features": true,
+        "threeCuts": true,
+        "baseline": true,
+        "independentError": true,
+        "centralError": true,
+        "matchingBound": true
+      },
+      "coarseAccepted": false,
+      "coarseAttempted": true
+    },
+    {
+      "file": "0-with-clock-test-after-41.json",
+      "source": "tmp/heart-learning/paper-calibration-failures-v1/0-with-clock-test-after/test.log",
+      "maskSha256": "99fa80c07d5bccbb8354d2301e844e0231a84101b5f8d9351da0baf0747b5bb9",
+      "geometrySha256": "cf9a90a6f803e9f8966101a70a3c5c97dea1516484c83dbf05b8ce5d5147b496",
+      "error": 0.011375,
+      "centralError": 0.00375,
+      "checks": {
+        "reportedTemplateChecks": true,
+        "geometry": true,
+        "paper": true,
+        "features": true,
+        "threeCuts": true,
+        "baseline": true,
+        "independentError": true,
+        "centralError": true,
+        "matchingBound": true
+      },
+      "coarseAccepted": false,
+      "coarseAttempted": true
+    }
+  ],
+  "corrections": {
+    "changes": [
+      "Run the unchanged deterministic leaf geometry test in its own Node process so its frozen clock cannot populate kernel choices for subsequent real-deadline fits. Share fixture preparation with those fresh-fit tests.",
+      "Require an actual coarse routing attempt and all existing final image, branch, matching, geometry and paper outcomes. Do not require the preliminary timed MILP itself to succeed when the final checked pair is good."
+    ],
+    "tests": 8,
+    "passed": 8,
+    "checks": [
+      {
+        "stage": "lint",
+        "exitCode": 0,
+        "seconds": 1.835897541
+      },
+      {
+        "stage": "focused",
+        "exitCode": 0,
+        "seconds": 44.863348083000005
+      }
+    ],
+    "scope": "Test isolation and assertion semantics only; production runtime remains c484669. A comment was clarified after the focused run."
+  },
+  "limits": [
+    "The full QA run failed. Native corpus and browser/export stages did not start.",
+    "These findings explain two test problems, not all fifteen failures. The remaining failures need further diagnosis.",
+    "A faster microbenchmark does not establish improved or equally robust full reconstruction.",
+    "No physical cutting or assembly was tested."
+  ],
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/paper-calibration-failures-v1/failed-release.json",
+      "sha256": "6ed8ca21d21aee78880615f6a0822110aa9dc19aa3665b447d51115010558565"
+    },
+    {
+      "path": "tmp/heart-learning/paper-calibration-failures-v1/checks.json",
+      "sha256": "fe2f518309b33554c2ab066f59904d7bc935566a803a1d161712e49222cc5183"
+    },
+    {
+      "path": "tmp/heart-learning/paper-calibration-failures-v1/test-source.json",
+      "sha256": "81335e239191eb7ce8fd3102d6ae3b773d60e5707641d6b5fbb10bc6ee7dc4e9"
+    },
+    {
+      "path": "tmp/heart-learning/paper-calibration-failures-v1/source.json",
+      "sha256": "de571ce21196991af898f2545cd853893f2bffcc6945c67b6d0b8d46ab5bcf1a"
+    },
+    {
+      "path": "tmp/heart-learning/paper-calibration-failures-v1/state.json",
+      "sha256": "decafd8c80f4aeeab0c4aefbc18149770254596c52a32bffa19c4e0fe8b38cdc"
+    },
+    {
+      "path": "tmp/heart-learning/paper-calibration-failures-v1/hook.mjs",
+      "sha256": "08e9fb03df7c2960dc7bf59c462b98fb2d35e3b2aba0cae32843428d4e11e9c2"
+    },
+    {
+      "path": "tmp/heart-learning/paper-calibration-failures-v1/run.py",
+      "sha256": "1b57a7ff0711814cf30585db4e02af6cb21e40876b6cf1a0af59c8baca2f7ffd"
+    },
+    {
+      "path": "tmp/heart-learning/paper-calibration-failures-v1/tree-independent-checks.json",
+      "sha256": "4de18164d9aebcdb7ebde49d588391f84a10477d2e7ed16c6b4bdc855ce57211"
+    },
+    {
+      "path": "tmp/heart-learning/paper-calibration-failures-v1/inspect-tree.mjs",
+      "sha256": "26f417d1955a6aaae9df051253dde936367e9ca7be4ba68babb69c6603db2f6f"
+    },
+    {
+      "path": "tmp/heart-learning/paper-calibration-failures-v1/corrections/focused.log",
+      "sha256": "8d0417d07e8b7006a5f14a54f7aae0bfc9c2b27daffe45cd7a5f00c70d2e9d5f"
+    },
+    {
+      "path": "tmp/heart-learning/paper-calibration-failures-v1/corrections/lint.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "tmp/heart-learning/paper-calibration-failures-v1/corrections/source.json",
+      "sha256": "6ae16614bffea4dda561a3d60789195a9c715cea1d17349929195d2251ac5967"
+    }
+  ]
+}

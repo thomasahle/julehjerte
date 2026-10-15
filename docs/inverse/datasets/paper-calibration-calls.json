@@ -3,7 +3,7 @@
   "baseCommit": "da3cb2d",
   "scope": "Reduce repeated startup kernel measurements in paper validation; no changes to image objectives, geometry, paper tolerances, deadlines or acceptance thresholds.",
   "policy": "Compare JavaScript and WebAssembly outputs on each of the first two actual requests in a size bucket, in opposite orders. Return the current JavaScript result during calibration. Enable WebAssembly only after both outputs match and both paired timings show a greater than 10% gain. Retain timings only. Other measured-kernel clients keep their previous default policy.",
-  "integration": "Enabled locally through paperBackend. Prototype opted in at its two materialAudit call sites; the production wrapper supplies the same option. Generic default remains false. 21 prototype tests and 33 focused integrated tests pass; full repository, fresh solver corpus and browser/export QA remain pending.",
+  "integration": "Enabled locally through paperBackend at c484669. Prototype opted in at its two materialAudit call sites; the production wrapper supplies the same option. Generic default remains false. Focused integrated tests passed, but full inverse QA failed (880/895); native corpus and browser stages did not start. Follow-up isolates a frozen-clock test contamination and an overly restrictive intermediate-routing assertion; eight corrected tests pass. Remaining failures are unresolved. See paper-calibration-release-failures.json.",
   "auditComparisons": {
     "audits": {
       "cases": 7,
@@ -354,5 +354,6 @@
       "path": "tmp/heart-learning/paper-calibration-calls-v1/repair-3-before.json",
       "sha256": "d1f2aad7e4b9c30f023a69d5ba5d16015cdcfeb0625d3286ddcbc066498586f7"
     }
-  ]
+  ],
+  "releaseFailureRecord": "docs/inverse/datasets/paper-calibration-release-failures.json"
 }

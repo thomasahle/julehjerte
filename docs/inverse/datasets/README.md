@@ -155,9 +155,17 @@ median first-audit saving ranges from 21% to 43%; the first audit plus four
 follow-ups saves 10% to 20%. Deferred work makes some follow-up batches slower,
 so these are not uniform per-call gains. Eight cold leaf-repair runs are faster
 with the new policy but all still fail the 700-resolution paper check. The
-change is integrated locally after 33 focused tests; full repository, fresh
-corpus and browser/export QA remain pending. This does not establish additional
-successful reconstructions or fix the repair's finer-verification limitation.
+change is integrated locally after 33 focused tests. Its [full QA run failed](paper-calibration-release-failures.json):
+880/895 inverse tests pass, while type checking, lint, application tests and build
+pass. Corpus and browser stages did not start. Paired replays expose a frozen-clock
+geometry test contaminating later backend selection, plus a tree test that rejects
+a valid final export solely because its preliminary MILP timed out. The actual
+failed tree export independently passes all final checks at 1.1375% mask error
+and 0.375% central-region error. The geometry test now runs in its own process;
+the tree test retains every final quality check while requiring the routing attempt.
+All eight affected tests pass. Other failures remain unresolved. This does not
+establish additional successful reconstructions or fix the repair's finer-verification
+limitation.
 
 The latest validated solver revision is `c000d30`. Its
 [release record](return-projection-speed.json) passes **22/22 regular Hunodan
