@@ -552,13 +552,15 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
         const paper=geometry.passed?materialAudit(solution,alternate.refinementCfg):null;
         const originalColours=retainsGridColours(clear),alternativeColours=retainsGridColours(alternate.clear);
         const score=r=>r.error+.005*(r.model.counts[0]+r.model.counts[1]);
-        const competitive=score(alternate.clear)<score(clear)&&(!originalColours||alternativeColours);
+        const lowerScore=score(alternate.clear)<score(clear),recoverFeatures=lowerScore&&geometry.passed&&!alternativeColours;
+        const competitive=lowerScore&&(!originalColours||alternativeColours);
         let preferred=competitive&&geometry.passed&&(!cfg.requireMaterialCore||paper?.passed),repair=null;
         // A better coarse routing can start with a narrow neck that the
-        // common curve fitter repairs quickly. Keep the ordinary incumbent
-        // and all finalists; only a fully checked repair can move ahead.
-        if(competitive&&!geometry.passed&&clear.error>cfg.maxImageError&&!candidates.some(c=>c.imagePassed)){
-          repair=stage('directRefining',()=>repairClearanceInitializer(alternate,input,alternate.refinementCfg,{geometry,deadline:deadline-1700,onProgress:(r,s)=>onProgress({stage:'directRefining',detail:'clearance-initializer',counts:alternate.clear.model.counts,...r},s)}));
+        // common curve fitter repairs quickly. A geometry-valid start can
+        // instead need this bounded refinement to recover missing colours.
+        // Keep every finalist; only a fully checked repair can move ahead.
+        if((competitive&&!geometry.passed||recoverFeatures)&&clear.error>cfg.maxImageError&&!candidates.some(c=>c.imagePassed)){
+          repair=stage('directRefining',()=>repairClearanceInitializer(alternate,input,alternate.refinementCfg,{geometry,recoverFeatures,deadline:deadline-1700,onProgress:(r,s)=>onProgress({stage:'directRefining',detail:'clearance-initializer',counts:alternate.clear.model.counts,...r},s)}));
           if(repair.candidate){
             addCandidate(repair.candidate);
             if(repair.candidate.imagePassed){

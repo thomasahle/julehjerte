@@ -18,9 +18,12 @@ test('a crossing is not admitted as a clearance-only repair',()=>{
   const source=input(),prepared=initializer(source),line=(a,b)=>[Cubic.line(a,b).p];
   prepared.graph=new CurveGraph([[line([30,0],[70,100]),line([70,0],[30,100])],[line([0,50],[100,50])]],cfg.width);
   prepared.clear.model.counts=[2,1];
-  const before=prepared.graph.points.slice(),result=repairClearanceInitializer(prepared,source,cfg);
-  assert.equal(result.candidate,null);assert.equal(result.report.reason,'geometry_not_repairable');
-  assert.equal(result.report.initialGeometry.passed,false);
+  const before=prepared.graph.points.slice();
+  for(const recoverFeatures of [false,true]){
+    const result=repairClearanceInitializer(prepared,source,cfg,{recoverFeatures});
+    assert.equal(result.candidate,null);assert.equal(result.report.reason,'geometry_not_repairable');
+    assert.equal(result.report.initialGeometry.passed,false);
+  }
   assert.deepEqual(prepared.graph.points,before);assert.deepEqual(source.sourceImage.mask,mask);
 });
 
