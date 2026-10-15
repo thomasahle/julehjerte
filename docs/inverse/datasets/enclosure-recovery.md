@@ -228,3 +228,13 @@ intersection is at `(755.89,874.98)`. Local RGB adjustment moves it to
 uses that same intersection and those same lower lines. More lobe optimization
 therefore cannot correct the underlying edge choice. This is a read-only
 diagnosis from saved evidence, not a repaired crop or a new benchmark pass.
+
+Two subsequent [RGB-gradient proposal experiments](gradient-edge-crops.json)
+replace the threshold-mask line proposals while keeping the existing shape
+fitter. One weights gradients by the inside/outside paper-probability change;
+the other uses RGB gradients alone. Both use the same eight rough ROIs, fixed
+candidate budgets and lobe-based selection, without consulting template error
+or review points. Neither produces a lobe-qualified jigsaw candidate, and both
+also fail qualification on the flower and dense-checker controls. Their bauble
+candidate loses three of the existing 26 artwork observations. These prototypes
+are rejected; no crop or acceptance rule changes.
