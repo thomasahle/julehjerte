@@ -72,9 +72,18 @@ routing, repair and engine finalization take 11.45 seconds; independent mask
 disagreement is 2.4525%. A second fresh replay with ordinary Bézier refinement
 reduces disagreement to 1.76125% while retaining all four enclosures, including
 at the finer independent render scale. It passes editable-SVG checks and takes
-14.91 seconds before independent audits. This remains an offline, fixed-mask experiment. The
-automatic fitter does not yet schedule the corner proposal or broader repair;
-neither the 25/31 photo result nor website behavior changes.
+14.91 seconds before independent audits. That isolated fixed-mask experiment
+preceded automatic scheduling and did not change the 25/31 photo result.
+
+The [automatic enclosure recovery](enclosure-recovery.md) now schedules the
+same routing, repair and refinement for small supported corner disturbances.
+The real Paint/worker/Draw workflow keeps all four hearts enclosed, with 1.73%
+editable-mask error and 16.74 seconds click to ready. All 883 inverse tests,
+857 application tests and six browser workflows pass. The 22 Hunodan designs
+retain exactly their validated errors and finish within 7.94 seconds; all 47
+accepted corpus exports pass editable checks. Photographic acceptance remains
+25/31, but five errors increase slightly, so the strict release comparison
+still fails. The linked record retains these regressions and a timing probe.
 
 The latest validated solver revision is `c000d30`. Its
 [release record](return-projection-speed.json) passes **22/22 regular Hunodan

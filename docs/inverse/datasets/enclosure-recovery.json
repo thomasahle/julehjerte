@@ -1,0 +1,425 @@
+{
+  "schema": "woven-heart-enclosure-recovery-1",
+  "status": "verified_with_regressions",
+  "runtimeCommit": "8ca7c422ef90ef7708f78b8365aafd0db426f036",
+  "scope": "Fresh automatic reconstruction from a frozen estimated mask, broader native corpora and actual browser exports. No neural deployment, physical assembly or perfect-artwork claim.",
+  "sourceFilesVerified": 732,
+  "qa": [
+    {
+      "stage": "core-lint",
+      "command": [
+        "npx",
+        "eslint",
+        "--no-ignore",
+        "static/inverse/core/direct/corner-topology.js",
+        "static/inverse/core/feature-enclosures.js",
+        "static/inverse/core/feature-shapes.js",
+        "static/inverse/core/direct/prefer-matching.js",
+        "static/inverse/core/direct/fit.js",
+        "scripts/inverse/corner-topology.test.mjs",
+        "scripts/inverse/feature-enclosures.test.mjs",
+        "scripts/inverse/diagnostics/corner-clearance-repair.mjs",
+        "scripts/inverse/paint-browser-test.mjs"
+      ],
+      "exitCode": 0,
+      "seconds": 1.849435708
+    },
+    {
+      "stage": "check",
+      "command": [
+        "npm",
+        "run",
+        "check"
+      ],
+      "exitCode": 0,
+      "seconds": 9.1468585
+    },
+    {
+      "stage": "lint",
+      "command": [
+        "npm",
+        "run",
+        "lint"
+      ],
+      "exitCode": 0,
+      "seconds": 6.349096542
+    },
+    {
+      "stage": "app",
+      "command": [
+        "npx",
+        "vitest",
+        "run",
+        "--maxWorkers=2"
+      ],
+      "exitCode": 0,
+      "seconds": 23.069017042000002
+    },
+    {
+      "stage": "build",
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "exitCode": 0,
+      "seconds": 14.260073165999998
+    },
+    {
+      "stage": "inverse",
+      "command": [
+        "npm",
+        "run",
+        "test:inverse"
+      ],
+      "exitCode": 0,
+      "seconds": 891.206964334
+    }
+  ],
+  "nativeGate": {
+    "hunodanPassed": 22,
+    "hunodanTotal": 22,
+    "hunodanErrorRegressions": [],
+    "photoPassed": 25,
+    "photoPassRegressions": [],
+    "photoErrorRegressions": [
+      {
+        "id": "warped-checker",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.01755,
+        "error": 0.01761875,
+        "errorDelta": 6.874999999999937e-05
+      },
+      {
+        "id": "round-checker",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.0121375,
+        "error": 0.01214375,
+        "errorDelta": 6.249999999999312e-06
+      },
+      {
+        "id": "fine-checker",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.0216875,
+        "error": 0.02245,
+        "errorDelta": 0.0007625000000000028
+      },
+      {
+        "id": "crown",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.02411875,
+        "error": 0.02413125,
+        "errorDelta": 1.2499999999998623e-05
+      },
+      {
+        "id": "flettede-viking",
+        "previousStatus": "validated",
+        "status": "validated",
+        "previousPassed": true,
+        "passed": true,
+        "previousError": 0.02024375,
+        "error": 0.02056875,
+        "errorDelta": 0.0003249999999999989
+      }
+    ],
+    "editablePassed": 47,
+    "editableTotal": 47,
+    "passed": false
+  },
+  "maximumHunodanSeconds": 7.937522291999994,
+  "automatic": {
+    "fitAndFinishSeconds": 16.342827874999998,
+    "independentImageError": 0.017475,
+    "enginePassed": true,
+    "editablePassed": true,
+    "independentFiner": {
+      "resolution": 800,
+      "reference": "Each original mask cell repeated 2 x 2; no extra photo information.",
+      "imageError": 0.0186640625,
+      "components": [
+        {
+          "centerMm": [
+            14.105950736648248,
+            14.743669429097606
+          ],
+          "sourceAreaMm2": 271.5,
+          "intersectionPixels": 17197,
+          "retention": 0.9896984346224678,
+          "predictedComponentAreaMm2": 273.8125,
+          "touchesBorder": false,
+          "componentIoU": 0.9714172739083771
+        },
+        {
+          "centerMm": [
+            38.96996221662469,
+            40.24773299748111
+          ],
+          "sourceAreaMm2": 248.125,
+          "intersectionPixels": 15117,
+          "retention": 0.9519521410579345,
+          "predictedComponentAreaMm2": 237.921875,
+          "touchesBorder": false,
+          "componentIoU": 0.9454033771106942
+        },
+        {
+          "centerMm": [
+            37.09396305256213,
+            63.97888717835936
+          ],
+          "sourceAreaMm2": 568.375,
+          "intersectionPixels": 35544,
+          "retention": 0.9771277765559709,
+          "predictedComponentAreaMm2": 562.703125,
+          "touchesBorder": false,
+          "componentIoU": 0.9646899172207898
+        },
+        {
+          "centerMm": [
+            62.52816560685651,
+            65.49623306607685
+          ],
+          "sourceAreaMm2": 226.0625,
+          "intersectionPixels": 14296,
+          "retention": 0.9881116947746752,
+          "predictedComponentAreaMm2": 225.484375,
+          "touchesBorder": false,
+          "componentIoU": 0.9789769225501609
+        },
+        {
+          "centerMm": [
+            85.27692091979809,
+            89.84885025238364
+          ],
+          "sourceAreaMm2": 222.875,
+          "intersectionPixels": 13856,
+          "retention": 0.971396522714526,
+          "predictedComponentAreaMm2": 218.703125,
+          "touchesBorder": false,
+          "componentIoU": 0.961888233252343
+        }
+      ]
+    }
+  },
+  "automaticEditableError": 0.0173,
+  "browser": [
+    {
+      "name": "stacked-hearts-mask",
+      "passed": true,
+      "seconds": 16.7445,
+      "editableError": 0.0173
+    },
+    {
+      "name": "flower-native-mask",
+      "passed": true,
+      "seconds": 7.737399999856949,
+      "editableError": 0.00509375
+    },
+    {
+      "name": "hard-flettede-stonehenge",
+      "passed": true,
+      "seconds": 9.613,
+      "editableError": 0.0188
+    },
+    {
+      "name": "hard-flettede-puppy",
+      "passed": true,
+      "seconds": 15.60560000014305,
+      "editableError": 0.0106
+    },
+    {
+      "name": "star",
+      "passed": true,
+      "seconds": 2.0759000000953676,
+      "editableError": 0.0016
+    },
+    {
+      "name": "top-hat-preferred",
+      "passed": true,
+      "seconds": 7.744299999952316,
+      "editableError": 0.004118835034013606
+    }
+  ],
+  "entryLoading": {
+    "strictPassed": false,
+    "strictError": "Initial script sizes changed for /en/editor/\n+ actual - expected\n... Skipped lines\n\n  [\n    39,\n    65,\n    71,\n    82,\n...\n    24834,\n+   28622,\n-   28618,\n    53051,\n    54957,\n    58361,\n    79166,\n    142401\n",
+    "freshPassed": true,
+    "rawBundleIncreaseBytes": 4,
+    "previousIdentifier": "__sveltekit_pcs580",
+    "currentIdentifier": "__sveltekit_19yb0vv",
+    "occurrences": 4,
+    "identifierNormalizedSizeMultisetMatches": true,
+    "initialEngineRequests": [
+      0,
+      0
+    ]
+  },
+  "fineCheckerProbe": [
+    {
+      "label": "before-1",
+      "seconds": 9.615593667,
+      "error": 0.02281875,
+      "cutCoordinateSha256": "f852d8606ec709b755b32a3b37b24ee2aeac9204be574b0fc5f232723fc38e9b",
+      "lastPolishingStep": 44
+    },
+    {
+      "label": "after-1",
+      "seconds": 9.77826425,
+      "error": 0.02281875,
+      "cutCoordinateSha256": "f852d8606ec709b755b32a3b37b24ee2aeac9204be574b0fc5f232723fc38e9b",
+      "lastPolishingStep": 44
+    },
+    {
+      "label": "after-2",
+      "seconds": 9.723151124999998,
+      "error": 0.02245,
+      "cutCoordinateSha256": "db6a5cfc60210c5bcd37810b04d8f56820bbf0c43e1afb8a58f2638c65ff81d1",
+      "lastPolishingStep": 44
+    },
+    {
+      "label": "before-2",
+      "seconds": 9.624977,
+      "error": 0.0216875,
+      "cutCoordinateSha256": "5ed202d2af0049be508434d1fc4c30b2f10494a362f07f95baccdfb87e6cb8e7",
+      "lastPolishingStep": 59
+    }
+  ],
+  "artifacts": [
+    {
+      "file": "tmp/heart-learning/corner-integration-qa-v2/checks.json",
+      "bytes": 1373,
+      "sha256": "4f887c930836a1891aa22a4add94f59b6e7c240fdc253fff4bf2ab38d7294ae4"
+    },
+    {
+      "file": "tmp/heart-learning/corner-integration-qa-v2/source.json",
+      "bytes": 83716,
+      "sha256": "729bd95972d9babd033117bfd618b86b773b2c12b8b54ac0fc7ec664300ab519"
+    },
+    {
+      "file": "tmp/heart-learning/corner-integration-qa-v2/running.json",
+      "bytes": 51,
+      "sha256": "674b3894232ea43fb7ff12a6b82c6fff4337a6e85cd5b1a156e86e98de2a3089"
+    },
+    {
+      "file": "tmp/heart-learning/corner-integration-release-v1/native-gates.json",
+      "bytes": 1538,
+      "sha256": "57342143440afc436e9b6d969019fd4c7cf59a13fd0066f18f0160858ec02338"
+    },
+    {
+      "file": "tmp/heart-learning/corner-integration-release-v1/hunodan-comparison.json",
+      "bytes": 5539,
+      "sha256": "9be4fd685cb5f6a5187068734931b916558dacbd4587b781594606e92d4095e7"
+    },
+    {
+      "file": "tmp/heart-learning/corner-integration-release-v1/photo-comparison.json",
+      "bytes": 10569,
+      "sha256": "d80d09417037fe690820f5ed5f1db035691cddd9ddbee9ff90b1b2c2650a4ee9"
+    },
+    {
+      "file": "tmp/heart-learning/corner-integration-release-v1/browser/results.json",
+      "bytes": 143961,
+      "sha256": "c6f25487a8ef2a15adfcb314e4f3a854687166c2b56ef5c174de7db93a910b8c"
+    },
+    {
+      "file": "tmp/heart-learning/corner-integration-release-v1/entry-loading/results.json",
+      "bytes": 19922,
+      "sha256": "b2a24b8a77dd7392d97a51fcf68b156c7a4a99d4264c1c100580a34fc600cf25"
+    },
+    {
+      "file": "tmp/heart-learning/corner-integration-release-v1/entry-loading-fresh/results.json",
+      "bytes": 27305,
+      "sha256": "ed5df6b0c5c08cb3161134312c32c70cfff0d8a9ae3c4f2bcb53ba9982e16065"
+    },
+    {
+      "file": "tmp/heart-learning/corner-integration-release-v1/corner-automatic/report.json",
+      "bytes": 169811,
+      "sha256": "22523979b70d64e3214ed2daafe327d60a585352db655a39b1c10ca74629b931"
+    },
+    {
+      "file": "tmp/heart-learning/corner-integration-release-v1/corner-projection/report.json",
+      "bytes": 84929,
+      "sha256": "741db06ce7e64e5c1a6131139120db24363eb96a937c9c0926daf46c2239d917"
+    },
+    {
+      "file": "tmp/heart-learning/corner-integration-qa-v1/long-budget.json",
+      "bytes": 242660,
+      "sha256": "76704027acedc9a8383e95129dab62bd635b51f476ab328b5331134ad5ad85ab"
+    },
+    {
+      "file": "tmp/heart-learning/corner-integration-qa-v2/long-budget.json",
+      "bytes": 126432,
+      "sha256": "78524e7637aa6002bd12e307890527329f733fd5e00e93857a255d4f633e57e7"
+    },
+    {
+      "file": "tmp/heart-learning/corner-error-probe-v1/long-budget.json",
+      "bytes": 433742,
+      "sha256": "206b58618f6cb7fcce625c2dd84f54d7ee92820241afb68893a8079e5c9f232d"
+    },
+    {
+      "file": "tmp/heart-learning/corner-integration-release-v1/corner-automatic/cut_geometry.json",
+      "bytes": 69405,
+      "sha256": "d77f61a6824f956be8389ab43f9b472675994aebc16f5436d792a3ed4db891e3"
+    },
+    {
+      "file": "tmp/heart-learning/corner-integration-release-v1/corner-automatic/editable.svg",
+      "bytes": 17899,
+      "sha256": "6d933e699310b259556d74cff1059223a1f02c8ff8e2d7b4208a14b87e52cda5"
+    },
+    {
+      "file": "tmp/heart-learning/corner-integration-release-v1/corner-automatic/woven.png",
+      "bytes": 11332,
+      "sha256": "895472eabbd2aa5450f8f8c8c93fc6c9c9ea5d0fb51e9df79efa2fcfeb2d1ea6"
+    },
+    {
+      "file": "tmp/heart-learning/corner-integration-release-v1/corner-projection/cut_geometry.json",
+      "bytes": 67392,
+      "sha256": "33e343d8591bc54937a087806683843c5e56b40a19a66415cec505a4e94b9b2d"
+    },
+    {
+      "file": "tmp/heart-learning/corner-integration-release-v1/corner-projection/editable.svg",
+      "bytes": 17165,
+      "sha256": "a8a535a3c5ec5b98a062d984e024a8e22c3b3aa30d2c973d82e7c6ee31bae0bb"
+    },
+    {
+      "file": "tmp/heart-learning/corner-integration-release-v1/corner-projection/woven.png",
+      "bytes": 10814,
+      "sha256": "e153b6196d46be46f75c05ae63f303580bcf40bb7e479c17df5fd5f209bd0b43"
+    },
+    {
+      "file": "tmp/heart-learning/corner-integration-release-v1/browser/chromium-stacked-hearts-mask/editable.svg",
+      "bytes": 17883,
+      "sha256": "0fd4899b4a47a2ecfbbd41c4a57417db211f727bb66d2b207292822f6a2cd6f8"
+    },
+    {
+      "file": "tmp/heart-learning/corner-integration-release-v1/browser/chromium-stacked-hearts-mask/result.png",
+      "bytes": 174997,
+      "sha256": "3e40cd1640bffce3ab994b42a7bc808d498c9c409013bc5759e816d125068395"
+    },
+    {
+      "file": "tmp/heart-learning/corner-integration-release-v1/browser/chromium-stacked-hearts-mask/cut_geometry.json",
+      "bytes": 69405,
+      "sha256": "70877c73eb69322cc785c8a0c28629f585d57770e972592673f1df608e428bcb"
+    },
+    {
+      "file": "tmp/heart-learning/corner-integration-release-v1/browser/chromium-stacked-hearts-mask/engine-report.json",
+      "bytes": 117255,
+      "sha256": "294d9953fb79cd4b33eb57be62041cb81870b250cc785702b51c5d98b82b90ba"
+    }
+  ],
+  "fineCheckerReferenceRuntime": {
+    "revision": "c76f7115cf246764a4c4a5e60f41868d6b027097",
+    "trackedFilesVerifiedAgainstGitObjects": 105,
+    "path": "tmp/heart-learning/corner-integration-qa-v1/baseline/inverse"
+  }
+}
