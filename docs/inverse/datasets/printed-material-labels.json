@@ -2,17 +2,17 @@
   "schema": "woven-heart-material-proposal-review-1",
   "status": "source-and-outline-reviewed; compiled-label-review-pending",
   "scope": "Two additional partial material proposals on existing body-labelled photographs. No admitted material-label count increase, training, split assignment, crop change or cutting-path ground truth.",
-  "root": "tmp/heart-learning/printed-material-labels-v1",
+  "root": "tmp/heart-learning/printed-material-labels-v2",
   "sourceHashes": {
-    "tmp/heart-learning/printed-material-labels-v1/draft.json": "543618f3ba85f758199226aec82aa22700d8678c001ceec71b61f61515a08aae",
-    "tmp/heart-learning/printed-material-labels-v1/reviewed-proposal.json": "44778c1603bb2eb91fff13819a05cb3bdc0e7ba2d355c1223b969acfc3728e07",
-    "tmp/heart-learning/printed-material-labels-v1/review-notes.json": "4e89466717c6069c4106d9278b1dbcd94d4cf42f7fdb79b6e5283f3959b1dd26",
+    "tmp/heart-learning/printed-material-labels-v2/reviewed-proposal.json": "1b510fca333f815232b4b3cc2bce92725034d7adba0a7d9abed69346e56721db",
+    "tmp/heart-learning/printed-material-labels-v2/review-notes.json": "4e89466717c6069c4106d9278b1dbcd94d4cf42f7fdb79b6e5283f3959b1dd26",
+    "tmp/heart-learning/printed-material-labels-v2/correction.json": "1ab0d9fac567607758b0be4df1425d645bcbbea0db2c19e7233d0be86bd43323",
     "scripts/inverse/datasets/real-annotations.json": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5",
     "scripts/inverse/datasets/real_materials.py": "7f6052d404e66b971bc76821e4de75d7fee38972cdd2af30fa076037faaf878a",
     "scripts/inverse/datasets/real_annotations.py": "b505fb723dc45b644cb95a058ddf45317f6afb700c61fb88cb3d93571fb9e33c",
     "docs/inverse/datasets/real-manifest.json": "149697fc7cdd535736dd8727bba7847bca10d74823a28bdfaf77c95c44a6ffb3",
-    "tmp/heart-learning/printed-material-labels-v1/real-b87b0b19f12724f3-body-1-outlines.png": "2b0c2d8bc660727e1549d4da1db8fe62ea624f6f12b535b75d87797d2e940b43",
-    "tmp/heart-learning/printed-material-labels-v1/real-995899fe049540ed-body-1-outlines.png": "48cbcea7b4c57db7fd41f6ef78d3341c721671b898de27fff2e466f896edaa53"
+    "tmp/heart-learning/printed-material-labels-v2/real-b87b0b19f12724f3-body-1-outlines.png": "2b0c2d8bc660727e1549d4da1db8fe62ea624f6f12b535b75d87797d2e940b43",
+    "tmp/heart-learning/printed-material-labels-v2/real-995899fe049540ed-body-1-outlines.png": "7400dcbdfe3440115cda3ce70844e491340511d998499389a731b61ce810d5c2"
   },
   "proposals": {
     "schema": "woven-heart-real-material-annotations-1",
@@ -95,8 +95,8 @@
               ],
               [
                 [
-                  811,
-                  570
+                  849,
+                  535
                 ],
                 [
                   975,
@@ -278,7 +278,7 @@
         "review": {
           "method": "assistant-visual-interior-polygons",
           "status": "initial-reviewed",
-          "note": "The original photograph and polygon-outline review were inspected. Floral ink of every colour belongs to one material; all horizontal printed stripes belong to the other. Conservative visible interiors avoid joins and edges. Physical paper/fabric composition is not asserted. Compiled overlays still require review before promotion."
+          "note": "The original photograph and polygon-outline review were inspected. Floral ink of every colour belongs to one material; all horizontal printed stripes belong to the other. Conservative visible interiors avoid joins and edges. Physical paper/fabric composition is not asserted. Compiled overlays still require review before promotion. Follow-up review moved the centre floral polygon left vertex from [811,570] (inside an adjacent striped cell) to [849,535], safely inside the floral material."
         }
       },
       {
@@ -559,12 +559,37 @@
     }
   ],
   "queuedVerification": {
-    "runner": "tmp/heart-learning/printed-material-labels-v1/after-browser.py",
+    "runner": "tmp/heart-learning/printed-material-labels-v2/after-browser.py",
     "sha256": "620341194f314070782102e59804edfae97b6a22984b0f436f11720dc6f68506",
     "resolutions": [
       256,
       768
     ],
     "policy": "Runs after the current serial solver/browser checks. Compiled overlays must be inspected before these proposals enter the material annotation inventory."
+  },
+  "previousReview": {
+    "root": "tmp/heart-learning/printed-material-labels-v1",
+    "proposalSha256": "44778c1603bb2eb91fff13819a05cb3bdc0e7ba2d355c1223b969acfc3728e07",
+    "commit": "54bcf32",
+    "compilationRan": false,
+    "reason": "Stopped the waiting compiler after source-image inspection found one polygon vertex entering the adjacent material."
+  },
+  "correction": {
+    "previousRoot": "tmp/heart-learning/printed-material-labels-v1",
+    "previousProposalSha256": "44778c1603bb2eb91fff13819a05cb3bdc0e7ba2d355c1223b969acfc3728e07",
+    "instance": "real-995899fe049540ed-body-1",
+    "paper": "paperA",
+    "polygon": 1,
+    "vertex": 0,
+    "before": [
+      811,
+      570
+    ],
+    "after": [
+      849,
+      535
+    ],
+    "reason": "The old left vertex lay below the floral diamond edge in the striped central cell. Source-image review exposed this semantic error; moving it inward leaves the join unlabelled.",
+    "previousCompilationRan": false
   }
 }

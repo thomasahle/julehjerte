@@ -24,6 +24,13 @@ not establish observed material ground truth.
 
 The [review record](printed-material-labels.json) preserves proposed source-pixel
 coordinates, source/group hashes, outline-image hashes and this abstention.
+Closer source-image inspection found one floral polygon vertex at `(811, 570)`
+extending into the adjacent striped cell. It was moved inward to `(849, 535)`;
+the corrected outline has been visually checked. The original proposal and
+outlines remain preserved, and its waiting compiler was stopped before any
+labels were generated. The correction is recorded explicitly rather than
+silently replacing the earlier review.
+
 The proposals are outside the admitted training sidecars. Compilation at 256 and
 768 pixels is queued after the current solver/browser checks. It will recheck
 source identity, existing body supervision, material conflicts and generated
