@@ -1,0 +1,54 @@
+{
+  "revision": "7632edc",
+  "state": {
+    "status": "complete",
+    "sourceFilesVerified": 817,
+    "inverseTests": 911,
+    "runtimeChange": false,
+    "nativeAndBrowser": "Last release unchanged; diagnostic additions only."
+  },
+  "checks": [
+    {
+      "stage": "check",
+      "exitCode": 0,
+      "seconds": 10.686717042
+    },
+    {
+      "stage": "lint",
+      "exitCode": 0,
+      "seconds": 7.126228082999999
+    },
+    {
+      "stage": "app",
+      "exitCode": 0,
+      "seconds": 25.356107666
+    },
+    {
+      "stage": "build",
+      "exitCode": 0,
+      "seconds": 16.584002500000004
+    },
+    {
+      "stage": "inverse",
+      "exitCode": 0,
+      "seconds": 1032.507334834
+    }
+  ],
+  "applicationTests": {
+    "passed": 857,
+    "skipped": 1,
+    "filesPassed": 58
+  },
+  "artifacts": {
+    "tmp/heart-learning/paper-offset-qa-v1/source.json": "dd01872e9756f63372f71fa2fa776dbaf8f693d9548e59e78cf5a05e1f2e9ca0",
+    "tmp/heart-learning/paper-offset-qa-v1/state.json": "b8b9da5c6736fd7030c30feec2df829094e5532b3357821f55a0ebb583debdcb",
+    "tmp/heart-learning/paper-offset-qa-v1/checks.json": "a39138fc7eafef508f6e31f024bf372162d514e5290aa59f352c009bdde0b8f4",
+    "tmp/heart-learning/paper-offset-qa-v1/check.log": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092",
+    "tmp/heart-learning/paper-offset-qa-v1/lint.log": "f1a4b272f2f106d9cc645be00a12d8ac4dea14308d11091a0ea8c493d6036f90",
+    "tmp/heart-learning/paper-offset-qa-v1/app.log": "a840aa4d9fc7f3755981441b4865b92a6c5252f545aa456502dd4293ff3adb88",
+    "tmp/heart-learning/paper-offset-qa-v1/build.log": "c3636f731985f8b9a9644fb102f50baea3bc7e7adf348eac96e86dd2cbf5cd5b",
+    "tmp/heart-learning/paper-offset-qa-v1/inverse.log": "b596e983ad9a5e19fea3d7ea0d181a3caafaa432b5a5ed00c2b0ba20b7be8f05"
+  },
+  "runtimeChanges": false,
+  "scope": "Full repository QA after independent offset diagnostics and regression fixtures. Existing application runtime unchanged."
+}

@@ -313,6 +313,11 @@ and four passing tests. It is offline; the production lattice, acceptance
 settings and fitting remain unchanged. Nominal fine-offset checks take a median
 67 ms per pair in this run, excluding fitting.
 
+The [post-diagnostic repository QA](paper-offset-qa.json) passes all 911 inverse
+tests, 857 application tests (one existing skip), type checking, lint and build.
+All 817 pinned files remained unchanged throughout the run. This verifies the
+diagnostic additions; it does not integrate the geometric gate or repair.
+
 A [fold-aware repair experiment](folded-cut-repair-probe.json) then runs 22
 fixed-work continuations. Adding separation from the mirrored cut repairs the
 Hunodan fold defect and both vertical-crop failures; the independent GEOS
