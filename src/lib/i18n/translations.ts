@@ -559,6 +559,8 @@ export const translations = {
       'Klip fra folden. De to papirlag bliver til løkker.'
     ],
     noPrinterScreenHelpTitle: 'Flytter billedet sig, når du tegner?',
+    noPrinterScreenHelpTrace: 'Nemmest: åbn hjertet på juleflet.dk, og tryk på »Tegn af fra skærmen«. Siden låser skabelonen, så den ikke flytter sig, mens du tegner.',
+    noPrinterScreenHelpTraceLink: 'Åbn det klassiske hjerte',
     noPrinterScreenHelpText: 'På iPad kan Forenklet adgang midlertidigt slå berøring fra. Indstil først PDF-visningen og størrelsen, og følg Apples vejledning for at starte og afslutte funktionen. Slå berøring til igen, når du skal flytte til en anden skabelon.',
     noPrinterScreenHelpLink: 'Apples vejledning til Forenklet adgang',
     noPrinterQuestionsTitle: 'Hvilket papir kan du tegne på?',
@@ -1182,6 +1184,8 @@ export const translations = {
       'Cut in from the fold. Both paper layers form loops.'
     ],
     noPrinterScreenHelpTitle: 'Does the image move as you trace?',
+    noPrinterScreenHelpTrace: 'Easiest: open the heart on juleflet.dk and tap “Trace from the screen”. The page locks the template so it does not move while you draw.',
+    noPrinterScreenHelpTraceLink: 'Open the classic heart',
     noPrinterScreenHelpText: 'On iPad, Guided Access can temporarily disable touch. Set the PDF view and size first, then follow Apple’s instructions to start and end the session. Enable touch again when you need to move to another template.',
     noPrinterScreenHelpLink: 'Apple’s guide to Guided Access',
     noPrinterQuestionsTitle: 'Which paper can you trace onto?',
