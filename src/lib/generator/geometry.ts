@@ -1351,7 +1351,8 @@ export function generateFourPortFigure(
 	size = 70,
 	scale = 0.7,
 	style: 'rays' | 'check' | 'plain' = 'rays',
-	route = fourPortMotif
+	route = fourPortMotif,
+	extraStrips = 0
 ) {
 	const artwork = rings.map((r) =>
 			r.map((p) =>
@@ -1367,7 +1368,8 @@ export function generateFourPortFigure(
 		edges,
 		artwork,
 		gates.map((g) => g.point),
-		gates.map((g) => g.angle + Math.PI)
+		gates.map((g) => g.angle + Math.PI),
+		gridClearance(3 + extraStrips)
 	);
 	return { geometry: compile(edges), edges, artwork };
 }

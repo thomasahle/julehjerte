@@ -48,6 +48,12 @@ function validateHandoffs(design: HeartDesign) {
 // These are expected successes, never a test that passes by accepting a refusal.
 // The larger offline corpus covers 2,028 text and 1,122 figure configurations.
 describe('generator robustness regressions', () => {
+	for (const [name, motif] of [['Gift', gift], ['Paw', paw]] as const)
+		it(`counts the sunburst's outer strips when routing ${name}`, () => {
+			const { design } = generate({ mode: 'figure', name, contours: motif.contours as Ring[], style: 'sunburst', colors });
+			expect(design.gridSize).toEqual({ x: 5, y: 5 });
+			validateHandoffs(design);
+		}, 20000);
 	for (const style of ['plain', 'rays', 'check'] as const)
 		it(`keeps the butterfly's touching wings in the oval-${style} frame`, () => {
 			const { design } = generate({ mode: 'figure', name: 'Butterfly', contours: phosphorButterfly.contours as Ring[], frame: 'oval', style, colors });

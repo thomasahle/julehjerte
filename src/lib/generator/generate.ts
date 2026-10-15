@@ -329,6 +329,19 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 				if (!(retryError instanceof ConstructionError) && !(retryError instanceof CutGeometryError)) throw retryError;
 			}
 		}
+		if (request.mode === 'figure' && request.style === 'sunburst') {
+			// The outer sunburst adds two strips to each sheet. Use the final
+			// five-strip clearance when rerouting the medallion, then check the
+			// entire heart as usual. Earlier valid layouts return unchanged.
+			try {
+				const size = request.frameSize ?? 70;
+				const construction = generateFourPortFigure(normalizeContours(request.contours ?? []),
+					'circle', size * .8, request.scale ?? .7, 'rays', fourPortMotif, 2);
+				return finishConstruction(request, sunburstBorder(construction, size), 'nested');
+			} catch (retryError) {
+				if (!(retryError instanceof ConstructionError) && !(retryError instanceof CutGeometryError)) throw retryError;
+			}
+		}
 		throw error;
 	}
 }
@@ -361,11 +374,11 @@ function generateUsingRecipes(request: GeneratorRequest,
 			// Keep the established layout (including the detached-accent fallback),
 			// then try slightly wider connections only when they improve its cuts.
 			const small = [...text.normalize('NFC').replace(/\s/g, '')].length <= 2;
-			for (const inset of small ? [.35, .25, .4] : [.35, .4]) {
+			for (const inset of small ? [.35, .25, .4, .46] : [.35, .4, .46]) {
 				if (inset === .25 && best) continue;
 				// This is a quality improvement for working cuts. Unsupported
 				// topology should still return promptly instead of trying it twice.
-				if (inset === .4 && !best) break;
+				if (inset >= .4 && !best) break;
 				try {
 					const construction = generateCheckeredGrid(text, request.font, .82, inset, { cache, onCrowded: () => { crowded = true; } });
 					const tips = cutTipCounts(construction.geometry);

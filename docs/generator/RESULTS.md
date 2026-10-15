@@ -1,13 +1,67 @@
 # Generator robustness results
 
-## Current coverage: clipping touching contours
+## Current work: fewer sharp checkerboard tips and complete sunburst grids
+
+The checkerboard frame now considers one more connection spacing after finding
+a valid design. It keeps a candidate only when the complete exported template
+has fewer narrow tips and passes the unchanged topology, spacing and artwork
+checks. It stops when no tips below 45° remain and skips curve fitting for worse
+raw candidates. The additional search does not run for an already refused input.
+
+- Nunito ANNA remains exactly 4×4, with ANNA / NNAA / NAAN / AANN. Its actual
+  exported tips below 45° decrease from ten to **eight**, with none below 30°.
+  The original unoptimized template had 34 below 45°, including eight below 30°.
+- The direct SØREN probe improves from 55 to 40 tips below 45°, with none below
+  30°. JUL retains its original broad connections; tighter candidates were worse
+  or failed spacing. The original Oswald ANNA route is also retained.
+- Failed sunburst figures can retry their four-port medallion using the complete
+  five-strip grid. Its outer band adds two strips to each sheet. Earlier valid
+  layouts return first, and full-sheet spacing checks remain unchanged. This
+  recovers the authored gift and Phosphor paw, each with 5×5 grids and no cutouts.
+
+All **51 sunburst configurations** were freshly checked: **47 accepted / four
+refused / zero invalid output**, with two recoveries and no regressions. The
+report is `tmp/generator/quality-sunburst.json`; the combined record with prior
+results retained elsewhere is `quality-current.json`. The 198-case checkerboard audit
+is running. The preceding full refresh has completed 2,812 of 3,150 cases; its
+Cinzel process is still running. All 2,770 accepted IDs, including these two new
+figure cases, are pinned in `scripts/generator/expected.json`.
+
+The finished ANNA heart and both cutting templates before and after the change
+were rendered and inspected in `tmp/generator/quality-text-before-after.png`.
+The repaired figures are in `quality-sunburst-cuts.png`: gift has four cut tips
+below 45° and none below 30°; paw has none below 45°. These are digital checks,
+not physical weaving trials. Browser inventory again returned no available app
+or browser, so a live interface check was unavailable.
+
+Type checking, lint and the production build pass (seven existing type-check
+warnings). All 1,066 unit tests pass: the full run passed 1,065, and the one
+handwritten-cell cache test that timed out under concurrent audit load passed
+its isolated rerun in 7.2 seconds. All 177 inverse tests pass. Logs
+are `tmp/generator/quality-{check,lint,build,tests,retry,inverse}.log`.
+
+The broader goal remains unfinished. At least 380 default-size matrix cases
+remain refused, most other sizes and the rest of the searchable catalog remain
+unverified, and difficult-case latency remains unresolved. The new sunburst
+fallback takes about 1.1 seconds for gift and 13.2 seconds for paw in this run,
+because it preserves all established recipes before retrying the complete grid.
+
+### Additional probes
+
+Counting every outer band in all local panel, component and fitted routes
+recovered the same two sunburst figures in a 65-refusal probe. A complete
+102-case sunburst/layered probe had no regressions, but changed several existing
+layered grids. That broader change is not shipped: the final implementation uses
+only the four-port sunburst retry needed for the verified recoveries.
+
+## Previous coverage: clipping touching contours
 
 The combined default-size matrix has **2,768 accepted / 382 refused / zero invalid
 accepted results**. A full refresh is in progress. Completed reports cover all
 1,122 figure configurations and all 338 text configurations for each of Nunito,
-Bree Serif, Oswald and Righteous: **2,474 freshly checked cases**, with four gains,
-no regressions and no invalid accepted output. The 676 Kalam and Cinzel records
-still retain their preceding results while those two audit processes finish.
+Bree Serif, Oswald, Righteous and Kalam: **2,812 freshly checked cases**, with four
+gains, no regressions and no invalid accepted output. The 338 Cinzel records
+still retain their preceding results while its audit process finishes.
 
 | Corpus | Configurations | Accepted | Refused | Invalid accepted output |
 |---|---:|---:|---:|---:|
@@ -15,8 +69,8 @@ still retain their preceding results while those two audit processes finish.
 | Figures: 51 motifs, 22 templates | 1122 | 1057 | 65 | 0 |
 
 The combined record is `tmp/generator/junction-current.json`. Completed reports
-are `junction-{figure,nunito,breeserif,oswald,righteous}.json`; the Kalam and Cinzel
-reports are not yet complete. All 2,768 accepted IDs are pinned in
+are `junction-{figure,nunito,breeserif,oswald,righteous,kalam}.json`; the Cinzel
+report is not yet complete. All 2,768 accepted IDs are pinned in
 `scripts/generator/expected.json`; none were removed.
 
 - Clipping can produce a shared vertex belonging to more than one closed
@@ -42,7 +96,7 @@ All **1,064 unit tests and 177 inverse tests** pass, along with type checking,
 lint and the production build. Type checking reports seven existing warnings.
 Logs are `tmp/generator/junction-{tests,check,lint,build}.log`.
 
-The goal remains unfinished. In addition to the two running corpus audits, 382
+The goal remains unfinished. In addition to the running Cinzel corpus audit, 382
 matrix configurations are still refused, most non-default sizes and the rest of
 the searchable catalog remain unverified, and difficult-case latency is unresolved.
 

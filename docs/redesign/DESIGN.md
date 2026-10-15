@@ -522,7 +522,11 @@ reuse locally clear cells, including those completed by the wider attachment
 search. Do not refit the full design when none of its local routes changed.
 
 For the checkerboard construction, compare a bounded set of invisible-cut
-routes before choosing one. Prefer counter joins at natural corners and avoid
+routes before choosing one. After a valid layout exists, one additional pair of
+connections near the cell midpoint can remove further sharp paper tips. Accept
+it only if the exported paths have fewer narrow tips and still pass the complete
+spacing and artwork checks. Stop when there are no tips below 45°, and reject
+worse raw candidates before curve fitting. Prefer counter joins at natural corners and avoid
 short sharp steps and hairpin turns; an extra coincident chord may split a
 fragile tongue between the sheets. Keep the glyph outline unchanged. If these
 routes cannot pass spacing validation, retain the original contour construction
@@ -597,6 +601,12 @@ colours and print size are excluded from geometry dependencies. Reuse idle worke
 work, and share letter routing within repeated glyphs. Do not add a fading or blocking loading
 animation for routine edits. These digital checks do not replace testing actual paper assembly.
 
+
+If a sunburst figure still fails after the existing recipes and shared-cut
+repairs, its four-port medallion may retry using the complete five-strip grid:
+the outer border adds two strips per sheet to the inner three-strip design.
+This changes local connection selection only; the completed heart must pass the
+same spacing, topology and artwork checks. Existing valid layouts return first.
 
 ## 8. Constraints and process
 
