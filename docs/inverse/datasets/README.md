@@ -46,6 +46,16 @@ the corrected labels. This is a post-hoc diagnosis, not a new training result;
 no model has used the revision. The 22 Hunodan and 31 hard-photo benchmark counts
 are unaffected.
 
+The source correction also changes real-photo family grouping. Earlier material
+pilots placed the printed checker in the framed-motif family, so it could train
+the model evaluated on the other checker photographs. Source/duplicate separation
+was preserved, but this was not complete real-checker-family holdout. A
+[new paired experiment](material-corrected-scenes-plan.json) retrains a seventeen-
+photo baseline and a corrected nineteen-photo candidate with every real checker
+in the checker family. Its training, independent audits and complete pipeline
+comparison are in progress; historical metrics are not replaced or directly
+compared across the different splits.
+
 A [boundary preparation refactor](boundary-trace-reuse.json) reuses cleanup and
 pixel chains when trying several tracing tolerances. Across 29 photographic
 masks and five border radii, all 145 resulting boundaries retain every control

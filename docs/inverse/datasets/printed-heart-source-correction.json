@@ -111,5 +111,12 @@
     "Four conservative white-paper interiors add 1,627 known material pixels at 256 resolution. Prior known pixels, body/RGB bytes and all 1,034 source split-group records remain unchanged.",
     "Unchanged model predictions rescored on the new labels; expanded model misclassifies 59.62% of newly supervised white-paper pixels. Old experiment inputs and reports remain preserved."
   ],
-  "materialCorrection": "docs/inverse/datasets/printed-paper-material-correction.json"
+  "materialCorrection": "docs/inverse/datasets/printed-paper-material-correction.json",
+  "familyGroupingImpact": {
+    "source": "docs/inverse/datasets/printed-heart-source-correction.json",
+    "pairedFollowup": "docs/inverse/datasets/material-corrected-scenes-plan.json",
+    "finding": "The photo real-8c875dd0f298b5a4 is an ordinary checker with printed hearts. The historical appearance-based grouping placed it in framed-motif-family, so it entered real-image training when the other checker photographs were held out.",
+    "scope": "Source and near-duplicate separation remain as recorded, and the saved metrics remain numerical observations. Do not interpret the historical split as complete real-checker-family holdout. Synthetic training already included checker geometry.",
+    "correction": "Both new paired arms place this photograph in checker-family. The baseline is retrained under that corrected grouping before evaluating the additional/corrected supervision. Historical labels, checkpoints and predictions are preserved."
+  }
 }
