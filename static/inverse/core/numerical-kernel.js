@@ -62,3 +62,41 @@ export function nativeGridRows(target,weights,flips,priors,n,count,family,phase,
   runtime.grid_rows(targetPtr,weightPtr,flipsPtr,priorPtr,n,count,family,phase,minimum,weight,weightScale,scratch,back,out);
   return doubles.slice(out/8,out/8+n*count);
 }
+
+/** Exact-threshold paper masks, with ambiguous cells deferred to JS hypot.
+ * Indices are validated before crossing the memory boundary. Coordinates are
+ * float64; nonfinite distance arithmetic is deferred rather than approximated. */
+export function nativePaperMasks({lattice,edt,tiles,tileX,tileY,chords,h,R,guard,tol,includeMap}){
+  if(!runtime?.paper_masks||!lattice)return null;
+  const {x,y,outline}=lattice,nx=x?.length,ny=y?.length,count=nx*ny;
+  if(!(x instanceof Float64Array)||!(y instanceof Float64Array)||!nx||!ny||count>0x7fffffff||
+    !(outline instanceof Float64Array)||outline.length!==count||!(edt instanceof Float64Array)||edt.length!==count||
+    !Array.isArray(tiles)||!tiles.length||tiles.length>0x7ffffffe||!Array.isArray(chords)||chords.length>0x7fffffff||
+    tileX?.length!==nx||tileY?.length!==ny||[tileX,tileY].some(v=>typeof v?.[Symbol.iterator]!=='function')||
+    ![h,R,guard,tol].every(Number.isFinite)||h<=0)return null;
+  let minX=Infinity,maxX=-Infinity,minY=Infinity,maxY=-Infinity;
+  for(const value of tileX){if(!Number.isInteger(value))return null;minX=Math.min(minX,value);maxX=Math.max(maxX,value);}
+  for(const value of tileY){if(!Number.isInteger(value))return null;minY=Math.min(minY,value);maxY=Math.max(maxY,value);}
+  if(Math.min(minX,minY)<0||maxX+maxY>=tiles.length)return null;
+  const starts=new Int32Array(tiles.length+1);let entries=0;
+  for(let i=0;i<tiles.length;i++){
+    const tile=tiles[i];if(tile!==undefined&&!Array.isArray(tile))return null;
+    for(const id of tile||[])if(!Number.isInteger(id)||id<0||id>=chords.length)return null;
+    entries+=tile?.length||0;if(entries>0x7fffffff)return null;starts[i+1]=entries;
+  }
+  const ids=new Int32Array(entries),terms=new Float64Array(5*chords.length);
+  for(let i=0;i<tiles.length;i++)if(tiles[i])ids.set(tiles[i],starts[i]);
+  for(let i=0;i<chords.length;i++){
+    const chord=chords[i],values=[chord?.ax,chord?.ay,chord?.dx,chord?.dy,chord?.denominator];
+    if(values.some(v=>typeof v!=='number'))return null;terms.set(values,5*i);
+  }
+  const arena=kernelMemory(),xp=arena.alloc(nx*8),yp=arena.alloc(ny*8),op=arena.alloc(count*8),dp=arena.alloc(count*8),
+    txp=arena.alloc(nx*4),typ=arena.alloc(ny*4),sp=arena.alloc(starts.length*4),ip=arena.alloc(ids.length*4),cp=arena.alloc(terms.length*8),
+    certain=arena.alloc(count),possible=arena.alloc(count),paper=includeMap?arena.alloc(count):0,deferred=arena.alloc(count*4);
+  const {bytes,integers,doubles}=arena.views();
+  doubles.set(x,xp/8);doubles.set(y,yp/8);doubles.set(outline,op/8);doubles.set(edt,dp/8);doubles.set(terms,cp/8);
+  integers.set(tileX,txp/4);integers.set(tileY,typ/4);integers.set(starts,sp/4);integers.set(ids,ip/4);
+  const pending=runtime.paper_masks(xp,nx,yp,ny,op,dp,txp,typ,sp,ip,cp,chords.length,h,R,guard,tol,certain,possible,paper,deferred);
+  return{certain:bytes.slice(certain,certain+count),possible:bytes.slice(possible,possible+count),
+    paper:includeMap?bytes.slice(paper,paper+count):null,deferred:integers.slice(deferred/4,deferred/4+pending)};
+}

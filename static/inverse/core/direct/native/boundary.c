@@ -169,3 +169,52 @@ void boundary_gradient(const double *points, int coordinates,
     }
   }
 }
+
+/* Paper-mask classification with the same guarded EDT/chord refinement as JS.
+ * Do not implement a different hypot: send near ties and extreme arithmetic
+ * back to the caller for the original JS distance calculation. */
+int paper_masks(const double *xs, int nx, const double *ys, int ny,
+    const double *outline, const double *edt, const int *tile_x,
+    const int *tile_y, const int *starts, const int *ids,
+    const double *chords, int chord_count, double h, double radius,
+    double guard, double tolerance, unsigned char *certain,
+    unsigned char *possible, unsigned char *paper, int *deferred) {
+  const double lower=radius-guard, upper=radius+guard;
+  const double lower2=lower*lower, upper2=upper*upper;
+  int pending=0;
+  for (int y=0; y<ny; ++y) for (int x=0; x<nx; ++x) {
+    const int i=y*nx+x;
+    const double edge=outline[i];
+    certain[i]=possible[i]=0;
+    if (paper) paper[i]=edge>0;
+    if (edge<lower) continue;
+    const double distance=__builtin_sqrt(edt[i])*h;
+    if (chord_count && __builtin_fabs(distance-radius)<4*h+2*tolerance) {
+      int core=3, ambiguous=0;
+      const int tile=tile_x[x]+tile_y[y];
+      for (int at=starts[tile]; at<starts[tile+1]; ++at) {
+        const double *c=chords+5*ids[at];
+        const double t=clamp(((xs[x]-c[0])*c[2]+(ys[y]-c[1])*c[3])/c[4],0,1);
+        const double dx=xs[x]-(c[0]+c[2]*t), dy=ys[y]-(c[1]+c[3]*t);
+        const double squared=dx*dx+dy*dy;
+        const double scaled=0x1p-52*(squared>upper2?squared:upper2);
+        const double roundoff=32*(scaled>0x1p-1074?scaled:0x1p-1074);
+        if (lower<0 || !__builtin_isfinite(squared+upper2) ||
+            __builtin_fabs(squared-lower2)<=roundoff ||
+            __builtin_fabs(squared-upper2)<=roundoff) {
+          ambiguous=1; break;
+        }
+        core&=squared>upper2?3:squared>lower2?1:0;
+        if (!core) break;
+      }
+      if (ambiguous) {deferred[pending++]=i; continue;}
+      certain[i]=edge>upper && (core&2);
+      possible[i]=edge>lower && (core&1);
+    } else {
+      /* Equivalent to Math.min(edge,distance)>threshold, including NaN. */
+      certain[i]=edge>upper && distance>upper;
+      possible[i]=edge>lower && distance>lower;
+    }
+  }
+  return pending;
+}

@@ -4,14 +4,15 @@
  * not an unsupported claim that a discretized mask proves tensile strength.
  */
 import {pathPolyline,distance,mix,Cubic,add,mul} from './bezier.js';
-import {prepareChord,chordClearance} from './chord-distance.js';
+import {prepareChord} from './chord-distance.js';
+import {paperCoreMasks,paperClearanceChoices} from './paper-clearance.js';
 import {curvesOf} from './graph.js';
 import {segments,lineSimple,lineDistance,keyPoint,pointInRing} from './geometry.js';
 import {closedRings,sampleRings} from './validate.js';
 import {nativeDistanceTransform,nativeCoreLabels,numericalKernel} from './numerical-kernel.js';
 import {paperBackend,sameArray,sameCore} from './paper-backend.js';
 const distanceBackend=paperBackend(sameArray),componentBackend=paperBackend(sameCore);
-export const paperKernelChoices=()=>({distanceTransform:distanceBackend.report(),components:componentBackend.report()});
+export const paperKernelChoices=()=>({distanceTransform:distanceBackend.report(),components:componentBackend.report(),clearance:paperClearanceChoices()});
 /** Carry an explicitly verified finer paper lattice through final cleanup and
  * export. Every changed geometry is audited again; no paper result is cached.
  * Physical tolerances and all other requested settings stay unchanged.
@@ -97,28 +98,12 @@ function materialFamily({lines,foldCuts},k,w,cfg,includeMap,native){
   const columns=Math.ceil(w/cell)+3,rows=Math.ceil(3*w/cell)+3,firstRow=Math.floor(originY/cell)-1;
   const tiles=new Array(columns*rows),reach=R+guard+tol;
   for(let si=0;si<ss.length;si++){const s=ss[si],steps=Math.max(1,Math.ceil(distance(s.a,s.b)/(h/3)));for(let t=0;t<=steps;t++){const p=mix(s.a,s.b,t/steps),ix=Math.round(p[0]/h-.5),iy=Math.round((p[1]-originY)/h-.5);if(ix>=0&&ix<nx&&iy>=0&&iy<ny)seeds[iy*nx+ix]=1;}const[ax,ay,bx,by]=s.box;for(let ty=Math.max(firstRow,Math.floor((ay-reach)/cell));ty<=Math.min(firstRow+rows-1,Math.floor((by+reach)/cell));ty++)for(let tx=Math.max(-1,Math.floor((ax-reach)/cell));tx<=Math.min(columns-2,Math.floor((bx+reach)/cell));tx++){const key=(ty-firstRow)*columns+tx+1;if(!tiles[key])tiles[key]=[];tiles[key].push(si);}}
-  const chords=ss.map(s=>prepareChord(s.a,s.b)),lower=R-guard,upper=R+guard,lower2=lower*lower,upper2=upper*upper;
+  const chords=ss.map(s=>prepareChord(s.a,s.b));
   // Each queried tile already contains all potentially relevant chords, once
   // each and in input order. No neighbouring lists or duplicate removal needed.
   const lattice=paperLattice(w,nx),tileX=lattice.x.map(x=>Math.floor(x/cell)+1),tileY=lattice.y.map(y=>(Math.floor(y/cell)-firstRow)*columns);
-  const edt=distanceTransform(seeds,nx,ny,{native}),certain=new Uint8Array(nx*ny),possible=new Uint8Array(nx*ny),paper=includeMap?new Uint8Array(nx*ny):null;
-  for(let y=0;y<ny;y++)for(let x=0;x<nx;x++){const i=y*nx+x,xx=lattice.x[x],yy=lattice.y[y],distOutline=lattice.outline[i];if(paper&&distOutline>0)paper[i]=1;if(distOutline<R-guard)continue;const d=Math.sqrt(edt[i])*h;
-    // EDT is only an accelerator. Recompute chord distance near either
-    // threshold, so lattice seeding does not determine a narrow-neck decision.
-    if(ss.length&&Math.abs(d-R)<4*h+2*tol){
-      let core=3;const near=tiles[tileX[x]+tileY[y]]||[];
-      for(const si of near){
-        core&=chordClearance(xx,yy,chords[si],lower,upper,lower2,upper2);
-        // Only membership matters. Once outside both cores, another chord
-        // cannot change either mask. Threshold ties still use hypot.
-        if(!core)break;
-      }
-      if(distOutline>upper&&(core&2))certain[i]=1;
-      if(distOutline>lower&&(core&1))possible[i]=1;
-      continue;
-    }
-    const clearance=Math.min(distOutline,d);if(clearance>R+guard)certain[i]=1;if(clearance>R-guard)possible[i]=1;
-  }
+  const edt=distanceTransform(seeds,nx,ny,{native});
+  const {certain,possible,paper}=paperCoreMasks({lattice,edt,tiles,tileX,tileY,chords,h,R,guard,tol,includeMap},{native});
   const c=labelCore(certain,nx,ny,originY,h,w,R,cfg.minFeatureArea,native),p=labelCore(possible,nx,ny,originY,h,w,R,cfg.minFeatureArea,native),foldY=Math.min(ny-1,Math.round((w-originY)/h-.5)),fold=[];
   for(let j=1;j<foldCuts.length;j++){let certainLength=0,possibleLength=0;for(let x=0;x<nx;x++){const xx=(x+.5)*h;if(xx<=foldCuts[j-1]||xx>=foldCuts[j])continue;const index=foldY*nx+x;if(c.anchors.has(c.labels[index]))certainLength+=h;if(p.anchors.has(p.labels[index]))possibleLength+=h;}fold.push({interval:[foldCuts[j-1],foldCuts[j]],certainCoreLength:certainLength,possibleCoreLength:possibleLength});}
   const certainBad=c.floating.length+fold.filter(f=>f.certainCoreLength<h/2).length,possibleBad=p.floating.length+fold.filter(f=>f.possibleCoreLength<h/2).length,status=possibleBad?'fail':certainBad?'uncertain':'pass';
