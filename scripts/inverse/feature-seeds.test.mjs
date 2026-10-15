@@ -14,6 +14,7 @@ import {resize} from '../../static/inverse/core/direct/math.js';
 import {readHardPhoto} from './hard-photo-data.mjs';
 import {renderExportedWeave} from './export-renderer.mjs';
 import {featureComponentMetrics} from './feature-component-metrics.mjs';
+import {assertFitError} from './diagnostics/fit-failure.mjs';
 
 async function puppy(dy=0,dx=0){
   const fixture=JSON.parse(await fs.readFile('scripts/inverse/fixtures/photographic-puppy-fit.json'));
@@ -245,7 +246,8 @@ test('a one-pixel crop shift cannot discard a feature-preserving fine-grid check
   const answer=await design(prepared.target,cfg),rendered=await renderExportedWeave(answer.files['cut_geometry.json'],400);
   assert.equal(answer.report.templateChecksPassed,true);
   assert.equal(answer.report.manufacturing.status,'pass');assert.equal(answer.report.validation.passed,true);
-  assert.equal(auditImageFeatures(source,rendered.mask).passed,true);assert.ok(mismatch(rendered.mask,source.mask)<.018);
+  assert.equal(auditImageFeatures(source,rendered.mask).passed,true);
+  await assertFitError({error:mismatch(rendered.mask,source.mask),maximum:.018,answer,source,resolution:400,context:{fixture:'photographic-puppy-fit',translation:[0,1]}});
   const opening=featureComponentMetrics(source,rendered.mask).find(f=>f.centerMm[1]<80);
   assert.equal(opening.touchesBorder,false,'The opening must not become a channel to the background');
   assert.ok(opening.componentIoU>.5,'Preserving the pixels must not create a much larger white blob');

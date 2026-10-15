@@ -247,6 +247,19 @@ file replay each reach 1.341875%, but the original timing-sensitive failure is
 not explained. Corpus and browser stages did not start. These experiments do not
 increase the published 31-photo benchmark count.
 
+A subsequent [complete QA and captured replay](timed-feature-diagnosis.json)
+passes 904/905 inverse tests, along with application tests, type checking, lint
+and build. The remaining accelerated-clock near-miss fit reaches 3.035% error
+at the independent 800-pixel scale, exceeding the unchanged 3% limit. Two
+complete near-miss file replays and one feature-seed file replay then pass all
+32 tests, with 24 fits captured. Identical-mask comparisons show a shorter
+broad refinement followed by lower-error detail candidates that fail paper
+checks; this does not identify cropping as the cause or justify weakening
+validity checks. The two intermittent fidelity assertions now retain typed
+source arrays, the solver report and byte-identical cut geometry on failure.
+Neither the successful replays nor this diagnostic helper cancel the failed
+full-suite result. Native corpus and browser stages have not run.
+
 The latest validated solver revision is `c000d30`. Its
 [release record](return-projection-speed.json) passes **22/22 regular Hunodan
 designs below ten seconds**, with a maximum of **8.100 seconds**. Automatic

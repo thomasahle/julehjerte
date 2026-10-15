@@ -11,6 +11,7 @@ import {initializeFeatureSeeds,initializeFeatureSampling} from '../../static/inv
 import {borderEvidence} from '../../static/inverse/core/direct/counts.js';
 import {readHardPhoto} from './hard-photo-data.mjs';
 import {renderExportedWeave} from './export-renderer.mjs';
+import {assertFitError} from './diagnostics/fit-failure.mjs';
 
 async function nearMiss(translation=null){
   const fixture=JSON.parse(await fs.readFile('scripts/inverse/fixtures/photographic-near-miss-seed.json'));
@@ -93,7 +94,7 @@ for(const clockScale of [1,1.5])for(const translation of [null,'horizontal','ver
     const n=source.resolution*scale,reference={resolution:n,mask:Uint8Array.from({length:n*n},(_,i)=>mask[Math.floor(Math.floor(i/n)/scale)*source.resolution+Math.floor((i%n)/scale)])};
     const replay=await renderExportedWeave(answer.files['cut_geometry.json'],n);
     const error=replay.mask.reduce((sum,v,i)=>sum+Number(v!==reference.mask[i]),0)/reference.mask.length;
-    assert.ok(error<.03,`Independent ${n}-pixel disagreement is ${error}.`);
+    await assertFitError({error,maximum:.03,answer,source,resolution:n,context:{fixture:'photographic-near-miss-seed',translation,clockScale}});
     assert.equal(auditFeatureFidelity(reference,replay.mask,answer.report.settings).passed,true);
     if(translation==='vertical'&&scale===1){
       // Whole-image error previously hid the sun's missing rays. This fixed
