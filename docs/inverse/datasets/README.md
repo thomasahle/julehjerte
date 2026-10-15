@@ -181,8 +181,9 @@ seconds in this limited experiment. The ceiling is not a production change. The
 original optimization trajectory and incumbent remain identical in fixed work,
 and the retained alternative passes both 700- and 1000-pixel paper audits. The new
 regression fails before the change and passes afterwards, including independent
-SVG replay. All six focused checks pass; full QA and the unchanged complete
-corpora are next. The twelve uncapped fresh trials all pass, but contain paired
+SVG replay. All six focused checks, 857 application tests (one skip), type checking, lint,
+build and private star/hat browser checks pass. The full inverse suite is running,
+with the unchanged complete corpora queued afterwards. The twelve uncapped fresh trials all pass, but contain paired
 error increases and do not establish no-regression. The prior failed suite remains
 recorded.
 

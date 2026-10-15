@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "status": "implemented; focused_tests_pass; full_QA_and_corpus_pending",
+  "status": "implemented; focused_application_static_and_browser_checks_pass; inverse_suite_and_full_corpus_in_progress",
   "mechanism": "At fixed refinement step395 the normal incumbent is the older step160 geometry (3.240625% source error). The best discarded coarse-paper-failed checkpoint has 2.715625% error and passes independent geometric, feature and paper checks at both 700px and 1000px. Retain that candidate separately; only after ordinary candidates fail, assess its original mask/features and run the actual finer paper audit. Preserve finer validation through export.",
   "fixed": {
     "incumbentAndHistoryUnchanged": true,
@@ -278,6 +278,72 @@
     {
       "path": "tmp/heart-learning/coarse-paper-recheck-v1/focused-after.log",
       "sha256": "24fadd5e1f48b4568f4745a1b716fa9973a9b0ad00399afcd0e64ded72c40d01"
+    },
+    {
+      "path": "tmp/heart-learning/coarse-paper-recheck-v1/controlled-comparison.png",
+      "sha256": "f03ae82c26ed76edda3d4ad2fb72fe88e0444c4be175379cff43983277d8dbd4"
     }
-  ]
+  ],
+  "currentQA": {
+    "checks": [
+      {
+        "stage": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 11.041608416
+      },
+      {
+        "stage": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 8.551095292
+      },
+      {
+        "stage": "build",
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 20.011646832999997
+      },
+      {
+        "stage": "preview",
+        "command": [
+          "python3",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/coarse-paper-recheck-v1/qa/restart-preview.py"
+        ],
+        "exitCode": 0,
+        "seconds": 1.3582444590000051
+      },
+      {
+        "stage": "browser",
+        "command": [
+          "node",
+          "scripts/inverse/paint-browser-test.mjs"
+        ],
+        "exitCode": 0,
+        "seconds": 19.647777667
+      }
+    ],
+    "application": {
+      "passed": 857,
+      "skipped": 1,
+      "failed": 0
+    },
+    "inverse": "running; expected 947 tests; final result not yet known",
+    "corpus": "queued after inverse; 22 Hunodan and unchanged hard-photo inventory, independent editable replay",
+    "controller": "tmp/heart-learning/coarse-paper-recheck-v1/qa/run.py",
+    "state": "tmp/heart-learning/coarse-paper-recheck-v1/qa/state.json"
+  },
+  "visualReview": "Both controlled baseline and recovered Viking exports were inspected beside the original crop. The recovered shape follows the curled upper silhouette and central lower opening more closely. Thin seams and frame irregularities remain; this is an improved validated fit, not exact recovery of the publisher cutting paths."
 }
