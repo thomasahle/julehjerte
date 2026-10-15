@@ -26,9 +26,20 @@ The inventory, with material annotations updated on 2026-10-15, contains:
 | Training scene variants | 2,448 | Neighbours and handles paired with all six backgrounds for the same 408 training views; no new geometry families. |
 | Source-photo material QA samples | 78 integrated + 25 new | Four hearts in two reserved photographs; sparse assistant-reviewed development observations, not dense labels or training data. The new jigsaw review is not yet in the common benchmark fixture. |
 | Real visible-body annotations | 18 | Seventeen instances in fifteen groups outside source QA, plus one reserved gold-angel instance. Uncertain pixels are excluded; the eight additions to the original ten-instance pilot have not entered training. |
-| Real partial paper-material annotations | 11 existing heart instances | Nine instances in the existing pilots plus newly labelled protruding and curved-checker motifs. Separate body and material uncertainty; no additional photographs. The two newest annotations have not entered training. |
+| Real partial paper-material annotations | 16 existing heart instances | Nine instances in the existing pilots plus seven additional reviewed instances. Separate body and material uncertainty; no additional photographs. The seven newest annotations have not entered training. |
 
 ## Current results and limits
+
+[Five additional material annotations](additional-material-labels.json) cover a
+curved hanging checker, a green/white bicycle medallion, a yellow/purple sloth,
+a decorated red/white checker and a yellow/teal checker on a reflective red
+background. Conservative interiors were inspected on the source photographs
+and compiled at 256 and 768 pixels. The compiler verifies every pixel, and RGB
+and body assets remain byte-identical to the previous exports. One sloth
+polygon initially crossed a paper boundary; it was corrected and re-reviewed.
+Fine bicycle strokes, handles, occlusions, seams and uncertain material remain
+unlabelled. These five labels are not new held-out photographs and have not
+entered training. The material inventory is now sixteen instances.
 
 The first [joint material pilot](material-pilot-results.md) has completed all
 three training runs and its independent checkpoint audit. Mixed out-of-fold

@@ -1,0 +1,634 @@
+{
+  "schema": "woven-heart-additional-material-labels-1",
+  "status": "admitted-after-source-and-compiled-overlay-review",
+  "scope": "Five existing development photos; partial material identities, no new source photographs, cutting paths, corners or train/test allocation.",
+  "totalMaterialInstances": 16,
+  "newMaterialInstances": 5,
+  "batches": [
+    {
+      "annotations": "scripts/inverse/datasets/real-materials-hanging.json",
+      "sha256": "9376385a12d03d5e5e31356f61201912dc40bf037631273cd4a109189cea2727",
+      "review": {
+        "status": "compiled-overlays-reviewed-ready-for-admission",
+        "id": "real-39f3a1ba97852876-body-1",
+        "reviewedResolutions": [
+          256,
+          768
+        ],
+        "bodyAndRgbIdentical": [
+          {
+            "new": "tmp/heart-learning/curved-hanging-labels-v1/review-256/real-39f3a1ba97852876-body-1-rgb.png",
+            "previous": "tmp/heart-learning/real-annotation-v1/labels-filtered/real-39f3a1ba97852876-body-1-rgb.png",
+            "sha256": "ddc1797c91569308f6e3653d4b2fd482cd46a139feecf3eececd44446255b380"
+          },
+          {
+            "new": "tmp/heart-learning/curved-hanging-labels-v1/review-256/real-39f3a1ba97852876-body-1-body.png",
+            "previous": "tmp/heart-learning/real-annotation-v1/labels-filtered/real-39f3a1ba97852876-body-1-labels.png",
+            "sha256": "5b91462bffb485040de523dc10446435f402a01bda8837ed845e5d93cc217d50"
+          }
+        ],
+        "findings": "All nine retained polygons identify the intended paper. Existing body uncertainty removes handle attachment and crossing needle; no corner or cutting labels are inferred.",
+        "training": "Not used. Admission is deferred while the full source-pinned regression run is active."
+      },
+      "compilations": [
+        {
+          "resolution": 256,
+          "manifest": "tmp/heart-learning/curved-hanging-labels-v1/admitted-256/manifest.json",
+          "manifestSha256": "6e7cf3e868f2898d74c9c65c19738042e0f032096ca16cdfd69dcbbcbaa47eed",
+          "identicalToVisuallyReviewedAssets": true,
+          "instances": [
+            {
+              "id": "real-39f3a1ba97852876-body-1",
+              "assetId": "real-39f3a1ba97852876",
+              "imageSha256": "39f3a1ba97852876b9c62d3fbff392a8f23b84d3bd0b53010cd6378ebc29a079",
+              "nearDuplicateGroup": "real-39f3a1ba97852876",
+              "splitGroupId": "real-split-0ce4ada523ddc171",
+              "splitStatus": "unassigned",
+              "trainingRightsStatus": "not-cleared",
+              "allocation": "unassigned",
+              "motif": {
+                "candidateFamily": "curved-checker",
+                "crossCorpusReview": "pending"
+              },
+              "transform": {
+                "scale": 0.5688888888888889,
+                "offset": [
+                  0.0,
+                  42.66666666666667
+                ],
+                "resolution": 256
+              },
+              "bodyPixelCounts": {
+                "0": 32025,
+                "1": 9342,
+                "255": 24169
+              },
+              "materialPixelCounts": {
+                "0": 1169,
+                "1": 888,
+                "255": 63479
+              },
+              "assets": {
+                "rgb": {
+                  "path": "real-39f3a1ba97852876-body-1-rgb.png",
+                  "sha256": "ddc1797c91569308f6e3653d4b2fd482cd46a139feecf3eececd44446255b380"
+                },
+                "body": {
+                  "path": "real-39f3a1ba97852876-body-1-body.png",
+                  "sha256": "5b91462bffb485040de523dc10446435f402a01bda8837ed845e5d93cc217d50"
+                },
+                "materials": {
+                  "path": "real-39f3a1ba97852876-body-1-materials.png",
+                  "sha256": "edcb0c97c79113372ffa9c3c451a577b57a082222c1fa9a4649a280c74eec6b7"
+                },
+                "overlay": {
+                  "path": "real-39f3a1ba97852876-body-1-overlay.png",
+                  "sha256": "58dfe4d83f3b2c948084608d4dce9916ffa9f6c918bfe48fe25b1b6491c9b27f"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "resolution": 768,
+          "manifest": "tmp/heart-learning/curved-hanging-labels-v1/admitted-768/manifest.json",
+          "manifestSha256": "9731b84d142d3042f384e853f47b1b7325af78a60dda909d42dea5ce50ef856e",
+          "identicalToVisuallyReviewedAssets": true,
+          "instances": [
+            {
+              "id": "real-39f3a1ba97852876-body-1",
+              "assetId": "real-39f3a1ba97852876",
+              "imageSha256": "39f3a1ba97852876b9c62d3fbff392a8f23b84d3bd0b53010cd6378ebc29a079",
+              "nearDuplicateGroup": "real-39f3a1ba97852876",
+              "splitGroupId": "real-split-0ce4ada523ddc171",
+              "splitStatus": "unassigned",
+              "trainingRightsStatus": "not-cleared",
+              "allocation": "unassigned",
+              "motif": {
+                "candidateFamily": "curved-checker",
+                "crossCorpusReview": "pending"
+              },
+              "transform": {
+                "scale": 1.7066666666666668,
+                "offset": [
+                  0.0,
+                  128.0
+                ],
+                "resolution": 768
+              },
+              "bodyPixelCounts": {
+                "0": 289709,
+                "1": 84171,
+                "255": 215944
+              },
+              "materialPixelCounts": {
+                "0": 10520,
+                "1": 8026,
+                "255": 571278
+              },
+              "assets": {
+                "rgb": {
+                  "path": "real-39f3a1ba97852876-body-1-rgb.png",
+                  "sha256": "a44de4cfd0cf8bdf3a1b7d1b963d54b1c3feb9633950a2961ff1c762176df615"
+                },
+                "body": {
+                  "path": "real-39f3a1ba97852876-body-1-body.png",
+                  "sha256": "41a29407eb7064394aeccba2b55fac3413b9bf70415fd4c1289b2bbab69eaa5f"
+                },
+                "materials": {
+                  "path": "real-39f3a1ba97852876-body-1-materials.png",
+                  "sha256": "791f4a4a5b841e109f60bb52cfdca63ca31cd3f30adb9af47227be906d2875cb"
+                },
+                "overlay": {
+                  "path": "real-39f3a1ba97852876-body-1-overlay.png",
+                  "sha256": "862883b620567e7b6445d150b594f31e176edeecae13e7ca0b1e3091c22886a3"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "annotations": "scripts/inverse/datasets/real-materials-colors.json",
+      "sha256": "a7567a3a9452d038bb8dcbacbab6117f376b60de268e39c7c636ee2e75c67fe9",
+      "review": {
+        "status": "compiled-overlays-reviewed-ready-for-admission",
+        "ids": [
+          "real-5330aa8b62176216-body-1",
+          "real-abf590088db891f9-body-1",
+          "real-990ac34431be87fe-body-1",
+          "real-12ce3c9180f7f317-body-1"
+        ],
+        "reviewedResolutions": [
+          256,
+          768
+        ],
+        "bodyAndRgbIdentical": [
+          {
+            "current": "tmp/heart-learning/remaining-material-labels-v1/review-v2-256/real-5330aa8b62176216-body-1-rgb.png",
+            "previous": "tmp/heart-learning/real-annotation-v1/labels-filtered/real-5330aa8b62176216-body-1-rgb.png",
+            "sha256": "41d3c41c7dcf1fc421d6e5f000f4a7aceac9a953871edfd40e8426f08af1cdd8"
+          },
+          {
+            "current": "tmp/heart-learning/remaining-material-labels-v1/review-v2-256/real-5330aa8b62176216-body-1-body.png",
+            "previous": "tmp/heart-learning/real-annotation-v1/labels-filtered/real-5330aa8b62176216-body-1-labels.png",
+            "sha256": "73296229e6a361c32b24fd06c3676b92861ed9606b6507c0afde35427cd71759"
+          },
+          {
+            "current": "tmp/heart-learning/remaining-material-labels-v1/review-v2-256/real-abf590088db891f9-body-1-rgb.png",
+            "previous": "tmp/heart-learning/real-annotation-v1/labels-filtered/real-abf590088db891f9-body-1-rgb.png",
+            "sha256": "91b6d770a55dfca41c65b03dabcb91d9013883c733faacf640cd05d3cb6d6cf4"
+          },
+          {
+            "current": "tmp/heart-learning/remaining-material-labels-v1/review-v2-256/real-abf590088db891f9-body-1-body.png",
+            "previous": "tmp/heart-learning/real-annotation-v1/labels-filtered/real-abf590088db891f9-body-1-labels.png",
+            "sha256": "e3d5b332886b5878544b21694f26cc45b9d13d85490f4196c287b962dd426c63"
+          },
+          {
+            "current": "tmp/heart-learning/remaining-material-labels-v1/review-v2-256/real-990ac34431be87fe-body-1-rgb.png",
+            "previous": "tmp/heart-learning/real-annotation-supplement-v1/labels-reviewed/real-990ac34431be87fe-body-1-rgb.png",
+            "sha256": "62d51ef4dcad958b0a11daa3155b94b859b361f3a943e2a5333d4087266a8a5c"
+          },
+          {
+            "current": "tmp/heart-learning/remaining-material-labels-v1/review-v2-256/real-990ac34431be87fe-body-1-body.png",
+            "previous": "tmp/heart-learning/real-annotation-supplement-v1/labels-reviewed/real-990ac34431be87fe-body-1-labels.png",
+            "sha256": "594c50ab4dd05a002f6d426624b29490bbca9af823dce2c835ba7be025a795f1"
+          },
+          {
+            "current": "tmp/heart-learning/remaining-material-labels-v1/review-v2-256/real-12ce3c9180f7f317-body-1-rgb.png",
+            "previous": "tmp/heart-learning/real-annotation-v1/labels-filtered/real-12ce3c9180f7f317-body-1-rgb.png",
+            "sha256": "6115dfff4cb2f66a65706aec02e85f0c405070623380f4ccb2d9c31200c81675"
+          },
+          {
+            "current": "tmp/heart-learning/remaining-material-labels-v1/review-v2-256/real-12ce3c9180f7f317-body-1-body.png",
+            "previous": "tmp/heart-learning/real-annotation-v1/labels-filtered/real-12ce3c9180f7f317-body-1-labels.png",
+            "sha256": "aff3959d94436dedf74028693a33e351209d51d660a31332d33fd373dfda79a4"
+          }
+        ],
+        "correction": "One yellow polygon on the sloth crossed the purple paper. It was contracted, recompiled and reviewed; the other three instances are byte-identical to the first compiled review.",
+        "solidColorDiagnostic": "After correction, no labelled yellow/purple interior has the opposite red-versus-blue ordering at either review resolution. This is a source-specific QA check, not a general material classifier.",
+        "training": "Not used; existing development photos, not new held-out examples. Admission waits for the pinned regression run to finish."
+      },
+      "compilations": [
+        {
+          "resolution": 256,
+          "manifest": "tmp/heart-learning/remaining-material-labels-v1/admitted-256/manifest.json",
+          "manifestSha256": "9f0a15ded969de92c09ed15a4cd6682c102a7093404fcf73dcb45609f24c9953",
+          "identicalToVisuallyReviewedAssets": true,
+          "instances": [
+            {
+              "id": "real-5330aa8b62176216-body-1",
+              "assetId": "real-5330aa8b62176216",
+              "imageSha256": "5330aa8b621762167ded8a0c2662e38947ee3422d7b06f669b18e6db43f0779d",
+              "nearDuplicateGroup": "real-5330aa8b62176216",
+              "splitGroupId": "real-split-66587aa0e20b89c8",
+              "splitStatus": "unassigned",
+              "trainingRightsStatus": "not-cleared",
+              "allocation": "unassigned",
+              "motif": {
+                "candidateFamily": "bicycle-medallion",
+                "crossCorpusReview": "pending"
+              },
+              "transform": {
+                "scale": 1.024,
+                "offset": [
+                  0.0,
+                  0.0
+                ],
+                "resolution": 256
+              },
+              "bodyPixelCounts": {
+                "0": 28647,
+                "1": 32502,
+                "255": 4387
+              },
+              "materialPixelCounts": {
+                "0": 4130,
+                "1": 4007,
+                "255": 57399
+              },
+              "assets": {
+                "rgb": {
+                  "path": "real-5330aa8b62176216-body-1-rgb.png",
+                  "sha256": "41d3c41c7dcf1fc421d6e5f000f4a7aceac9a953871edfd40e8426f08af1cdd8"
+                },
+                "body": {
+                  "path": "real-5330aa8b62176216-body-1-body.png",
+                  "sha256": "73296229e6a361c32b24fd06c3676b92861ed9606b6507c0afde35427cd71759"
+                },
+                "materials": {
+                  "path": "real-5330aa8b62176216-body-1-materials.png",
+                  "sha256": "b9978bd484c7e7c4736b7131f422f761ae83453c301808a93a3eacef80b2eeeb"
+                },
+                "overlay": {
+                  "path": "real-5330aa8b62176216-body-1-overlay.png",
+                  "sha256": "0b6a9a9f9e25c44ae8a941241f273df2344fb5ba5b9b9644c8f803510247dec2"
+                }
+              }
+            },
+            {
+              "id": "real-abf590088db891f9-body-1",
+              "assetId": "real-abf590088db891f9",
+              "imageSha256": "abf590088db891f98c7e082a3fd9b60cf72dd969fb31ab0d18e963a5297a1971",
+              "nearDuplicateGroup": "real-abf590088db891f9",
+              "splitGroupId": "real-split-66587aa0e20b89c8",
+              "splitStatus": "unassigned",
+              "trainingRightsStatus": "not-cleared",
+              "allocation": "unassigned",
+              "motif": {
+                "candidateFamily": "sloth-silhouette",
+                "crossCorpusReview": "pending"
+              },
+              "transform": {
+                "scale": 1.024,
+                "offset": [
+                  0.0,
+                  0.0
+                ],
+                "resolution": 256
+              },
+              "bodyPixelCounts": {
+                "0": 29071,
+                "1": 32091,
+                "255": 4374
+              },
+              "materialPixelCounts": {
+                "0": 7372,
+                "1": 3763,
+                "255": 54401
+              },
+              "assets": {
+                "rgb": {
+                  "path": "real-abf590088db891f9-body-1-rgb.png",
+                  "sha256": "91b6d770a55dfca41c65b03dabcb91d9013883c733faacf640cd05d3cb6d6cf4"
+                },
+                "body": {
+                  "path": "real-abf590088db891f9-body-1-body.png",
+                  "sha256": "e3d5b332886b5878544b21694f26cc45b9d13d85490f4196c287b962dd426c63"
+                },
+                "materials": {
+                  "path": "real-abf590088db891f9-body-1-materials.png",
+                  "sha256": "ab70bc97da69eb33e82d369e952f1962f113413827a77138614467959e874e0b"
+                },
+                "overlay": {
+                  "path": "real-abf590088db891f9-body-1-overlay.png",
+                  "sha256": "79a640df12ec44f5c54754ce2b21a12fd2622a3527f4e45fa4194a83510c6266"
+                }
+              }
+            },
+            {
+              "id": "real-990ac34431be87fe-body-1",
+              "assetId": "real-990ac34431be87fe",
+              "imageSha256": "990ac34431be87fea4d2b41050c1f1ccc6b12ca7dcb4a54f50bde137d6dffbbc",
+              "nearDuplicateGroup": "real-990ac34431be87fe",
+              "splitGroupId": "real-split-4cb27dd0236bd215",
+              "splitStatus": "unassigned",
+              "trainingRightsStatus": "not-cleared",
+              "allocation": "unassigned",
+              "motif": {
+                "candidateFamily": "regular-checkerboard",
+                "crossCorpusReview": "pending"
+              },
+              "transform": {
+                "scale": 0.44912280701754387,
+                "offset": [
+                  0.0,
+                  28.968421052631584
+                ],
+                "resolution": 256
+              },
+              "bodyPixelCounts": {
+                "0": 39084,
+                "1": 9274,
+                "255": 17178
+              },
+              "materialPixelCounts": {
+                "0": 1466,
+                "1": 1534,
+                "255": 62536
+              },
+              "assets": {
+                "rgb": {
+                  "path": "real-990ac34431be87fe-body-1-rgb.png",
+                  "sha256": "62d51ef4dcad958b0a11daa3155b94b859b361f3a943e2a5333d4087266a8a5c"
+                },
+                "body": {
+                  "path": "real-990ac34431be87fe-body-1-body.png",
+                  "sha256": "594c50ab4dd05a002f6d426624b29490bbca9af823dce2c835ba7be025a795f1"
+                },
+                "materials": {
+                  "path": "real-990ac34431be87fe-body-1-materials.png",
+                  "sha256": "3faac7648b64ade5b60ada6dd64f98323da431b993e3235d909bd01e0d230a52"
+                },
+                "overlay": {
+                  "path": "real-990ac34431be87fe-body-1-overlay.png",
+                  "sha256": "5eab2c28dec8e04e1321d1481c3f74e0b27d60864ac88c2b26211b55e6ff64dc"
+                }
+              }
+            },
+            {
+              "id": "real-12ce3c9180f7f317-body-1",
+              "assetId": "real-12ce3c9180f7f317",
+              "imageSha256": "12ce3c9180f7f31796ac378fc8cbdf3f2ebc7fee0eae9199d7266608df9e7966",
+              "nearDuplicateGroup": "real-12ce3c9180f7f317",
+              "splitGroupId": "real-split-1c907ad4f70d8815",
+              "splitStatus": "unassigned",
+              "trainingRightsStatus": "not-cleared",
+              "allocation": "unassigned",
+              "motif": {
+                "candidateFamily": "five-by-five-checker",
+                "crossCorpusReview": "pending"
+              },
+              "transform": {
+                "scale": 0.082687338501292,
+                "offset": [
+                  0.0,
+                  3.390180878552968
+                ],
+                "resolution": 256
+              },
+              "bodyPixelCounts": {
+                "0": 33733,
+                "1": 28661,
+                "255": 3142
+              },
+              "materialPixelCounts": {
+                "0": 4188,
+                "1": 4928,
+                "255": 56420
+              },
+              "assets": {
+                "rgb": {
+                  "path": "real-12ce3c9180f7f317-body-1-rgb.png",
+                  "sha256": "6115dfff4cb2f66a65706aec02e85f0c405070623380f4ccb2d9c31200c81675"
+                },
+                "body": {
+                  "path": "real-12ce3c9180f7f317-body-1-body.png",
+                  "sha256": "aff3959d94436dedf74028693a33e351209d51d660a31332d33fd373dfda79a4"
+                },
+                "materials": {
+                  "path": "real-12ce3c9180f7f317-body-1-materials.png",
+                  "sha256": "0c23a384c33a0dcd37da0fa8cb50afaada2793da27b8300a1bf2ceef754c6b56"
+                },
+                "overlay": {
+                  "path": "real-12ce3c9180f7f317-body-1-overlay.png",
+                  "sha256": "9b2f8ef6e75a50af3a25536ec1d557ecfe02dba39f4ca149f0de3984ca6f5bc9"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "resolution": 768,
+          "manifest": "tmp/heart-learning/remaining-material-labels-v1/admitted-768/manifest.json",
+          "manifestSha256": "526adcc0071e4f451f10854bebe20cbff35d6db48cdd7bf95475273e0b36f5fd",
+          "identicalToVisuallyReviewedAssets": true,
+          "instances": [
+            {
+              "id": "real-5330aa8b62176216-body-1",
+              "assetId": "real-5330aa8b62176216",
+              "imageSha256": "5330aa8b621762167ded8a0c2662e38947ee3422d7b06f669b18e6db43f0779d",
+              "nearDuplicateGroup": "real-5330aa8b62176216",
+              "splitGroupId": "real-split-66587aa0e20b89c8",
+              "splitStatus": "unassigned",
+              "trainingRightsStatus": "not-cleared",
+              "allocation": "unassigned",
+              "motif": {
+                "candidateFamily": "bicycle-medallion",
+                "crossCorpusReview": "pending"
+              },
+              "transform": {
+                "scale": 3.072,
+                "offset": [
+                  0.0,
+                  0.0
+                ],
+                "resolution": 768
+              },
+              "bodyPixelCounts": {
+                "0": 258093,
+                "1": 292543,
+                "255": 39188
+              },
+              "materialPixelCounts": {
+                "0": 37165,
+                "1": 36191,
+                "255": 516468
+              },
+              "assets": {
+                "rgb": {
+                  "path": "real-5330aa8b62176216-body-1-rgb.png",
+                  "sha256": "68d1163be8619059073f6aec6d1dfea31d5ff9097a9451314716c088b6adfcc2"
+                },
+                "body": {
+                  "path": "real-5330aa8b62176216-body-1-body.png",
+                  "sha256": "a59f3a05c599e7e27139fb408ce14155af760cf81bf39b3cb32fd06fcb4f237e"
+                },
+                "materials": {
+                  "path": "real-5330aa8b62176216-body-1-materials.png",
+                  "sha256": "9d2c42fffb4688934eb0a4aa4af2cf5f269a70dd75d3ac7cf80ac0406d0ab9db"
+                },
+                "overlay": {
+                  "path": "real-5330aa8b62176216-body-1-overlay.png",
+                  "sha256": "73b4ff9f4fa0950ef891cb2f67c509df7f00baf3ab9abd544b9497dd62588da6"
+                }
+              }
+            },
+            {
+              "id": "real-abf590088db891f9-body-1",
+              "assetId": "real-abf590088db891f9",
+              "imageSha256": "abf590088db891f98c7e082a3fd9b60cf72dd969fb31ab0d18e963a5297a1971",
+              "nearDuplicateGroup": "real-abf590088db891f9",
+              "splitGroupId": "real-split-66587aa0e20b89c8",
+              "splitStatus": "unassigned",
+              "trainingRightsStatus": "not-cleared",
+              "allocation": "unassigned",
+              "motif": {
+                "candidateFamily": "sloth-silhouette",
+                "crossCorpusReview": "pending"
+              },
+              "transform": {
+                "scale": 3.072,
+                "offset": [
+                  0.0,
+                  0.0
+                ],
+                "resolution": 768
+              },
+              "bodyPixelCounts": {
+                "0": 262006,
+                "1": 288768,
+                "255": 39050
+              },
+              "materialPixelCounts": {
+                "0": 66234,
+                "1": 33801,
+                "255": 489789
+              },
+              "assets": {
+                "rgb": {
+                  "path": "real-abf590088db891f9-body-1-rgb.png",
+                  "sha256": "9b16b92552359a00f5b51dad618fc1185d38479cc1133921f394927fe72aa257"
+                },
+                "body": {
+                  "path": "real-abf590088db891f9-body-1-body.png",
+                  "sha256": "c25afb618507ff3ef1bf8bfa3b401e19e07d6a9124ea9c222e85f26e0cf74562"
+                },
+                "materials": {
+                  "path": "real-abf590088db891f9-body-1-materials.png",
+                  "sha256": "e314e429133ff3a5afc5ff2c41cb3f082e3d5ed7cdf12d2d05b902e14c6e7223"
+                },
+                "overlay": {
+                  "path": "real-abf590088db891f9-body-1-overlay.png",
+                  "sha256": "68952887aa8d9fa453c9cc9b824dfe821629f7d8fcae20b97b3f88c0a5a6af26"
+                }
+              }
+            },
+            {
+              "id": "real-990ac34431be87fe-body-1",
+              "assetId": "real-990ac34431be87fe",
+              "imageSha256": "990ac34431be87fea4d2b41050c1f1ccc6b12ca7dcb4a54f50bde137d6dffbbc",
+              "nearDuplicateGroup": "real-990ac34431be87fe",
+              "splitGroupId": "real-split-4cb27dd0236bd215",
+              "splitStatus": "unassigned",
+              "trainingRightsStatus": "not-cleared",
+              "allocation": "unassigned",
+              "motif": {
+                "candidateFamily": "regular-checkerboard",
+                "crossCorpusReview": "pending"
+              },
+              "transform": {
+                "scale": 1.3473684210526315,
+                "offset": [
+                  0.0,
+                  86.90526315789475
+                ],
+                "resolution": 768
+              },
+              "bodyPixelCounts": {
+                "0": 351869,
+                "1": 83407,
+                "255": 154548
+              },
+              "materialPixelCounts": {
+                "0": 13235,
+                "1": 13713,
+                "255": 562876
+              },
+              "assets": {
+                "rgb": {
+                  "path": "real-990ac34431be87fe-body-1-rgb.png",
+                  "sha256": "08210827b9bd9dc18551779ca5482ff9da1de1c128298ddab3107b2514c2534a"
+                },
+                "body": {
+                  "path": "real-990ac34431be87fe-body-1-body.png",
+                  "sha256": "052433a845dc6d7401b1f27b8a6560dfb292ba47f58b4ba9ed73a36373fb6d6b"
+                },
+                "materials": {
+                  "path": "real-990ac34431be87fe-body-1-materials.png",
+                  "sha256": "d8705aed33059b145e268f2514fea47a680a2d33db2cd2008fd3944c2368c4ba"
+                },
+                "overlay": {
+                  "path": "real-990ac34431be87fe-body-1-overlay.png",
+                  "sha256": "7cdd0cf8ba2ce4d36f98a0553d329a03cb4b1c3687b58c419144a5d1af2482dd"
+                }
+              }
+            },
+            {
+              "id": "real-12ce3c9180f7f317-body-1",
+              "assetId": "real-12ce3c9180f7f317",
+              "imageSha256": "12ce3c9180f7f31796ac378fc8cbdf3f2ebc7fee0eae9199d7266608df9e7966",
+              "nearDuplicateGroup": "real-12ce3c9180f7f317",
+              "splitGroupId": "real-split-1c907ad4f70d8815",
+              "splitStatus": "unassigned",
+              "trainingRightsStatus": "not-cleared",
+              "allocation": "unassigned",
+              "motif": {
+                "candidateFamily": "five-by-five-checker",
+                "crossCorpusReview": "pending"
+              },
+              "transform": {
+                "scale": 0.24806201550387597,
+                "offset": [
+                  0.0,
+                  10.170542635658933
+                ],
+                "resolution": 768
+              },
+              "bodyPixelCounts": {
+                "0": 302089,
+                "1": 258015,
+                "255": 29720
+              },
+              "materialPixelCounts": {
+                "0": 37960,
+                "1": 44152,
+                "255": 507712
+              },
+              "assets": {
+                "rgb": {
+                  "path": "real-12ce3c9180f7f317-body-1-rgb.png",
+                  "sha256": "a6b7720a3a7af4246d740c4bbe8a029e8b254757b3fe1968e184e0f32a97a7b7"
+                },
+                "body": {
+                  "path": "real-12ce3c9180f7f317-body-1-body.png",
+                  "sha256": "5bf668277ac1926acc601e6efe7f600d9ffefb65a9a39c9ea2fc1f8461c477eb"
+                },
+                "materials": {
+                  "path": "real-12ce3c9180f7f317-body-1-materials.png",
+                  "sha256": "a7ba47a5427fbfcd5a36b63df2e2a9653314902ac5628503be78d86515d0df85"
+                },
+                "overlay": {
+                  "path": "real-12ce3c9180f7f317-body-1-overlay.png",
+                  "sha256": "370ab18ccef213f7a048832571a67882822089f6a4f65f861734a89104b29fd5"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "training": "These labels have not entered training. Source groups, source rights and body supervision are unchanged."
+}
