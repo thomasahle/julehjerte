@@ -1,0 +1,436 @@
+{
+  "schema": "woven-heart-printed-material-results-1",
+  "status": "experiment-complete-repository-qa-running",
+  "scope": "One fixed seed, nine previously inspected development photographs and 32 existing synthetic training geometries. Not unseen or topology-disjoint evaluation. No model integration.",
+  "evidence": {
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-printed-pilot-v1/run-v1/report.json": "48fb66e545ddc8d0e149589f83b90c6aa615a462e8beb993d434a38935cf0852",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-printed-pilot-v1/review-v1/audit.json": "d4d5a1919af3a3cb25e537f95e32aac779c477155392df7d65de130721e45553",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-printed-pilot-v1/checks.json": "f4ea8f63a31e837f4475c94c63232aed18eff17db4a04b523b835ef0372f21ff",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-printed-pilot-v1/pipeline-v1/report.json": "7f45249d722d89b4d093155108159341546fb07d8731e27fa2c3ff898e8b94f3",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-printed-pilot-v1/editable-v1/results.json": "df6d082e979033a15a9383393402b6caac88d22417b2a9a622e253bbc9aab16c",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-printed-pilot-v1/visual-review.json": "a050131a2318cdf87f1b40ec14955b0922032b33c8f44e4cabf4a585ad612db2",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-printed-pilot-v1/synthetic-check.json": "297eefd8fdf18f051f4c1781441fbe8a135d3d8ef987f91fc60e589f44c6aa4a",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-printed-pilot-v1/synthetic-check.py": "a4480b6137bcef777ddad71bd55a524c1e495e5d8ff4984a1c2db4a8fe00718f",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-prints-v1/generation-plan.json": "895e24e1a1a59c0f86a373541c4374c67b54c3bcbb2b56d8e2a1238d10ec6f87",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-prints-v1/checks.json": "7a4c0a627cc01ebb954319b134c75670c88404fc190fb3f8aadd04c44a878bcb",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-prints-v1/visual-review.json": "78abe8848d6fd4d5e30c1b2d040bfbc26f68b152572a65a215ee025c64a62900",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-prints-v1/learning-tests.log": "992a4d515c0daf3740673f590e980204d1da7f26258e7a6c5d94b824b68290ac",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-prints-v1/renderer-tests.log": "3c5b441b1776784ae1a19c829d20e2a5325edd3ffd4bbff06afbfd64cf9c5de9"
+  },
+  "pairedTrainingFieldsIdentical": [
+    "inputs",
+    "syntheticReplay",
+    "syntheticInputHashes",
+    "drawsSha256",
+    "folds",
+    "initialization"
+  ],
+  "productionCropAndMaskInputsUnchanged": true,
+  "cropComparisonExclusion": "Only locator.elapsedMs is excluded; all other selected-crop fields and target masks match.",
+  "metrics": {
+    "synthetic-control": {
+      "before": {
+        "bodyIoU": 0.8409320605223077,
+        "bodyPixelError": 0.06129702344050757,
+        "bodyFalseNegative": 0.06789937126734752,
+        "backgroundFalsePositive": 0.045242482856391916,
+        "materialPixelError": 0.2440187658931607,
+        "materialJointError": 0.2698436368952064,
+        "jointRegionPixelError": 0.12390452761778101,
+        "balancedMaterialJointError": 0.279327313721754
+      },
+      "after": {
+        "bodyIoU": 0.833474439967165,
+        "bodyPixelError": 0.06657655269980071,
+        "bodyFalseNegative": 0.045769997024615185,
+        "backgroundFalsePositive": 0.06740000915161927,
+        "materialPixelError": 0.25681534093906955,
+        "materialJointError": 0.26831355457562134,
+        "jointRegionPixelError": 0.1329223781284181,
+        "balancedMaterialJointError": 0.25574815687244357
+      }
+    },
+    "mixed-out-of-fold": {
+      "before": {
+        "bodyIoU": 0.8123531420636435,
+        "bodyPixelError": 0.07823000957056073,
+        "bodyFalseNegative": 0.05604449772859499,
+        "backgroundFalsePositive": 0.07827694140692461,
+        "materialPixelError": 0.17838324355391622,
+        "materialJointError": 0.19510470744896777,
+        "jointRegionPixelError": 0.12058963228864328,
+        "balancedMaterialJointError": 0.19590185984148123
+      },
+      "after": {
+        "bodyIoU": 0.8237612685624682,
+        "bodyPixelError": 0.07171500055159923,
+        "bodyFalseNegative": 0.04127160128485579,
+        "backgroundFalsePositive": 0.0780003535405967,
+        "materialPixelError": 0.15405135165603534,
+        "materialJointError": 0.16748486964687553,
+        "jointRegionPixelError": 0.10564352560075443,
+        "balancedMaterialJointError": 0.17324807813124796
+      }
+    }
+  },
+  "pipeline": {
+    "production": {
+      "cases": 9,
+      "crops": 3,
+      "checkedPairs": 2,
+      "editablePasses": 2
+    },
+    "mixed-body": {
+      "cases": 9,
+      "crops": 1,
+      "checkedPairs": 1,
+      "editablePasses": 1
+    },
+    "synthetic-joint": {
+      "cases": 9,
+      "crops": 1,
+      "checkedPairs": 0,
+      "editablePasses": 0
+    },
+    "mixed-joint": {
+      "cases": 9,
+      "crops": 2,
+      "checkedPairs": 2,
+      "editablePasses": 2
+    }
+  },
+  "perInstance": [
+    {
+      "id": "real-2044b1d98ed6f262-body-1",
+      "before": {
+        "bodyIoU": 0.9724847825011135,
+        "materialPixelError": 0.001018707167994073,
+        "materialJointError": 0.0048157066123356174
+      },
+      "after": {
+        "bodyIoU": 0.9721082043420207,
+        "materialPixelError": 0.0008334876829042416,
+        "materialJointError": 0.004167438414521208
+      },
+      "jointPipelineStatus": "checked-derived-mask",
+      "cropReason": null,
+      "cropEvidence": {
+        "lowerEdgeSupport": [
+          0.8125,
+          0.8125
+        ],
+        "lobeOutlineSupport": [
+          0.8333333333333334,
+          0.8055555555555556
+        ],
+        "capColourLoss": [
+          0.015055001523656056,
+          0.06326345241635586
+        ]
+      },
+      "visualReview": "Boar material regions remain recognizable; neural silhouette smooths small details. Both learned reconstructions pass."
+    },
+    {
+      "id": "real-45744a03afddccb1-body-1",
+      "before": {
+        "bodyIoU": 0.818300256220958,
+        "materialPixelError": 0.015243144727031728,
+        "materialJointError": 0.03935050948554387
+      },
+      "after": {
+        "bodyIoU": 0.8190783807062877,
+        "materialPixelError": 0.0067931405848728355,
+        "materialJointError": 0.02394167840278353
+      },
+      "jointPipelineStatus": "crop-unresolved",
+      "cropReason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+      "cropEvidence": {
+        "lowerEdgeSupport": [
+          0.46153846153846156,
+          0.6474358974358975
+        ],
+        "lobeOutlineSupport": [
+          0.5555555555555556,
+          0.5
+        ],
+        "capColourLoss": [
+          0.0869505453808086,
+          0.03549149907897189
+        ]
+      },
+      "visualReview": "Rabbit material improves; body still absorbs the textured background. Crop geometry support remains weak."
+    },
+    {
+      "id": "real-8c875dd0f298b5a4-body-1",
+      "before": {
+        "bodyIoU": 0.7886228117725838,
+        "materialPixelError": 0.08410867138072199,
+        "materialJointError": 0.11016002977298102
+      },
+      "after": {
+        "bodyIoU": 0.8033991731740928,
+        "materialPixelError": 0.2963900260513584,
+        "materialJointError": 0.3004093784890212
+      },
+      "jointPipelineStatus": "crop-unresolved",
+      "cropReason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+      "cropEvidence": {
+        "lowerEdgeSupport": [
+          0.5258620689655172,
+          0.5431034482758621
+        ],
+        "lobeOutlineSupport": [
+          0.9166666666666666,
+          0.3333333333333333
+        ],
+        "capColourLoss": [
+          0.08931800857773714,
+          0.5695809857732123
+        ]
+      },
+      "visualReview": "Stacked-heart material becomes worse; left lobe and small heart regions are distorted. The synthetic-joint fit is rejected."
+    },
+    {
+      "id": "real-3f7b76e1a98e808f-body-1",
+      "before": {
+        "bodyIoU": 0.9478647202828906,
+        "materialPixelError": 0.2544970631424376,
+        "materialJointError": 0.25569016152716595
+      },
+      "after": {
+        "bodyIoU": 0.9336448178264971,
+        "materialPixelError": 0.48393906020558003,
+        "materialJointError": 0.48393906020558003
+      },
+      "jointPipelineStatus": "crop-unresolved",
+      "cropReason": "No nondegenerate heart-shape fit",
+      "cropEvidence": {
+        "lowerEdgeSupport": null,
+        "lobeOutlineSupport": null,
+        "capColourLoss": null
+      },
+      "visualReview": "Dark star loses material separation; no nondegenerate crop is found."
+    },
+    {
+      "id": "real-995899fe049540ed-body-1",
+      "before": {
+        "bodyIoU": 0.9141612539380032,
+        "materialPixelError": 0.4437098722268133,
+        "materialJointError": 0.46754815332782407
+      },
+      "after": {
+        "bodyIoU": 0.9426037352504493,
+        "materialPixelError": 0.13088805543194965,
+        "materialJointError": 0.1369906553938084
+      },
+      "jointPipelineStatus": "crop-unresolved",
+      "cropReason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+      "cropEvidence": {
+        "lowerEdgeSupport": [
+          0.6363636363636364,
+          0.5878787878787879
+        ],
+        "lobeOutlineSupport": [
+          0.4444444444444444,
+          0.5
+        ],
+        "capColourLoss": [
+          0.5359760427043334,
+          0.483448472903286
+        ]
+      },
+      "visualReview": "Floral/stripe paper improves substantially but remaining stripes and wrong lobe support prevent a crop."
+    },
+    {
+      "id": "real-b87b0b19f12724f3-body-1",
+      "before": {
+        "bodyIoU": 0.4427665357897916,
+        "materialPixelError": 0.10832383124287344,
+        "materialJointError": 0.10832383124287344
+      },
+      "after": {
+        "bodyIoU": 0.4947354211663067,
+        "materialPixelError": 0.00028506271379703536,
+        "materialJointError": 0.00028506271379703536
+      },
+      "jointPipelineStatus": "crop-unresolved",
+      "cropReason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+      "cropEvidence": {
+        "lowerEdgeSupport": null,
+        "lobeOutlineSupport": null,
+        "capColourLoss": null
+      },
+      "visualReview": "Bowed red/pink material improves in known regions; table and chocolate false positives still prevent neural cropping."
+    },
+    {
+      "id": "real-cf2d0fcff65d7386-body-1",
+      "before": {
+        "bodyIoU": 0.9689641562914858,
+        "materialPixelError": 0.038547904191616765,
+        "materialJointError": 0.03860136869118905
+      },
+      "after": {
+        "bodyIoU": 0.9836942858169019,
+        "materialPixelError": 0.0,
+        "materialJointError": 0.0
+      },
+      "jointPipelineStatus": "checked-derived-mask",
+      "cropReason": null,
+      "cropEvidence": {
+        "lowerEdgeSupport": [
+          0.9675324675324676,
+          0.7987012987012987
+        ],
+        "lobeOutlineSupport": [
+          1,
+          0.6944444444444444
+        ],
+        "capColourLoss": [
+          0.03932089664080686,
+          0.07815342921359608
+        ]
+      },
+      "visualReview": "Blue/yellow separation and body improve; mixed joint now yields a checked pair. Rounded mask corners and narrow gaps remain."
+    },
+    {
+      "id": "real-cdae5c890b6933cd-body-1",
+      "before": {
+        "bodyIoU": 0.643344709897611,
+        "materialPixelError": 0.20641216327879688,
+        "materialJointError": 0.25252024458767147
+      },
+      "after": {
+        "bodyIoU": 0.6175012944744434,
+        "materialPixelError": 0.4666997190547017,
+        "materialJointError": 0.48405222277309534
+      },
+      "jointPipelineStatus": "crop-unresolved",
+      "cropReason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+      "cropEvidence": {
+        "lowerEdgeSupport": null,
+        "lobeOutlineSupport": null,
+        "capColourLoss": null
+      },
+      "visualReview": "Hand-held printed checker regresses toward one paper; hands/background still corrupt the outline."
+    },
+    {
+      "id": "real-68d8f25d8891df62-body-1",
+      "before": {
+        "bodyIoU": 0.8146690518783543,
+        "materialPixelError": 0.45358783462696023,
+        "materialJointError": 0.4789323617931253
+      },
+      "after": {
+        "bodyIoU": 0.8470861043052152,
+        "materialPixelError": 0.0006336131791541264,
+        "materialJointError": 0.07357833042927293
+      },
+      "jointPipelineStatus": "crop-unresolved",
+      "cropReason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.",
+      "cropEvidence": {
+        "lowerEdgeSupport": null,
+        "lobeOutlineSupport": null,
+        "capColourLoss": null
+      },
+      "visualReview": "Blue printed/gold identity improves in known regions, but occlusion and lower-edge detection still prevent cropping."
+    }
+  ],
+  "syntheticTrainingDiagnostic": {
+    "unprinted-training": {
+      "baseline": {
+        "bodyIoU": 0.9812637552066792,
+        "bodyPixelError": 0.005635738372802734,
+        "bodyFalseNegative": 0.010457924800347676,
+        "backgroundFalsePositive": 0.003644082336091181,
+        "materialPixelError": 0.042326057185212165,
+        "materialJointError": 0.04293316875619349,
+        "jointRegionPixelError": 0.01431362801345627,
+        "balancedMaterialJointError": 0.04405941221332868
+      },
+      "print-flowers": {
+        "bodyIoU": 0.9769203204503649,
+        "bodyPixelError": 0.006906032562255859,
+        "bodyFalseNegative": 0.014481339509699015,
+        "backgroundFalsePositive": 0.0038293152395921085,
+        "materialPixelError": 0.04367745493498329,
+        "materialJointError": 0.04549454491155136,
+        "jointRegionPixelError": 0.015298947725431911,
+        "balancedMaterialJointError": 0.04503201996313482
+      },
+      "print-stripes-dots": {
+        "bodyIoU": 0.9591396388529634,
+        "bodyPixelError": 0.01250600814819336,
+        "bodyFalseNegative": 0.031109637991073816,
+        "backgroundFalsePositive": 0.00420613745641591,
+        "materialPixelError": 0.2268524027724383,
+        "materialJointError": 0.23545388820997834,
+        "jointRegionPixelError": 0.0713562735588953,
+        "balancedMaterialJointError": 0.23412959937315744
+      },
+      "print-flowers-stripes": {
+        "bodyIoU": 0.9590561150038976,
+        "bodyPixelError": 0.012550830841064453,
+        "bodyFalseNegative": 0.030597335157941295,
+        "backgroundFalsePositive": 0.004344659183081014,
+        "materialPixelError": 0.19422393128213183,
+        "materialJointError": 0.20198615678744447,
+        "jointRegionPixelError": 0.06113204545767976,
+        "balancedMaterialJointError": 0.20173683418054628
+      }
+    },
+    "printed-training": {
+      "baseline": {
+        "bodyIoU": 0.9780785242893533,
+        "bodyPixelError": 0.006580829620361328,
+        "bodyFalseNegative": 0.009652230098458541,
+        "backgroundFalsePositive": 0.005118948621931565,
+        "materialPixelError": 0.04150983439475732,
+        "materialJointError": 0.04218778607395739,
+        "jointRegionPixelError": 0.015540090830779594,
+        "balancedMaterialJointError": 0.041879468139234766
+      },
+      "print-flowers": {
+        "bodyIoU": 0.9772421215043547,
+        "bodyPixelError": 0.0068149566650390625,
+        "bodyFalseNegative": 0.010443622217102284,
+        "backgroundFalsePositive": 0.005128157640817052,
+        "materialPixelError": 0.03294216592466969,
+        "materialJointError": 0.03401872277539565,
+        "jointRegionPixelError": 0.013369879209504335,
+        "balancedMaterialJointError": 0.03408430758521196
+      },
+      "print-stripes-dots": {
+        "bodyIoU": 0.967469017913102,
+        "bodyPixelError": 0.009845256805419922,
+        "bodyFalseNegative": 0.01385356414750648,
+        "backgroundFalsePositive": 0.0077590048833085755,
+        "materialPixelError": 0.17517474133768152,
+        "materialJointError": 0.17767122742172986,
+        "jointRegionPixelError": 0.05646803370478774,
+        "balancedMaterialJointError": 0.17786109107643638
+      },
+      "print-flowers-stripes": {
+        "bodyIoU": 0.9686519194013458,
+        "bodyPixelError": 0.00951242446899414,
+        "bodyFalseNegative": 0.013902728392997114,
+        "backgroundFalsePositive": 0.007255293410179058,
+        "materialPixelError": 0.13498240402628306,
+        "materialJointError": 0.13719130811957952,
+        "jointRegionPixelError": 0.044186493678508756,
+        "balancedMaterialJointError": 0.13800785224583806
+      }
+    }
+  },
+  "validation": {
+    "learningTests": 98,
+    "learningModules": 17,
+    "focusedRendererTests": 27,
+    "editableConversions": 7,
+    "editableConversionsPassed": 7,
+    "completeEditableCandidates": 5,
+    "independentModelInferenceMaxDifference": 0.0,
+    "fullRepositoryQaDirectory": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-printed-pilot-v1/production-qa-v2",
+    "priorQaFailure": "Sparse-array test fixture violated lint; rewritten without changing test coverage. Initial failed run retained in production-qa."
+  },
+  "conclusion": "Printed supervision improves some material identities and recovers blue/yellow in the joint pipeline, but regressions and crop failures remain. The joint model matches production on count (2/9), with different successes. No deployment."
+}

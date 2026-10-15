@@ -20,7 +20,8 @@ The inventory, with material annotations updated on 2026-10-15, contains:
 | Trained proposal models | 4 | Same 880,466-parameter network: random/ImageNet, balanced loss, and broader corner data; synthetic-only, offline. |
 | Trained foreground models | 5 | RGB-only, 880,449 parameters; random/ImageNet, background augmentation, and paired clutter/control runs, all offline. |
 | Decoder-adaptation checkpoints | 4 | One synthetic control and three grouped real/synthetic folds; no all-data or deployed model. |
-| Material-pilot checkpoints | 6, plus 2 synthetic diagnostics | Two grouped pilots independently audited. Higher-rate training improves material separation but regresses body overlap; full reconstruction is not reliably improved. No integration. |
+| Material-pilot checkpoints | 9, plus 2 synthetic diagnostics | Three grouped pilots independently audited. Printed-paper augmentation improves some material identities but has large per-photo regressions; no integration. |
+| Printed-paper photographic variants | 96 | Three ink recipes on the same 32 training replay geometries, plus 32 byte-identical controls. Exact body, material and graph labels retained. |
 | Training background variants | 2,040 | Five changes to each of 408 original training views; geometry labels and split groups unchanged. |
 | Training scene variants | 2,448 | Neighbours and handles paired with all six backgrounds for the same 408 training views; no new geometry families. |
 | Source-photo material QA samples | 78 | Three hearts in two reserved photographs; sparse assistant-reviewed development observations, not dense labels or training data. |
@@ -44,6 +45,15 @@ The joint model recovers only one of nine complete reconstructions, versus two
 for production. Restoring the original body predictions alone does not recover
 the other joint crops. Printed-paper identity, clutter, outline evidence and
 paper connectivity remain distinct failure sources. No learned model is deployed.
+
+A [controlled printed-paper follow-up](material-printed-study.md) now reduces
+mixed observed material disagreement to 15.41% and raises body IoU to 82.38%.
+The joint pipeline yields two checked editable pairs out of nine, matching the
+production count but on partly different photos. Floral/stripe and blue/gold
+paper improve substantially; star, stacked hearts and the hand-held checker
+regress. Seven joint crops remain unresolved, including photos with almost zero
+observed material error. The model remains offline; these results do not replace
+the established solver benchmarks below.
 
 The latest validated solver revision is `c000d30`. Its
 [release record](return-projection-speed.json) passes **22/22 regular Hunodan
