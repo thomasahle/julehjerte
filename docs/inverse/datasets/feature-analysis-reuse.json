@@ -191,7 +191,64 @@
     "explicitCoreLint": true
   },
   "productionValidation": {
-    "status": "pending-full-qa-native-benchmarks-and-browser-replay"
+    "status": "full-qa-passed-native-corpus-and-browser-pending",
+    "runtimeCommit": "3997441",
+    "qaRun": "tmp/heart-learning/feature-reuse-qa-v1",
+    "inversePassed": 889,
+    "inverseFailed": 0,
+    "applicationPassed": 857,
+    "applicationSkipped": 1,
+    "sourceFilesVerified": 733,
+    "checks": [
+      {
+        "stage": "core-lint",
+        "exitCode": 0,
+        "seconds": 1.471535834
+      },
+      {
+        "stage": "check",
+        "exitCode": 0,
+        "seconds": 8.818212084
+      },
+      {
+        "stage": "lint",
+        "exitCode": 0,
+        "seconds": 6.034688124999999
+      },
+      {
+        "stage": "app",
+        "exitCode": 0,
+        "seconds": 22.154024583
+      },
+      {
+        "stage": "build",
+        "exitCode": 0,
+        "seconds": 11.820937459
+      },
+      {
+        "stage": "inverse",
+        "exitCode": 0,
+        "seconds": 945.5000823749999
+      }
+    ],
+    "artifacts": [
+      {
+        "path": "tmp/heart-learning/feature-reuse-qa-v1/checks.json",
+        "sha256": "eb3376c53f367a2e420c1bef60f5cbaa83961c09d597a50f13c1b82e20ca68ab"
+      },
+      {
+        "path": "tmp/heart-learning/feature-reuse-qa-v1/source.json",
+        "sha256": "921e1fc4c75c2218607329d35c83ab7fe9a2833f5b90c56cbb368355adb129a0"
+      },
+      {
+        "path": "tmp/heart-learning/feature-reuse-qa-v1/inverse.log",
+        "sha256": "9cd65384f9fd37068cfc4357660bc3bc16d3c59d78052bc2f76dd3fab400b7c2"
+      },
+      {
+        "path": "tmp/heart-learning/feature-reuse-qa-v1/app.log",
+        "sha256": "5020ad95866c978a40899df0b0f11fe9dce61ad952f7fb8476b86e8b7f625c0e"
+      }
+    ]
   },
   "artifacts": [
     {

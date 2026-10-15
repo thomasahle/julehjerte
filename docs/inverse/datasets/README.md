@@ -104,8 +104,10 @@ original computation. All 112 semantic comparisons and 24 focused tests pass.
 Sixteen paired ten-second fixed-mask fits retain checked outputs, with average
 fit time decreasing from 9.442 to 9.361 seconds. The dense-checker pair also
 improves its error, but two repetitions per condition do not establish broad
-speed or quality gains. The change is committed as `3997441`; full repository,
-native-corpus and browser verification are pending.
+speed or quality gains. The change is committed as `3997441`. Full repository
+QA passes 889 inverse tests, 857 application tests, type checking, lint and build;
+all 733 pinned source files were verified. Native-corpus and browser verification
+remain pending.
 
 The latest validated solver revision is `c000d30`. Its
 [release record](return-projection-speed.json) passes **22/22 regular Hunodan
