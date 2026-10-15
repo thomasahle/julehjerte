@@ -235,9 +235,17 @@ and 2.29875%, taking 8.39 and 8.66 seconds for design and export. Independent
 alternating-order rounds, acceptance rises from 6/8 to 8/8; all three controls
 retain passes, but one increases from 0.6000% to 0.6544% error. The frame still
 has visible small defects. All eighteen focused integration tests pass, including
-the old ten-second matching regression. New full repository, corpus and browser
-checks remain pending; these experiments do not increase the published 31-photo
-benchmark count.
+the old ten-second matching regression. The subsequent [full run and paired
+diagnosis](feature-recovery-release-failures.json) record 902/905 inverse passes;
+type checking, lint, application tests and build pass. Two failed assertions
+required an intermediate rejection or a raw MILP success even when continuous
+repair had already supplied a valid pair. Those assertions now recognize the
+checked repair while retaining every final quality check. Both affected complete
+test files pass on follow-up, 17/17. The third failure exceeded the unchanged
+1.8% error bound after a one-pixel crop shift; four isolated fits and the complete
+file replay each reach 1.341875%, but the original timing-sensitive failure is
+not explained. Corpus and browser stages did not start. These experiments do not
+increase the published 31-photo benchmark count.
 
 The latest validated solver revision is `c000d30`. Its
 [release record](return-projection-speed.json) passes **22/22 regular Hunodan
