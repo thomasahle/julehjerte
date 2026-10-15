@@ -248,7 +248,9 @@ loss. `joint_material_loss` permits one global A/B exchange per image, never a
 separate exchange at every pixel. It also retains fractional synthetic material
 coverage, so antialiased boundary targets need not be thresholded. This is
 material supervision, not cut-path ground truth, and no real train/test
-allocation has been added.
+allocation has been added. The [joint evaluator](material-evaluation.md) counts
+missed body as a material error and retains one global A/B assignment per image;
+unknown regions cannot silently become correct background.
 
 ## Keep evaluation separate
 
