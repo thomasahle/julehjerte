@@ -1,5 +1,5 @@
 {
-  "status": "integrated-candidate-full-regressions-pending",
+  "status": "integrated-candidate-regression-failures-under-investigation",
   "implementation": {
     "finalGate": "Existing guarded lattice plus fine polygon offsets of both unfolded sheets. Nominal radius and two nearby probes must pass.",
     "repair": "Only detected defects invoke the main constrained Bezier fitter, with fold forces limited to affected sheets and local separation for off-fold islands. Already valid inputs remain unchanged.",
@@ -395,9 +395,24 @@
     "tmp/heart-learning/geometric-paper-integration-v1/preflight-v3/paint/results.json": "95fb1e559ac47d7d6d882f2b6049a405df5cea654aff3e47c529e719bb0fc700"
   },
   "remaining": [
-    "Full 921-test inverse suite",
+    "Resolve the three failed near-miss final acceptance checks, then rerun the complete inverse suite.",
     "31-photo regression and editable exports",
     "Remaining ordinary and ten-second browser workflows",
     "Strict cross-corpus error comparisons; prior photographic regressions are not declared resolved."
-  ]
+  ],
+  "fullInverseQA": {
+    "passed": 918,
+    "total": 921,
+    "failed": [
+      "the original near-miss layout produces checked exports within the original short search (1x clock)",
+      "the vertical near-miss layout produces checked exports within the original short search (1x clock)",
+      "the vertical near-miss layout produces checked exports within the original short search (1.5x clock)"
+    ],
+    "sourceFilesVerified": 825,
+    "seconds": 1059.1398655,
+    "log": "tmp/heart-learning/geometric-paper-integration-v1/release-v1/inverse.log",
+    "sha256": "40c38ef8aad83f6786fd2e08af84bdd7fe6af06685966582b32a8e30cad1b416",
+    "followingStages": "Native and remaining browser stages did not run because inverse QA failed.",
+    "next": "Capture final reports for the failed near-miss source/crop variants; distinguish deadline exhaustion from inadequate repair forces."
+  }
 }

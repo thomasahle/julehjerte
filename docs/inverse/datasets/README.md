@@ -347,8 +347,12 @@ is now installed before awaiting the engine. All 857 app tests (one existing
 skip), type checking, lint, build, 22 focused inverse tests, deferred-entry
 checks, delayed-worker and backend-failure browser checks pass. Star and
 free-border hat complete the full Paint-to-Draw workflow. The complete inverse
-suite and photographic release regressions have not yet completed for this
-candidate; it is not a new validated release.
+suite then finishes with 918/921 passing. Three original/vertically shifted
+near-miss photographic runs fail final acceptance, including one under the
+accelerated clock. All 825 pinned files stayed unchanged. Final-report capture
+is the next step to distinguish deadline exhaustion from inadequate repair.
+The native/photo and remaining browser release stages were not run after that
+failure; this candidate is not a new validated release.
 
 The latest validated solver revision is `c000d30`. Its
 [release record](return-projection-speed.json) passes **22/22 regular Hunodan
