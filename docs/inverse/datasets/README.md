@@ -26,7 +26,7 @@ The inventory, with material annotations updated on 2026-10-15, contains:
 | Training scene variants | 2,448 | Neighbours and handles paired with all six backgrounds for the same 408 training views; no new geometry families. |
 | Source-photo material QA samples | 78 integrated + 25 new | Four hearts in two reserved photographs; sparse assistant-reviewed development observations, not dense labels or training data. The new jigsaw review is not yet in the common benchmark fixture. |
 | Real visible-body annotations | 18 | Seventeen instances in fifteen groups outside source QA, plus one reserved gold-angel instance. Uncertain pixels are excluded; the eight additions to the original ten-instance pilot have not entered training. |
-| Real partial paper-material annotations | 9 existing heart instances | Five earlier paper pairs, boar/rabbit silhouettes, and printed floral/stripe and shaded red/pink hearts. Separate body and material uncertainty; no additional photographs. |
+| Real partial paper-material annotations | 10 existing heart instances | Nine instances in the existing pilots plus one newly labelled protruding motif. Separate body and material uncertainty; no additional photographs. The tenth material annotation has not entered training. |
 
 ## Current results and limits
 
@@ -54,6 +54,16 @@ paper improve substantially; star, stacked hearts and the hand-held checker
 regress. Seven joint crops remain unresolved, including photos with almost zero
 observed material error. The model remains offline; these results do not replace
 the established solver benchmarks below.
+
+An [additional material annotation](protruding-material-labels.json) now covers
+conservative red/white interiors on the existing photograph with protruding
+motif pieces and a yellow background. Both 256- and 768-pixel overlays were
+visually reviewed and pass the compiler's source, grouping and pixel checks.
+The 256-pixel RGB and body PNGs are byte-identical to the earlier body-training
+exports. Seams, fine tips, the handle, shadows and uncertain body regions remain
+unlabelled. This brings the material inventory to ten existing heart instances;
+the new labels have not entered training, and this previously used foreground
+development photograph is not a new held-out test.
 
 A [frozen stacked-hearts investigation](enclosure-corner-study.md) finds that
 low pixel error and the current feature gate can still admit unwanted channels
