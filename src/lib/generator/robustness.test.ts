@@ -50,6 +50,20 @@ function validateHandoffs(design: HeartDesign) {
 // These are expected successes, never a test that passes by accepting a refusal.
 // The larger offline corpus covers 2,028 text and 1,122 figure configurations.
 describe('generator robustness regressions', () => {
+	for (const fontId of ['nunito', 'breeserif', 'oswald', 'kalam', 'righteous'])
+		it(`keeps three ${fontId} text rows inside the diamond frame`, () => {
+			const { design } = generate({ mode: 'text', name: 'A B O', text: 'A\nB\nO',
+				font: fonts[fontId], textFrame: 'diamond', colors });
+			expect(design.gridSize).toEqual({ x: 5, y: 5 });
+			validateHandoffs(design);
+		}, 20000);
+	for (const [text, strips] of [['B', 6], ['BO', 8]] as const)
+		it(`separates the divided Cinzel ${text} cuts outside the diamond frame`, () => {
+			const { design } = generate({ mode: 'text', name: text, text,
+				font: fonts.cinzel, textFrame: 'diamond', colors });
+			expect(design.gridSize).toEqual({ x: strips, y: strips });
+			validateHandoffs(design);
+		}, 20000);
 	for (const textFrame of ['diamond', 'hexagon'] as const)
 		it(`gives ten Nunito letters room with curved shared cuts in ${textFrame}`, () => {
 			const { design } = generate({ mode: 'text', name: 'ABCDEFGHIJ', text: 'ABCDEFGHIJ',

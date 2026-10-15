@@ -1292,54 +1292,56 @@ function localRoutes(edges: Edge[], gates: Point[], pointKeys: WeakMap<Point, st
 		}
 		return value;
 	};
+	// Both sheets use the same endpoint keys. Build adjacency in place and
+	// track visited edges by index rather than allocating sets for every walk.
+	const fromKeys = edges.map(e => key(e.from)), toKeys = edges.map(e => key(e.to));
+	const gateKeys = gates.map(key), gateSet = new Set(gateKeys);
 	const routes: Ring[] = [];
 	for (const [family, pairs] of [
-		[
-			'A',
-			[
-				[0, 3],
-				[1, 2]
-			]
-		],
-		[
-			'B',
-			[
-				[0, 1],
-				[2, 3]
-			]
-		]
+		['A', [[0, 3], [1, 2]]],
+		['B', [[0, 1], [2, 3]]]
 	] as const) {
 		const adj = new Map<string, number[]>();
-		const selected = edges.flatMap((e, i) =>
-			e.family.includes(family) ? [i] : []
-		);
-		for (const i of selected)
-			for (const p of [edges[i].from, edges[i].to]) {
-				const k = key(p);
-				adj.set(k, [...(adj.get(k) ?? []), i]);
-			}
-		const gateKeys = gates.map(key),
-			used = new Set<number>();
+		const attach = (k: string, i: number) => {
+			const ids = adj.get(k);
+			if (ids) ids.push(i);
+			else adj.set(k, [i]);
+		};
+		let selected = 0;
+		for (let i = 0; i < edges.length; i++) {
+			if (edges[i].family !== family && edges[i].family !== 'AB') continue;
+			selected++;
+			attach(fromKeys[i], i);
+			attach(toKeys[i], i);
+		}
 		for (const [k, ids] of adj)
-			if (ids.length !== (gateKeys.includes(k) ? 1 : 2)) return null;
+			if (ids.length !== (gateSet.has(k) ? 1 : 2)) return null;
+		const used = new Uint8Array(edges.length);
+		let usedCount = 0;
 		for (const [start, end] of gates.length === 2 ? [[0, 1]] : pairs) {
-			let p = gates[start];
+			let p = gates[start], at = gateKeys[start];
 			const route = [p];
 			for (;;) {
-				const i = adj.get(key(p))?.find((i) => !used.has(i));
+				const ids = adj.get(at);
+				// Degree validation above leaves at most two choices at each point.
+				const i = ids && !used[ids[0]] ? ids[0]
+					: ids?.length === 2 && !used[ids[1]] ? ids[1] : undefined;
 				if (i === undefined) break;
-				used.add(i);
-				const e = edges[i];
-				p = near(p, e.from) ? e.to : e.from;
+				used[i] = 1;
+				usedCount++;
+				const e = edges[i], forward = near(p, e.from);
+				p = forward ? e.to : e.from;
+				at = forward ? toKeys[i] : fromKeys[i];
 				route.push(p);
 			}
 			if (!near(p, gates[end])) return null;
 			routes.push(route);
 		}
-		if (used.size !== selected.length) return null;
+		if (usedCount !== selected) return null;
 	}
 	return routes;
 }
+
 function clearSharedCuts(edges: Edge[], contours: Ring[]): boolean {
 	const shared = edges.filter((e) => e.family === 'AB');
 	const crosses = (a: Point, b: Point, c: Point, d: Point) => {
@@ -1442,7 +1444,8 @@ export function framedGate(
 	angle: number,
 	half: number,
 	fan = 1,
-	spread = false
+	spread = false,
+	sideCount = 1
 ): Point {
 	const low = ray(ring, [50, 50], angle - half),
 		mid = ray(ring, [50, 50], angle),
@@ -1460,13 +1463,21 @@ export function framedGate(
 					Math.sin(angle) > 0 ? 100 - (100 - p[1]) * fan : p[1] * fan
 				];
 	const route = (point: Point, family: 'A' | 'B'): Ring => {
-		if ((!spread && ring.length !== 4) || quadrant % 2) return [point, edge(point, family)];
+		const flat = ring.length === 4;
+		if ((!spread && !flat) || (quadrant % 2 && (!flat || sideCount === 1)))
+			return [point, edge(point, family)];
 		// A diamond has flat sheet-aligned sides. A direct projection would stack
 		// several cuts at the same endpoint. Stagger their routes around its corner.
+		// Reflect every quadrant into the upper-left corner, reversing the angular
+		// order for a single-axis reflection. Tall grids need the same separated
+		// lanes on the other two sides as wide grids do on the first two. A lone
+		// gate on those sides already projects outward and keeps its direct cut.
 		const reflect = (p: Point): Point =>
-			quadrant === 0 ? [100 - p[0], 100 - p[1]] : p;
+			[quadrant === 0 || quadrant === 3 ? 100 - p[0] : p[0],
+				quadrant === 0 || quadrant === 1 ? 100 - p[1] : p[1]];
 		const p = reflect(point),
-			fraction = (angle - (quadrant * Math.PI) / 2) / (Math.PI / 2);
+			rawFraction = (angle - (quadrant * Math.PI) / 2) / (Math.PI / 2),
+			fraction = quadrant % 2 ? 1 - rawFraction : rawFraction;
 		const topRoute = (p: Point, t: number): Ring => {
 			const margin = Math.min(...ring.map((p) => p[0]));
 			const lane = margin * (0.1 + 0.8 * (1 - t));
@@ -1530,7 +1541,7 @@ export function connectCellGrid(
 					: step * band;
 			add(
 				edges,
-				[gate, framedGate(edges, boundary, angle, half, fan, spread)],
+				[gate, framedGate(edges, boundary, angle, half, fan, spread, count)],
 				'AB',
 				'shared'
 			);

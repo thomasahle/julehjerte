@@ -1,5 +1,93 @@
 # Generator robustness results
 
+## Current coverage: separate cuts around every flat frame side
+
+The diamond's outer routing now separates cuts on all four sides when several
+cells connect to that side. Previously the two sides used by tall layouts
+projected cuts directly along the frame, where they could overlap neighbouring
+frame sections. Each quadrant now reflects into the same corner construction;
+single-axis reflections reverse the angular order. A lone gate keeps its
+existing direct projection. Letter outlines, counter connections, frame shape
+and requested text remain unchanged.
+
+The three-line `A\nB\nO` construction now passes with Nunito, Bree Serif,
+Oswald, Kalam and Righteous, all on 5×5 paper strips. Both JSON/SVG handoffs pass,
+and the heart plus both cutting sheets have been rendered and inspected in
+`symmetric-frame-gallery-{0,1,2,3,4}.png` and the matching SVGs. Tip counts below
+30° / below 45° are respectively 0/10, 0/5, 3/11, 2/5 and 0/9. This is a routing
+repair, not a claim that all fine letter features have become easy to cut.
+The same correction also recovers Cinzel B and BO in diamond, with 6×6 and
+8×8 strips. Their JSON/SVG handoffs pass, and both cutting sheets have been
+rendered and inspected in `symmetric-cinzel-gallery-{0,1}.png`. They have
+respectively 0/4 and 0/8 tips below 30° / below 45°. All seven new designs pass
+the separate guarded rolling-disk connectivity audit at resolution 1,400
+(`symmetric-frame-material.json`). This discrete model is not a physical
+strength or tear-resistance test and does not certify small tips.
+
+The completed **204-case diamond text audit** reports **184 accepted / 20
+refused / zero invalid**, with seven recoveries and no regressions
+(`symmetric-frame-diamond-text.json`). Its Cinzel A-B duration includes the
+audit's suspension during testing and must not be used as generation latency.
+
+All **153 diamond figure combinations** were rerun: **150 accepted / three
+refused / zero invalid**, with no status changes or regressions. Reports are
+`symmetric-frame-diamond-{rays,check,plain}.json`. An additional **48 multiline
+diamond cases** cover blank lines, accents, uneven line lengths and up to six
+rows: **44 accepted / four refused / zero invalid**
+(`symmetric-tall-extra.json`). The remaining four are Oswald's vertical Å/Ø/Æ,
+and Cinzel's ANNA/BO/IDA, Å/Ø/Æ and six-row A/B/O/A/B/O. These extra cases are
+outside the existing corpus and are not added to its coverage totals.
+
+All seven recoveries are pinned, retaining every preceding success. The combined
+3,150-case record is now **2,808 accepted / 342 refused / zero invalid**: text
+is **1,733 / 295**, figures **1,075 / 47** (`symmetric-frame-current.json`).
+This retains earlier results outside the 357 freshly audited diamond cases;
+it is not a complete fresh rerun. The full goal remains unfinished, including
+the remaining refusals, other sizes and the rest of the icon catalog.
+
+### Topology-check runtime
+
+Profiling Kalam A in ordinary repeat found 16% of samples directly in the local
+graph walker, plus allocation and key-lookup costs (`kalam-runtime.cpuprofile`).
+The walker now computes endpoint keys once for both sheets, builds adjacency
+arrays in place, and records visited edges by index. It retains the same
+rounded keys, endpoint proximity test, gate pairings, degree checks, edge order
+and requirement to visit every selected edge.
+
+A differential prototype compares every returned point by object identity,
+including rejected graphs: **325,092 text candidates** and **68,458 figure
+candidates** match exactly. The reports are `compact-route-differential.json`
+and `compact-route-figure-differential.json.comparisons.json`. The latter covers
+all 51 circle-rays figures with their complete handoffs: 50 accepted and one
+unchanged refusal, with zero invalid output.
+
+Two paired runs in alternating order give the following average generation
+times, with identical final cuts and colour phase in each pair
+(`compact-route-compare.json`):
+
+| Case | Before | After |
+|---|---:|---:|
+| Kalam A, ordinary repeat | 8,478 ms | 7,847 ms |
+| Kalam ANNA, ordinary repeat | 9,847 ms | 8,639 ms |
+| Nunito amy, checkerboard | 9,074 ms | 8,621 ms |
+
+These measurements ran alongside audits, so they do not establish browser
+latency. Type checking, lint and the production build pass; the type check
+retains seven existing warnings (`symmetric-frame-{check,lint,build}-final.log`).
+The full unit run reports **1,098 passed / one timed out** in 768 seconds
+(`symmetric-frame-tests.log`). Kalam A in ordinary repeat now passes in the
+full run; Kalam ANNA still exceeds its unchanged 20-second limit at 22.14
+seconds. The latter passes alone in 7.93 seconds
+(`symmetric-frame-kalam-focused.log`). The full-suite timing issue is not
+resolved, and that run must not be reported as green. All **177 inverse-engine
+tests pass** separately (`symmetric-frame-inverse.log`). Both long text audits
+were suspended during testing and resumed afterward; the diamond audit has
+since finished. No timeout was raised.
+
+Extending the mirrored routing to the nonflat frames' optional spread pass
+recovered none of 47 previous figure refusals (`spread-sides-figures.json`).
+That broader change remains a prototype.
+
 ## Current coverage: curved shared connections after straight layouts fail
 
 Completed constructions can now retry with curved coincident cuts after all
