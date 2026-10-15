@@ -23,24 +23,43 @@
   ],
   "artifacts": [
     {
-      "path": "tmp/heart-learning/late-feature-budget-v1/plan.json",
-      "sha256": "94992a6a5608c98c6e91f4c6cf09da8251a22a69151ce1b8a74edd1bb4baeded",
-      "bytes": 887997
+      "path": "tmp/heart-learning/late-feature-budget-v2/plan.json",
+      "sha256": "099961aad9e8f629dc06ba5d4fa937632a3c9c14cb3f9f714183c52f7608e6a3",
+      "bytes": 888244
     },
     {
-      "path": "tmp/heart-learning/late-feature-budget-v1/run-one.mjs",
-      "sha256": "5e00cf52d588e0092c9c2cc6505b4be6e08584331eedf07255b0294d069fd578",
-      "bytes": 3387
+      "path": "tmp/heart-learning/late-feature-budget-v2/run-one.mjs",
+      "sha256": "110e338f41f6f41bf4c65d07d077e4ef7c21e9bdf572d0de0ab161ce4b00eccc",
+      "bytes": 3380
     },
     {
-      "path": "tmp/heart-learning/late-feature-budget-v1/candidate/core/direct/fit.js",
+      "path": "tmp/heart-learning/late-feature-budget-v2/run.py",
+      "sha256": "d22f6d391feba42ac3e0cdfc5e04d63bef8e4999e3a1eff2f5a5776ed73b3a48",
+      "bytes": 1953
+    },
+    {
+      "path": "tmp/heart-learning/late-feature-budget-v2/candidate/core/direct/fit.js",
       "sha256": "02abf458f8bec894f1ec63b840fa3e8e78677b2774591410f74650b1fef813eb",
       "bytes": 68812
     },
     {
-      "path": "tmp/heart-learning/late-feature-budget-v1/run.py",
-      "sha256": "d22f6d391feba42ac3e0cdfc5e04d63bef8e4999e3a1eff2f5a5776ed73b3a48",
-      "bytes": 1953
+      "path": "tmp/heart-learning/late-feature-budget-v1/retirement.json",
+      "sha256": "7f98dd670d8d470de0252fe32be91b684d22418b7327d38077bae7eeb6efb366",
+      "bytes": 617
     }
-  ]
+  ],
+  "replaySettings": "Use runs[0].settings: the original caller inputs. Do not use report.settings, which can include a post-fit increase of materialResolution.",
+  "retiredPredecessor": {
+    "status": "retired-replay-configuration-error",
+    "previousState": {
+      "status": "running",
+      "caseId": "orb",
+      "delay": 2000,
+      "runtime": "candidate",
+      "pid": 47540,
+      "controllerPid": 43367
+    },
+    "reason": "The first runner reused result.report.settings, which includes a post-fit paperVerification upgrade to materialResolution=700, instead of the original runs[0].settings. This changes solver work and cannot replay the original production schedule. Partial outputs remain preserved; do not interpret as the planned benchmark.",
+    "replacement": "tmp/heart-learning/late-feature-budget-v2"
+  }
 }
