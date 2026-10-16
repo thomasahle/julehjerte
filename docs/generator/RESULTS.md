@@ -1,6 +1,56 @@
 # Generator robustness results
 
-## Current coverage: paw in the sunburst frame
+## Current coverage: paw with a fitted grid
+
+The fitted paw's convex-envelope attachment lay too close to a neighbouring toe.
+Moving the invisible attachment outward clears that collision. A final fallback
+offsets the envelope's supporting lines by two or three local clearance units
+and gives shared cuts shorter normal approaches. The motif never moves, no
+surrounding outline is added, and the entire expanded envelope still undergoes
+the artwork check. Completed cuts require the same 10% extra clearance.
+
+This recovers the Tabler paw with **7×7 strips and no tips below 45°**. JSON/SVG
+handoffs pass. The production design passes the independent material audit at
+resolution **4,200**, with zero certain or possible detached core islands; the
+1,400 and 2,800 results were uncertain and were not counted as passes. Its
+finished heart and both cutting sheets were visually reviewed. Evidence:
+`offset-fitted-{metrics,material}.json`, `offset-fitted-production-tb-paw.json`
+and `offset-fitted-gallery-0.png`. This is digital connectivity validation, not
+physical weaving or tear-strength testing.
+
+The direct prototype and production output differ by at most 5.69e-14 internal
+coordinate units and eight smooth/corner editor tags, caused by the different
+order of floating-point operations when shortening handles. Consequently the
+production output received its own handoff and material audits; it is not
+reported as an exact prototype match (`offset-fitted-prototype-diff.json`).
+
+All **51 default fitted motifs** were freshly compared with the previous
+generator: **47 accepted / four refused / zero invalid**. All **46 previously
+accepted complete outputs are exactly unchanged**. Butterfly, coffee, bicycle
+and sailboat still refuse. Paw generation took 0.93 seconds during the resumed
+audit, not an isolated latency benchmark. The comparison resumed after its
+exact-prototype assertion detected the roundoff/tag differences above; already
+recorded old/new comparisons were retained, and comparisons for all 51 were completed.
+
+The merged corpus is **2,862 accepted / 288 refused / zero invalid**: text is
+unchanged at 1,750 / 278; figures are 1,112 / 10. `offset-fitted-current.json`
+refreshes 51 fitted records and retains the other 3,099 from
+`frame-route-current.json`. This is not a fresh full-matrix run. Other sizes and
+the broader searchable catalogue remain incompletely verified.
+
+The first 120 offset-envelope trials recovered no designs with the extra
+clearance reserve. Shorter shared-cut approaches recovered the paw in a further
+180 trials across all five remaining fitted motifs. The production fallback
+tries the two useful padding distances and handle lengths, preserves earlier
+working layouts, and stops once no narrow tips remain.
+
+All **1,166 unit tests across 67 files** pass in one full run with unchanged time
+limits (600.71 seconds), followed by **177 passing inverse tests** (87.57 seconds).
+Both focused regressions pass. Check, lint and production build pass with the
+seven existing Svelte warnings. Logs are
+`offset-fitted-{focused,tests,check,lint,build}.log`.
+
+## Previous coverage: paw in the sunburst frame
 
 A wide component grid could send its inner frame leads through the outer
 sunburst circle. A final fallback now detours those leads around cuts on their

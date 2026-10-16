@@ -478,6 +478,15 @@ motif, then project them to the paper edges without drawing a new frame outline.
 The average of the envelope vertices supplies an interior origin for those
 projections. Check fidelity over the entire envelope, including the empty spaces
 between islands; clipping the validation domain to individual cells is insufficient.
+If an envelope gate itself grazes another island, a final fitted-only fallback
+may offset the convex envelope outward by two or three local clearance units.
+Offset supporting lines, rather than scaling from the centre, so flat sides get
+the same room as corners. This moves invisible joins only and draws no new frame
+outline. Try normal shared-cut approaches with handles of 10% or 20% of the
+connection length. Keep the motif fixed, validate the whole expanded envelope,
+require 10% extra clearance after fitting, and stop at zero narrow tips. Earlier
+successful layouts retain their original gates and curves. The fitted paw uses
+seven strips per sheet and must pass the independent material-connectivity audit.
 Neighbouring cells share a gate between their nearest boundaries. If a third
 island occupies that gate, move it into the surrounding space. Shared A/B cuts
 can then detour around other cuts using a bounded geometric visibility graph:

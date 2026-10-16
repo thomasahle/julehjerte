@@ -38,6 +38,23 @@ it('uses the outline tangent even when its first control handle is collapsed', (
 	expect(shared[1][0]).toBeGreaterThan(shared[0][0]);
 });
 
+it('shortens the normal approach without moving endpoints, outlines or an unattached handle', () => {
+	const input = junction(), original = structuredClone(input);
+	const full = curveSharedCuts(input)!, short = curveSharedCuts(input, undefined, .1)!;
+	const p = short.curves.shared.control_points, q = full.curves.shared.control_points;
+	expect(input).toEqual(original);
+	expect(short.curves.lower).toEqual(input.curves.lower);
+	expect(short.curves.upper).toEqual(input.curves.upper);
+	expect(short.A_overlap_paths).toEqual(input.A_overlap_paths);
+	expect(short.B_overlap_paths).toEqual(input.B_overlap_paths);
+	expect(p[0]).toEqual(q[0]);
+	expect(p[3]).toEqual(q[3]);
+	expect(p[2]).toEqual(input.curves.shared.control_points[2]);
+	expect(p[1][1]).toBe(p[0][1]);
+	expect(p[1][0]).toBeGreaterThan(p[0][0]);
+	expect(p[1][0]).toBeLessThan(q[1][0]);
+});
+
 it('does not alter a single-sheet cut or add new connections', () => {
 	const input = junction();
 	input.B_overlap_paths = [[{ curve: 'upper', reverse: false }]];

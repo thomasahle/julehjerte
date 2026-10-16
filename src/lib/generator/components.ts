@@ -11,7 +11,7 @@ const contoursOf = (node: Contour): Ring[] => [node.ring, ...node.children.flatM
 
 /** The outer connections of a fitted grid must clear every island, including
  * the ones in other cells. Their common convex envelope supplies those gates. */
-function componentEnvelope(points: Ring): Ring {
+function componentEnvelope(points: Ring, padding = 0): Ring {
 	const sorted = [...points].sort((a, b) => a[0] - b[0] || a[1] - b[1]);
 	const chain = (points: Ring) => {
 		const result: Ring = [];
@@ -24,16 +24,29 @@ function componentEnvelope(points: Ring): Ring {
 	};
 	const hull = [...chain(sorted).slice(0, -1), ...chain([...sorted].reverse()).slice(0, -1)];
 	if (hull.length < 3) throw new ConstructionError('empty', 'No component envelope');
-	return hull;
+	if (!padding) return hull;
+	// Intersect outward-offset supporting lines. Radial scaling would leave
+	// less room beside a long flat side than beside a corner. This envelope
+	// locates invisible joins only; no new outline is drawn around the motif.
+	const normals = hull.map((p, i): Point => {
+		const v = sub(hull[(i + 1) % hull.length], p), length = Math.hypot(...v);
+		return [v[1] / length, -v[0] / length];
+	});
+	return hull.map((p, i): Point => {
+		const a = normals[(i + hull.length - 1) % hull.length], b = normals[i], denominator = 1 + dot(a, b);
+		if (denominator < 1e-8) throw new ConstructionError('topology', 'Degenerate component envelope');
+		return [p[0] + padding * (a[0] + b[0]) / denominator, p[1] + padding * (a[1] + b[1]) / denominator];
+	});
 }
 
 /** Give separate motif islands their own cells instead of clipping all of them
  * with the same rectangular dividers. Counters stay with their parent island.
  * Divide the largest islands until every row is full. A wider grid can keep
- * small neighbouring islands separate while sharing a larger body below them. */
+ * small neighbouring islands separate while sharing a larger body below them.
+ * Optional fitted-envelope padding is measured in local clearance units. */
 export function generateComponentFigure(rings: Ring[], frame: Frame | 'fitted' = 'circle', size = 70, scale = .7,
 	style: 'rays' | 'check' | 'plain' = 'rays', route = fourPortMotif, columns: 2 | 3 | 4 = 2, extraStrips = 0,
-	wideContacts = false, spread = true) {
+	wideContacts = false, spread = true, envelopePadding = 0) {
 	const upright = rings.map(r => r.map(([x, y]): Point => [
 		x * size * scale * (frame === 'oval' ? .75 : 1), y * size * scale * (frame === 'oval' ? .75 : 1)
 	]));
@@ -113,7 +126,7 @@ export function generateComponentFigure(rings: Ring[], frame: Frame | 'fitted' =
 		}
 		return uprightToSheet(p);
 	};
-	const envelope = boundary ?? componentEnvelope(upright.flat().map(uprightToSheet));
+	const envelope = boundary ?? componentEnvelope(upright.flat().map(uprightToSheet), margin * envelopePadding);
 	const origin: Point = boundary ? [50, 50] : [
 		envelope.reduce((sum, p) => sum + p[0], 0) / envelope.length,
 		envelope.reduce((sum, p) => sum + p[1], 0) / envelope.length

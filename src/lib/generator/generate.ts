@@ -449,6 +449,8 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		if (sunburstPanels) return sunburstPanels;
 		const sunburstComponents = retrySunburstComponents(request, curveFitter);
 		if (sunburstComponents) return sunburstComponents;
+		const fittedComponents = retryFittedComponentEnvelope(request, curveFitter);
+		if (fittedComponents) return fittedComponents;
 		const textPanels = retryTextPanelIslands(request, curveFitter);
 		if (textPanels) return textPanels;
 		let bestRepeated: GeneratorResult | undefined;
@@ -484,6 +486,42 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		if (bestRepeated) return bestRepeated;
 		throw error;
 	}
+}
+
+/** A convex-envelope gate can itself sit too close to an adjacent island.
+ * Move the invisible joins outward by the actual grid clearance, without
+ * adding a frame outline or moving the motif. Curved shared cuts then have
+ * room to meet the silhouette normally. Earlier successful layouts stay fixed. */
+function retryFittedComponentEnvelope(request: GeneratorRequest, curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult | undefined {
+	if (request.mode !== 'figure' || request.style !== 'fitted') return;
+	const rings = normalizeContours(request.contours ?? []), count = forest(rings).length;
+	if (count < 2 || count > 8) return;
+	let best: GeneratorResult | undefined;
+	for (const padding of [2, 3]) for (const columns of [4, 3, 2] as const)
+	for (const route of [fourPortMotif, balancedFourPortMotif]) {
+		let construction: Construction;
+		try {
+			construction = generateComponentFigure(rings, 'fitted', request.frameSize, request.scale,
+				'check', route, columns, 0, true, true, padding);
+		} catch (error) {
+			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			continue;
+		}
+		for (const handleFraction of [.1, .2]) try {
+			const geometry = curveSharedCuts(construction.geometry, undefined, handleFraction);
+			if (!geometry) continue;
+			const result = improveSharedConnections(finishConstruction(request, construction, 'silhouette', geometry, curveFitter));
+			const margin = intersectionMarginPx(inferOverlapRect(result.design.fingers, result.design.gridSize),
+				gridClearanceScale(result.design.gridSize.x, result.design.gridSize.y));
+			if (findFingersWithIssues(result.design.fingers, margin * 1.1).size) continue;
+			const tips = cutTipCounts(result.design);
+			if (!best || fewerCutTips(tips, cutTipCounts(best.design))) best = result;
+			if (!tips[0] && !tips[1]) return best;
+		} catch (error) {
+			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		}
+	}
+	return best;
 }
 
 /** Wide component grids can send a frame lead through the outer circle. Route

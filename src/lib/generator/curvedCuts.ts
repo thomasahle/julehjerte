@@ -14,8 +14,9 @@ const unit = (p: Point): Point => {
  * Only coincident cuts change; the visible outline and path connections stay
  * fixed. Curving a shared cut may open a narrow passage, but can also cross a
  * neighbouring cut, so the complete candidate still requires validation.
- * An optional endpoint filter confines a quality repair to existing sharp tips. */
-export function curveSharedCuts<T extends CutNetwork>(geometry: T, at?: (point: Point) => boolean): T | undefined {
+ * An optional endpoint filter confines a quality repair to existing sharp tips.
+ * Shorter handles can retain the normal approach in a crowded component grid. */
+export function curveSharedCuts<T extends CutNetwork>(geometry: T, at?: (point: Point) => boolean, handleFraction = .2): T | undefined {
 	const uses = new Map<string, number>(), outlines = new Map<string, Point[]>();
 	for (const path of [...geometry.A_overlap_paths, ...geometry.B_overlap_paths])
 		for (const ref of path) uses.set(ref.curve, (uses.get(ref.curve) ?? 0) + 1);
@@ -43,7 +44,7 @@ export function curveSharedCuts<T extends CutNetwork>(geometry: T, at?: (point: 
 			if (!(t[0] || t[1])) continue;
 			const normal = [-t[1], t[0]],
 				forward = normal[0] * (p[other][0] - p[end][0]) + normal[1] * (p[other][1] - p[end][1]),
-				distance = length * .2 * (forward < 0 ? -1 : 1),
+				distance = length * handleFraction * (forward < 0 ? -1 : 1),
 				next = p[end].map((a, i) => a + normal[i] * distance);
 			if (next.every((v, i) => Math.abs(v - p[control][i]) < 1e-12)) continue;
 			p[control] = next;
