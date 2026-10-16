@@ -46,18 +46,18 @@
   "visualReview": "All four changed render pairs inspected. Changes are minute at the source resolution; uneven checker cells, imperfect contacts and missing bauble frame remain. The frozen comparison establishes retention of the lowest production-source score, not recovery of those motifs.",
   "qualification": "Independent antialiased rendering disagrees with the source pixel-centre sampler at some boundary pixels. It improves fine checker by three pixels and jigsaw by two, but worsens the already failing bauble by two observed pixels and historical floral checker by one. These tradeoffs are retained rather than claiming every rendering metric improves.",
   "releaseQA": {
-    "status": "prepared",
-    "root": "tmp/heart-learning/shared-best-checkpoint-v1/qa",
-    "planned": [
-      "check",
-      "lint",
-      "build",
-      "preview byte verification",
-      "29 browser workflows",
-      "55 fresh native fits",
-      "55 editable audits",
-      "full application and inverse tests"
-    ]
+    "status": "browser-native-and-editable-passed-full-suite-running",
+    "report": "docs/inverse/datasets/sharing-best-checkpoint-release-qa.json",
+    "browserPassed": 29,
+    "nativePassed": 53,
+    "nativeTotal": 55,
+    "editableGeometryAndPaperPassed": 55,
+    "sameKnownFailures": [
+      "photo-outline-star",
+      "photo-bauble"
+    ],
+    "qualification": "Fresh timed fits have both error increases and decreases. No uniform full-fit quality improvement is claimed.",
+    "root": "tmp/heart-learning/shared-best-checkpoint-v1/qa"
   },
   "results": [
     {

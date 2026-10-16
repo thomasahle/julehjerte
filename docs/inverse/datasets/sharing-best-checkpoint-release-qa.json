@@ -1,0 +1,1203 @@
+{
+  "schema": "sharing-best-checkpoint-release-qa-1",
+  "status": "full-test-suite-running",
+  "runtimeCommit": "1561381",
+  "completedChecks": [
+    {
+      "stage": "check",
+      "exitCode": 0,
+      "seconds": 10.589352458
+    },
+    {
+      "stage": "lint",
+      "exitCode": 0,
+      "seconds": 6.851422250000001
+    },
+    {
+      "stage": "build",
+      "exitCode": 0,
+      "seconds": 17.320660458
+    },
+    {
+      "stage": "preview",
+      "exitCode": 0,
+      "seconds": 1.376072999999998
+    },
+    {
+      "stage": "browser-smoke",
+      "exitCode": 0,
+      "seconds": 26.019379457999996
+    },
+    {
+      "stage": "browser-photos",
+      "exitCode": 0,
+      "seconds": 54.961006041
+    },
+    {
+      "stage": "browser-hunodan",
+      "exitCode": 0,
+      "seconds": 191.96108329100002
+    },
+    {
+      "stage": "corpus",
+      "exitCode": 0,
+      "seconds": 441.59172083299995
+    },
+    {
+      "stage": "corpus-audit",
+      "exitCode": 0,
+      "seconds": 46.58717245799994
+    }
+  ],
+  "sourceFilesVerified": 1025,
+  "browser": {
+    "passed": 29,
+    "samePreparedMasks": 29,
+    "byteIdenticalGeometryAndSVG": 27,
+    "hunodanPassed": 22,
+    "hunodanClickToReadyMedianSeconds": 5.761100000023841,
+    "hunodanClickToReadyMaxSeconds": 8.859299999952317,
+    "rows": [
+      {
+        "suite": "browser-smoke",
+        "id": "star",
+        "passed": true,
+        "same": {
+          "prepared.json": true,
+          "cut_geometry.json": true,
+          "editable.svg": true
+        },
+        "clickToReadySeconds": 2.1297999999523163,
+        "beforePaintingError": 0.0016,
+        "paintingError": 0.0016,
+        "beforeSourceError": 0.0016,
+        "sourceError": 0.0016
+      },
+      {
+        "suite": "browser-smoke",
+        "id": "top-hat-preferred",
+        "passed": true,
+        "same": {
+          "prepared.json": true,
+          "cut_geometry.json": true,
+          "editable.svg": true
+        },
+        "clickToReadySeconds": 7.125400000095367,
+        "beforePaintingError": 0.004118835034013606,
+        "paintingError": 0.004118835034013606,
+        "beforeSourceError": 0.004118835034013606,
+        "sourceError": 0.004118835034013606
+      },
+      {
+        "suite": "browser-smoke",
+        "id": "hunodan-hjfig-05",
+        "passed": true,
+        "same": {
+          "prepared.json": true,
+          "cut_geometry.json": true,
+          "editable.svg": true
+        },
+        "clickToReadySeconds": 5.862600000143051,
+        "beforePaintingError": 0.01015625,
+        "paintingError": 0.01015625,
+        "beforeSourceError": 0.007678151608273384,
+        "sourceError": 0.007678151608273384
+      },
+      {
+        "suite": "browser-photos",
+        "id": "hard-bibel-star-outline",
+        "passed": true,
+        "same": {
+          "prepared.json": true,
+          "cut_geometry.json": true,
+          "editable.svg": true
+        },
+        "clickToReadySeconds": 7.971399999856949,
+        "beforePaintingError": 0.0115375,
+        "paintingError": 0.0115375,
+        "beforeSourceError": 0.0115375,
+        "sourceError": 0.0115375
+      },
+      {
+        "suite": "browser-photos",
+        "id": "hard-bibel-star-outline-half",
+        "passed": true,
+        "same": {
+          "prepared.json": true,
+          "cut_geometry.json": true,
+          "editable.svg": true
+        },
+        "clickToReadySeconds": 6.285200000047683,
+        "beforePaintingError": 0.01839375,
+        "paintingError": 0.01839375,
+        "beforeSourceError": 0.015580361625030804,
+        "sourceError": 0.015580361625030804
+      },
+      {
+        "suite": "browser-photos",
+        "id": "hard-bibel-star-outline-jpeg75",
+        "passed": true,
+        "same": {
+          "prepared.json": true,
+          "cut_geometry.json": true,
+          "editable.svg": true
+        },
+        "clickToReadySeconds": 4.294400000095368,
+        "beforePaintingError": 0.0156375,
+        "paintingError": 0.0156375,
+        "beforeSourceError": 0.0156375,
+        "sourceError": 0.0156375
+      },
+      {
+        "suite": "browser-photos",
+        "id": "hard-flettede-puppy-half",
+        "passed": true,
+        "same": {
+          "prepared.json": true,
+          "cut_geometry.json": false,
+          "editable.svg": false
+        },
+        "clickToReadySeconds": 20.499,
+        "beforePaintingError": 0.01316875,
+        "paintingError": 0.01308125,
+        "beforeSourceError": 0.011939513477975016,
+        "sourceError": 0.011906640368178829
+      },
+      {
+        "suite": "browser-hunodan",
+        "id": "hunodan-hjfig-01",
+        "passed": true,
+        "same": {
+          "prepared.json": true,
+          "cut_geometry.json": true,
+          "editable.svg": true
+        },
+        "clickToReadySeconds": 4.1215,
+        "beforePaintingError": 0.0112625,
+        "paintingError": 0.0112625,
+        "beforeSourceError": 0.009891555555555556,
+        "sourceError": 0.009891555555555556
+      },
+      {
+        "suite": "browser-hunodan",
+        "id": "hunodan-hjfig-02",
+        "passed": true,
+        "same": {
+          "prepared.json": true,
+          "cut_geometry.json": true,
+          "editable.svg": true
+        },
+        "clickToReadySeconds": 3.8112000000476836,
+        "beforePaintingError": 0.00548125,
+        "paintingError": 0.00548125,
+        "beforeSourceError": 0.00548125,
+        "sourceError": 0.00548125
+      },
+      {
+        "suite": "browser-hunodan",
+        "id": "hunodan-hjfig-03",
+        "passed": true,
+        "same": {
+          "prepared.json": true,
+          "cut_geometry.json": true,
+          "editable.svg": true
+        },
+        "clickToReadySeconds": 4.335799999952316,
+        "beforePaintingError": 0.00825,
+        "paintingError": 0.00825,
+        "beforeSourceError": 0.006592,
+        "sourceError": 0.006592
+      },
+      {
+        "suite": "browser-hunodan",
+        "id": "hunodan-hjfig-04",
+        "passed": true,
+        "same": {
+          "prepared.json": true,
+          "cut_geometry.json": true,
+          "editable.svg": true
+        },
+        "clickToReadySeconds": 4.661800000190735,
+        "beforePaintingError": 0.01473125,
+        "paintingError": 0.01473125,
+        "beforeSourceError": 0.014016,
+        "sourceError": 0.014016
+      },
+      {
+        "suite": "browser-hunodan",
+        "id": "hunodan-hjfig-05",
+        "passed": true,
+        "same": {
+          "prepared.json": true,
+          "cut_geometry.json": true,
+          "editable.svg": true
+        },
+        "clickToReadySeconds": 5.833400000095367,
+        "beforePaintingError": 0.01015625,
+        "paintingError": 0.01015625,
+        "beforeSourceError": 0.007678151608273384,
+        "sourceError": 0.007678151608273384
+      },
+      {
+        "suite": "browser-hunodan",
+        "id": "hunodan-hjfla-01",
+        "passed": true,
+        "same": {
+          "prepared.json": true,
+          "cut_geometry.json": true,
+          "editable.svg": true
+        },
+        "clickToReadySeconds": 6.495,
+        "beforePaintingError": 0.0093375,
+        "paintingError": 0.0093375,
+        "beforeSourceError": 0.007120768229166667,
+        "sourceError": 0.007120768229166667
+      },
+      {
+        "suite": "browser-hunodan",
+        "id": "hunodan-hjcur-01",
+        "passed": true,
+        "same": {
+          "prepared.json": true,
+          "cut_geometry.json": true,
+          "editable.svg": true
+        },
+        "clickToReadySeconds": 5.688799999952316,
+        "beforePaintingError": 0.00723125,
+        "paintingError": 0.00723125,
+        "beforeSourceError": 0.005091555555555556,
+        "sourceError": 0.005091555555555556
+      },
+      {
+        "suite": "browser-hunodan",
+        "id": "hunodan-hjcur-02",
+        "passed": true,
+        "same": {
+          "prepared.json": true,
+          "cut_geometry.json": true,
+          "editable.svg": true
+        },
+        "clickToReadySeconds": 7.159799999952316,
+        "beforePaintingError": 0.00829375,
+        "paintingError": 0.00829375,
+        "beforeSourceError": 0.004878222222222222,
+        "sourceError": 0.004878222222222222
+      },
+      {
+        "suite": "browser-hunodan",
+        "id": "hunodan-hjcur-03",
+        "passed": true,
+        "same": {
+          "prepared.json": true,
+          "cut_geometry.json": true,
+          "editable.svg": true
+        },
+        "clickToReadySeconds": 5.495899999856949,
+        "beforePaintingError": 0.0086375,
+        "paintingError": 0.0086375,
+        "beforeSourceError": 0.004238222222222222,
+        "sourceError": 0.004238222222222222
+      },
+      {
+        "suite": "browser-hunodan",
+        "id": "hunodan-hjcur-04",
+        "passed": true,
+        "same": {
+          "prepared.json": true,
+          "cut_geometry.json": true,
+          "editable.svg": true
+        },
+        "clickToReadySeconds": 7.729399999856949,
+        "beforePaintingError": 0.0104,
+        "paintingError": 0.0104,
+        "beforeSourceError": 0.005418666666666666,
+        "sourceError": 0.005418666666666666
+      },
+      {
+        "suite": "browser-hunodan",
+        "id": "hunodan-hjcur-05",
+        "passed": true,
+        "same": {
+          "prepared.json": true,
+          "cut_geometry.json": true,
+          "editable.svg": true
+        },
+        "clickToReadySeconds": 4.348200000047684,
+        "beforePaintingError": 0.0110375,
+        "paintingError": 0.0110375,
+        "beforeSourceError": 0.009450666666666666,
+        "sourceError": 0.009450666666666666
+      },
+      {
+        "suite": "browser-hunodan",
+        "id": "hunodan-hjhih-01",
+        "passed": true,
+        "same": {
+          "prepared.json": true,
+          "cut_geometry.json": true,
+          "editable.svg": true
+        },
+        "clickToReadySeconds": 6.685700000047683,
+        "beforePaintingError": 0.00824375,
+        "paintingError": 0.00824375,
+        "beforeSourceError": 0.005919622003275255,
+        "sourceError": 0.005919622003275255
+      },
+      {
+        "suite": "browser-hunodan",
+        "id": "hunodan-hjhih-02",
+        "passed": true,
+        "same": {
+          "prepared.json": true,
+          "cut_geometry.json": true,
+          "editable.svg": true
+        },
+        "clickToReadySeconds": 5.468600000143051,
+        "beforePaintingError": 0.00619375,
+        "paintingError": 0.00619375,
+        "beforeSourceError": 0.0038585033642604422,
+        "sourceError": 0.0038585033642604422
+      },
+      {
+        "suite": "browser-hunodan",
+        "id": "hunodan-hjhih-04",
+        "passed": true,
+        "same": {
+          "prepared.json": true,
+          "cut_geometry.json": true,
+          "editable.svg": true
+        },
+        "clickToReadySeconds": 7.777900000095367,
+        "beforePaintingError": 0.01061875,
+        "paintingError": 0.01061875,
+        "beforeSourceError": 0.007750131111240604,
+        "sourceError": 0.007750131111240604
+      },
+      {
+        "suite": "browser-hunodan",
+        "id": "hunodan-hjstr-01",
+        "passed": true,
+        "same": {
+          "prepared.json": true,
+          "cut_geometry.json": true,
+          "editable.svg": true
+        },
+        "clickToReadySeconds": 5.094799999952317,
+        "beforePaintingError": 0.01006875,
+        "paintingError": 0.01006875,
+        "beforeSourceError": 0.007295347924029181,
+        "sourceError": 0.007295347924029181
+      },
+      {
+        "suite": "browser-hunodan",
+        "id": "hunodan-hjstr-02",
+        "passed": true,
+        "same": {
+          "prepared.json": true,
+          "cut_geometry.json": true,
+          "editable.svg": true
+        },
+        "clickToReadySeconds": 6.557400000095368,
+        "beforePaintingError": 0.0044,
+        "paintingError": 0.0044,
+        "beforeSourceError": 0.004122287968441814,
+        "sourceError": 0.004122287968441814
+      },
+      {
+        "suite": "browser-hunodan",
+        "id": "hunodan-hjstr-03",
+        "passed": true,
+        "same": {
+          "prepared.json": true,
+          "cut_geometry.json": true,
+          "editable.svg": true
+        },
+        "clickToReadySeconds": 8.859299999952317,
+        "beforePaintingError": 0.00808125,
+        "paintingError": 0.00808125,
+        "beforeSourceError": 0.005446912530555851,
+        "sourceError": 0.005446912530555851
+      },
+      {
+        "suite": "browser-hunodan",
+        "id": "hunodan-hjsta-01",
+        "passed": true,
+        "same": {
+          "prepared.json": true,
+          "cut_geometry.json": true,
+          "editable.svg": true
+        },
+        "clickToReadySeconds": 5.6822000000476836,
+        "beforePaintingError": 0.009175,
+        "paintingError": 0.009175,
+        "beforeSourceError": 0.00788781163434903,
+        "sourceError": 0.00788781163434903
+      },
+      {
+        "suite": "browser-hunodan",
+        "id": "hunodan-hjsta-02",
+        "passed": true,
+        "same": {
+          "prepared.json": true,
+          "cut_geometry.json": true,
+          "editable.svg": true
+        },
+        "clickToReadySeconds": 4.434899999856949,
+        "beforePaintingError": 0.00216875,
+        "paintingError": 0.00216875,
+        "beforeSourceError": 0.00216875,
+        "sourceError": 0.00216875
+      },
+      {
+        "suite": "browser-hunodan",
+        "id": "hunodan-hjsta-03",
+        "passed": true,
+        "same": {
+          "prepared.json": true,
+          "cut_geometry.json": true,
+          "editable.svg": true
+        },
+        "clickToReadySeconds": 8.495800000190735,
+        "beforePaintingError": 0.01418125,
+        "paintingError": 0.01418125,
+        "beforeSourceError": 0.012257224468092359,
+        "sourceError": 0.012257224468092359
+      },
+      {
+        "suite": "browser-hunodan",
+        "id": "hunodan-hjsta-04",
+        "passed": true,
+        "same": {
+          "prepared.json": true,
+          "cut_geometry.json": true,
+          "editable.svg": true
+        },
+        "clickToReadySeconds": 7.226,
+        "beforePaintingError": 0.0063625,
+        "paintingError": 0.0063625,
+        "beforeSourceError": 0.004885081604658325,
+        "sourceError": 0.004885081604658325
+      },
+      {
+        "suite": "browser-hunodan",
+        "id": "hunodan-hjsta-05",
+        "passed": true,
+        "same": {
+          "prepared.json": true,
+          "cut_geometry.json": false,
+          "editable.svg": false
+        },
+        "clickToReadySeconds": 6.724599999904632,
+        "beforePaintingError": 0.0132875,
+        "paintingError": 0.01328125,
+        "beforeSourceError": 0.010570753577277242,
+        "sourceError": 0.010577465166850116
+      }
+    ]
+  },
+  "native": {
+    "status": "native-and-editable-complete-full-suite-pending",
+    "caseCount": 55,
+    "passed": 53,
+    "failures": [
+      "photo-outline-star",
+      "photo-bauble"
+    ],
+    "sameGeometry": 37,
+    "sameCounts": 55,
+    "improved": 5,
+    "worse": 11,
+    "geometryAndPaperPassed": 55,
+    "method": "Fresh timed fits compared with prior completed release candidate. Timing-dependent search varies; this is not an isolated causal estimate of checkpoint selection.",
+    "rows": [
+      {
+        "id": "hunodan-hjfig-01",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": true,
+        "beforeError": 0.009799111111111111,
+        "error": 0.009799111111111111,
+        "delta": 0.0,
+        "sameCounts": true,
+        "beforeSeconds": 3.752089583,
+        "seconds": 3.7138404170000006
+      },
+      {
+        "id": "hunodan-hjfig-02",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": true,
+        "beforeError": 0.0056125,
+        "error": 0.0056125,
+        "delta": 0.0,
+        "sameCounts": true,
+        "beforeSeconds": 3.662511583,
+        "seconds": 3.6538708749999995
+      },
+      {
+        "id": "hunodan-hjfig-03",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": true,
+        "beforeError": 0.006634666666666666,
+        "error": 0.006634666666666666,
+        "delta": 0.0,
+        "sameCounts": true,
+        "beforeSeconds": 4.267853375,
+        "seconds": 4.002924209
+      },
+      {
+        "id": "hunodan-hjfig-04",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": true,
+        "beforeError": 0.013824,
+        "error": 0.013824,
+        "delta": 0.0,
+        "sameCounts": true,
+        "beforeSeconds": 4.468190709000001,
+        "seconds": 4.572556667
+      },
+      {
+        "id": "hunodan-hjfig-05",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": true,
+        "beforeError": 0.008021555177909465,
+        "error": 0.008021555177909465,
+        "delta": 0.0,
+        "sameCounts": true,
+        "beforeSeconds": 5.937545167000001,
+        "seconds": 5.988749291
+      },
+      {
+        "id": "hunodan-hjfla-01",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": true,
+        "beforeError": 0.007181803385416667,
+        "error": 0.007181803385416667,
+        "delta": 0.0,
+        "sameCounts": true,
+        "beforeSeconds": 5.969792125,
+        "seconds": 6.46584775
+      },
+      {
+        "id": "hunodan-hjcur-01",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": true,
+        "beforeError": 0.005148444444444444,
+        "error": 0.005148444444444444,
+        "delta": 0.0,
+        "sameCounts": true,
+        "beforeSeconds": 5.512708792000001,
+        "seconds": 5.538432458
+      },
+      {
+        "id": "hunodan-hjcur-02",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": true,
+        "beforeError": 0.0050702222222222225,
+        "error": 0.0050702222222222225,
+        "delta": 0.0,
+        "sameCounts": true,
+        "beforeSeconds": 7.142227667,
+        "seconds": 6.805219375000001
+      },
+      {
+        "id": "hunodan-hjcur-03",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": true,
+        "beforeError": 0.004522666666666667,
+        "error": 0.004522666666666667,
+        "delta": 0.0,
+        "sameCounts": true,
+        "beforeSeconds": 5.315158417,
+        "seconds": 5.273048875000001
+      },
+      {
+        "id": "hunodan-hjcur-04",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": true,
+        "beforeError": 0.005639111111111111,
+        "error": 0.005639111111111111,
+        "delta": 0.0,
+        "sameCounts": true,
+        "beforeSeconds": 7.14395925,
+        "seconds": 6.777326124999999
+      },
+      {
+        "id": "hunodan-hjcur-05",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": true,
+        "beforeError": 0.00933688888888889,
+        "error": 0.00933688888888889,
+        "delta": 0.0,
+        "sameCounts": true,
+        "beforeSeconds": 4.4972984160000005,
+        "seconds": 4.252216917
+      },
+      {
+        "id": "hunodan-hjhih-01",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": true,
+        "beforeError": 0.006040430615586996,
+        "error": 0.006040430615586996,
+        "delta": 0.0,
+        "sameCounts": true,
+        "beforeSeconds": 6.7806359590000005,
+        "seconds": 6.471889875
+      },
+      {
+        "id": "hunodan-hjhih-02",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": true,
+        "beforeError": 0.003899406226779104,
+        "error": 0.003899406226779104,
+        "delta": 0.0,
+        "sameCounts": true,
+        "beforeSeconds": 4.974855334,
+        "seconds": 4.891716958
+      },
+      {
+        "id": "hunodan-hjhih-04",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": false,
+        "beforeError": 0.007776029627903062,
+        "error": 0.007879623694552895,
+        "delta": 0.00010359406664983261,
+        "sameCounts": true,
+        "beforeSeconds": 7.360161124999999,
+        "seconds": 8.491282417
+      },
+      {
+        "id": "hunodan-hjstr-01",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": true,
+        "beforeError": 0.007550237322696868,
+        "error": 0.007550237322696868,
+        "delta": 0.0,
+        "sameCounts": true,
+        "beforeSeconds": 4.400261500000001,
+        "seconds": 4.68143775
+      },
+      {
+        "id": "hunodan-hjstr-02",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": true,
+        "beforeError": 0.004365548980933596,
+        "error": 0.004365548980933596,
+        "delta": 0.0,
+        "sameCounts": true,
+        "beforeSeconds": 6.285398916999999,
+        "seconds": 6.13842275
+      },
+      {
+        "id": "hunodan-hjstr-03",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": true,
+        "beforeError": 0.0056129769369752365,
+        "error": 0.0056129769369752365,
+        "delta": 0.0,
+        "sameCounts": true,
+        "beforeSeconds": 7.915815792,
+        "seconds": 8.001053792
+      },
+      {
+        "id": "hunodan-hjsta-01",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": true,
+        "beforeError": 0.007922437673130193,
+        "error": 0.007922437673130193,
+        "delta": 0.0,
+        "sameCounts": true,
+        "beforeSeconds": 5.430425625,
+        "seconds": 5.350139749999999
+      },
+      {
+        "id": "hunodan-hjsta-02",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": true,
+        "beforeError": 0.00221875,
+        "error": 0.00221875,
+        "delta": 0.0,
+        "sameCounts": true,
+        "beforeSeconds": 4.642806625,
+        "seconds": 4.201801499999999
+      },
+      {
+        "id": "hunodan-hjsta-03",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": true,
+        "beforeError": 0.012352664480635904,
+        "error": 0.012352664480635904,
+        "delta": 0.0,
+        "sameCounts": true,
+        "beforeSeconds": 8.150151082999999,
+        "seconds": 7.974949792
+      },
+      {
+        "id": "hunodan-hjsta-04",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": true,
+        "beforeError": 0.0050250552896055544,
+        "error": 0.0050250552896055544,
+        "delta": 0.0,
+        "sameCounts": true,
+        "beforeSeconds": 6.579216583,
+        "seconds": 6.34692475
+      },
+      {
+        "id": "hunodan-hjsta-05",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": false,
+        "beforeError": 0.010624446293860237,
+        "error": 0.010725120137453354,
+        "delta": 0.00010067384359311628,
+        "sameCounts": true,
+        "beforeSeconds": 6.4108297919999995,
+        "seconds": 6.827326167
+      },
+      {
+        "id": "hard-bibel-star-outline",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": true,
+        "beforeError": 0.0116,
+        "error": 0.0116,
+        "delta": 0.0,
+        "sameCounts": true,
+        "beforeSeconds": 7.831613625,
+        "seconds": 7.667393999999999
+      },
+      {
+        "id": "hard-bibel-star-outline-half",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": true,
+        "beforeError": 0.015772035669626965,
+        "error": 0.015772035669626965,
+        "delta": 0.0,
+        "sameCounts": true,
+        "beforeSeconds": 5.9775688339999995,
+        "seconds": 5.763859709
+      },
+      {
+        "id": "hard-bibel-star-outline-jpeg75",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": true,
+        "beforeError": 0.016825,
+        "error": 0.016825,
+        "delta": 0.0,
+        "sameCounts": true,
+        "beforeSeconds": 3.7274535,
+        "seconds": 4.042708375
+      },
+      {
+        "id": "hard-flettede-puppy-half",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": false,
+        "beforeError": 0.01180802103879027,
+        "error": 0.011821170282708744,
+        "delta": 1.3149243918474454e-05,
+        "sameCounts": true,
+        "beforeSeconds": 20.30894925,
+        "seconds": 20.240667541000004
+      },
+      {
+        "id": "photo-outline-star",
+        "beforePassed": false,
+        "passed": false,
+        "sameGeometry": false,
+        "beforeError": 0.0074875,
+        "error": 0.00743125,
+        "delta": -5.6249999999999876e-05,
+        "sameCounts": true,
+        "beforeSeconds": 9.355057833,
+        "seconds": 9.103071708000002
+      },
+      {
+        "id": "photo-floral-checker",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": false,
+        "beforeError": 0.01413125,
+        "error": 0.01334375,
+        "delta": -0.0007875,
+        "sameCounts": true,
+        "beforeSeconds": 10.314371084,
+        "seconds": 10.318245667
+      },
+      {
+        "id": "photo-dense-checker",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": true,
+        "beforeError": 0.00699375,
+        "error": 0.00699375,
+        "delta": 0.0,
+        "sameCounts": true,
+        "beforeSeconds": 9.178253583,
+        "seconds": 8.641362125000002
+      },
+      {
+        "id": "photo-bird",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": false,
+        "beforeError": 0.01963125,
+        "error": 0.01963125,
+        "delta": 0.0,
+        "sameCounts": true,
+        "beforeSeconds": 10.038760583,
+        "seconds": 9.955001082999999
+      },
+      {
+        "id": "photo-leaf",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": false,
+        "beforeError": 0.00949375,
+        "error": 0.00929375,
+        "delta": -0.00020000000000000052,
+        "sameCounts": true,
+        "beforeSeconds": 9.215602708,
+        "seconds": 9.652881916999998
+      },
+      {
+        "id": "photo-gift",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": false,
+        "beforeError": 0.01659375,
+        "error": 0.01666875,
+        "delta": 7.499999999999868e-05,
+        "sameCounts": true,
+        "beforeSeconds": 9.589833417,
+        "seconds": 9.590353333
+      },
+      {
+        "id": "photo-gingerbread",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": true,
+        "beforeError": 0.010925,
+        "error": 0.010925,
+        "delta": 0.0,
+        "sameCounts": true,
+        "beforeSeconds": 6.65751425,
+        "seconds": 6.746832375
+      },
+      {
+        "id": "photo-white-birds",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": true,
+        "beforeError": 0.00379375,
+        "error": 0.00379375,
+        "delta": 0.0,
+        "sameCounts": true,
+        "beforeSeconds": 5.774168334,
+        "seconds": 5.5897225
+      },
+      {
+        "id": "photo-flower",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": false,
+        "beforeError": 0.00350625,
+        "error": 0.0035875,
+        "delta": 8.125000000000016e-05,
+        "sameCounts": true,
+        "beforeSeconds": 5.997964708,
+        "seconds": 6.055329916000001
+      },
+      {
+        "id": "photo-warped-checker",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": false,
+        "beforeError": 0.0137,
+        "error": 0.0136125,
+        "delta": -8.750000000000077e-05,
+        "sameCounts": true,
+        "beforeSeconds": 10.414189458,
+        "seconds": 10.52140675
+      },
+      {
+        "id": "photo-round-checker",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": false,
+        "beforeError": 0.0120375,
+        "error": 0.0120875,
+        "delta": 4.99999999999997e-05,
+        "sameCounts": true,
+        "beforeSeconds": 9.841214875,
+        "seconds": 9.758788625
+      },
+      {
+        "id": "photo-fine-checker",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": true,
+        "beforeError": 0.017075,
+        "error": 0.017075,
+        "delta": 0.0,
+        "sameCounts": true,
+        "beforeSeconds": 10.726169790999998,
+        "seconds": 10.701191541999998
+      },
+      {
+        "id": "photo-orb",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": false,
+        "beforeError": 0.0118875,
+        "error": 0.01189375,
+        "delta": 6.249999999999312e-06,
+        "sameCounts": true,
+        "beforeSeconds": 9.901983,
+        "seconds": 9.812315125000001
+      },
+      {
+        "id": "photo-stacked-hearts",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": false,
+        "beforeError": 0.00566875,
+        "error": 0.00578125,
+        "delta": 0.00011249999999999975,
+        "sameCounts": true,
+        "beforeSeconds": 8.71778825,
+        "seconds": 8.94122325
+      },
+      {
+        "id": "photo-jigsaw",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": false,
+        "beforeError": 0.01026875,
+        "error": 0.01031875,
+        "delta": 4.99999999999997e-05,
+        "sameCounts": true,
+        "beforeSeconds": 9.990388832999999,
+        "seconds": 9.885500209
+      },
+      {
+        "id": "photo-candle",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": true,
+        "beforeError": 0.0048375,
+        "error": 0.0048375,
+        "delta": 0.0,
+        "sameCounts": true,
+        "beforeSeconds": 3.378386375,
+        "seconds": 3.371623917
+      },
+      {
+        "id": "photo-maple-leaf",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": false,
+        "beforeError": 0.0086625,
+        "error": 0.008675,
+        "delta": 1.2500000000000358e-05,
+        "sameCounts": true,
+        "beforeSeconds": 9.758963415999999,
+        "seconds": 9.652035834
+      },
+      {
+        "id": "photo-crown",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": true,
+        "beforeError": 0.02273125,
+        "error": 0.02273125,
+        "delta": 0.0,
+        "sameCounts": true,
+        "beforeSeconds": 10.0470115,
+        "seconds": 10.034238792
+      },
+      {
+        "id": "photo-crossed-ribbons",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": true,
+        "beforeError": 0.0055283063279704305,
+        "error": 0.0055283063279704305,
+        "delta": 0.0,
+        "sameCounts": true,
+        "beforeSeconds": 7.950898584000001,
+        "seconds": 8.395548833000001
+      },
+      {
+        "id": "photo-bauble",
+        "beforePassed": false,
+        "passed": false,
+        "sameGeometry": true,
+        "beforeError": 0.043805859226705615,
+        "error": 0.043805859226705615,
+        "delta": 0.0,
+        "sameCounts": true,
+        "beforeSeconds": 9.96843275,
+        "seconds": 9.817235542
+      },
+      {
+        "id": "photo-bottom-flower",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": true,
+        "beforeError": 0.007314720875762472,
+        "error": 0.007314720875762472,
+        "delta": 0.0,
+        "sameCounts": true,
+        "beforeSeconds": 9.798056791999999,
+        "seconds": 9.725217832999999
+      },
+      {
+        "id": "photo-faceted-star",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": false,
+        "beforeError": 0.00643125,
+        "error": 0.0064125,
+        "delta": -1.8750000000000537e-05,
+        "sameCounts": true,
+        "beforeSeconds": 9.712655084,
+        "seconds": 8.636986666999999
+      },
+      {
+        "id": "photo-bibel-star-8",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": true,
+        "beforeError": 0.003675,
+        "error": 0.003675,
+        "delta": 0.0,
+        "sameCounts": true,
+        "beforeSeconds": 4.2333625,
+        "seconds": 4.1460445
+      },
+      {
+        "id": "photo-bibel-star-curved",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": true,
+        "beforeError": 0.0064625,
+        "error": 0.0064625,
+        "delta": 0.0,
+        "sameCounts": true,
+        "beforeSeconds": 9.4210175,
+        "seconds": 9.410593
+      },
+      {
+        "id": "photo-bibel-star-outline",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": true,
+        "beforeError": 0.0116,
+        "error": 0.0116,
+        "delta": 0.0,
+        "sameCounts": true,
+        "beforeSeconds": 7.388259917,
+        "seconds": 7.394705416999999
+      },
+      {
+        "id": "photo-bibel-cross",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": true,
+        "beforeError": 0.00243125,
+        "error": 0.00243125,
+        "delta": 0.0,
+        "sameCounts": true,
+        "beforeSeconds": 3.618379667,
+        "seconds": 3.738007333
+      },
+      {
+        "id": "photo-flettede-puppy",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": false,
+        "beforeError": 0.01036875,
+        "error": 0.01036875,
+        "delta": 0.0,
+        "sameCounts": true,
+        "beforeSeconds": 9.506596625,
+        "seconds": 9.562607917000001
+      },
+      {
+        "id": "photo-flettede-stonehenge",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": true,
+        "beforeError": 0.0143875,
+        "error": 0.0143875,
+        "delta": 0.0,
+        "sameCounts": true,
+        "beforeSeconds": 8.600070125,
+        "seconds": 8.924182542
+      },
+      {
+        "id": "photo-flettede-viking",
+        "beforePassed": true,
+        "passed": true,
+        "sameGeometry": false,
+        "beforeError": 0.0201,
+        "error": 0.0207875,
+        "delta": 0.0006875000000000006,
+        "sameCounts": true,
+        "beforeSeconds": 10.004041583,
+        "seconds": 10.124671458
+      }
+    ]
+  },
+  "editable": {
+    "passed": 55,
+    "completeCandidatesPassed": 53,
+    "geometryAndPaperPassed": 55,
+    "sourceFilesVerified": 1025
+  },
+  "attribution": {
+    "method": "Fresh timed fits compared with preceding release. Changes are not isolated causal estimates; fixed-geometry no-time-limit comparison is reported separately.",
+    "puppy": "Identical polishing checkpoints; final accepted sharing count changes from five to six. No best_source_checkpoint selection branch used.",
+    "viking": "Largest native error increase is 0.06875 percentage points. No new checkpoint-selection branch used; polishing starts from different geometry and finishes at step 59 instead of 79. Both pass but this is not a uniform quality improvement.",
+    "floralChecker": "Largest native error decrease is 0.07875 percentage points. No new checkpoint-selection branch used; polishing checkpoint history differs.",
+    "selectedEarlierCheckpoint": "Some fresh cases do take the new checkpoint branch, including stacked hearts and Hunodan hjhih-04. An improved intermediate source score does not establish lower eventual independent-renderer error."
+  },
+  "visualReview": {
+    "reviewed": [
+      "browser puppy before/after",
+      "native floral checker before/after",
+      "native viking before/after"
+    ],
+    "finding": "Puppy still has false shared-cut seams. Floral and Viking differences are small and retain broad motifs; neither comparison establishes exact ground-truth reconstruction."
+  },
+  "artifactsSha256": {
+    "tmp/heart-learning/shared-best-checkpoint-v1/qa/browser-comparison.json": "d5eb523daacfc7decfa7123de8c1a8a8ce679c268d22ae443fa6e0ac0d751184",
+    "tmp/heart-learning/shared-best-checkpoint-v1/corpus/comparison.json": "624d7b622956cd972d2b1bbe6385e489e9f0d0df766896a228e1d799dbd0c997",
+    "tmp/heart-learning/shared-best-checkpoint-v1/corpus/audit-results.json": "66a19d958cb0ca554ec59087583f29f82d500fe3773c1419910f6da85f5900f1",
+    "tmp/heart-learning/shared-best-checkpoint-v1/qa/source.json": "900909af04396371503f7e434dc62b0328377d4900d256f4d121f79776904c1d",
+    "tmp/heart-learning/shared-best-checkpoint-v1/qa/served-assets.json": "9f165c7c7f6790f0d5ce945833ca07ac860f525b9b05c99156a34ca37ae4e82f"
+  }
+}

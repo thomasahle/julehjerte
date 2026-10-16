@@ -97,8 +97,16 @@ feature-change comparisons pass. Independent rendering improves two changed
 cases but worsens the already failing bauble by two pixels and the historical
 floral checker by one; those small sampling disagreements remain recorded.
 All four changed pairs were inspected and retain their broader visual defects.
-Full fresh-fit, browser and repository QA is pending; this is not a new photo
-benchmark success or a demonstrated speed improvement.
+The [fresh release replay](sharing-best-checkpoint-release-qa.json) passes all
+29 browser workflows; the 22 Hunodan cases take **5.76 s median / 8.86 s maximum**
+from click to editable result. The 55 native fits retain **53 passing cases** and
+the same two failures; all 55 editable conversions pass fidelity, geometry and
+paper checks. Slit counts are unchanged and 37 native geometries are identical
+to the preceding release. Five independent errors improve and eleven worsen
+within the same acceptance status; timed searches follow different refinement
+paths. The largest change in either direction does not use the new checkpoint
+selection branch. These are not uniform quality gains or new photo successes.
+Type checking, lint and build pass; the full test suite is still running.
 
 The [completed paired corpus and editable audits](refinement-checkpoint-corpus-results.json)
 retain **53/55 passing masks** in both arms, including all 22 Hunodan and four
