@@ -18,26 +18,27 @@ import {loadNumericalKernel} from '../../static/inverse/core/numerical-kernel.js
 import {readHardPhoto} from './hard-photo-data.mjs';
 import {renderExportedWeave} from './export-renderer.mjs';
 
-test('longer refinement retains a geometry-valid uncertain checkpoint for finer paper verification',async()=>{
+test('longer gift refinement preserves a finer-verified export below the original error limit',async()=>{
   const fixture=JSON.parse(await fs.readFile('scripts/inverse/fixtures/gift-refinement-checkpoint.json'));
   const catalogue=JSON.parse(await fs.readFile(fixture.sourceCatalogue)),photo=await readHardPhoto(catalogue.source);
   const cfg=settings({...AUTOMATIC_PRESET,trials:0,preferMatchingSheets:false});
-  const input=prepare({...photo,quad:fixture.quad},cfg).target,source=input.sourceImage;
+  const input=prepare({...photo,quad:fixture.quad},cfg).target,source=input.sourceImage,original=source.mask.slice();
   assert.equal(createHash('sha256').update(source.mask).digest('hex'),fixture.maskSha256);
   await loadNumericalKernel();
   const graph=new CurveGraph(fixture.paths,fixture.width);
-  // The old selector returned an illegal 1.98% checkpoint, throwing away the
-  // earlier 2.41% geometry whose coarse paper uncertainty was resolvable.
-  const fitted=refineCurves(graph,resize(source.probability,400,256),256,fixture.phase,cfg,{input,steps:750,rate:.05});
-  assert.ok(fitted.history.some(h=>!h.geometry&&h.error<fitted.error));
-  assert.equal(fitted.geometryPassed,true);
-  assert.equal(fitted.paperPassed,false,'An uncertain checkpoint is not a paper certificate');
-  assert.equal(fitted.paper.status,'uncertain');
-  const solution=graph.solution(fitted.points,fixture.phase,input);
-  assert.equal(materialAudit(solution,{...cfg,materialResolution:700}).status,'pass');
+  // Use the app's actual policy. Guarded diagonal connections now establish
+  // a safe incumbent; finer checking must prevent premature coarse rollback.
+  const fitted=refineCurves(graph,resize(source.probability,400,256),256,fixture.phase,cfg,{input,steps:750,rate:.05,resolvePaperBeforeRollback:true});
+  assert.equal(fitted.geometryPassed,true);assert.equal(fitted.paperPassed,true);
+  assert.equal(fitted.paperVerification.status,'pass');assert.equal(fitted.paperVerification.resolution,700);
+  const solution=graph.solution(fitted.points,fixture.phase,input),finer={...cfg,materialResolution:fitted.paperVerification.resolution};
+  assert.equal(materialAudit(solution,cfg).status,'uncertain','The unchanged cuts still need a finer paper check.');
+  assert.equal(finalMaterialAudit(solution,finer).status,'pass');
+  assert.equal(validate(solution,finer,{checkImage:false,finalGeometry:true}).passed,true);
   const rendered=await renderExportedWeave(solutionJSON(solution),400);
   assert.ok(mismatch(rendered.mask,source.mask)<.025);
   assert.equal(auditImageFeatures(source,rendered.mask).passed,true);
+  assert.deepEqual(source.mask,original);
 });
 
 test('a coarse paper pass retains a better uncertain alternative without certifying it',async()=>{

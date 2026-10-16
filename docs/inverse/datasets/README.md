@@ -31,6 +31,17 @@ The inventory, with material annotations updated on 2026-10-16, contains:
 
 ## Current results and limits
 
+[Initial narrow-neck recovery](initial-paper-separation-results.json) reuses the
+existing local separation retry after a complete paper-failed refinement block,
+only when the best safe fitting error still exceeds the image target. A fixed-work
+Viking replay improves independently rendered disagreement from 3.00% to 2.51%;
+a fresh ten-second solve improves from 2.78% to 2.13%. The guard avoids changing
+already accurate trajectories: all 22 Hunodan errors remain identical, with all
+22 fits under ten seconds (maximum 8.81 s). Ten focused tests pass, including
+actual export checks and rejection of a lower-error paper-invalid checkpoint.
+Full application, browser and photographic-corpus QA is pending; no new broad
+photographic success count is claimed.
+
 The [reviewed cream/blue fish photograph](fish-annotation-admission.json) adds one
 visible-body and partial-material annotation. Its handle, cast shadow and four
 narrow contacts remain unknown; no hidden cut connectivity is asserted. Final
@@ -70,7 +81,8 @@ validate the blue-star and horizontally shifted puppy exports. Both pass geometr
 and paper checks, retaining the original error and small-opening requirements.
 Three focused tests now check those outcomes instead of requiring historical
 uncertain intermediate states; all three pass. The full-run count above remains
-the earlier frozen run, and the gift/Viking regressions remain unresolved.
+the earlier frozen run; the gift/Viking follow-up is recorded in the initial
+narrow-neck recovery study above.
 
 [Keeping the best valid rollback point](best-safe-rollback-results.json) restores
 the shifted bird's small eye while preserving exploration through worse valid

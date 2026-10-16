@@ -100,7 +100,7 @@ export function curvePenalty(graph,points,cfg,{separationWeight=12,paperRecovery
   return{loss,gradient,minRadius};
 }
 
-export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=40,deadline=Infinity,onProgress=()=>{},input={},rate=.035,identicalSheets=false,stopWhen=null,selection='boundary',weights=null,preferCheckpoint=null,skipRepeatedRollbacks=false,finalGeometry=true,resolvePaperBeforeRollback=false,paperVerificationResolution=700,paperVerificationReserve=250,retryPaperSeparation=false,paperRecovery=null,paperAudit=materialAudit}={}){
+export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=40,deadline=Infinity,onProgress=()=>{},input={},rate=.035,identicalSheets=false,stopWhen=null,selection='boundary',weights=null,preferCheckpoint=null,skipRepeatedRollbacks=false,finalGeometry=true,resolvePaperBeforeRollback=false,paperVerificationResolution=700,paperVerificationReserve=250,retryPaperSeparation=false,paperSeparationErrorThreshold=null,paperRecovery=null,paperAudit=materialAudit}={}){
   if(!Number.isInteger(checkpointEvery)||checkpointEvery<1)throw new RangeError('Checkpoint interval must be a positive integer.');
   // Compile the weighted force field once, not on every optimization step.
   let penaltySettings=cfg,paperSeparationRetry=null;
@@ -221,7 +221,7 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=4
       // the general fitter's shorter, three-width force neighbourhood. Keep
       // the requested validation rules and the ordinary safe rollback point.
       // Successful blocks and initial transient failures keep their forces.
-      if(retryPaperSeparation&&!paperSeparationRetry&&step>=checkpointEvery&&cfg.localNeighborhoodFactor>3&&proposals.some(v=>v.validation?.passed&&v.paper?.status==='fail'&&v.paper?.offset?.status!=='fail')){
+      if(retryPaperSeparation&&!paperSeparationRetry&&(paperSeparationErrorThreshold==null||best.error>paperSeparationErrorThreshold)&&step>=checkpointEvery&&cfg.localNeighborhoodFactor>3&&proposals.some(v=>v.validation?.passed&&v.paper?.status==='fail'&&v.paper?.offset?.status!=='fail')){
         penaltySettings={...cfg,localNeighborhoodFactor:3};
         paperSeparationRetry={step,previousLocalFactor:cfg.localNeighborhoodFactor,localFactor:3};
         history.at(-1).paperSeparationRetry=paperSeparationRetry;

@@ -1,0 +1,486 @@
+{
+  "schema": "initial-paper-separation-retry-1",
+  "status": "integrated; ten focused tests pass; full application/browser/photographic QA pending",
+  "problem": "After a paper-failed block, the original long same-slit exclusion can leave a narrow return without a corrective separation force. Initial refinement repeatedly rolls back while a lower-error shape remains paper-invalid.",
+  "change": "Reuse the existing shorter same-slit separation-force retry in initial refinement, only after a full failed block and only when the best safe fitting error exceeds the configured image target. Existing polishing callers keep their prior behavior. Validation, rollback incumbent, requested steps and deadline remain unchanged.",
+  "rejectedAlternatives": {
+    "boundedExploration": "Allowing two/four unresolved checkpoints worsened selected Viking/floral results. With production finer checks, gift/floral gain nothing. Not integrated.",
+    "largerCheckpointPortfolio": "All lower-error rejected current Viking checkpoints fail actual finer paper checks. Keeping more of those points does not recover a passing better fit.",
+    "unrestrictedRetry": "Improved Viking/gift but increased hjfig-02 disagreement from 1.334044% to 1.4144%. The guard preserves already accurate initial trajectories."
+  },
+  "vikingCheckpointAudit": [
+    {
+      "step": 80,
+      "independentError": 0.0392125,
+      "coarse": "uncertain",
+      "fine": "pass",
+      "final": "pass"
+    },
+    {
+      "step": 120,
+      "independentError": 0.0350875,
+      "coarse": "uncertain",
+      "fine": "pass",
+      "final": "pass"
+    },
+    {
+      "step": 160,
+      "independentError": 0.03209375,
+      "coarse": "pass",
+      "fine": "pass",
+      "final": "pass"
+    },
+    {
+      "step": 200,
+      "independentError": 0.03055625,
+      "coarse": "fail",
+      "fine": "fail",
+      "final": "fail"
+    },
+    {
+      "step": 240,
+      "independentError": 0.02931875,
+      "coarse": "fail",
+      "fine": "fail",
+      "final": "fail"
+    },
+    {
+      "step": 280,
+      "independentError": 0.0299625,
+      "coarse": "uncertain",
+      "fine": "pass",
+      "final": "pass"
+    },
+    {
+      "step": 320,
+      "independentError": 0.02851875,
+      "coarse": "fail",
+      "fine": "fail",
+      "final": "fail"
+    },
+    {
+      "step": 360,
+      "independentError": 0.02894375,
+      "coarse": "fail",
+      "fine": "fail",
+      "final": "fail"
+    },
+    {
+      "step": 394,
+      "independentError": 0.02930625,
+      "coarse": "uncertain",
+      "fine": "fail",
+      "final": "fail"
+    }
+  ],
+  "freshPhotoComparisons": [
+    {
+      "case": "viking",
+      "arms": [
+        {
+          "arm": "baseline",
+          "seconds": 9.683076458,
+          "templateChecksPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "renders": [
+            {
+              "resolution": 400,
+              "disagreement": 0.02783125,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "disagreement": 0.02971875,
+              "featuresPassed": true
+            }
+          ],
+          "artifact": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/initial-paper-separation-retry-v1/fresh/baseline-viking/result.json",
+          "sha256": "6e409ddd16063e9db91c47ce1e0574924ac3e2af94507bc3cdf6d16eeaf43067"
+        },
+        {
+          "arm": "unrestricted-retry",
+          "seconds": 9.867098791999998,
+          "templateChecksPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "renders": [
+            {
+              "resolution": 400,
+              "disagreement": 0.021075,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "disagreement": 0.022925,
+              "featuresPassed": true
+            }
+          ],
+          "artifact": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/initial-paper-separation-retry-v1/fresh/candidate-viking/result.json",
+          "sha256": "48301e3a32bde4b5b98602bb9ac9f904886df4ef71d00320cb1cf502007bb536"
+        },
+        {
+          "arm": "guarded-retry",
+          "seconds": 9.947416041,
+          "templateChecksPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "renders": [
+            {
+              "resolution": 400,
+              "disagreement": 0.02130625,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "disagreement": 0.023309375,
+              "featuresPassed": true
+            }
+          ],
+          "artifact": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/guarded-initial-paper-retry-v1/candidate-viking/result.json",
+          "sha256": "3ef7cfcf744974b25611a7630d84d4dc79ba0c7248a1e00d9a65c56ff9fbe73d"
+        }
+      ]
+    },
+    {
+      "case": "gift",
+      "arms": [
+        {
+          "arm": "baseline",
+          "seconds": 9.544800709,
+          "templateChecksPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "renders": [
+            {
+              "resolution": 400,
+              "disagreement": 0.016575,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "disagreement": 0.0186859375,
+              "featuresPassed": true
+            }
+          ],
+          "artifact": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/initial-paper-separation-retry-v1/fresh/baseline-gift/result.json",
+          "sha256": "eea2159d30c62f0a78ea20279f0cd711f02a70389bcddb24d8e2ed860069a2f6"
+        },
+        {
+          "arm": "unrestricted-retry",
+          "seconds": 9.655628792000002,
+          "templateChecksPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "renders": [
+            {
+              "resolution": 400,
+              "disagreement": 0.01420625,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "disagreement": 0.0161828125,
+              "featuresPassed": true
+            }
+          ],
+          "artifact": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/initial-paper-separation-retry-v1/fresh/candidate-gift/result.json",
+          "sha256": "da0f66c1c4c9ac370054ccc93abc183ec42dee717aaac4fd3a17a312060953d2"
+        },
+        {
+          "arm": "guarded-retry",
+          "seconds": 9.575403166,
+          "templateChecksPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "renders": [
+            {
+              "resolution": 400,
+              "disagreement": 0.016575,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "disagreement": 0.0186859375,
+              "featuresPassed": true
+            }
+          ],
+          "artifact": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/guarded-initial-paper-retry-v1/candidate-gift/result.json",
+          "sha256": "6fe6f7d642dacc15d13c2ef23be52f018edd20a1e6a64696e0ee57dc168ba47f"
+        }
+      ]
+    },
+    {
+      "case": "bird-x1",
+      "arms": [
+        {
+          "arm": "baseline",
+          "seconds": 9.754421749999999,
+          "templateChecksPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "renders": [
+            {
+              "resolution": 400,
+              "disagreement": 0.0252,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "disagreement": 0.026209375,
+              "featuresPassed": true
+            }
+          ],
+          "artifact": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/initial-paper-separation-retry-v1/fresh/baseline-bird-x1/result.json",
+          "sha256": "407ca5e4d5bcc42dd1a369b99e908d5a4d480a1a7dc341a303b3115c5464b7e4"
+        },
+        {
+          "arm": "unrestricted-retry",
+          "seconds": 9.788529333,
+          "templateChecksPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "renders": [
+            {
+              "resolution": 400,
+              "disagreement": 0.025225,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "disagreement": 0.0262171875,
+              "featuresPassed": true
+            }
+          ],
+          "artifact": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/initial-paper-separation-retry-v1/fresh/candidate-bird-x1/result.json",
+          "sha256": "718e4ce0f610c986f82d2ffbc7e5ac50018464df5ed191a27275b9413de37e60"
+        },
+        {
+          "arm": "guarded-retry",
+          "seconds": 9.802738292000003,
+          "templateChecksPassed": true,
+          "geometryPassed": true,
+          "paperStatus": "pass",
+          "renders": [
+            {
+              "resolution": 400,
+              "disagreement": 0.025225,
+              "featuresPassed": true
+            },
+            {
+              "resolution": 800,
+              "disagreement": 0.0262171875,
+              "featuresPassed": true
+            }
+          ],
+          "artifact": "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/guarded-initial-paper-retry-v1/candidate-bird-x1/result.json",
+          "sha256": "5f6496a9f8e19acbc0ef45d7cb8c5baf42248763388ec53fb1d259a760ab7899"
+        }
+      ]
+    }
+  ],
+  "hunodan": {
+    "passed": 22,
+    "total": 22,
+    "maximumSeconds": 8.810663542000002,
+    "unchangedErrors": 22,
+    "rows": [
+      {
+        "id": "hjfig-01",
+        "seconds": 3.937450042,
+        "passed": true,
+        "error": 0.009799111111111111,
+        "previousError": 0.009799111111111111
+      },
+      {
+        "id": "hjfig-02",
+        "seconds": 4.980361333000001,
+        "passed": true,
+        "error": 0.013340444444444445,
+        "previousError": 0.013340444444444445
+      },
+      {
+        "id": "hjfig-03",
+        "seconds": 3.6919990830000007,
+        "passed": true,
+        "error": 0.006634666666666666,
+        "previousError": 0.006634666666666666
+      },
+      {
+        "id": "hjfig-04",
+        "seconds": 3.792057249999998,
+        "passed": true,
+        "error": 0.013824,
+        "previousError": 0.013824
+      },
+      {
+        "id": "hjfig-05",
+        "seconds": 5.6582388749999994,
+        "passed": true,
+        "error": 0.008021555177909465,
+        "previousError": 0.008021555177909465
+      },
+      {
+        "id": "hjfla-01",
+        "seconds": 5.799820583000001,
+        "passed": true,
+        "error": 0.007181803385416667,
+        "previousError": 0.007181803385416667
+      },
+      {
+        "id": "hjcur-01",
+        "seconds": 5.127409082999999,
+        "passed": true,
+        "error": 0.005148444444444444,
+        "previousError": 0.005148444444444444
+      },
+      {
+        "id": "hjcur-02",
+        "seconds": 8.810663542000002,
+        "passed": true,
+        "error": 0.0050702222222222225,
+        "previousError": 0.0050702222222222225
+      },
+      {
+        "id": "hjcur-03",
+        "seconds": 4.961068792000005,
+        "passed": true,
+        "error": 0.004522666666666667,
+        "previousError": 0.004522666666666667
+      },
+      {
+        "id": "hjcur-04",
+        "seconds": 7.0741388750000045,
+        "passed": true,
+        "error": 0.005639111111111111,
+        "previousError": 0.005639111111111111
+      },
+      {
+        "id": "hjcur-05",
+        "seconds": 3.788552624999997,
+        "passed": true,
+        "error": 0.00933688888888889,
+        "previousError": 0.00933688888888889
+      },
+      {
+        "id": "hjhih-01",
+        "seconds": 6.206649292000002,
+        "passed": true,
+        "error": 0.006040430615586996,
+        "previousError": 0.006040430615586996
+      },
+      {
+        "id": "hjhih-02",
+        "seconds": 4.502455667000002,
+        "passed": true,
+        "error": 0.003899406226779104,
+        "previousError": 0.003899406226779104
+      },
+      {
+        "id": "hjhih-04",
+        "seconds": 7.303238041000004,
+        "passed": true,
+        "error": 0.007776029627903062,
+        "previousError": 0.007776029627903062
+      },
+      {
+        "id": "hjstr-01",
+        "seconds": 3.9823851670000003,
+        "passed": true,
+        "error": 0.007550237322696868,
+        "previousError": 0.007550237322696868
+      },
+      {
+        "id": "hjstr-02",
+        "seconds": 6.084927792000002,
+        "passed": true,
+        "error": 0.004365548980933596,
+        "previousError": 0.004365548980933596
+      },
+      {
+        "id": "hjstr-03",
+        "seconds": 8.14135716700001,
+        "passed": true,
+        "error": 0.0056129769369752365,
+        "previousError": 0.0056129769369752365
+      },
+      {
+        "id": "hjsta-01",
+        "seconds": 4.7042373750000115,
+        "passed": true,
+        "error": 0.007929362880886427,
+        "previousError": 0.007929362880886427
+      },
+      {
+        "id": "hjsta-02",
+        "seconds": 4.16499495800001,
+        "passed": true,
+        "error": 0.0038045247395833335,
+        "previousError": 0.0038045247395833335
+      },
+      {
+        "id": "hjsta-03",
+        "seconds": 7.364436124999993,
+        "passed": true,
+        "error": 0.012332213049376572,
+        "previousError": 0.012332213049376572
+      },
+      {
+        "id": "hjsta-04",
+        "seconds": 6.582247499999998,
+        "passed": true,
+        "error": 0.0050250552896055544,
+        "previousError": 0.0050250552896055544
+      },
+      {
+        "id": "hjsta-05",
+        "seconds": 5.92329787499999,
+        "passed": true,
+        "error": 0.010624446293860237,
+        "previousError": 0.010624446293860237
+      }
+    ],
+    "timing": "Preparation, solving, validation and export; excludes photo decoding, external render and browser startup."
+  },
+  "limitations": [
+    "Existing development fixtures; no unseen-photo generalization claim.",
+    "Fresh solves use wall-clock budgets and can differ by a few pixels. Fixed-work Viking comparison isolates the force change.",
+    "The coarse fitting error is a retry heuristic; final acceptance still uses original-image, feature, geometry and paper checks.",
+    "Fine seams, bumps and uneven frame details remain visible.",
+    "No physical cutting or assembly validation."
+  ],
+  "artifacts": {
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/guarded-initial-paper-retry-v1/source.json": "ee89e568aac44069e7782155f59fa67e45ce808b3e401554594a09d0e76a2135",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/guarded-initial-paper-retry-v1/candidate.patch": "b69539621ab7bda54c63f54267ecccc7a7787b232ccf7e8cd2275c3fd94580fb",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/guarded-initial-paper-retry-v1/checks.json": "6736a03f0a825c0d2242a82b2bf59463c2cd2252441cd648f78d9d15fd907a52",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/guarded-initial-paper-retry-v1/hunodan/results.json": "e764d724845da693ffbad8395ddd3b25be3c405102f2382f755fb7f1e0452101",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/initial-paper-separation-retry-v1/fresh/hunodan/results.json": "bc3f03fe95150bba7440eddd5ea9dccab68f1074de8afaf7789cd6baace676a6",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/bounded-paper-exploration-v1/summary.json": "89d097765fb627d022af5e5c10902d23f0e72d70e07d66e25cac6bab2ecc62e2",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/bounded-paper-fine-policy-v1/summary.json": "a7b4d89c68893e5bdd4fe03391caf2462d67436de78b16d8a6760af7d70356de",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/viking-checkpoint-portfolio-v1/audit.json": "383b86ac5a6718cae0b3af34ff645a881a7ec3904adf8bca1a4e5321332ee947"
+  },
+  "fixedWorkViking": {
+    "stepsPerArm": 395,
+    "beforeIndependentError": 0.0299625,
+    "afterIndependentError": 0.02505,
+    "beforeAppSampledError": 0.0303125,
+    "afterPaperStatus": "pass",
+    "afterGeometryPassed": true,
+    "scope": "Identical initial curves, mask, steps and width requirements. Retry only changes local separation after step 200."
+  },
+  "verification": {
+    "focusedPassed": 10,
+    "focusedTotal": 10,
+    "focusedLog": "tmp/heart-learning/guarded-initial-paper-retry-v1/verification/focused.log",
+    "focusedLogSha256": "f813a7ce7526e180145ac91ae5c4bd1d40888b106168035283902c0d8fba3e4a",
+    "thresholdRegression": "The updated fixed-work test fails on the prior runtime because the already-accurate guard is ignored, and passes with the guard.",
+    "beforeLog": "tmp/heart-learning/guarded-initial-paper-retry-v1/verification/threshold-before.log",
+    "beforeLogSha256": "50fb08b4d8f6452e76ae82ba7d9f656cb8d26bde386eb7a0ae47750345c2efe8",
+    "runtimeMatchesBenchmarkedCandidate": {
+      "fit.js": "3a77f84783dbae215f4e04b9bf622d5825923c7edaca53eb40c18b7a4fd14fc3",
+      "refine.js": "25aa7bb6aa87dfc836bca6cc17ba0febf0079b07032dbea50dd4cc4b68eabc24"
+    },
+    "fullQA": "Pending; do not combine the focused results with earlier full-suite totals."
+  },
+  "visualReview": "Baseline and unrestricted Viking/gift renders, then guarded Viking/bird renders inspected at 800 pixels. Main silhouettes are retained, with improved Viking contours. Small contour bumps, border distortions and thin seams remain. Guarded gift has the same 400/800 errors as baseline; bird differs by four pixels at 400 and five at 800 while retaining its enclosed eye."
+}
