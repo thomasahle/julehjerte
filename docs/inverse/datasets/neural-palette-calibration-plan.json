@@ -1,0 +1,101 @@
+{
+  "schema": "neural-palette-calibration-plan-1",
+  "question": "Can predicted paper identities seed RGB palettes that preserve photographed boundaries better than the network material mask itself?",
+  "status": "predeclared before calibration outcomes",
+  "training": false,
+  "deployment": false,
+  "oldStudy": "tmp/heart-learning/material-corrected-scenes-v1",
+  "sourceManifest": "docs/inverse/datasets/real-manifest.json",
+  "sourceManifestSha256": "306d6d8bf96e97defa815cab8f336e9eab09b56ff325b1f81631d4765fa75123",
+  "modelReport": "tmp/heart-learning/material-corrected-scenes-v1/candidate/report.json",
+  "modelReportSha256": "47b1b5e1f8a50d53152a744d00b3750b7c1e96ca0d88511662fb4e1778122a29",
+  "predictionFile": "tmp/heart-learning/material-corrected-scenes-v1/comparison/candidate-predictions.npz",
+  "predictionSha256": "a06b13e092f9be1a0ecb23886b9f802b14144f0b459ede3f3c9be2147bf5b996",
+  "comparisonReport": "tmp/heart-learning/material-corrected-scenes-v1/comparison/report.json",
+  "comparisonReportSha256": "ad2e041989a369a19f6d0149f571665d2de5bdc6369730b0c5d573f708b8f6f4",
+  "cohorts": {
+    "previouslyEvaluated": 19,
+    "newlyAnnotated": 3
+  },
+  "arms": [
+    "network",
+    "learned-affine",
+    "learned-illumination",
+    "rgb-illumination"
+  ],
+  "parameters": {
+    "bodyConfidence": 0.8,
+    "materialLow": 0.2,
+    "materialHigh": 0.8,
+    "minimumSamplesPerPaper": 32,
+    "minimumColorDistance": 0.1,
+    "minimumEigenvalueRatio": 0.001,
+    "rgbClusterIterations": 10
+  },
+  "newCases": [
+    {
+      "id": "real-c0cc1ce97cf5e6a6-body-1",
+      "group": "checker-family",
+      "fold": "fold-dd50f2256463",
+      "labels": "tmp/heart-learning/contact-annotation-final-v1/labels-256",
+      "reason": "Printed decoration on an ordinary checker; use the checkpoint held out on every real checker."
+    },
+    {
+      "id": "real-c4a9ee6e2d0a4185-body-1",
+      "group": "framed-motif-family",
+      "fold": "fold-7f1a81db164f",
+      "labels": "tmp/heart-learning/contact-annotation-final-v1/labels-256",
+      "reason": "Conservatively keep the candle with all complex/framed motifs; checkpoint trained only on real checker-family photographs."
+    },
+    {
+      "id": "real-80794af7903e5d29-body-1",
+      "group": "framed-motif-family",
+      "fold": "fold-7f1a81db164f",
+      "labels": "tmp/heart-learning/fish-annotation-final-v1/labels-256",
+      "reason": "Conservatively keep the fish with complex/framed motifs; checkpoint trained only on real checker-family photographs."
+    }
+  ],
+  "evaluation": [
+    "Keep body probabilities byte-identical in every calibration arm. Only original RGB, predicted probabilities and full-source rectangle coverage enter palette calibration.",
+    "Use one fixed final checkpoint per held-out family; no new training, threshold sweep or per-photo model selection.",
+    "Reproduce the old nineteen-photo baseline metrics exactly before considering new outputs.",
+    "Report old nineteen and new three separately, plus both broad motif groups. Missing body remains an error in joint material metrics.",
+    "Inspect all source/prediction panels. Lower partial-region error is not evidence of correct contact topology.",
+    "No full-pipeline improvement claim without separate crop, fit, feature and geometry replay."
+  ],
+  "limitations": [
+    "All are visually inspected development photographs; this is not an unseen test.",
+    "Only two broad real motif groups and one trained seed.",
+    "The scalar-lighting model is empirical sRGB and cannot distinguish collinear paper colors from illumination; use an explicit affine fallback.",
+    "Printed ink may violate the two-color model and worsen paper identity.",
+    "Three new annotations remain globally unassigned and unused in training. This plan assigns only evaluation checkpoint provenance."
+  ],
+  "labelCatalogs": {
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-motifs/manifest.json": "9caa71574f688a27777fb35d16f8c47125bb0dccfd3681070147047e4f8bb887",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-printed/manifest.json": "0494aec7d9bce630f1101d422a192a2689e2d42513ffc834bd0650f78b4bfef5",
+    "tmp/heart-learning/fish-annotation-final-v1/labels-256/manifest.json": "91c85abd5a912ac50c6e283bcf1b0b39e8e8596d3fdbdcdce5a2d205d77522fa",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-protruding/manifest.json": "d853f81d3f226465e4cbf7e88ad876430b870678c3abbecb07aa5cc8ef65cbb7",
+    "tmp/heart-learning/contact-annotation-final-v1/labels-256/manifest.json": "c39a27b2289992e4c735d5b43f91288df3f338b35cda2ca31f8e72f07332e028",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-paper-scenes/manifest.json": "29070754513d7c11fb03bb8088867cb9454b3f06910a32ef5accd451d1d22e0c",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-palettes/manifest.json": "578a0eb0f03fe083903640ee2ffe586686c316c2faaaf56b3a792a82ca790ba3",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials/manifest.json": "1be905bd82bf5f18793ef2d31fa573f7dd976b5218991437d3c8d4902ccc95f6",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-colors/manifest.json": "0736a30bd8ed05538b74bd3cb9727a540834c6258d1327ae0a61c92cb3f06244",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-hanging/manifest.json": "89ba906f2e8a3c546ab3e7cf77ac49b479ff7411667a68dcb2178ba454f84cc3",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-pinterest/manifest.json": "43ad3b146fb44a73afdc9c5f5662adeec18c4819b9bd7d606ab7d8dacb5b7e00",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-curved/manifest.json": "42780e542336415ca00b72e707a697295f3a4e69720e3538d7685f2c281c1af1"
+  },
+  "implementation": {
+    "status": "offline prototype only",
+    "analyticTests": 4,
+    "testsPassed": 4,
+    "evaluation": "Queued after the currently running full solver/application QA and paired photographic benchmarks. No calibration outputs inspected yet.",
+    "artifacts": {
+      "tmp/heart-learning/neural-palette-calibration-v1/plan.json": "c95d73efe9bed80b415df7bffea3bafbe5c144b06aa4b68de7957931d27dab87",
+      "tmp/heart-learning/neural-palette-calibration-v1/palette_calibration.py": "9ad5f2dab79cba4a6dce51cdc00f24885e2f3589af6004cfd8fd692dce82c4cb",
+      "tmp/heart-learning/neural-palette-calibration-v1/test.py": "68d8e1b5785d9fafd0bb0ce5afd8d6ebefaaf8485f4f15d06370ba1c7e24d692",
+      "tmp/heart-learning/neural-palette-calibration-v1/tests.log": "84ff24306afcf5e19892adf32493aa9bc9dbc8db16870c6155e8e03c23864a33",
+      "tmp/heart-learning/neural-palette-calibration-v1/evaluate.py": "b752330aae7aad769783b8311a791ff4870eebf88dc84a10b7f09a99548bff45",
+      "tmp/heart-learning/neural-palette-calibration-v1/after-qa.py": "ddd1f93d287eccd7ea5f77ae127ec78d467a407ddeb9b030971dd3438dbcf857"
+    }
+  }
+}
