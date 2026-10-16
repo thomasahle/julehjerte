@@ -1,0 +1,61 @@
+{
+  "baseline": "2841a0e",
+  "current": "fd85519",
+  "passed": 22,
+  "medianSeconds": 5.988849999904632,
+  "maximumSeconds": 8.8505,
+  "masksIdentical": 22,
+  "geometryIdentical": 22,
+  "editableIdentical": 22,
+  "errorsEqual": 22,
+  "schema": "late-feature-browser-qa-1",
+  "status": "browser-complete-full-suite-running",
+  "browserWorkflowsPassed": 30,
+  "workflowGroups": {
+    "selectedOriginalPhotos": 2,
+    "smokeMasks": 5,
+    "clippedOriginalPhoto": 1,
+    "hunodan": 22
+  },
+  "qualification": "The two original-photo workflows verify UI and editable export; the dense checker remains above the image acceptance limit. Hunodan timing variation is not attributed to the new fallback, since every exported geometry and mask is identical.",
+  "fullSuite": {
+    "status": "running",
+    "expectedInverseTests": 1022,
+    "expectedApplicationTests": 874,
+    "expectedApplicationSkipped": 1
+  },
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/late-feature-release-v1/hunodan-comparison.json",
+      "sha256": "a6942864a3407be3a0e6920dc85aaffc35f0b7132bde934b8263608cd192ec27"
+    },
+    {
+      "path": "tmp/heart-learning/late-feature-release-v1/browser-checks.json",
+      "sha256": "274c2b617ed05a514273e8056a2da50820e5dec7f836553f5e3519232652f029"
+    },
+    {
+      "path": "tmp/heart-learning/late-feature-release-v1/qa/source.json",
+      "sha256": "90084f7d24efa4da5c089690626d0c3e66eae767dffeb53271427e9cdbc3ab29"
+    },
+    {
+      "path": "tmp/heart-learning/late-feature-release-v1/qa/served-assets.json",
+      "sha256": "a8f11ab6df44f34b1b99a8caa1bcfdf9a20ac7916b7161ac55849b1a609ecb8e"
+    },
+    {
+      "path": "tmp/heart-learning/late-feature-release-v1/qa/browser-selected/results.json",
+      "sha256": "801e8006a0948e75a52f2f74d29c23b50a5f120e5b3fb267831b1e24fe71d8b9"
+    },
+    {
+      "path": "tmp/heart-learning/late-feature-release-v1/qa/browser-smoke/results.json",
+      "sha256": "92fd5837012e94ce3d437befd5e8724e388a4f6d3dd4d88defb897cc4544939a"
+    },
+    {
+      "path": "tmp/heart-learning/late-feature-release-v1/qa/browser-coverage/results.json",
+      "sha256": "bd29439024c251cdaa6a5a16813984c2b4e0bede7d73d3eeec92c543efff01f3"
+    },
+    {
+      "path": "tmp/heart-learning/late-feature-release-v1/qa/browser-hunodan/results.json",
+      "sha256": "492136e7a91a2bb3ef3014ed25eff02014e4eaf5823ddab8a61c6b90ba7e81a1"
+    }
+  ]
+}
