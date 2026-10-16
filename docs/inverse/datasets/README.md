@@ -10,6 +10,23 @@ A [rough-selection bounds correction](selection-bounds-reconstruction.json) now 
 
 The [follow-up browser checks](late-feature-browser-qa.json) pass all 30 workflows. All 22 regular Hunodan cases remain below ten seconds (5.99 s median, 8.85 s maximum), with byte-identical masks, cut geometry and editable SVGs, and unchanged image error. The complete 1,022-test inverse suite is still running.
 
+The established photo benchmark and the neural experiments have different
+inputs and denominators. Their latest completed comparisons are:
+
+| Comparison | Result | Scope |
+| --- | ---: | --- |
+| [Established photo benchmark](refinement-checkpoint-corpus-results.json) | 27/31 | The latest fixed-mask replay retains 27/29 cropped inputs; two historical no-crop cases remain failures. Cropping was not rerun in that replay. |
+| [Mixed fixed-mask corpus](refinement-checkpoint-corpus-results.json) | 53/55 | Includes Hunodan, the 29 photo masks and four additional variants; not 55 independent photographs. |
+| [Small-CNN corrected-family study](material-corrected-scenes-results.json) | 3/19 learned; 6/19 production | Body/material predictions alone did not improve complete recovery. |
+| [Offline SAM plus projective-outline pipeline](projective-real-results.json) | 15/22 earlier-development; 9/20 additional-source | The later geometric fallback improves the earlier 4/20 policy result. These inspected photos are now development cases; this is not a new independent retest. |
+
+These are checked reconstructions of extracted masks, not ground-truth cutting
+accuracy. In the 9/20 result, visible defects include clipped cap motifs,
+reflection-induced detail and a handle fragment. No learned model or offline
+projective fallback is deployed. The individual experiments below retain their
+historical results, including rejected alternatives; those counts should not be
+combined or read as newer than this overview.
+
 A [source-only review of the four remaining selected-photo crop failures](selection-failure-source-review.json) confirms substantial visible lower edges in all four. The pale printed checker is the clearest failure on usable evidence; the other photos add notch occlusion, a clipped lobe, or warped/stepped paper edges. This rules out absent lower edges as a blanket explanation, but does not yet establish the failing implementation stage. All ten review artifacts, four originals and the fixed selections verify unchanged; no annotations or benchmark successes are added.
 
 The inventory, with material annotations updated on 2026-10-16, contains:
