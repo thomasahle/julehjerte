@@ -1,0 +1,23 @@
+{
+  "schema": "projective-real-plan-1",
+  "status": "declared-before-evaluation",
+  "sourceManifest": "tmp/heart-learning/shape-visibility-v1/probe/manifest.json",
+  "sourceManifestSha256": "3cd179931df6bf309c26ff873da3e34e5a366fdb499218992f2ca4f0d4b1807f",
+  "cases": "All 42 fixed real-photo inputs: 22 earlier development and 20 additional source photos. Preserve these separate cohorts.",
+  "policy": "Retain all 22 supported prior crops exactly. For each of the 20 rejections, try the frozen single-point body first, then the frozen two-paper body if no supported projective crop. First supported crop wins; no template-fitting or ground-truth selection.",
+  "geometry": "Same projective-body.mjs as the completed synthetic experiment, maxSize=650, existing outline/edge thresholds and orientation search. No per-case adjustment.",
+  "material": "Keep all original learned material fields, source RGB, alignment and valid-pixel rules. No body-mask union, material retraining, or target editing.",
+  "solver": "Current automatic preset, resolution and ten-second budget; independent exported renderer, paper/feature checks and editable conversion.",
+  "comparison": "Report baseline versus candidate counts separately from valid fitted/exported masks; inspect all 20 fallback attempts and every new or changed export. A low derived-mask error does not certify crop correctness or hidden material recovery.",
+  "limits": [
+    "Both cohorts are development data; no held-out accuracy claim.",
+    "Existing crops remain untouched, so this measures conditional fallback recovery only.",
+    "Frozen inference is reused; crop timing excludes model inference.",
+    "No neural model or prototype is integrated into the website."
+  ],
+  "sourceHashes": {
+    "scripts/inverse/learning/projective-body.mjs": "202890ff3b573c6c74076756a6f2ea774a9dbb3b3aade177763a870f2565f9aa",
+    "static/inverse/locator/locator.js": "bb745954e2fa2b59abf8be98ded36b75b134295363f913dab04d3a4ad1c6a419",
+    "scripts/inverse/learning/material-target.mjs": "036b4e763f8ab7a1dfa6b8e56bb8db6717d7219351409e11cd4022c1271c93af"
+  }
+}
