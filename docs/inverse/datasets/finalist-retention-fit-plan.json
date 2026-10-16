@@ -1,0 +1,11 @@
+{
+  "schema": "finalist-retention-fit-plan-1",
+  "status": "declared-before-implementation-and-evaluation",
+  "inputManifest": "tmp/heart-learning/feature-finalist-fit-v1/input.json",
+  "inputManifestSha256": "199452b5c6339596e1cbbf552ef8788c8b38402d7549e61bb4a7c77eb983314b",
+  "cases": "Same thirteen fixed masks and ten-second budgets, including all five previously checked controls.",
+  "change": "Only for poor unweighted, unconstrained grids with no colour-retaining ordinary finalist, prefer an EXISTING finalist that has lower original image error, fewer missing features and passes auditFeatureFidelityChange against the incumbent. Choose the lowest-error eligible candidate. Reserve ordinary local-refinement time; do not add feature/count searches or use the rejected alternate-base feature seeding.",
+  "validation": "Independent mask rendering, full image/feature/geometry/paper checks and editable conversion. Inspect changed exports. If useful, add a regression and run existing focused, Hunodan, 31-photo and full repository checks before adopting.",
+  "stoppingRule": "Do not adopt a net regression or claim a full reconstruction from a better initializer alone.",
+  "sourceHash": "3df91dd597ba37163cb0bc9ca9cd04a6f3e9454ec791cf410777e2e9c67e0ac1"
+}
