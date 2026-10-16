@@ -429,25 +429,30 @@ export function fingerHasIntersectionIssues(finger: Finger, fingers: Finger[], m
 	for (const other of fingers) {
 		if (other.id === finger.id) continue;
 		if (other.lobe !== finger.lobe) continue;
-		const otherSegs = fingerToSegments(other);
-		const m = otherSegs.length;
-		if (!m) continue;
-		const otherBBoxes = otherSegs.map(bezierBBox);
-		const otherEndpoints = { start: otherSegs[0]!.p0, end: otherSegs[m - 1]!.p3 };
-		// No endpoint exemption between different curves: two cuts that meet or nearly meet on the
-		// fold line (the "baseline") leave a strip with no paper holding it, so flag those too.
-		if (
-			segmentsHaveIssues(segs, segBBoxes, endpoints, otherSegs, otherBBoxes, otherEndpoints, {
-				minDistance,
-				endpointTolerance: 0,
-				proximityEndpointTolerance: 0
-			})
-		) {
-			return true;
-		}
+		if (pairHasIssues(segs, segBBoxes, endpoints, other, minDistance)) return true;
 	}
 
 	return false;
+}
+
+function pairHasIssues(segs: BezierSegment[], boxes: BBox[], endpoints: { start: Vec; end: Vec }, other: Finger, minDistance: number): boolean {
+	const otherSegs = fingerToSegments(other);
+	if (!otherSegs.length) return false;
+	const otherEndpoints = { start: otherSegs[0].p0, end: otherSegs.at(-1)!.p3 };
+	// No endpoint exemption between cuts: a narrow fold-line attachment can
+	// leave a strip with no paper holding it, even if both cuts are open.
+	return segmentsHaveIssues(segs, boxes, endpoints, otherSegs, otherSegs.map(bezierBBox), otherEndpoints, {
+		minDistance, endpointTolerance: 0, proximityEndpointTolerance: 0
+	});
+}
+
+/** Check just the interaction of two distinct cuts on one paper sheet.
+ * Callers may reuse a cut's separate self-check when comparing new neighbours. */
+export function fingerPairHasIntersectionIssues(finger: Finger, other: Finger, minDistance: number): boolean {
+	if (finger.id === other.id || finger.lobe !== other.lobe) return false;
+	const segs = fingerToSegments(finger);
+	if (!segs.length) return false;
+	return pairHasIssues(segs, segs.map(bezierBBox), { start: segs[0].p0, end: segs.at(-1)!.p3 }, other, minDistance);
 }
 
 /** Ids of every curve that has an intersection issue with itself or another curve in its lobe. */

@@ -53,6 +53,15 @@ function validateHandoffs(design: HeartDesign) {
 // These are expected successes, never a test that passes by accepting a refusal.
 // The larger offline corpus covers 2,028 text and 1,122 figure configurations.
 describe('generator robustness regressions', () => {
+	it('widens invisible approaches when Oswald ÆØÅ narrowly misses the hexagon clearance reserve', () => {
+		const { design } = generate({ mode: 'text', name: 'ÆØÅ', text: 'ÆØÅ', font: fonts.oswald,
+			textFrame: 'hexagon', colors });
+		expect(design.gridSize).toEqual({ x: 6, y: 6 });
+		expect(cutTipCounts(design)).toEqual([2, 5]);
+		const margin = intersectionMarginPx(inferOverlapRect(design.fingers, design.gridSize), gridClearanceScale(6));
+		expect(findFingersWithIssues(design.fingers, margin * 1.1).size).toBe(0);
+		validateHandoffs(design);
+	}, 20000);
 	it('separates nearly touching paw outlines between the checked corners', () => {
 		const { design } = generate({ mode: 'figure', name: 'Paw', contours: tablerPaw.contours as Ring[],
 			frame: 'circle', style: 'corners', colors });

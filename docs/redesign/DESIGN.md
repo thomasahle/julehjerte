@@ -682,6 +682,11 @@ animation for routine edits. Local contour construction reuses integer point ide
 adjacency slots across its routing candidates, with the existing coordinate precision and exact
 output points. Reset adjacency between candidates and sheets; still reject branches, wrong endpoint
 pairings and detached cycles. These digital checks do not replace testing actual paper assembly.
+Repeated-text construction also reuses exact spacing checks within one request.
+Cache a route's self-check separately from its ordered interactions with other
+routes, retaining every coordinate, boundary extension, margin and scale in the
+key. Bound both caches to 2,048 entries and preserve the original check order;
+reversing a pair must not silently reuse a numerical search in the other direction.
 
 A final close-fitting figure fallback may vary the four support directions by ±0.15 and ±0.3
 radians within their original quadrants. Attach to actual silhouette vertices, preserving the
@@ -792,6 +797,12 @@ envelope instead of 88%. Keep the frame boundary and exact glyph proportions,
 and require the same extra clearance for the outside connections as for the
 letters. Stop at the original fit whenever it works; unframed text has no such
 retry.
+Keep completed panels that pass nominal spacing but miss the extra reserve until
+all established constructions have failed. Those panels may retry coincident
+connections with normal-approach handles of 20% or 40% of their length. Refit and
+validate the complete design, retain the original outlines and attachments, and
+require the same 10% reserve. Deduplicate completed geometries and prefer fewer
+sharp tips. A successful existing layout returns before this final repair.
 
 Relief-cut construction may cache geometric queries for one unchanged outline,
 routing mode and allowed external ports: notch ray targets, outline-edge positions,

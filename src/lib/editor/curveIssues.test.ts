@@ -5,6 +5,7 @@ import { getCenteredRectParams } from '$lib/utils/overlapRect';
 import {
 	INTERSECTION_MARGIN_UNITS,
 	fingerHasIntersectionIssues,
+	fingerPairHasIntersectionIssues,
 	findFingersWithIssues,
 	intersectionMarginPx,
 	segmentsIntersect
@@ -166,5 +167,26 @@ describe('fingerHasIntersectionIssues', () => {
 		const other = straightLeft('L-2', mid - 60);
 		expect(fingerHasIntersectionIssues(other, [loop, other], margin)).toBe(false);
 		expect(findFingersWithIssues([loop, other], margin)).toEqual(new Set(['L-1']));
+	});
+});
+
+describe('fingerPairHasIntersectionIssues', () => {
+	const mid = rect.top + rect.height / 2;
+	it('detects crossings and near passes in both directions', () => {
+		const a = straightLeft('a', mid);
+		for (const b of [bowedLeft('b', mid - 30, 60), straightLeft('b', mid + margin * .8)]) {
+			expect(fingerPairHasIntersectionIssues(a, b, margin)).toBe(true);
+			expect(fingerPairHasIntersectionIssues(b, a, margin)).toBe(true);
+		}
+		expect(fingerPairHasIntersectionIssues(a, straightLeft('b', mid + margin * 1.2), margin)).toBe(false);
+	});
+	it('includes narrow attachments at the fold line', () => {
+		const a = straightLeft('a', mid), b = straightLeft('b', mid + margin * .5, mid + 30);
+		expect(fingerPairHasIntersectionIssues(a, b, margin)).toBe(true);
+	});
+	it('ignores the other paper and excludes self-checks', () => {
+		const a = straightLeft('a', mid);
+		expect(fingerPairHasIntersectionIssues(a, straightRight('b', rect.left + rect.width / 2), margin)).toBe(false);
+		expect(fingerPairHasIntersectionIssues(a, a, margin)).toBe(false);
 	});
 });

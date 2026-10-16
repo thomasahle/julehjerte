@@ -466,7 +466,8 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		if (fittedComponents) return fittedComponents;
 		const chainContacts = retryChainContacts(request, curveFitter);
 		if (chainContacts) return chainContacts;
-		const textPanels = retryTextPanelIslands(request, curveFitter);
+		const closePanels: Construction[] = [];
+		const textPanels = retryTextPanelIslands(request, curveFitter, closePanels);
 		if (textPanels) return textPanels;
 		const branches = overlappingBranches ? undefined : retryBranchedText(request, curveFitter);
 		if (branches) return branches;
@@ -513,6 +514,8 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 			if (!(retryError instanceof ConstructionError) && !(retryError instanceof CutGeometryError)) throw retryError;
 		}
 		if (bestRepeated) return bestRepeated;
+		const widerConnections = retryPanelReserve(request, closePanels, curveFitter);
+		if (widerConnections) return widerConnections;
 		throw error;
 	}
 }
@@ -685,7 +688,7 @@ function retrySunburstPanels(request: GeneratorRequest, curveFitter: ReturnType<
  * Follow that piece from its actual seam, with the panel's alternating phase.
  * A smaller inter-letter gap also leaves more room for the unchanged strokes.
  * Earlier successful layouts return before these bounded alternatives. */
-function retryTextPanelIslands(request: GeneratorRequest, curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult | undefined {
+function retryTextPanelIslands(request: GeneratorRequest, curveFitter: ReturnType<typeof createExactCurveFitter>, closePanels: Construction[]): GeneratorResult | undefined {
 	const frame = request.textFrame ?? 'woven', text = request.text ?? '', font = request.font;
 	if (request.mode !== 'text' || !font || !text.trim() || frame === 'repeat' || frame === 'repeat-check') return;
 	const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n'),
@@ -712,7 +715,10 @@ function retryTextPanelIslands(request: GeneratorRequest, curveFitter: ReturnTyp
 				const result = improveSharedConnections(candidate), design = result.design;
 				const margin = intersectionMarginPx(inferOverlapRect(design.fingers, design.gridSize),
 					gridClearanceScale(design.gridSize.x, design.gridSize.y));
-				if (findFingersWithIssues(design.fingers, margin * 1.1).size) continue;
+				if (findFingersWithIssues(design.fingers, margin * 1.1).size) {
+					closePanels.push(construction);
+					continue;
+				}
 				const tips = cutTipCounts(design);
 				if (!best || fewerCutTips(tips, cutTipCounts(best.design))) best = result;
 				if (!tips[1]) return best;
@@ -725,6 +731,34 @@ function retryTextPanelIslands(request: GeneratorRequest, curveFitter: ReturnTyp
 		// validate its outside connections with the same clearance reserve.
 		if (best) return best;
 	}
+}
+
+/** A layout can pass nominal spacing while missing its clearance reserve.
+ * Curved approaches are useful here too, even though conversion did not throw.
+ * Keep these completed panels until every established layout has failed, then
+ * widen only their coincident connections. Earlier successes stay unchanged. */
+function retryPanelReserve(request: GeneratorRequest, candidates: Construction[], curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult | undefined {
+	const seen = new Set<string>();
+	let best: GeneratorResult | undefined;
+	for (const construction of candidates) {
+		const key = JSON.stringify(construction.geometry);
+		if (seen.has(key)) continue;
+		seen.add(key);
+		for (const fraction of [.2, .4]) try {
+			const geometry = curveSharedCuts(construction.geometry, undefined, fraction);
+			if (!geometry) continue;
+			const result = improveSharedConnections(finishConstruction(request, construction, 'letters', geometry, curveFitter)),
+				design = result.design, margin = intersectionMarginPx(inferOverlapRect(design.fingers, design.gridSize),
+					gridClearanceScale(design.gridSize.x, design.gridSize.y));
+			if (findFingersWithIssues(design.fingers, margin * 1.1).size) continue;
+			const tips = cutTipCounts(design);
+			if (!best || fewerCutTips(tips, cutTipCounts(best.design))) best = result;
+			if (!tips[1]) return best;
+		} catch (error) {
+			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		}
+	}
+	return best;
 }
 
 /** Overlapping serif ends need independent branches rather than tighter clips.

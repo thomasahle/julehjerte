@@ -1,6 +1,66 @@
 # Generator robustness results
 
-## Current coverage: stacked parts in a plain oval
+## Current coverage: clearance reserve and repeated-text checks
+
+Oswald **ÆØÅ** now works in the hexagon frame with **6×6 strips**. Its original
+construction passed nominal spacing but missed the extra clearance reserve.
+A final repair reuses completed panels and curves only their coincident
+connections, trying normal-approach handles of 20% and 40% of connection length.
+It preserves the original outlines, attachment points, frame and sheet assignments,
+and still requires the full topology, fidelity and 10% extra spacing checks.
+Earlier successful layouts return before this repair.
+
+The new result has **two tips below 30 degrees and five below 45 degrees**;
+it is not a tip-free construction. The final production design is exactly equal
+to the direct, unchanged-assignment prototype. It passes JSON/SVG handoffs and
+the independent material audit at resolution **2,800**, with zero certain or
+possible detached core islands. The 1,400-resolution audit was uncertain and
+was not treated as a pass. The finished heart and both full cutting sheets were
+visually reviewed. These checks do not establish physical weaving ease or tear
+strength. Evidence in ignored `tmp/generator/`: `panel-reserve-production-7.json`,
+`reserve-direct-{material,metrics}.json`, and `reserve-direct-gallery-0.png`.
+
+Repeated-text generation now caches exact local spacing checks within a request:
+a route's self-check separately from each ordered pair of neighbouring cuts.
+The keys retain every coordinate, boundary extension, margin and scale, and each
+cache is limited to 2,048 entries. The original validation order and acceptance
+rules stay intact. A paired run of **48 repeated texts across all six fonts**
+produces exactly the same **23 successes and 25 refusals**, including complete
+accepted outputs and rejection codes/messages. Oswald juleman took 3,333 ms versus
+3,781 ms in that comparison; total time across those 48 cases was 194,085 ms versus
+211,535 ms. These paired measurements shared the machine with another audit and
+are not isolated latency benchmarks.
+
+The separate paired framed-text run covers **21 cases**, including all twelve
+previously refused non-Cinzel decorative-frame cases, ÆØÅ in each font's hexagon,
+and every Oswald ÆØÅ decorative frame. It yields **nine accepted / twelve refused /
+zero invalid**; all **eight earlier accepted complete outputs are unchanged**.
+The broader 34-group curve/assignment experiment and twelve-case wider-curve sweep
+found no further recoveries. Assignment changes and the larger 60%/80% handles are
+not part of production. Evidence: `panel-reserve-audit.json`,
+`spacing-production-results.json`, `cycle-curves-results.json`, and
+`reserve-wide-results.json`.
+
+The merged corpus is **2,875 accepted / 275 refused / zero invalid**: text is
+1,761 / 267; figures remain 1,114 / 8. `panel-reserve-current.json` refreshes 69
+records and retains 3,081 from `horizontal-contact-current.json`. This is not a
+fresh full-matrix run. The expected-ID fixture exactly matches these 2,875 cases;
+the broader catalogue and nondefault sizes remain incompletely verified.
+
+Check, lint and build pass, with seven existing Svelte warnings. All four new
+focused tests pass. The existing Oswald juleman case timed out at 5.95 seconds
+in the concurrent focused run and passed alone in 3.89 seconds under its unchanged
+five-second limit. The initial cache integration missed two call sites; focused
+tests caught the error, both calls were corrected, and the final paired run above
+uses the corrected source. The full unit run completed **1,192 passing / one
+existing timing failure** across 68 files in 630.32 seconds. Oswald juleman took
+5.40 seconds against the unchanged five-second limit; its isolated 3.89-second
+pass above uses the same final source. All 1,193 unit cases have a passing result
+across these runs, but this was not one entirely green full run. All **177
+inverse-engine tests pass**, in 86.69 seconds.
+Logs: `panel-reserve-{focused,check,lint,build,oswald-isolated,tests,inverse}.log`.
+
+## Previous coverage: stacked parts in a plain oval
 
 The coffee motif now works in the plain oval with **4×4 strips**, no tips below
 30 degrees and two below 45 degrees. Horizontal lanes keep the separate steam

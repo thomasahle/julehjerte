@@ -2,7 +2,7 @@
  * checker lattice. Boundary letters open directly onto the paper edges;
  * there is no separate checkerboard frame or narrow routing gutter. */
 import { MAX_GRID_SIZE, STRIP_WIDTH } from '$lib/constants';
-import { fingerHasIntersectionIssues } from '$lib/editor/curveIssues';
+import { fingerHasIntersectionIssues, fingerPairHasIntersectionIssues } from '$lib/editor/curveIssues';
 import type { Finger } from '$lib/types/heart';
 import { gridClearance } from '$lib/geometry/clearance';
 import { repeatedText } from './repeatedText';
@@ -45,9 +45,15 @@ const pointKey = (p: Point) => p.map(v => v.toFixed(6)).join(',');
 
 /** Validate only the retained paths at the actual editor scale. Extend inward
  * gates past the cell so endpoint exemptions cannot conceal a hooked strip. */
-function spacedRoutes(routes: Ring[], gates: Point[], active: number[], boundary: boolean[], margin: number, scale: number) {
+type SpacingCache = { self: Map<string, boolean>; pairs: Map<string, boolean> };
+function rememberSpacing(cache: Map<string, boolean>, key: string, result: boolean): boolean {
+	cache.set(key, result);
+	if (cache.size > 2048) cache.delete(cache.keys().next().value!);
+	return result;
+}
+function spacedRoutes(routes: Ring[], gates: Point[], active: number[], boundary: boolean[], margin: number, scale: number, cache: SpacingCache) {
 	const interior = new Set(active.map(i => pointKey(gates[i])));
-	const fingers: Finger[] = [];
+	const fingers: Finger[] = [], keys: string[] = [];
 	for (const [i, route] of routes.entries()) {
 		if (![route[0], route.at(-1)!].some(p => interior.has(pointKey(p))))
 			continue;
@@ -55,6 +61,9 @@ function spacedRoutes(routes: Ring[], gates: Point[], active: number[], boundary
 			? mix(q, p, 1 + 3 / Math.max(distance(p, q), 1e-6))
 			: i < 2 ? [p[0], boundary[0] ? 0 : 100] : [boundary[3] ? 0 : 100, p[1]];
 		const ps = [end(route[0], route[1]), ...route, end(route.at(-1)!, route.at(-2)!)].filter((p, j, all) => !j || distance(p, all[j - 1]) > 1e-7);
+		// Keep every coordinate and both scale parameters. Reuse only exactly
+		// equal checks, including the real boundary extensions above.
+		keys.push(JSON.stringify([ps, margin, scale]));
 		fingers.push({
 			id: String(i),
 			lobe: i < 2 ? 'right' : 'left',
@@ -69,7 +78,20 @@ function spacedRoutes(routes: Ring[], gates: Point[], active: number[], boundary
 			})
 		});
 	}
-	return !fingers.some(f => fingerHasIntersectionIssues(f, fingers, margin * scale));
+	for (const [i, finger] of fingers.entries()) {
+		const self = cache.self.get(keys[i]) ?? rememberSpacing(cache.self, keys[i],
+			fingerHasIntersectionIssues(finger, [finger], margin * scale));
+		if (self) return false;
+		for (const [j, other] of fingers.entries()) if (i !== j && finger.lobe === other.lobe) {
+			// Preserve the ordered pair: numerical curve searches need not
+			// return exactly the same witnesses when their inputs are reversed.
+			const key = keys[i] + '|' + keys[j];
+			const pair = cache.pairs.get(key) ?? rememberSpacing(cache.pairs, key,
+				fingerPairHasIntersectionIssues(finger, other, margin * scale));
+			if (pair) return false;
+		}
+	}
+	return true;
 }
 
 /** Keep exactly the paths connected to an inward gate. The other local path
@@ -105,7 +127,8 @@ export function repeatedGridCache() {
 	return {
 		cells: new Map<string, { center: Point; edges: Edge[]; artwork: Ring[] }>(),
 		failed: new Set<string>(),
-		crowded: new Set<string>()
+		crowded: new Set<string>(),
+		spacing: { self: new Map<string, boolean>(), pairs: new Map<string, boolean>() }
 	};
 }
 
@@ -164,11 +187,11 @@ export function generateRepeatedGrid(text: string, font: Font, practical = false
 				try {
 					try {
 						if (cache.failed.has(key)) throw new ConstructionError('topology', 'No original cell route');
-						fourPortMotif(edges, contours, gates, angles, margin, active, routes => spacedRoutes(routes, gates, active, boundary, margin, 2 * n * STRIP_WIDTH / 100), { bentSpokes, strokeTips, compound, islandRank, islandFlip, alternateIslandGates: islandFlip });
+						fourPortMotif(edges, contours, gates, angles, margin, active, routes => spacedRoutes(routes, gates, active, boundary, margin, 2 * n * STRIP_WIDTH / 100, cache.spacing), { bentSpokes, strokeTips, compound, islandRank, islandFlip, alternateIslandGates: islandFlip });
 					} catch (error) {
 						if (error instanceof ConstructionError) cache.failed.add(key);
 						if (!practical || !(error instanceof ConstructionError)) throw error;
-						const accept = (routes: Ring[]) => spacedRoutes(routes, gates, active, boundary, margin, 2 * n * STRIP_WIDTH / 100);
+						const accept = (routes: Ring[]) => spacedRoutes(routes, gates, active, boundary, margin, 2 * n * STRIP_WIDTH / 100, cache.spacing);
 						try {
 							fourPortMotif(edges, contours, gates, angles, margin, active, accept, { practical: true, bentSpokes, strokeTips, compound, islandRank, islandFlip, alternateIslandGates: islandFlip, onCrowded: () => cache.crowded.add(key) });
 						} catch (error) {
@@ -223,7 +246,7 @@ export function generateRepeatedGrid(text: string, font: Font, practical = false
 					}
 					try {
 						const local: Edge[] = [];
-						fourPortMotif(local, contours, ports, angles, margin, active, routes => spacedRoutes(routes, ports, active, boundary, margin, 2 * n * STRIP_WIDTH / 100), { root: base.ring, practical: improve, balanced: balancedRouting, bentSpokes, strokeTips, compound, islandRank, islandFlip, alternateIslandGates: islandFlip, onCrowded: () => cache.crowded.add(key) });
+						fourPortMotif(local, contours, ports, angles, margin, active, routes => spacedRoutes(routes, ports, active, boundary, margin, 2 * n * STRIP_WIDTH / 100, cache.spacing), { root: base.ring, practical: improve, balanced: balancedRouting, bentSpokes, strokeTips, compound, islandRank, islandFlip, alternateIslandGates: islandFlip, onCrowded: () => cache.crowded.add(key) });
 						const opened = openBoundary(local, ports, active);
 						const ends = new Map<string, Point>();
 						for (const i of [0, 1, 2, 3].filter(i => !active.includes(i))) {
