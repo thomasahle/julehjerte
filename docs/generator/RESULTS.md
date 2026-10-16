@@ -1,5 +1,88 @@
 # Generator robustness results
 
+## Current coverage: alternate connections for detached components
+
+Detached components originally used only the nearest active gate. That approach
+can cross a letter's stem or leave no clear path from a separate sail to the
+frame. A final retry now assigns each component to the next nearest gate, with
+at most three alternative ranks. The existing nearest-gate calculation remains
+unchanged when no alternative is requested.
+
+Repeated text retains completed cells and retries only when a missing glyph has
+multiple separate components. If all cells exist but the complete heart failed,
+it rebuilds their connections. The established compound construction still
+returns first when successful. The new alternatives are compared by their sharp
+tips after shared-join rounding, with an early return at zero tips. Single-contour
+failures do not trigger these extra attempts.
+
+Figures try the same component assignments through their requested frame, using
+the existing ordinary and practical local routing. The fitted silhouette and
+sunburst border keep their own construction rules. The corner-check and layered
+frames are not redirected into a different frame. All new accepted results must
+retain **10% extra full-sheet clearance** after fitting and rounding. Existing
+successful recipes return before these retries. No font/motif outlines, counters,
+visible frame cells or validation thresholds were relaxed.
+
+Seven previously refused combinations now work:
+
+| Input | Frame / strips | Tips below 30° / below 45° |
+|---|---|---|
+| Oswald jul | Repeat, 6×3 | 0 / 3 |
+| Righteous jul | Repeat, 6×3 | 0 / 0 |
+| Righteous Sofie | Repeat, 10×5 | 4 / 10 |
+| Righteous William | Repeat, 14×7 | 0 / 0 |
+| Phosphor sailboat | Oval plain, rays and check, 3×3 each | 0 / 0 |
+
+All seven pass the guarded material audit at resolution **1,400**, with zero
+certain or possible detached core islands on either sheet, and both JSON/SVG
+handoffs. Their finished hearts and both paper sheets were reviewed in
+`island-ports-quality-gallery-0.png` and `island-extra-gallery-{0,1,2,3,4,5}.png`.
+Final production captures are exactly identical to the audited candidates
+(`island-text-production.json`, `island-figure-production.json`). Remaining sharp
+tips in Sofie and Oswald jul are not claimed eliminated; the material check does
+not certify physical tear strength or every sub-threshold feature.
+
+All **55 previous ordinary-repeat refusals** were checked: four are recovered,
+51 remain refused. All **21 previous figure refusals** were checked through the
+production generator: three are recovered, 18 remain refused. Both audits have
+zero invalid accepted outputs. The final text implementation was rerun on all
+four new text successes after adding tip ranking; all captures remain identical.
+The merged report is **2,847 accepted / 303 refused / zero invalid**: text
+**1,743 / 285**, figures **1,104 / 18** (`island-current.json`). The other 3,074
+records retain previous results; this is not a fresh audit of all 3,150 cases.
+The expected corpus exactly matches all 2,847 accepted IDs. Thirteen paired
+samples of existing text and figure successes give exactly identical complete
+results before and after the change (`island-ports-preservation.json`).
+
+Several broader experiments were rejected: routing spokes around an unchanged
+letter failed full-sheet spacing in all 12 ANNA variants; filtering compound
+chords before spending the candidate budget recovered none of ten Kalam repeat
+failures; alternate component gates recovered none of 32 checkerboard failures
+with detached components. These are recorded in `wrapped-spokes-results.json`,
+`qualified-chords-production.json` and `island-checks-results.json` and are not
+enabled in production.
+
+The annotated ANNA diagnostic (`anna-tip-diagnostic.{json,svg,png}`) confirms that
+all eight remaining tips are N corners around **38°**, with two visible outline
+segments meeting at each tip. Shared-join rounding cannot remove them; a different
+connection topology is still required while preserving the font outline.
+Prioritizing the existing two-chord repairs in ten fresh ANNA layouts, then
+ranking their complete local cuts in another ten, also failed to reduce the
+minimum below eight tips (`compound-first-results.json`,
+`compound-quality-results.json`). Neither experiment is enabled.
+
+Seven focused regressions pass in **5.32 seconds**. Type checking, lint and the
+production build pass with seven existing warnings
+(`island-ports-final-{focused,check,lint,build}.log`). The single-worker
+`npm test` run passes **all 1,141 unit tests** in 466.38 seconds and **all 177
+inverse-engine tests** in 91.24 seconds (`island-ports-tests.log`). The earlier
+Kalam ANNA timeout did not recur in this run; no timeout was changed. This does
+not establish a general latency improvement. The new text cases take roughly
+0.35–0.82 seconds and the three sailboat cases 1.82–2.07 seconds in the fresh
+production captures.
+The remaining refusals, larger catalogue/size coverage, difficult-text latency
+and ANNA's narrow corners remain unfinished.
+
 ## Current coverage: divided fitted supports and compound repeated letters
 
 The last close-fitting figure retry can divide a concave silhouette into two

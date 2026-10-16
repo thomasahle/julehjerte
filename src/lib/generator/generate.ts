@@ -25,6 +25,7 @@ import { inferOverlapRect } from '$lib/utils/overlapRect';
 import { findFingersWithIssues, intersectionMarginPx } from '$lib/editor/curveIssues';
 import { rasterizeDesign } from '$lib/paint/rasterize';
 import {
+	forest,
 	ConstructionError,
 	CompilationError,
 	generateFigure,
@@ -429,25 +430,73 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		}
 		const lanes = retryComponentLanes(request, curveFitter);
 		if (lanes) return lanes;
-		if (repetitionCache && request.font) try {
+		const islands = retryFigureIslandPorts(request, curveFitter);
+		if (islands) return islands;
+		let bestRepeated: GeneratorResult | undefined;
+		if (repetitionCache && request.font) for (const islandRank of [0, 1, 2, 3]) try {
 			// Multiple concave corners can require two invisible connections.
 			// Retain successful letter cells and try this only after all earlier
 			// whole-heart repairs, so established designs stay unchanged.
-			if (!repetitionCache.failed.size) repetitionCache.cells.clear();
+			if (islandRank) {
+				const missing = [...repetitionCache.failed].filter(key => !repetitionCache.cells.has(key));
+				const chars = missing.length ? missing.map(key => [...key][0])
+					: [...(request.text ?? '').normalize('NFC').replace(/\s/g, '')];
+				// Dots and accents can use another active gate. A single contour
+				// has no such choice; do not repeat its unsuccessful routing.
+				if (!chars.some(char => forest(request.font!.glyphs[char]?.contours ?? []).length > 1)) break;
+				if (!missing.length) repetitionCache.cells.clear();
+			} else if (!repetitionCache.failed.size) repetitionCache.cells.clear();
 			repetitionCache.crowded.clear();
 			const construction = generateRepeatedGrid(request.text ?? '', request.font,
-				true, repetitionCache, true, false, false, true);
+				true, repetitionCache, true, false, false, true, islandRank);
 			const result = improveSharedConnections(finishConstruction(request, construction, 'letters', undefined, curveFitter));
 			// Keep a reserve around these extra connections after curve fitting.
 			// A barely clear neck can still be uncertain on the unfolded paper.
 			const rect = inferOverlapRect(result.design.fingers, result.design.gridSize),
 				margin = intersectionMarginPx(rect, gridClearanceScale(result.design.gridSize.x, result.design.gridSize.y));
-			if (!findFingersWithIssues(result.design.fingers, margin * 1.1).size) return result;
+			if (findFingersWithIssues(result.design.fingers, margin * 1.1).size) continue;
+			if (!islandRank) return result;
+			const tips = cutTipCounts(result.design);
+			if (!bestRepeated || fewerCutTips(tips, cutTipCounts(bestRepeated.design))) bestRepeated = result;
+			if (!tips[0] && !tips[1]) return bestRepeated;
 		} catch (retryError) {
 			if (!(retryError instanceof ConstructionError) && !(retryError instanceof CutGeometryError)) throw retryError;
 		}
+		if (bestRepeated) return bestRepeated;
 		throw error;
 	}
+}
+
+/** A disconnected part need not use its nearest gate. Another attachment can
+ * keep its approach clear of the main silhouette, retaining the same frame. */
+function retryFigureIslandPorts(request: GeneratorRequest, curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult | undefined {
+	if (request.mode !== 'figure' || request.style === 'corners' || request.style === 'layers') return;
+	const rings = normalizeContours(request.contours ?? []);
+	if (forest(rings).length < 2) return;
+	const size = request.frameSize ?? 70, scale = request.scale ?? .7,
+		style = request.style ?? 'rays', sunburst = style === 'sunburst';
+	let best: GeneratorResult | undefined;
+	for (const islandRank of [1, 2, 3]) for (const practical of [false, true]) try {
+		const route: typeof fourPortMotif = (...args) => {
+			args[7] = { ...args[7], islandRank, practical };
+			return fourPortMotif(...args);
+		};
+		const inner = style === 'fitted' ? generateFittedFigure(rings, size, scale, route)
+			: generateFourPortFigure(rings, sunburst ? 'circle' : request.frame,
+				sunburst ? size * .8 : size, scale, sunburst ? 'rays' : style, route, sunburst ? 2 : 0);
+		const construction = sunburst ? sunburstBorder(inner, size) : inner;
+		const result = improveSharedConnections(finishConstruction(request, construction,
+			style === 'fitted' ? 'silhouette' : 'nested', undefined, curveFitter));
+		const rect = inferOverlapRect(result.design.fingers, result.design.gridSize),
+			margin = intersectionMarginPx(rect, gridClearanceScale(result.design.gridSize.x, result.design.gridSize.y));
+		if (findFingersWithIssues(result.design.fingers, margin * 1.1).size) continue;
+		const tips = cutTipCounts(result.design);
+		if (!best || fewerCutTips(tips, cutTipCounts(best.design))) best = result;
+		if (!tips[0] && !tips[1]) return best;
+	} catch (error) {
+		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+	}
+	return best;
 }
 
 /** A fixed diagonal can land on a narrow shoulder or give two components the

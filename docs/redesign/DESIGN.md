@@ -657,6 +657,14 @@ letter field. Round only shared joins, then require 10% extra full-sheet clearan
 for this fallback. An uncertain material candidate must not be counted as a
 verified success merely because the ordinary editor spacing check accepts it.
 
+A disconnected dot, accent or motif part may finally retry the next nearest
+active gates after the established constructions fail. Keep the nearest-gate
+rule unchanged for existing paths. Repeated text reuses completed cells and skips
+these retries when its missing glyphs have only one component. Figures retain
+their requested frame; do not map corner checks or layered frames to another
+style. Compare new valid alternatives after rounding by sharp-tip counts, and
+retain the 10% full-sheet clearance reserve. Stop at zero sharp tips.
+
 
 If a sunburst figure still fails after the existing recipes and shared-cut
 repairs, its four-port medallion may retry using the complete five-strip grid:

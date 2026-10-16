@@ -28,6 +28,7 @@ import phosphorButterfly from '../../../static/generator/motifs/ph-butterfly.jso
 import tablerGift from '../../../static/generator/motifs/tb-gift.json';
 import angel from '../../../static/generator/motifs/angel.json';
 import snow from '../../../static/generator/motifs/snow.json';
+import sailboat from '../../../static/generator/motifs/ph-sailboat.json';
 import smiley from '../../../static/generator/motifs/ph-smiley.json';
 import palette from '../../../static/generator/motifs/tb-palette.json';
 import bicycle from '../../../static/generator/motifs/ph-bicycle.json';
@@ -51,6 +52,28 @@ function validateHandoffs(design: HeartDesign) {
 // These are expected successes, never a test that passes by accepting a refusal.
 // The larger offline corpus covers 2,028 text and 1,122 figure configurations.
 describe('generator robustness regressions', () => {
+	for (const [fontId, text, tips] of [
+		['oswald', 'jul', [0, 3]], ['righteous', 'jul', [0, 0]],
+		['righteous', 'Sofie', [4, 10]], ['righteous', 'William', [0, 0]]
+	] as const) it(`connects detached dots to clear gates in the ${fontId} ${text} repeat`, () => {
+		const { design } = generate({ mode: 'text', name: text, text,
+			font: fonts[fontId], textFrame: 'repeat', colors });
+		expect(design.gridSize).toEqual({ x: text.length * 2, y: text.length });
+		expect(cutTipCounts(design)).toEqual(tips);
+		const margin = intersectionMarginPx(inferOverlapRect(design.fingers, design.gridSize), gridClearanceScale(design.gridSize.x, design.gridSize.y));
+		expect(findFingersWithIssues(design.fingers, margin * 1.1).size).toBe(0);
+		validateHandoffs(design);
+	});
+	for (const style of ['plain', 'rays', 'check'] as const)
+		it(`connects both sailboat parts through the oval ${style} frame`, () => {
+			const { design } = generate({ mode: 'figure', name: 'sailboat', contours: sailboat.contours as Ring[],
+				frame: 'oval', style, colors });
+			expect(design.gridSize).toEqual({ x: 3, y: 3 });
+			expect(cutTipCounts(design)).toEqual([0, 0]);
+			const margin = intersectionMarginPx(inferOverlapRect(design.fingers, design.gridSize), gridClearanceScale(3, 3));
+			expect(findFingersWithIssues(design.fingers, margin * 1.1).size).toBe(0);
+			validateHandoffs(design);
+		}, 20000);
 	it('opens repeated Kalam EMMA with multiple shared connections and intact counters', () => {
 		const { design } = generate({ mode: 'text', name: 'EMMA', text: 'EMMA',
 			font: fonts.kalam, textFrame: 'repeat', colors });

@@ -109,7 +109,7 @@ export function repeatedGridCache() {
 	};
 }
 
-export function generateRepeatedGrid(text: string, font: Font, practical = false, cache = repeatedGridCache(), balanced = false, bentSpokes = false, strokeTips = false, compound = false) {
+export function generateRepeatedGrid(text: string, font: Font, practical = false, cache = repeatedGridCache(), balanced = false, bentSpokes = false, strokeTips = false, compound = false, islandRank = 0) {
 	let repeated = repeatedText(text);
 	if (!repeated)
 		throw new ConstructionError('empty', 'Empty text');
@@ -164,16 +164,16 @@ export function generateRepeatedGrid(text: string, font: Font, practical = false
 				try {
 					try {
 						if (cache.failed.has(key)) throw new ConstructionError('topology', 'No original cell route');
-						fourPortMotif(edges, contours, gates, angles, margin, active, routes => spacedRoutes(routes, gates, active, boundary, margin, 2 * n * STRIP_WIDTH / 100), { bentSpokes, strokeTips, compound });
+						fourPortMotif(edges, contours, gates, angles, margin, active, routes => spacedRoutes(routes, gates, active, boundary, margin, 2 * n * STRIP_WIDTH / 100), { bentSpokes, strokeTips, compound, islandRank });
 					} catch (error) {
 						if (error instanceof ConstructionError) cache.failed.add(key);
 						if (!practical || !(error instanceof ConstructionError)) throw error;
 						const accept = (routes: Ring[]) => spacedRoutes(routes, gates, active, boundary, margin, 2 * n * STRIP_WIDTH / 100);
 						try {
-							fourPortMotif(edges, contours, gates, angles, margin, active, accept, { practical: true, bentSpokes, strokeTips, compound, onCrowded: () => cache.crowded.add(key) });
+							fourPortMotif(edges, contours, gates, angles, margin, active, accept, { practical: true, bentSpokes, strokeTips, compound, islandRank, onCrowded: () => cache.crowded.add(key) });
 						} catch (error) {
 							if (!balanced || !cache.crowded.has(key) || !(error instanceof ConstructionError)) throw error;
-							fourPortMotif(edges, contours, gates, angles, margin, active, accept, { practical: true, balanced: true, bentSpokes, strokeTips, compound });
+							fourPortMotif(edges, contours, gates, angles, margin, active, accept, { practical: true, balanced: true, bentSpokes, strokeTips, compound, islandRank });
 						}
 					}
 				} catch (error) {
@@ -223,7 +223,7 @@ export function generateRepeatedGrid(text: string, font: Font, practical = false
 					}
 					try {
 						const local: Edge[] = [];
-						fourPortMotif(local, contours, ports, angles, margin, active, routes => spacedRoutes(routes, ports, active, boundary, margin, 2 * n * STRIP_WIDTH / 100), { root: base.ring, practical: improve, balanced: balancedRouting, bentSpokes, strokeTips, compound, onCrowded: () => cache.crowded.add(key) });
+						fourPortMotif(local, contours, ports, angles, margin, active, routes => spacedRoutes(routes, ports, active, boundary, margin, 2 * n * STRIP_WIDTH / 100), { root: base.ring, practical: improve, balanced: balancedRouting, bentSpokes, strokeTips, compound, islandRank, onCrowded: () => cache.crowded.add(key) });
 						const opened = openBoundary(local, ports, active);
 						const ends = new Map<string, Point>();
 						for (const i of [0, 1, 2, 3].filter(i => !active.includes(i))) {

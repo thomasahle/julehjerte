@@ -749,7 +749,7 @@ function contourMotif(
 	margin = 1.5,
 	bridgePorts: readonly number[] = [0, 1, 2, 3],
 	acceptRoutes?: (routes: Ring[]) => boolean,
-	options: { root?: Ring; visibleIslands?: boolean; strict?: boolean; practical?: boolean; originalOnly?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; touching?: boolean; bentSpokes?: boolean; strokeTips?: boolean; nested?: boolean; connectionAllowed?: (point: Point) => boolean } = {}
+	options: { root?: Ring; islandRank?: number; visibleIslands?: boolean; strict?: boolean; practical?: boolean; originalOnly?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; touching?: boolean; bentSpokes?: boolean; strokeTips?: boolean; nested?: boolean; connectionAllowed?: (point: Point) => boolean } = {}
 ) {
 	const count = gates.length;
 	// A clipped outline belongs to two neighbouring cells. Attaching an extra
@@ -846,10 +846,14 @@ function contourMotif(
 		const extras = Array.from({ length: count }, () => [] as Contour[]);
 		for (const node of nodes.slice(1)) {
 			const c = centroid(node.ring);
-			const j = bridgePorts.reduce(
-				(best, i) => distance(c, gates[i]) < distance(c, gates[best]) ? i : best,
-				bridgePorts[0]
-			);
+			// The nearest gate can put a dot's approach across the letter's
+			// stem. A final retry may use the next nearest active gate instead.
+			const j = options.islandRank
+				? [...bridgePorts].sort((a, b) => distance(c, gates[a]) - distance(c, gates[b]))[options.islandRank % bridgePorts.length]
+				: bridgePorts.reduce(
+					(best, i) => distance(c, gates[i]) < distance(c, gates[best]) ? i : best,
+					bridgePorts[0]
+				);
 			extras[j].push(node);
 		}
 		try {
