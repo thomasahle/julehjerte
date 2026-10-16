@@ -29,6 +29,7 @@ import {
 	generateFourPortFigure,
 	compile,
 	fourPortMotif,
+	nestedFourPortMotif,
 	originalFourPortMotif,
 	balancedFourPortMotif,
 	bentFourPortMotif,
@@ -620,16 +621,28 @@ function generateUsingRecipes(request: GeneratorRequest,
 	if (request.style === 'layers') {
 		const layouts = [undefined, ...[false, true].flatMap(filled =>
 			[[1, 2], [2, 1], [2, 2], [3, 2]].map(([columns, rows]) => ({ columns, rows, filled })))];
-		let last: unknown;
 		for (const panels of layouts) {
 			try {
 				return finish(generateLayeredFigure(request.contours ?? [], request.frameSize, request.scale, panels), 'nested');
 			} catch (error) {
 				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
-				last = error;
 			}
 		}
-		throw last;
+		// A motif inside the medallion can have counters whose attachments
+		// cannot alternate along a straight chain. Reconnect those counters
+		// around either attachment while retaining the seven-strip layout.
+		const construction = generateLayeredFigure(request.contours ?? [], request.frameSize,
+			request.scale, undefined, nestedFourPortMotif);
+		try {
+			return finish(construction, 'nested');
+		} catch (error) {
+			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			// Preserve these connections with curved approaches before the
+			// global retry replaces them with new straight segments.
+			const geometry = curveSharedCuts(construction.geometry);
+			if (!geometry) throw error;
+			return finishConstruction(request, construction, 'nested', geometry);
+		}
 	}
 	if (request.style === 'corners') {
 		let last: unknown;

@@ -1,5 +1,74 @@
 # Generator robustness results
 
+## Current coverage: reconnect nested counters in the layered frame
+
+The layered frame has one additional fallback for nested contours. When a
+straight chain cannot alternate with a contour's two external attachments, the
+fallback opens its counters around either attachment. It keeps one complete
+entry-to-exit path on each sheet, rejects branches and cycles, and checks shared
+connections against every descendant outline. It ranks the valid connections
+by cutting cost. Every visible contour and both outer bands remain unchanged;
+counters still use coincident cuts on the two sheets, never cutouts.
+
+This fallback runs after the existing layered layouts. It retains seven strips
+per sheet. If its straight connections fail the final checks, it tries curved
+approaches before the global straight-rerouting fallback. That order matters:
+the bicycle's straight reroute passed spacing but introduced three tips below
+45°, whereas retaining its curved connections gives zero. All accepted paths
+still pass the complete converter and artwork-fidelity checks.
+
+Four previously refused figures now pass in the layered frame:
+
+| Figure | Paper strips | Tips below 30° / below 45° |
+|---|---|---|
+| Tabler cookie | 7×7 | 2 / 2 |
+| Phosphor cat | 7×7 | 0 / 0 |
+| Phosphor bicycle | 7×7 | 0 / 0 |
+| Tabler gift | 7×7 | 0 / 0 |
+
+Their production heart and both paper sheets were rendered and inspected in
+`nested-production-gallery-{0,1,2,3}.png`, with matching SVGs. Both JSON and SVG
+handoffs pass (`nested-production-metrics.json`). All four also pass the separate
+guarded rolling-disk connectivity audit at resolution 1,400
+(`nested-production-material.json`). That discrete model does not certify
+physical tear resistance or small tips; the cookie's two narrow tips remain.
+
+The fresh 51-case layered audit reports **48 accepted / three refused / zero
+invalid**, with four recoveries and no acceptance regressions
+(`nested-production-layers-final.json`). The remaining layered refusals are the
+Phosphor butterfly, Phosphor crown and Tabler paw.
+
+A direct comparison with the preceding generator confirms that **43 of the 44
+previously accepted layered designs are byte-for-byte identical**
+(`nested-existing-comparison.json`). The remaining palette uses the new nested
+fallback before the old global retry. It stays on 7×7 strips and improves from
+**4/6 to 2/2** tips below 30° / below 45°. Both versions pass the separate
+1,400-resolution material audit (`nested-palette-material.json`), and their
+heart and cutting sheets were inspected in `nested-palette-gallery-{0,1}.png`.
+
+All four recoveries are pinned. Combined coverage is now **2,812 accepted / 338
+refused / zero invalid**: text is unchanged at **1,733 / 295**, figures are
+**1,079 / 43** (`nested-current.json`). Only the 51 layered cases were freshly
+rerun; the rest retain `curve-export-current.json` results. The broader goal
+remains unfinished, including other sizes and the rest of the icon catalog.
+
+Type checking, lint and the production build pass, with seven existing type-check
+warnings (`nested-check-final.log`, `nested-lint-final.log`, `nested-build.log`).
+The full single-worker `npm test` run reports **1,104 passed / one timed out**
+in 848 seconds (`nested-tests.log`). All four new frame regressions pass. The
+only failure is the existing Kalam `ANNA` ordinary-repeat test at 21.58 seconds
+against its unchanged 20-second limit. It passes alone in 7.96 seconds
+(`nested-kalam-focused.log`). The full run is not green; its timing issue remains
+unresolved, and no timeout was raised. All **177 inverse-engine tests pass**
+separately in 92 seconds (`nested-inverse.log`). The old Cinzel diagnostic was
+suspended during testing and has been resumed; its elapsed times include those
+pauses and must not be interpreted as generation latency.
+
+The earlier experiment that only counted the extra outer strips in local
+clearance recovered none of the seven layered failures, even with curved
+retries (`layer-width-curved-probe.json`). That change was not shipped. The
+nested-contour fallback retains the existing clearance thresholds.
+
 ## Current quality: round only sharp shared joints in the finished cuts
 
 The checkerboard quality pass now works on the already fitted paper paths.

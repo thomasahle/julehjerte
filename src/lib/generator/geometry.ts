@@ -247,6 +247,36 @@ function block(
 	}
 	add(edges, [previous, outPort.point], 'AB', 'shared');
 }
+
+/** A nested contour may have its two external attachments on the same side.
+ * The straight sibling chain then cannot alternate with those attachments.
+ * Open its counters around either attachment instead, preserving one complete
+ * entry-to-exit path on each sheet. Try this only in the nested fallback. */
+function nestedBlock(...args: Parameters<typeof block>) {
+	const [edges, node, entry, exit, first] = args;
+	const original: Edge[] = [];
+	try {
+		block(original, node, entry, exit, first);
+		edges.push(...original);
+		return;
+	} catch (error) {
+		if (!(error instanceof ConstructionError)) throw error;
+	}
+	const contours = (node: Contour): Ring[] => [node.ring, ...node.children.flatMap(contours)];
+	const rings = contours(node), pointKeys = new WeakMap<Point, string>();
+	let best: Edge[] | undefined, cost = Infinity;
+	for (const candidate of perforatedOutline(node, [entry, exit], [0, 1], false, false, true)) {
+		const routes = localRoutes(candidate, [entry.point, exit.point], pointKeys);
+		if (!routes || !clearSharedCuts(candidate, rings)) continue;
+		const score = cuttingCost(routes, 1.5);
+		if (score < cost) { cost = score; best = candidate; }
+	}
+	if (!best) throw new ConstructionError('topology', 'No open nested contour construction');
+	// perforatedOutline starts with B. Restore the parent's requested orientation.
+	edges.push(...best.map(edge => first === 'B' || edge.family === 'AB' ? edge : {
+		...edge, family: edge.family === 'A' ? 'B' as const : 'A' as const
+	}));
+}
 export const centroid = (r: Ring): Point => {
 	const xs = r.map((p) => p[0]),
 		ys = r.map((p) => p[1]);
@@ -262,7 +292,8 @@ export function contourChain(
 	start: Point,
 	end: Point,
 	first: 'A' | 'B' = 'A',
-	visible = false
+	visible = false,
+	nested = false
 ) {
 	const ordered = nodes
 		.slice()
@@ -277,7 +308,7 @@ export function contourChain(
 		const entry = visible ? ray(node.ring, previous, Math.atan2(c[1] - previous[1], c[0] - previous[0])) : support(node.ring, angle + Math.PI),
 			exit = visible ? ray(node.ring, next, Math.atan2(c[1] - next[1], c[0] - next[0])) : support(node.ring, angle);
 		add(edges, [previous, entry.point], 'AB', 'shared');
-		block(edges, node, entry, exit, first);
+		(nested ? nestedBlock : block)(edges, node, entry, exit, first);
 		previous = exit.point;
 	}
 	add(edges, [previous, end], 'AB', 'shared');
@@ -717,7 +748,7 @@ function contourMotif(
 	margin = 1.5,
 	bridgePorts: readonly number[] = [0, 1, 2, 3],
 	acceptRoutes?: (routes: Ring[]) => boolean,
-	options: { root?: Ring; visibleIslands?: boolean; strict?: boolean; practical?: boolean; originalOnly?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; touching?: boolean; bentSpokes?: boolean; strokeTips?: boolean } = {}
+	options: { root?: Ring; visibleIslands?: boolean; strict?: boolean; practical?: boolean; originalOnly?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; touching?: boolean; bentSpokes?: boolean; strokeTips?: boolean; nested?: boolean } = {}
 ) {
 	const count = gates.length;
 	// Candidate routes reuse the same immutable outline points. Keep their
@@ -817,7 +848,7 @@ function contourMotif(
 				if (extras[j].length) {
 					const c = centroid(extras[j].flatMap(n => n.ring)), b = centroid(base.ring);
 					const angle = options.visibleIslands ? Math.atan2(b[1] - c[1], b[0] - c[0]) : angles[j];
-					contourChain(exterior, extras[j], angle, gates[j], ports[j].point, 'A', options.visibleIslands);
+					contourChain(exterior, extras[j], angle, gates[j], ports[j].point, 'A', options.visibleIslands, options.nested);
 				}
 				else add(exterior, spokes?.[j][indices[j]] ?? [gates[j], ports[j].point], 'AB', 'shared');
 			}
@@ -827,7 +858,7 @@ function contourMotif(
 		}
 		if (!clearSharedCuts(exterior, contours)) continue;
 		let attachmentAttempts = 0;
-		for (const interior of perforatedOutline(base, ports, bridgePorts, options.practical, options.touching)) {
+		for (const interior of perforatedOutline(base, ports, bridgePorts, options.practical, options.touching, options.nested)) {
 			const local = [...interior, ...exterior];
 			try {
 				const routes = localRoutes(local, gates, pointKeys);
@@ -932,6 +963,13 @@ function contourMotif(
 }
 
 export const fourPortMotif = contourMotif;
+
+/** Nested counters can turn around either external attachment when the
+ * established straight sibling chain cannot form two open cutting paths. */
+export function nestedFourPortMotif(...args: Parameters<typeof contourMotif>) {
+	args[7] = { ...args[7], nested: true };
+	return contourMotif(...args);
+}
 
 /** Approach an outline along its outward normal, or the bisector at a corner.
  * A direct gate-to-outline connection can graze a serif and leave a narrow
@@ -1108,7 +1146,7 @@ function* relieveNotches(edges: Edge[], ring: Ring, ports: Port[], allowed: read
  * outline arcs preserves the four external path pairings. A bridge pair on an
  * arc with no external port would instead create a closed cutting cycle.
  * Sibling holes share a chain; nested contours use the two-terminal block. */
-function* perforatedOutline(node: Contour, ports: Port[], bridgePorts: readonly number[], practical = false, touching = false): Generator<Edge[]> {
+function* perforatedOutline(node: Contour, ports: Port[], bridgePorts: readonly number[], practical = false, touching = false, nested = false): Generator<Edge[]> {
 	if (!node.children.length) {
 		const edges: Edge[] = [];
 		outline(edges, node.ring, ports, 'B');
@@ -1252,7 +1290,7 @@ function* perforatedOutline(node: Contour, ports: Port[], bridgePorts: readonly 
 						if (near(entry.point, exit.point))
 							throw new ConstructionError('topology', 'Coincident hole ports');
 						add(edges, [previous, entry.point], 'AB', 'shared');
-						block(edges, h, entry, exit, 'A');
+						(nested ? nestedBlock : block)(edges, h, entry, exit, 'A');
 						previous = exit.point;
 					}
 					add(edges, [previous, after.point], 'AB', 'shared');

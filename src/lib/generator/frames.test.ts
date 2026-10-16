@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { generate } from './generate';
+import { cutTipCounts } from './cutQuality';
 import { generateFittedFigure } from './fitted';
 import { generateLayeredFigure } from './layers';
 import { generateCornerChecks } from './cornerChecks';
@@ -20,6 +21,9 @@ import bicycle from '../../../static/generator/motifs/ph-bicycle.json';
 import coffee from '../../../static/generator/motifs/ph-coffee.json';
 import snow from '../../../static/generator/motifs/snow.json';
 import sailboat from '../../../static/generator/motifs/ph-sailboat.json';
+import cookie from '../../../static/generator/motifs/tb-cookie.json';
+import cat from '../../../static/generator/motifs/ph-cat.json';
+import tablerGift from '../../../static/generator/motifs/tb-gift.json';
 const colors = { left: '#fff', right: '#b91313' };
 const examples = { tree, horse, bird, star, snowflake };
 
@@ -93,6 +97,18 @@ describe('complete motif frames', () => {
    expect(result.edges).toContainEqual({ from: [0, t], to: [100, t], family: 'B', kind: 'frame' });
   }
  });
+ for (const [name, motif] of Object.entries({ cookie, cat, bicycle, tablerGift })) {
+  it(`opens the nested ${name} counters in the layered frame with seven strips`, () => {
+   const { design } = generate({ mode: 'figure', name, contours: motif.contours as Ring[], colors, style: 'layers' });
+   expect(design.gridSize).toEqual({ x: 7, y: 7 });
+   expect(design).not.toHaveProperty('leftCutouts');
+   expect(design).not.toHaveProperty('rightCutouts');
+   expect(cutTipCounts(design)[1]).toBeLessThanOrEqual(name === 'cookie' ? 2 : 0);
+   const restored = normalizeHeartDesign(serializeHeartDesign(design));
+   expect(restored?.fingers).toHaveLength(design.fingers.length);
+   expect(rasterizeDesign(restored!, 240).data).toEqual(rasterizeDesign(design, 240).data);
+  });
+ }
  it('distributes separate stars and a snowflake over the three central lanes', () => {
   const contours: Ring[] = (snowflake.contours as Ring[]).map(r => r.map(([x,y]) => [x*.6,y*.6]));
   for (const x of [-.36,.36]) for (const y of [-.3,.3])
