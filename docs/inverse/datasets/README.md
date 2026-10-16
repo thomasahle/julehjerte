@@ -61,8 +61,14 @@ still has distorted central cuts after cap and ribbon observations are excluded,
 despite **0.25%** observed-region error. All eight diagnostic outputs convert to
 editable SVG without editor issues; no real-photograph pass is added. These are
 manual uncertainty interventions, not automatic segmentation or deployed changes. A [later annotation review](ribbon-coverage-plan.json)
-shows the vertical polygon clips the ribbon edge; correcting that coverage is
-the next diagnostic before attributing the remaining hook to the optimizer.
+shows the vertical polygon clips the ribbon edge. The completed
+[coverage experiment](ribbon-coverage-results.json) removes both large hooks at
+the widest exclusion, supporting input contamination as a cause. However, that
+same exclusion distorts the known synthetic grid: its editable output has
+**2.70% clean-design error** despite **0.00146% observed-region error**. Narrower
+exclusions recover the synthetic grid exactly after editable conversion. All
+six outputs pass geometry/paper and editor checks; no real-photo pass is added.
+Accurate visibility evidence matters more than simply excluding a wider band.
 
 A [one-photo color-residual probe](ribbon-color-residual.json) does not support
 using a global residual threshold to exclude the ribbon automatically. With

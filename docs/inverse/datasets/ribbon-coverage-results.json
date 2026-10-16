@@ -1,0 +1,237 @@
+{
+  "schema": "ribbon-coverage-results-1",
+  "status": "completed-offline-diagnostic-no-runtime-change",
+  "plan": "docs/inverse/datasets/ribbon-coverage-plan.json",
+  "execution": {
+    "status": "complete",
+    "exitCode": 0,
+    "seconds": 36.2859108749999,
+    "sourceFilesVerified": 934
+  },
+  "scope": "Six fresh fits from the same fixed source masks and caps exclusion, varying only the declared ribbon uncertainty margin. All original source-mask bytes and pinned runtime files verified unchanged.",
+  "summary": [
+    {
+      "id": "real-202b8421f50252f2",
+      "margin": 0,
+      "coverage": 0.54315625,
+      "status": "protected-target-checks-pass",
+      "geometry": true,
+      "paper": "pass",
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "observedError": 0.0025314999136988666,
+      "fullOriginalError": 0.16610625,
+      "originalFullChecks": false,
+      "knownCleanError": null,
+      "knownCleanFeatures": null
+    },
+    {
+      "id": "real-202b8421f50252f2",
+      "margin": 8,
+      "coverage": 0.484325,
+      "status": "protected-target-checks-pass",
+      "geometry": true,
+      "paper": "pass",
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "observedError": 0.0022195839570536315,
+      "fullOriginalError": 0.172075,
+      "originalFullChecks": false,
+      "knownCleanError": null,
+      "knownCleanFeatures": null
+    },
+    {
+      "id": "real-202b8421f50252f2",
+      "margin": 16,
+      "coverage": 0.42903125,
+      "status": "protected-target-checks-pass",
+      "geometry": true,
+      "paper": "pass",
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "observedError": 0.0020831815864229006,
+      "fullOriginalError": 0.1767625,
+      "originalFullChecks": false,
+      "knownCleanError": null,
+      "knownCleanFeatures": null
+    },
+    {
+      "id": "known-two-cut-ribbon",
+      "margin": 0,
+      "coverage": 0.54315625,
+      "status": "protected-target-checks-pass",
+      "geometry": true,
+      "paper": "pass",
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "observedError": 0,
+      "fullOriginalError": 0.05141875,
+      "originalFullChecks": false,
+      "knownCleanError": 3.125e-05,
+      "knownCleanFeatures": true
+    },
+    {
+      "id": "known-two-cut-ribbon",
+      "margin": 8,
+      "coverage": 0.484325,
+      "status": "protected-target-checks-pass",
+      "geometry": true,
+      "paper": "pass",
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "observedError": 0,
+      "fullOriginalError": 0.05146875,
+      "originalFullChecks": false,
+      "knownCleanError": 8.125e-05,
+      "knownCleanFeatures": true
+    },
+    {
+      "id": "known-two-cut-ribbon",
+      "margin": 16,
+      "coverage": 0.42903125,
+      "status": "protected-target-checks-pass",
+      "geometry": true,
+      "paper": "pass",
+      "slits": {
+        "left": 2,
+        "right": 2
+      },
+      "observedError": 1.4567703401558745e-05,
+      "fullOriginalError": 0.07445,
+      "originalFullChecks": false,
+      "knownCleanError": 0.0260875,
+      "knownCleanFeatures": true
+    }
+  ],
+  "editableSummary": [
+    {
+      "id": "real-202b8421f50252f2",
+      "margin": 0,
+      "coverage": 0.54315625,
+      "observedError": 0.0024394453713825442,
+      "fullOriginalError": 0.16604375,
+      "geometryPassed": true,
+      "paper": "pass",
+      "editorIssues": [],
+      "protectedChecksPassed": true,
+      "exportedPreviewSha256": "c0bbb89c3391e4f11dfb8b00adaec7c88bd4f049f081b8027e0ca50a9962f74d"
+    },
+    {
+      "id": "real-202b8421f50252f2",
+      "margin": 8,
+      "coverage": 0.484325,
+      "observedError": 0.0022066793991637845,
+      "fullOriginalError": 0.1720875,
+      "geometryPassed": true,
+      "paper": "pass",
+      "editorIssues": [],
+      "protectedChecksPassed": true,
+      "exportedPreviewSha256": "970cc23a86f6743f6effba8d973b871c7855814354ced6874afc3097206ed7ef"
+    },
+    {
+      "id": "real-202b8421f50252f2",
+      "margin": 16,
+      "coverage": 0.42903125,
+      "observedError": 0.001981207662611989,
+      "fullOriginalError": 0.1767625,
+      "geometryPassed": true,
+      "paper": "pass",
+      "editorIssues": [],
+      "protectedChecksPassed": true,
+      "exportedPreviewSha256": "9805b4731dfe91b21efc3a1c79343cf832e8ae6df0de725720ce37694526dd9f"
+    },
+    {
+      "id": "known-two-cut-ribbon",
+      "margin": 0,
+      "coverage": 0.54315625,
+      "observedError": 0.0,
+      "fullOriginalError": 0.0513875,
+      "geometryPassed": true,
+      "paper": "pass",
+      "editorIssues": [],
+      "protectedChecksPassed": true,
+      "exportedPreviewSha256": "4b7dd0c2d741dceede8cb5a4ca3c1d8ad49f3a5ccb3cf99439e7a44418ede7f8",
+      "knownCleanError": 0.0
+    },
+    {
+      "id": "known-two-cut-ribbon",
+      "margin": 8,
+      "coverage": 0.484325,
+      "observedError": 0.0,
+      "fullOriginalError": 0.0513875,
+      "geometryPassed": true,
+      "paper": "pass",
+      "editorIssues": [],
+      "protectedChecksPassed": true,
+      "exportedPreviewSha256": "4b7dd0c2d741dceede8cb5a4ca3c1d8ad49f3a5ccb3cf99439e7a44418ede7f8",
+      "knownCleanError": 0.0
+    },
+    {
+      "id": "known-two-cut-ribbon",
+      "margin": 16,
+      "coverage": 0.42903125,
+      "observedError": 1.4567703401558745e-05,
+      "fullOriginalError": 0.07535,
+      "geometryPassed": true,
+      "paper": "pass",
+      "editorIssues": [],
+      "protectedChecksPassed": true,
+      "exportedPreviewSha256": "b878e1f29cb111aef9d09ae98d278ffd0efe6e9d6bde970bffb59b39775d9c17",
+      "knownCleanError": 0.0270125
+    }
+  ],
+  "visualReview": {
+    "reviewed": [
+      "photo-curve-review.png",
+      "real-202b8421f50252f2-comparison.png",
+      "known-two-cut-ribbon-comparison.png"
+    ],
+    "findings": [
+      "At zero extra margin, the real-photograph reconstruction has two prominent hooks along the ribbon. At 8px one remains prominent. At 16px both large hooks disappear; smaller photographic edge irregularity remains.",
+      "The synthetic zero- and 8px-margin outputs visually recover the regular grid; editable conversion gives exact clean-mask agreement at 400px. The 16px-margin grid bends and shifts where useful observations have been removed.",
+      "All six editable outputs retain geometry/paper checks and have no editor issues."
+    ]
+  },
+  "conclusions": [
+    "The ribbon annotation coverage changes the surviving central hooks, supporting input contamination as a cause. This does not prove the real hidden geometry or attribute every defect to annotation.",
+    "A lower observed-region error as coverage decreases is not evidence of better reconstruction: in the synthetic control, the widest exclusion yields 0.00146% observed error but 2.70125% clean-mask error after editable export.",
+    "The study adds no complete original-photo passes and no automatic occlusion detector. It does not change production masks, fitting, or acceptance gates."
+  ],
+  "limitations": [
+    "Single real photograph and single known-grid control; no held-out occlusion accuracy.",
+    "Only 42.90% to 54.32% of each mask remains scored because the prior coarse caps exclusion is retained.",
+    "The widest uncertainty region excludes visible paper too. Real hidden colours and cutting paths are unknown.",
+    "Independent geometric and editable rasterizers differ slightly; both results are retained.",
+    "The real source has decorative flower caps beyond the regular grid, so full-original disagreement measures those excluded decorations too."
+  ],
+  "nextAction": "Use separate visible-material and complete-body supervision; avoid global uncertainty dilation. Independently test the observed browser/native resampling sensitivity with fixed target masks and configurations.",
+  "artifactsSha256": {
+    "tmp/heart-learning/ribbon-coverage-v1/plan.json": "b3274b30272d885a02f86820d8c2585bc06b243b4363806e6cedfa647e544cbc",
+    "tmp/heart-learning/ribbon-coverage-v1/source.json": "fcd3e26e7cb45333ec588dd3e1703089aee86e803dc5be978412539a025ca459",
+    "tmp/heart-learning/ribbon-coverage-v1/report.json": "9038e73ff9806d4813c02aa735eaa0a960751a120c0dff01a0db839ab77a73fc",
+    "tmp/heart-learning/ribbon-coverage-v1/state.json": "2aab4bad783fe4da2762eae63d6a83767c4a685d0469c5a0e51d6253b7d95ff1",
+    "tmp/heart-learning/ribbon-coverage-v1/replay.mjs": "cf1c0ee6831daca3bc1a31f4b0f025894dfe122f45957530422d16a9776fda17",
+    "tmp/heart-learning/ribbon-coverage-v1/run.py": "85dd47b5b75453cafb635efe0f6c827a77e8e3e5034a2eb4dea9df07e08d5968",
+    "tmp/heart-learning/ribbon-coverage-v1/review.py": "1768ede20c6eebc94cc63e6aed2a1533600bfe790ddffb30a627d73bdbc10179",
+    "tmp/heart-learning/ribbon-coverage-v1/editor-input.py": "7ed12c8a61d23af4ac786497d7b88ef657db65dc1f0a9dbc49b2409fbce169c0",
+    "tmp/heart-learning/ribbon-coverage-v1/export-review.py": "507da538ed55d8f318750df3b5125aae050ed0e760f9445eee8a8b581f9bfcc8",
+    "tmp/heart-learning/ribbon-coverage-v1/summary.json": "fa748d4ae70437257c9be5513ab0a093c82ef401922707c96cb622465dc30dde",
+    "tmp/heart-learning/ribbon-coverage-v1/export-summary.json": "2c642ffc2edbb6ff02eb836d8dab1bbaf98f185c06ac45a5acfb05fb27ce0d5e",
+    "tmp/heart-learning/ribbon-coverage-v1/editable/results.json": "8e182540df3447957e86b52254a622834e5b2ece6993486a8c48b4d7d7d8b2da",
+    "tmp/heart-learning/ribbon-coverage-v1/photo-curve-review.png": "aae921b2f8f89b3d35aa08f9ead97d6b8dec16a187992cb8e061c2ef2e777bd7",
+    "tmp/heart-learning/ribbon-coverage-v1/real-202b8421f50252f2-comparison.png": "6fab81f4753d76ef5d31ef648bcf090590a6472227fe9a32dfff7556abc33b90",
+    "tmp/heart-learning/ribbon-coverage-v1/known-two-cut-ribbon-comparison.png": "155babc8eb0cdad43c681b5c9f51246532169bb7c1333e78441493927b5e00a6",
+    "tmp/heart-learning/ribbon-coverage-v1/annotation-review.png": "5302a9b0c1c8f25a4f18dbb8da0d729b9356e3afccd1628c5bb40ff129fb3d95"
+  },
+  "deployment": "None; local diagnostic only."
+}
