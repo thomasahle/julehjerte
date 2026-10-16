@@ -1,0 +1,61 @@
+{
+  "schema": "mobilesam-foreground-plan-1",
+  "status": "declared-before-inference",
+  "scope": "Development photographs; automatically prompted pretrained segmentation, no annotation, supplied corners, ROI, retraining or templates. Frozen RGB material estimates are unchanged. Pretraining overlap with these public photographs is unknown.",
+  "inputManifestSha256": "4cd5b9dcd46c31fbe2b55515357ac0a1553534ef36647857e811937cb9302896",
+  "cases": 22,
+  "modelRepository": "https://github.com/ChaoningZhang/MobileSAM",
+  "modelCommit": "f706ad9c4eb7f219c00d9050e46328518ffb65d2",
+  "checkpointSha256": "6dbb90523a35330fedd7f1d3dfc66f995213d81b29a5ca8108dbcdd4e37d6c2f",
+  "checkpointGitBlob": "7ef2d090979fd9853adf17b7a99c8b94a1c5a6a7",
+  "modelSourceSha256": {
+    "mobile_sam/__init__.py": "fea49857574bb02cd690f8d39c339fe808d953795cec793f36be6681ce3a56b9",
+    "mobile_sam/automatic_mask_generator.py": "71c698d2b6cbf5a62eafa5f12106fdf3bff676102adf1aed2287df3b3990b4e0",
+    "mobile_sam/build_sam.py": "bc195e97cdb20286b7312421f790cbb943659ca4bf5babb60dbebc6400cf32ed",
+    "mobile_sam/modeling/__init__.py": "6f9d091c722036a33eac2ae767eea2a5fdf940c6f47a5710f9b044a64067f252",
+    "mobile_sam/modeling/common.py": "59a53bfa5d0a4d446df7f2bb57d2e95808b130601592b934600fb663d256ce17",
+    "mobile_sam/modeling/image_encoder.py": "1665ada2902722c9a8cd566c840e324d623ef2b12f7d9ae9f38b24aed0e39886",
+    "mobile_sam/modeling/mask_decoder.py": "6a2455e990515c67a061187c92c236b879b189f21ef6ebfce1627cae9a6b2f93",
+    "mobile_sam/modeling/prompt_encoder.py": "bd8f2f5903f0647f55c21c608bcbb334eec2901ebe76aa41061b1c513df4a06f",
+    "mobile_sam/modeling/sam.py": "8abefaefd5a1c0edf06c9749bd746a93002d929b390f8c95cee498657102238d",
+    "mobile_sam/modeling/tiny_vit_sam.py": "e6432ce8eee4727e921ab5b0530631fd71453f760247734f8fe63604cff4d303",
+    "mobile_sam/modeling/transformer.py": "566a8f6db8b608398de939548bd0f485b21752fda2bdda36900e6444ef938d11",
+    "mobile_sam/predictor.py": "6dafa1d20430f6c4e0d37c53bfa80a8241619abb4264d26ca30d843991b760ff",
+    "mobile_sam/utils/__init__.py": "34bd8069c54764e7b8d73a78905dbe6467140a2f73170875128f6ca4d8cdd0aa",
+    "mobile_sam/utils/amg.py": "5c10f8dd63facb642ff090f61426b35b3c6c3a07e72839595cb04d74828b1d39",
+    "mobile_sam/utils/onnx.py": "b4410ac1dc9a7bb3a09827520fa08454f9b397608775e2fe4ebfb7c8dbb02666",
+    "mobile_sam/utils/transforms.py": "26a649f2bca8a4a24b4d56617487a9a54c4279e559b2b813c9de38f58a60107c"
+  },
+  "driverSha256": "5b526753cb3737d00e5e560239499eb891f3594a3a7242f5ab5007cf0da5f98c",
+  "promptHelperSha256": "1d0ad53923c3324f7f9e4ad08031649aa0484430492eafd4b4d3088688677cae",
+  "methods": [
+    "unchanged",
+    "sam-box",
+    "sam-box-point"
+  ],
+  "promptRule": "Largest 8-connected .5 body component inside source; box padded 5% per axis; optional deepest interior point. Ties use first row-major component/pixel.",
+  "predictionRule": "Single mask per prompt (multimask_output=False); no per-photo selection or fallback. Sigmoid of native logits, bilinear sample to frozen 256-pixel window; outside source is zero.",
+  "runtime": {
+    "device": "cpu",
+    "dtype": "float32",
+    "torchThreads": 2,
+    "torchInteropThreads": 1
+  },
+  "dependencies": {
+    "torch": "2.8.0",
+    "torchvision": "0.23.0",
+    "numpy": "1.26.4",
+    "scipy": "1.13.1",
+    "Pillow": "11.1.0",
+    "timm": "0.9.16",
+    "safetensors": "0.4.5"
+  },
+  "evaluation": [
+    "Replay unchanged control and both SAM arms with the unchanged locator and support gates.",
+    "Inspect every photograph, prompt, mask and proposed crop.",
+    "Report body metrics only on the separately annotated known pixels.",
+    "Do not call crop proposals successful templates; fit only after crop review."
+  ],
+  "evaluationOutput": "tmp/heart-learning/mobilesam-foreground-v1",
+  "deployed": false
+}
