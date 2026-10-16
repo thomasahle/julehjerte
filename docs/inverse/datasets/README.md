@@ -26,10 +26,16 @@ The inventory, with material annotations updated on 2026-10-16, contains:
 | Training scene variants | 2,448 | Neighbours and handles paired with all six backgrounds for the same 408 training views; no new geometry families. |
 | Source-photo material QA samples | 78 integrated + 25 new | Four hearts in two reserved photographs; sparse assistant-reviewed development observations, not dense labels or training data. The new jigsaw review is not yet in the common benchmark fixture. |
 | Sparse four-sector neighbourhood observations | 25 on two sources, plus 8 ordinary-edge controls | Reviewed locations and uncertainty boxes; exact physical joining is unknown. Development observations, not training labels. |
-| Real visible-body annotations | 23 | Includes two newly admitted printed-checker/candle instances and one reserved gold-angel instance. Uncertain pixels are excluded; the completed corrected-family study retains its original nineteen instances. |
-| Real partial paper-material annotations | 21 heart instances | Nineteen enter the completed corrected-family study; two new instances remain unassigned and unused in training. Separate body and material uncertainty; all are reviewed development examples. |
+| Real visible-body annotations | 24 | Includes newly admitted printed-checker/candle/fish instances and one reserved gold-angel instance. Uncertain pixels are excluded; the completed corrected-family study retains its original nineteen instances. |
+| Real partial paper-material annotations | 22 heart instances | Nineteen enter the completed corrected-family study; three new instances remain unassigned and unused in training. Separate body and material uncertainty; all are reviewed development examples. |
 
 ## Current results and limits
+
+The [reviewed cream/blue fish photograph](fish-annotation-admission.json) adds one
+visible-body and partial-material annotation. Its handle, cast shadow and four
+narrow contacts remain unknown; no hidden cut connectivity is asserted. Final
+256/768-pixel compilation reproduces all eight reviewed PNGs exactly. The source
+remains unassigned and unused in training pending motif-family grouping.
 
 [Preserving photographic coverage](photo-observation-results.json) now separates
 real source pixels from crop padding through colour estimation, editing and
