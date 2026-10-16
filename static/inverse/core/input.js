@@ -65,7 +65,7 @@ function observedMask(mask,length){
 
 export function quantize(rgb,{mode='auto',threshold=128,swatches=['#bd1111','#ffffff'],invert=false,validMask=null}={}){
   const observed=observedMask(validMask,rgb.length/3);
-  if(observed){
+  if(observed&&mode!=='red-white-mixture'){
     // Palette/threshold estimation must never see synthetic background.
     // Fitting weights cannot undo a classification already changed by it.
     const count=observed.reduce((sum,v)=>sum+v,0),samples=new Uint8Array(3*count);
@@ -78,7 +78,7 @@ export function quantize(rgb,{mode='auto',threshold=128,swatches=['#bd1111','#ff
   const n=rgb.length/3,gray=new Uint8Array(n);let chroma=0;for(let i=0;i<n;i++){const c=[rgb[3*i],rgb[3*i+1],rgb[3*i+2]];gray[i]=Math.round(.2126*c[0]+.7152*c[1]+.0722*c[2]);chroma+=Math.max(...c)-Math.min(...c);}if(mode==='auto')mode=chroma/n<5?'otsu':'lab';
   const mask=new Uint8Array(n);let centers=null,cutoff=null,mixture=null,probability=null;
   if(['threshold','otsu'].includes(mode)){cutoff=mode==='otsu'?otsu(gray):threshold;if(!Number.isFinite(cutoff)||cutoff<0||cutoff>255)throw new Error('Threshold must be 0–255.');for(let i=0;i<n;i++)mask[i]=gray[i]<=cutoff?1:0;}
-  else if(mode==='red-white-mixture'){const result=redWhiteMixture(rgb);mask.set(result.mask);mixture=result.metadata;probability=result.probability;}
+  else if(mode==='red-white-mixture'){const result=redWhiteMixture(rgb,{validMask:observed});mask.set(result.mask);mixture=result.metadata;probability=result.probability;}
   else if(mode==='red-white'){for(let i=0;i<n;i++)mask[i]=rgb[3*i]>1.5*rgb[3*i+1]&&rgb[3*i]>1.5*rgb[3*i+2]?1:0;}
   else if(['lab','swatches'].includes(mode)){
     const labs=new Float64Array(n*3);for(let i=0;i<n;i++)labs.set(rgbToLab(Array.from(rgb.slice(i*3,i*3+3))),3*i);
@@ -104,7 +104,7 @@ export function quantize(rgb,{mode='auto',threshold=128,swatches=['#bd1111','#ff
       centers=bestCenters.sort((a,b)=>a[0]-b[0]);}
     for(let i=0;i<n;i++)mask[i]=sq(i,centers[0])<=sq(i,centers[1])?1:0;
   }else throw new Error('Unknown two-colour conversion mode.');
-  if(invert)for(let i=0;i<n;i++){mask[i]^=1;if(probability)probability[i]=1-probability[i];}return{mask,probability,metadata:{method:mode,threshold:cutoff,labCenters:centers,...(mixture?{mixture}:{}),inverted:invert,dither:false}};
+  if(invert)for(let i=0;i<n;i++){if(observed&&!observed[i])continue;mask[i]^=1;if(probability)probability[i]=1-probability[i];}return{mask,probability,metadata:{method:mode,threshold:cutoff,labCenters:centers,...(mixture?{mixture}:{}),inverted:invert,dither:false,...(observed?{observedPixels:observed.reduce((s,v)=>s+v,0),missingPixels:observed.reduce((s,v)=>s+1-v,0)}:{})}};
 }
 /** Label one four-connected region. Optional integer labels let sparse callers
  * reuse the traversal without scanning unrelated regions of the image. */

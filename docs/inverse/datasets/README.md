@@ -41,9 +41,20 @@ three-case clipped-photo replay, bottom-flower still passes, and bauble remains
 failed with a worse fit. Both old/new exports are rescored against both old/new
 observed classifications, because neither the target nor denominator stayed
 unchanged. All 865 application tests and twelve focused core checks pass;
-ordinary star/hat browser exports remain byte-identical. The complete inverse
-suite and regular Hunodan timing replay are running; no full-corpus improvement
-is claimed yet.
+ordinary star/hat browser exports remain byte-identical. The completed inverse
+suite passes 958/964 checks: five prior fitter failures plus an observer
+expectation corrected in the follow-up below. All 22 regular Hunodan fits pass
+within ten seconds (maximum 8.81 seconds), with every error unchanged from the
+preceding run. No full photographic-corpus improvement is claimed yet.
+
+[Irregular red/white mixtures](irregular-mixture-results.json) keep the original
+square layout while excluding missing pixels from palette estimation. Compacting
+those pixels previously caused clipped photos to throw or moved the estimator's
+inset. All eighteen focused tests, type checking, lint and build pass. A private
+Chromium replay toggles the red/white option on a real clipped collage crop, then
+returns to Automatic for editing, undo/redo, solving and SVG download. The
+downloaded result passes geometry/paper checks at 0.55% observed disagreement;
+this does not establish a quality improvement from changing classification.
 
 [Keeping the best valid rollback point](best-safe-rollback-results.json) restores
 the shifted bird's small eye while preserving exploration through worse valid
@@ -72,8 +83,9 @@ round-checker and jigsaw; bottom-flower's proposed tip is outside the photograph
 Other flagged crops look plausible or remain uncertain, so the diagnostic must
 not be treated as eighteen proven crop failures. The 26/31 result counts valid
 templates fitting estimated masks, not verified physical crops or known cuts.
-Production rectification fills outside-source pixels with white without carrying
-observation coverage into the fitting target. Independent sampling and an actual
+At the time of that review, production rectification filled outside-source
+pixels with white without carrying observation coverage into the fitting target.
+Independent sampling and an actual
 rectifier replay measure 1.68%/2.77%/0.174% synthetic padding weight in crossed-ribbons,
 bauble and bottom-flower respectively. No crops, masks or benchmark denominators
 were changed by this review.
@@ -86,7 +98,7 @@ automatic classification collapse two photographed grey papers into one: half
 the observed pixels become misclassified before fitting starts. Import, editing,
 undo, persistence and solver handoff must carry observation separately from free-
 border permission. These are correctness diagnoses, not photographic solve gains;
-the production fix remains pending.
+the coverage fix and irregular-mixture follow-up above address that handoff.
 
 [A muted teal/pale candle photograph](real-candle-annotation-review.json) now has
 reviewed candidate body/material polygons and six four-sector contact

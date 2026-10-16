@@ -14,7 +14,7 @@ const root=process.env.INVERSE_TEST_OUTPUT||`tmp/inverse-photo-coverage-browser/
 const browser=await chromium.launch({headless:true}),page=await browser.newPage({viewport:{width:1440,height:1100},deviceScaleFactor:1});
 let loader;
 const record={commit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),sourceHashes:{},case:'crossed-ribbons',scope:'Real collage upload, rough ROI through UI, production detector and worker. Only solve time budget set to ten seconds.',errors:[]};
-for(const file of ['scripts/inverse/photo-coverage-browser-test.mjs','scripts/inverse/paint-observer.mjs','static/inverse/core/input.js','static/inverse/core/mask-preview.js','src/lib/paint/mask.ts','src/lib/paint/tools.ts','src/lib/components/paint/ImportImageDialog.svelte','src/lib/components/paint/MaskCanvas.svelte','src/lib/components/paint/PaintPage.svelte'])record.sourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
+for(const file of ['scripts/inverse/photo-coverage-browser-test.mjs','scripts/inverse/paint-observer.mjs','static/inverse/core/input.js','static/inverse/core/unmix.js','static/inverse/core/mask-preview.js','src/lib/paint/mask.ts','src/lib/paint/tools.ts','src/lib/components/paint/ImportImageDialog.svelte','src/lib/components/paint/MaskCanvas.svelte','src/lib/components/paint/PaintPage.svelte'])record.sourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 try{
  page.on('pageerror',e=>record.errors.push(e.message));await page.addInitScript(installPaintObservation);
  await page.addInitScript(()=>{
@@ -32,6 +32,16 @@ try{
  const point=(x,y)=>[rect.x+x/1482*rect.width,rect.y+y/1112*rect.height];
  await page.mouse.move(...point(261,856));await page.mouse.down();await page.mouse.move(...point(524,1112),{steps:10});await page.mouse.up();
  await page.waitForFunction(()=>window.__imports.at(-1)?.validMask?.some(v=>!v)&&Array.from(document.querySelectorAll('button')).some(b=>b.textContent.trim()==='Use as mask'&&!b.disabled),{},{timeout:60000});
+ // The spatial red/white estimator must retain the square despite an
+ // irregular missing tip. Revisit Automatic before the normal solve replay.
+ await button('Red-and-white photo').click();
+ await page.waitForFunction(()=>window.__imports.at(-1)?.metadata?.preprocessing?.method==='red-white-mixture'&&Array.from(document.querySelectorAll('button')).some(b=>b.textContent.trim()==='Use as mask'&&!b.disabled),{},{timeout:60000});
+ record.mixturePreview=await page.evaluate(()=>{const p=window.__imports.at(-1);return{resolution:p.resolution,observedPixels:p.validMask.reduce((s,v)=>s+v,0),foregroundPixels:p.mask.reduce((s,v)=>s+v,0),method:p.metadata.preprocessing.method};});
+ assert.ok(record.mixturePreview.foregroundPixels>0&&record.mixturePreview.foregroundPixels<record.mixturePreview.observedPixels);
+ assert.ok(!Number.isInteger(Math.sqrt(record.mixturePreview.observedPixels)),'Regression must use an irregular observed region.');
+ await page.screenshot({path:root+'/mixture-import.png',fullPage:true});
+ await button('Automatic').click();
+ await page.waitForFunction(()=>window.__imports.at(-1)?.metadata?.preprocessing?.method==='lab'&&Array.from(document.querySelectorAll('button')).some(b=>b.textContent.trim()==='Use as mask'&&!b.disabled));
  await page.screenshot({path:root+'/import.png',fullPage:true});
  const imported=await page.evaluate(()=>{const p=window.__imports.at(-1);return{validMask:Array.from(p.validMask),mask:Array.from(p.mask),resolution:p.resolution};});
  record.importedObserved=imported.validMask.reduce((s,v)=>s+v,0);record.crop=await page.evaluate(()=>window.__paintQA.crop);

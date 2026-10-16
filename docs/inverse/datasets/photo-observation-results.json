@@ -1,6 +1,6 @@
 {
   "schema": "photo-observation-results-1",
-  "status": "integrated; focused and browser QA passed; full inverse suite and Hunodan replay running",
+  "status": "integrated; full QA completed with five prior fitter failures and one observer expectation subsequently corrected",
   "problem": "Out-of-photo padding was classified as white paper, could move automatic colour thresholds/palette centres, and was counted as photographed evidence after binary editor handoff.",
   "semantics": [
     "A pixel is observed only when every nonzero bilinear contribution comes from inside the source image. This is conservative binary support, not a fractional-confidence estimate.",
@@ -206,7 +206,7 @@
     }
   ],
   "fullQA": {
-    "status": "running",
+    "status": "complete",
     "root": "tmp/heart-learning/photo-coverage-prototype-v1/full-qa",
     "sourceManifest": {
       "path": "tmp/heart-learning/photo-coverage-prototype-v1/full-qa/source.json",
@@ -215,7 +215,38 @@
     "commands": [
       "npm test",
       "node scripts/inverse/hunodan-speed-benchmark.mjs"
-    ]
+    ],
+    "sourceFilesVerified": 793,
+    "allCommandsPassed": false,
+    "applicationTests": {
+      "passed": 865,
+      "skipped": 1
+    },
+    "inverseTests": {
+      "passed": 958,
+      "total": 964,
+      "failed": 6,
+      "note": "Five prior fitter failures plus the observer expectation for the new validMask field. The subsequent irregular-mixture fix corrects that expectation and adds a coverage ownership test; no aggregate passing count is inferred from the focused rerun."
+    },
+    "checks": {
+      "path": "tmp/heart-learning/photo-coverage-prototype-v1/full-qa/checks.json",
+      "sha256": "e0f282e540a393ed96b9246262e2744c3615fb5296634e9f9204451e0057bdaa"
+    },
+    "testLog": {
+      "path": "tmp/heart-learning/photo-coverage-prototype-v1/full-qa/test.log",
+      "sha256": "a1f7a82f09e9ddd95151f5dd55017d701a89f459fa0eeb2968eac884c174cedf"
+    },
+    "hunodan": {
+      "passed": 22,
+      "total": 22,
+      "maximumSeconds": 8.809860042,
+      "identicalErrorsToPrecedingRun": 22,
+      "scope": "Preparation, solve, validation and export on native fixtures; excludes decoding, independent external replay, browser startup and worker transfer. Uses the stated matching-sheet allowance.",
+      "artifact": {
+        "path": "tmp/heart-learning/photo-coverage-prototype-v1/full-qa/hunodan/results.json",
+        "sha256": "8d26c3fa0c172ce29572b1680ef63f531fa1bb57bf01f3f9d85c5741b080cfc0"
+      }
+    }
   },
   "limitations": [
     "The three clipped cases are development photographs, not an independent generalization test.",
@@ -223,5 +254,6 @@
     "Improvement against a reclassified mask does not prove greater fidelity to unavailable original artwork; both masks and all four cross-scores are retained.",
     "This does not fix inaccurate corners inside the photograph or classify badly faded paper correctly.",
     "No model was trained/deployed and no changes were pushed or deployed."
-  ]
+  ],
+  "followup": "irregular-mixture-results.json"
 }

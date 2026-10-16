@@ -35,7 +35,7 @@ test('page timestamps exclude later capture delays and wait for an enabled visib
   h.at(1000000);const captured=h.collect();
   assert.equal(captured.marks.ready,225);
   assert.deepEqual(captured.timings,{clickToPrepareRequestSeconds:.01,prepareRoundTripSeconds:.022,preparedToSolveRequestSeconds:.005,solveRoundTripSeconds:.063,resultToReadySeconds:.025,clickToReadySeconds:.125});
-  assert.deepEqual(captured.prepared,{mask:[0,1,1,0],resolution:2,weights:[1,0,0,1]});
+  assert.deepEqual(captured.prepared,{mask:[0,1,1,0],resolution:2,weights:[1,0,0,1],validMask:null});
   preview.mask[0]=1;assert.equal(captured.prepared.mask[0],0,'Collection owns its serialized pixels.');
   h.at(2000000);assert.deepEqual(h.collect().marks,captured.marks,'Later bookkeeping cannot extend readiness.');
 });
@@ -76,4 +76,14 @@ test('automatic crop evidence survives the Find click without starting its timer
   assert.deepEqual(h.collect().crop,crops);
   h.find.click();
   assert.deepEqual(h.collect().crop,crops);
+});
+
+test('coverage snapshots own their pixels without copying during worker readiness timing',async t=>{
+ const h=harness(t),worker=new h.window.Worker(),validMask=Uint8Array.of(1,0,1,1);
+ h.find.click();worker.postMessage({id:1,action:'prepare'});
+ worker.emit({id:1,type:'prepared',preview:{mask:Uint8Array.of(0,0,1,1),resolution:2,validMask}});
+ assert.equal(h.window.__paintQA.prepared.validMask,validMask);
+ const captured=h.collect();assert.deepEqual(captured.prepared.validMask,[1,0,1,1]);
+ validMask.fill(1);assert.deepEqual(captured.prepared.validMask,[1,0,1,1]);
+ assert.deepEqual(h.collect().prepared.validMask,[1,1,1,1]);
 });

@@ -63,3 +63,31 @@ test('the red/white mixture also estimates paper colors only from observations',
  }
  const options={mode:'red-white-mixture',validMask:expected};assert.deepEqual(quantize(rgb,options),quantize(altered,options));
 });
+
+test('mixture preparation keeps the original inset with an irregular missing region',()=>{
+ const rgb=new Uint8Array(3*n*n),validMask=new Uint8Array(n*n).fill(1);
+ for(let i=0;i<n*n;i++)rgb.set(i%n<32?[150,20,30]:[230,225,215],3*i);
+ validMask[0]=0; // 4095 observations cannot be reinterpreted as a square.
+ const expected=quantize(rgb,{mode:'red-white-mixture'}),actual=quantize(rgb,{mode:'red-white-mixture',validMask});
+ assert.equal(actual.metadata.observedPixels,4095);assert.equal(actual.metadata.missingPixels,1);
+ assert.deepEqual(actual.metadata.mixture.paperPalettesSRGB,expected.metadata.mixture.paperPalettesSRGB);
+ assert.deepEqual(actual.metadata.mixture.sampleCounts,expected.metadata.mixture.sampleCounts,'A missing corner outside the inset cannot move palette samples.');
+ assert.equal(actual.mask[0],0);assert.equal(actual.probability[0],.5);
+ for(let i=1;i<n*n;i++){assert.equal(actual.mask[i],expected.mask[i]);assert.equal(actual.probability[i],expected.probability[i]);}
+ const changed=rgb.slice();changed.set([0,255,80],0);
+ assert.deepEqual(quantize(changed,{mode:'red-white-mixture',validMask}),actual);
+ const inverted=quantize(rgb,{mode:'red-white-mixture',validMask,invert:true});
+ assert.equal(inverted.mask[0],0);assert.equal(inverted.probability[0],.5);
+ for(let i=1;i<n*n;i++)assert.equal(inverted.mask[i],1-actual.mask[i]);
+});
+
+test('mixture palettes and residuals ignore missing interior pixels at their original positions',()=>{
+ const rgb=new Uint8Array(3*n*n),validMask=new Uint8Array(n*n).fill(1);
+ for(let y=0;y<n;y++)for(let x=0;x<n;x++){
+  const i=y*n+x;rgb.set(x<32?[150,20,30]:[230,225,215],3*i);
+  if(y>14&&y<34&&x>20&&x<20+y/2)validMask[i]=0;
+ }
+ const changed=rgb.slice();for(let i=0;i<n*n;i++)if(!validMask[i])changed.set([0,240,80],3*i);
+ const options={mode:'red-white-mixture',validMask};
+ assert.deepEqual(quantize(changed,options),quantize(rgb,options));
+});
