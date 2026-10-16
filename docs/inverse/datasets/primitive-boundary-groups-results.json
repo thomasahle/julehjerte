@@ -112,5 +112,19 @@
     "tmp/heart-learning/primitive-boundary-groups-v1/corpus-unbounded.mjs": "11780eefde29aeee306ffb4b3f8b08a4b93d96b680456a42f06cca1676d38b66",
     "tmp/heart-learning/primitive-boundary-groups-v1/analytic.log": "63cbb19a29934b93b3292ee69df01b5671e0019db45a2c2d47c405d229dee916"
   },
-  "deployment": "Local branch only; not pushed or deployed."
+  "deployment": "Local branch only; not pushed or deployed.",
+  "freshHunodan": {
+    "cases": 22,
+    "passed": 22,
+    "medianSeconds": 5.291481978999997,
+    "maxSeconds": 8.830321291,
+    "exactlyUnchangedErrors": 22,
+    "changedErrors": []
+  },
+  "remainingVerification": [
+    "Fresh automatic-photo benchmark and editable export",
+    "check/lint/build",
+    "three browser workflows",
+    "full application and inverse tests"
+  ]
 }

@@ -52,7 +52,9 @@ control; hiding an unrelated border does not. The real flower-cap photograph
 still has distorted central cuts after cap and ribbon observations are excluded,
 despite **0.25%** observed-region error. All eight diagnostic outputs convert to
 editable SVG without editor issues; no real-photograph pass is added. These are
-manual uncertainty interventions, not automatic segmentation or deployed changes.
+manual uncertainty interventions, not automatic segmentation or deployed changes. A [later annotation review](ribbon-coverage-plan.json)
+shows the vertical polygon clips the ribbon edge; correcting that coverage is
+the next diagnostic before attributing the remaining hook to the optimizer.
 
 
 An [existing-finalist comparison](finalist-retention-fit-results.json) improves

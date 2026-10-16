@@ -166,5 +166,9 @@
     "reviewedBeforeFitting": true,
     "finding": "Cyan polygons cover the visible gold strips and a conservative fringe. Magenta limits discard the top and left decorative-cap intrusions, together with valid border pixels. These are manually supplied diagnostic regions, not an automatic detector."
   },
-  "routingQualification": "Observation weights use the existing weighted direct-fitting path. The unweighted arm may also try MILP; differences include the pipeline response to uncertainty, not only an isolated loss gradient."
+  "routingQualification": "Observation weights use the existing weighted direct-fitting path. The unweighted arm may also try MILP; differences include the pipeline response to uncertainty, not only an isolated loss gradient.",
+  "postFitAnnotationCorrection": {
+    "reference": "docs/inverse/datasets/ribbon-coverage-plan.json",
+    "finding": "Later enlarged RGB review shows that the original vertical uncertainty polygon clips the ribbon's right edge. The claim that it conservatively covers the ribbon fringe is withdrawn. Original experiment inputs and results remain unchanged; they do not isolate a fully hidden ribbon."
+  }
 }

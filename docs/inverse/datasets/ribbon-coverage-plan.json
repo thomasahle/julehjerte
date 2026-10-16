@@ -1,0 +1,30 @@
+{
+  "schema": "ribbon-coverage-plan-1",
+  "status": "declared-before-fitting",
+  "previousPlan": "docs/inverse/datasets/flower-occlusion-plan.json",
+  "previousResults": "docs/inverse/datasets/flower-occlusion-results.json",
+  "sourceCrop": "tmp/heart-learning/projective-real-v1/pipeline/real-202b8421f50252f2-fallback/crop.png",
+  "sourceCropSha256": "51e64117be7482eab732e21f73c999eef4cea0721fb7008af2630995466371e8",
+  "finding": "The previous cyan vertical polygon clips the visible right edge of the gold ribbon in the centre. The earlier description as a conservative fringe was too strong. Source classified pixels outside that polygon can still demand ribbon-shaped cuts.",
+  "evidence": {
+    "annotationReview": "tmp/heart-learning/ribbon-coverage-v1/annotation-review.png",
+    "sha256": "5302a9b0c1c8f25a4f18dbb8da0d729b9356e3afccd1628c5bb40ff129fb3d95",
+    "geometryDiagnostic": "tmp/heart-learning/primitive-boundary-groups-v1/remaining-hidden-bends.json",
+    "geometryDiagnosticSha256": "aaea0642525e6e30bf4362c1a1777a974238762b69f073e2bc25aadca01b2169",
+    "sampledSupport": "The descending centre-hook span 34 has about 85% of its 33 sampled boundary points inside the previously scored region. This measures boundary samples, not the swept area or true ribbon silhouette."
+  },
+  "experiment": "Repeat the real and exact known-grid controls using the same fixed mask/crop, same cap exclusion, and ribbon uncertainty margins of 0, 8 and 16 pixels. Margins are declared from RGB inspection before fitting; no hidden colours, cut counts, or paths enter the fitter.",
+  "uncertaintyDefinition": "Rasterize original ribbon polygons using the original Canvas coverage rule, then apply a Chebyshev (pixel-square) dilation. Preserve the original caps region. No underlying source mask pixel is edited.",
+  "evaluation": [
+    "Report retained coverage, observed error, full original-mask disagreement, geometry/paper/source-feature checks and editable export.",
+    "Use the synthetic known grid only for independent latent-mask scoring, not fitting or model selection.",
+    "Inspect all outcomes and whether the hook survives. Additional excluded pixels cannot count as recovered image evidence.",
+    "Compare results to the original full-mask outcome; no new photo reconstruction pass merely because a weighted target passes."
+  ],
+  "limitations": [
+    "The real hidden design is not independently known.",
+    "The 8px and 16px margins also discard visible paper; this is uncertainty sensitivity, not automatic occlusion detection.",
+    "Cropping still includes decorative caps; their coarse exclusion also removes valid border observations."
+  ],
+  "execution": "After the currently running primitive-cleanup QA finishes; no concurrent fitting jobs."
+}

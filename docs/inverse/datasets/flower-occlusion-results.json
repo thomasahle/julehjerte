@@ -4287,5 +4287,9 @@
     "tmp/heart-learning/flower-occlusion-v1/real-202b8421f50252f2-comparison.png": "548d87847b3fd0423e1534d0e3385206049a9b6ce748b27944c945a6dd77e8da",
     "tmp/heart-learning/flower-occlusion-v1/known-two-cut-ribbon-comparison.png": "a396920a51cb305bb9aabcc607d876f1cc8bad845c32c58e7103c09ef2a607e9",
     "tmp/heart-learning/flower-occlusion-v1/editable/results.json": "92edd89d9c95defad8a762978b9b4156558e8b0a507da991e91b2a6dec87fe14"
+  },
+  "postFitAnnotationCorrection": {
+    "reference": "docs/inverse/datasets/ribbon-coverage-plan.json",
+    "finding": "Later enlarged RGB review shows that the original vertical uncertainty polygon clips the ribbon's right edge. The claim that it conservatively covers the ribbon fringe is withdrawn. Original experiment inputs and results remain unchanged; they do not isolate a fully hidden ribbon."
   }
 }
