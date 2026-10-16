@@ -1,6 +1,6 @@
 {
   "schema": "refinement-repair-clock-plan-1",
-  "status": "prepared-not-run-awaiting-serial-release-qa",
+  "status": "queued-after-serial-release-qa",
   "reason": "Two browser runs reach the same improved half-star checkpoint at step 200, fail only short self-clearance, and record no repair. A preceding run repaired that checkpoint and returned a lower-error star. The existing 50 ms repair gate is a candidate explanation; saved reports have no checkpoint timestamps.",
   "method": "Three fresh control/instrumented pairs per case (18 fits), alternating order, on captured native masks with actual settings and candidate observers. Load-hook instrumentation records per-refinement time allowance, checkpoint time remaining, proposal validity, repair eligibility and selected output. It does not change deadlines, forces, geometry rules or masks.",
   "instrumentationLimit": "Taking timestamps and storing small records adds overhead. This is a diagnostic of which branch was taken, not a latency benchmark or a claim that instrumentation reproduces an uninstrumented trajectory.",
@@ -13,7 +13,8 @@
     "tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-gift/baseline/engine-report.json": "0a694974e50b103cbbb1b8ba3bb8cca4a7974548296cff8f653f9fcf508a8111",
     "tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-gift/candidate/engine-report.json": "91e6bf0edbaf62a5df1641238331551e7649764c45d7d7c738129b5b2336223d",
     "tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-warped-checker/baseline/engine-report.json": "bb4fac91bb00113ef9f3d809d6841734a8aa594bf3d72aba098ccc8ab6c57fc2",
-    "tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-warped-checker/candidate/engine-report.json": "d97d588077de26a31effb89a84791067256b6522ab8c2c594ccddeaba37f0a9b"
+    "tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-warped-checker/candidate/engine-report.json": "d97d588077de26a31effb89a84791067256b6522ab8c2c594ccddeaba37f0a9b",
+    "tmp/heart-learning/refinement-repair-clock-v1/after-qa.py": "2f9518424c809f866e8ec28cb3f01758021499dbfd1e0c351a5348d76a685cea"
   },
   "cases": [
     "hard-bibel-star-outline-half",
