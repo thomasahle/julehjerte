@@ -441,7 +441,9 @@ try{
      if(name==='hard-flettede-puppy-half'){
       const frozen=JSON.parse(await fs.readFile('scripts/inverse/fixtures/browser-puppy-half-mask.json'));
       row.classifiedMaskSha256=createHash('sha256').update(Uint8Array.from(observed.prepared.mask)).digest('hex');
-      assert.equal(row.classifiedMaskSha256,frozen.maskSha256,'Template improvements must use the same browser-classified pixels');
+      const painted=resample(Uint8Array.from(observed.prepared.mask),observed.prepared.resolution,MASK_SIZE);
+      row.paintingMaskSha256=createHash('sha256').update(painted).digest('hex');
+      assert.equal(row.paintingMaskSha256,frozen.maskSha256,'Original sampling must still describe every frozen browser-classified painting pixel');
       assert.deepEqual(row.detectedCrop.quad,frozen.detectedCrop.quad,'The automatic crop remains fixed in this fitting regression');
      }
      if(['hard-flettede-puppy','hard-flettede-puppy-half','hard-flettede-stonehenge','hard-flettede-viking','hard-bibel-star-outline','hard-bibel-star-outline-half','hard-bibel-star-outline-jpeg75'].includes(name)&&!engineReference){
