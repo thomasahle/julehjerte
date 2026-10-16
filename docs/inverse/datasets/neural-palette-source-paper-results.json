@@ -1,0 +1,371 @@
+{
+  "schema": "fixed-partial-source-paper-score-1",
+  "status": "complete",
+  "scope": "Post-hoc diagnostic on six photos with pre-existing approximate overlap references. Score the SAME known source-paper cell centres inside an inset [0.1,0.9] reference square in every arm; never choose evaluation positions from the predicted crop. One phase chosen from classified observations and retained for exported weave. No references enter reconstruction.",
+  "limitations": [
+    "Approximate reference corners, partial interior labels and nearest-neighbour sampling; neither full motif boundary accuracy nor cutting-path ground truth.",
+    "Sixteen of the twenty-two photos lack independently supplied overlap references in this diagnostic; they remain unscored.",
+    "Unknown paper pixels and the outer ten percent of the reference square are not evaluated.",
+    "No crop/output is reported as unavailable, not assigned a misleading low error."
+  ],
+  "referencePhotos": 6,
+  "excludedPhotos": [
+    "real-2044b1d98ed6f262-body-1",
+    "real-340f5e5b0f447889-body-1",
+    "real-39f3a1ba97852876-body-1",
+    "real-3f7b76e1a98e808f-body-1",
+    "real-45744a03afddccb1-body-1",
+    "real-68d8f25d8891df62-body-1",
+    "real-710703159f609111-body-1",
+    "real-80794af7903e5d29-body-1",
+    "real-990ac34431be87fe-body-1",
+    "real-a414dfffbd2362ae-body-1",
+    "real-b87b0b19f12724f3-body-1",
+    "real-c0cc1ce97cf5e6a6-body-1",
+    "real-c4a9ee6e2d0a4185-body-1",
+    "real-cdae5c890b6933cd-body-1",
+    "real-cf2d0fcff65d7386-body-1",
+    "real-e936e08ac62db19b-body-1"
+  ],
+  "rows": [
+    {
+      "id": "real-12ce3c9180f7f317-body-1",
+      "method": "production",
+      "status": "crop-unresolved",
+      "observedSourcePixels": 1662,
+      "knownFractionOfReferenceInterior": 0.14728819567529244,
+      "referenceCornerUncertaintyPixels": 29.0273,
+      "coveredSourcePixels": 0,
+      "coverage": 0.0,
+      "classification": null,
+      "exported": null
+    },
+    {
+      "id": "real-12ce3c9180f7f317-body-1",
+      "method": "network-joint",
+      "status": "crop-unresolved",
+      "observedSourcePixels": 1662,
+      "knownFractionOfReferenceInterior": 0.14728819567529244,
+      "referenceCornerUncertaintyPixels": 29.0273,
+      "coveredSourcePixels": 0,
+      "coverage": 0.0,
+      "classification": null,
+      "exported": null
+    },
+    {
+      "id": "real-12ce3c9180f7f317-body-1",
+      "method": "rgb-joint",
+      "status": "crop-unresolved",
+      "observedSourcePixels": 1662,
+      "knownFractionOfReferenceInterior": 0.14728819567529244,
+      "referenceCornerUncertaintyPixels": 29.0273,
+      "coveredSourcePixels": 0,
+      "coverage": 0.0,
+      "classification": null,
+      "exported": null
+    },
+    {
+      "id": "real-5330aa8b62176216-body-1",
+      "method": "production",
+      "status": "review-required",
+      "observedSourcePixels": 296,
+      "knownFractionOfReferenceInterior": 0.022984935548998293,
+      "referenceCornerUncertaintyPixels": 6.0,
+      "coveredSourcePixels": 296,
+      "coverage": 1.0,
+      "phaseExchanged": true,
+      "classification": {
+        "observedCoveredError": 0.0,
+        "errorIncludingMissingCoverage": 0.0,
+        "missingSourcePixels": 0
+      },
+      "exported": {
+        "observedCoveredError": 0.0,
+        "errorIncludingMissingCoverage": 0.0,
+        "missingSourcePixels": 0
+      }
+    },
+    {
+      "id": "real-5330aa8b62176216-body-1",
+      "method": "network-joint",
+      "status": "crop-unresolved",
+      "observedSourcePixels": 296,
+      "knownFractionOfReferenceInterior": 0.022984935548998293,
+      "referenceCornerUncertaintyPixels": 6.0,
+      "coveredSourcePixels": 0,
+      "coverage": 0.0,
+      "classification": null,
+      "exported": null
+    },
+    {
+      "id": "real-5330aa8b62176216-body-1",
+      "method": "rgb-joint",
+      "status": "crop-unresolved",
+      "observedSourcePixels": 296,
+      "knownFractionOfReferenceInterior": 0.022984935548998293,
+      "referenceCornerUncertaintyPixels": 6.0,
+      "coveredSourcePixels": 0,
+      "coverage": 0.0,
+      "classification": null,
+      "exported": null
+    },
+    {
+      "id": "real-8c875dd0f298b5a4-body-1",
+      "method": "network-joint",
+      "status": "crop-unresolved",
+      "observedSourcePixels": 4005,
+      "knownFractionOfReferenceInterior": 0.42255750158261235,
+      "referenceCornerUncertaintyPixels": 6,
+      "coveredSourcePixels": 0,
+      "coverage": 0.0,
+      "classification": null,
+      "exported": null
+    },
+    {
+      "id": "real-8c875dd0f298b5a4-body-1",
+      "method": "rgb-joint",
+      "status": "crop-unresolved",
+      "observedSourcePixels": 4005,
+      "knownFractionOfReferenceInterior": 0.42255750158261235,
+      "referenceCornerUncertaintyPixels": 6,
+      "coveredSourcePixels": 0,
+      "coverage": 0.0,
+      "classification": null,
+      "exported": null
+    },
+    {
+      "id": "real-8c875dd0f298b5a4-body-1",
+      "method": "production",
+      "status": "checked-derived-mask",
+      "observedSourcePixels": 4005,
+      "knownFractionOfReferenceInterior": 0.42255750158261235,
+      "referenceCornerUncertaintyPixels": 6,
+      "coveredSourcePixels": 4005,
+      "coverage": 1.0,
+      "phaseExchanged": true,
+      "classification": {
+        "observedCoveredError": 0.23820224719101124,
+        "errorIncludingMissingCoverage": 0.23820224719101124,
+        "missingSourcePixels": 0
+      },
+      "exported": {
+        "observedCoveredError": 0.2387016229712859,
+        "errorIncludingMissingCoverage": 0.2387016229712859,
+        "missingSourcePixels": 0
+      }
+    },
+    {
+      "id": "real-995899fe049540ed-body-1",
+      "method": "production",
+      "status": "crop-unresolved",
+      "observedSourcePixels": 5706,
+      "knownFractionOfReferenceInterior": 0.5710568454763811,
+      "referenceCornerUncertaintyPixels": 15.0,
+      "coveredSourcePixels": 0,
+      "coverage": 0.0,
+      "classification": null,
+      "exported": null
+    },
+    {
+      "id": "real-995899fe049540ed-body-1",
+      "method": "network-joint",
+      "status": "crop-unresolved",
+      "observedSourcePixels": 5706,
+      "knownFractionOfReferenceInterior": 0.5710568454763811,
+      "referenceCornerUncertaintyPixels": 15.0,
+      "coveredSourcePixels": 0,
+      "coverage": 0.0,
+      "classification": null,
+      "exported": null
+    },
+    {
+      "id": "real-995899fe049540ed-body-1",
+      "method": "rgb-joint",
+      "status": "crop-unresolved",
+      "observedSourcePixels": 5706,
+      "knownFractionOfReferenceInterior": 0.5710568454763811,
+      "referenceCornerUncertaintyPixels": 15.0,
+      "coveredSourcePixels": 0,
+      "coverage": 0.0,
+      "classification": null,
+      "exported": null
+    },
+    {
+      "id": "real-abf590088db891f9-body-1",
+      "method": "rgb-joint",
+      "status": "crop-unresolved",
+      "observedSourcePixels": 2034,
+      "knownFractionOfReferenceInterior": 0.15698078258856216,
+      "referenceCornerUncertaintyPixels": 6.0,
+      "coveredSourcePixels": 0,
+      "coverage": 0.0,
+      "classification": null,
+      "exported": null
+    },
+    {
+      "id": "real-abf590088db891f9-body-1",
+      "method": "production",
+      "status": "checked-derived-mask",
+      "observedSourcePixels": 2034,
+      "knownFractionOfReferenceInterior": 0.15698078258856216,
+      "referenceCornerUncertaintyPixels": 6.0,
+      "coveredSourcePixels": 2034,
+      "coverage": 1.0,
+      "phaseExchanged": false,
+      "classification": {
+        "observedCoveredError": 0.0,
+        "errorIncludingMissingCoverage": 0.0,
+        "missingSourcePixels": 0
+      },
+      "exported": {
+        "observedCoveredError": 0.0,
+        "errorIncludingMissingCoverage": 0.0,
+        "missingSourcePixels": 0
+      }
+    },
+    {
+      "id": "real-abf590088db891f9-body-1",
+      "method": "network-joint",
+      "status": "crop-unresolved",
+      "observedSourcePixels": 2034,
+      "knownFractionOfReferenceInterior": 0.15698078258856216,
+      "referenceCornerUncertaintyPixels": 6.0,
+      "coveredSourcePixels": 0,
+      "coverage": 0.0,
+      "classification": null,
+      "exported": null
+    },
+    {
+      "id": "real-d5b0aa8d4d2465ee-body-1",
+      "method": "rgb-joint",
+      "status": "checked-derived-mask",
+      "observedSourcePixels": 299,
+      "knownFractionOfReferenceInterior": 0.06235662148070907,
+      "referenceCornerUncertaintyPixels": 6.75,
+      "coveredSourcePixels": 299,
+      "coverage": 1.0,
+      "phaseExchanged": false,
+      "classification": {
+        "observedCoveredError": 0.0,
+        "errorIncludingMissingCoverage": 0.0,
+        "missingSourcePixels": 0
+      },
+      "exported": {
+        "observedCoveredError": 0.0,
+        "errorIncludingMissingCoverage": 0.0,
+        "missingSourcePixels": 0
+      }
+    },
+    {
+      "id": "real-d5b0aa8d4d2465ee-body-1",
+      "method": "production",
+      "status": "checked-derived-mask",
+      "observedSourcePixels": 299,
+      "knownFractionOfReferenceInterior": 0.06235662148070907,
+      "referenceCornerUncertaintyPixels": 6.75,
+      "coveredSourcePixels": 299,
+      "coverage": 1.0,
+      "phaseExchanged": true,
+      "classification": {
+        "observedCoveredError": 0.0,
+        "errorIncludingMissingCoverage": 0.0,
+        "missingSourcePixels": 0
+      },
+      "exported": {
+        "observedCoveredError": 0.0,
+        "errorIncludingMissingCoverage": 0.0,
+        "missingSourcePixels": 0
+      }
+    },
+    {
+      "id": "real-d5b0aa8d4d2465ee-body-1",
+      "method": "network-joint",
+      "status": "checked-derived-mask",
+      "observedSourcePixels": 299,
+      "knownFractionOfReferenceInterior": 0.06235662148070907,
+      "referenceCornerUncertaintyPixels": 6.75,
+      "coveredSourcePixels": 299,
+      "coverage": 1.0,
+      "phaseExchanged": false,
+      "classification": {
+        "observedCoveredError": 0.0,
+        "errorIncludingMissingCoverage": 0.0,
+        "missingSourcePixels": 0
+      },
+      "exported": {
+        "observedCoveredError": 0.0,
+        "errorIncludingMissingCoverage": 0.0,
+        "missingSourcePixels": 0
+      }
+    }
+  ],
+  "sourceHashes": {
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/neural-palette-pipeline-v1/pipeline/report.json": "2a989adb71c240594f8c2673c8c5b767e1a685ee95960b20dcb44f1dae42d7e1",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/report.json": "47b1b5e1f8a50d53152a744d00b3750b7c1e96ca0d88511662fb4e1778122a29",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/neural-palette-source-paper-v1/score-source.py": "f1b715419537c469af9d2ff671b0762441c2428fe7eb6b0487272871fc14cb66",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-motifs/manifest.json": "9caa71574f688a27777fb35d16f8c47125bb0dccfd3681070147047e4f8bb887",
+    "scripts/inverse/datasets/real-materials-motifs.json": "5e439770d03347a528746a325ce995fb8f917d096fb480113fb45e4af97ec100",
+    "scripts/inverse/datasets/real-annotations-motifs.json": "753cd9c44d1b24077024ba3f9a2f40408a5d13624416c1f8e9402a80b3b6580e",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-pinterest/manifest.json": "43ad3b146fb44a73afdc9c5f5662adeec18c4819b9bd7d606ab7d8dacb5b7e00",
+    "scripts/inverse/datasets/real-materials-pinterest.json": "1909f24e8868be1d74458944655009b4e4fdce15fa64e1703a3f2f44bab751ae",
+    "scripts/inverse/datasets/real-annotations-pinterest.json": "a972cf961544f85565b2f8edc3df872dd27c2ca3333ea5c01d04e1867b19aaa9",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-pinterest/real-8c875dd0f298b5a4-body-1-materials.png": "84d85b1c76e02d2622a2260e9a81535dd73a34e22c29774257231c52430f03a9",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-printed/manifest.json": "0494aec7d9bce630f1101d422a192a2689e2d42513ffc834bd0650f78b4bfef5",
+    "scripts/inverse/datasets/real-materials-printed.json": "96368a150b75fc0aa04aa03eda43293b094235cd2741abaa7a55bc4fab0feee2",
+    "scripts/inverse/datasets/real-annotations.json": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-printed/real-995899fe049540ed-body-1-materials.png": "b474a8c859fa61bc6509f236d41009e79fe732a9de556bac68ac187a539a2bb4",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials/manifest.json": "1be905bd82bf5f18793ef2d31fa573f7dd976b5218991437d3c8d4902ccc95f6",
+    "scripts/inverse/datasets/real-materials.json": "fae5ef1cf8f1fbf4661776e05454da849be1dcada9f778d88e522d5d29773709",
+    "scripts/inverse/datasets/real-annotations-supplement.json": "db3a35a1bb2b50477d8a203e137a123e996193c5e8bf922a929e5b0ebedf0e25",
+    "scripts/inverse/datasets/real-annotations-scenes.json": "7a6a64262ab878f25c928c1ad4d07620e4ede8b6cd0d2ea79c3bd100c9c8e536",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-colors/manifest.json": "0736a30bd8ed05538b74bd3cb9727a540834c6258d1327ae0a61c92cb3f06244",
+    "scripts/inverse/datasets/real-materials-colors.json": "a7567a3a9452d038bb8dcbacbab6117f376b60de268e39c7c636ee2e75c67fe9",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-colors/real-5330aa8b62176216-body-1-materials.png": "b9978bd484c7e7c4736b7131f422f761ae83453c301808a93a3eacef80b2eeeb",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-colors/real-abf590088db891f9-body-1-materials.png": "ab70bc97da69eb33e82d369e952f1962f113413827a77138614467959e874e0b",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-colors/real-12ce3c9180f7f317-body-1-materials.png": "0c23a384c33a0dcd37da0fa8cb50afaada2793da27b8300a1bf2ceef754c6b56",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-curved/manifest.json": "42780e542336415ca00b72e707a697295f3a4e69720e3538d7685f2c281c1af1",
+    "scripts/inverse/datasets/real-materials-curved.json": "2b2dea584e023ac296d603aedb17efd802a7082e54e4fd7f936182461abfad12",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-curved/real-d5b0aa8d4d2465ee-body-1-materials.png": "c9c252b6bec2510b5851714b3f9aa3a4c8d872ee0bdff6066526f0a0f398d850",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-hanging/manifest.json": "89ba906f2e8a3c546ab3e7cf77ac49b479ff7411667a68dcb2178ba454f84cc3",
+    "scripts/inverse/datasets/real-materials-hanging.json": "9376385a12d03d5e5e31356f61201912dc40bf037631273cd4a109189cea2727",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-palettes/manifest.json": "578a0eb0f03fe083903640ee2ffe586686c316c2faaaf56b3a792a82ca790ba3",
+    "scripts/inverse/datasets/real-materials-palettes.json": "0269eaf9a4ef159b41b4b7e2717afe5254e8fac3b9eeeb5e434cbc81745accba",
+    "scripts/inverse/datasets/real-annotations-palettes.json": "2b8c2f11b6390608cee50c5adfb42280a2f72ca3d6309f4aad6ffc7ae081fd4f",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-protruding/manifest.json": "d853f81d3f226465e4cbf7e88ad876430b870678c3abbecb07aa5cc8ef65cbb7",
+    "scripts/inverse/datasets/real-materials-protruding.json": "beea1b34e342ee7152d1933e04182c81f1e0fd2d6c110ccdbae2e2c5eac71676",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-paper-scenes/manifest.json": "29070754513d7c11fb03bb8088867cb9454b3f06910a32ef5accd451d1d22e0c",
+    "scripts/inverse/datasets/real-materials-paper-scenes.json": "c4857fc3cceec4c2150353515dfb679ea8055bf65a30c10a4bd724d0bb118741",
+    "scripts/inverse/datasets/real-annotations-paper-scenes.json": "2f153ec1b274adac461bf384c06f72303f3b50914e4a3faa9716962a13fb3ee0",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/neural-palette-pipeline-v1/pipeline/real-5330aa8b62176216-body-1-production/mask.png": "f6661aadb143ce88d9843a6856aeebe8baf679d95822ae5e1a81911ef994032a",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/neural-palette-pipeline-v1/pipeline/real-5330aa8b62176216-body-1-production/woven.png": "395168a28f8b4cec2a86d5842ae7cc69bc9d0d9316ed2a43aadd0308ad77639d",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/neural-palette-pipeline-v1/pipeline/real-8c875dd0f298b5a4-body-1-production/mask.png": "697598be4f4146f24a594ef1190ea09e8787e5af8689e6f76a025375af9865c7",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/neural-palette-pipeline-v1/pipeline/real-8c875dd0f298b5a4-body-1-production/woven.png": "55606cd36c407749f06938cef804ef79f58c74e8f3b63c9ffe0e25427da336e7",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/neural-palette-pipeline-v1/pipeline/real-abf590088db891f9-body-1-production/mask.png": "7d8a803fa3fb705f79e1d7a165c55b027baa23271d63e142517106b8b27cbde1",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/neural-palette-pipeline-v1/pipeline/real-abf590088db891f9-body-1-production/woven.png": "2151ae4f6aff45829dd1eaf62dc49e52f60354033d05bc8ea6afff1d3225297a",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/neural-palette-pipeline-v1/pipeline/real-d5b0aa8d4d2465ee-body-1-rgb-joint/mask.png": "c2cc0fbe18e6e6b3b086b3432c78d8d7cff0fe5582476e6a5e068b898422b9f1",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/neural-palette-pipeline-v1/pipeline/real-d5b0aa8d4d2465ee-body-1-rgb-joint/woven.png": "37d8703d85e0f8cf87596987c1f176424434a4fcaa0eb4ad83d30af417aed422",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/neural-palette-pipeline-v1/pipeline/real-d5b0aa8d4d2465ee-body-1-production/mask.png": "1add30746fa343c5f525ab35df574ed8f2ae67bed19006feb45f9993484d7c1e",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/neural-palette-pipeline-v1/pipeline/real-d5b0aa8d4d2465ee-body-1-production/woven.png": "062507ea6ad769b024d3afbc4a61d8f27db2855fe6f2d55817b7efe3733f915a",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/neural-palette-pipeline-v1/pipeline/real-d5b0aa8d4d2465ee-body-1-network-joint/mask.png": "f952ccf1cb61ceedba4367c292c556d6188a41aaa3720fb40aa6438d0c16fb8c",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/neural-palette-pipeline-v1/pipeline/real-d5b0aa8d4d2465ee-body-1-network-joint/woven.png": "4b9347c1b5b9da4dc9d6ffda5d5d0667906d1f2df3a478ac8673cbde3f359d0c"
+  },
+  "pipeline": "docs/inverse/datasets/neural-palette-pipeline-results.json",
+  "visualReviewRequired": false,
+  "findings": [
+    "The printed-heart checker remains a checked fit against its derived mask, yet disagrees with 23.87% of the fixed known paper-identity samples; its classifier already disagrees with 23.82%. Decorative print versus underlying paper identity remains a preprocessing limitation, not evidence that all photographed colors should be discarded.",
+    "The bicycle scores zero error on only 296 known reference-interior samples while its motif is visibly lost. Those labels exclude the fine strokes and cannot certify motif recovery. The matching published PDF additionally requires closed cutouts outside the regular slit-chain model.",
+    "The purple/yellow ship and sampled checker regions have zero observed mismatch where outputs exist; their sparse/partial coverage does not establish correct complete contours.",
+    "Sixteen photos lack independent overlap references for this diagnostic. No score is assigned to missing crops, and no new reconstruction success is claimed."
+  ],
+  "visualReview": {
+    "figure": "tmp/heart-learning/neural-palette-pipeline-v1/reconstructions-2.png",
+    "sourceAndTemplateBicycleReviewed": true,
+    "scope": "Saved source/crop/classified-mask/exported-weave panel inspected; earlier full pipeline inspection covered all fifteen outputs. These are existing saved outputs, not new fits."
+  },
+  "artifactsSha256": {
+    "tmp/heart-learning/neural-palette-source-paper-v1/plan.json": "19e88e6b616c65065557ec3943e147fc733b17a87f4fdd958309a4ecae46ee86",
+    "tmp/heart-learning/neural-palette-source-paper-v1/score-source.py": "f1b715419537c469af9d2ff671b0762441c2428fe7eb6b0487272871fc14cb66",
+    "tmp/heart-learning/neural-palette-source-paper-v1/source-paper-scores.json": "b49e723ad7637cf689cb16ce232b1d4ea297b15c6c7f72e61e1ab3b6f2805867",
+    "tmp/heart-learning/neural-palette-pipeline-v1/reconstructions-2.png": "fce0ae464df49c5110ab1de024be3f3f003e99d10618b92fd43a2a7e34d69c29"
+  }
+}

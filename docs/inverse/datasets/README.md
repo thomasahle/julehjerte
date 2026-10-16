@@ -31,6 +31,19 @@ The inventory, with material annotations updated on 2026-10-16, contains:
 
 ## Current results and limits
 
+A [published-template review](bicycle-template-review.json) qualifies the
+bicycle failure: the designer's matching PDF requires additional enclosed
+cutouts in the green sheet, outside the regular slit-chain model. This does
+not prove that no regular alternative exists. Historical benchmark counts and
+training splits remain unchanged. An [independent paper-label replay](neural-palette-source-paper-results.json)
+also exposes an evaluation gap: the bicycle's 296 known reference-interior
+pixels omit its fine strokes, so their zero error cannot certify the motif.
+For the printed-heart checker, the exported weave disagrees with 23.87% of
+known underlying-paper samples, although it passes its derived-mask checks;
+the classifier already disagrees with 23.82%. Decorative print and paper
+identity are different targets. This diagnostic covers six photos with prior
+approximate overlap references and leaves sixteen unscored.
+
 [Shared-cut fine-scale scoring](sharing-original-scale-results.json) now uses the
 original classified mask and coverage directly, avoiding enlargement of the
 reduced fitting mask. All 49 fixed-export alignment replays pass geometry,

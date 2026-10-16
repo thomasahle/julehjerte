@@ -114,5 +114,16 @@
     "tmp/heart-learning/neural-palette-pipeline-v1/reconstructions-1.png": "10a149ae8337fb85f1ce427e41fb2bd3f3abb988bf4980b98c80124621375149",
     "tmp/heart-learning/neural-palette-pipeline-v1/reconstructions-2.png": "fce0ae464df49c5110ab1de024be3f3f003e99d10618b92fd43a2a7e34d69c29",
     "tmp/heart-learning/neural-palette-pipeline-v1/reconstructions-3.png": "355318f63cfa38e2c12ee84f5e69a10aa192fd3102bde349c06b961f7311be9d"
+  },
+  "publishedTemplateFollowup": {
+    "review": "docs/inverse/datasets/bicycle-template-review.json",
+    "finding": "The designer\u2019s two-page bicycle PDF requires additional enclosed cutouts on the green sheet. That published construction is outside the regular slit-chain model. This qualifies the earlier solver/representation diagnosis; no proof of impossibility for an alternative regular construction.",
+    "historicalResultsAndDenominatorsUnchanged": true
+  },
+  "independentPaperFollowup": {
+    "review": "docs/inverse/datasets/neural-palette-source-paper-results.json",
+    "referencePhotos": 6,
+    "unscoredPhotos": 16,
+    "findings": "The printed-heart checker has 23.87% disagreement on fixed known paper-identity samples despite passing derived-mask checks. The bicycle\u2019s 296 sampled reference-interior pixels miss its fine strokes entirely; zero sampled error cannot certify motif retention."
   }
 }
