@@ -72,6 +72,16 @@ control rather than attributing every gap to the network. Soft-field fitting
 and explicit contact supervision remain untested alternatives; no runtime model,
 new reconstruction success, or exact photographed junction label is claimed.
 
+A [binary-versus-soft objective replay](material-soft-objective-plan.json) is
+prepared and queued after the serial release QA. Eight frozen inputs contain
+the two saved learned predictions and six ideal-checker sampling controls, with
+sixteen fresh fits scheduled. All target masks prepare unchanged, and the real
+soft fields exactly match the original JavaScript sampler. The comparison
+changes only the fitting probabilities; original binary targets and validation
+remain fixed. Synthetic outputs will also be scored against their known straight
+geometry at 1,600px. This is an unrun development ablation, not a neural gain or
+an increase in independently labelled photographs.
+
 A [bounded gradient index](gradient-row-bins-runtime.json) is now integrated
 locally after **27 focused tests**. Sparse designs retain 128 row buckets;
 larger graphs use eight per cubic, capped at 1,024. Across 75 saved/analytic
