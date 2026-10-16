@@ -44,8 +44,12 @@ All six crop panels and eight reconstruction panels were inspected. The editable
 audit converts 29/30 outputs; the one rejection is a bicycle candidate already
 rejected by the engine. All 24 accepted outputs pass editable checks. The global
 objective change is not adopted, and no combined best-arm success rate is
-claimed. A separate production RGB-only crop replay tests whether this diagnosis
-also applies without a neural model.
+claimed. The [production RGB-only replay](production-diameter-isolation-results.json)
+produces one extra crop (9 to 10), but its yellow/teal checker corners are visibly
+wrong: the maximum offset is 14.94% of side length against an existing approximate
+visible reference, versus 1.31% for the SAM baseline. Its partial body-outline
+IoU of 97.5% therefore does not certify overlap corners. All six panels were
+reviewed, and no full fitting gain or production change is claimed.
 
 A [pretrained MobileSAM experiment](mobilesam-foreground-results.json) improves
 the difficult 22-photo development replay from 7 checked derived-mask fits with
