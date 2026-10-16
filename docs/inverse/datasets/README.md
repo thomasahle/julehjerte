@@ -32,14 +32,20 @@ The inventory, with material annotations updated on 2026-10-16, contains:
 
 ## Current results and limits
 
-A [new-photo evaluation plan](new-photo-generalization-plan.json) reserves twenty
-additional source photographs before inference. The source review excludes an
-unassembled process shot, two ambiguous constructions, a repost and a second
-photograph from a previously evaluated tutorial. All 1,034 original source
-files are unchanged. The new images include multiple-heart scenes and unusual
-outer outlines. One fixed checkpoint will process every image; this differs
-from the earlier family-held-out development models. No new-photo outcomes
-are available yet.
+The [frozen new-photo comparison](new-photo-generalization-results.json) completes
+on twenty additional source photographs: **4/20** checked reconstructions with
+the learned policy versus **3/20** with production. The learned pipeline adds the
+yellow/white cross and retains the three shared passes; all seven accepted
+exports pass independent editable checks. All twenty field/crop panels and nine
+exports were visually inspected, with all 886 pinned runtime sources unchanged.
+This is one fixed model on new source groups, unlike the earlier family-held-out
+development study below. It is not motif-disjoint or verified pretraining-disjoint
+accuracy. Sixteen learned inputs stop at crop rejection; ten retain internal
+quadrilaterals, including both plausible overlaps and visibly wrong ones. Printed
+paper, reflections and wrong-object selection remain upstream failures. The
+production flower-cap crop is visibly oversized and its reconstruction fails.
+No learned model is integrated. The next diagnostic fits rejected proposals
+separately, without counting them as automatic successes.
 
 A [conditional two-paper segmentation fallback](locator-paper-fallback-results.json)
 raises the offline development result from **13/22 to 15/22 checked
