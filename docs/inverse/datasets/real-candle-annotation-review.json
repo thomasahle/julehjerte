@@ -1,5 +1,5 @@
 {
-  "status": "raster_review_complete; not_admitted_or_trained",
+  "status": "reviewed, compiled, verified and admitted; not trained",
   "source": {
     "assetId": "real-c4a9ee6e2d0a4185",
     "file": "tmp/heart-training-real/assets/c4a9ee6e2d0a418519f0ea2d1ce4a63be83c3883b2bc75bc54e0e69375435edf.jpg",
@@ -57,7 +57,7 @@
     "rasterCompilation": "Complete at 256 and 768 pixels; both manifests verified by the compiler replay before the coverage QA started.",
     "modelTraining": "none"
   },
-  "integration": "Keep source and related candle motif families grouped in any later evaluation. Do not change existing study denominators. Add to the existing pending printed-paper annotation only after raster review.",
+  "integration": "Admitted with the reviewed printed-paper instance in real-annotations-contacts.json and real-materials-contacts.json. Source groups remain unassigned; prior study inputs and denominators unchanged.",
   "artifacts": [
     {
       "path": "tmp/heart-learning/candle-annotation-review-v1/body-reviewed.json",
@@ -98,11 +98,9 @@
   ],
   "crossCorpusQualification": "The photograph is outside reserved near-duplicate groups, but a framed candle may share its motif with existing public-photo benchmarks. No independent-family or holdout claim; cross-corpus motif review is required before allocation.",
   "root": "tmp/heart-learning/candle-annotation-review-v1",
-  "repositoryCountsChanged": false,
+  "repositoryCountsChanged": true,
   "next": [
-    "Compile and independently verify body/material labels at 256 and 768 pixels after the current serial solver jobs.",
-    "Inspect compiled overlays before moving the reviewed coordinates into the dataset.",
-    "Integrate together with the previously reviewed printed-paper candidate and pending non-paper-source correction; preserve source groups and prior study inputs."
+    "Review related candle motif families before allocating a future grouped training/evaluation study."
   ],
   "compiledArtifacts": [
     {
@@ -179,5 +177,6 @@
         }
       ]
     }
-  ]
+  ],
+  "admission": "contact-annotation-admission.json"
 }

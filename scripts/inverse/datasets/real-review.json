@@ -4920,9 +4920,9 @@
     "nearDuplicateGroup": "real-3e688a50ef76ead4"
   },
   "real-65e0031723ed4dfe": {
-    "kind": "photo",
-    "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "kind": "photo-other-material",
+    "reviewStatus": "visually-reviewed-source-recheck",
+    "reviewMethod": "Native 1024x682 source inspected: pebbled leather-like surface, thick edges and fibrous backing. Excluded from paper-heart photo totals; precise leather composition is not established."
   },
   "real-642c4cb2ef3e92dc": {
     "kind": "photo",

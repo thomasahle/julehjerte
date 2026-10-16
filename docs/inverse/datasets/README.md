@@ -6,13 +6,13 @@ and verified pretrained encoder checkpoints. Offline studies cover synthetic
 proposal learning and a small real-photo adaptation pilot. No learned model
 has been added to the website.
 
-The inventory, with material annotations updated on 2026-10-15, contains:
+The inventory, with material annotations updated on 2026-10-16, contains:
 
 | Asset | Verified count | Meaning |
 | --- | ---: | --- |
 | Real-source image files | 1,034 | Includes templates, process shots and rejected/uncertain material. |
-| Files containing assembled-heart photographs | 568 | Includes multi-heart scenes and mixed photo/template pages; 456 reviewed near-duplicate groups after five source-kind corrections. |
-| Public Pinterest imports | 470 of 487 selected pins | 193 image files contain assembled-heart photographs; these are a subset of the real-source totals. |
+| Files containing assembled-heart photographs | 567 | Includes multi-heart scenes and mixed photo/template pages; 455 reviewed near-duplicate groups after six source-kind corrections. |
+| Public Pinterest imports | 470 of 487 selected pins | 192 image files contain assembled-heart photographs; these are a subset of the real-source totals. |
 | Synthetic cutting geometries in existing experiments | 192 | Original 128 plus 64 mixed-angle lattices; color phase is excluded from geometry identity; still only three recipe groups. |
 | Synthetic photographic views in existing experiments | 768 | Original 512 plus 256 supplementary views; all 5,952 referenced assets verified. |
 | Unassigned radial-motif candidates | 64 geometries / 256 views | One additional recipe group with exact shared approaches; not used in training. All 1,984 referenced assets verified. |
@@ -26,8 +26,8 @@ The inventory, with material annotations updated on 2026-10-15, contains:
 | Training scene variants | 2,448 | Neighbours and handles paired with all six backgrounds for the same 408 training views; no new geometry families. |
 | Source-photo material QA samples | 78 integrated + 25 new | Four hearts in two reserved photographs; sparse assistant-reviewed development observations, not dense labels or training data. The new jigsaw review is not yet in the common benchmark fixture. |
 | Sparse four-sector neighbourhood observations | 25 on two sources, plus 8 ordinary-edge controls | Reviewed locations and uncertainty boxes; exact physical joining is unknown. Development observations, not training labels. |
-| Real visible-body annotations | 21 | Twenty instances in eighteen groups outside source QA, plus one reserved gold-angel instance. Uncertain pixels are excluded; nineteen enter the corrected-family material study. |
-| Real partial paper-material annotations | 19 heart instances | All enter the completed corrected-family study, with whole real motif families kept apart. Separate body and material uncertainty; all are reviewed development examples. |
+| Real visible-body annotations | 23 | Includes two newly admitted printed-checker/candle instances and one reserved gold-angel instance. Uncertain pixels are excluded; the completed corrected-family study retains its original nineteen instances. |
+| Real partial paper-material annotations | 21 heart instances | Nineteen enter the completed corrected-family study; two new instances remain unassigned and unused in training. Separate body and material uncertainty; all are reviewed development examples. |
 
 ## Current results and limits
 
@@ -105,10 +105,12 @@ reviewed candidate body/material polygons and six four-sector contact
 neighbourhoods, three ordinary-edge controls and one separately recorded narrow
 neck. Native source and local edge/contact views were inspected. The right-hand
 cast shadow is excluded, and the uncertain flame tip and handle attachment are
-not assigned a paper identity. These are staged development annotations:
-raster compilation, dataset admission and cross-corpus motif-family review are
-pending. They do not increase the admitted counts above and have not been used
-for training.
+not assigned a paper identity. These and the previously reviewed printed-checker labels are now
+[admitted development annotations](contact-annotation-admission.json). Final
+compilation and verification at 256/768 pixels reproduce all sixteen reviewed
+RGB/body/material/overlay PNGs exactly. Counts rise to 23 body and 21 material
+instances; neither source has been allocated or used in training. Related motif
+families still require cross-corpus review before allocation.
 
 [A bounded finer finalist check](finalist-paper-resolution-results.json) restores
 the round-checker candidate without changing its cuts, classified image or
@@ -244,8 +246,13 @@ the neural checker masks, but one photograph is not a generalization result.
 heart classifications: two star photographs, one process photograph, one folded
 square object and one bead heart. The [recorded correction](real-source-kind-correction.json)
 keeps all 1,034 source files and changes only those five kind/review records.
-The current inventory has 568 photograph-containing files in 456 near-duplicate
-groups; Pinterest contributes 193 such files. These sources were unassigned and
+A subsequent native-source review identifies a leather-like woven heart among
+the apparent paper photographs. Its pebbled surface, thick edges and fibrous
+backing justify the separate `photo-other-material` category; exact composition
+is not established. The [admission record](contact-annotation-admission.json)
+records this sixth correction and the complete repeated asset audit. The current
+inventory has 567 photograph-containing files in 455 near-duplicate groups;
+Pinterest contributes 192 such files. These sources were unassigned and
 absent from the body-annotation sets. Completed training studies and historical
 573-file collection reports retain their original inputs and counts. No new
 training data or benchmark exclusions are introduced by this correction.

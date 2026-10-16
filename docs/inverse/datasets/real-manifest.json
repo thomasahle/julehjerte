@@ -1,25 +1,25 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-15T21:52:11.605899+00:00",
+  "generatedAt": "2026-10-16T03:18:39.632271+00:00",
   "assetRoot": "tmp/heart-training-real",
   "description": "Original public-source files and existing fixtures; photographs are individually visually reviewed. Not a count of independent designs or labeled heart instances.",
   "counts": {
     "uniqueFileHashes": 1034,
     "kinds": {
-      "photo": 403,
+      "photo": 402,
       "photo-multiple": 104,
       "mixed-photo-template": 41,
       "photo-collage": 20,
       "template-render": 202,
       "unrelated": 122,
       "photo-process": 92,
-      "photo-other-material": 48,
+      "photo-other-material": 49,
       "unknown": 2
     },
     "sourcePages": 134,
     "visuallyReviewedFiles": 1034,
-    "reviewedPhotoFileHashes": 568,
-    "photoNearDuplicateGroups": 456,
+    "reviewedPhotoFileHashes": 567,
+    "photoNearDuplicateGroups": 455,
     "qaReservedFiles": 476
   },
   "splitPolicy": "Keep all files/crops from a source photo, near-duplicate group and motif family together. SourceGroups conservatively include publishers and UNVERIFIED source links observed in pin JSON; these possible connections can over-reserve QA and do not establish motif families, authorship or image origin. No random image-level split; family annotation remains pending.",
@@ -53470,8 +53470,8 @@
       "format": "JPEG",
       "decodedPixelsSha256": "8a8246abd1317687381fa599c4cb8860dfa2e87218baf8b55a05f5c9878c0b7d",
       "dhash256": "002201ae0114010c0c621e721a38192819231b330a320462064203c101c101c0",
-      "kind": "photo",
-      "reviewStatus": "visually-reviewed-contact-sheet",
+      "kind": "photo-other-material",
+      "reviewStatus": "visually-reviewed-source-recheck",
       "origins": [
         {
           "imageUrl": "https://i.pinimg.com/originals/25/c4/c9/25c4c979a04be24f87a407be6bafb4da.jpg",
@@ -53515,7 +53515,7 @@
         }
       ],
       "reviewIndex": 813,
-      "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+      "reviewMethod": "Native 1024x682 source inspected: pebbled leather-like surface, thick edges and fibrous backing. Excluded from paper-heart photo totals; precise leather composition is not established.",
       "localPath": "tmp/heart-training-real/assets/65e0031723ed4dfe1f62f73c54581d0cc475e64e3b749ef8236a7ac71b8396f6.jpg",
       "exactDuplicateGroup": "65e0031723ed4dfe1f62f73c54581d0cc475e64e3b749ef8236a7ac71b8396f6",
       "nearDuplicateGroup": "real-65e0031723ed4dfe",
