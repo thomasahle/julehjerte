@@ -771,6 +771,29 @@ sharp tips and stop at zero. Earlier successful branch layouts return first.
 Only the original overlapping-branch detector enables these four extra layouts;
 there are no font-name or word-specific exceptions.
 
+If those layouts also fail, keep extra attachments a full clearance reserve away
+from the actual clipped segments and their endpoints, retaining the agreed seam
+gates. A clipped quadrilateral may have no usable vertices: replace blocked fan
+choices with the nearest allowed quarter-, half- or three-quarter point along
+an unchanged outline edge. Keep the same eight-choice fan and routing budget.
+For branched text, try higher neighbouring row divisions at 20%/35% and 15%/30%.
+For upper rows with two separated components, keep their vertical divider
+inside the common horizontal gap; retain the centre if it already fits.
+This avoids shaving a serif and places the last junction above a narrowing fork.
+Keep the previous successful branch layouts before considering this fallback.
+Reject a new guarded layout if any complete letter-outline segment extends
+outside the frame. Check intervals between frame intersections as well as
+vertices, so narrow concave scallops cannot crop a letter between sample points.
+
+Other nonrepeated text may use the same guarded attachments after all established
+recipes fail, including multiline layouts. Compare the existing two-panel row
+and column arrangements, with padding 16%/12% and frame fill 88%/94% (88% without
+a frame). Aim their connections towards the actual clipped contours. Retain the
+20-strip cap, exact artwork, frame and counters; compare straight and 20%/40%
+shared-curve handles, require 10% full-sheet clearance reserve and prefer fewer
+sharp tips. Apply the same complete-outline frame-containment check. Every
+finished construction still needs full topology and export checks.
+
 If a sunburst figure still fails after the existing recipes and shared-cut
 repairs, its four-port medallion may retry using the complete five-strip grid:
 the outer border adds two strips per sheet to the inner three-strip design.

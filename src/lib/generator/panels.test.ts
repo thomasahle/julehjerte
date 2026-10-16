@@ -126,3 +126,15 @@ it('limits an irregular piece’s seam guard to its actual clipped edge', () => 
 	gates[1] = uprightToSheet([2, -5]);
 	expect(allowed(gates[1])).toBe(false);
 });
+
+it('leaves clearance beside a clipped seam while retaining its agreed gate', () => {
+	const contours = [square(5).map(uprightToSheet)],
+		gates = [[0, -5], [8, -5], [0, 5], [-5, 0]].map(p => uprightToSheet(p as Point)),
+		allowed = panelSeamGuard(gates, [-5, 5, 5, -5], [true, false, false, false], contours, 1);
+	expect(allowed(gates[0])).toBe(true);
+	expect(allowed(gates[1])).toBe(true);
+	expect(allowed(uprightToSheet([2, -4.5]))).toBe(false);
+	expect(allowed(uprightToSheet([2, -3.5]))).toBe(true);
+	expect(allowed(uprightToSheet([5.5, -5.5]))).toBe(false);
+	expect(allowed(uprightToSheet([6, -6]))).toBe(true);
+});

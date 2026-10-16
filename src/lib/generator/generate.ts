@@ -526,6 +526,8 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		if (bestRepeated) return bestRepeated;
 		const widerConnections = retryPanelReserve(request, closePanels, curveFitter);
 		if (widerConnections) return widerConnections;
+		const guardedPanels = retryGuardedPanels(request, curveFitter);
+		if (guardedPanels) return guardedPanels;
 		throw error;
 	}
 }
@@ -830,6 +832,47 @@ function retryPanelReserve(request: GeneratorRequest, candidates: Construction[]
 	return best;
 }
 
+/** After the established layouts fail, move blocked attachments away from
+ * clipped seams along the original outline. Keep the seam gates themselves
+ * fixed and validate the complete joined sheets, including a spacing reserve. */
+function retryGuardedPanels(request: GeneratorRequest, curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult | undefined {
+	const frame = request.textFrame ?? 'woven', text = request.text ?? '', font = request.font;
+	if (request.mode !== 'text' || !font || !text.trim() || frame === 'repeat' || frame === 'repeat-check') return;
+	const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n'),
+		letters = Math.max(...lines.map(line => [...line].length)),
+		shape = frame === 'woven' || frame === 'air' ? undefined : frame;
+	let best: GeneratorResult | undefined;
+	for (const frameFill of shape ? [.88, .94] : [.88])
+		for (const padding of [.16, .12]) for (const [columns, slices] of [[1, 2], [2, 1]]) {
+			if (columns * letters + slices * lines.length + 1 > 20) continue;
+			let construction: Construction;
+			try {
+				construction = generateTextGrid(text, font, frame === 'air', shape, {
+					padding, frameFill, columns, slices, spread: true, filled: true, adaptivePanels: true,
+					guardSeams: true, practical: true, compound: true, boundaryIslands: true,
+					contourApproaches: true, guardedAttachments: true
+				});
+			} catch (error) {
+				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+				continue;
+			}
+			for (const fraction of [0, .2, .4]) try {
+				const geometry = fraction ? curveSharedCuts(construction.geometry, undefined, fraction) : construction.geometry;
+				if (!geometry) continue;
+				const result = improveSharedConnections(finishConstruction(request, construction, 'letters', geometry, curveFitter)),
+					design = result.design, margin = intersectionMarginPx(inferOverlapRect(design.fingers, design.gridSize),
+						gridClearanceScale(design.gridSize.x, design.gridSize.y));
+				if (findFingersWithIssues(design.fingers, margin * 1.1).size) continue;
+				const tips = cutTipCounts(design);
+				if (!best || fewerCutTips(tips, cutTipCounts(best.design))) best = result;
+				if (!tips[1]) return best;
+			} catch (error) {
+				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			}
+		}
+	return best;
+}
+
 /** Overlapping serif ends need independent branches rather than tighter clips.
  * Other topology uses these bounded alternatives only as a final fallback. */
 function retryBranchedText(request: GeneratorRequest, curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult | undefined {
@@ -862,27 +905,34 @@ function retryBranchedText(request: GeneratorRequest, curveFitter: ReturnType<ty
 	// A neighbouring V-shaped stroke needs aligned columns and higher row
 	// junctions. Retain the separate serif branches, give the unchanged letters
 	// more of the frame, and require room around the complete joined cuts.
-	for (const frameFill of [.9, .84]) for (const rows of [[.2, .4], [.25, .45]] as const) {
-		let construction: Construction;
-		try {
-			construction = generateBranchedText(text, font, frame, .55, true, rows, frameFill);
-		} catch (error) {
-			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
-			continue;
+	for (const guardedJunctions of [false, true]) {
+		// A narrowing fork needs its last horizontal junction higher up. Its
+		// vertical divider follows the common air gap instead of shaving a
+		// serif, and extra attachments keep clear of the stitched boundaries.
+		const profiles = guardedJunctions ? [[.2, .35], [.15, .3]] as const : [[.2, .4], [.25, .45]] as const;
+		for (const frameFill of [.9, .84]) for (const rows of profiles) {
+			let construction: Construction;
+			try {
+				construction = generateBranchedText(text, font, frame, .55, true, rows, frameFill, guardedJunctions);
+			} catch (error) {
+				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+				continue;
+			}
+			for (const fraction of [0, .2, .4]) try {
+				const geometry = fraction ? curveSharedCuts(construction.geometry, undefined, fraction) : construction.geometry;
+				if (!geometry) continue;
+				const result = improveSharedConnections(finishConstruction(request, construction, 'letters', geometry, curveFitter)),
+					design = result.design, margin = intersectionMarginPx(inferOverlapRect(design.fingers, design.gridSize),
+						gridClearanceScale(design.gridSize.x, design.gridSize.y));
+				if (findFingersWithIssues(design.fingers, margin * 1.1).size) continue;
+				const tips = cutTipCounts(design);
+				if (!best || fewerCutTips(tips, cutTipCounts(best.design))) best = result;
+				if (!tips[1]) return best;
+			} catch (error) {
+				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			}
 		}
-		for (const fraction of [0, .2, .4]) try {
-			const geometry = fraction ? curveSharedCuts(construction.geometry, undefined, fraction) : construction.geometry;
-			if (!geometry) continue;
-			const result = improveSharedConnections(finishConstruction(request, construction, 'letters', geometry, curveFitter)),
-				design = result.design, margin = intersectionMarginPx(inferOverlapRect(design.fingers, design.gridSize),
-					gridClearanceScale(design.gridSize.x, design.gridSize.y));
-			if (findFingersWithIssues(design.fingers, margin * 1.1).size) continue;
-			const tips = cutTipCounts(design);
-			if (!best || fewerCutTips(tips, cutTipCounts(best.design))) best = result;
-			if (!tips[1]) return best;
-		} catch (error) {
-			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
-		}
+		if (best) return best;
 	}
 	return best;
 }

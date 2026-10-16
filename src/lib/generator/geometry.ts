@@ -761,7 +761,7 @@ function contourMotif(
 	margin = 1.5,
 	bridgePorts: readonly number[] = [0, 1, 2, 3],
 	acceptRoutes?: (routes: Ring[]) => boolean,
-	options: { root?: Ring; islandRank?: number; islandFlip?: boolean; alternateIslandGates?: boolean; visibleIslands?: boolean; boundaryIslands?: boolean; strict?: boolean; practical?: boolean; originalOnly?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; touching?: boolean; bentSpokes?: boolean; strokeTips?: boolean; nested?: boolean; connectionAllowed?: (point: Point) => boolean } = {}
+	options: { root?: Ring; islandRank?: number; islandFlip?: boolean; alternateIslandGates?: boolean; visibleIslands?: boolean; boundaryIslands?: boolean; strict?: boolean; practical?: boolean; originalOnly?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; touching?: boolean; bentSpokes?: boolean; strokeTips?: boolean; nested?: boolean; connectionAllowed?: (point: Point) => boolean; safeAttachments?: boolean } = {}
 ) {
 	if (options.alternateIslandGates) {
 		// Different letters can need different gates. Finish each cell locally
@@ -798,6 +798,12 @@ function contourMotif(
 		}
 	);
 	const base = nodes[0];
+	// A clipped quadrilateral may have no usable vertices away from its seams.
+	// Offer points along its unchanged edges when the ordinary fan is blocked.
+	// Replace those blocked choices only; retain the same attachment budget.
+	const safePorts = options.safeAttachments && connectionAllowed ? base.ring.flatMap((point, index) =>
+		[.25, .5, .75].map(t => ({ point: mix(point, base.ring[(index + 1) % base.ring.length], t), index: index + t }))
+	).filter(port => connectionAllowed(port.point)) : [];
 	const candidates = gates.map((p, j) => {
 		// A neighbouring cell may place a gate exactly on a clipped boundary.
 		// Use that attachment directly rather than shooting through the shape.
@@ -847,7 +853,12 @@ function contourMotif(
 			result.push(support(base.ring, angles[j] + Math.PI));
 			if (options.practical) result.push(notches[1] ?? null, support(base.ring, angles[j] + Math.PI - .7), support(base.ring, angles[j] + Math.PI + .7));
 		}
-		return result;
+		if (!safePorts.length) return result;
+		return result.map(port => {
+			if (port && (!connectionAllowed || connectionAllowed(port.point))) return port;
+			const origin = port?.point ?? p;
+			return safePorts.reduce((a, b) => distance(a.point, origin) <= distance(b.point, origin) ? a : b);
+		});
 	});
 	const spokes = options.bentSpokes ? candidates.map((choices, j) =>
 		choices.map(port => port ? bentSpoke(base.ring, port, gates[j], margin) : [])) : undefined;

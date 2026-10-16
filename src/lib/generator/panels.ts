@@ -224,7 +224,7 @@ export function panelDividers(values: number[], low: number, high: number, count
 /** Shared cuts may meet an internal seam only at that seam's agreed gate.
  * Bounds and flags follow the gates: top, right, bottom, left, in upright space.
  * Outer sides are unrestricted. Use the same tolerance as divider stitching. */
-export function panelSeamGuard(gates: Point[], bounds: number[], internal: boolean[], contours?: Ring[]) {
+export function panelSeamGuard(gates: Point[], bounds: number[], internal: boolean[], contours?: Ring[], clearance = 0) {
 	// Irregular pieces can have an external gate on a divider's extension.
 	// Constrain the actual clipped segments, including their endpoints, while
 	// allowing that external approach beyond the piece's boundary.
@@ -246,6 +246,15 @@ export function panelSeamGuard(gates: Point[], bounds: number[], internal: boole
 	return (point: Point) => {
 		const u = (point[0] - point[1]) * Math.SQRT1_2,
 			v = (point[0] + point[1] - 100) * Math.SQRT1_2;
+		// A contact just beside a seam can leave a tiny outline arc on a
+		// separate paper strip after stitching. Keep the agreed gate, but
+		// leave room around the actual clipped segment and its endpoints.
+		if (clearance > 0 && spans) return internal.every((seam, side) => {
+			if (!seam || distance(point, gates[side]) < 1e-5) return true;
+			const across = Math.abs((side % 2 ? u : v) - bounds[side]), along = side % 2 ? v : u;
+			return !spans[side].some(([lo, hi]) =>
+				Math.hypot(across, Math.max(lo - along, along - hi, 0)) < clearance);
+		});
 		return internal.every((seam, side) => !seam ||
 			Math.abs((side % 2 ? u : v) - bounds[side]) >= 1e-5 ||
 			spans && !spans[side].some(([lo, hi]) => (side % 2 ? v : u) >= lo - 1e-5 && (side % 2 ? v : u) <= hi + 1e-5) ||

@@ -1,5 +1,83 @@
 # Generator robustness results
 
+## Guarded text connections: avoid slivers beside panel seams
+
+Fifteen additional text configurations now pass. All retain the original
+font outlines and counters, with no detached cutouts. None has a detected
+needle tip below 30 degrees; the narrow-tip count below 45 degrees is zero
+to three.
+
+| Font and text | Newly accepted frames | Strips per sheet |
+|---|---|---:|
+| Bree Serif ÆØÅ | scalloped | 6 |
+| Cinzel LOVE | circle, diamond, hexagon, rounded, scalloped | 11 |
+| Cinzel MEME | circle, oval | 12 |
+| Cinzel MILLE | circle, hexagon, rounded, scalloped | 11 |
+| Cinzel EVA | oval | 9 |
+| Cinzel EM, ME | rounded | 8 |
+
+The new fallback keeps extra attachments away from the actual clipped seams
+and their endpoints, while retaining each seam's agreed contact. If ordinary
+attachment choices are blocked, it uses allowed points along unchanged outline
+edges. It replaces choices within the existing eight-choice fan and routing
+budget. Neighbouring branch cells can use higher row divisions and a vertical
+divider inside their common gap, avoiding a sliver shaved off a serif or a join
+inside the narrowing bottom of a V. Earlier successful layouts return first.
+
+Other nonrepeated text gets a final guarded two-panel fallback, including
+multiline layouts. It retains the 20-strip cap. Both new recipes compare the
+complete cutting sheets, require 10% spacing reserve and prefer fewer sharp
+tips. The contour topology constructs the cuts; no inverse solver constructs
+these patterns. The extra attempts are bounded, but failed inputs can still be
+slow, and this work does not establish an overall latency improvement.
+
+The independent boundary inspection caught a false success: Cinzel ME extended
+outside the scalloped frame. New guarded layouts now check every complete
+outline segment, including intervals between frame intersections, and reject
+that crop. LOVE's oversized hexagon layout is rejected too; its selected 84%
+layout remains exactly unchanged. Of 31 inspected size variants, those two
+inputs had outside outline portions. Every selected final output is contained.
+The new check applies to the new guarded constructions; it is not a fresh
+containment audit of every established construction.
+
+All fifteen final designs pass JSON/SVG handoffs, raster agreement, full-sheet
+spacing and independent material connectivity checks. Final material resolutions
+range from 1,400 to 6,000, with zero certain or possible detached core islands
+on either sheet. Lower-resolution checks were sometimes uncertain. Every full
+heart and both cutting sheets were visually reviewed. These digital checks do
+not establish physical cutting ease, weaving ease or tear strength.
+
+The targeted audit covers 195 configurations: all 152 previously refused
+nonrepeated corpus configurations, ten established overlapping-branch successes and
+33 supplementary cases. Its final result is **40 accepted / 155 refused / zero
+invalid accepted outputs**, including fifteen recoveries. All 25 established
+successful designs are exactly unchanged. The initial audit had sixteen nominal
+recoveries; after finding the cropped ME, complete generation was rerun for all
+sixteen on the final source. Fifteen match the inspected previews exactly and
+ME is refused. The other refusals are retained where the additive recipes fail;
+the final containment guard cannot turn those failures into successes.
+
+The merged corpus is **2,888 accepted / 262 refused / zero invalid**: text is
+**1,772 / 256**, and figures remain **1,116 / six**. The expected-ID fixture
+matches all 2,888 accepted IDs. This refreshes 162 records and retains 2,988 from
+`joined-branches-current.json`; supplementary cases are excluded. This is not a
+fresh full-matrix run. The larger catalogue and nondefault sizes remain
+incompletely audited, and supporting all combinations remains unfinished.
+
+Final type checking, lint and production build pass, with seven existing Svelte
+warnings. The focused tests pass all 32 cases. The final frozen-source unit run
+reports **1,217 passes and one existing Oswald juleman timing failure**: 5.604
+seconds against its unchanged five-second limit. The run took 679.19 seconds
+across 70 files. That same test passes alone in **4.44 seconds**. All 1,218 unit
+cases pass across those runs; this is not a single fully green full-suite run.
+No existing test timeout was increased. The separate inverse suite passes all
+**177 tests** in 101.90 seconds.
+Evidence in ignored `tmp/generator/`: `guarded-production-{audit,final-audit,current}.json`,
+`guarded-production-final-previews.json`, `guarded-production-preview-{metrics,material}.json`,
+`guarded-production-preview-gallery-*.png`, `guarded-containment.json` and
+`guarded-hexagon-match.json`. Gallery 15 is the rejected cropped prototype;
+galleries 0–14 are the fifteen unchanged final designs.
+
 ## Framed text: keep neighbouring branches connected
 
 Cinzel **EMMA** now works in the circle, diamond, hexagon, rounded and scalloped

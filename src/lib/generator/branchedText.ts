@@ -3,7 +3,7 @@ import {
 	uprightToSheet, fourPortMotif, connectCellGrid, compile, ConstructionError,
 	type Ring, type Point, type Edge, type Contour, type Frame, type Font
 } from './geometry';
-import { normalizeContours } from './contours';
+import { normalizeContours, contoursWithinBoundary } from './contours';
 import { clipContours, stitch, filledSeamGate, panelSeamGuard, panelDividers } from './panels';
 import { rerouteSharedCuts } from './sharedCuts';
 import { gridClearance } from '$lib/geometry/clearance';
@@ -30,6 +30,21 @@ function seamRoot(contours: Ring[], gates: Point[]): Ring | undefined {
 		ring: node.ring, count: gates.filter(p => touches(node.ring, p)).length
 	})).sort((a, b) => b.count - a.count || Math.abs(area(b.ring)) - Math.abs(area(a.ring)));
 	return ranked[0]?.count ? ranked[0].ring : undefined;
+}
+
+/** Keep the upper rows' divider in a common gap between their two branches.
+ * A centred line can otherwise shave a small fragment off an overhanging serif. */
+function alignedGapDivider(parts: Ring[][], minX: number, maxX: number): number {
+	const center = (minX + maxX) / 2;
+	let lo = minX, hi = maxX, found = false;
+	for (const part of parts.slice(0, 2)) {
+		const roots = forest(part).map(root => extent([root.ring], 0)).sort((a, b) => a[0] - b[0]);
+		if (roots.length !== 2 || roots[0][1] >= roots[1][0]) continue;
+		found = true;
+		lo = Math.max(lo, roots[0][1]); hi = Math.min(hi, roots[1][0]);
+	}
+	if (!found || lo >= hi || center > lo && center < hi) return center;
+	return (lo + hi) / 2;
 }
 
 const overlapCache = new WeakMap<Font, Map<string, boolean>>();
@@ -66,7 +81,7 @@ export function hasOverlappingTextBranches(text: string, font: Font): boolean {
  * All original outlines are retained. */
 export function generateBranchedText(text: string, font: Font, frame: Frame,
 	splitFraction = .55, practical = false, junctionRows?: readonly [number, number],
-	frameFill = junctionRows ? .84 : .72) {
+	frameFill = junctionRows ? .84 : .72, guardedJunctions = false) {
 	if (!text.trim() || /\s/.test(text)) throw new ConstructionError('topology', 'Branched text needs one filled line');
 	const glyphs = [...text.normalize('NFC')].map(char => {
 		const glyph = font.glyphs[char];
@@ -88,6 +103,9 @@ export function generateBranchedText(text: string, font: Font, frame: Frame,
 	const uprightGlyphs = placed.map(g => normalizeContours(g.map(r => r.map(([x, y]): Point =>
 		[(x - cx) / span, (y - cy) / span]))).map(r => r.map(([x, y]): Point =>
 		[x * 80 * frameFill * (frame === 'oval' ? .75 : 1), y * 80 * frameFill * (frame === 'oval' ? .75 : 1)])));
+	const artwork = uprightGlyphs.flat().map(r => r.map(uprightToSheet)), boundary = frameRing(frame, 80);
+	if (guardedJunctions && !contoursWithinBoundary(artwork, boundary))
+		throw new ConstructionError('clearance', 'The letters extend beyond the frame');
 	const matrix: Ring[][][] = [[], [], []],
 		splits: { axis: 0 | 1; value: number; source: number }[] = [],
 		sources = new Map<Ring[], number>(),
@@ -122,7 +140,8 @@ export function generateBranchedText(text: string, font: Font, frame: Frame,
 		// junctions out of that filled tip. Every completed graph is still checked.
 		const columns = useBranches ? 1 : Math.min(junctionRows ? 2 : Infinity,
 			Math.max(...horizontalParts.map(part => forest(part).length))),
-			verticals = columns > 1 ? junctionRows ? [(minX + maxX) / 2]
+			verticals = columns > 1 ? junctionRows ? [guardedJunctions
+				? alignedGapDivider(horizontalParts, minX, maxX) : (minX + maxX) / 2]
 				: panelDividers(whole.flat().map(p => p[0]), minX, maxX, columns) : [];
 		splits.push(...verticals.map(value => ({ axis: 0 as const, value, source })));
 		for (let row = 0; row < 3; row++) {
@@ -148,7 +167,7 @@ export function generateBranchedText(text: string, font: Font, frame: Frame,
 	}
 	if (!branched) throw new ConstructionError('topology', 'No branched glyph');
 	const parts = matrix.flat(), rows = matrix.length, columns = matrix[0].length,
-		boundary = frameRing(frame, 80), margin = gridClearance(rows + columns + 1),
+		margin = gridClearance(rows + columns + 1),
 		cells: Point[][][] = matrix.map(row => row.map(() => []));
 	const contact = (a: Ring[], b: Ring[]): Point => {
 		if (sources.get(a) === sources.get(b)) {
@@ -217,8 +236,9 @@ export function generateBranchedText(text: string, font: Font, frame: Frame,
 		fourPortMotif(edges, contours, gates, gates.map(p => Math.atan2(center[1] - p[1], center[0] - p[0])),
 			margin, undefined, undefined, { practical, compound: true, balanced: true, alternateIslandGates: true,
 				root: junctionRows ? seamRoot(contours, gates) : undefined,
+				safeAttachments: guardedJunctions,
 				boundaryIslands: true, connectionAllowed: panelSeamGuard(gates, clipping.bounds, clipping.internal,
-					junctionRows ? contours : undefined) });
+					junctionRows ? contours : undefined, guardedJunctions ? margin * 1.1 : 0) });
 	}
 	for (const axis of [0, 1] as const) {
 		const values = [...new Set(splits.filter(s => s.axis === axis).map(s => s.value))].sort((a, b) => a - b);
@@ -226,5 +246,5 @@ export function generateBranchedText(text: string, font: Font, frame: Frame,
 	}
 	connectCellGrid(edges, cells, boundary, 'check', true);
 	edges = rerouteSharedCuts(edges, margin);
-	return { edges, artwork: uprightGlyphs.flat().map(r => r.map(uprightToSheet)), geometry: compile(edges), domain: [boundary] };
+	return { edges, artwork, geometry: compile(edges), domain: [boundary] };
 }

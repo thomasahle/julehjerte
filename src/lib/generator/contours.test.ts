@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { normalizeContours } from './contours';
+import { normalizeContours, contoursWithinBoundary } from './contours';
 import { inside, forest, type Ring } from './geometry';
 import rabbit from '../../../static/generator/motifs/ph-rabbit.json';
 import sun from '../../../static/generator/motifs/ph-sun.json';
@@ -7,6 +7,24 @@ import butterfly from '../../../static/generator/motifs/ph-butterfly.json';
 import bicycle from '../../../static/generator/motifs/ph-bicycle.json';
 
 const filled = (rings: Ring[], x: number, y: number) => rings.reduce((a, r) => a ^ Number(inside([x, y], r)), 0);
+
+describe('complete contour containment', () => {
+	const square: Ring = [[0, 0], [10, 0], [10, 10], [0, 10]];
+	it('retains counters and accepts contact along the frame boundary', () => {
+		expect(contoursWithinBoundary([square, [[2, 2], [4, 2], [4, 4], [2, 4]]], square)).toBe(true);
+	});
+	it('rejects an outline vertex outside the frame', () => {
+		expect(contoursWithinBoundary([[[2, 2], [12, 2], [2, 4]]], square)).toBe(false);
+	});
+	it('finds a narrow concave excursion between interior vertices and midpoints', () => {
+		const frame: Ring = [[0, 0], [10, 0], [10, 10], [2.2, 10], [2.2, 6], [2, 6], [2, 10], [0, 10]],
+			outline: Ring = [[1, 8], [9, 8], [9, 1], [1, 1]];
+		for (const ring of [outline, outline.slice().reverse()]) {
+			expect(ring.every(point => inside(point, frame))).toBe(true);
+			expect(contoursWithinBoundary([ring], frame)).toBe(false);
+		}
+	});
+});
 
 describe('rounded contour normalization', () => {
 	it('keeps touching components separate regardless of their starting vertex', () => {

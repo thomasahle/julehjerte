@@ -18,6 +18,7 @@ import {
 	connectCellGrid
 } from './geometry';
 import { gridClearance } from '$lib/geometry/clearance';
+import { contoursWithinBoundary } from './contours';
 import { clipContours, stitch, filledSeamGate, panelDividers, panelSeamGuard } from './panels';
 
 export function generateTextGrid(
@@ -25,7 +26,7 @@ export function generateTextGrid(
 	font: Font,
 	air = false,
 	frame?: Frame,
-	layout: { padding?: number; frameFill?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; adaptGates?: boolean; onGateChange?: () => void; filled?: boolean; onSeamChange?: () => void; inkPanels?: boolean; bentSpokes?: boolean; adaptivePanels?: boolean; guardSeams?: boolean; boundaryIslands?: boolean; contourApproaches?: boolean } = {}
+	layout: { padding?: number; frameFill?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; adaptGates?: boolean; onGateChange?: () => void; filled?: boolean; onSeamChange?: () => void; inkPanels?: boolean; bentSpokes?: boolean; adaptivePanels?: boolean; guardSeams?: boolean; boundaryIslands?: boolean; contourApproaches?: boolean; guardedAttachments?: boolean } = {}
 ) {
 	const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n');
 	const cols = Math.max(...lines.map((l) => [...l].length)),
@@ -207,7 +208,8 @@ export function generateTextGrid(
 				];
 				const connectionAllowed = layout.guardSeams ? panelSeamGuard(gates,
 					[y - h / 2, x + w / 2, y + h / 2, x - w / 2],
-					[row % slices > 0, col % columns < columns - 1, row % slices < slices - 1, col % columns > 0]
+					[row % slices > 0, col % columns < columns - 1, row % slices < slices - 1, col % columns > 0],
+					layout.guardedAttachments ? contours : undefined, layout.guardedAttachments ? margin * 1.1 : 0
 				) : undefined;
 				const construct = () => {
 					const local: Edge[] = [];
@@ -216,7 +218,7 @@ export function generateTextGrid(
 						centre ? gates.map(p => Math.atan2(centre[1] - p[1], centre[0] - p[0]))
 							: [Math.PI / 4, (3 * Math.PI) / 4, (-3 * Math.PI) / 4, -Math.PI / 4],
 						margin, [0, 1, 2, 3], undefined,
-						{ practical: layout.practical, compound: layout.compound, onCompound: layout.onCompound, balanced: layout.balanced, onCrowded: layout.onCrowded, bentSpokes: layout.bentSpokes, boundaryIslands: layout.boundaryIslands, connectionAllowed }
+						{ practical: layout.practical, compound: layout.compound, onCompound: layout.onCompound, balanced: layout.balanced, onCrowded: layout.onCrowded, bentSpokes: layout.bentSpokes, boundaryIslands: layout.boundaryIslands, connectionAllowed, safeAttachments: layout.guardedAttachments }
 					);
 					return local;
 				};
@@ -248,6 +250,8 @@ export function generateTextGrid(
 			}
 		}
 	}
+	if (layout.guardedAttachments && boundary && !contoursWithinBoundary(artwork, boundary))
+		throw new ConstructionError('clearance', 'The letters extend beyond the frame');
 	if (slices > 1) {
 		const dividers = Array.from({length: rows}, (_, row) => Array.from({length: slices - 1}, (_, i) =>
 			(layout.inkPanels || layout.adaptivePanels
