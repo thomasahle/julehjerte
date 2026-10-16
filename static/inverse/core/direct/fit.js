@@ -361,10 +361,18 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     // explicitly offers its retained geometric alternative. Image and feature
     // gates above remain mandatory, and final export rechecks the actual finer
     // resolution after every edit.
-    if(!c.paperPassed&&(c.paper?.status==='uncertain'||recheckFailed&&c.paper?.status==='fail')&&cfg.materialResolution<700&&searchDeadline()-performance.now()>500){
-      const initialStatus=c.paper.status;
-      const paper=materialAudit(s,{...cfg,materialResolution:700});
-      c.paperVerification={requestedResolution:cfg.materialResolution,initialStatus,resolution:700,status:paper.status};
+    // A 700-cell core can still split a real connection into significant
+    // floating fragments. Resolve that uncertainty at the supported maximum
+    // before discarding the same good image fit. Retain the actual resolution
+    // for Stop/export, and never spend the final half-second reserve here.
+    const checkedResolution=c.paperVerification?.resolution??cfg.materialResolution;
+    for(const resolution of [700,1000]){
+      if(c.paperPassed||!(c.paper?.status==='uncertain'||recheckFailed&&c.paper?.status==='fail'))break;
+      if(resolution<=checkedResolution)continue;
+      if(searchDeadline()-performance.now()<=500)break;
+      const initialStatus=c.paperVerification?.initialStatus??c.paper.status;
+      const paper=materialAudit(s,{...cfg,materialResolution:resolution});
+      c.paperVerification={...c.paperVerification,requestedResolution:cfg.materialResolution,initialStatus,resolution,status:paper.status};
       c.paperPassed=paper.passed;c.paper=paper.summary;
     }
     return c.paperPassed;

@@ -31,6 +31,27 @@ The inventory, with material annotations updated on 2026-10-15, contains:
 
 ## Current results and limits
 
+[A bounded finer finalist check](finalist-paper-resolution-results.json) restores
+the round-checker candidate without changing its cuts, classified image or
+physical tolerances. The candidate is still uncertain at resolution 700, but
+passes at 1000 and under independent polygon offsets. A fresh ten-second fit
+returns 1.20875% independently rendered disagreement in 9.73 seconds, versus
+1.215% before the connectivity change and 2.67875% in its paired regressed run.
+The exported result and comparison were visually reviewed. The main fitter now
+tries 1000 only for an otherwise acceptable unresolved candidate, retaining the
+existing half-second reserve and the actual verified resolution through export.
+All 17 focused tests pass; broad QA for this change is pending.
+
+[Bird routing alternatives](bird-reroute-candidate-results.json) expose a deeper
+optimization issue. A newly certified early projection changes the subsequent
+rollback trajectory. Trying a second rejected checkpoint within the original
+1.5-second routing allowance closes the eye, but enlarges it: independent eye
+IoU remains around 0.60–0.69 instead of the required 0.85. More frequent detail
+checkpoints also fail. Neither experiment is integrated. Fixed-work gift and
+Viking replays show changed exploration and inferior retained alternatives too;
+these failures must not be fixed by merely updating historical hashes or
+loosening image/feature bounds.
+
 [A guarded diagonal-connectivity correction](diagonal-paper-core-results.json)
 addresses valid paper checkpoints discarded by four-neighbour lattice labelling.
 The existing clearance guard certifies the whole cell, so diagonally touching
