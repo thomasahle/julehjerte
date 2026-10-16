@@ -1,6 +1,6 @@
 {
   "schema": "refinement-checkpoint-completion-1",
-  "status": "integrated-focused-tests-passed-release-qa-pending",
+  "status": "integrated-focused-tests-passed-release-qa-running",
   "change": "Separate a checkpoint repair deadline from the gradient-step deadline. Recovered provisional routings can complete up to 400 ms of short-return projection beyond their 700 ms phase, capped by the existing enclosing search deadline. Other callers retain the original shared deadline; no extra gradient steps or changed validity rules.",
   "experiment": "Fourteen fresh fits: three half-star pairs and one pair each for full star, compressed star, gift and dense Hunodan hjstr03. Alternating arm order. The candidate loads only patched fit.js/refine.js; exact saved masks, settings and independent export checks are shared. Source frozen through all runs.",
   "sourceFilesVerified": 1017,
@@ -165,6 +165,11 @@
     "tmp/heart-learning/refinement-completion-v1/fit.js": "ab34a84834f9ca417c6934263f391af9f308e647758f6fc1db4bcfd581fdd902",
     "tmp/heart-learning/refinement-completion-v1/refine.js": "424f728908f670752873c16fc267dd9fb3f1cbb8a70eb083c32f762796cd556f",
     "tmp/heart-learning/refinement-completion-v1/focused.log": "3d4a36ab81499d7094378cf2ee5e176aff200aa17887c3205d356411491a066c",
-    "tmp/heart-learning/refinement-completion-v1/comparison.png": "6187efb0160fa46e2f1f7a18c9b596de0814a005ea52fa40aa247ddd30c42f99"
-  }
+    "tmp/heart-learning/refinement-completion-v1/comparison.png": "6187efb0160fa46e2f1f7a18c9b596de0814a005ea52fa40aa247ddd30c42f99",
+    "tmp/heart-learning/refinement-completion-v1/qa/run.py": "7ed6a63cbf5bab7afd1c07c243de4645638c1c568e42662a7aaf80e26f8f8e29",
+    "tmp/heart-learning/refinement-completion-v1/qa/restart-preview.py": "6747e79fcfec31eabb8daffe87016f1672889b85cc08f6c705b4191dd4569345",
+    "tmp/heart-learning/refinement-completion-v1/qa/source.json": "577e458d337ecd15949e6d4f91b9c2ff5d0bdc5050be1ab812d15d60386ec306"
+  },
+  "qaRoot": "tmp/heart-learning/refinement-completion-v1/qa",
+  "releaseVerification": "Serial check, lint, build, preview byte verification, 29 browser workflows, 55 paired masks / 110 editable audits, and full repository tests. Expected 874 application tests plus one skip and 1007 inverse tests. Completion is not yet established."
 }

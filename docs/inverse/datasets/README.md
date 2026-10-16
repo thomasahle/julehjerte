@@ -42,7 +42,8 @@ checks. The three half-star pairs improve from **1.747–1.781%** disagreement t
 **1.577–1.584%**; the compressed star improves from **1.6825% to 1.56625%**.
 Full-star and dense Hunodan geometry remain byte-identical. Both changed star
 renders have been visually inspected; rounded joins remain. New full release,
-browser, corpus and editable-conversion verification is pending.
+browser, corpus and editable-conversion verification is running; check and lint
+already pass.
 
 A [saved-field junction diagnostic](material-junction-diagnostic.json) separates
 three possible causes of the learned checkers' gaps. Both 400px masks reproduce
