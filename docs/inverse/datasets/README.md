@@ -43,12 +43,19 @@ policy is integrated. A saved-mask polarity mismatch stopped one harness attempt
 before fitting; the original hash caught it, the failure is preserved, and the
 remaining cases resumed with the correct original mask. Six cases include related
 perturbations and are not six independent photographs.
-The [combined-policy follow-up](topology-graph-hybrid-plan.json) is running 24
+The [combined-policy follow-up](topology-graph-hybrid-results.json) completed 24
 fresh fits. It gives sparse coarse preparation/routing at most 1.1 seconds, then
 tries detailed recovery, with guided coarse fallback limited to the unused
 original coarse allowance. The [runtime patch](topology-graph-hybrid.patch) is
 recorded for review and is not applied to production. Source pixels, objectives,
 validity checks and the ten-second request remain unchanged.
+All fits pass within ten seconds, but five paired errors increase (one tree,
+both individual-photo repeats and both leaf repeats). The outlined star gains
+accuracy while adding corner detail, and the shifted photo gains about 1–1.5
+seconds without changing its rendered error. Every output was visually reviewed.
+This universal order is not integrated; the next diagnosis captures the actual
+paper-uncertain polishing checkpoints instead of inferring their validity from
+their image scores.
 
 [A contact-supervision audit](contact-supervision-audit.json) maps the nine reviewed
 orange/yellow checker junctions into the existing material labels. All 97 sampled

@@ -1,5 +1,5 @@
 {
-  "status": "running; isolated_runtime_only",
+  "status": "complete; all_24_exported_images_visually_reviewed; policy_not_integrated",
   "question": "Can a bounded sparse coarse probe preserve useful seeds while leaving earlier time for detailed recovery?",
   "baseline": "Unchanged runtime from 9cedec4, identical to the preceding completed three-arm study.",
   "candidate": "At most 1.1 seconds for coarse preparation plus sparse routing (at most 0.8 per routing attempt). Detailed recovery follows. Guided coarse fallback can use only the unspent part of the original coarse allowance, with the original final-refinement reserve and caller deadline.",
@@ -36,5 +36,6 @@
   "sourcePins": {
     "path": "tmp/heart-learning/topology-graph-hybrid-v1/source.json",
     "sha256": "a325f334e006fc9f96553ea8618a66cdd8aa3ad0428c26401b1e4c528b9f5317"
-  }
+  },
+  "results": "docs/inverse/datasets/topology-graph-hybrid-results.json"
 }
