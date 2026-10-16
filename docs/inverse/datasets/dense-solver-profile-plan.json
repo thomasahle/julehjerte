@@ -1,6 +1,6 @@
 {
   "schema": "dense-solver-profile-plan-1",
-  "status": "queued-after-running-native-conversion-qa",
+  "status": "complete",
   "reason": {
     "case": "hunodan-hjstr-03",
     "previousClickToReadySeconds": 9.851599999904632,
@@ -23,5 +23,6 @@
   "artifactsSha256": {
     "tmp/heart-learning/dense-solver-profile-v1/profile.mjs": "1e9ec8af10c80329672842096749f9624fa8171b72432e29e692471dcf1070be",
     "tmp/heart-learning/dense-solver-profile-v1/run.py": "1704e8dcbf4e8158ec480c30a35dac2baacaac5e0e982cb60e802b213675562e"
-  }
+  },
+  "results": "dense-solver-profile-results.json"
 }

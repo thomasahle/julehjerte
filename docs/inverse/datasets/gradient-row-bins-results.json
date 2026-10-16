@@ -1,0 +1,136 @@
+{
+  "schema": "gradient-row-bins-results-1",
+  "status": "offline-derivative-comparison-complete-runtime-unchanged",
+  "method": "55 saved fitted geometries, two phases and binary/fractional target fields. Compare 128/256/512/1024 row-bin gradients against the unchanged JavaScript reference, including signed zero. For 10 representative geometries, measure whole gradient calls including index construction, with four rotating-order rounds per phase and 12 calls per timer after warmup.",
+  "gradientComparisons": 880,
+  "exactScalarComparisons": 614240,
+  "allExact": true,
+  "timedCases": 10,
+  "timings": [
+    {
+      "id": "hunodan-hjfig-01",
+      "edges": 60,
+      "medianMillisecondsPerCall": {
+        "128": 0.3796284583333325,
+        "256": 0.3440711666666682,
+        "512": 0.3219444583333354,
+        "1024": 0.3460815833333323
+      },
+      "ratio1024To128": 0.9116323493046867
+    },
+    {
+      "id": "hunodan-hjcur-02",
+      "edges": 104,
+      "medianMillisecondsPerCall": {
+        "128": 1.0127621666666662,
+        "256": 0.9051632083333299,
+        "512": 0.8061649583333311,
+        "1024": 0.7465294999999988
+      },
+      "ratio1024To128": 0.7371222233321306
+    },
+    {
+      "id": "hunodan-hjstr-03",
+      "edges": 182,
+      "medianMillisecondsPerCall": {
+        "128": 2.5657326666666713,
+        "256": 2.1269965416666707,
+        "512": 1.7788645833333305,
+        "1024": 1.5573177500000006
+      },
+      "ratio1024To128": 0.6069680486327613
+    },
+    {
+      "id": "hunodan-hjsta-05",
+      "edges": 112,
+      "medianMillisecondsPerCall": {
+        "128": 1.088508708333336,
+        "256": 0.9687378333333261,
+        "512": 0.8574253333333294,
+        "1024": 0.7891510416666467
+      },
+      "ratio1024To128": 0.7249836731898552
+    },
+    {
+      "id": "hard-bibel-star-outline-half",
+      "edges": 76,
+      "medianMillisecondsPerCall": {
+        "128": 0.6566388749999987,
+        "256": 0.5756579583333329,
+        "512": 0.5393593333333417,
+        "1024": 0.539282958333331
+      },
+      "ratio1024To128": 0.8212778421523276
+    },
+    {
+      "id": "photo-dense-checker",
+      "edges": 185,
+      "medianMillisecondsPerCall": {
+        "128": 3.068239583333328,
+        "256": 2.465972249999993,
+        "512": 2.0804479166666665,
+        "1024": 1.796402750000027
+      },
+      "ratio1024To128": 0.5854832066433415
+    },
+    {
+      "id": "photo-flower",
+      "edges": 109,
+      "medianMillisecondsPerCall": {
+        "128": 0.7902378333333596,
+        "256": 0.7062499999999545,
+        "512": 0.6378124583333526,
+        "1024": 0.6069288333333512
+      },
+      "ratio1024To128": 0.7680331258922654
+    },
+    {
+      "id": "photo-crown",
+      "edges": 152,
+      "medianMillisecondsPerCall": {
+        "128": 1.6553645833333046,
+        "256": 1.4342083333333449,
+        "512": 1.2747412916666008,
+        "1024": 1.1520417083333236
+      },
+      "ratio1024To128": 0.6959443979485951
+    },
+    {
+      "id": "photo-flettede-puppy",
+      "edges": 189,
+      "medianMillisecondsPerCall": {
+        "128": 1.757536458333334,
+        "256": 1.5280919583332964,
+        "512": 1.3376996666666703,
+        "1024": 1.2153489583333037
+      },
+      "ratio1024To128": 0.691507110746263
+    },
+    {
+      "id": "photo-flettede-viking",
+      "edges": 249,
+      "medianMillisecondsPerCall": {
+        "128": 3.773755208333303,
+        "256": 3.1181562916666885,
+        "512": 2.6593054999999977,
+        "1024": 2.3098958333333335
+      },
+      "ratio1024To128": 0.6120947718687642
+    }
+  ],
+  "sourceFilesVerified": 1062,
+  "limitations": [
+    "These are fixed-geometry derivative calls, not fresh fits or browser timings.",
+    "Sparse graphs may pay more index-building overhead; measure them before choosing a general policy.",
+    "Timed optimizers can choose different valid candidates when faster, even with identical gradients. Fresh quality checks are still required."
+  ],
+  "nextAction": "Test bounded adaptive row-bin counts on sparse analytic controls and the same 55 geometries. Then run fresh dense/simple/photographic solves and actual browser comparisons before integrating.",
+  "artifactsSha256": {
+    "tmp/heart-learning/gradient-bins-v1/source.json": "cb1c2dccbe80231862029696fdff0d8b05f43c28189d4c2c866d4dbcfad73ad0",
+    "tmp/heart-learning/gradient-bins-v1/state.json": "7902fdc09116ab05b2264b23eae195ba51e9a4b03ba8323010036d55eea31779",
+    "tmp/heart-learning/gradient-bins-v1/benchmark.mjs": "d5cb76b9a193a449fbaef20f0c1c230014974f3721dbe8c243bc0f878d72221b",
+    "tmp/heart-learning/gradient-bins-v1/run.py": "ec736ded67c3b2178271dafe04bad0e025e280c7112466def202b6f096ff14d0",
+    "tmp/heart-learning/gradient-bins-v1/results.json": "d09181dc2c46a6317000569e8fa0ea520ab2268a4d4a9b7ca19e0e8b7f0d0310",
+    "tmp/heart-learning/gradient-bins-v1/run.log": "8d91577030ac0d7aa44054b80cfcd0a32cf7b051ffd6a03c34195928383fc230"
+  }
+}

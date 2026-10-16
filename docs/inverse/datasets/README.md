@@ -33,15 +33,27 @@ The inventory, with material annotations updated on 2026-10-16, contains:
 
 ## Current results and limits
 
+The [fresh dense-case profile](dense-solver-profile-results.json) identifies the
+boundary-gradient kernel as the largest cost: **2.21 s** sampled self time.
+Both fresh control/profile solves reproduce the browser's exact cutting
+geometry. An [offline row-bin experiment](gradient-row-bins-results.json)
+reduces the dense case's median complete gradient call from **2.57 ms to
+1.56 ms** using 1,024 instead of 128 segment-row buckets. All **880 gradient
+comparisons / 614,240 scalar coordinates** agree exactly with the existing
+JavaScript reference across 55 saved geometries, both phases and binary/fractional
+targets. Sparse-graph overhead, fresh-fit quality and browser timings still need
+verification. No runtime bin-count change has been made.
+
 The native-fidelity fix now passes all **22 Hunodan**, **four hard-photo** and
 **three smoke** browser workflows, plus **874 application tests** (one skip),
-check, lint and build. The inverse suite is still running. The puppy's original
+**1,003 inverse tests**, check, lint and build. All **943 pinned source files**
+remain unchanged through the completed QA. The puppy's original
 six-pixel conversion regression is gone, including through editable SVG export.
 Every Hunodan SVG remains byte-identical, but this fresh run has **21/22 below
 ten seconds**, median **6.15 s**, maximum **10.24 s**. About 0.30 s of the dense
 case's paired slowdown occurs inside the unchanged solver and 0.065 s after its
-result. A [fresh solver profile](dense-solver-profile-plan.json) is queued after
-QA to find more speed margin. The hard-photo fits retain timing sensitivity:
+result. The fresh solver profile above now directs the next speed experiment.
+The hard-photo fits retain timing sensitivity:
 the half-size star's painting error rises from 1.8394% to 2.0081%, while the
 compressed star improves. These changes are preserved in the
 [browser comparison](native-conversion-fidelity-results.json), not described as
@@ -58,17 +70,16 @@ conversion gap predates the curve cache. The
 [native conversion fix](native-conversion-fidelity-results.json) now requires
 both grids to pass while an imported mask is unchanged, preserving free-border
 weights and observation coverage. Its regression, SVG round trip and related
-checks pass (80 focused tests); the renewed browser results are above, with
-full inverse QA still pending. The failed run remains recorded, not counted as
-complete QA.
+checks pass (80 focused tests); the completed renewed QA is above. The earlier
+failed run remains recorded separately.
 
 [Cached curve evaluation](curve-evaluation-cache-results.json) reduces the
 editable-conversion stage by **33%** across 110 saved inputs (65 distinct fitted
 geometries), preserving every converted coordinate, validation result and SVG
 byte. The dense Hunodan conversion falls from roughly **0.86 s to 0.55 s**.
 This reuses the same arithmetic instead of changing tolerances or fitting
-iterations. It is integrated locally alongside the count-search bound; combined
-browser timing is reported above, with full repository QA still pending.
+iterations. It is integrated locally alongside the count-search bound; the
+combined browser timing and completed full repository QA are reported above.
 
 The [supported-count search bound](supported-count-bound-results.json) is now
 integrated locally. It skips other counts only when they cannot displace an
@@ -82,8 +93,8 @@ All **110 fits across 55 fixed masks** retain their pass/fail status, and all
 including its two unchanged no-crop failures. Ten timed fits have changed
 geometry; their reviewed differences and error increases are retained in the
 report. The pruning bound did not activate in any increased-error case. The new
-Hunodan regression and the existing candle regression both pass. Full repository
-QA is pending for this change.
+Hunodan regression and the existing candle regression both pass. The completed
+combined repository QA is recorded above.
 
 The [native import sampling fix](native-import-sampling-results.json) keeps the
 400px painting surface but reuses the original photographic raster only while

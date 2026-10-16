@@ -1,0 +1,461 @@
+{
+  "schema": "dense-solver-profile-results-1",
+  "status": "complete-offline-diagnostic",
+  "sourceFilesVerified": 949,
+  "control": {
+    "mode": "control",
+    "id": "hunodan-hjstr-03",
+    "sourceResolution": 388,
+    "maskSha256": "d9ba414af2b114d628d5a1ee4df9b7c6cc875d31452495e8159a06d1e3021f11",
+    "prepareSeconds": 0.11670891699999998,
+    "solveSeconds": 8.902189917000001,
+    "totalSeconds": 9.018898834000002,
+    "retainedCandidates": 26,
+    "templateChecksPassed": true,
+    "numericalBackend": {
+      "backend": "wasm",
+      "method": "Float64 boundary, row-initialization and guarded-lattice kernels; no fast-math"
+    },
+    "stages": [
+      {
+        "stage": "directInitializing",
+        "seconds": 0.43621350000000003
+      },
+      {
+        "stage": "directFitting",
+        "seconds": 0.9626125
+      },
+      {
+        "stage": "directClearance",
+        "seconds": 0.4674207919999999
+      },
+      {
+        "stage": "directRefining",
+        "seconds": 4.490173458
+      },
+      {
+        "stage": "directSharing",
+        "seconds": 0.055231957999999394
+      },
+      {
+        "stage": "directPolishing",
+        "seconds": 1.1186052500000006
+      },
+      {
+        "stage": "directPolishing",
+        "detail": "selective-degree-reduction",
+        "seconds": 0.12764087499999915
+      },
+      {
+        "stage": "directPolishing",
+        "detail": "curve-degree-reduction",
+        "seconds": 0.11169800000000032
+      }
+    ],
+    "events": [
+      {
+        "stage": "directInitializing",
+        "seconds": 0.192081167
+      },
+      {
+        "stage": "directFitting",
+        "seconds": 1.0108524169999997
+      },
+      {
+        "stage": "directClearance",
+        "seconds": 1.9769496670000002
+      },
+      {
+        "stage": "directRefining",
+        "seconds": 2.446804584
+      },
+      {
+        "stage": "directSharing",
+        "seconds": 6.960318459
+      },
+      {
+        "stage": "directPolishing",
+        "seconds": 7.0220178749999995
+      },
+      {
+        "stage": "validating",
+        "seconds": 8.495456084
+      },
+      {
+        "stage": "paper",
+        "seconds": 8.875658375
+      },
+      {
+        "stage": "tolerances",
+        "seconds": 8.887789667000002
+      },
+      {
+        "stage": "exporting",
+        "seconds": 8.996433667000002
+      }
+    ],
+    "geometrySha256": "f56429ad6c7a2faceb7df95a22be4962cf6834878da575768a79c727408c2e1d",
+    "sameGeometryAsBrowser": true,
+    "independentError": {
+      "mismatchPixels": 845,
+      "observedPixels": 150544,
+      "observedFraction": 1,
+      "mismatchFraction": 0.0056129769369752365
+    }
+  },
+  "profile": {
+    "mode": "profile",
+    "id": "hunodan-hjstr-03",
+    "sourceResolution": 388,
+    "maskSha256": "d9ba414af2b114d628d5a1ee4df9b7c6cc875d31452495e8159a06d1e3021f11",
+    "prepareSeconds": 0.122966083,
+    "solveSeconds": 9.002135417,
+    "totalSeconds": 9.1251015,
+    "retainedCandidates": 26,
+    "templateChecksPassed": true,
+    "numericalBackend": {
+      "backend": "wasm",
+      "method": "Float64 boundary, row-initialization and guarded-lattice kernels; no fast-math"
+    },
+    "stages": [
+      {
+        "stage": "directInitializing",
+        "seconds": 0.38029033300000004
+      },
+      {
+        "stage": "directFitting",
+        "seconds": 1.022856792
+      },
+      {
+        "stage": "directClearance",
+        "seconds": 0.45376358300000036
+      },
+      {
+        "stage": "directRefining",
+        "seconds": 4.647683166000001
+      },
+      {
+        "stage": "directSharing",
+        "seconds": 0.055858374999999794
+      },
+      {
+        "stage": "directPolishing",
+        "seconds": 1.0747934579999991
+      },
+      {
+        "stage": "directPolishing",
+        "detail": "selective-degree-reduction",
+        "seconds": 0.13631375000000118
+      },
+      {
+        "stage": "directPolishing",
+        "detail": "curve-degree-reduction",
+        "seconds": 0.10928820900000027
+      }
+    ],
+    "events": [
+      {
+        "stage": "directInitializing",
+        "seconds": 0.192003458
+      },
+      {
+        "stage": "directFitting",
+        "seconds": 0.948642083
+      },
+      {
+        "stage": "directClearance",
+        "seconds": 1.9751779580000002
+      },
+      {
+        "stage": "directRefining",
+        "seconds": 2.431535208
+      },
+      {
+        "stage": "directSharing",
+        "seconds": 7.102610583
+      },
+      {
+        "stage": "directPolishing",
+        "seconds": 7.164978625
+      },
+      {
+        "stage": "validating",
+        "seconds": 8.586521124999999
+      },
+      {
+        "stage": "paper",
+        "seconds": 8.972325457999998
+      },
+      {
+        "stage": "tolerances",
+        "seconds": 8.984533291999998
+      },
+      {
+        "stage": "exporting",
+        "seconds": 9.102141624999998
+      }
+    ],
+    "geometrySha256": "f56429ad6c7a2faceb7df95a22be4962cf6834878da575768a79c727408c2e1d",
+    "sameGeometryAsBrowser": true,
+    "independentError": {
+      "mismatchPixels": 845,
+      "observedPixels": 150544,
+      "observedFraction": 1,
+      "mismatchFraction": 0.0056129769369752365
+    },
+    "hotspots": [
+      {
+        "frame": "wasm://wasm/boundary.wasm-fb2b398a:1 boundary_gradient",
+        "milliseconds": 2208.265
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/direct/grid.js:51 ",
+        "milliseconds": 829.478
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/direct/grid.js:47 gridLoss",
+        "milliseconds": 356.253
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/direct/boundary.js:79 ",
+        "milliseconds": 314.232
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/direct/refine.js:31 curvePenalty",
+        "milliseconds": 313.83
+      },
+      {
+        "frame": "wasm://wasm/boundary.wasm-fb2b398a:1 label_core_impl",
+        "milliseconds": 223.165
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/direct/refine.js:35 ",
+        "milliseconds": 217.353
+      },
+      {
+        "frame": "wasm://wasm/boundary.wasm-fb2b398a:1 paper_masks",
+        "milliseconds": 214.168
+      },
+      {
+        "frame": "wasm://wasm/000d0a2e:1 wasm-function[69]",
+        "milliseconds": 189.278
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/direct/refine.js:44 ",
+        "milliseconds": 183.808
+      },
+      {
+        "frame": "wasm://wasm/boundary.wasm-fb2b398a:1 edt",
+        "milliseconds": 176.105
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/direct/curves.js:64 add",
+        "milliseconds": 174.093
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/return-search.js:125 nearbyPairs",
+        "milliseconds": 162.675
+      },
+      {
+        "frame": "wasm://wasm/boundary.wasm-fb2b398a:1 grid_rows",
+        "milliseconds": 154.528
+      },
+      {
+        "frame": ":0 (garbage collector)",
+        "milliseconds": 138.808
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/geometry.js:10 boxDistanceForComparison",
+        "milliseconds": 128.971
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/direct/grid.js:120 gridParity",
+        "milliseconds": 99.638
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/return-search.js:331 pathReturns",
+        "milliseconds": 82.516
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/bezier.js:7 norm",
+        "milliseconds": 77.148
+      },
+      {
+        "frame": ":0 (program)",
+        "milliseconds": 76.173
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/direct/curves.js:41 ",
+        "milliseconds": 72.993
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/validate.js:13 sampleRings",
+        "milliseconds": 70.797
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/direct/curves.js:77 ",
+        "milliseconds": 69.022
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/geometry.js:28 lineDistance",
+        "milliseconds": 68.886
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/geometry.js:32 nearbyPairs",
+        "milliseconds": 68.118
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/return-search.js:117 boxDistanceForComparison",
+        "milliseconds": 67.14
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/direct/native.js:7 nativeBoundaryGradient",
+        "milliseconds": 63.015
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/direct/refine.js:34 key",
+        "milliseconds": 54.14
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/direct/refine.js:64 ",
+        "milliseconds": 49.713
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/direct/grid.js:99 ",
+        "milliseconds": 49.193
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/direct/grid.js:25 ",
+        "milliseconds": 48.92
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/polygonal.js:26 fitPolygonal",
+        "milliseconds": 45.152
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/bezier.js:3 sub",
+        "milliseconds": 43.364
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/bezier.js:26 flatness",
+        "milliseconds": 42.168
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/input.js:148 sampleTarget",
+        "milliseconds": 40.924
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/return-search.js:45 flatness",
+        "milliseconds": 38.426
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/geometry.js:4 ",
+        "milliseconds": 38.156
+      },
+      {
+        "frame": "wasm://wasm/boundary.wasm-fb2b398a:1 distance_transform",
+        "milliseconds": 36.306
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/direct/math.js:9 splineBasis",
+        "milliseconds": 35.699
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/input.js:204 ",
+        "milliseconds": 32.052
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/direct/grid.js:137 mismatch",
+        "milliseconds": 31.196
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/material.js:97 materialFamily",
+        "milliseconds": 30.605
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/direct/grid.js:154 fitGrid",
+        "milliseconds": 30.516
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/direct/curves.js:99 renderCurves",
+        "milliseconds": 29.971
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/polygonal.js:51 ",
+        "milliseconds": 29.682
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/polygonal.js:8 fittedLine",
+        "milliseconds": 29.526
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/feature-enclosures.js:29 ",
+        "milliseconds": 28.733
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/validate.js:9 selfNecks",
+        "milliseconds": 28.724
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/numerical-kernel.js:70 nativePaperMasks",
+        "milliseconds": 28.061
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/bezier.js:27 flatten",
+        "milliseconds": 27.472
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/direct/refine.js:103 refineCurves",
+        "milliseconds": 27.294
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/direct/curves.js:91 contains",
+        "milliseconds": 27.089
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/image-reference.js:15 referenceError",
+        "milliseconds": 26.941
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/direct/share.js:43 ",
+        "milliseconds": 26.271
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/return-search.js:407 heartPathReturns",
+        "milliseconds": 25.59
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/geometry.js:30 lineSimple",
+        "milliseconds": 25.528
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/direct/grid.js:139 ",
+        "milliseconds": 25.375
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/material.js:44 edt",
+        "milliseconds": 24.882
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/direct/initialize.js:112 separableFromImage",
+        "milliseconds": 24.753
+      },
+      {
+        "frame": "file:///Users/ahle/repos/julehjerte-solver-initialization/static/inverse/core/feature-enclosures.js:20 enclosureSupport",
+        "milliseconds": 24.647
+      }
+    ]
+  },
+  "finding": "The boundary-gradient kernel dominates this dense case (2.208s sampled self time), followed by grid fitting. Paper audits consume about 0.848s inclusive, so optimizing them alone would miss the largest cost.",
+  "scope": "One fresh unprofiled and one fresh profiled solve, same captured mask and actual browser request. Both preserve the browser cutting geometry exactly and pass native checks; independent renderer reports identical 845/150544 disagreement pixels. Profiling timings are not browser latency claims.",
+  "nextAction": "Compare finer segment-row bins without changing quadrature, intersection arithmetic, geometry, input masks or acceptance gates.",
+  "artifactsSha256": {
+    "tmp/heart-learning/dense-solver-profile-v1/source.json": "48cdf3170668b248c4ac4375f5a1cf2b6e3262d11a9d5ed38545f199d3cdca0a",
+    "tmp/heart-learning/dense-solver-profile-v1/state.json": "fde1ea6f623a0d7d89f0f7718a5dee2e3ea5321d8076e0ea2d7283a2198e58cb",
+    "tmp/heart-learning/dense-solver-profile-v1/profile.mjs": "1e9ec8af10c80329672842096749f9624fa8171b72432e29e692471dcf1070be",
+    "tmp/heart-learning/dense-solver-profile-v1/run.py": "1704e8dcbf4e8158ec480c30a35dac2baacaac5e0e982cb60e802b213675562e",
+    "tmp/heart-learning/dense-solver-profile-v1/control-results.json": "509952d33950ab352875293ca1279c8b2cb1eda0c9f3092ffd34d4ca06949cfc",
+    "tmp/heart-learning/dense-solver-profile-v1/profile-results.json": "074872f36194a9535e5c865bdc22e3bdf83f9b9d45ed4f93a7473dcaf7abfbc7",
+    "tmp/heart-learning/dense-solver-profile-v1/solver.cpuprofile": "b73dbc3f881068915fda647339bdcceb0422899d1da1dfeed024c7e834e9501b"
+  }
+}

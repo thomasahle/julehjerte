@@ -1369,5 +1369,14 @@
     "qaRoot": "tmp/heart-learning/supported-count-bound-runtime-v1/qa",
     "fullQa": "Stopped at hard-photo native conversion assertion before full npm test."
   },
-  "followup": "native-conversion-fidelity-results.json"
+  "followup": "native-conversion-fidelity-results.json",
+  "fullRuntimeQa": {
+    "record": "native-conversion-fidelity-results.json",
+    "applicationPassed": 874,
+    "applicationSkipped": 1,
+    "inversePassed": 1003,
+    "browserWorkflowsPassed": 29,
+    "hunodanUnderTenSeconds": 21,
+    "hunodanMaximumSeconds": 10.244800000190734
+  }
 }

@@ -1,6 +1,6 @@
 {
   "schema": "native-conversion-fidelity-results-1",
-  "status": "browser-checks-passed-full-inverse-qa-running-speed-target-21-of-22",
+  "status": "full-qa-passed-speed-target-21-of-22",
   "cause": "The converter checked only the 400px painting target. Equal error on an enlarged binary mask did not guarantee equal error at the unchanged 390px source sampling. The cache and uncached simplifiers return the same failing conversion.",
   "change": "Check unchanged native sampling and the painting grid, each at its own size and double size. Preserve source error on both grids. Average free-border importance over painting cells assigned to each native cell; observation coverage remains separate. Actual colour or coverage edits disable native reuse.",
   "regression": {
@@ -127,7 +127,15 @@
     "tmp/heart-learning/supported-count-bound-runtime-v1/qa/browser-photos/results.json": "1e6a0876df3ffdb91c60f693f8f504aa42109640bb2de9e9e00eb464dd96ed5b",
     "tmp/heart-learning/native-conversion-fidelity-v1/qa/browser-smoke/results.json": "a322acf9bdee2d55e9d47c7648973eaa54212b78f0e4951b90a6dedd86dc17d0",
     "tmp/heart-learning/native-conversion-fidelity-v1/qa/browser-hunodan/results.json": "56531b0090b196129ba9d2bfc3a3ce477631d7397ed642b62188a250fdbfef93",
-    "tmp/heart-learning/native-conversion-fidelity-v1/qa/browser-photos/results.json": "42bf1ee1153adeafe592b72dde67a9a7027ac8af0808050763885ca650e0311f"
+    "tmp/heart-learning/native-conversion-fidelity-v1/qa/browser-photos/results.json": "42bf1ee1153adeafe592b72dde67a9a7027ac8af0808050763885ca650e0311f",
+    "tmp/heart-learning/native-conversion-fidelity-v1/qa/state.json": "eaee90f94a10c8af6c615b41cc9b6637c81328b8ccd6f8526ba6f585baa8e0a7",
+    "tmp/heart-learning/native-conversion-fidelity-v1/qa/checks.json": "72c2a2cb876d9bef766428e1474cceaefc907e76a8754d322eee906391a97479",
+    "tmp/heart-learning/native-conversion-fidelity-v1/qa/source.json": "b93fc7d058aed166b6b9b54d2a3b7c6b4523a78bca720f010a017866f1191330",
+    "tmp/heart-learning/native-conversion-fidelity-v1/qa/test.log": "fe291630a06a9b948fcd22e8d1996f67b907a2c32dcd5abb37e70fff87011ecc",
+    "tmp/heart-learning/native-conversion-fidelity-v1/qa/check.log": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092",
+    "tmp/heart-learning/native-conversion-fidelity-v1/qa/lint.log": "2b7add329ca80a0f26dcb26c7eb139cd28b3768793c6b0797002f91a54119a34",
+    "tmp/heart-learning/native-conversion-fidelity-v1/qa/build.log": "8de213eefa2dfa6f63fa75756c8ae31c43a3cfeda2b30ffce4417fce9677fc1e",
+    "tmp/heart-learning/native-conversion-fidelity-v1/qa/served-assets.json": "4aa8d16b6f4cce17a659cc97e2bdf8aca7bca2a14c5240444aa573a51e87e3ba"
   },
   "browserQa": {
     "browser-smoke": {
@@ -853,5 +861,59 @@
     "currentResultToReadySeconds": 0.7018000001907349,
     "conclusion": "Most of this paired slowdown is in the unchanged solver, not the newly extended conversion check. A single pair does not establish a stable speed regression; more margin is needed for the 10s target."
   },
-  "nextAction": "Finish the pinned inverse suite, then profile a fresh dense Hunodan solve at the actual browser settings. Preserve source/geometry/paper checks and quantify any optimization before changing runtime."
+  "nextAction": "Profile-guided gradient indexing experiment; exact derivative comparisons pass offline, but fresh solves and browser timing remain to be checked.",
+  "fullQa": {
+    "status": "complete",
+    "seconds": 1462.7458005,
+    "sourceFilesVerified": 943,
+    "applicationPassed": 874,
+    "applicationSkipped": 1,
+    "inversePassed": 1003
+  },
+  "fullQaChecks": [
+    {
+      "stage": "check",
+      "exitCode": 0,
+      "seconds": 8.876773875
+    },
+    {
+      "stage": "lint",
+      "exitCode": 0,
+      "seconds": 7.574902916000001
+    },
+    {
+      "stage": "build",
+      "exitCode": 0,
+      "seconds": 16.337408583000002
+    },
+    {
+      "stage": "preview",
+      "exitCode": 0,
+      "seconds": 1.0988093750000019
+    },
+    {
+      "stage": "browser-smoke",
+      "exitCode": 0,
+      "seconds": 26.304416417
+    },
+    {
+      "stage": "browser-photos",
+      "exitCode": 0,
+      "seconds": 55.86152091699999
+    },
+    {
+      "stage": "browser-hunodan",
+      "exitCode": 0,
+      "seconds": 203.07086741700002
+    },
+    {
+      "stage": "test",
+      "exitCode": 0,
+      "seconds": 1143.334480125,
+      "completeSummary": true,
+      "applicationPassed": 874,
+      "applicationSkipped": 1,
+      "inversePassed": 1003
+    }
+  ]
 }
