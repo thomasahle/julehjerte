@@ -1,6 +1,6 @@
 {
   "schema": "material-soft-objective-plan-1",
-  "status": "queued-after-serial-repair-release-qa",
+  "status": "complete",
   "root": "tmp/heart-learning/material-soft-objective-v1",
   "dependency": "tmp/heart-learning/refinement-completion-v1/qa/state.json must be complete, with its pinned source files unchanged. A separate live dependency controller waits without running fits concurrently.",
   "hypothesis": "Thresholding a coarse photographic material field may lose useful subpixel evidence. Compare the current binary fitting objective with the saved soft field while preserving the binary target used for final checks. Learned cross-entropy probabilities are not assumed to be calibrated photographic coverage.",
@@ -182,5 +182,6 @@
       "sha256": "7bc8332241722af3e0f1d266b95049b5d6ef6d25691e9fcdd01b542b151ab4de",
       "text": "import fs from 'node:fs/promises';\nimport assert from 'node:assert/strict';\nimport {materialMask} from '../material-corrected-scenes-v1/material-fields.mjs';\nimport {prepare} from '../../../static/inverse/core/engine.js';\nconst root=new URL('.',import.meta.url),read=async p=>JSON.parse(await fs.readFile(p));\nconst inputs=await read(new URL('inputs.json',root)),study=new URL('../material-corrected-scenes-v1/',root);\nconst probe=await read(new URL('probe/manifest.json',study)),pipeline=await read(new URL('pipeline/report.json',study));\nconst rows=[];\nfor(const entry of inputs.rows){\n  const mask=Uint8Array.from(await fs.readFile(entry.assets['mask.bin'].path));\n  const bytes=await fs.readFile(entry.assets['probability.f32'].path),p=Float32Array.from({length:400**2},(_,i)=>bytes.readFloatLE(4*i));\n  const prepared=prepare({type:'mask',mask,resolution:400},inputs.configuration);\n  assert.deepEqual(prepared.target.sourceImage.mask,mask);\n  assert.ok(p.every((v,i)=>Number.isFinite(v)&&v>=0&&v<=1&&Number(v>=.5)===mask[i]));\n  const row={id:entry.id,maskPreparedExactly:true};\n  if(entry.kind==='held-out-learned-field'){\n    const source=probe.rows.find(s=>s.id===entry.sourceId),run=pipeline.rows.find(s=>s.id===entry.sourceId&&s.method==='candidate-joint');\n    const b=await fs.readFile(new URL('probe/'+source.assets.candidate.material.path,study));\n    const f=Float32Array.from({length:256**2},(_,i)=>b.readFloatLE(4*i));\n    const actual=materialMask(f,256,source.window,run.selectedCrop.quad,400);assert.deepEqual(actual.mask,mask);\n    let max=0;for(let i=0;i<p.length;i++)max=Math.max(max,Math.abs(actual.probability[i]-p[i]));\n    assert.equal(max,0);row.maximumDifferenceFromOriginalJSSampler=max;\n  }\n  if(entry.kind==='native-400-exact-checker')assert.deepEqual(p,Float32Array.from(mask));\n  rows.push(row);\n}\nawait fs.writeFile(new URL('preflight.json',root),JSON.stringify({status:'passed',rows},null,2)+'\\n');\nconsole.log('Eight inputs verified; real probabilities exactly match the original JS sampler.');\n"
     }
-  ]
+  ],
+  "results": "docs/inverse/datasets/material-soft-objective-results.json"
 }

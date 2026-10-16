@@ -115,15 +115,19 @@ control rather than attributing every gap to the network. Soft-field fitting
 and explicit contact supervision remain untested alternatives; no runtime model,
 new reconstruction success, or exact photographed junction label is claimed.
 
-A [binary-versus-soft objective replay](material-soft-objective-plan.json) is
-now running after the completed serial release QA. Eight frozen inputs contain
-the two saved learned predictions and six ideal-checker sampling controls, with
-sixteen fresh fits scheduled. All target masks prepare unchanged, and the real
-soft fields exactly match the original JavaScript sampler. The comparison
-changes only the fitting probabilities; original binary targets and validation
-remain fixed. Synthetic outputs will also be scored against their known straight
-geometry at 1,600px. This is a development ablation in progress, not a neural gain or
-an increase in independently labelled photographs.
+The [completed binary-versus-soft replay](material-soft-objective-results.json)
+finds **no useful improvement from the soft-field handoff**. All sixteen fits
+pass their derived-mask/geometry/paper checks, but the two learned-photo errors
+increase from **0.8000% to 1.1575%** and **0.445625% to 0.4900%**. Both render
+pairs were inspected and retain distorted cells and imperfect junctions. Native
+synthetic controls return identical exact grids in both arms. Of four projected
+synthetic controls, soft input improves known-geometry error on one and worsens
+three. In one coverage-sampled case, target error falls from **0.0675% to 0.0600%**
+while 1,600px ground-truth error rises from **0.09633% to 0.22188%**. All outputs
+were visually reviewed. Original targets, settings and checks stayed fixed;
+1,074 pinned sources/artifacts verify. The existing binary final polish remains
+part of this pipeline comparison. No runtime change or neural gain is adopted;
+finite raster scores still cannot certify exact contacts.
 
 A [bounded gradient index](gradient-row-bins-runtime.json) is now integrated
 locally after **27 focused tests**. Sparse designs retain 128 row buckets;
