@@ -31,6 +31,19 @@ The inventory, with material annotations updated on 2026-10-15, contains:
 
 ## Current results and limits
 
+[Source-crop review](accepted-crop-review.json) qualifies the photographic solve
+rate: 18 of the 26 accepted outputs in the preceding corpus run have weak
+crop-outline support. Source views show clear corner misplacement in gift,
+round-checker and jigsaw; bottom-flower's proposed tip is outside the photograph.
+Other flagged crops look plausible or remain uncertain, so the diagnostic must
+not be treated as eighteen proven crop failures. The 26/31 result counts valid
+templates fitting estimated masks, not verified physical crops or known cuts.
+Production rectification fills outside-source pixels with white without carrying
+observation coverage into the fitting target. Independent sampling and an actual
+rectifier replay measure 1.68%/2.77%/0.174% synthetic padding weight in crossed-ribbons,
+bauble and bottom-flower respectively. No crops, masks or benchmark denominators
+were changed by this review.
+
 [A muted teal/pale candle photograph](real-candle-annotation-review.json) now has
 reviewed candidate body/material polygons and six four-sector contact
 neighbourhoods, three ordinary-edge controls and one separately recorded narrow

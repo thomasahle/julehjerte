@@ -1,6 +1,6 @@
 {
   "schema": "finalist-paper-resolution-study-1",
-  "status": "implemented; focused_checks_typecheck_lint_build_pass; full_QA_running",
+  "status": "implemented; full_tests_947_of_954; corpus_export_checks_running",
   "problem": "The same accurate 4+4 candidate was discarded when certified diagonal labelling made its unresolved floating fragments exceed the unchanged area threshold at resolution 700.",
   "fixedGeometry": {
     "controlsIdenticalBeforeAfter": true,
@@ -68,7 +68,7 @@
     "interruptedAttempt": "An initial focused run overlapped a live diagnostic briefly and was terminated. Only the subsequent serial 17-test run is used."
   },
   "fullQA": {
-    "status": "running",
+    "status": "tests_complete; corpus_export_checks_running",
     "root": "tmp/heart-learning/round-paper-capture-v1/qa",
     "runtimeCommit": "0d40b97",
     "controllerPid": 26752,
@@ -99,7 +99,21 @@
           "visualReview": "Hat shape retained; small bumps along crown/brim and curved free-border ornaments remain."
         }
       ]
-    }
+    },
+    "applicationPassed": 857,
+    "applicationSkipped": 1,
+    "inversePassed": 947,
+    "inverseTotal": 954,
+    "inverseSeconds": 1148.898101959,
+    "remainingFailures": [
+      "horizontal puppy route/checkpoint assertion",
+      "shifted bird short allowance",
+      "shifted bird long allowance",
+      "gift uncertain checkpoint",
+      "floral uncertain alternative",
+      "blue-star finer-verification route",
+      "Viking retained failed alternative"
+    ]
   },
   "artifacts": [
     {

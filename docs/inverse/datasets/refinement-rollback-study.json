@@ -52,7 +52,7 @@
   "artifacts": [
     {
       "path": "tmp/heart-learning/refinement-rollback-study-v1/prepare.py",
-      "sha256": "04e8da4e73dffc1ab383da996eb3260830d20c52b6ef42322586cdf2dcad661b"
+      "sha256": "154314c39760aa0c389f3121c9b5298b0d32d907697237e0b9e7877dd8c68e6a"
     },
     {
       "path": "tmp/heart-learning/refinement-rollback-study-v1/replay.mjs",
@@ -68,7 +68,8 @@
     },
     {
       "path": "tmp/heart-learning/refinement-rollback-study-v1/source.json",
-      "sha256": "bc81aff0a54312c2784ae79964e63e0ffaa181f23a963d019d0a21706d77cf32"
+      "sha256": "246c7192d1c2cd8e5f348802e9408b871e5024f5bd878a08c5c905278308bc84"
     }
-  ]
+  ],
+  "protocolReview": "An improving checkpoint remains accepted if another same-step preferred-proposal comparison follows; a later non-improving proposal cannot clear that accepted state. The queued cases do not use preferCheckpoint, but the experimental implementation preserves that invariant."
 }
