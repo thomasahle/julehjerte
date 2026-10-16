@@ -32,6 +32,20 @@ The inventory, with material annotations updated on 2026-10-16, contains:
 
 ## Current results and limits
 
+A [conditional crop fallback](locator-contrast-fallback-results.json) improves
+the SAM-assisted development pipeline from **12/22 to 13/22 checked
+reconstructions**, retaining all twelve previous passes and adding rabbit.
+It preserves all fourteen supported primary crops and their classified masks
+exactly, and invokes the alternative contrast objective only for the eight
+unsupported inputs. Fresh detection produces sixteen crops, including star;
+star still fails its border-feature check. All sixteen exports convert to
+editable SVG, the same thirteen pass complete checks, and all four reconstruction
+panels were inspected. All 876 pinned sources remain unchanged. Crop search
+takes a median 0.64 s and maximum 5.14 s, excluding model inference; fitting
+and engine export take a median 7.69 s and maximum 9.63 s separately. This is
+an actual fixed-policy replay, not a union selected by template quality. It
+remains offline; higher-resolution material classification is the next test.
+
 A [component-wise locator study](locator-diameter-components-results.json)
 separates cap-side colour purity from the reward for a visible colour step at
 the lobe diameter. Removing only the contrast reward recovers the rotated star
@@ -39,7 +53,7 @@ and rabbit, but loses aircraft: **14 to 15 crop proposals, 12 to 11 checked
 reconstructions**. Removing only purity retains the original 14 proposal IDs.
 All 66 crop attempts, 44 paired fitting attempts and 29 editable-export audits
 complete; all eight reconstruction panels were inspected. The global change
-is rejected. A fallback restricted to unsupported crops remains untested.
+is rejected; the conditional follow-up above preserves already accepted crops.
 
 The offline learned-material replay now preserves the production rectifier's
 source coverage through fitting, independent scoring and editable conversion.
