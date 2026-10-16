@@ -31,6 +31,16 @@ The inventory, with material annotations updated on 2026-10-16, contains:
 
 ## Current results and limits
 
+[Shared-cut fine-scale scoring](sharing-original-scale-results.json) now uses the
+original classified mask and coverage directly, avoiding enlargement of the
+reduced fitting mask. All 49 fixed-export alignment replays pass geometry,
+paper and feature checks; all 22 Hunodan geometries remain byte-identical.
+Four photographic outputs change, with mixed small error differences across
+render resolutions. The orb improves consistently and supplies a regression
+that fails before the correction and passes afterward. All 111 focused checks
+pass. Fresh complete QA is pending; the slower area-recovery proposal remains
+offline and no uniform photographic improvement is claimed.
+
 [Initial narrow-neck recovery](initial-paper-separation-results.json) reuses the
 existing local separation retry after a complete paper-failed refinement block,
 only when the best safe fitting error still exceeds the image target. A fixed-work

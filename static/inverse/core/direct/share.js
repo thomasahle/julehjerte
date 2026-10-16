@@ -130,7 +130,11 @@ function replaceOrdered(paths,c,{identicalSheets=false,antiTranspose=false,width
 }
 
 export function recoverShared(candidate,prob,n,cfg,{deadline=Infinity,input={},rounds=12,weights=null}={}){
-  let best=candidate;const accepted=[],rejected=[],bigN=Math.min(512,2*n),high=resizeObjective(prob,n,bigN,weights),big=high.probability;
+  let best=candidate;const accepted=[],rejected=[],bigN=Math.min(512,2*n),source=input.sourceImage;
+  // Measure fine-scale fidelity against the original classified artwork.
+  // Enlarging the reduced fitting image shifts edge pixels and can veto a
+  // useful exact join. Resample source coverage together with its colour.
+  const high=source?resizeObjective(source.mask,source.resolution,bigN,sourceWeights(source)):resizeObjective(prob,n,bigN,weights),big=high.probability;
   const identicalSheets=matchingSummary(best.graph.solution(best.points,best.phase,input)).identical;
   const symmetry={...cfg.symmetry,...(identicalSheets?{transpose:true}:{})},antiTranspose=!!cfg.symmetry?.antiTranspose;
   const orbit=needsOrbit(symmetry);
@@ -142,7 +146,7 @@ export function recoverShared(candidate,prob,n,cfg,{deadline=Infinity,input={},r
   // Reduced fitting scales can miss a narrow source feature or disagree on
   // edge pixels. Check each edit against the original artwork, so one bad
   // edit cannot undo the useful sharing accumulated earlier in the batch.
-  const source=input.sourceImage,features=source&&imageFeatures(source,cfg.width);
+  const features=source&&imageFeatures(source,cfg.width);
   let sourceWoven=source&&sampleWeave(best.graph.solution(best.points,best.phase,input),source.resolution);
   let sourceError=source&&maskDisagreement(source,sourceWoven);
   // Keep the batch's original error ceiling. Two complementary alignments

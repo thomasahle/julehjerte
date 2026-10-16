@@ -987,6 +987,19 @@
       ],
       "failureLog": "tmp/heart-learning/sharing-area-tail-v1/matrix-baseline.log",
       "sourceGeometry": "tmp/heart-learning/return-projection-speed-v1/production-release/photos/round-checker/automatic/cut_geometry.json"
+    },
+    "currentMatrix": {
+      "cases": 49,
+      "allGeometryPaperAndFeatureChecksPassed": true,
+      "baselineTotalMilliseconds": 32231.80466800001,
+      "candidateTotalMilliseconds": 47600.60971100002,
+      "changedCases": 8,
+      "decision": "Not integrated: substantial additional work for small image/coverage differences. Investigate direct original-source fine-scale scoring instead.",
+      "artifactsSha256": {
+        "tmp/heart-learning/sharing-area-tail-current-v1/matrix-baseline/results.json": "ab1c30c11ff61f3e9ece9ba0bc8d468e411e88e7f5e5ec1b46d5e4bc59a89e41",
+        "tmp/heart-learning/sharing-area-tail-current-v1/matrix-candidate/results.json": "81d22669c3959d6be66dce3cc4e528a03c4ae294ccde7fb7546312799c345d50",
+        "tmp/heart-learning/sharing-area-tail-current-v1/matrix-state.json": "9f9717125ee1b54ef82bf08c8de1e8213dffcb9fc477b6b2fd94d1b2bf0cf402"
+      }
     }
   }
 }

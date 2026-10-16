@@ -1,0 +1,201 @@
+{
+  "schema": "sharing-original-scale-results-1",
+  "status": "integrated-focused-tests-pass-full-QA-pending",
+  "change": "Fine-scale shared-cut image checks area-resample the original classified mask and its observation weights directly. Source-free callers keep their existing objective. No new alignment pass, extra rounds or acceptance-threshold relaxation.",
+  "scope": "Local additional alignment on 49 fixed accepted exports. All source probability fields in this probe equal their binary masks, making its probability-or-mask prototype equivalent to the integrated classified-mask reference. This does not establish fresh solve success or runtime.",
+  "fixedMatrix": {
+    "cases": 49,
+    "geometryPassed": 49,
+    "paperPassed": 49,
+    "featureChangesPassed": 49,
+    "sourceHashesVerifiedPerArm": 90,
+    "identicalInputGeometriesMasksAndObservationFields": true,
+    "hunodanGeometryByteIdenticalCases": 22,
+    "changedCases": [
+      {
+        "case": "photos/faceted-star",
+        "baselineMilliseconds": 152.14295800000036,
+        "candidateMilliseconds": 628.1145419999993,
+        "baselineError": 0.0065,
+        "candidateError": 0.0064875,
+        "baselineCoverageError": 0.009145073481835424,
+        "candidateCoverageError": 0.009144436229253188,
+        "baselineSourceError": 0.00626875,
+        "candidateSourceError": 0.00623125
+      },
+      {
+        "case": "photos/fine-checker",
+        "baselineMilliseconds": 4136.383750000001,
+        "candidateMilliseconds": 4539.852082999998,
+        "baselineError": 0.0170875,
+        "candidateError": 0.0170375,
+        "baselineCoverageError": 0.021160318562178874,
+        "candidateCoverageError": 0.021150955813890322,
+        "baselineSourceError": 0.01696875,
+        "candidateSourceError": 0.01695625
+      },
+      {
+        "case": "photos/orb",
+        "baselineMilliseconds": 2722.319417000006,
+        "candidateMilliseconds": 2776.294750000001,
+        "baselineError": 0.01245,
+        "candidateError": 0.01244375,
+        "baselineCoverageError": 0.0145688234961126,
+        "candidateCoverageError": 0.014541127417422832,
+        "baselineSourceError": 0.01245,
+        "candidateSourceError": 0.0124375
+      },
+      {
+        "case": "photos/warped-checker",
+        "baselineMilliseconds": 886.715916000001,
+        "candidateMilliseconds": 1176.861791999996,
+        "baselineError": 0.01361875,
+        "candidateError": 0.0136375,
+        "baselineCoverageError": 0.017671029340056703,
+        "candidateCoverageError": 0.017680833261972295,
+        "baselineSourceError": 0.01351875,
+        "candidateSourceError": 0.01353125
+      }
+    ],
+    "baselineTotalMilliseconds": 32231.80466800001,
+    "candidateTotalMilliseconds": 32952.43862599999
+  },
+  "independentFineRenders": [
+    {
+      "name": "faceted-star",
+      "n": 800,
+      "arm": "baseline",
+      "error": 0.008690625,
+      "coverage": 0.009220042881654808
+    },
+    {
+      "name": "faceted-star",
+      "n": 800,
+      "arm": "candidate",
+      "error": 0.0086984375,
+      "coverage": 0.009225674010178772
+    },
+    {
+      "name": "faceted-star",
+      "n": 1600,
+      "arm": "baseline",
+      "error": 0.00908984375,
+      "coverage": 0.009242156859983516
+    },
+    {
+      "name": "faceted-star",
+      "n": 1600,
+      "arm": "candidate",
+      "error": 0.009105859375,
+      "coverage": 0.009246654409878829
+    },
+    {
+      "name": "fine-checker",
+      "n": 800,
+      "arm": "baseline",
+      "error": 0.0204453125,
+      "coverage": 0.021282389701844658
+    },
+    {
+      "name": "fine-checker",
+      "n": 800,
+      "arm": "candidate",
+      "error": 0.0204484375,
+      "coverage": 0.021268731612176635
+    },
+    {
+      "name": "fine-checker",
+      "n": 1600,
+      "arm": "baseline",
+      "error": 0.02101953125,
+      "coverage": 0.02131677236820542
+    },
+    {
+      "name": "fine-checker",
+      "n": 1600,
+      "arm": "candidate",
+      "error": 0.02100390625,
+      "coverage": 0.02130431832289178
+    },
+    {
+      "name": "orb",
+      "n": 800,
+      "arm": "baseline",
+      "error": 0.01424375,
+      "coverage": 0.014673345579055603
+    },
+    {
+      "name": "orb",
+      "n": 800,
+      "arm": "candidate",
+      "error": 0.0142078125,
+      "coverage": 0.014652132342359982
+    },
+    {
+      "name": "orb",
+      "n": 1600,
+      "arm": "baseline",
+      "error": 0.0145484375,
+      "coverage": 0.014682190559289302
+    },
+    {
+      "name": "orb",
+      "n": 1600,
+      "arm": "candidate",
+      "error": 0.01451171875,
+      "coverage": 0.014658098952955334
+    },
+    {
+      "name": "warped-checker",
+      "n": 800,
+      "arm": "baseline",
+      "error": 0.017025,
+      "coverage": 0.01783673406066955
+    },
+    {
+      "name": "warped-checker",
+      "n": 800,
+      "arm": "candidate",
+      "error": 0.017034375,
+      "coverage": 0.017847941168653778
+    },
+    {
+      "name": "warped-checker",
+      "n": 1600,
+      "arm": "baseline",
+      "error": 0.017624609375,
+      "coverage": 0.01788280943599093
+    },
+    {
+      "name": "warped-checker",
+      "n": 1600,
+      "arm": "candidate",
+      "error": 0.017633203125,
+      "coverage": 0.017893848038978467
+    }
+  ],
+  "verification": {
+    "focusedTestsPassed": 111,
+    "focusedTestsFailed": 0,
+    "newRegression": "Original orb cleanup fails the independent fractional-coverage limit at 800 pixels; updated cleanup passes both binary and fractional limits at 800 and 1600, plus final geometry, paper and feature checks. Input image and geometry remain unchanged.",
+    "fullQA": "Pending fresh check/lint/build/browser, all 22 timed Hunodan solves, automatic photos, editable conversion and complete tests."
+  },
+  "limitations": [
+    "Three of four changed cases improve binary error at source resolution; warped-checker worsens by three pixels.",
+    "At 800/1600, orb improves binary and fractional error; fine-checker fractional error improves but its 800-pixel binary error increases by two pixels. Faceted-star and warped-checker worsen slightly on both fine metrics. No uniform fidelity improvement claim.",
+    "All changed 800-pixel before/after pairs were visually inspected. Major motifs remain, with subtle changes in faint seams and contact points; uneven contours and several seams remain.",
+    "A separate continuous-area fallback stayed valid but cost 47.60 versus 32.23 seconds across the same 49 exports. It is not integrated.",
+    "The benchmark contains development fixtures, not original cutting-path ground truth or physical assembly tests."
+  ],
+  "artifactsSha256": {
+    "tmp/heart-learning/sharing-area-tail-current-v1/matrix-baseline/results.json": "ab1c30c11ff61f3e9ece9ba0bc8d468e411e88e7f5e5ec1b46d5e4bc59a89e41",
+    "tmp/heart-learning/sharing-original-scale-v1/matrix-candidate/results.json": "f285428b1cd7c32427db26e955fae4eee3073fbafd7cb86706f45d809771d7f6",
+    "tmp/heart-learning/sharing-original-scale-v1/fine-renders.mjs": "7cf4652db920b9a6e48c19b028d4f7d540d3a8d77cfd65472ae02c01397a0146",
+    "tmp/heart-learning/sharing-original-scale-v1/fine-renders.json": "8b40caba24bc63bc887b20b3fd851a1cf37b394f4c079e6ae3420f24449afab0",
+    "tmp/heart-learning/sharing-original-scale-v1/test-before.log": "b9fd37717d371fb26968c5a8f79af33cb83d6d2c2d3d65e337663396188506dd",
+    "tmp/heart-learning/sharing-original-scale-v1/focused.log": "58b7c9588bc249b2d602893b8f57ca45505d4c3d726cfe37d0da06bb14787292",
+    "static/inverse/core/direct/share.js": "4a9dc8272771895dea2c0c0b27df643c6733f236384d85195fac2a5332566a28",
+    "scripts/inverse/sharing-source-scale.test.mjs": "a23d9bae63bd5d81efed9996feb1b53c43019aad8b052c278d53f55fd57da0c1",
+    "scripts/inverse/fixtures/sharing-original-scale-orb.json": "6d47e5021c1434a60cbcb1514b3a55f9f41e0e67d32573dafa6e3d731211a7a4"
+  }
+}
