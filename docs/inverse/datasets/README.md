@@ -42,7 +42,8 @@ The anchor upload falls from **19.72 s to 6.00 s**, with painting-grid error
 and four hard-photo uploads pass editable export checks. **20/22** finish under
 ten seconds (median **6.23 s**); hjcur-02 and hjstr-03 still take **15.44 s** and
 **10.31 s**. All 22 previews were reviewed. Check, lint, build, 57 focused tests
-and **871 application tests** (one skip) pass; full inverse QA is still running.
+and **871 application tests** (one skip) pass. Full inverse QA also passes
+**1,002 tests**, with all 936 pinned source files unchanged.
 The changes are committed locally, with no push or deployment.
 
 A [selective boundary-cleanup candidate](primitive-boundary-groups-results.json)

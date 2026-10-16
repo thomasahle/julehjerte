@@ -1,6 +1,6 @@
 {
   "schema": "native-import-sampling-results-1",
-  "status": "committed-browser-qa-passed-full-inverse-tests-running",
+  "status": "committed-full-qa-passed",
   "implementationCommits": [
     "632bc74",
     "e0fc2f1"
@@ -783,10 +783,14 @@
   "repositoryTests": {
     "applicationPassed": 871,
     "applicationSkipped": 1,
-    "inverseStatus": "running",
+    "inverseStatus": "passed",
     "state": "tmp/heart-learning/native-import-sampling-v1/qa/test-state.json",
     "log": "tmp/heart-learning/native-import-sampling-v1/qa/test.log",
-    "requiredInverseTests": 1002
+    "requiredInverseTests": 1002,
+    "inversePassed": 1002,
+    "exitCode": 0,
+    "sourceFilesVerified": 936,
+    "seconds": 1136.940979792
   },
   "limitations": [
     "20/22 browser cases are below ten seconds; the two slower cases and the 21.53-second puppy remain unresolved.",
@@ -795,7 +799,7 @@
     "The first smoke attempt failed only its old cross-resolution displayed-error assertion; it remains recorded separately.",
     "No push or deployment. The private preview is rebuilt at http://127.0.0.1:5232/."
   ],
-  "nextAction": "Finish full inverse QA. Then test whether the already-supported four-cut candidate on hjcur-02 can safely avoid additional larger finalists under the existing final preference, without changing image or paper acceptance.",
+  "nextAction": "Compare a supported-count search bound using the actual captured worker input settings; final report settings may contain a finer verification resolution and must not be reused as the initial configuration.",
   "artifactsSha256": {
     "tmp/heart-learning/native-import-sampling-v1/plan.json": "2d4d0d3d5e0f9743b845dbf08fb646eb3dbe65fb0d95ea37b5f78dfa1132dd21",
     "tmp/heart-learning/native-import-sampling-v1/edit-handoff.mjs": "39e00424593728643dd58e60b94c5d6989ee22e21b3ff1546f46b7957dba0f06",
@@ -817,6 +821,8 @@
     "tmp/heart-learning/native-import-sampling-v1/browser-review-3.png": "8364fa487f5e775f8a22f96c4b862c97dd8846e60eaee4ac67f46cc8a0abc9a9",
     "tmp/heart-learning/native-import-sampling-v1/browser-review-4.png": "569b7aab4c14e43dd59d92ab654b34e32af9db6bb0d372a165c0bd7d70c68c5b",
     "tmp/heart-learning/native-import-sampling-v1/browser-review-5.png": "5193995d98b453bfae7dfd36750aafac5e5ffed595c3c3cded9b9d22a34b212d",
-    "tmp/heart-learning/native-import-sampling-v1/browser-review-6.png": "089b421624ed4a0058f5f1eddc550978a3309bce3bfdc275bd2d8a901be41395"
+    "tmp/heart-learning/native-import-sampling-v1/browser-review-6.png": "089b421624ed4a0058f5f1eddc550978a3309bce3bfdc275bd2d8a901be41395",
+    "tmp/heart-learning/native-import-sampling-v1/qa/test-state.json": "9e0803daa2dc69f3aee4c4a0cc80cda398940db243fed7f2b7b58c16cbd10d12",
+    "tmp/heart-learning/native-import-sampling-v1/qa/test.log": "efd6a34dbde002730fd8dbc8443b519f5ea2a2eb6517f493245751743965acf4"
   }
 }
