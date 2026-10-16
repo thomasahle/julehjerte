@@ -25,7 +25,7 @@ export function generateTextGrid(
 	font: Font,
 	air = false,
 	frame?: Frame,
-	layout: { padding?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; adaptGates?: boolean; onGateChange?: () => void; filled?: boolean; onSeamChange?: () => void; inkPanels?: boolean; bentSpokes?: boolean; adaptivePanels?: boolean; guardSeams?: boolean } = {}
+	layout: { padding?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; adaptGates?: boolean; onGateChange?: () => void; filled?: boolean; onSeamChange?: () => void; inkPanels?: boolean; bentSpokes?: boolean; adaptivePanels?: boolean; guardSeams?: boolean; boundaryIslands?: boolean } = {}
 ) {
 	const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n');
 	const cols = Math.max(...lines.map((l) => [...l].length)),
@@ -207,7 +207,7 @@ export function generateTextGrid(
 						local, contours, gates,
 						[Math.PI / 4, (3 * Math.PI) / 4, (-3 * Math.PI) / 4, -Math.PI / 4],
 						margin, [0, 1, 2, 3], undefined,
-						{ practical: layout.practical, compound: layout.compound, onCompound: layout.onCompound, balanced: layout.balanced, onCrowded: layout.onCrowded, bentSpokes: layout.bentSpokes, connectionAllowed }
+						{ practical: layout.practical, compound: layout.compound, onCompound: layout.onCompound, balanced: layout.balanced, onCrowded: layout.onCrowded, bentSpokes: layout.bentSpokes, boundaryIslands: layout.boundaryIslands, connectionAllowed }
 					);
 					return local;
 				};

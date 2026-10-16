@@ -53,6 +53,25 @@ function validateHandoffs(design: HeartDesign) {
 // These are expected successes, never a test that passes by accepting a refusal.
 // The larger offline corpus covers 2,028 text and 1,122 figure configurations.
 describe('generator robustness regressions', () => {
+	for (const textFrame of ['air', 'circle', 'diamond', 'rounded'] as const)
+		it(`keeps all Oswald ÆØÅ components connected in the ${textFrame} frame`, () => {
+			const { design } = generate({ mode: 'text', name: 'ÆØÅ', text: 'ÆØÅ',
+				font: fonts.oswald, textFrame, colors });
+			expect(design.gridSize).toEqual({ x: 6, y: 6 });
+			expect(cutTipCounts(design)).toEqual([2, 2]);
+			const margin = intersectionMarginPx(inferOverlapRect(design.fingers, design.gridSize), gridClearanceScale(6, 6));
+			expect(findFingersWithIssues(design.fingers, margin * 1.1).size).toBe(0);
+			validateHandoffs(design);
+		}, 20000);
+	it('divides Cinzel BO into open strips inside the original hexagon', () => {
+		const { design } = generate({ mode: 'text', name: 'BO', text: 'BO',
+			font: fonts.cinzel, textFrame: 'hexagon', colors });
+		expect(design.gridSize).toEqual({ x: 6, y: 6 });
+		expect(cutTipCounts(design)).toEqual([1, 6]);
+		const margin = intersectionMarginPx(inferOverlapRect(design.fingers, design.gridSize), gridClearanceScale(6, 6));
+		expect(findFingersWithIssues(design.fingers, margin * 1.1).size).toBe(0);
+		validateHandoffs(design);
+	}, 20000);
 	for (const style of ['plain', 'rays', 'check'] as const)
 		it(`joins the paw through wider gaps in the oval ${style} frame`, () => {
 			const { design } = generate({ mode: 'figure', name: 'Paw', contours: tablerPaw.contours as Ring[],

@@ -445,6 +445,8 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		} catch (retryError) {
 			if (!(retryError instanceof ConstructionError) && !(retryError instanceof CutGeometryError)) throw retryError;
 		}
+		const textPanels = retryTextPanelIslands(request, curveFitter);
+		if (textPanels) return textPanels;
 		let bestRepeated: GeneratorResult | undefined;
 		if (repetitionCache && request.font) for (const islandRank of [0, 1, 2, 3]) try {
 			// Multiple concave corners can require two invisible connections.
@@ -478,6 +480,47 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		if (bestRepeated) return bestRepeated;
 		throw error;
 	}
+}
+
+/** Clipping an accent or serif can leave a separate piece owning a panel gate.
+ * Follow that piece from its actual seam, with the panel's alternating phase.
+ * A smaller inter-letter gap also leaves more room for the unchanged strokes.
+ * Earlier successful layouts return before these four bounded alternatives. */
+function retryTextPanelIslands(request: GeneratorRequest, curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult | undefined {
+	const frame = request.textFrame ?? 'woven', text = request.text ?? '', font = request.font;
+	if (request.mode !== 'text' || !font || !text.trim() || frame === 'repeat' || frame === 'repeat-check') return;
+	const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n'),
+		letters = Math.max(...lines.map(line => [...line].length)),
+		shape = frame === 'woven' || frame === 'air' ? undefined : frame;
+	let best: GeneratorResult | undefined;
+	for (const padding of [.16, .12]) for (const [columns, slices] of [[1, 2], [2, 1]]) {
+		if (columns * letters + slices * lines.length + 1 > 20) continue;
+		try {
+			const construction = generateTextGrid(text, font, frame === 'air', shape, {
+				padding, columns, slices, spread: true, filled: true, adaptivePanels: true,
+				guardSeams: true, practical: true, compound: true, boundaryIslands: true
+			});
+			let candidate: GeneratorResult;
+			try {
+				candidate = finishConstruction(request, construction, 'letters', undefined, curveFitter);
+			} catch (error) {
+				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+				const geometry = curveSharedCuts(construction.geometry);
+				if (!geometry) continue;
+				candidate = finishConstruction(request, construction, 'letters', geometry, curveFitter);
+			}
+			const result = improveSharedConnections(candidate), design = result.design;
+			const margin = intersectionMarginPx(inferOverlapRect(design.fingers, design.gridSize),
+				gridClearanceScale(design.gridSize.x, design.gridSize.y));
+			if (findFingersWithIssues(design.fingers, margin * 1.1).size) continue;
+			const tips = cutTipCounts(design);
+			if (!best || fewerCutTips(tips, cutTipCounts(best.design))) best = result;
+			if (!tips[1]) return best;
+		} catch (error) {
+			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		}
+	}
+	return best;
 }
 
 /** Separate islands need room around their shared gate, not just the shortest

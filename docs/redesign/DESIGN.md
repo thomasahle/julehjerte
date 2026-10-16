@@ -714,6 +714,15 @@ test. Scope the prepared validator to one immutable motif construction rather
 than caching mutable contours globally. This pruning changes neither candidate
 order nor acceptance, and does not replace the final paper-path spacing check.
 
+Framed text may finally reuse the boundary-component routing for clipped glyphs:
+enter the component owning the seam gate and retain the panel's alternating
+A/B phase. Try two panels per glyph, horizontally or vertically, with padding
+ratios 0.16 and 0.12 and the existing adaptive seams. Preserve every outline,
+counter and requested frame. The complete result needs 10% extra clearance
+after fitting and shared-join rounding. Choose fewer sharp exported tips among
+the four bounded alternatives, with the existing 20-strip cap. Earlier valid
+layouts return unchanged; repeat and checkerboard text use their own routes.
+
 ## 8. Constraints and process
 
 - SvelteKit static adapter, `trailingSlash: 'always'`, everything prerendered; keep it that way.

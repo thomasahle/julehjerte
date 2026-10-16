@@ -1,5 +1,53 @@
 # Generator robustness results
 
+## Current coverage: clipped accents and serifs in text panels
+
+A final framed-text fallback now divides each glyph into two panels and follows
+the clipped component that owns the seam gate, retaining the correct alternating
+paper phase. Slightly smaller inter-letter padding leaves more space for the
+unchanged glyph strokes. Four bounded layouts are tried, after existing valid
+constructions have already returned. Repeat and checkerboard text are unchanged.
+
+This recovers **five cases**: Oswald `ÆØÅ` in air, circle, diamond and rounded
+frames, and Cinzel `BO` in the hexagon. Each uses six strips per sheet, with the
+original letters, counters and frame. Oswald retains two cutting tips below
+30°; Cinzel has one below 30° and six below 45°. These are not tip-free patterns.
+The additional 10% full-sheet clearance reserve is required after rounding.
+
+All five final production designs exactly match the successful prototypes.
+They pass JSON/SVG handoffs and the independent material audit with zero certain
+or possible detached core islands: Oswald's circle, diamond and rounded cases
+resolve at resolution 2,800; air and Cinzel pass at 1,400. All five finished
+hearts and both cutting sheets were visually reviewed. Evidence is in
+`panel-islands-production.json`,
+`panel-islands-material.json`, `panel-islands-metrics.json` and their associated
+captures/galleries. The material audit does not establish physical tear strength
+or ease of actual weaving.
+
+The direct fallback was tried against all **170 previously refused non-repeat
+text cases**; five pass and 165 still refuse. All five successes were regenerated
+through full production. A separate comparison preserves **16 representative
+previous successful outputs exactly**, across all original text frames, several
+fonts, and both repeated-text styles (`panel-islands-preservation.json`).
+
+The merged corpus is **2,856 accepted / 294 refused / zero invalid**: text
+1,748 / 280; figures 1,108 / 14. Only the five newly accepted records have fresh
+full-production results in this update; the other 3,145 retain their earlier
+evidence (`panel-islands-current.json`). This is not a fresh full-matrix run.
+Expected-success IDs match. Complete generation of the new cases took roughly
+7–19 seconds while the broader diagnostic probe was running; the direct fallback
+alone took 0.6–2.2 seconds. Difficult-case latency still needs work.
+
+Verification: the full single-worker unit run has **1,157 passed / one timed
+out** out of 1,158 tests, in 653.33 seconds (`panel-islands-tests.log`). The only
+timeout is the existing Kalam EMMA ordinary-repeat test at 36.55 seconds; it
+passes alone in **16.68 seconds** under the unchanged 30-second limit
+(`panel-islands-kalam.log`). All unit cases are covered by a pass, but this is
+not a clean single full-suite run. The focused seven-case run passes, including
+all five new regressions. Check, lint and production build pass, with the seven
+existing Svelte warnings. All **177 inverse tests pass** in 87.32 seconds
+(`panel-islands-inverse.log`). Full-run timing instability remains.
+
 ## Faster local crossing checks, with unchanged designs
 
 The local motif validator now prepares outline segment bounds once per
