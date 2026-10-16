@@ -1,0 +1,17 @@
+{
+  "schema": "finalist-retention-plan-1",
+  "status": "declared-before-evaluation",
+  "inputManifest": "tmp/heart-learning/feature-finalist-probe-v1/input.json",
+  "inputManifestSha256": "199452b5c6339596e1cbbf552ef8788c8b38402d7549e61bb4a7c77eb983314b",
+  "cases": "Same thirteen fixed masks and coverage as alternate-base experiment.",
+  "hypothesis": "Among existing finalists on poor grids, a lower-error candidate may retain more source regions without regressing any incumbent region. Strictly require the existing auditFeatureFidelityChange predicate, a lower missing-region count, and lower original image error.",
+  "measurement": "Capture current fine finalists, compare every candidate with the complexity-preferred first one using source masks. No geometry refinement, target edits, relaxed gates or added counts. Report all eligible and ineligible cases.",
+  "limits": "Candidate ranking evidence only. Any proposed priority must be tested through full geometry, paper and export checks within the original budget.",
+  "sourceHashes": {
+    "static/inverse/core/direct/fit.js": "3df91dd597ba37163cb0bc9ca9cd04a6f3e9454ec791cf410777e2e9c67e0ac1",
+    "static/inverse/core/feature-shapes.js": "8ee1931f44602dc548e6441049e77cb97893a618e3d6c9eeafbeb6ccf85e9701",
+    "static/inverse/core/image-features.js": "957dcb5da564d21b2101e1000bbb948c6c47390b74882cd7829edb706a630a73"
+  },
+  "inputReport": "tmp/heart-learning/projective-real-v1/pipeline/report.json",
+  "inputReportSha256": "68bb42139f34201f48c1523b2ec38ce06cf60741cc64c2387c2853d1eede7cbc"
+}
