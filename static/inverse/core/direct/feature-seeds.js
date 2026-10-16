@@ -9,7 +9,7 @@ import {auditImageFeatures} from '../image-features.js';
 import {featureComponentMetrics} from '../feature-shapes.js';
 import {smallInteriorFeatures} from './feature-details.js';
 
-function interiorFeatures(source,features,missed,cfg){
+export function interiorFeatureIndices(source,features,missed,cfg){
   const resolution=source.resolution;
   return missed.filter(index=>features[index].pixels.some(pixel=>{
     const x=pixel%resolution+.5,y=Math.floor(pixel/resolution)+.5;
@@ -22,7 +22,7 @@ export function initializeFeatureSeeds({source,features,missed,counts,cfg,eviden
   // They still count in the unchanged final image/feature checks. At least part
   // of an emphasized region must reach beyond the nominal paper side margin.
   const resolution=source.resolution,boundaryBandMm=cfg.nominalWidth;
-  const interior=interiorFeatures(source,features,missed,cfg);
+  const interior=interiorFeatureIndices(source,features,missed,cfg);
   const report={boost:16,baseCounts:counts,missedRegions:missed.length,emphasizedRegions:interior.length,skippedBorderRegions:missed.length-interior.length,boundaryBandMm};
   if(!interior.length)return{seeds:[],report:{...report,hypotheses:0,attempts:[],retained:0}};
   const options=[];
@@ -119,7 +119,7 @@ export function featureRefinementObjective(source,features,n){
  * a replacement for a checked fit. Keep the original cut counts and image gate.
  */
 export function initializeFeatureSampling({source,features,missed,counts,cfg,evidence}){
-  const interior=interiorFeatures(source,features,missed,cfg),initializationResolution=98;
+  const interior=interiorFeatureIndices(source,features,missed,cfg),initializationResolution=98;
   const report={counts,initializationResolution,emphasizedRegions:interior.length,attempts:[],retained:0};
   if(!interior.length)return{seeds:[],report};
   const resolution=source.resolution,n=Math.min(256,resolution),fullProb=source.probability||Float32Array.from(source.mask);

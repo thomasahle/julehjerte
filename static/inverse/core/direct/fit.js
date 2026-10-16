@@ -15,7 +15,7 @@ import {materialAudit,paperKernelChoices,verifiedPaperSettings} from '../materia
 import {resize} from './math.js';
 import {borderEvidence,supportedBorderCounts,gridCountLimit,gridFinalists,clearanceComparisonSeed,simplerComparisonSeed,countHypotheses,initializeCounts} from './counts.js';
 import {imageFeatures,auditImageFeatures} from '../image-features.js';
-import {auditFeatureFidelity} from '../feature-shapes.js';
+import {auditFeatureFidelity,auditFeatureFidelityChange} from '../feature-shapes.js';
 import {recoverImageFeatures} from '../feature-recovery.js';
 import {loadBoundaryKernel} from './native.js';
 import {boundaryKernelChoices} from './boundary.js';
@@ -24,7 +24,7 @@ import {initializeTopology,initializeCoarseTopology} from './topology.js';
 import {curvesOf} from '../graph.js';
 import {sourceWeights,initializationMask} from '../image-reference.js';
 import {resizeObjective} from './image-objective.js';
-import {initializeFeatureSeeds,initializeFeatureSampling,featureRefinementObjective} from './feature-seeds.js';
+import {initializeFeatureSeeds,initializeFeatureSampling,featureRefinementObjective,interiorFeatureIndices} from './feature-seeds.js';
 import {featureDetailPlan} from './feature-details.js';
 import {rerouteFittedBoundary} from './reroute.js';
 import {recoverClampedFeatures} from './clamped-features.js';
@@ -199,7 +199,8 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   }
   // A local boundary gradient cannot create a remote missing region. Try an
   // alternate traced routing while there is still time within this search.
-  let features=auditFeatureFidelity(source,gridMask(fine[0].model,source.resolution,fine[0].phase,fine[0].floor),cfg,sourceFeatures);
+  const initialGridMask=gridMask(fine[0].model,source.resolution,fine[0].phase,fine[0].floor);
+  let features=auditFeatureFidelity(source,initialGridMask,cfg,sourceFeatures);
   let recovery=null;const recoveredCandidates=[],recoveryHistory=[];
   // Traced feature recovery routes through the MILP, which cannot hold a
   // mirrored pairing, and a symmetric fit is expected to drop features of an
@@ -221,22 +222,34 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   // reproduced than the image average. This bounded proposal earns priority
   // only by lowering the ORIGINAL image error and retaining every feature;
   // it does not raise the feature gate or discard any ordinary finalist.
-  const weakest=features.regions.reduce((best,r,j)=>best===null||r.retainedFraction<features.regions[best].retainedFraction?j:best,null);
-  const weakRegion=poorGrid&&features.passed&&weakest!==null&&1-features.regions[weakest].retainedFraction>fine[0].error?weakest:null;
+  // A lost crop-edge fleck cannot justify new routing on its own, but must not
+  // suppress a useful interior proposal or spend its time on tracing. Only
+  // proposal scheduling uses this subset; all source features remain mandatory
+  // at final acceptance, and a proposal cannot regress their current fidelity.
+  const routingIndices=poorGrid&&!features.passed&&!weights&&!symmetryRequested?interiorFeatureIndices(source,sourceFeatures,sourceFeatures.map((_,j)=>j),cfg):[];
+  const routingFeatures=routingIndices.map(j=>sourceFeatures[j]);
+  const interiorRetry=routingFeatures.length>0&&auditFeatureFidelity(source,initialGridMask,cfg,routingFeatures).passed;
+  const eligible=interiorRetry?routingIndices:features.regions.map((_,j)=>j);
+  const weakest=eligible.reduce((best,j)=>best===null||features.regions[j].retainedFraction<features.regions[best].retainedFraction?j:best,null);
+  const weakRegion=poorGrid&&(features.passed||interiorRetry)&&weakest!==null&&1-features.regions[weakest].retainedFraction>fine[0].error?weakest:null;
   const missingFeature=(competitiveGrid||poorGrid&&lostColour)&&!features.passed;
   const initializeEarlyFeature=(missed,weakRegion=null,when='before-recovery')=>{
     featureSamplingContext={missed,counts:fine[0].model.counts};
-    const extra=stage('directInitializing',()=>initializeFeatureSeeds({source,features:sourceFeatures,missed,counts:fine[0].model.counts,cfg,evidence,maximumCount}));
-    earlyFeatureInitialization={...extra.report,stage:when,scheduled:0,...(weakRegion!==null?{trigger:'weak-region',retention:features.regions[weakRegion].retainedFraction,previousError:fine[0].error}:{})};
+    const interiorOnly=weakRegion!==null&&interiorRetry,seedFeatures=interiorOnly?routingFeatures:sourceFeatures,seedMissed=interiorOnly?missed.map(j=>routingIndices.indexOf(j)):missed;
+    const beforeMask=interiorOnly?gridMask(fine[0].model,source.resolution,fine[0].phase,fine[0].floor):null;
+    const extra=stage('directInitializing',()=>initializeFeatureSeeds({source,features:seedFeatures,missed:seedMissed,counts:fine[0].model.counts,cfg,evidence,maximumCount}));
+    earlyFeatureInitialization={...extra.report,stage:when,scheduled:0,...(interiorOnly?{interiorOnly}:{}),...(weakRegion!==null?{trigger:'weak-region',retention:features.regions[weakRegion].retainedFraction,previousError:fine[0].error}:{})};
     if(extra.seeds.length){
       const seed=stage('directFitting',()=>fitSeed(extra.seeds[0]));
-      const audit=auditFeatureFidelity(source,gridMask(seed.model,source.resolution,seed.phase,seed.floor),cfg,sourceFeatures);
+      const proposalMask=gridMask(seed.model,source.resolution,seed.phase,seed.floor),audit=auditFeatureFidelity(source,proposalMask,cfg,sourceFeatures);
       // The coarse grid only needs to retain the colours to earn refinement.
       // Local detail can close an initially open eye in the detail pass;
       // enclosure remains mandatory when accepting the resulting template.
       const enclosurePending=!audit.passed&&audit.regions.every(r=>r.retainedFraction>=audit.minimumRetention);
-      const preferred=weakRegion===null?audit.passed||enclosurePending:audit.passed&&seed.error<fine[0].error;
-      if(weakRegion!==null)earlyFeatureInitialization.proposal={error:seed.error,featuresPassed:audit.passed,preferred};
+      const routingPassed=interiorOnly?auditFeatureFidelity(source,proposalMask,cfg,routingFeatures).passed:audit.passed;
+      const change=interiorOnly?auditFeatureFidelityChange(source,beforeMask,proposalMask,cfg,sourceFeatures):null;
+      const preferred=weakRegion===null?audit.passed||enclosurePending:routingPassed&&seed.error<fine[0].error&&(!change||change.passed);
+      if(weakRegion!==null)earlyFeatureInitialization.proposal={error:seed.error,featuresPassed:audit.passed,...(interiorOnly?{routingFeaturesPassed:routingPassed,featureChange:change}:{}),preferred};
       if(preferred){
         fine.unshift(seed);features=audit;
         earlyFeatureInitialization.scheduled=1;
@@ -251,6 +264,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   // delays and spent the remaining budget on unsuccessful traced recovery.
   const featureTimeAvailable=()=>!symmetryRequested&&!weights&&refinementTimeLeft(deadline)>2500;
   if(missingFeature&&featureTimeAvailable())initializeEarlyFeature(features.regions.flatMap((r,j)=>(r.retainedFraction<features.minimumRetention||r.enclosureLost)?[j]:[]));
+  if(interiorRetry&&weakRegion!==null&&featureTimeAvailable())initializeEarlyFeature([weakRegion],weakRegion,'before-recovery');
   // Retaining a large region does not mean a coarse grid keeps its branches.
   // Only shorten routing when colour protection selected a better-fitting
   // ordinary layout or scheduled a dedicated feature start. Otherwise trees
@@ -343,7 +357,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   // with hidden border endpoints needs that search to recover its simpler
   // three-cut pair. Try the speculative grid only after routing has failed,
   // while fast border-model rejections still leave time for a fresh layout.
-  if(weakRegion!==null&&featureTimeAvailable())initializeEarlyFeature([weakRegion],weakRegion,'after-recovery');
+  if(!interiorRetry&&weakRegion!==null&&featureTimeAvailable())initializeEarlyFeature([weakRegion],weakRegion,'after-recovery');
   const floor=fittingMargin(cfg,cfg.width)/cfg.width,candidates=[];
   let verifiedAlternative=false;
   // Keep the established 25-second photographic comparison allowance after
