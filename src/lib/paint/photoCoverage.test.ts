@@ -18,11 +18,13 @@ describe('photographic observation through editing and solving', () => {
     const prepared = prepare({ type: 'pixels', rgba, imageWidth: n, imageHeight: n, quad: [[0, 0], [128, 0], [128, 128], [0, 128]] }, { algorithm: 'direct', mode: 'auto' });
     const mask = maskFromPrepared(prepared.preview), input = maskToArtwork(mask);
     expect(mask.validMask?.reduce((s, v) => s + v, 0)).toBe(200 * 200);
-    expect(input.validMask).toEqual(mask.validMask);
-    expect(input.validMask).not.toBe(mask.validMask);
+    expect(mask.size).toBe(400);
+    expect(input.resolution).toBe(n);
+    expect(input.validMask).toEqual(prepared.preview.validMask);
+    expect(input.validMask).not.toBe(mask.sourceRaster?.validMask);
     const roundTrip = prepare(input, { algorithm: 'direct' });
-    expect(roundTrip.target.sourceImage.validMask).toEqual(mask.validMask);
-    expect(roundTrip.preview.mask).toEqual(mask.data);
+    expect(roundTrip.target.sourceImage.validMask).toEqual(prepared.preview.validMask);
+    expect(roundTrip.preview.mask).toEqual(prepared.preview.mask);
   });
 
   it('same-colour brush, rectangle and flood fill make only their cells known', () => {

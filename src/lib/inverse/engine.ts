@@ -40,7 +40,7 @@ import {
 	type PreparedArtwork
 } from '$lib/inverse/client';
 import { insideCell, type Frame } from '$lib/paint/frame';
-import { MASK_SIZE, type Mask } from '$lib/paint/mask';
+import { MASK_SIZE, solverRaster, type Mask } from '$lib/paint/mask';
 import type { SymmetrySettings } from '$lib/paint/symmetry';
 import type { HeartColors } from '$lib/types/heart';
 import { toHexColor } from '$lib/utils/heartColors';
@@ -458,12 +458,13 @@ export function maskPrepareSettings(colors: HeartColors): Record<string, unknown
 
 /** Snapshot the drawing without replacing the visitor's border colours. */
 export function maskToArtwork(mask: Mask, frame?: Frame): MaskInput {
+	const raster = solverRaster(mask);
 	return {
 		type: 'mask',
-		mask: new Uint8Array(mask.data),
-		resolution: mask.size,
-		...(mask.validMask ? { validMask: mask.validMask.slice() } : {}),
-		...(frame?.mode === 'free' ? { weights: frameWeights(mask, frame) } : {})
+		mask: new Uint8Array(raster.data),
+		resolution: raster.size,
+		...(raster.validMask ? { validMask: raster.validMask.slice() } : {}),
+		...(frame?.mode === 'free' ? { weights: frameWeights(raster, frame) } : {})
 	};
 }
 

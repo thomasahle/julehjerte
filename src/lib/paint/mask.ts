@@ -7,21 +7,26 @@
  * engine uses for `prepared.mask`, so a mask can travel to the engine and back
  * without anyone having to remember which colour is which.
  *
- * The resolution is fixed at `MASK_SIZE` rather than settable: the engine works
- * at 400 anyway, and a visible cell size would turn a drawing tool into a
- * spreadsheet. Everything here is plain data (`Uint8Array`), so masks can be
- * cloned for undo, transformed, and compared without touching the DOM.
+ * The painting resolution is fixed at `MASK_SIZE`, without a cell-size setting.
+ * An imported picture also retains its original sampling: enlarging its binary
+ * pixels for painting must not move the boundaries the solver sees. Everything
+ * here is plain data, so undo and comparisons do not depend on the DOM.
  */
 
-/** Cells per side of the mask. The resolution the engine solves at. */
+/** Cells per side of the painting surface. */
 export const MASK_SIZE = 400;
 
 /** Row-major cells, `data[y * size + x]`, each `0` (left colour) or `1` (right). */
-export type Mask = {
+export type MaskRaster = {
 	size: number;
 	data: Uint8Array;
 	/** Real photo or painted cells; zero is unobserved. Absent means all known. */
 	validMask?: Uint8Array;
+};
+
+export type Mask = MaskRaster & {
+	/** Original imported cells. Usable only while their enlargement still matches. */
+	sourceRaster?: MaskRaster;
 };
 
 /**
@@ -73,7 +78,34 @@ export function createMask(fill: 0 | 1 = 0, size: number = MASK_SIZE): Mask {
 }
 
 export function cloneMask(m: Mask): Mask {
-	return { size: m.size, data: new Uint8Array(m.data), ...(m.validMask ? { validMask: m.validMask.slice() } : {}) };
+	return { ...cloneRaster(m), ...(m.sourceRaster ? { sourceRaster: cloneRaster(m.sourceRaster) } : {}) };
+}
+
+function cloneRaster(m: MaskRaster): MaskRaster {
+	return { size: m.size, data: m.data.slice(), ...(m.validMask ? { validMask: m.validMask.slice() } : {}) };
+}
+
+/**
+ * Use original photo sampling only when it still describes every painted cell.
+ * Check the actual bytes, not a dirty flag: brushes, symmetry, selection, undo
+ * and same-colour writes into unknown pixels must all respect the current mask.
+ * Callers copy the returned raster before transferring it to the worker.
+ */
+export function solverRaster(mask: Mask): MaskRaster {
+	const source = mask.sourceRaster;
+	if (!source || !Number.isInteger(source.size) || source.size < 32 || source.size >= mask.size ||
+		source.data.length !== source.size ** 2 || source.data.some(v => v !== 0 && v !== 1) ||
+		source.validMask && (source.validMask.length !== source.data.length || source.validMask.some(v => v !== 0 && v !== 1))) return mask;
+	if (mask.data.length !== mask.size ** 2 || mask.validMask && mask.validMask.length !== mask.data.length) return mask;
+	for (let y = 0; y < mask.size; y++) {
+		const sy = Math.min(source.size - 1, Math.floor((y + .5) * source.size / mask.size));
+		for (let x = 0; x < mask.size; x++) {
+			const sx = Math.min(source.size - 1, Math.floor((x + .5) * source.size / mask.size));
+			const i = y * mask.size + x, j = sy * source.size + sx;
+			if (mask.data[i] !== source.data[j] || (mask.validMask?.[i] ?? 1) !== (source.validMask?.[j] ?? 1)) return mask;
+		}
+	}
+	return source;
 }
 
 /** An explicit brush/eraser write also specifies previously unknown cells. */

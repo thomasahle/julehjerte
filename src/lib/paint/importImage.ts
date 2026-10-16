@@ -105,9 +105,8 @@ export async function decodeImageFile(file: File): Promise<DecodedImage> {
  * The engine's prepared picture as a mask we can paint on.
  *
  * `prepared.mask` is already the convention the rest of paint mode uses — 0 the
- * left colour, 1 the right — but the engine may answer at a lower resolution
- * than ours (the automatic route re-prepares at whatever the traced graph wants),
- * so it is resampled to `MASK_SIZE` before anyone else sees it.
+ * left colour, 1 the right. A smaller source is enlarged for painting, with its
+ * original cells retained for solving while that enlargement remains unchanged.
  */
 export function maskFromPrepared(prepared: PreparedArtwork): Mask {
 	const from = prepared.resolution;
@@ -117,7 +116,11 @@ export function maskFromPrepared(prepared: PreparedArtwork): Mask {
 	}
 	return {
 		size: MASK_SIZE, data: resample(prepared.mask, from, MASK_SIZE),
-		...(prepared.validMask ? { validMask: resample(prepared.validMask, from, MASK_SIZE) } : {})
+		...(prepared.validMask ? { validMask: resample(prepared.validMask, from, MASK_SIZE) } : {}),
+		...(from >= 32 && from < MASK_SIZE ? { sourceRaster: {
+			size: from, data: prepared.mask.slice(),
+			...(prepared.validMask ? { validMask: prepared.validMask.slice() } : {})
+		} } : {})
 	};
 }
 

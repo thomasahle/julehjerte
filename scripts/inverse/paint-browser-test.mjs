@@ -91,8 +91,8 @@ const {parseHeartFromSVG}=await loader.ssrLoadModule('/src/lib/utils/heartDesign
 const {findFingersWithIssues,intersectionMarginPx}=await loader.ssrLoadModule('/src/lib/editor/curveIssues.ts');
 const {inferOverlapRect}=await loader.ssrLoadModule('/src/lib/utils/overlapRect.ts');
 const {rasterizeDesign}=await loader.ssrLoadModule('/src/lib/paint/rasterize.ts');
-const {frameMismatch}=await loader.ssrLoadModule('/src/lib/paint/frame.ts');
-const {resample,maskMismatch}=await loader.ssrLoadModule('/src/lib/paint/mask.ts');
+const {frameMismatch,shapeCells}=await loader.ssrLoadModule('/src/lib/paint/frame.ts');
+const {resample,maskMismatch,MASK_SIZE}=await loader.ssrLoadModule('/src/lib/paint/mask.ts');
 const {convertCutGeometry}=await loader.ssrLoadModule('/src/lib/inverse/toHeartDesign.ts');
 const {conversionFidelity}=await loader.ssrLoadModule('/src/lib/inverse/conversionFidelity.ts');
 const results=[];
@@ -623,6 +623,14 @@ try{
      assert.ok(row.originalArtworkError<.05,`Original checker artwork disagreement: ${row.originalArtworkError}`);
     }
     row.sourceEditableError=free?frameMismatch(sourceRendered,sourceMask,resolution,{mode:'free',shape:'diamond',size:frameSize},sourceValid).inside:maskMismatch(sourceRendered,sourceMask,sourceValid);
+    // The painting surface stays 400px. An unchanged photo can now be solved
+    // on its original smaller grid; its exact enlargement remains the drawing
+    // used for the displayed error and editable conversion. Keep both scores.
+    const paintingMask=resample(sourceMask,resolution,MASK_SIZE),paintingValid=sourceValid?resample(sourceValid,resolution,MASK_SIZE):undefined;
+    const paintingRendered=resolution===MASK_SIZE?sourceRendered:rasterizeDesign(design,MASK_SIZE).data;
+    const paintingFrame={mode:'free',shape:'diamond',size:frameSize};
+    row.paintingResolution=MASK_SIZE;row.paintingMaskSha256=createHash('sha256').update(paintingMask).digest('hex');
+    row.paintingEditableError=free?frameMismatch(paintingRendered,paintingMask,MASK_SIZE,paintingFrame,paintingValid).inside:maskMismatch(paintingRendered,paintingMask,paintingValid);
     if(name==='maple-leaf-mask'&&!engineReference){
      assert.ok(row.sourceEditableError<.012,'The downloaded maple must retain the improved source fit.');
      if(row.selectedCounts.reduce((sum,n)=>sum+n,0)>6){
@@ -658,11 +666,13 @@ try{
     assert.deepEqual(raw.honoured,row.honouredSymmetry);
     row.conversionFidelity=conversionFidelity(raw.design,{mask:{size:resolution,data:sourceMask,...(sourceValid?{validMask:sourceValid}:{})},weights:observed.prepared.weights??undefined})(design);
     assert.equal(row.conversionFidelity.passed,true,`Editable SVG lost fitted weave fidelity: ${JSON.stringify(row.conversionFidelity)}`);
+    row.paintingConversionFidelity=conversionFidelity(raw.design,{mask:{size:MASK_SIZE,data:paintingMask,...(paintingValid?{validMask:paintingValid}:{})},weights:free?shapeCells(paintingFrame,MASK_SIZE):undefined})(design);
+    assert.equal(row.paintingConversionFidelity.passed,true,'Editable SVG must also retain fidelity on the actual painting grid.');
     if(hardPhoto||photoMask){
      row.conversionFeatures=auditFeatureFidelityChange(sourceReference,rasterizeDesign(raw.design,resolution).data,sourceRendered,observed.result.report.settings);
      assert.equal(row.conversionFeatures.passed,true,'Conversion must not erode a source feature, including one that was already imperfect.');
     }
-    assert.ok(Math.abs(row.displayedError-row.sourceEditableError)<=.00051,`Displayed mismatch ${row.displayedError} disagrees with exported heart ${row.sourceEditableError}`);
+    assert.ok(Math.abs(row.displayedError-row.paintingEditableError)<=.00051,`Displayed mismatch ${row.displayedError} disagrees with exported heart on the painting grid ${row.paintingEditableError}`);
     assert.ok(row.sourceEditableError<=(small ? .005 : topHat ? .01 : free||photograph||photoMask ? .03 : .015),`Editable source mismatch ${row.sourceEditableError}`);
     if(anchorMask&&!engineReference)assert.ok(row.sourceEditableError<.025,'The editable anchor must retain the recovered fit.');
     if(flowerMask&&!engineReference)assert.ok(row.sourceEditableError<.01,'The editable flower must preserve the improved fit.');
