@@ -41,6 +41,15 @@ mark other hearts as background. A subsequent training protocol must specify a
 rough-ROI/prompt task or label all hearts rather than silently mixing those tasks.
 Source groups remain intact and motif-family relationships remain unresolved.
 
+A [reviewed selection-cue handoff](instance-selection-proposals.json) now records
+two photo-drawn rough rectangles for those drafts and five additional single-heart
+annotation candidates. The cross rectangle retains two partial neighboring bodies;
+the star isolates one body. All seven source hashes and thirty handoff artifacts
+verify. The annotator had prior exposure to the drafts, so these are development
+cues, not blinded human prompts. The five additional photos add palette/background
+variation within existing source groups; no new labels, splits or independent
+motif-family counts are claimed.
+
 A [current-label task audit](real-photo-instance-task-audit.json) found one
 identifiable woven basket in each of the existing 24 body-annotated photographs,
 so the draft ambiguity does not explain the completed single-heart model failures.
