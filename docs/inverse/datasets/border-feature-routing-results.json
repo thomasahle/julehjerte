@@ -198,6 +198,30 @@
         ],
         "exitCode": 0,
         "seconds": 122.933937792
+      },
+      {
+        "stage": "photos",
+        "command": [
+          "node",
+          "scripts/inverse/hard-photo-benchmark.mjs",
+          "--crop=automatic",
+          "--target=mask",
+          "--seconds=10",
+          "--output=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/border-feature-routing-v1/qa/photos"
+        ],
+        "exitCode": 0,
+        "seconds": 331.914009417
+      },
+      {
+        "stage": "editable",
+        "command": [
+          "node",
+          "scripts/inverse/hard-photo-editor-replay.mjs",
+          "--run=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/border-feature-routing-v1/qa/photos",
+          "--output=/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/border-feature-routing-v1/qa/editable"
+        ],
+        "exitCode": 0,
+        "seconds": 34.56177224999999
       }
     ],
     "hunodan": {
@@ -209,6 +233,53 @@
       "timingScope": "Preparation + solve + validate + export. Excludes decoding, worker startup and independent external replay.",
       "comparison": "tmp/heart-learning/sharing-original-scale-v1/production-qa/hunodan/results.json",
       "sha256": "01a633841ecf87475a2c63475db0f04f3fd4fd4ed4d2e45956067af010d7c7da"
+    },
+    "photos": {
+      "eligiblePhotos": 31,
+      "checked": 27,
+      "excludedBeforeFitting": {
+        "incomplete": 15,
+        "obscured": 1
+      },
+      "cropUnresolved": [
+        "nested-squares",
+        "santa"
+      ],
+      "fitUnresolved": [
+        "outline-star",
+        "bauble"
+      ],
+      "sourceCropAndMaskRecordsUnchanged": true,
+      "newInteriorRetryTriggered": false,
+      "changedErrorCount": 9,
+      "comparison": "tmp/heart-learning/border-feature-routing-v1/qa/photo-comparison.json",
+      "visualReview": {
+        "panels": [
+          "tmp/heart-learning/border-feature-routing-v1/qa/changed-photos-1.png",
+          "tmp/heart-learning/border-feature-routing-v1/qa/changed-photos-2.png",
+          "tmp/heart-learning/border-feature-routing-v1/qa/changed-photos-3.png"
+        ],
+        "allNineChangedOutputsInspected": true,
+        "notes": [
+          "Overall motifs remain recognizable and pass/fail outcomes are unchanged.",
+          "Fine checker has a lower image error, but curved grid and border artifacts remain.",
+          "Orb has a lower image error but more small protrusions along its top border; do not interpret the lower score as uniformly cleaner geometry.",
+          "Other changes are small at the displayed scale. These time-limited runs do not isolate timing variation from code effects; none exercises the new interior-only retry."
+        ]
+      }
+    },
+    "artifactSha256": {
+      "tmp/heart-learning/border-feature-routing-v1/qa/hunodan/results.json": "01a633841ecf87475a2c63475db0f04f3fd4fd4ed4d2e45956067af010d7c7da",
+      "tmp/heart-learning/border-feature-routing-v1/qa/photos/results.json": "4a75c776cc04df1cf85ab00a6dd5f11815d523331e70af84c5280c59f72a4f61",
+      "tmp/heart-learning/border-feature-routing-v1/qa/editable/results.json": "f1ff4efa05d036e80b558820fb7ba2675a4bab3a78b4b832f60de0d6e2b70694",
+      "tmp/heart-learning/border-feature-routing-v1/qa/photo-comparison.json": "b92e420c75cae8d22d1d6d1097e07b57deca06ad7768188ef5d9f19245d8334b",
+      "tmp/heart-learning/border-feature-routing-v1/qa/changed-photo-panels.json": "45174ba774b838a3e86fe89d73da1b0d065fc0c8b53d056caaba779161e8e0ed"
+    },
+    "editable": {
+      "exports": 29,
+      "converted": 29,
+      "complete": 27,
+      "editorIssues": 0
     }
   }
 }
