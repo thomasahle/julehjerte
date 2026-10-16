@@ -3404,9 +3404,9 @@
     ]
   },
   "real-752b34e653e50135": {
-    "kind": "photo",
-    "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
+    "kind": "unknown",
+    "reviewStatus": "visually-reviewed-original-file",
+    "reviewMethod": "Small stylized/composite image; cannot establish that this depicts a photographed woven-paper construction.",
     "tags": []
   },
   "real-856026126fbfa0cd": {
@@ -3475,7 +3475,9 @@
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
     "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
-    "tags": []
+    "tags": [],
+    "qaReserved": true,
+    "qaReservationReason": "Frozen additional-photo pipeline evaluation; reserve the entire connected source group. See docs/inverse/datasets/new-photo-generalization-plan.json."
   },
   "real-54eded14bda86cd5": {
     "kind": "unrelated",
@@ -3976,7 +3978,9 @@
     "reviewStatus": "visually-reviewed-contact-sheet",
     "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
     "tags": [],
-    "nearDuplicateGroup": "real-202b8421f50252f2"
+    "nearDuplicateGroup": "real-202b8421f50252f2",
+    "qaReserved": true,
+    "qaReservationReason": "Frozen additional-photo pipeline evaluation; reserve the entire connected source group. See docs/inverse/datasets/new-photo-generalization-plan.json."
   },
   "real-c2eaff0dda61b372": {
     "kind": "photo-other-material",
@@ -4074,13 +4078,17 @@
     "reviewStatus": "visually-reviewed-contact-sheet",
     "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
     "tags": [],
-    "nearDuplicateGroup": "real-931ac5ea86dbe082"
+    "nearDuplicateGroup": "real-931ac5ea86dbe082",
+    "qaReserved": true,
+    "qaReservationReason": "Frozen additional-photo pipeline evaluation; reserve the entire connected source group. See docs/inverse/datasets/new-photo-generalization-plan.json."
   },
   "real-27c86e56296f2df5": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
     "reviewMethod": "Original-file thumbnail inspected in 1200px contact sheet; no instance or cut-geometry annotation implied.",
-    "tags": []
+    "tags": [],
+    "qaReserved": true,
+    "qaReservationReason": "Frozen additional-photo pipeline evaluation; reserve the entire connected source group. See docs/inverse/datasets/new-photo-generalization-plan.json."
   },
   "real-8f9740d8307c30b3": {
     "kind": "template-render",
@@ -4407,9 +4415,9 @@
     "reviewNote": "Cut and partly interwoven dark/gold paper pieces on a table; no complete assembled-heart silhouette visible."
   },
   "real-009b06de359dbabe": {
-    "kind": "photo",
-    "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "kind": "photo-process",
+    "reviewStatus": "visually-reviewed-original-file",
+    "reviewMethod": "Assembly-process photograph; the two paper halves are still unassembled."
   },
   "real-b3c470391d3cf907": {
     "kind": "photo",
@@ -4463,7 +4471,9 @@
   "real-c7bc99827b382da7": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "qaReserved": true,
+    "qaReservationReason": "Frozen additional-photo pipeline evaluation; reserve the entire connected source group. See docs/inverse/datasets/new-photo-generalization-plan.json."
   },
   "real-1c479efcab780a01": {
     "kind": "photo",
@@ -4496,7 +4506,9 @@
   "real-26c948c0aa94f483": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "qaReserved": true,
+    "qaReservationReason": "Frozen additional-photo pipeline evaluation; reserve the entire connected source group. See docs/inverse/datasets/new-photo-generalization-plan.json."
   },
   "real-5f35b1a308c9a7c7": {
     "kind": "photo",
@@ -4809,7 +4821,9 @@
   "real-e15ec1906fab0f9c": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "qaReserved": true,
+    "qaReservationReason": "Frozen additional-photo pipeline evaluation; reserve the entire connected source group. See docs/inverse/datasets/new-photo-generalization-plan.json."
   },
   "real-29362c3b3b69a123": {
     "kind": "photo",
@@ -4834,9 +4848,11 @@
     "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
   },
   "real-e4f8acc92d491b5a": {
-    "kind": "photo",
-    "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "kind": "photo-multiple",
+    "reviewStatus": "visually-reviewed-original-file",
+    "reviewMethod": "Original photograph contains multiple woven hearts; retain this scene complexity in the new-photo evaluation.",
+    "qaReserved": true,
+    "qaReservationReason": "Frozen additional-photo pipeline evaluation; reserve the entire connected source group. See docs/inverse/datasets/new-photo-generalization-plan.json."
   },
   "real-7c13256213ed4a72": {
     "kind": "photo",
@@ -4846,7 +4862,9 @@
   "real-e4baad0c914577c8": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "qaReserved": true,
+    "qaReservationReason": "Frozen additional-photo pipeline evaluation; reserve the entire connected source group. See docs/inverse/datasets/new-photo-generalization-plan.json."
   },
   "real-45744a03afddccb1": {
     "kind": "photo",
@@ -4884,7 +4902,9 @@
   "real-e9131a2d52b78220": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "qaReserved": true,
+    "qaReservationReason": "Frozen additional-photo pipeline evaluation; reserve the entire connected source group. See docs/inverse/datasets/new-photo-generalization-plan.json."
   },
   "real-82eed10fb7484537": {
     "kind": "photo",
@@ -4905,12 +4925,14 @@
   "real-1498fed65a8e41b7": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "qaReserved": true,
+    "qaReservationReason": "Frozen additional-photo pipeline evaluation; reserve the entire connected source group. See docs/inverse/datasets/new-photo-generalization-plan.json."
   },
   "real-1031a761b9a31912": {
-    "kind": "photo",
-    "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "kind": "unknown",
+    "reviewStatus": "visually-reviewed-original-file",
+    "reviewMethod": "Open looped-strip ornament; material and equivalence to the regular folded-paper model are uncertain.",
     "nearDuplicateGroup": "real-23512cb6f4f65f0c"
   },
   "real-2502cdec0720f4ea": {
@@ -4927,7 +4949,9 @@
   "real-642c4cb2ef3e92dc": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "qaReserved": true,
+    "qaReservationReason": "Frozen additional-photo pipeline evaluation; reserve the entire connected source group. See docs/inverse/datasets/new-photo-generalization-plan.json."
   },
   "real-7f06080553e19f72": {
     "kind": "photo",
@@ -4949,7 +4973,9 @@
   "real-7076a4d811c096db": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "qaReserved": true,
+    "qaReservationReason": "Frozen additional-photo pipeline evaluation; reserve the entire connected source group. See docs/inverse/datasets/new-photo-generalization-plan.json."
   },
   "real-6bf033091cdd0605": {
     "kind": "unrelated",
@@ -5332,7 +5358,9 @@
   "real-d6d0462384722949": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "qaReserved": true,
+    "qaReservationReason": "Frozen additional-photo pipeline evaluation; reserve the entire connected source group. See docs/inverse/datasets/new-photo-generalization-plan.json."
   },
   "real-8913638b176b8279": {
     "kind": "photo",
@@ -5500,7 +5528,11 @@
   "real-a414dfffbd2362ae": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "reviewedSourceGroups": [
+      "publisher:nurturestore.co.uk"
+    ],
+    "sourceGroupReview": "NurtureStore watermark visible on the original painted-checker photograph; group with the tutorial photo real-e1b1492e32f6cdf5. Publisher grouping is conservative, not a near-duplicate assertion."
   },
   "real-41b7c3e0b79f1265": {
     "kind": "photo",
@@ -5511,7 +5543,9 @@
   "real-f882e57ac79e63d3": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "qaReserved": true,
+    "qaReservationReason": "Frozen additional-photo pipeline evaluation; reserve the entire connected source group. See docs/inverse/datasets/new-photo-generalization-plan.json."
   },
   "real-b5317080eec610dc": {
     "kind": "photo",
@@ -5534,7 +5568,9 @@
   "real-962159dea653810f": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "qaReserved": true,
+    "qaReservationReason": "Frozen additional-photo pipeline evaluation; reserve the entire connected source group. See docs/inverse/datasets/new-photo-generalization-plan.json."
   },
   "real-1e9c9ed6bd889d70": {
     "kind": "photo",
@@ -5544,7 +5580,8 @@
   "real-e936e08ac62db19b": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "nearDuplicateGroup": "real-e936e08ac62db19b"
   },
   "real-41bda0ea77cabd27": {
     "kind": "photo-other-material",
@@ -5996,7 +6033,9 @@
   "real-1fa372c6288da69f": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "qaReserved": true,
+    "qaReservationReason": "Frozen additional-photo pipeline evaluation; reserve the entire connected source group. See docs/inverse/datasets/new-photo-generalization-plan.json."
   },
   "real-af21a4ef38355dfa": {
     "kind": "photo",
@@ -6011,14 +6050,18 @@
     "nearDuplicateGroup": "real-0eb4a193bbb474ba"
   },
   "real-df27aec172744811": {
-    "kind": "photo",
-    "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "kind": "photo-multiple",
+    "reviewStatus": "visually-reviewed-original-file",
+    "reviewMethod": "Original photograph contains multiple woven hearts; retain this scene complexity in the new-photo evaluation.",
+    "qaReserved": true,
+    "qaReservationReason": "Frozen additional-photo pipeline evaluation; reserve the entire connected source group. See docs/inverse/datasets/new-photo-generalization-plan.json."
   },
   "real-9b47cfbdf0004f4d": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "qaReserved": true,
+    "qaReservationReason": "Frozen additional-photo pipeline evaluation; reserve the entire connected source group. See docs/inverse/datasets/new-photo-generalization-plan.json."
   },
   "real-4ac11f8df948f1ba": {
     "kind": "photo",
@@ -6033,8 +6076,9 @@
   },
   "real-668dcbee05542ab8": {
     "kind": "photo",
-    "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewStatus": "visually-reviewed-original-file",
+    "reviewMethod": "Letterboxed repost of the orange/yellow checker already evaluated as real-e936e08ac62db19b.",
+    "nearDuplicateGroup": "real-e936e08ac62db19b"
   },
   "real-9abcfa9f8d5925cc": {
     "kind": "photo",
@@ -6249,7 +6293,9 @@
   "real-31ed1172998ab1c5": {
     "kind": "photo",
     "reviewStatus": "visually-reviewed-contact-sheet",
-    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied."
+    "reviewMethod": "Original-file thumbnail inspected in 1200px public-pin contact sheet; no instance or cutting geometry annotation implied.",
+    "qaReserved": true,
+    "qaReservationReason": "Frozen additional-photo pipeline evaluation; reserve the entire connected source group. See docs/inverse/datasets/new-photo-generalization-plan.json."
   },
   "real-0d51442459c3d4c9": {
     "kind": "photo",

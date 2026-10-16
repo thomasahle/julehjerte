@@ -11,8 +11,8 @@ The inventory, with material annotations updated on 2026-10-16, contains:
 | Asset | Verified count | Meaning |
 | --- | ---: | --- |
 | Real-source image files | 1,034 | Includes templates, process shots and rejected/uncertain material. |
-| Files containing assembled-heart photographs | 567 | Includes multi-heart scenes and mixed photo/template pages; 455 reviewed near-duplicate groups after six source-kind corrections. |
-| Public Pinterest imports | 470 of 487 selected pins | 192 image files contain assembled-heart photographs; these are a subset of the real-source totals. |
+| Files containing assembled-heart photographs | 564 | Includes multi-heart scenes and mixed photo/template pages; 451 reviewed near-duplicate groups after source-kind and repost corrections. |
+| Public Pinterest imports | 470 of 487 selected pins | 190 image files contain assembled-heart photographs; these are a subset of the real-source totals. |
 | Synthetic cutting geometries in existing experiments | 192 | Original 128 plus 64 mixed-angle lattices; color phase is excluded from geometry identity; still only three recipe groups. |
 | Synthetic photographic views in existing experiments | 768 | Original 512 plus 256 supplementary views; all 5,952 referenced assets verified. |
 | Unassigned radial-motif candidates | 64 geometries / 256 views | One additional recipe group with exact shared approaches; not used in training. All 1,984 referenced assets verified. |
@@ -31,6 +31,15 @@ The inventory, with material annotations updated on 2026-10-16, contains:
 | Real partial paper-material annotations | 22 heart instances | Nineteen enter the completed corrected-family study; three new instances remain unassigned and unused in training. Separate body and material uncertainty; all are reviewed development examples. |
 
 ## Current results and limits
+
+A [new-photo evaluation plan](new-photo-generalization-plan.json) reserves twenty
+additional source photographs before inference. The source review excludes an
+unassembled process shot, two ambiguous constructions, a repost and a second
+photograph from a previously evaluated tutorial. All 1,034 original source
+files are unchanged. The new images include multiple-heart scenes and unusual
+outer outlines. One fixed checkpoint will process every image; this differs
+from the earlier family-held-out development models. No new-photo outcomes
+are available yet.
 
 A [conditional two-paper segmentation fallback](locator-paper-fallback-results.json)
 raises the offline development result from **13/22 to 15/22 checked

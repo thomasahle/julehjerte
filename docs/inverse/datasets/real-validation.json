@@ -1,23 +1,23 @@
 {
-  "manifestSha256": "306d6d8bf96e97defa815cab8f336e9eab09b56ff325b1f81631d4765fa75123",
+  "manifestSha256": "0f3086fca422238235cbd8d9a46d154f42d1f00b8bd1e336892b3f69331a52d1",
   "verifiedAssetFiles": 1034,
   "verifiedBytes": 199381046,
   "verifiedDecodedPixelGroups": 1033,
   "kinds": {
-    "photo": 402,
-    "photo-multiple": 104,
+    "photo": 397,
+    "photo-multiple": 106,
     "mixed-photo-template": 41,
     "photo-collage": 20,
     "template-render": 202,
     "unrelated": 122,
-    "photo-process": 92,
+    "photo-process": 93,
     "photo-other-material": 49,
-    "unknown": 2
+    "unknown": 4
   },
-  "reviewedAssembledHeartPhotoFiles": 567,
-  "reviewedPhotoNearDuplicateGroups": 455,
-  "qaReservedFiles": 476,
+  "reviewedAssembledHeartPhotoFiles": 564,
+  "reviewedPhotoNearDuplicateGroups": 451,
+  "qaReservedFiles": 524,
   "pinterestSelectedPins": 487,
   "pinterestDownloadedPins": 470,
-  "pinterestPhotoFiles": 192
+  "pinterestPhotoFiles": 190
 }

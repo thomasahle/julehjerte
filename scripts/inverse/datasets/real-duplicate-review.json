@@ -820,5 +820,12 @@
       "b": "real-493199c831737b5b",
       "reviewReason": "Visual match of the same product/template composite."
     }
+  ],
+  "additionalManualPairs": [
+    {
+      "a": "real-668dcbee05542ab8",
+      "b": "real-e936e08ac62db19b",
+      "evidence": "Same orange/yellow checker, magenta decorative frame and background objects; one image adds black letterbox bars. Reviewed originals before model inference."
+    }
   ]
 }
