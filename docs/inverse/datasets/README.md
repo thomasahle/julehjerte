@@ -42,9 +42,14 @@ analytic regression tests are integrated, with all ten focused tests passing,
 including the unchanged photographic, finer-paper and rollback-cycle checks.
 Type checking, lint, build, 857 application tests (one skipped), and private
 Chromium star/hat checks pass. Both browser exports are byte-identical to the
-previous QA run and were visually reviewed. The full inverse suite and corpus
-replays are running with frozen sources; this is one photographic case, not a
-general speed claim.
+previous QA run and were visually reviewed. The completed frozen-source replay passes 951/956 inverse tests, with five
+existing failures still under investigation. All 22 regular Hunodan fits finish
+within ten seconds (maximum 8.83 seconds), with errors unchanged from the
+immediately preceding run. Photos remain 26/31 accepted and editable exports
+48/48; several individual photo errors increased, and visual review still finds
+artifacts, including an extra small opening in the unshifted bird. The strict
+no-regression quality gate therefore remains false. This is not a universal
+quality or speed claim.
 
 [Source-crop review](accepted-crop-review.json) qualifies the photographic solve
 rate: 18 of the 26 accepted outputs in the preceding corpus run have weak

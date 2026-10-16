@@ -1,6 +1,6 @@
 {
   "schema": "best-safe-rollback-results-1",
-  "status": "implemented; focused_checks_10_of_10; full_QA_running",
+  "status": "implemented; full_QA_complete_with_five_existing_inverse_failures_and_remaining_quality_regressions",
   "problem": "A worse valid checkpoint replaced the rollback coordinates even when it did not replace the selected best candidate. A later invalid block therefore restarted from a poorer fit and lost the useful bird-eye boundary.",
   "change": "Keep the rollback coordinates with the best physically valid candidate under the existing selection/preference comparator. Worse valid checkpoints still continue exploration. Invalid states still trigger rollback and the same rate reduction.",
   "controls": "No changes to probabilities, crop, original-image or feature thresholds, gradients, paper tolerances, routing budget, or count portfolio.",
@@ -115,10 +115,9 @@
     "sha256": "9693aa837bc9170b482362b36e7bd165d0069af32f46b79b13d3a7692c82213b"
   },
   "fullQA": {
-    "status": "running",
+    "status": "complete",
     "root": "tmp/heart-learning/best-safe-integration-v1/qa",
     "runtimeCommit": "3edc6b8",
-    "controllerPid": 22581,
     "completedChecks": [
       "check",
       "lint",
@@ -150,11 +149,176 @@
         }
       ]
     },
-    "remaining": [
-      "inverse suite",
-      "22 Hunodan timed fits",
-      "hard-photo corpus and original-mask comparison",
-      "editable export replays"
-    ]
+    "sourceFilesVerified": 790,
+    "allCommandsPassed": false,
+    "inverseTests": {
+      "passed": 951,
+      "total": 956,
+      "seconds": 1065.212797292,
+      "failures": [
+        "horizontal puppy uncertain alternate",
+        "gift retained uncertain checkpoint",
+        "floral coarse pass alternative",
+        "blue-star polishing checkpoint provenance",
+        "Viking finer-verification alternative"
+      ]
+    },
+    "hunodan": {
+      "passed": 22,
+      "total": 22,
+      "maximumSeconds": 8.828100125,
+      "errorsComparedWithImmediatePreviousRun": "All 22 unchanged",
+      "olderBaselineRegression": [
+        {
+          "id": "hjfla-01",
+          "passed": true,
+          "qualityPassed": true,
+          "seconds": 5.977061625000002,
+          "previousSeconds": 9.515122125000001,
+          "error": 0.007181803385416667,
+          "previousError": 0.007107204861111111,
+          "errorDelta": 7.459852430555594e-05
+        }
+      ]
+    },
+    "photos": {
+      "passed": 26,
+      "complete": 31,
+      "passRegressions": 0,
+      "immediatePreviousComparison": [
+        {
+          "id": "floral-checker",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.01410625,
+          "error": 0.01334375,
+          "errorDelta": -0.000762500000000001
+        },
+        {
+          "id": "dense-checker",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.00700625,
+          "error": 0.00699375,
+          "errorDelta": -1.2500000000000358e-05
+        },
+        {
+          "id": "bird",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.0197875,
+          "error": 0.01968125,
+          "errorDelta": -0.0001062499999999987
+        },
+        {
+          "id": "leaf",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.00929375,
+          "error": 0.0095125,
+          "errorDelta": 0.0002187500000000002
+        },
+        {
+          "id": "gift",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.01665,
+          "error": 0.016575,
+          "errorDelta": -7.500000000000215e-05
+        },
+        {
+          "id": "warped-checker",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.01365625,
+          "error": 0.01361875,
+          "errorDelta": -3.749999999999934e-05
+        },
+        {
+          "id": "fine-checker",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.01941875,
+          "error": 0.01650625,
+          "errorDelta": -0.0029124999999999984
+        },
+        {
+          "id": "orb",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.01134375,
+          "error": 0.01255,
+          "errorDelta": 0.0012062500000000007
+        },
+        {
+          "id": "maple-leaf",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.0087625,
+          "error": 0.00876875,
+          "errorDelta": 6.250000000001046e-06
+        },
+        {
+          "id": "crown",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.02241875,
+          "error": 0.022725,
+          "errorDelta": 0.0003062499999999975
+        },
+        {
+          "id": "crossed-ribbons",
+          "previousPassed": false,
+          "passed": false,
+          "previousError": 0.00883125,
+          "error": 0.00885,
+          "errorDelta": 1.874999999999967e-05
+        },
+        {
+          "id": "bauble",
+          "previousPassed": false,
+          "passed": false,
+          "previousError": 0.02555625,
+          "error": 0.03125,
+          "errorDelta": 0.005693750000000001
+        },
+        {
+          "id": "flettede-viking",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.02525,
+          "error": 0.02504375,
+          "errorDelta": -0.00020625000000000157
+        }
+      ],
+      "qualification": "Template acceptance is not verified crop accuracy; source crops and feature artifacts remain."
+    },
+    "editable": {
+      "passed": 48,
+      "total": 48
+    },
+    "strictQualityGatePassed": false,
+    "visualReview": {
+      "status": "reviewed",
+      "artifacts": [
+        "tmp/heart-learning/best-safe-integration-v1/qa/native/visual-comparison-0.png",
+        "tmp/heart-learning/best-safe-integration-v1/qa/native/visual-comparison-1.png",
+        "tmp/heart-learning/best-safe-integration-v1/qa/native/visual-comparison-2.png",
+        "tmp/heart-learning/best-safe-integration-v1/qa/native/visual-comparison-3.png",
+        "tmp/heart-learning/best-safe-integration-v1/qa/native/visual-comparison-4.png",
+        "tmp/heart-learning/best-safe-integration-v1/qa/native/visual-immediate-failures.png"
+      ],
+      "findings": [
+        "Unshifted bird preserves its eye but has an extra small white quadrilateral behind the neck; lower global mismatch does not establish motif fidelity.",
+        "Jigsaw keeps the large pieces; crop misplacement and small connection irregularities remain.",
+        "Maple keeps its leaf and stalk, with small frame/contact differences.",
+        "Crown keeps the recognisable shape but retains thin seams and uneven frame shapes.",
+        "Puppy retains its enclosed opening; its shape remains angular.",
+        "Stonehenge retains more sun detail than the older baseline but does not recover every narrow ray.",
+        "Viking retains the ship silhouette and some oar/detail shapes, but fine joins and border contacts remain distorted.",
+        "Crossed-ribbons remains nearly unchanged and failed in this pre-coverage run.",
+        "Bauble remains failed, with a visibly worse circular contour and fragmented frame than the immediate previous run."
+      ]
+    }
   }
 }
