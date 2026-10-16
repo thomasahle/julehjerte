@@ -227,7 +227,7 @@
     "committedAnalyticTestsPassed": 7,
     "implementationByteIdenticalToEvaluatedPrototype": true,
     "visualPanelsReviewed": 6,
-    "fullPipelineReplay": "Running separately in tmp/heart-learning/neural-palette-pipeline-v1; no end-to-end improvement claimed."
+    "fullPipelineReplay": "Complete: docs/inverse/datasets/neural-palette-pipeline-results.json. No increase in checked count: RGB 3/22, network 3/22, production 7/22."
   },
   "rgbPaperErrorRegressions": [
     {
@@ -272,7 +272,7 @@
     "Printed floral/striped paper is still interpreted partly as weaving. Its annotated material error worsens; a two-color palette cannot generally identify sheet identity beneath arbitrary print.",
     "Some checker corners still have tiny gaps or bridges. Partial interior annotations do not certify their connectivity, and metrics at 256 pixels do not establish native-resolution boundaries."
   ],
-  "nextStep": "Compare production, frozen-network and RGB-calibrated fields through the actual crop, fitter and editable-export pipeline. Preserve all failures and score derived-mask agreement separately from photographed material identity.",
+  "nextStep": "Improve and evaluate full-photo body/instance localization, and native-resolution material boundaries. Keep the palette helper offline; the downstream replay does not justify deployment.",
   "artifactsSha256": {
     "tmp/heart-learning/neural-palette-calibration-v1/plan.json": "c95d73efe9bed80b415df7bffea3bafbe5c144b06aa4b68de7957931d27dab87",
     "tmp/heart-learning/neural-palette-calibration-v1/results/report.json": "5da32153c3dbde4a4d54df90e2cd016756620b10dc11086199ae2a945256c324",

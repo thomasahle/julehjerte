@@ -60,8 +60,14 @@ probabilities remain byte-identical. Visual review confirms much cleaner fish,
 candle, bicycle and checker interiors, but substantial foreground leakage and
 printed-paper errors remain. These partial-label scores do not certify boundaries
 or cutting templates. Seven analytical tests pass; the evaluated calibration
-helper is committed for offline use. A separate full-pipeline replay is running;
-no model or palette change has been added to the website.
+helper is committed for offline use. The completed
+[full-pipeline replay](neural-palette-pipeline-results.json) produces checked
+results for 3/22 with RGB correction, 3/22 with the uncorrected network and 7/22
+with production. RGB gains the candle but loses the rabbit crop. Both learned
+arms fail 19 times before fitting. All 15 exported candidates survive editable
+conversion, and the same 13 pass complete checks. Better partial material scores
+therefore do not establish better overall recovery; no model or palette change
+has been added to the website.
 
 The [reviewed cream/blue fish photograph](fish-annotation-admission.json) adds one
 visible-body and partial-material annotation. Its handle, cast shadow and four
