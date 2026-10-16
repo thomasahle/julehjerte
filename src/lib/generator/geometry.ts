@@ -774,6 +774,7 @@ function contourMotif(
 	// Candidate routes reuse the same immutable outline points. Keep point
 	// identities and graph storage for this cell across its routing attempts.
 	const routeLocal = createLocalRouter();
+	const reliefCache: ReliefCache = {};
 	const clearSharedCuts = createSharedCutValidator(contours);
 	const nodes = forest(contours).sort(
 		(a, b) => {
@@ -929,7 +930,7 @@ function contourMotif(
 	let reliefAttempts = 0;
 	relief: for (const local of alternatives.values()) {
 		let portAttempts = 0;
-		for (const relieved of relieveNotches(local.edges, base.ring, local.ports, bridgePorts, options.practical)) {
+		for (const relieved of relieveNotches(local.edges, base.ring, local.ports, bridgePorts, options.practical, reliefCache)) {
 			if (options.practical && ++portAttempts > 8) break;
 			if (++reliefAttempts > 256) break relief;
 			const routes = routeLocal(relieved, gates);
@@ -955,10 +956,10 @@ function contourMotif(
 		// and coincident A/B cuts. Bound this final local search to 128 pairs.
 		for (const local of [...alternatives.values()].slice(0, 8)) {
 			let firstCount = 0;
-			for (const first of relieveNotches(local.edges, base.ring, local.ports, bridgePorts, true)) {
+			for (const first of relieveNotches(local.edges, base.ring, local.ports, bridgePorts, true, reliefCache)) {
 				if (++firstCount > 4) break;
 				let secondCount = 0;
-				for (const second of relieveNotches(first, base.ring, local.ports, bridgePorts, true)) {
+				for (const second of relieveNotches(first, base.ring, local.ports, bridgePorts, true, reliefCache)) {
 					if (++secondCount > 4) break;
 					const routes = routeLocal(second, gates);
 					if (!routes || !allowedConnections(second) || !clearSharedCuts(second)) continue;
@@ -1103,40 +1104,51 @@ function ringPort(ring: Ring, point: Point): Port | null {
 	}
 	return null;
 }
+/** Scoped to one immutable outline and routing mode. Attachment eligibility
+ * is checked separately for each candidate's current shared cuts. */
+type ReliefCache = { sources?: { a: Port; targets: Port[] }[]; notches?: Port[]; middles?: WeakMap<Edge, Port | null> };
+
 /** A chord brackets one active external port. Flipping that interval preserves
  * the four path pairings; both sheets share the new internal cut. Boundary
  * ports are excluded so an opened letter cap cannot swallow this bridge. */
-function* relieveNotches(edges: Edge[], ring: Ring, ports: Port[], allowed: readonly number[], practical = false): Generator<Edge[]> {
+function* relieveNotches(edges: Edge[], ring: Ring, ports: Port[], allowed: readonly number[], practical = false, cache: ReliefCache = {}): Generator<Edge[]> {
 	const chords: [Port, Port][] = [];
-	const notches = practical ? ring.flatMap((p, i) => {
+	const shared = edges.filter(e => e.family === 'AB').flatMap(e => [e.from, e.to]);
+	const blockedPorts = new Map<Point, boolean>();
+	const blocked = (point: Point) => {
+		let value = blockedPorts.get(point);
+		if (value === undefined) { value = shared.some(p => near(p, point)); blockedPorts.set(point, value); }
+		return value;
+	};
+	const notches = cache.notches ??= practical ? ring.flatMap((p, i) => {
 		const u = sub(p, ring[(i + ring.length - 1) % ring.length]), v = sub(ring[(i + 1) % ring.length], p);
 		return Math.atan2(cross(u, v), dot(u, v)) < -.8 ? [{ point: p, index: i }] : [];
 	}) : [];
-	for (let i = 0; i < ring.length; i++) {
-		const p = ring[i], u = sub(p, ring[(i + ring.length - 1) % ring.length]), v = sub(ring[(i + 1) % ring.length], p);
-		if (Math.atan2(cross(u, v), dot(u, v)) > -.8)
-			continue;
-		if (edges.some(e => e.family === 'AB' && (near(e.from, p) || near(e.to, p))))
-			continue;
-		for (let j = 0; j < 32 + notches.length; j++) {
-			try {
-				const b = j < 32 ? rayHit(ring, p, j * Math.PI / 16) : notches[j - 32];
-				if (!b) continue;
-				if (near(p, b.point)) continue;
-				if (!inside(mix(p, b.point, .5), ring))
-					continue;
-				if (edges.some(e => e.family === 'AB' && (near(e.from, b.point) || near(e.to, b.point))))
-					continue;
-				const a = { point: p, index: i };
-				for (const [from, to] of [[a, b], [b, a]]) {
-					const enclosed = ports.flatMap((port, j) => (port.index - from.index + ring.length) % ring.length < (to.index - from.index + ring.length) % ring.length ? [j] : []);
-					if (enclosed.length === 1 && allowed.includes(enclosed[0]))
-						chords.push([from, to]);
+	if (!cache.sources) {
+		cache.sources = [];
+		for (let i = 0; i < ring.length; i++) {
+			const p = ring[i], u = sub(p, ring[(i + ring.length - 1) % ring.length]), v = sub(ring[(i + 1) % ring.length], p);
+			if (Math.atan2(cross(u, v), dot(u, v)) > -.8) continue;
+			const source = { a: { point: p, index: i }, targets: [] as Port[] };
+			for (let j = 0; j < 32 + notches.length; j++) {
+				try {
+					const b = j < 32 ? rayHit(ring, p, j * Math.PI / 16) : notches[j - 32];
+					if (!b || near(p, b.point) || !inside(mix(p, b.point, .5), ring)) continue;
+					source.targets.push(b);
+				} catch (error) {
+					if (!(error instanceof ConstructionError)) throw error;
 				}
 			}
-			catch (error) {
-				if (!(error instanceof ConstructionError))
-					throw error;
+			cache.sources.push(source);
+		}
+	}
+	for (const { a, targets } of cache.sources) {
+		if (blocked(a.point)) continue;
+		for (const b of targets) {
+			if (blocked(b.point)) continue;
+			for (const [from, to] of [[a, b], [b, a]]) {
+				const enclosed = ports.flatMap((port, j) => (port.index - from.index + ring.length) % ring.length < (to.index - from.index + ring.length) % ring.length ? [j] : []);
+				if (enclosed.length === 1 && allowed.includes(enclosed[0])) chords.push([from, to]);
 			}
 		}
 	}
@@ -1145,8 +1157,12 @@ function* relieveNotches(edges: Edge[], ring: Ring, ports: Port[], allowed: read
 	if (!chords.length) return;
 	// Every relief chord uses the same outline edges. Locate them once on the
 	// original ring; only an edge split by a new chord needs another lookup.
-	const middlePorts = edges.map(edge => edge.family === 'AB' || edge.kind !== 'outline'
-		? null : ringPort(ring, mix(edge.from, edge.to, .5)));
+	const middles = cache.middles ??= new WeakMap<Edge, Port | null>();
+	const middlePorts = edges.map(edge => {
+		if (edge.family === 'AB' || edge.kind !== 'outline') return null;
+		if (!middles.has(edge)) middles.set(edge, ringPort(ring, mix(edge.from, edge.to, .5)));
+		return middles.get(edge)!;
+	});
 	for (const [a, b] of chords) {
 		const result: Edge[] = [];
 		for (const [edgeIndex, edge] of edges.entries()) {

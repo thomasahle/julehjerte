@@ -25,7 +25,7 @@ export function generateTextGrid(
 	font: Font,
 	air = false,
 	frame?: Frame,
-	layout: { padding?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; adaptGates?: boolean; onGateChange?: () => void; filled?: boolean; onSeamChange?: () => void; inkPanels?: boolean; bentSpokes?: boolean; adaptivePanels?: boolean; guardSeams?: boolean; boundaryIslands?: boolean } = {}
+	layout: { padding?: number; frameFill?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; adaptGates?: boolean; onGateChange?: () => void; filled?: boolean; onSeamChange?: () => void; inkPanels?: boolean; bentSpokes?: boolean; adaptivePanels?: boolean; guardSeams?: boolean; boundaryIslands?: boolean } = {}
 ) {
 	const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n');
 	const cols = Math.max(...lines.map((l) => [...l].length)),
@@ -69,7 +69,7 @@ export function generateTextGrid(
 				const hit = ray(boundary, [50, 50], Math.atan2(p[1] - 50, p[0] - 50));
 				scale = Math.min(
 					scale,
-					(0.88 * distance(hit.point, [50, 50])) / Math.hypot(x, y)
+					((layout.frameFill ?? 0.88) * distance(hit.point, [50, 50])) / Math.hypot(x, y)
 				);
 			}
 	let edges: Edge[] = [];

@@ -1,6 +1,59 @@
 # Generator robustness results
 
-## Current coverage: clipped accents and serifs in text panels
+## Current coverage: more room inside text frames
+
+Oswald `ÆØÅ` now also works in the oval and scalloped frames. After all existing
+layouts fail, the panel fallback may use 94% of the frame's available envelope
+instead of 88%. The original glyph proportions, counters and frame boundary
+remain unchanged. The completed cuts must still have 10% extra clearance,
+including the connections outside the letters. Unframed text and previously
+successful layouts keep their original fit.
+
+Both new designs use six strips per sheet and retain two tips below 30°; they
+are not tip-free patterns. Their complete production designs exactly match the
+audited prototypes, pass JSON/SVG handoffs, and pass the independent material
+audit at resolution 2,800 with zero certain or possible detached core islands.
+Both finished hearts and both sheets were visually reviewed. See
+`text-envelope-production.json`, `text-envelope-material.json`,
+`text-envelope-metrics.json` and their captures/galleries. This is a digital
+connectivity audit, not physical weaving or tear-strength testing.
+
+The larger-fit fallback was tried against all **128 remaining refused shaped
+text cases**: two pass and 126 still refuse. Full production verification covers
+both successes and the five cases recovered in the previous change; all five
+earlier designs are exactly unchanged. The merged corpus is **2,858 accepted /
+292 refused / zero invalid**: text 1,750 / 278; figures 1,108 / 14. Seven records
+have fresh full-production results and 3,143 retain their earlier evidence
+(`text-envelope-current.json`). This is not a fresh full-matrix run.
+
+Alternative accent roots, extra paired connections between detached components,
+and counter-centred text partitions still failed topology or spacing checks and
+were not added to production. Difficult-case latency remains unfinished.
+
+Relief-cut generation now reuses notch ray targets and outline-edge positions
+within one unchanged contour construction. A separate endpoint lookup checks
+each candidate against its current shared cuts. The cache does not survive the
+construction or alter candidate ordering. A replay checked **520,983 yielded
+candidates in 52,022 calls across 13 complete requests**, including difficult
+Kalam repeats and figure frames. Every candidate and complete design stayed
+exactly identical (`envelope-relief-broad.json`). Time inside that stage fell
+from 85.63 to 45.00 seconds; this is not total generation time.
+
+Before caching, the new scalloped-frame regression timed out at 20.90 seconds.
+After caching, both new frame tests pass under their unchanged 20-second limits;
+their combined test time fell from **33.16 to 26.46 seconds** in these focused
+runs (`text-envelope-focused.log`, `text-envelope-cached-focused.log`). This
+single comparison is not a general latency guarantee.
+
+The final production oval/scalloped captures remain exactly identical to the
+material-audited designs after caching, taking 11.14 and 15.20 seconds in a
+separate run (`text-envelope-final-production.json`). All **1,160 unit tests
+pass in one full run**, including the previously timing-out Kalam EMMA repeat,
+with unchanged time limits, in 585.97 seconds (`text-envelope-cached-tests.log`).
+The same run also passes all **177 inverse tests** in 87.43 seconds. Check,
+lint and production build pass with the seven existing Svelte warnings.
+
+## Previous coverage: clipped accents and serifs in text panels
 
 A final framed-text fallback now divides each glyph into two panels and follows
 the clipped component that owns the seam gate, retaining the correct alternating
@@ -88,7 +141,7 @@ with the seven existing Svelte warnings. All **177 inverse tests pass** in
 95.71 seconds (`shared-clearance-inverse.log`). Full-run timing instability
 remains.
 
-## Current coverage: wider connections between separate components
+## Previous coverage: wider connections between separate components
 
 The Tabler paw now works in all three oval frames: plain, rays and check. The
 component-grid fallback previously joined neighbouring pieces at their nearest
@@ -188,7 +241,7 @@ Verification: all **1,144 unit tests** pass in 367.37 seconds, followed by all
 lint and production build pass; the seven existing Svelte warnings remain.
 The two new focused regressions also pass independently.
 
-## Current quality: fewer narrow checkerboard corners
+## Previous quality: fewer narrow checkerboard corners
 
 The remaining eight Nunito ANNA tips were 38° corners in the visible N outline.
 Moving or rounding the existing invisible connections could not remove them.
@@ -343,7 +396,7 @@ production captures.
 The remaining refusals, larger catalogue/size coverage, difficult-text latency
 and ANNA's narrow corners remain unfinished.
 
-## Current coverage: divided fitted supports and compound repeated letters
+## Previous coverage: divided fitted supports and compound repeated letters
 
 The last close-fitting figure retry can divide a concave silhouette into two
 horizontal panels, moving only the outer support directions by ±0.15 radians.
@@ -425,7 +478,7 @@ All **177 inverse-engine tests pass** separately in 90.65 seconds
 entries, difficult-text latency and ANNA's eight visible N-corner tips are still
 unfinished.
 
-## Current coverage: adapt fitted supports and reuse local route graphs
+## Previous coverage: adapt fitted supports and reuse local route graphs
 
 The final close-fitting fallback moves the four support directions by ±0.15 or
 ±0.3 radians, trying four rotation/reflection patterns. Every attachment remains
@@ -496,7 +549,7 @@ still not green, and difficult-text latency remains unfinished. All **177
 inverse-engine tests pass** separately in 87.77 seconds
 (`fitted-support-inverse.log`).
 
-## Current coverage: separate component lanes with a clearance reserve
+## Previous coverage: separate component lanes with a clearance reserve
 
 A final figure fallback now groups disconnected components into three vertical
 lanes. Each lane has one open cutting path on each paper; counters stay with their
@@ -558,7 +611,7 @@ focused rerun in 16.22 seconds (`component-lanes-kalam-isolated.log`); the full
 suite is still not green. All **177 inverse-engine tests pass** separately in
 93.92 seconds (`component-lanes-inverse.log`).
 
-## Current coverage: tilted partitions inside layered frames
+## Previous coverage: tilted partitions inside layered frames
 
 A final layered-frame fallback tilts the internal panel seams before clipping
 and routing the motif, then restores its original coordinates before attaching
@@ -603,7 +656,7 @@ limit. It passes alone in 8.05 seconds (`tilted-kalam-focused.log`); the full su
 is still not green. All **177 inverse-engine tests pass** separately in 86.74
 seconds (`tilted-inverse.log`).
 
-## Current coverage: align shared contacts across clipped panels
+## Previous coverage: align shared contacts across clipped panels
 
 The last-resort text layout now reserves each internal panel seam for its agreed
 shared-cut contact. Previously an extra invisible cut could attach at another
@@ -686,7 +739,7 @@ The old Cinzel curved retry has completed all 199 cases. Its sole recovery is
 BO/diamond, which was already supported; it adds no new coverage. Its durations
 include earlier process suspensions and are not latency measurements.
 
-## Current coverage: reconnect nested counters in the layered frame
+## Previous coverage: reconnect nested counters in the layered frame
 
 The layered frame has one additional fallback for nested contours. When a
 straight chain cannot alternate with a contour's two external attachments, the
@@ -755,7 +808,7 @@ clearance recovered none of the seven layered failures, even with curved
 retries (`layer-width-curved-probe.json`). That change was not shipped. The
 nested-contour fallback retains the existing clearance thresholds.
 
-## Current quality: round only sharp shared joints in the finished cuts
+## Previous quality: round only sharp shared joints in the finished cuts
 
 The checkerboard quality pass now works on the already fitted paper paths.
 It identifies a cubic shared by the two sheets, including reversed references,
@@ -811,7 +864,7 @@ separately (`curve-export-inverse.log`). The full run is not green, and its
 timing problem remains unresolved. No timeout was raised. The new checkerboard
 regressions pass.
 
-## Current coverage: separate cuts around every flat frame side
+## Previous coverage: separate cuts around every flat frame side
 
 The diamond's outer routing now separates cuts on all four sides when several
 cells connect to that side. Previously the two sides used by tall layouts
@@ -899,7 +952,7 @@ Extending the mirrored routing to the nonflat frames' optional spread pass
 recovered none of 47 previous figure refusals (`spread-sides-figures.json`).
 That broader change remains a prototype.
 
-## Current coverage: curved shared connections after straight layouts fail
+## Previous coverage: curved shared connections after straight layouts fail
 
 Completed constructions can now retry with curved coincident cuts after all
 established recipes fail. The handles approach the visible outline across its
@@ -1008,7 +1061,7 @@ All **177 inverse-engine tests pass** in the separate run
   The final result is exactly the original design, with all controls in 0–100
   and zero raster difference (`smooth-bounds-report.json`).
 
-## Current performance: reuse translated outline fits
+## Previous performance: reuse translated outline fits
 
 The two repeating-text frames now reuse fitted outline sections within a single
 geometry conversion. Matching includes the fitting tolerance and every control
@@ -1087,7 +1140,7 @@ M&M roundtrip logs a coordinate-range warning that needs investigation before
 enabling the prototype. This experiment is not included in the production code
 or its coverage totals.
 
-## Current coverage: attach to individual stroke tips
+## Previous coverage: attach to individual stroke tips
 
 The combined default-size matrix now has **2,794 accepted / 356 refused / zero
 invalid accepted output**. Text is **1,719 accepted / 309 refused**; figures remain
@@ -1814,7 +1867,7 @@ unverified catalog entries.
   result; branch removal alone is insufficient. These experimental geometries
   are not accepted exports.
 
-## Current coverage: divide the ink, retain the outer margin
+## Previous coverage: divide the ink, retain the outer margin
 
 The current 3,150-configuration matrix has **2,731 accepted / 419 refused / zero
 invalid accepted results**. This batch freshly retested all 60 BO configurations

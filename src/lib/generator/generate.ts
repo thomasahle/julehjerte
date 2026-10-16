@@ -485,42 +485,47 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 /** Clipping an accent or serif can leave a separate piece owning a panel gate.
  * Follow that piece from its actual seam, with the panel's alternating phase.
  * A smaller inter-letter gap also leaves more room for the unchanged strokes.
- * Earlier successful layouts return before these four bounded alternatives. */
+ * Earlier successful layouts return before these bounded alternatives. */
 function retryTextPanelIslands(request: GeneratorRequest, curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult | undefined {
 	const frame = request.textFrame ?? 'woven', text = request.text ?? '', font = request.font;
 	if (request.mode !== 'text' || !font || !text.trim() || frame === 'repeat' || frame === 'repeat-check') return;
 	const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n'),
 		letters = Math.max(...lines.map(line => [...line].length)),
 		shape = frame === 'woven' || frame === 'air' ? undefined : frame;
-	let best: GeneratorResult | undefined;
-	for (const padding of [.16, .12]) for (const [columns, slices] of [[1, 2], [2, 1]]) {
-		if (columns * letters + slices * lines.length + 1 > 20) continue;
-		try {
-			const construction = generateTextGrid(text, font, frame === 'air', shape, {
-				padding, columns, slices, spread: true, filled: true, adaptivePanels: true,
-				guardSeams: true, practical: true, compound: true, boundaryIslands: true
-			});
-			let candidate: GeneratorResult;
+	for (const frameFill of shape ? [.88, .94] : [.88]) {
+		let best: GeneratorResult | undefined;
+		for (const padding of [.16, .12]) for (const [columns, slices] of [[1, 2], [2, 1]]) {
+			if (columns * letters + slices * lines.length + 1 > 20) continue;
 			try {
-				candidate = finishConstruction(request, construction, 'letters', undefined, curveFitter);
+				const construction = generateTextGrid(text, font, frame === 'air', shape, {
+					padding, frameFill, columns, slices, spread: true, filled: true, adaptivePanels: true,
+					guardSeams: true, practical: true, compound: true, boundaryIslands: true
+				});
+				let candidate: GeneratorResult;
+				try {
+					candidate = finishConstruction(request, construction, 'letters', undefined, curveFitter);
+				} catch (error) {
+					if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+					const geometry = curveSharedCuts(construction.geometry);
+					if (!geometry) continue;
+					candidate = finishConstruction(request, construction, 'letters', geometry, curveFitter);
+				}
+				const result = improveSharedConnections(candidate), design = result.design;
+				const margin = intersectionMarginPx(inferOverlapRect(design.fingers, design.gridSize),
+					gridClearanceScale(design.gridSize.x, design.gridSize.y));
+				if (findFingersWithIssues(design.fingers, margin * 1.1).size) continue;
+				const tips = cutTipCounts(design);
+				if (!best || fewerCutTips(tips, cutTipCounts(best.design))) best = result;
+				if (!tips[1]) return best;
 			} catch (error) {
 				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
-				const geometry = curveSharedCuts(construction.geometry);
-				if (!geometry) continue;
-				candidate = finishConstruction(request, construction, 'letters', geometry, curveFitter);
 			}
-			const result = improveSharedConnections(candidate), design = result.design;
-			const margin = intersectionMarginPx(inferOverlapRect(design.fingers, design.gridSize),
-				gridClearanceScale(design.gridSize.x, design.gridSize.y));
-			if (findFingersWithIssues(design.fingers, margin * 1.1).size) continue;
-			const tips = cutTipCounts(design);
-			if (!best || fewerCutTips(tips, cutTipCounts(best.design))) best = result;
-			if (!tips[1]) return best;
-		} catch (error) {
-			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 		}
+		// Keep the established fit when any of its layouts works. Only a
+		// refused frame gets slightly larger letters inside the same boundary;
+		// validate its outside connections with the same clearance reserve.
+		if (best) return best;
 	}
-	return best;
 }
 
 /** Separate islands need room around their shared gate, not just the shortest

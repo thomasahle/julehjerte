@@ -722,6 +722,18 @@ counter and requested frame. The complete result needs 10% extra clearance
 after fitting and shared-join rounding. Choose fewer sharp exported tips among
 the four bounded alternatives, with the existing 20-strip cap. Earlier valid
 layouts return unchanged; repeat and checkerboard text use their own routes.
+If all four fail inside a shaped frame, they may retry using 94% of its available
+envelope instead of 88%. Keep the frame boundary and exact glyph proportions,
+and require the same extra clearance for the outside connections as for the
+letters. Stop at the original fit whenever it works; unframed text has no such
+retry.
+
+Relief-cut construction may cache geometric queries for one unchanged outline
+and routing mode: notch ray targets and outline-edge positions. Each candidate
+must still check its current shared endpoints and external port pairings.
+Keep this cache local to the contour construction, with a fresh endpoint lookup
+for each edge set. Candidate order, exact cut coordinates and validation rules
+must remain identical; no cache may survive into an edited or different motif.
 
 ## 8. Constraints and process
 
