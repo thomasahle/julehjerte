@@ -1,0 +1,42 @@
+{
+  "schema": "notch-local-support-plan-1",
+  "status": "declared-before-local-support-proposals",
+  "scope": "Retain supported frozen primary crops; independent affine notch/edge proposals only after rejection. Forty-two photos in two distinct cohorts; no retraining or model integration.",
+  "cohorts": {
+    "previous-development": 22,
+    "new-source": 20
+  },
+  "parents": {
+    "tmp/heart-learning/locator-paper-fallback-v1/probe/manifest.json": "46086602ec57e3e2de2bfb52c89d2033c2cfcaa4fa596f159a22f28c129ae219",
+    "tmp/heart-learning/locator-paper-fallback-v1/pipeline/report.json": "923e603ea273b69d4d8d5934fbd6f44a9d51e868df58d52a28d3cb99dba4157a",
+    "tmp/heart-learning/new-photo-generalization-v1/probe/manifest.json": "c04e282590e4da55fa6de01272d3da0ef3625b17f0d3fc9bd97ec512748b3abf",
+    "tmp/heart-learning/new-photo-generalization-v1/pipeline/report.json": "3b05f3b40d819aaa9554a89f6e86e1c37bd95231c843a3dbd324a790cc5203b7"
+  },
+  "method": "Keep the affine notch/edge proposal. Replace cap colour purity, global concavity depth and pre-corner lower-edge sample gates with local physical-paper evidence: three paper quadrants and one background quadrant at the notch, and inside/outside bands along the proposed lower edges.",
+  "policy": "Retain every supported baseline crop exactly. For rejected inputs, compare one-point and two-paper SAM fields at upright and four covariance-derived orientations. Select the supported proposal with lowest source-only evidence score; no downstream fit-based selection.",
+  "support": {
+    "minimumNotchInsideProbability": 0.8,
+    "maximumNotchOutsideProbability": 0.2,
+    "minimumLowerEdgeInsideProbability": 0.85,
+    "maximumLowerEdgeOutsideProbability": 0.15,
+    "minimumOverlapBodyCoverage": 0.94,
+    "maximumBodyOutsideEnvelope": 0.03,
+    "allCornersInFrame": true
+  },
+  "limitations": [
+    "Affine assumption may not fit perspective or deformed paper.",
+    "Model body/paper predictions are not independent ground truth.",
+    "The twenty new-source images have now been inspected: this is a development follow-up, not another untouched generalization estimate.",
+    "All original observed pixels and existing final image/feature/geometry/paper/editor checks are retained.",
+    "No learned model or notch locator is integrated into the application."
+  ],
+  "validation": [
+    "Eleven synthetic/analytic tests for geometry and local evidence, including an undersized crop that is entirely inside the physical paper.",
+    "Same 42 frozen photographs and every supported baseline crop retained exactly.",
+    "Inspect all new/rejected crops and fit with all previous image/feature/geometry/paper/editor checks.",
+    "No automatic success inferred merely from crop proposal or low downstream mask error."
+  ],
+  "parentExperiment": "notch-overlap-v1",
+  "parentResultSha256": "157a3f32543888c97624335ff791da00b081367353141d13905f4dcbf4aa009a",
+  "selectionScore": "Sum of outside-envelope fraction, missing overlap-body coverage, mean missing notch/edge inside probability, notch outside probability and mean edge outside probability. No paper colours or downstream template scores."
+}
