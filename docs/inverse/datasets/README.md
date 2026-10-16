@@ -125,9 +125,19 @@ regression confirm larger changes: puppy 3+5 → 5+5 cuts; Hunodan hjfig-05
 All-valid controls retain identical geometry. Feature recovery restores puppy
 counts and the bird eye, while native grid resampling alone does not. The
 combined correction still fails to restore the Hunodan route and slightly
-increases total bird error despite improving its eye shape. A separate weighted
-traced-recovery experiment is running. No candidate is integrated; remaining
-partial-crop and free-border checks are still required.
+increases total bird error despite improving its eye shape. The [weighted traced-recovery and wider checks](coverage-recovery-validation.json)
+are now complete: all sixteen targeted runs and 47 focused tests pass, restoring
+the affected Hunodan case to **4+4 cuts in 5.27–5.35 s**. Seven of eight
+ignored-colour pairs retain identical geometry; the remaining puppy pair has
+identical fine-grid scores but different timed refinement histories. The bird
+retains its eye, although its total error remains above the unperturbed baseline.
+Eight fresh free-border house/hat controls retain exactly identical geometry.
+The four partial-bauble comparisons expose a promotion blocker: observed error
+improves from **4.34–4.38% to 2.00–2.15%**, but the candidate fails self-clearance
+and paper checks. Its initially illegal feature grid consumes the budget before
+an ordinary legal fallback is retained. Both arms remain failed cases; better
+image resemblance is not a legality improvement. A bounded ordinary-fallback
+experiment is underway. No coverage candidate is integrated.
 
 The [completed paired corpus and editable audits](refinement-checkpoint-corpus-results.json)
 retain **53/55 passing masks** in both arms, including all 22 Hunodan and four
