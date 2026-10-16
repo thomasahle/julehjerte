@@ -684,6 +684,14 @@ not improve its exported cuts; additional cuts require 10% extra full-sheet
 clearance after rounding. Nunito ANNA must retain its exact cyclic 4×4
 checkerboard while eliminating all cutting tips narrower than 45°.
 
+A final layered-frame retry may place a 2×2 panel junction at the median centres
+of the motif's counters. Keep the circle, motif and both border bands unchanged.
+When clipping leaves a small separate filled component on a seam, give it the
+seam gate, enter the component owning that gate first, and use its exact boundary
+contact. Alternate its A/B outline phase with the side of the panel so stitching
+cannot turn the counter into a closed cut. The completed heart still needs the
+normal whole-sheet checks; existing successful layouts return before this retry.
+
 ## 8. Constraints and process
 
 - SvelteKit static adapter, `trailingSlash: 'always'`, everything prerendered; keep it that way.

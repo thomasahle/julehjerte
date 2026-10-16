@@ -1,5 +1,5 @@
 import { it, expect } from 'vitest';
-import { clipContours, filledSeamGate, generatePanelFigure, panelDividers, panelSeamGuard } from './panels';
+import { clipContours, componentSeamGate, filledSeamGate, generatePanelFigure, panelDividers, panelSeamGuard } from './panels';
 import { convertValidatedCutGeometry } from '$lib/inverse/toHeartDesign';
 import { type Ring, type Point, inside, uprightToSheet } from './geometry';
 import cat from '../../../static/generator/motifs/ph-cat.json';
@@ -56,6 +56,19 @@ it('selects the wider filled seam and leaves an absent seam alone', () => {
 	const rings = [square(10), square(4).map(([x, y]) => [x, y + 2] as [number, number])];
 	expect(filledSeamGate(clipContours(rings, 0, true), 0, 0, 8)).toEqual(uprightToSheet([0, -6]));
 	expect(filledSeamGate(rings, 0, 0, 0)).toBeUndefined();
+});
+it('gives a small nested island an agreed gate on both sides of a divider', () => {
+	// A medallion, a surrounding motif and a small counter. Cutting through
+	// the centre opens the counter into an isolated filled component.
+	const rings = [square(10), square(6), square(2)];
+	for (const input of [rings, rings.map(r => [...r].reverse()).reverse()])
+		for (const left of [false, true]) {
+			const parts = clipContours(input, 0, left);
+			expect(componentSeamGate(parts, 0, 0, 0)).toEqual(uprightToSheet([0, 0]));
+			const swap = (r: Ring): Ring => r.map(([x, y]) => [y, x]);
+			expect(componentSeamGate(parts.map(swap), 1, 0, 0)).toEqual(uprightToSheet([0, 0]));
+		}
+	expect(componentSeamGate(rings, 0, 0, 0)).toBeUndefined();
 });
 it('spreads cat details across several cuts', () => {
 	const r = generatePanelFigure(cat.contours as Ring[], 'circle', 70, 0.7);

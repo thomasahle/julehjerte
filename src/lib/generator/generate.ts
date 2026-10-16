@@ -432,6 +432,17 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		if (lanes) return lanes;
 		const islands = retryFigureIslandPorts(request, curveFitter);
 		if (islands) return islands;
+		if (request.mode === 'figure' && request.style === 'layers') try {
+			// Small counters can have no open approach from uniform panels.
+			// Split through their centres and attach the clipped components at
+			// the shared seam. This final bounded retry leaves earlier layouts
+			// and their generation time unchanged.
+			const construction = generateLayeredFigure(normalizeContours(request.contours ?? []),
+				request.frameSize, request.scale, { columns: 2, rows: 2, filled: true, counterSeams: true });
+			return improveSharedConnections(finishConstruction(request, construction, 'nested', undefined, curveFitter));
+		} catch (retryError) {
+			if (!(retryError instanceof ConstructionError) && !(retryError instanceof CutGeometryError)) throw retryError;
+		}
 		let bestRepeated: GeneratorResult | undefined;
 		if (repetitionCache && request.font) for (const islandRank of [0, 1, 2, 3]) try {
 			// Multiple concave corners can require two invisible connections.

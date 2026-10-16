@@ -295,7 +295,8 @@ export function contourChain(
 	end: Point,
 	first: 'A' | 'B' = 'A',
 	visible = false,
-	nested = false
+	nested = false,
+	boundaryGates = false
 ) {
 	const ordered = nodes
 		.slice()
@@ -304,11 +305,19 @@ export function contourChain(
 				dot(centroid(a.ring), direction(angle)) -
 				dot(centroid(b.ring), direction(angle))
 		);
+	if (visible && boundaryGates) {
+		// A clipped island can own the panel's external gate. Enter that
+		// island first, even when its centre projects behind another island.
+		const first = ordered.findIndex(node => !!ringPort(node.ring, start));
+		if (first >= 0) ordered.unshift(...ordered.splice(first, 1));
+		const last = ordered.findIndex(node => !!ringPort(node.ring, end));
+		if (last >= 0) ordered.push(...ordered.splice(last, 1));
+	}
 	let previous = start;
 	for (const [index, node] of ordered.entries()) {
 		const c = centroid(node.ring), next = index + 1 < ordered.length ? centroid(ordered[index + 1].ring) : end;
-		const entry = visible ? ray(node.ring, previous, Math.atan2(c[1] - previous[1], c[0] - previous[0])) : support(node.ring, angle + Math.PI),
-			exit = visible ? ray(node.ring, next, Math.atan2(c[1] - next[1], c[0] - next[0])) : support(node.ring, angle);
+		const entry = visible ? (boundaryGates ? ringPort(node.ring, previous) : undefined) ?? ray(node.ring, previous, Math.atan2(c[1] - previous[1], c[0] - previous[0])) : support(node.ring, angle + Math.PI),
+			exit = visible ? (boundaryGates ? ringPort(node.ring, next) : undefined) ?? ray(node.ring, next, Math.atan2(c[1] - next[1], c[0] - next[0])) : support(node.ring, angle);
 		add(edges, [previous, entry.point], 'AB', 'shared');
 		(nested ? nestedBlock : block)(edges, node, entry, exit, first);
 		previous = exit.point;
@@ -750,7 +759,7 @@ function contourMotif(
 	margin = 1.5,
 	bridgePorts: readonly number[] = [0, 1, 2, 3],
 	acceptRoutes?: (routes: Ring[]) => boolean,
-	options: { root?: Ring; islandRank?: number; visibleIslands?: boolean; strict?: boolean; practical?: boolean; originalOnly?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; touching?: boolean; bentSpokes?: boolean; strokeTips?: boolean; nested?: boolean; connectionAllowed?: (point: Point) => boolean } = {}
+	options: { root?: Ring; islandRank?: number; visibleIslands?: boolean; boundaryIslands?: boolean; strict?: boolean; practical?: boolean; originalOnly?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; touching?: boolean; bentSpokes?: boolean; strokeTips?: boolean; nested?: boolean; connectionAllowed?: (point: Point) => boolean } = {}
 ) {
 	const count = gates.length;
 	// A clipped outline belongs to two neighbouring cells. Attaching an extra
@@ -862,7 +871,12 @@ function contourMotif(
 				if (extras[j].length) {
 					const c = centroid(extras[j].flatMap(n => n.ring)), b = centroid(base.ring);
 					const angle = options.visibleIslands ? Math.atan2(b[1] - c[1], b[0] - c[0]) : angles[j];
-					contourChain(exterior, extras[j], angle, gates[j], ports[j].point, 'A', options.visibleIslands, options.nested);
+					// At an island's seam gate, the outline arcs must follow the
+					// panel's alternating A/B phase. A fixed phase can close a
+					// cutting loop when the neighbouring half is stitched on.
+					const first = options.boundaryIslands && j % 2 === 0 ? 'B' : 'A';
+					contourChain(exterior, extras[j], angle, gates[j], ports[j].point, first,
+						options.visibleIslands, options.nested, options.boundaryIslands);
 				}
 				else add(exterior, spokes?.[j][indices[j]] ?? [gates[j], ports[j].point], 'AB', 'shared');
 			}

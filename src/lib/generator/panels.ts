@@ -15,6 +15,7 @@ import {
 	dot,
 	direction,
 	area,
+	forest,
 	mix,
 	add,
 	compile,
@@ -194,6 +195,17 @@ export function filledSeamGate(parts: Ring[], axis: 0 | 1, value: number, target
 	return uprightToSheet(axis === 0 ? [value, t] : [t, value]);
 }
 
+/** A counter opened onto a seam can become a separate filled component.
+ * Give that component the shared gate: placing every gate on the surrounding
+ * background leaves no open approach to its small outline. */
+export function componentSeamGate(parts: Ring[], axis: 0 | 1, value: number, target: number): Point | undefined {
+	const roots = forest(parts).filter(node => node.ring.some((point, i) =>
+		Math.abs(point[axis] - value) < 1e-6 &&
+		Math.abs(node.ring[(i + 1) % node.ring.length][axis] - value) < 1e-6));
+	roots.sort((a, b) => Math.abs(area(a.ring)) - Math.abs(area(b.ring)));
+	return filledSeamGate(roots.length > 1 ? [roots[0].ring] : parts, axis, value, target);
+}
+
 /** Keep panel widths comparable while moving dividers away from contour vertices.
  * A midpoint in a wider coordinate gap avoids grazing a tip or creating a tiny
  * clipped fragment. This changes only the invisible partition, never the motif. */
@@ -232,10 +244,11 @@ export function generatePanelFigure(
 	rows = 1,
 	spread = false,
 	route = fourPortMotif,
-	attachments: 'support' | 'ray' | 'filled' = 'support',
+	attachments: 'support' | 'ray' | 'filled' | 'components' = 'support',
 	adaptive = false,
 	shear = 0,
-	angleOffsets: readonly [number, number, number, number] = [0, 0, 0, 0]
+	angleOffsets: readonly [number, number, number, number] = [0, 0, 0, 0],
+	junction?: Point
 ) {
 	const factor = size * scale * (frame === 'oval' ? 0.75 : 1);
 	const artworkUpright = rings.map((r) =>
@@ -263,6 +276,13 @@ export function generatePanelFigure(
 		{ length: rows - 1 },
 		(_, i) => top + (i + 1) * height
 	);
+	if (junction) {
+		if (count !== 2 || rows !== 2 || !junction.every(Number.isFinite) ||
+			junction[0] <= left || junction[0] >= right || junction[1] <= top || junction[1] >= bottom)
+			throw new ConstructionError('topology', 'Invalid four-panel junction');
+		vertical[0] = junction[0];
+		horizontal[0] = junction[1];
+	}
 	const xLines = [left, ...vertical, right], yLines = [top, ...horizontal, bottom];
 	let edges: Edge[] = [];
 	const cells: Point[][][] = [];
@@ -270,10 +290,10 @@ export function generatePanelFigure(
 	for (let row = 0; row < rows; row++) {
 		cells.push([]);
 		for (let col = 0; col < count; col++) {
-			const lo = adaptive ? xLines[col] : left + col * width,
-				hi = adaptive ? xLines[col + 1] : lo + width,
-				up = adaptive ? yLines[row] : top + row * height,
-				down = adaptive ? yLines[row + 1] : up + height;
+			const lo = adaptive || junction ? xLines[col] : left + col * width,
+				hi = adaptive || junction ? xLines[col + 1] : lo + width,
+				up = adaptive || junction ? yLines[row] : top + row * height,
+				down = adaptive || junction ? yLines[row + 1] : up + height;
 			let parts = upright;
 			if (col) parts = clipContours(parts, lo, false);
 			if (col < count - 1) parts = clipContours(parts, hi, true);
@@ -289,11 +309,12 @@ export function generatePanelFigure(
 				[x, down],
 				[lo, y]
 			].map((p) => uprightToSheet(p as Point));
-			if (attachments === 'filled') {
-				if (row) gates[0] = filledSeamGate(parts, 1, up, x) ?? gates[0];
-				if (row < rows - 1) gates[2] = filledSeamGate(parts, 1, down, x) ?? gates[2];
-				if (col) gates[3] = filledSeamGate(parts, 0, lo, y) ?? gates[3];
-				if (col < count - 1) gates[1] = filledSeamGate(parts, 0, hi, y) ?? gates[1];
+			if (attachments === 'filled' || attachments === 'components') {
+				const gate = attachments === 'components' ? componentSeamGate : filledSeamGate;
+				if (row) gates[0] = gate(parts, 1, up, x) ?? gates[0];
+				if (row < rows - 1) gates[2] = gate(parts, 1, down, x) ?? gates[2];
+				if (col) gates[3] = gate(parts, 0, lo, y) ?? gates[3];
+				if (col < count - 1) gates[1] = gate(parts, 0, hi, y) ?? gates[1];
 			}
 			const contours = parts.map(r => r.map(uprightToSheet));
 			const angles = [Math.PI / 4, (3 * Math.PI) / 4, (-3 * Math.PI) / 4, -Math.PI / 4];
@@ -330,7 +351,10 @@ export function generatePanelFigure(
 				contours,
 				gates,
 				angles,
-				gridClearance(count + rows + 1)
+				gridClearance(count + rows + 1),
+				undefined,
+				undefined,
+				attachments === 'components' ? { boundaryIslands: true } : undefined
 			);
 			cells[row].push(gates);
 		}

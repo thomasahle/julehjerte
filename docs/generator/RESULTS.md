@@ -1,5 +1,40 @@
 # Generator robustness results
 
+## Current coverage: crown counters in the layered frame
+
+The layered Phosphor crown now uses a 9×9 grid with all three round counters,
+the circular medallion and both outer bands intact. Its final fallback moves
+the 2×2 panel junction through the median counter centres. Each small clipped
+component gets a seam gate, the component owning the gate starts its chain,
+and its outline's A/B phase follows the panel side. This avoids the closed
+cutting loops produced by a fixed phase. No outline changes or cutouts are used.
+
+All **51 layered-frame corpus motifs now pass**. A paired run found the other
+50 accepted designs exactly identical (`crown-final-audit.json`); existing
+successful constructions return before this retry. The crown takes about
+0.37 seconds in the isolated production check. This is a single-case timing,
+not a broader performance claim.
+
+The final production crown passes JSON/SVG handoffs, the editor's spacing check
+with an additional 10% reserve, and the independent material audit at resolution
+1,400 with zero certain or possible detached core islands. Its exported paths
+have no tips below 45°. The finished heart and both cutting sheets were reviewed
+(`crown-final-design-ph-crown.json`, `crown-final-material.json`,
+`crown-final-metrics.json`, `crown-final-gallery-0.png`). The audit concerns
+geometric connectivity, not measured tear strength or actual weaving trials.
+
+The merged corpus is **2,848 accepted / 302 refused / zero invalid**, with
+1,105 accepted / 17 refused figures and 1,743 accepted / 285 refused text cases.
+This refreshes all 51 layered cases and retains the preceding 3,099 results
+(`crown-component-current.json`). The expected-success list matches the merged
+accepted IDs. The remaining refusals and broader catalogue coverage are still
+unfinished.
+
+Verification: all **1,144 unit tests** pass in 367.37 seconds, followed by all
+**177 inverse tests** in 85.36 seconds (`crown-component-tests.log`). Check,
+lint and production build pass; the seven existing Svelte warnings remain.
+The two new focused regressions also pass independently.
+
 ## Current quality: fewer narrow checkerboard corners
 
 The remaining eight Nunito ANNA tips were 38° corners in the visible N outline.

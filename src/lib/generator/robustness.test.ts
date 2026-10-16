@@ -34,6 +34,7 @@ import palette from '../../../static/generator/motifs/tb-palette.json';
 import bicycle from '../../../static/generator/motifs/ph-bicycle.json';
 import moonStars from '../../../static/generator/motifs/ph-moon-stars.json';
 import tablerStars from '../../../static/generator/motifs/tb-stars.json';
+import crown from '../../../static/generator/motifs/ph-crown.json';
 const colors = { left: '#fffdf5', right: '#b72f2b' };
 const fonts = { nunito, breeserif, oswald, kalam, cinzel, righteous } as unknown as Record<string, Font>;
 function validateHandoffs(design: HeartDesign) {
@@ -52,6 +53,15 @@ function validateHandoffs(design: HeartDesign) {
 // These are expected successes, never a test that passes by accepting a refusal.
 // The larger offline corpus covers 2,028 text and 1,122 figure configurations.
 describe('generator robustness regressions', () => {
+	it('opens all three crown counters without closed cuts in the layered frame', () => {
+		const { design } = generate({ mode: 'figure', name: 'Crown', contours: crown.contours as Ring[],
+			style: 'layers', colors });
+		expect(design.gridSize).toEqual({ x: 9, y: 9 });
+		expect(cutTipCounts(design)).toEqual([0, 0]);
+		const margin = intersectionMarginPx(inferOverlapRect(design.fingers, design.gridSize), gridClearanceScale(9, 9));
+		expect(findFingersWithIssues(design.fingers, margin * 1.1).size).toBe(0);
+		validateHandoffs(design);
+	});
 	it('keeps the wider Oswald JULEMAND cuts when notch relief creates a thin neck', () => {
 		const { design } = generate({ mode: 'text', name: 'JULEMAND', text: 'JULEMAND',
 			font: fonts.oswald, textFrame: 'repeat-check', colors });
