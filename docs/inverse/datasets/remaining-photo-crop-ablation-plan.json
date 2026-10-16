@@ -1,6 +1,6 @@
 {
   "schema": "remaining-photo-crop-ablation-plan-1",
-  "status": "prepared-waiting-for-serial-QA-and-soft-study",
+  "status": "complete",
   "root": "tmp/heart-learning/remaining-crop-ablation-v1",
   "hypothesis": "The remaining two fixed-mask failures may be driven partly by crop placement and edge classification. The saved bauble crop contains background and one corner outside the image; outline-star fails on a small near-edge classified region.",
   "intervention": "Four fresh fits on two development photographs. Only crop coordinates change; raw image bytes and algorithm/settings stay fixed. Previously disputed manual coordinates are a diagnostic intervention, not a new cropper or cutting ground truth. Different crops change classified targets, so their raw disagreement percentages cannot be ranked as reconstruction quality.",
@@ -236,5 +236,6 @@
   "prefitVisualReview": {
     "outline-star": "Both saved quadrilaterals inspected on the original source ROI. Historical visual selection is more inset, while automatic selection includes more of the noisy bottom edge; neither is asserted ground truth.",
     "bauble": "Both saved quadrilaterals inspected on the original source ROI with out-of-frame area shown grey. Automatic bottom corner is below the image and right/lower side contains visible background. Historical selection is inside the visible paper but its top overlap corner is not established as ground truth."
-  }
+  },
+  "results": "docs/inverse/datasets/remaining-photo-crop-ablation-results.json"
 }

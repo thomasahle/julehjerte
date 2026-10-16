@@ -85,16 +85,19 @@ also disables the current feature-initialization/recovery branches. No corrected
 crop or changed recovery policy has been tested here. The two historical missing
 crops remain outside this fixed-mask replay, so the photo result stays **27/31**.
 
-A [four-fit crop intervention](remaining-photo-crop-ablation-plan.json) is queued
-after the soft-field study. It compares the saved automatic coordinates with the
-existing historical visual coordinates on these two sources, using identical
-pixels and fitting settings. Source-coordinate overlays were reviewed before any
-new fits: the bauble's automatic bottom corner is outside the photo, while the
-historical crop lies inside the visible paper but is not established as the true
-overlap. Both historical corner sets remain disputed diagnostic inputs. Preflight
-must reproduce the old automatic masks and coverage exactly; changing targets
-prevents directly ranking their raw image-error percentages. This does not update
-the automatic benchmark or claim a cropper improvement.
+The [completed four-fit crop intervention](remaining-photo-crop-ablation-results.json)
+produces **no accepted candidate** with either the saved automatic or historical
+visual coordinates. Both original automatic targets and coverage reproduce
+exactly. The star retains its main motif but loses a small lower-edge region in
+both crops. The historical bauble crop lowers its own target disagreement, but
+also excludes **three reviewed upper-frame samples**: 19/26 source samples are
+classified correctly, versus 21/26 with the automatic crop. Several red-frame
+samples are misclassified before solving in both arms. Source overlays, crops,
+masks and all four reconstructions were inspected; historical coordinates remain
+disputed, and their different targets prevent a direct error ranking. A separate
+[classifier comparison](remaining-photo-color-ablation-plan.json) now tests the
+existing color-mixture mode on those fixed crops, still passing binary masks to
+the same fitter. Neither diagnostic updates the automatic benchmark.
 
 A [saved-field junction diagnostic](material-junction-diagnostic.json) separates
 three possible causes of the learned checkers' gaps. Both 400px masks reproduce
