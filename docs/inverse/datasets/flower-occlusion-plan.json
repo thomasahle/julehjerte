@@ -152,5 +152,12 @@
     "A second exact-geometry control will distinguish available hidden-image inference from a merely lower observed error; no exact geometry is supplied to fitting."
   ],
   "regularConstructionQualification": "The visible gold ribbon is an added decoration/occluder, not a third material the existing two-sheet mask can model. Whether the actual flat cutting template uses exactly two cuts remains an inference to test, not supplied truth.",
-  "execution": "Wait for current full repository QA to finish; no concurrent fitting jobs. No application changes or learned-model training in this diagnostic."
+  "execution": "Wait for current full repository QA to finish; no concurrent fitting jobs. No application changes or learned-model training in this diagnostic.",
+  "syntheticControl": {
+    "construction": "Exactly straight equal-width grid, two cuts per sheet, phase +1, at 400 pixels. Paint the declared ribbon polygons as material value 1 without changing the latent clean mask.",
+    "arms": "The same four observation-weight arms as the photograph. The cap exclusion is an irrelevant-region control here; no cap corruption is added.",
+    "role": "Known-mask counterfactual, not a photorealistic training sample; hidden reference pixels and cut counts never enter fitting or selection.",
+    "score": "Report disagreement with the known clean grid independently of observed-region fit, while still retaining disagreement with the corrupted input."
+  },
+  "replaySha256": "18f44da72f817fa2de3b187ce5c28ab1805643e5ebcef6769545a90cb511578a"
 }
