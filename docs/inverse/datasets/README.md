@@ -40,6 +40,11 @@ an already available, lower-error grid only when it recovers missing features
 without eroding represented ones. All five checked controls remain checked;
 both improved cases still lose details, so this adds **zero complete passes**.
 All thirteen exports convert and all eight changed outputs were inspected.
+The bicycle's [published construction](bicycle-template-review.json) uses extra
+enclosed cutouts on one sheet. Its existing failed-case denominator and warning
+remain; improved scheduling does not establish recovery of that unsupported
+reference. It is retained as a regression, not a target for further regular-slit
+optimization.
 
 A cold regression exposed another scheduling defect: the clearance stage could
 promote the old simpler grid again using its cut-count bonus. The follow-up

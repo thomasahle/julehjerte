@@ -388,5 +388,13 @@
     "tmp/heart-learning/finalist-retention-fit-v1/focused-tests.log": "d146c854edb555f0a8e578d1ceca3928bea264390d7200cd5bd90d249bc856e8",
     "tmp/heart-learning/finalist-retention-fit-v1/focused-clearance-tests.log": "500dcb2c4a3b159c7364106d79a70a4c348d1420eec41ceb8841fb696111cf37",
     "tmp/heart-learning/finalist-retention-fit-v1/brown-regression-report.json": "78ed7f9c609ea5ab1f91f3bdef089d7c48959539e454dac0bec3b19793a97053"
+  },
+  "bicycleConstructionQualification": {
+    "reference": "docs/inverse/datasets/bicycle-template-review.json",
+    "reviewArtifactsReverified": 5,
+    "confirmedBySavedPublishedPage": true,
+    "construction": "The published green sheet contains additional enclosed cutouts (yellow regions explicitly marked for removal). Its actual construction is outside the regular slit-chain model.",
+    "evaluation": "Keep the fixed-mask denominator, missing-detail warnings and existing regression unchanged. Improvement demonstrates safer candidate scheduling; it is not evidence of recovering this published template.",
+    "nextAction": "Do not spend further regular-solver optimization on this known irregular reference; the user allowed irregular designs to be excluded from regular-solver goals."
   }
 }
