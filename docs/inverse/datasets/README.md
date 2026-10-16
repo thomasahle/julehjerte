@@ -108,6 +108,18 @@ paths. The largest change in either direction does not use the new checkpoint
 selection branch. These are not uniform quality gains or new photo successes.
 Type checking, lint and build pass; the full test suite is still running.
 
+A [coverage perturbation study](coverage-perturbation-plan.json) is prepared:
+mark just one corner pixel as unobserved while keeping all mask colours fixed.
+Two implementation discontinuities are confirmed before fitting. Feature
+emphasis restores a positive weight at ignored pixels, so its existing
+weighted-input guards cannot simply be removed. Separately, weighted grids
+resize native → 256 → 96 while unweighted grids resize native → 96; the
+one-pixel intervention changes 533–1,013 coarse pixels away from the corner
+on the three selected masks. Isolated candidates preserve observed feature
+weights, preserve direct native resampling, or combine both. Small objective
+and grid probes pass, but the 18 baseline and 18 candidate fits have not run.
+No full-pipeline gain or production integration is claimed.
+
 The [completed paired corpus and editable audits](refinement-checkpoint-corpus-results.json)
 retain **53/55 passing masks** in both arms, including all 22 Hunodan and four
 hard-photo variants. All 55 slit-count pairs are unchanged; 41 cutting geometries
