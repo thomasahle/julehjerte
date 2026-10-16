@@ -40,7 +40,14 @@ allows a guarded interior-feature proposal before tracing consumes its time.
 Original-mask disagreement falls from **6.36% to 1.39%**, with valid geometry and
 nominal paper checks. The unresolved border feature still fails the final
 feature check: this is a much better candidate, not a new fully checked pass.
-The focused regression passes; broad production QA is in progress.
+Full QA passes: 865 application tests (one skipped), 978 inverse tests, type
+checking, lint, build and browser smoke tests. All 22 regular Hunodan designs
+still finish below ten seconds with exactly the previous errors. The photo
+benchmark retains 27/31 successes; all 29 exported candidates convert to
+editable geometry, with the same 27 complete passes. Nine time-limited photo
+errors change slightly; all changed previews were inspected. The orb uses two
+additional cuts and has more border protrusions despite lower disagreement.
+All 876 pinned sources remain unchanged.
 
 The [completed material-resolution comparison](material-resolution-results.json)
 runs 44 fresh fits on the same 22 fixed crops, with identical frozen paper

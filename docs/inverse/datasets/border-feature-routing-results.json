@@ -1,6 +1,6 @@
 {
   "schema": "border-feature-routing-results-1",
-  "status": "causal-experiments-complete-production-qa-running",
+  "status": "causal-experiments-and-production-qa-complete",
   "runtimeCommit": "97f5c49f63a19fd421410494f05735de8b82c738",
   "scope": "One controlled photographic-mask regression. Broad production and fixed-input material-resolution checks are recorded separately. No model deployed.",
   "interventions": [
@@ -139,7 +139,7 @@
     ]
   },
   "productionQA": {
-    "status": "running",
+    "status": "complete",
     "directory": "tmp/heart-learning/border-feature-routing-v1/qa",
     "completedStages": [
       {
@@ -222,6 +222,15 @@
         ],
         "exitCode": 0,
         "seconds": 34.56177224999999
+      },
+      {
+        "stage": "test",
+        "command": [
+          "npm",
+          "test"
+        ],
+        "exitCode": 0,
+        "seconds": 1103.6651958329999
       }
     ],
     "hunodan": {
@@ -296,13 +305,28 @@
       "tmp/heart-learning/border-feature-routing-v1/qa/photos/results.json": "4a75c776cc04df1cf85ab00a6dd5f11815d523331e70af84c5280c59f72a4f61",
       "tmp/heart-learning/border-feature-routing-v1/qa/editable/results.json": "f1ff4efa05d036e80b558820fb7ba2675a4bab3a78b4b832f60de0d6e2b70694",
       "tmp/heart-learning/border-feature-routing-v1/qa/photo-comparison.json": "b92e420c75cae8d22d1d6d1097e07b57deca06ad7768188ef5d9f19245d8334b",
-      "tmp/heart-learning/border-feature-routing-v1/qa/changed-photo-panels.json": "45174ba774b838a3e86fe89d73da1b0d065fc0c8b53d056caaba779161e8e0ed"
+      "tmp/heart-learning/border-feature-routing-v1/qa/changed-photo-panels.json": "45174ba774b838a3e86fe89d73da1b0d065fc0c8b53d056caaba779161e8e0ed",
+      "tmp/heart-learning/border-feature-routing-v1/qa/state.json": "4acc512fe6a3cb5b7f9c0161af232e9a8031c92ab9de2fc9dd678b0e1a506a7e",
+      "tmp/heart-learning/border-feature-routing-v1/qa/checks.json": "194c6528ec5b98dc4fc18e7d2ad230dbfb8476beeafe3aa10080ad5e4f6118d5",
+      "tmp/heart-learning/border-feature-routing-v1/qa/source.json": "889a25f4d113a55ff43e502a3d10c35a6b1c8f84df9b6f50b30d504ba982330e",
+      "tmp/heart-learning/border-feature-routing-v1/qa/test.log": "173feeceda1aa6172e8401afaf0cf59eeb3a917f069438bb48c98b5c2176ad1f",
+      "tmp/heart-learning/border-feature-routing-v1/qa/browser/results.json": "2bf3b79c6f3dea71c6cd3e47f28e2a37e8d94ea025d3fd0f14d49d945680f94c",
+      "tmp/heart-learning/border-feature-routing-v1/qa/served-assets.json": "74dacd107c82c3867ab7a9493ed20da58a89aa397e757f17d8909b18c327be0f"
     },
     "editable": {
       "exports": 29,
       "converted": 29,
       "complete": 27,
       "editorIssues": 0
+    },
+    "sourceFilesVerified": 876,
+    "applicationTests": {
+      "passed": 865,
+      "skipped": 1
+    },
+    "inverseTests": {
+      "passed": 978,
+      "failed": 0
     }
   }
 }
