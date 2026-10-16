@@ -39,8 +39,17 @@ a fresh ten-second solve improves from 2.78% to 2.13%. The guard avoids changing
 already accurate trajectories: all 22 Hunodan errors remain identical, with all
 22 fits under ten seconds (maximum 8.81 s). Ten focused tests pass, including
 actual export checks and rejection of a lower-error paper-invalid checkpoint.
-Full application, browser and photographic-corpus QA is pending; no new broad
-photographic success count is claimed.
+Full QA now passes 865 application tests (one skipped), all 967 inverse tests,
+type checking, lint, build and private Chromium star/hat checks. The paired
+photographic replay retains **27/31** reviewable cases, with identical crops,
+classified masks and observation fields in both arms. All 29 exported candidates
+convert successfully through editable SVG; the same 27 pass the complete checks.
+Viking improves from 2.525% to 2.223% independent mask disagreement. Fine-checker
+and orb worsen by 0.061 and 0.121 percentage points; the leaf differs by one pixel.
+The checker reaches fewer polishing steps; the orb changes starting geometry and
+later paper-check outcomes, so its cause is not yet isolated. This is not a claim
+of uniform photographic-error improvement. Two unresolved crops, the outlined
+star's lost edge feature and the bauble's image error remain failures.
 
 The [reviewed cream/blue fish photograph](fish-annotation-admission.json) adds one
 visible-body and partial-material annotation. Its handle, cast shadow and four

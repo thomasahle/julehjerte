@@ -480,7 +480,253 @@
       "fit.js": "3a77f84783dbae215f4e04b9bf622d5825923c7edaca53eb40c18b7a4fd14fc3",
       "refine.js": "25aa7bb6aa87dfc836bca6cc17ba0febf0079b07032dbea50dd4cc4b68eabc24"
     },
-    "fullQA": "Pending; do not combine the focused results with earlier full-suite totals."
+    "fullQA": {
+      "status": "complete",
+      "applicationPassed": 865,
+      "applicationSkipped": 1,
+      "inversePassed": 967,
+      "inverseTotal": 967,
+      "checkPassed": true,
+      "lintPassed": true,
+      "buildPassed": true,
+      "browserCases": [
+        "star",
+        "top-hat-preferred"
+      ],
+      "sourceFilesVerified": 909,
+      "pairedPhotoSummary": {
+        "baseline": {
+          "catalogCases": 47,
+          "reviewableCases": 31,
+          "fittedCases": 29,
+          "passed": 27,
+          "statuses": {
+            "incomplete": 15,
+            "no_crop": 2,
+            "failed": 2,
+            "validated": 27,
+            "obscured": 1
+          },
+          "maximumTotalSeconds": 11.118012958000007,
+          "maximumSolveAndValidationSeconds": 10.495491290999984
+        },
+        "candidate": {
+          "catalogCases": 47,
+          "reviewableCases": 31,
+          "fittedCases": 29,
+          "passed": 27,
+          "statuses": {
+            "incomplete": 15,
+            "no_crop": 2,
+            "failed": 2,
+            "validated": 27,
+            "obscured": 1
+          },
+          "maximumTotalSeconds": 11.11092633300001,
+          "maximumSolveAndValidationSeconds": 10.470584457999998
+        },
+        "inputComparisons": "Original file and decoded-pixel hashes, catalog metadata, effective automatic crops, classified/fitting mask and probability hashes, observation metadata, settings and criteria match for every paired case.",
+        "passRegressions": [],
+        "errorChanges": [
+          {
+            "id": "outline-star",
+            "baselinePassed": false,
+            "candidatePassed": false,
+            "baselineError": 0.0074375,
+            "candidateError": 0.00743125,
+            "errorDelta": -6.249999999999312e-06,
+            "baselineSeconds": 10.007680042,
+            "candidateSeconds": 9.594397416,
+            "maskSha256": "311d3c3542ec6605918892cfcecae25749f176d32dcf563b65e2ffdc1336ce3e",
+            "observation": {
+              "method": "fully-observed",
+              "observedPixels": 160000,
+              "totalPixels": 160000
+            },
+            "candidateGeometryPassed": true,
+            "candidatePaperStatus": "pass",
+            "candidateFeaturesPassed": false
+          },
+          {
+            "id": "bird",
+            "baselinePassed": true,
+            "candidatePassed": true,
+            "baselineError": 0.01968125,
+            "candidateError": 0.019675,
+            "errorDelta": -6.249999999999312e-06,
+            "baselineSeconds": 10.374916667000004,
+            "candidateSeconds": 10.041992208000003,
+            "maskSha256": "7137173fa17abe3f8f7788ddb7d321fe48258a4a3f4c2f8b3171b9ff9f15a16f",
+            "observation": {
+              "method": "fully-observed",
+              "observedPixels": 160000,
+              "totalPixels": 160000
+            },
+            "candidateGeometryPassed": true,
+            "candidatePaperStatus": "pass",
+            "candidateFeaturesPassed": true
+          },
+          {
+            "id": "leaf",
+            "baselinePassed": true,
+            "candidatePassed": true,
+            "baselineError": 0.00950625,
+            "candidateError": 0.0095125,
+            "errorDelta": 6.249999999999312e-06,
+            "baselineSeconds": 10.251047624999991,
+            "candidateSeconds": 10.166923166,
+            "maskSha256": "0e1fefda40bbe92da956dd2467d117af6a732d0223e695901cc0255a166651f4",
+            "observation": {
+              "method": "fully-observed",
+              "observedPixels": 160000,
+              "totalPixels": 160000
+            },
+            "candidateGeometryPassed": true,
+            "candidatePaperStatus": "pass",
+            "candidateFeaturesPassed": true
+          },
+          {
+            "id": "warped-checker",
+            "baselinePassed": true,
+            "candidatePassed": true,
+            "baselineError": 0.01363125,
+            "candidateError": 0.013625,
+            "errorDelta": -6.249999999999312e-06,
+            "baselineSeconds": 10.854885332999999,
+            "candidateSeconds": 10.84632429199999,
+            "maskSha256": "3508f08f46f539554f7fdab38f01f018bc7ec8d86db2309427b28e18b049c2de",
+            "observation": {
+              "method": "fully-observed",
+              "observedPixels": 160000,
+              "totalPixels": 160000
+            },
+            "candidateGeometryPassed": true,
+            "candidatePaperStatus": "pass",
+            "candidateFeaturesPassed": true
+          },
+          {
+            "id": "fine-checker",
+            "baselinePassed": true,
+            "candidatePassed": true,
+            "baselineError": 0.01646875,
+            "candidateError": 0.017075,
+            "errorDelta": 0.0006062499999999992,
+            "baselineSeconds": 11.118012958000007,
+            "candidateSeconds": 11.11092633300001,
+            "maskSha256": "184fe9c3aaf1a4e8a3732e1180a17770ebb3ef60566861c89859bb5a1e36ad4a",
+            "observation": {
+              "method": "fully-observed",
+              "observedPixels": 160000,
+              "totalPixels": 160000
+            },
+            "candidateGeometryPassed": true,
+            "candidatePaperStatus": "pass",
+            "candidateFeaturesPassed": true
+          },
+          {
+            "id": "orb",
+            "baselinePassed": true,
+            "candidatePassed": true,
+            "baselineError": 0.01134375,
+            "candidateError": 0.01255,
+            "errorDelta": 0.0012062500000000007,
+            "baselineSeconds": 10.546422874999989,
+            "candidateSeconds": 10.16213166699998,
+            "maskSha256": "4a9574d7d5bc6d22ff176926863814a6f9c298abd433f9e0fa432886a9929830",
+            "observation": {
+              "method": "fully-observed",
+              "observedPixels": 160000,
+              "totalPixels": 160000
+            },
+            "candidateGeometryPassed": true,
+            "candidatePaperStatus": "pass",
+            "candidateFeaturesPassed": true
+          },
+          {
+            "id": "jigsaw",
+            "baselinePassed": true,
+            "candidatePassed": true,
+            "baselineError": 0.0101375,
+            "candidateError": 0.010125,
+            "errorDelta": -1.2500000000000358e-05,
+            "baselineSeconds": 10.261029875000007,
+            "candidateSeconds": 10.298772874999996,
+            "maskSha256": "5c3d1ae064e795a787a92a91d5403bc7bdb0f4780dfeb75606ce1f9531b58788",
+            "observation": {
+              "method": "fully-observed",
+              "observedPixels": 160000,
+              "totalPixels": 160000
+            },
+            "candidateGeometryPassed": true,
+            "candidatePaperStatus": "pass",
+            "candidateFeaturesPassed": true
+          },
+          {
+            "id": "bottom-flower",
+            "baselinePassed": true,
+            "candidatePassed": true,
+            "baselineError": 0.007421185135084357,
+            "candidateError": 0.00733350868623104,
+            "errorDelta": -8.767644885331743e-05,
+            "baselineSeconds": 10.563473333000001,
+            "candidateSeconds": 10.496529749999986,
+            "maskSha256": "e61dc4faa0bcd1f4528a9b99a0ddffd0ae7057bbc508b915c7adb054503089a4",
+            "observation": {
+              "method": "complete-bilinear-support",
+              "sha256": "2b5b10fa180a6fb4fd3a9a7b4d0c19697fc4ed31f4015796d9857bb862ff8447",
+              "observedPixels": 159678,
+              "totalPixels": 160000,
+              "file": "observed.bin"
+            },
+            "candidateGeometryPassed": true,
+            "candidatePaperStatus": "pass",
+            "candidateFeaturesPassed": true
+          },
+          {
+            "id": "flettede-viking",
+            "baselinePassed": true,
+            "candidatePassed": true,
+            "baselineError": 0.02525,
+            "candidateError": 0.02223125,
+            "errorDelta": -0.0030187500000000006,
+            "baselineSeconds": 10.40076458399999,
+            "candidateSeconds": 10.31158808299998,
+            "maskSha256": "7791de154fdbc94b618ece0bf018522573d57c231c46bc0385d24a9e2b9a9bb8",
+            "observation": {
+              "method": "fully-observed",
+              "observedPixels": 160000,
+              "totalPixels": 160000
+            },
+            "candidateGeometryPassed": true,
+            "candidatePaperStatus": "pass",
+            "candidateFeaturesPassed": true
+          }
+        ],
+        "remainingFailures": [
+          "nested-squares",
+          "outline-star",
+          "santa",
+          "bauble"
+        ]
+      },
+      "editable": {
+        "exportedCandidates": 29,
+        "conversionPassed": 29,
+        "completeCandidatePassed": 27,
+        "editorIssues": 0
+      },
+      "artifacts": {
+        "tmp/heart-learning/guarded-initial-paper-retry-v1/production-qa/comparison.json": "ba26cb60757c9c6181f9abc98010565b73bb8224c4d208996723a0ee924c074e",
+        "tmp/heart-learning/guarded-initial-paper-retry-v1/production-qa/editable/results.json": "a84dd7c5ccb2cac17ed92a98cd04bf422e7d40321f1c9ca6dbe0103e5c19451b",
+        "tmp/heart-learning/guarded-initial-paper-retry-v1/production-qa/checks.json": "1f07fc97609eb00380ccaaf508ebcba2f7a6709e5704ffca3262b2c5ca610165"
+      },
+      "interpretation": "All prior photo passes are retained, but three photographed targets have higher independent error (one by a single pixel). Do not describe this as uniform non-regression on photographic errors. The 22 Hunodan fixed targets retain identical errors."
+    },
+    "photoErrorDiagnosis": {
+      "fine-checker": "The polishing checkpoints at -1, 0 and 40 are exactly equal. Baseline reaches step 79; candidate stops at 44. This establishes a different timed stopping point, not a causal attribution of its cost.",
+      "orb": "Polishing begins from different shared geometry. Candidate has lower initial error but its later promising checkpoints are paper-uncertain; the selected valid result has higher final error. Earlier-stage differences are not yet causally isolated.",
+      "visualReview": "Independent before/after renders inspected for fine-checker, orb and Viking. Checker/orb retain the same major motifs with local contour differences. Viking changes the boat/sail contours; thin seams, bumps and border defects remain. No comparison against original cutting paths."
+    }
   },
   "visualReview": "Baseline and unrestricted Viking/gift renders, then guarded Viking/bird renders inspected at 800 pixels. Main silhouettes are retained, with improved Viking contours. Small contour bumps, border distortions and thin seams remain. Guarded gift has the same 400/800 errors as baseline; bird differs by four pixels at 400 and five at 800 while retaining its enclosed eye."
 }
