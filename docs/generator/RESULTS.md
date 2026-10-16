@@ -1,5 +1,58 @@
 # Generator robustness results
 
+## Checked corners: divide a connected figure among the existing lanes
+
+The Phosphor **crown** now works with checked corners, using **6×6 strips** and
+**zero detected tips below 45 degrees**. Its three counters remain connected
+through coincident cuts. Dividing the silhouette vertically lets the three
+existing lanes carry different parts of the figure, instead of sending the
+whole crown through the central lane while the other two pass around it.
+The original artwork, checked tips and outer bands are retained.
+
+The bounded fallback first tries quarter-width side pieces and approaches each
+piece at its own height, then equal thirds with the ordinary contour chain.
+Artificial clipping seams are stitched after routing. The full topology,
+conversion and artwork checks remain mandatory, followed by a 10% spacing
+reserve. Failed straight connections may use 20% or 40% shared-curve handles;
+the algorithm prefers fewer sharp tips and stops at zero. The crown succeeds
+with the first partition and no extra curve retry.
+
+A contour-based detector recognizes one root with three unnested counters,
+one wholly inside each quarter/half/quarter lane. That arrangement tries the
+new construction first. Three paired runs produce **exactly identical designs**
+while reducing generation from **2,225–2,679 ms to 249–309 ms** on this machine.
+The detector was run over all 51 corpus motifs and matches only the crown;
+there is no icon-name special case. A failed early attempt continues through
+the existing constructions and is not repeated at the end.
+
+The paired audit covers **78 cases**: all 51 checked-corner motifs, all 22 crown
+frames, and the other outstanding figure failures. It gives **72 accepted / six
+refused / zero invalid**. The crown is the only changed result; the other **77
+complete outputs or refusals are identical**. All accepted designs pass both
+JSON and SVG handoffs. The paired run preceded the priority detector; the final
+crown was rerun three times, and the detector excludes all 77 unchanged records.
+The final production crown exactly matches the inspected prototype. It passes
+the independent material audit at resolution **1,400**, with zero certain or
+possible detached core islands. The full heart and both cutting sheets were
+visually inspected. Physical weaving ease and tear strength remain untested.
+
+The merged corpus is **2,877 accepted / 273 refused / zero invalid**: text is
+unchanged at **1,761 / 267**, and figures are **1,116 / 6**. The expected-ID fixture
+matches all 2,877 accepted IDs. This refreshes 78 records and retains 3,072 from
+`padded-support-current.json`; it is not a fresh full-matrix run. The larger
+catalogue and nondefault sizes remain incompletely audited, and the goal of
+supporting all combinations is not yet achieved.
+
+Type checking, lint, build and all **43 focused frame tests** pass, with the
+same seven existing Svelte warnings. The full unit run reports **1,198 passes
+and one existing Oswald juleman timing failure**: 5.163 seconds against its
+unchanged five-second limit. The same test passes on the final source when
+run alone in **3.73 seconds**. All 1,199 unit cases pass across those runs;
+this is not a single fully green full-suite run. No existing test timeout was
+increased. The separate inverse suite passes all **177 tests** in 87.49 seconds.
+Evidence in ignored `tmp/generator/`: `corner-lanes-{final-audit,current,priority,detector,material,metrics}.json`,
+`corner-lanes-final-design.json`, and `corner-lanes-gallery-0.png`.
+
 ## Fitted figures: room for shared connections to separate parts
 
 The Phosphor **sailboat** now works in the close-fitting frame, with **5×5 strips**

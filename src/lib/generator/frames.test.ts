@@ -3,7 +3,7 @@ import { generate } from './generate';
 import { cutTipCounts } from './cutQuality';
 import { generateFittedFigure } from './fitted';
 import { generateLayeredFigure } from './layers';
-import { generateCornerChecks } from './cornerChecks';
+import { generateCornerChecks, hasThreeCounterLanes } from './cornerChecks';
 import { defaults, readGeneratorState } from './state';
 import { templateVariants } from './templates';
 import { inside, uprightToSheet, type Point, type Ring } from './geometry';
@@ -31,10 +31,41 @@ import tablerGift from '../../../static/generator/motifs/tb-gift.json';
 import bow from '../../../static/generator/motifs/tb-bow.json';
 import butterfly from '../../../static/generator/motifs/ph-butterfly.json';
 import paw from '../../../static/generator/motifs/tb-paw.json';
+import crown from '../../../static/generator/motifs/ph-crown.json';
 const colors = { left: '#fff', right: '#b91313' };
 const examples = { tree, horse, bird, star, snowflake };
 
 describe('complete motif frames', () => {
+ it('divides the crown between three lanes without changing its outline or checked corners', () => {
+  const rings = normalizeContours(crown.contours as Ring[]);
+  expect(hasThreeCounterLanes(rings)).toBe(true);
+  expect(hasThreeCounterLanes(normalizeContours(cat.contours as Ring[]))).toBe(false);
+  const result = generateCornerChecks(rings, 70, .7, 'separated', true, false, undefined, .25);
+  expect(result.artwork).toEqual(rings.map(r => r.map(([x, y]) => uprightToSheet([x * 70 * .7, y * 70 * .7]))));
+  expect(result.geometry.A_overlap_paths).toHaveLength(5);
+  expect(result.geometry.B_overlap_paths).toHaveLength(5);
+  for (const t of [6, 94]) {
+   expect(result.edges).toContainEqual({ from: [t, 0], to: [t, 100], family: 'A', kind: 'frame' });
+   expect(result.edges).toContainEqual({ from: [0, t], to: [100, t], family: 'B', kind: 'frame' });
+  }
+ });
+ it('keeps all three crown counters on open strips through both exports', () => {
+  const { design } = generate({ mode: 'figure', name: 'Crown', contours: crown.contours as Ring[], colors, style: 'corners' });
+  expect(design.gridSize).toEqual({ x: 6, y: 6 });
+  expect(cutTipCounts(design)).toEqual([0, 0]);
+  const margin = intersectionMarginPx(inferOverlapRect(design.fingers, design.gridSize), gridClearanceScale(6));
+  expect(findFingersWithIssues(design.fingers, margin * 1.1).size).toBe(0);
+  const before = rasterizeDesign(design, 240).data;
+  for (const restored of [normalizeHeartDesign(serializeHeartDesign(design)), parseHeartFromSVG(serializeHeartToSVG(design))]) {
+   expect(restored).not.toBeNull();
+   expect(restored!.fingers).toHaveLength(design.fingers.length);
+   expect(restored).not.toHaveProperty('leftCutouts');
+   expect(restored).not.toHaveProperty('rightCutouts');
+   const rect = inferOverlapRect(restored!.fingers, restored!.gridSize);
+   expect(findFingersWithIssues(restored!.fingers, intersectionMarginPx(rect, gridClearanceScale(6))).size).toBe(0);
+   expect(rasterizeDesign(restored!, 240).data).toEqual(before);
+  }
+ }, 20000);
  it('tilts invisible panel seams without distorting the paw, medallion or outer bands', () => {
   const rings = normalizeContours(paw.contours as Ring[]);
   const result = generateLayeredFigure(rings, 70, .7,

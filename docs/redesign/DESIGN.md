@@ -538,6 +538,19 @@ tilts and the two complementary assignments; keep the three lanes, six strips,
 counter bridges and frame. Require full-sheet validation and a 10% clearance
 reserve after curve fitting and tip improvement. Earlier successful layouts
 return before this fallback.
+For one connected silhouette, the checked-tip frame may instead divide the
+artwork vertically among its three existing lanes. First try quarter-width
+side pieces with approaches at each piece's own height, then equal thirds with
+the ordinary contour chain. Clip the complete even-odd artwork, including every
+counter, and stitch the artificial dividers after routing. Keep both checked
+tips, the outer bands and six actual strips per sheet. Validate the complete
+cut paths and artwork; coincident joins may use 20% or 40% normal-approach handles
+if the straight construction fails. Require 10% clearance reserve after fitting,
+prefer fewer sharp tips, and stop at zero. Usually existing successful layouts
+return before this bounded fallback. When one silhouette has exactly three separate,
+unnested counters, one entirely inside each quarter/half/quarter lane, try this
+recipe first. Detect that topology from the contours, never from an icon ID.
+If it fails, continue the established recipes without repeating the same retry.
 For a plain oval containing separate solid marks above one wider, counter-bearing
 body, try horizontal nearest-contact lanes first. Detect this arrangement from
 the contour forest and bounds, never an icon ID. Change only the partition axis:

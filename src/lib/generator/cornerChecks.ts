@@ -6,12 +6,29 @@ import {
 } from './geometry';
 import { gridClearance } from '$lib/geometry/clearance';
 import { contactChains, type ContourChain } from './chainContacts';
+import { clipContours, stitch } from './panels';
 
 const contoursOf = (node: Contour): Ring[] => [node.ring, ...node.children.flatMap(contoursOf)];
 
+/** Three separate counters across one silhouette naturally belong to the
+ * three lanes. Detect their positions so editing need not exhaust one-lane
+ * constructions first. This chooses a recipe; all output checks still apply. */
+export function hasThreeCounterLanes(rings: Ring[]): boolean {
+	const roots = forest(rings);
+	if (roots.length !== 1 || roots[0].children.length !== 3 ||
+		roots[0].children.some(child => child.children.length)) return false;
+	const xs = roots[0].ring.map(p => p[0]), min = Math.min(...xs), max = Math.max(...xs),
+		left = min + (max - min) / 4, right = max - (max - min) / 4;
+	const holes = roots[0].children.map(child => {
+		const xs = child.ring.map(p => p[0]);
+		return [Math.min(...xs), Math.max(...xs)];
+	}).sort((a, b) => a[0] - b[0]);
+	return holes[0][1] < left && holes[1][0] > left && holes[1][1] < right && holes[2][0] > right;
+}
+
 export function generateCornerChecks(rings: Ring[], size = 70, scale = .7,
 	routing: 'chain' | 'practical' | 'separated' = 'chain', fitBorder = false, bentSpokes = false,
-	contacts?: { tilt: number; invert: boolean }) {
+	contacts?: { tilt: number; invert: boolean }, laneSplit?: number) {
 	const points = rings.flat();
 	if (!points.length) throw new ConstructionError('empty', 'No contour');
 	const artwork = rings.map(r => r.map(([x, y]) => uprightToSheet([x * size * scale, y * size * scale])));
@@ -33,12 +50,28 @@ export function generateCornerChecks(rings: Ring[], size = 70, scale = .7,
 		if (clamped.some((value, axis) => Math.abs(value - point[axis]) > 1e-6)) borderAdjusted = true;
 		return clamped;
 	};
-	const edges: Edge[] = [];
+	let edges: Edge[] = [];
 	const chains: ContourChain[] = [];
 	const lanes = Array.from({ length: 3 }, () => [] as ReturnType<typeof forest>);
 	const separate = routing === 'separated';
 	let changed = false;
-	for (const node of forest(artwork)) {
+	const dividers: number[] = [];
+	if (laneSplit !== undefined) {
+		const minX = Math.min(...points.map(p => p[0])), maxX = Math.max(...points.map(p => p[0]));
+		dividers.push(minX + (maxX - minX) * laneSplit, maxX - (maxX - minX) * laneSplit);
+	}
+	if (dividers.length) {
+		// A connected silhouette can use all three lanes too. Keep each
+		// clipped counter, then cancel the artificial seams after routing.
+		for (let col = 0; col < 3; col++) {
+			let part = rings;
+			if (col) part = clipContours(part, dividers[col - 1], false);
+			if (col < 2) part = clipContours(part, dividers[col], true);
+			lanes[col].push(...forest(part.map(r => r.map(([x, y]) =>
+				uprightToSheet([x * size * scale, y * size * scale])))));
+		}
+		changed = true;
+	} else for (const node of forest(artwork)) {
 		const xs = node.ring.map(p => (p[0] - p[1]) * Math.SQRT1_2);
 		const center = (Math.min(...xs) + Math.max(...xs)) / 2;
 		const laneAt = (threshold: number) => center < -half * threshold ? 0 : center > half * threshold ? 2 : 1;
@@ -89,6 +122,7 @@ export function generateCornerChecks(rings: Ring[], size = 70, scale = .7,
 		add(edges, [[t, 0], [t, 100]], 'A', 'frame');
 		add(edges, [[0, t], [100, t]], 'B', 'frame');
 	}
+	if (dividers.length) edges = stitch(edges, dividers.map(x => x * size * scale));
 	// Exclude only the two checked corners and the narrow outer bands from the
 	// solid-field check. No decorative colours may appear elsewhere in the field.
 	const domain: Ring = [[30, inset], [100 - inset, inset], [100 - inset, 70], [70, 70], [70, 100 - inset], [inset, 100 - inset], [inset, 30], [30, 30]];

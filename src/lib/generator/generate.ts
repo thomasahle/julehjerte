@@ -1,6 +1,6 @@
 import { createExactCurveFitter } from '$lib/inverse/curveFitCache';
 import { generateLayeredFigure } from './layers';
-import { generateCornerChecks } from './cornerChecks';
+import { generateCornerChecks, hasThreeCounterLanes } from './cornerChecks';
 import { generateFittedFigure } from './fitted';
 import { sunburstBorder } from './sunburst';
 import { generateTextGrid } from './textGrid';
@@ -349,6 +349,12 @@ function improveSharedConnections(result: GeneratorResult): GeneratorResult {
  * result must pass the same topology, spacing and fidelity checks again. */
 export function generate(request: GeneratorRequest): GeneratorResult {
 	const curveFitter = createExactCurveFitter();
+	const counterLanes = request.mode === 'figure' && request.style === 'corners' &&
+		hasThreeCounterLanes(normalizeContours(request.contours ?? []));
+	if (counterLanes) {
+		const result = retryCornerLanes(request, curveFitter);
+		if (result) return result;
+	}
 	const stacked = tryStackedComponentLanes(request, curveFitter);
 	if (stacked) return stacked;
 	const frame = request.textFrame ?? 'woven';
@@ -468,6 +474,8 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		if (fittedGates) return fittedGates;
 		const chainContacts = retryChainContacts(request, curveFitter);
 		if (chainContacts) return chainContacts;
+		const cornerLanes = counterLanes ? undefined : retryCornerLanes(request, curveFitter);
+		if (cornerLanes) return cornerLanes;
 		const closePanels: Construction[] = [];
 		const textPanels = retryTextPanelIslands(request, curveFitter, closePanels);
 		if (textPanels) return textPanels;
@@ -520,6 +528,40 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		if (widerConnections) return widerConnections;
 		throw error;
 	}
+}
+
+/** A single connected figure need not weave through one long central lane.
+ * Divide it among the existing three lanes, preserving both checked corners
+ * and cancelling the artificial seams. Usually a final fallback; three
+ * separate counters across the lanes try this construction first. */
+function retryCornerLanes(request: GeneratorRequest, curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult | undefined {
+	if (request.mode !== 'figure' || request.style !== 'corners') return;
+	const rings = normalizeContours(request.contours ?? []);
+	if (forest(rings).length !== 1) return;
+	let best: GeneratorResult | undefined;
+	for (const [split, routing] of [[.25, 'separated'], [1 / 3, 'chain']] as const) {
+		let construction: Construction;
+		try {
+			construction = generateCornerChecks(rings, request.frameSize, request.scale, routing, true, false, undefined, split);
+		} catch (error) {
+			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			continue;
+		}
+		for (const fraction of [0, .2, .4]) try {
+			const geometry = fraction ? curveSharedCuts(construction.geometry, undefined, fraction) : construction.geometry;
+			if (!geometry) continue;
+			const result = improveSharedConnections(finishConstruction(request, construction, 'silhouette', geometry, curveFitter));
+			const margin = intersectionMarginPx(inferOverlapRect(result.design.fingers, result.design.gridSize),
+				gridClearanceScale(result.design.gridSize.x, result.design.gridSize.y));
+			if (findFingersWithIssues(result.design.fingers, margin * 1.1).size) continue;
+			const tips = cutTipCounts(result.design);
+			if (!best || fewerCutTips(tips, cutTipCounts(best.design))) best = result;
+			if (!tips[1]) return best;
+		} catch (error) {
+			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		}
+	}
+	return best;
 }
 
 /** A near contact can pinch even when both component outlines are individually
