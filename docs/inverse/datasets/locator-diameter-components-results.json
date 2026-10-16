@@ -781,5 +781,65 @@
     "tmp/heart-learning/locator-diameter-components-v1/reconstruction-figures.json": "1241cd67ef0a0d8c7a4cddceab891f88b8c24de8b2f20f89cd2a2ba19936637e",
     "tmp/heart-learning/locator-diameter-components-v1/star-feature-diagnosis.png": "cafe8148e7e30cdb87aee860b8543eac5f933bfd314bc33b950fd0ce6340c2f0",
     "tmp/heart-learning/locator-diameter-components-v1/star-source-feature-zoom.png": "7694c5f30f0851cc087b3bd1e528fe328805f838b7b12cd27d572735fa8b23e3"
+  },
+  "repositoryQA": {
+    "status": "complete",
+    "applicationPassed": 865,
+    "applicationSkipped": 1,
+    "inversePassed": 972,
+    "cornerMetricPythonPassed": 6,
+    "commands": [
+      {
+        "stage": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 10.29124775
+      },
+      {
+        "stage": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 6.665888582999999
+      },
+      {
+        "stage": "test",
+        "command": [
+          "npm",
+          "run",
+          "test"
+        ],
+        "exitCode": 0,
+        "seconds": 1101.407473375
+      },
+      {
+        "stage": "build",
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 19.8315843339999
+      }
+    ],
+    "sourceFilesVerified": 870,
+    "previousProductionPinsUnchanged": 801,
+    "artifactsSha256": {
+      "tmp/heart-learning/locator-diameter-components-v1/qa/source.json": "477e3716f62b4c2262ca69219973ac1cd38334e75bc1aec09b75d853a24ed951",
+      "tmp/heart-learning/locator-diameter-components-v1/qa/state.json": "5126d27eebf9563fa394bb76879d4add4e84006863eeaa113332e1dda95cbf1b",
+      "tmp/heart-learning/locator-diameter-components-v1/qa/checks.json": "a7ecaa1493ae44a3dfb1d7bf62d2f02a9973d0c4bd04fa18d0fe9bc24bc4c546",
+      "tmp/heart-learning/locator-diameter-components-v1/qa/check.log": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092",
+      "tmp/heart-learning/locator-diameter-components-v1/qa/lint.log": "2b7add329ca80a0f26dcb26c7eb139cd28b3768793c6b0797002f91a54119a34",
+      "tmp/heart-learning/locator-diameter-components-v1/qa/test.log": "cd489534e48dd1de860cc55aa90099c09d472e14ed7282087b15cc644dd8ffe0",
+      "tmp/heart-learning/locator-diameter-components-v1/qa/build.log": "72bbe6e81d7b0b5dc149b94f31dea7e73685a3e20b16af698c8413d76dbd4fbd"
+    }
   }
 }

@@ -50,6 +50,8 @@ edge is omitted. Rabbit passes at 0.57%; candle loses a border feature. All 23
 accepted outputs pass editable checks. The rejected bicycle cannot pass editor
 geometry conversion, so the controller's nonzero exit is retained in the
 report. Twelve focused Node checks and six analytic corner-metric tests pass.
+Full repository QA also passes: 865 application tests (one skipped), 972 inverse
+tests, type checking, lint and build, with all 870 pinned source files unchanged.
 No learned model or locator-objective change is integrated into the website.
 
 A [single-star resolution diagnostic](material-resolution-diagnostic.json)
