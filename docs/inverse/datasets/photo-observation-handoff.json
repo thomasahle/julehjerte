@@ -1,0 +1,144 @@
+{
+  "schema": "photographic-observation-handoff-review-1",
+  "status": "two_production_reproductions; implementation_pending",
+  "runtimeCommit": "3edc6b8",
+  "sourceCropStudy": "docs/inverse/datasets/accepted-crop-review.json",
+  "preparation": {
+    "status": "reproduced_with_production_preparation",
+    "fixture": {
+      "imageSize": 64,
+      "cropSide": 128,
+      "resolution": 64,
+      "fullyObservedPixels": 1024,
+      "missingPixels": 3072
+    },
+    "photoObservationField": null,
+    "binaryObservationField": null,
+    "errorWithoutCoverage": {
+      "mismatchPixels": 3072,
+      "observedPixels": 4096,
+      "observedFraction": 1,
+      "mismatchFraction": 0.75
+    },
+    "errorWithIndependentCoverage": {
+      "mismatchPixels": 0,
+      "observedPixels": 1024,
+      "observedFraction": 0.25,
+      "mismatchFraction": 0
+    },
+    "scope": "Analytic correctness fixture, not a claimed photographic reconstruction improvement.",
+    "constraints": [
+      "Retain the mask and both missing/observed accounting.",
+      "Exclude padding from paper-color estimation as well as downstream fitting.",
+      "Preserve coverage through import, editor actions, undo, save/restore and solver handoff.",
+      "Explicitly painted pixels become known, including same-color edits.",
+      "Transparent pixels inside the source retain the selected background-compositing semantics."
+    ]
+  },
+  "classification": {
+    "status": "reproduced",
+    "fixture": "Opaque grayscale papers at RGB 100 and 120; identical photographed pixels, with and without white outside-image padding.",
+    "wholeSourceClassification": {
+      "method": "otsu",
+      "threshold": 100,
+      "labCenters": null,
+      "inverted": false,
+      "dither": false,
+      "actualResolution": 64,
+      "traceUsed": false,
+      "traceChangeFraction": 0,
+      "totalChangeFraction": 0,
+      "sourceMaskComponents": 1,
+      "vectorSampleComponents": 1,
+      "requestedResolution": 64
+    },
+    "paddedClassification": {
+      "method": "otsu",
+      "threshold": 120,
+      "labCenters": null,
+      "inverted": false,
+      "dither": false,
+      "actualResolution": 64,
+      "traceUsed": false,
+      "traceChangeFraction": 0,
+      "totalChangeFraction": 0,
+      "sourceMaskComponents": 1,
+      "vectorSampleComponents": 1,
+      "requestedResolution": 64
+    },
+    "wholeSourceCounts": [
+      2048,
+      2048
+    ],
+    "paddedObservedCounts": [
+      0,
+      1024
+    ],
+    "observedMisclassification": 0.5,
+    "conclusion": "Missing pixels affect automatic paper classification before any loss weights can be applied. Ignoring padding in fitting alone cannot recover the already collapsed paper labels."
+  },
+  "handoff": [
+    {
+      "path": "static/inverse/core/input.js",
+      "finding": "rectify composites out-of-bounds samples with the selected background. preprocessPixels quantizes the whole result without coverage. preprocessBinaryMask does not accept validMask."
+    },
+    {
+      "path": "static/inverse/core/engine.js",
+      "finding": "prepare preview exports optional importance weights but no observation validity. Existing source-image error accounting already distinguishes validMask when it is present."
+    },
+    {
+      "path": "src/lib/paint/importImage.ts",
+      "finding": "maskFromPrepared returns only size/data; any added engine observation field would still be dropped here."
+    },
+    {
+      "path": "src/lib/paint/mask.ts",
+      "finding": "Mask currently stores size/data only. Cloning and packed persistence need observation support."
+    },
+    {
+      "path": "src/lib/inverse/engine.ts",
+      "finding": "maskToArtwork copies the mask and optionally free-border importance, without photo observation coverage."
+    },
+    {
+      "path": "src/lib/paint/tools.ts",
+      "finding": "Same-colour painting returns early. When unknown cells are introduced, explicit painting of that same colour must still mark those cells known."
+    },
+    {
+      "path": "src/lib/paint/selection.ts",
+      "finding": "Lift/transform/commit copies only colour cells. Observation must follow the patch, and explicitly cleared cells must become known."
+    },
+    {
+      "path": "src/lib/editor/session.svelte.ts",
+      "finding": "Persistence stores only packed colour cells; unknown regions would be lost after restore without schema support."
+    }
+  ],
+  "requirements": [
+    "Keep missing photographic evidence separate from permission to alter a free border.",
+    "Exclude outside-source padding from palette estimation before forming the colour mask.",
+    "Keep original RGB/crop and report observed/missing area so changed scoring is inspectable. Do not compare a newly masked metric directly to old whole-crop percentages.",
+    "Propagate observation through worker preparation, import, mask edits, symmetry, selection, undo/redo, persistence, solve and result comparison.",
+    "An ordinary image or drawing without missing observations keeps its existing meaning.",
+    "Keep alpha compositing for transparent artwork independent from missing source coordinates.",
+    "Reject an entirely unobserved input explicitly; it must not score zero disagreement.",
+    "Test missing-pixel colour invariance in count initialization, fitting, feature checks, matching preference and final export.",
+    "Re-run original frozen corpus outputs separately from any new coverage-aware benchmark."
+  ],
+  "limitations": "Analytic fixtures demonstrate bugs, not improvement on the three clipped photographs. No production source, crop, mask, threshold or benchmark denominator changed by this diagnosis.",
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/coverage-handoff-v1/palette.json",
+      "sha256": "62eb085a9cad6eaba08e7a8d7370e64f7bde5768619caa51601000d2797eca66"
+    },
+    {
+      "path": "tmp/heart-learning/coverage-handoff-v1/palette.mjs",
+      "sha256": "8edee16501a0da9b5a8de37a63e822b3960d63af29fd8aa669fb8612d2c608f0"
+    },
+    {
+      "path": "tmp/heart-learning/coverage-handoff-v1/replay.mjs",
+      "sha256": "b10efb68ad9522d89497535d08d7b12649b84067e753d2b862b1eaa5dd8eaf71"
+    },
+    {
+      "path": "tmp/heart-learning/coverage-handoff-v1/result.json",
+      "sha256": "034a9a4bb4213bbb08178138325da495c28c338c65f343268536d535f7583115"
+    }
+  ]
+}

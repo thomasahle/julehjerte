@@ -59,6 +59,16 @@ rectifier replay measure 1.68%/2.77%/0.174% synthetic padding weight in crossed-
 bauble and bottom-flower respectively. No crops, masks or benchmark denominators
 were changed by this review.
 
+[Production handoff reproductions](photo-observation-handoff.json) show why loss
+weights alone will not fix clipping. A controlled crop with one-quarter observed
+image produces 75% artificial mismatch, and binary preparation drops an explicit
+observation mask. In a second fixture, adding white outside-source padding makes
+automatic classification collapse two photographed grey papers into one: half
+the observed pixels become misclassified before fitting starts. Import, editing,
+undo, persistence and solver handoff must carry observation separately from free-
+border permission. These are correctness diagnoses, not photographic solve gains;
+the production fix remains pending.
+
 [A muted teal/pale candle photograph](real-candle-annotation-review.json) now has
 reviewed candidate body/material polygons and six four-sector contact
 neighbourhoods, three ordinary-edge controls and one separately recorded narrow
