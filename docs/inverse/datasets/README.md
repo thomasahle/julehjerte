@@ -40,7 +40,11 @@ above 0.90 and total disagreement below 2.7%; actual geometry and paper checks
 pass. Both outputs were visually reviewed. The minimal fitter change and two
 analytic regression tests are integrated, with all ten focused tests passing,
 including the unchanged photographic, finer-paper and rollback-cycle checks.
-Broad QA is pending; this is one photographic case, not a general speed claim.
+Type checking, lint, build, 857 application tests (one skipped), and private
+Chromium star/hat checks pass. Both browser exports are byte-identical to the
+previous QA run and were visually reviewed. The full inverse suite and corpus
+replays are running with frozen sources; this is one photographic case, not a
+general speed claim.
 
 [Source-crop review](accepted-crop-review.json) qualifies the photographic solve
 rate: 18 of the 26 accepted outputs in the preceding corpus run have weak

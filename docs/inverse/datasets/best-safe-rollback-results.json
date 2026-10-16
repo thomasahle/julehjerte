@@ -1,6 +1,6 @@
 {
   "schema": "best-safe-rollback-results-1",
-  "status": "implemented; focused_checks_10_of_10; broad_QA_pending",
+  "status": "implemented; focused_checks_10_of_10; full_QA_running",
   "problem": "A worse valid checkpoint replaced the rollback coordinates even when it did not replace the selected best candidate. A later invalid block therefore restarted from a poorer fit and lost the useful bird-eye boundary.",
   "change": "Keep the rollback coordinates with the best physically valid candidate under the existing selection/preference comparator. Worse valid checkpoints still continue exploration. Invalid states still trigger rollback and the same rate reduction.",
   "controls": "No changes to probabilities, crop, original-image or feature thresholds, gradients, paper tolerances, routing budget, or count portfolio.",
@@ -113,5 +113,48 @@
     "seconds": 49.052793292,
     "log": "tmp/heart-learning/best-safe-integration-v1/focused.log",
     "sha256": "9693aa837bc9170b482362b36e7bd165d0069af32f46b79b13d3a7692c82213b"
+  },
+  "fullQA": {
+    "status": "running",
+    "root": "tmp/heart-learning/best-safe-integration-v1/qa",
+    "runtimeCommit": "3edc6b8",
+    "controllerPid": 22581,
+    "completedChecks": [
+      "check",
+      "lint",
+      "build",
+      "served asset verification",
+      "private Chromium star/hat",
+      "857 application tests; one skipped"
+    ],
+    "browserReview": {
+      "status": "reviewed",
+      "results": [
+        {
+          "case": "chromium-star",
+          "templateChecksPassed": true,
+          "fitSeconds": 1.583,
+          "geometryIdenticalToPreviousQA": true,
+          "visualReview": "Star and frame remain crisp; identical exported geometry.",
+          "screenshot": "tmp/heart-learning/best-safe-integration-v1/qa/browser/chromium-star/result.png",
+          "screenshotSha256": "522d9dccd90dd690c1d61426978ec014621f5671725846e4435ff501ef80010e"
+        },
+        {
+          "case": "chromium-top-hat-preferred",
+          "templateChecksPassed": true,
+          "fitSeconds": 6.414,
+          "geometryIdenticalToPreviousQA": true,
+          "visualReview": "Hat silhouette retained; existing small crown/brim bumps and curved free-border shapes remain. Identical exported geometry.",
+          "screenshot": "tmp/heart-learning/best-safe-integration-v1/qa/browser/chromium-top-hat-preferred/result.png",
+          "screenshotSha256": "cd7dbc32e8336499bf2c66c5342ced8f48236b51e903a89e3e0278925fc9dd63"
+        }
+      ]
+    },
+    "remaining": [
+      "inverse suite",
+      "22 Hunodan timed fits",
+      "hard-photo corpus and original-mask comparison",
+      "editable export replays"
+    ]
   }
 }
