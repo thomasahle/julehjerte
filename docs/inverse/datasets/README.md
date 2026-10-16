@@ -33,20 +33,35 @@ The inventory, with material annotations updated on 2026-10-16, contains:
 
 ## Current results and limits
 
+The combined count-bound and curve-cache **actual-browser** run completes all
+**22 regular Hunodan cases below ten seconds**, measured from Find snit to
+editable-ready: **5.98 s median, 9.85 s maximum**. Every painting mask, fitted
+cutting geometry, exported SVG and painting-grid error is unchanged from the
+previous native-import browser run. The combined QA run then stopped on a hard
+puppy photograph: editable simplification kept its 400px painting error but
+introduced six additional wrong pixels on the original 390px source. This
+conversion gap predates the curve cache. The
+[native conversion fix](native-conversion-fidelity-results.json) now requires
+both grids to pass while an imported mask is unchanged, preserving free-border
+weights and observation coverage. Its regression, SVG round trip and related
+checks pass (80 focused tests); renewed browser and full repository QA are
+pending. The failed run remains recorded, not counted as complete QA.
+
 [Cached curve evaluation](curve-evaluation-cache-results.json) reduces the
 editable-conversion stage by **33%** across 110 saved inputs (65 distinct fitted
 geometries), preserving every converted coordinate, validation result and SVG
 byte. The dense Hunodan conversion falls from roughly **0.86 s to 0.55 s**.
 This reuses the same arithmetic instead of changing tolerances or fitting
 iterations. It is integrated locally alongside the count-search bound; combined
-browser timing and repository QA are pending.
+browser timing is reported above, with full repository QA still pending.
 
 The [supported-count search bound](supported-count-bound-results.json) is now
 integrated locally. It skips other counts only when they cannot displace an
 already valid boundary-supported fit under the existing one-percentage-point
 preference. All **22 Hunodan mask pairs retain byte-identical cutting geometry**;
 the slow case falls from **16.07 s to 6.87 s**. Candidate solver replays have a
-**5.82 s median** and **9.01 s maximum**; actual-browser release QA is still pending.
+**5.82 s median** and **9.01 s maximum**; the combined actual-browser run is
+reported above.
 All **110 fits across 55 fixed masks** retain their pass/fail status, and all
 **110 editable SVG conversions** pass. The photo benchmark remains **27/31**,
 including its two unchanged no-crop failures. Ten timed fits have changed

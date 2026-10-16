@@ -1,0 +1,129 @@
+{
+  "schema": "native-conversion-fidelity-results-1",
+  "status": "focused-passed-release-qa-pending",
+  "cause": "The converter checked only the 400px painting target. Equal error on an enlarged binary mask did not guarantee equal error at the unchanged 390px source sampling. The cache and uncached simplifiers return the same failing conversion.",
+  "change": "Check unchanged native sampling and the painting grid, each at its own size and double size. Preserve source error on both grids. Average free-border importance over painting cells assigned to each native cell; observation coverage remains separate. Actual colour or coverage edits disable native reuse.",
+  "regression": {
+    "before": {
+      "editorValidation": {
+        "passed": true,
+        "tolerance": 0.1,
+        "fidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 3.75e-05
+            },
+            {
+              "resolution": 800,
+              "mismatch": 4.21875e-05
+            }
+          ],
+          "originalSourceError": 0.01380625,
+          "sourceError": 0.01380625
+        }
+      },
+      "native": {
+        "passed": false,
+        "maximumWeaveDrift": 0.001,
+        "weaveDrift": [
+          {
+            "resolution": 390,
+            "mismatch": 5.259697567389875e-05
+          },
+          {
+            "resolution": 780,
+            "mismatch": 5.4240631163708086e-05
+          }
+        ],
+        "originalSourceError": 0.012735042735042735,
+        "sourceError": 0.012774490466798159
+      }
+    },
+    "after": {
+      "editorValidation": {
+        "passed": true,
+        "tolerance": 0.025,
+        "fidelity": {
+          "passed": true,
+          "maximumWeaveDrift": 0.001,
+          "weaveDrift": [
+            {
+              "resolution": 400,
+              "mismatch": 0
+            },
+            {
+              "resolution": 800,
+              "mismatch": 1.5625e-06
+            }
+          ],
+          "originalSourceError": 0.01380625,
+          "sourceError": 0.01380625,
+          "nativeRaster": {
+            "passed": true,
+            "maximumWeaveDrift": 0.001,
+            "weaveDrift": [
+              {
+                "resolution": 390,
+                "mismatch": 0
+              },
+              {
+                "resolution": 780,
+                "mismatch": 1.643655489809336e-06
+              }
+            ],
+            "originalSourceError": 0.012735042735042735,
+            "sourceError": 0.012735042735042735
+          }
+        }
+      }
+    },
+    "source": {
+      "case": "hard-flettede-puppy-half",
+      "maskSha256": "2abddb3cba34978548c5a575c6a01d05afcbfc85631e95bdf21b863ab6c22971",
+      "geometrySha256": "d68cab7d0b6d69e49a55915b3b571822807df06016d613d2d4428c96e15f1bfb"
+    }
+  },
+  "focusedTests": {
+    "passed": 80,
+    "files": 5,
+    "newRegressions": 3,
+    "preFixNewTestsFailed": 3,
+    "covers": [
+      "native and painting error",
+      "SVG round trip and editor geometry",
+      "colour and coverage edits",
+      "tiny weighted protected regions",
+      "unobserved pixels",
+      "reference snapshot isolation"
+    ]
+  },
+  "check": "0 errors, 7 existing CSS warnings",
+  "focusedLint": "passed",
+  "precedingBrowserHunodan": {
+    "passed": 22,
+    "cases": 22,
+    "underTenSeconds": 22,
+    "medianSeconds": 5.984049999952316,
+    "maximumSeconds": 9.851599999904632,
+    "identicalToNativeImport": [
+      "all 22 painting masks",
+      "all 22 cutting geometries",
+      "all 22 editable SVG files",
+      "all 22 painting errors"
+    ],
+    "qaRoot": "tmp/heart-learning/supported-count-bound-runtime-v1/qa",
+    "fullQa": "Stopped at hard-photo native conversion assertion before full npm test."
+  },
+  "qaRoot": "tmp/heart-learning/native-conversion-fidelity-v1/qa",
+  "artifactsSha256": {
+    "tmp/heart-learning/native-conversion-fidelity-v1/replay.json": "8d667f317aeff905b1971c29c6e459b9660a25079bef6af891c20aa38162a6a4",
+    "tmp/heart-learning/native-conversion-fidelity-v1/check.log": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092",
+    "scripts/inverse/fixtures/native-conversion-puppy.json": "e613911ac425dc6c13068ab8ee4741d9a87384d3f91904c2c8bacc9b90719ace",
+    "tmp/heart-learning/supported-count-bound-runtime-v1/qa/state.json": "1ce8cfd3ced05f2a0693ac61603b1618a737f82753d42e4cbba3f94208c59da4",
+    "tmp/heart-learning/supported-count-bound-runtime-v1/qa/browser-hunodan/results.json": "c2cc2e2e6b2d18b4beb7d8a77c644f9a0f7d8fa6357411709400dbe94e37531d",
+    "tmp/heart-learning/supported-count-bound-runtime-v1/qa/browser-photos/results.json": "1e6a0876df3ffdb91c60f693f8f504aa42109640bb2de9e9e00eb464dd96ed5b"
+  }
+}

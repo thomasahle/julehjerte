@@ -43,7 +43,7 @@
   },
   "method": "Two separate SSR module loaders select the unchanged or cached simplifier. Alternate arm order for each saved fit; compare every scalar coordinate, fidelity result, chosen tolerance and complete serialized SVG. Browser cases use their actual 400px painting reference; photo benchmark cases retain their native masks and observation coverage.",
   "limitations": [
-    "Conversion timings exclude module loading, fitting and browser rendering. Actual-browser speed measurements are pending.",
+    "Conversion replay timings exclude module loading, fitting and browser rendering. The combined actual-browser measurements are recorded separately below; full QA stopped at a pre-existing native conversion fidelity gap.",
     "The 110 inputs come from two fitted variants of 55 cases, with repeated geometry; they are not 110 independent photographs.",
     "No fit-quality or legality threshold is relaxed. Existing photographic reconstruction defects remain."
   ],
@@ -76,5 +76,21 @@
   "focusedTests": {
     "passed": 61,
     "files": 3
-  }
+  },
+  "combinedBrowserQa": {
+    "passed": 22,
+    "cases": 22,
+    "underTenSeconds": 22,
+    "medianSeconds": 5.984049999952316,
+    "maximumSeconds": 9.851599999904632,
+    "identicalToNativeImport": [
+      "all 22 painting masks",
+      "all 22 cutting geometries",
+      "all 22 editable SVG files",
+      "all 22 painting errors"
+    ],
+    "qaRoot": "tmp/heart-learning/supported-count-bound-runtime-v1/qa",
+    "fullQa": "Stopped at hard-photo native conversion assertion before full npm test."
+  },
+  "followup": "native-conversion-fidelity-results.json"
 }

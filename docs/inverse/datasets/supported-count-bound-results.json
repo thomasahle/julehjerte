@@ -1353,5 +1353,21 @@
       "Hunodan supported-count finer-verification regression",
       "Candle beneficial simpler-finalist regression"
     ]
-  }
+  },
+  "combinedBrowserQa": {
+    "passed": 22,
+    "cases": 22,
+    "underTenSeconds": 22,
+    "medianSeconds": 5.984049999952316,
+    "maximumSeconds": 9.851599999904632,
+    "identicalToNativeImport": [
+      "all 22 painting masks",
+      "all 22 cutting geometries",
+      "all 22 editable SVG files",
+      "all 22 painting errors"
+    ],
+    "qaRoot": "tmp/heart-learning/supported-count-bound-runtime-v1/qa",
+    "fullQa": "Stopped at hard-photo native conversion assertion before full npm test."
+  },
+  "followup": "native-conversion-fidelity-results.json"
 }

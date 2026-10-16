@@ -1,7 +1,7 @@
 /** Simplifying individual cuts must also preserve their combined weave. */
 import type { HeartDesign } from '$lib/types/heart';
 import type { Mask } from '$lib/paint/mask';
-import { maskMismatch } from '$lib/paint/mask';
+import { maskMismatch, solverRaster } from '$lib/paint/mask';
 import { rasterizeDesign } from '$lib/paint/rasterize';
 
 export type ConversionReference = { mask: Mask; weights?: ArrayLike<number> };
@@ -11,17 +11,40 @@ export type ConversionFidelity = {
   weaveDrift: Array<{ resolution: number; mismatch: number }>;
   originalSourceError?: number;
   sourceError?: number;
+  /** Also protect the original sampling while the imported mask is unchanged. */
+  nativeRaster?: ConversionFidelity;
 };
 
 /** At most a tenth of a percentage point of additional rendered weave drift. */
 export const MAXIMUM_WEAVE_DRIFT = 0.001;
 
+/** Average importance over the painting cells belonging to each source cell.
+ * Sampling a single centre could discard a small protected motif entirely.
+ * Coverage already multiplies these weights and also matches on both grids.
+ */
+function nativeWeights(weights: Float64Array, paintingSize: number, sourceSize: number): Float64Array {
+  const result = new Float64Array(sourceSize ** 2), counts = new Uint32Array(result.length);
+  for (let y = 0; y < paintingSize; y++) {
+    const sy = Math.min(sourceSize - 1, Math.floor((y + .5) * sourceSize / paintingSize));
+    for (let x = 0; x < paintingSize; x++) {
+      const sx = Math.min(sourceSize - 1, Math.floor((x + .5) * sourceSize / paintingSize));
+      const j = sy * sourceSize + sx;
+      result[j]! += weights[y * paintingSize + x]!;
+      counts[j]!++;
+    }
+  }
+  for (let i = 0; i < result.length; i++) result[i]! /= counts[i]!;
+  return result;
+}
+
 /** One unchanged, already-normalized design supplies the reference masks.
  * Sample twice as finely too: a single pixel-centre mask can miss thin seams.
  * If the actual target is available, simplification may not increase its error,
  * including when only a small protected motif carries image weight.
+ * An unchanged photo import must pass at both native and painting resolution:
+ * equal error after enlargement does not imply equal error on the source grid.
  */
-export function conversionFidelity(original: HeartDesign, reference?: ConversionReference) {
+export function conversionFidelity(original: HeartDesign, reference?: ConversionReference): (candidate: HeartDesign) => ConversionFidelity {
   const resolution = reference?.mask.size ?? 400;
   if (!Number.isInteger(resolution) || resolution <= 0 ||
       reference && (reference.mask.data.length !== resolution * resolution ||
@@ -41,6 +64,12 @@ export function conversionFidelity(original: HeartDesign, reference?: Conversion
   if (observed) weights = Float64Array.from(observed, (v, i) => v * (weights?.[i] ?? 1));
   const mass = weights ? weights.reduce((sum, value) => sum + value, 0) : resolution * resolution;
   if (!(mass > 0) || !Number.isFinite(mass)) throw new Error('Conversion comparison needs positive image weight.');
+  const native = reference && solverRaster(reference.mask);
+  const checkNative = native && native !== reference!.mask
+    ? conversionFidelity(original, {
+      mask: native,
+      weights: weights && nativeWeights(weights, resolution, native.size)
+    }) : undefined;
   const sourceError = (mask: Uint8Array): number | undefined => {
     if (!target) return undefined;
     let error = 0;
@@ -54,12 +83,15 @@ export function conversionFidelity(original: HeartDesign, reference?: Conversion
     const masks = candidate === original ? originals : sizes.map(size => rasterizeDesign(candidate, size).data);
     const weaveDrift = masks.map((mask, i) => ({ resolution: sizes[i]!, mismatch: maskMismatch(mask, originals[i]!) }));
     const error = sourceError(masks[0]!);
+    const nativeRaster = checkNative?.(candidate);
     return {
       passed: weaveDrift.every(row => row.mismatch <= MAXIMUM_WEAVE_DRIFT) &&
-        (error === undefined || error <= originalSourceError! + 1e-12),
+        (error === undefined || error <= originalSourceError! + 1e-12) &&
+        (nativeRaster?.passed ?? true),
       maximumWeaveDrift: MAXIMUM_WEAVE_DRIFT,
       weaveDrift,
-      ...(error !== undefined ? { originalSourceError, sourceError: error } : {})
+      ...(error !== undefined ? { originalSourceError, sourceError: error } : {}),
+      ...(nativeRaster ? { nativeRaster } : {})
     };
   };
 }
