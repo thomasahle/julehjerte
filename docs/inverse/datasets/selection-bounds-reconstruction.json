@@ -1,6 +1,6 @@
 {
   "schema": "selection-bounds-reconstruction-1",
-  "status": "focused-validation-complete-release-qa-pending",
+  "status": "focused-and-browser-validation-complete-full-suite-fitter-failure",
   "method": "Same seven source photos and nine workflows, including two unselected multi-heart controls. Only selected-instance foreground bounds are retried; all masks and curves are fitted afresh. No annotation enters cropping or fitting.",
   "runtimeFiles": {
     "static/inverse/core/crop.js": "1ffeb4fe4f93019bb463d5b7d1db222409d27dd5f9d3b2ecf46ec899ea82debb",
@@ -564,5 +564,6 @@
     "tmp/heart-learning/selection-crop-diagnosis-v1/refined.mjs": "399f58c94dacb7deeeb02e41a8bb6539ded7b9bda68b3c000afce038131bf64b",
     "tmp/heart-learning/selection-crop-diagnosis-v1/refined.log": "3706608fe15605fb3de28a3be9636f2c937e390ca2c546a82ac0f4961ca37b6b",
     "tmp/heart-learning/selection-crop-diagnosis-v1/focused-tests.log": "60dbfaf53d27d9a4aa475c9bcbeb6111b18ef55d4b8ac8ff011bde14052d359d"
-  }
+  },
+  "releaseQA": "docs/inverse/datasets/selection-bounds-release-qa.json"
 }
