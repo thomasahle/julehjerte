@@ -1,6 +1,71 @@
 # Generator robustness results
 
-## Current coverage: crown counters in the layered frame
+## Current coverage: wider connections between separate components
+
+The Tabler paw now works in all three oval frames: plain, rays and check. The
+component-grid fallback previously joined neighbouring pieces at their nearest
+points. Some such gaps are pinched; moving the contact perpendicular to that
+gap could instead put it on the wrong side of a toe. The new fallback considers
+nearby vertex-to-edge midpoints and selects the shortest one with clearance
+from both joined outlines and every other component. Contacts on an actual
+clipping seam retain the existing shared gate. Existing successful layouts
+return before this search.
+
+The paw uses a 7×7 grid with the original five components and requested oval
+frame. Plain and check have no tips below 45°; rays has four, with none below
+30°. All three final production captures pass the editor check with 10% extra
+clearance, both JSON/SVG handoffs, and the independent material audit at
+resolution 1,400 with zero certain or possible detached core islands. The
+finished hearts and both cutting sheets were reviewed. Evidence is in
+`wide-gates-final-{audit,material,metrics}.json` and the three corresponding
+design captures and galleries. This remains a digital connectivity audit,
+not a physical weaving or tear-strength trial.
+
+A paired run covers all **153 oval combinations**: the **149 previous accepted
+designs stay exactly identical**, three are newly accepted, and coffee/plain
+still refuses. The fresh rerun of all 17 preceding figure refusals accepts the
+same three paw cases and refuses the other 14, with no invalid output.
+The merged corpus is **2,851 accepted / 299 refused / zero invalid**: figures
+1,108 / 14; text 1,743 / 285. This refreshes 166 distinct records and retains
+the other 2,984 (`wide-gates-current.json`). Expected accepted IDs match.
+
+The fallback's direct paw construction takes about 0.15–0.22 seconds in the
+prototype. Before the routing optimisation below, complete generation spent
+roughly 5–8 seconds exhausting earlier recipes in the paired run; concurrent
+diagnostic runs were slower. Hard-case latency, the remaining refusals and
+broader catalogue coverage are unfinished.
+
+Shared-cut routing now precomputes each obstacle's bounds padded by the full
+clearance distance. Candidate segments whose bounds are disjoint can skip the
+exact intersection and distance calculations; nearby obstacles retain all
+existing checks. A replay compared **77 routing calls** from ten complete figure
+generations against the preceding implementation. Every returned edge list was
+exactly identical, including failed routing attempts retained for later
+validation. Aggregate time inside those calls fell from **50.84 to 7.54 seconds**
+(`shared-bounds-replay.json`), about 85% less. This measures that routing stage,
+not total generation time. All ten final generations succeeded, and the three
+paw outputs exactly match their material-audited captures. Regressions cover
+nearby noncrossing obstacles in three orientations, as well as the existing
+coffee/frame checks.
+
+A final production timing run measured 2.72 seconds for paw/plain, 7.00 for
+paw/rays, 4.32 for paw/check and 3.92 for coffee/circle-check. All three paw
+designs remain byte-for-byte identical to the audited captures
+(`shared-bounds-production-bench.json`). The ray case in particular still needs
+latency work despite the faster routing stage.
+
+Verification: the final full run, with two test workers and unchanged timeout
+limits, has **1,148 passed / two timed out** out of 1,150 unit tests
+(`shared-bounds-final-tests.log`). Both are existing Kalam ordinary-repeat
+tests on an unchanged text path. The isolated rerun passes all eleven selected
+Kalam cases, including EMMA in 17.21 seconds under its 30-second limit and ANNA
+in 6.93 seconds under its 20-second limit (`shared-bounds-kalam-tests.log`).
+Thus every unit case is covered by a pass, but this is **not** a clean single
+full-suite run. No timeout was raised. All **177 inverse tests pass** in 85.92
+seconds, and check, lint and production build pass with the seven existing
+Svelte warnings. The full-run timing instability remains recorded.
+
+## Previous coverage: crown counters in the layered frame
 
 The layered Phosphor crown now uses a 9×9 grid with all three round counters,
 the circular medallion and both outer bands intact. Its final fallback moves

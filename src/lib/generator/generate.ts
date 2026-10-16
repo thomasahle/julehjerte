@@ -432,6 +432,8 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		if (lanes) return lanes;
 		const islands = retryFigureIslandPorts(request, curveFitter);
 		if (islands) return islands;
+		const contacts = retryWideComponentContacts(request, curveFitter);
+		if (contacts) return contacts;
 		if (request.mode === 'figure' && request.style === 'layers') try {
 			// Small counters can have no open approach from uniform panels.
 			// Split through their centres and attach the clipped components at
@@ -476,6 +478,36 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		if (bestRepeated) return bestRepeated;
 		throw error;
 	}
+}
+
+/** Separate islands need room around their shared gate, not just the shortest
+ * distance between their outlines. Preserve existing designs and try wider
+ * contacts only after their established constructions have failed. */
+function retryWideComponentContacts(request: GeneratorRequest, curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult | undefined {
+	if (request.mode !== 'figure' || request.style === 'corners' || request.style === 'layers') return;
+	const rings = normalizeContours(request.contours ?? []), count = forest(rings).length;
+	if (count < 2 || count > 8) return;
+	const size = request.frameSize ?? 70, scale = request.scale ?? .7,
+		sunburst = request.style === 'sunburst',
+		frame = request.style === 'fitted' ? 'fitted' : sunburst ? 'circle' : (request.frame ?? 'circle'),
+		style = request.style === 'fitted' ? 'check' : request.style === 'sunburst' ? 'rays' : (request.style ?? 'rays');
+	let best: GeneratorResult | undefined;
+	for (const columns of [4, 3, 2] as const) for (const route of [fourPortMotif, balancedFourPortMotif]) try {
+		const inner = generateComponentFigure(rings, frame, sunburst ? size * .8 : size,
+			scale, style, route, columns, sunburst ? 2 : 0, true);
+		const construction = sunburst ? sunburstBorder(inner, size) : inner;
+		const result = improveSharedConnections(finishConstruction(request, construction,
+			frame === 'fitted' ? 'silhouette' : 'nested', undefined, curveFitter));
+		const margin = intersectionMarginPx(inferOverlapRect(result.design.fingers, result.design.gridSize),
+			gridClearanceScale(result.design.gridSize.x, result.design.gridSize.y));
+		if (findFingersWithIssues(result.design.fingers, margin * 1.1).size) continue;
+		const tips = cutTipCounts(result.design);
+		if (!best || fewerCutTips(tips, cutTipCounts(best.design))) best = result;
+		if (!tips[0] && !tips[1]) return best;
+	} catch (error) {
+		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+	}
+	return best;
 }
 
 /** A disconnected part need not use its nearest gate. Another attachment can

@@ -32,7 +32,8 @@ function componentEnvelope(points: Ring): Ring {
  * Divide the largest islands until every row is full. A wider grid can keep
  * small neighbouring islands separate while sharing a larger body below them. */
 export function generateComponentFigure(rings: Ring[], frame: Frame | 'fitted' = 'circle', size = 70, scale = .7,
-	style: 'rays' | 'check' | 'plain' = 'rays', route = fourPortMotif, columns: 2 | 3 | 4 = 2, extraStrips = 0) {
+	style: 'rays' | 'check' | 'plain' = 'rays', route = fourPortMotif, columns: 2 | 3 | 4 = 2, extraStrips = 0,
+	wideContacts = false) {
 	const upright = rings.map(r => r.map(([x, y]): Point => [
 		x * size * scale * (frame === 'oval' ? .75 : 1), y * size * scale * (frame === 'oval' ? .75 : 1)
 	]));
@@ -72,6 +73,7 @@ export function generateComponentFigure(rings: Ring[], frame: Frame | 'fitted' =
 			}
 		}
 		let best = Infinity, p: Point = [0, 0];
+		const alternatives: { point: Point; gap: number }[] = [];
 		const rootsA = forest(a).map(n => n.ring), rootsB = forest(b).map(n => n.ring);
 		for (const [first, second] of [[rootsA, rootsB], [rootsB, rootsA]])
 			for (const r of first) for (const u of r) for (const s of second) for (let i = 0; i < s.length; i++) {
@@ -79,8 +81,10 @@ export function generateComponentFigure(rings: Ring[], frame: Frame | 'fitted' =
 					t = Math.max(0, Math.min(1, dot(sub(u, v), d) / Math.max(1e-20, dot(d, d)))),
 					q = mix(v, w, t), gap = distance(u, q);
 				if (gap < best) { best = gap; p = mix(u, q, .5); }
+				if (wideContacts && gap >= margin * 3) alternatives.push({ point: mix(u, q, .5), gap });
 			}
 		const obstacles = parts.filter(part => part !== a && part !== b).flat();
+		if (wideContacts) obstacles.push(...rootsA, ...rootsB);
 		const segmentDistance = (p: Point, a: Point, b: Point) => {
 			const d = sub(b, a), t = Math.max(0, Math.min(1, dot(sub(p, a), d) / Math.max(1e-20, dot(d, d))));
 			return distance(p, mix(a, b, t));
@@ -88,6 +92,13 @@ export function generateComponentFigure(rings: Ring[], frame: Frame | 'fitted' =
 		const clear = (p: Point) => !obstacles.some(r => inside(p, r) ||
 			r.some((a, i) => segmentDistance(p, a, r[(i + 1) % r.length]) < margin * 1.5));
 		if (!clear(p)) {
+			// Closest points can lie in a pinched gap between two toes. Prefer
+			// a short join whose midpoint clears both participating outlines
+			// as well as the other islands. Moving only normal to the closest
+			// pair can put the gate on the wrong side of either component.
+			const alternative = alternatives.sort((a, b) => a.gap - b.gap)
+				.find(candidate => clear(candidate.point));
+			if (alternative) return uprightToSheet(alternative.point);
 			// A third island can occupy the midpoint. Move the shared gate into
 			// the surrounding space, then route its connections around obstacles.
 			const vector = sub(centroid(b.flat()), centroid(a.flat())), length = Math.hypot(...vector);

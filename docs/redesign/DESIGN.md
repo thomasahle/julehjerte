@@ -692,6 +692,21 @@ contact. Alternate its A/B outline phase with the side of the panel so stitching
 cannot turn the counter into a closed cut. The completed heart still needs the
 normal whole-sheet checks; existing successful layouts return before this retry.
 
+Disconnected figures may finally retry component grids with wider shared
+contacts. A closest-point midpoint can sit in a pinched gap between two parts.
+When it lacks clearance, choose the shortest nearby vertex-to-edge midpoint
+that clears both participating outlines and all other islands. Preserve the
+agreed seam when two panels belong to the same original component. Try at most
+the 4-, 3- and 2-column arrangements with the existing two routing modes, keep
+the selected frame, and require 10% extra full-sheet clearance after fitting and
+rounding. Compare valid candidates by sharp-tip count and stop at zero tips.
+
+Shared-cut visibility checks may skip an obstacle only when its bounding box,
+padded by the complete clearance distance, is disjoint from the candidate
+segment's box. Precompute those bounds for the connection's routing candidates.
+Keep exact crossing, distance and endpoint checks for nearby obstacles; the
+optimisation must preserve the selected cutting geometry.
+
 ## 8. Constraints and process
 
 - SvelteKit static adapter, `trailingSlash: 'always'`, everything prerendered; keep it that way.

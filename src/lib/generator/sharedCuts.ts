@@ -16,9 +16,22 @@ export function rerouteSharedCuts(source: Edge[], margin: number): Edge[] {
 		const relevant = edges.filter(e => e !== original &&
 			Math.min(e.from[0], e.to[0]) <= bounds[2] && Math.max(e.from[0], e.to[0]) >= bounds[0] &&
 			Math.min(e.from[1], e.to[1]) <= bounds[3] && Math.max(e.from[1], e.to[1]) >= bounds[1]);
+		const padded = relevant.map(edge => ({
+			edge,
+			left: Math.min(edge.from[0], edge.to[0]) - margin * 1.1,
+			right: Math.max(edge.from[0], edge.to[0]) + margin * 1.1,
+			top: Math.min(edge.from[1], edge.to[1]) - margin * 1.1,
+			bottom: Math.max(edge.from[1], edge.to[1]) + margin * 1.1
+		}));
 		const clear = (a: Point, b: Point) => {
-			const u = sub(b, a);
-			for (const e of relevant) {
+			const u = sub(b, a), left = Math.min(a[0], b[0]), right = Math.max(a[0], b[0]),
+				top = Math.min(a[1], b[1]), bottom = Math.max(a[1], b[1]);
+			for (const obstacle of padded) {
+				// Candidate segments are often much shorter than the original
+				// connection's search box. Disjoint padded boxes cannot cross or
+				// violate the distance test below; retain its exact checks nearby.
+				if (right < obstacle.left || left > obstacle.right || bottom < obstacle.top || top > obstacle.bottom) continue;
+				const e = obstacle.edge;
 				const c = e.from, d = e.to, v = sub(d, c), det = cross(u, v);
 				if (Math.abs(det) > 1e-7) {
 					const t = cross(sub(c, a), v) / det, s = cross(sub(c, a), u) / det;

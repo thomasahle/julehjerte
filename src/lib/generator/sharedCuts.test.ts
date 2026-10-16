@@ -35,6 +35,22 @@ describe('invisible connection detours', () => {
 		add(edges, [[20, 40], [80, 40]], 'AB', 'shared');
 		expect(rerouteSharedCuts(edges, 1)).toBe(edges);
 	});
+	for (const angle of [0, Math.PI / 4, Math.PI / 2])
+		it(`still detours around a close noncrossing outline at angle ${angle}`, () => {
+			const rotate = (ring: Ring): Ring => ring.map(([x, y]) => [
+				50 + (x - 50) * Math.cos(angle) - (y - 50) * Math.sin(angle),
+				50 + (x - 50) * Math.sin(angle) + (y - 50) * Math.cos(angle)
+			]);
+			const edges: Edge[] = [], outline = rotate(obstacle);
+			add(edges, outline, 'A', 'outline');
+			// The original segment misses the outline but leaves only 0.75
+			// units of paper. Pruning distant obstacles must retain this one.
+			add(edges, rotate([[20, 46.25], [80, 46.25]]), 'AB', 'shared');
+			const shared = rerouteSharedCuts(edges, 1).filter(edge => edge.family === 'AB');
+			expect(shared.length).toBeGreaterThan(1);
+			const routed = finger('connection', [shared[0].from, ...shared.map(edge => edge.to)]);
+			expect(fingerHasIntersectionIssues(routed, [routed, finger('obstacle', outline)], 1)).toBe(false);
+		});
 	it('retains an unroutable connection for rejection by the complete validator', () => {
 		const edges: Edge[] = [];
 		add(edges, obstacle, 'A', 'outline');
