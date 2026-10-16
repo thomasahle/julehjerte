@@ -1,6 +1,6 @@
 {
   "schema": "refinement-repair-clock-plan-1",
-  "status": "queued-after-serial-release-qa",
+  "status": "complete",
   "reason": "Two browser runs reach the same improved half-star checkpoint at step 200, fail only short self-clearance, and record no repair. A preceding run repaired that checkpoint and returned a lower-error star. The existing 50 ms repair gate is a candidate explanation; saved reports have no checkpoint timestamps.",
   "method": "Three fresh control/instrumented pairs per case (18 fits), alternating order, on captured native masks with actual settings and candidate observers. Load-hook instrumentation records per-refinement time allowance, checkpoint time remaining, proposal validity, repair eligibility and selected output. It does not change deadlines, forces, geometry rules or masks.",
   "instrumentationLimit": "Taking timestamps and storing small records adds overhead. This is a diagnostic of which branch was taken, not a latency benchmark or a claim that instrumentation reproduces an uninstrumented trajectory.",
@@ -50,5 +50,6 @@
       "evidence": "Both arms select 9+9 cuts. The candidate enters polishing with a worse checkpoint, so the difference occurs before the final polishing cutoff. Per-refinement timing is needed to identify that earlier divergence.",
       "visualReview": "Both independent renders inspected: motif structure is retained with small boundary and central-join differences; 40 additional wrong pixels are retained in the comparison."
     }
-  }
+  },
+  "results": "refinement-repair-clock-results.json"
 }

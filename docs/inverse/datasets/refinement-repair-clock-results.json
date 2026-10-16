@@ -1,0 +1,678 @@
+{
+  "schema": "refinement-repair-clock-results-1",
+  "status": "complete-diagnostic",
+  "sourceFilesVerified": 1013,
+  "runs": 18,
+  "geometryPassed": 18,
+  "templateChecksPassed": 18,
+  "method": "Three fresh control/instrumented pairs for each of three frozen native masks. Alternate arm order. Instrumented loader records times and branches without changing forces, deadlines, masks or validity rules; overhead can change a timed trajectory. This is not a throughput comparison.",
+  "findings": [
+    "Half star: two of three instrumented runs reach the same step-200 proposal at 1.5580% refinement-grid error, failing only short self-clearance. Remaining phase allowance is -14.14 and -26.24 ms, so the 50 ms repair gate prevents projection. The third instrumented run stops before step 200. This verifies the missing-repair branch, not that the untried repair would succeed.",
+    "Half star uses a provisional recovered routing with a 700 ms polishing phase, despite returning the full solve in roughly six seconds. Its three uninstrumented independent mask errors range from 1.7470% to 2.0801%, so the issue occurs without instrumentation.",
+    "Gift: the same 4+4 initial refinement ends after 470 computed steps in every instrumented run, leaving a 5+5 alternative about 1.7-1.8 seconds. Final 4+4 polishing begins with only 0.94-0.97 seconds. This reproduces the shared allocation mechanism; all three current instrumented polishes reach the same selected error, so this run alone does not establish that capping the alternative improves quality.",
+    "Warped checker: two instrumented initial refinements reach 205 steps; a slower third reaches only 125, entering polishing with 1.7319% instead of 1.5961% error. The worse final fit therefore starts before final polishing, rather than from a missed short-return repair."
+  ],
+  "nextExperiment": "Keep the gradient-step deadline, but allow the provisional recovery checkpoint to complete its bounded short-return projection for up to 400 ms more, capped by the existing enclosing deadline. Evaluate fresh paired fits and unchanged independent validity checks before runtime integration.",
+  "records": [
+    {
+      "id": "hard-bibel-star-outline-half",
+      "variant": "control",
+      "repeat": 0,
+      "prepareSeconds": 0.09805583299999998,
+      "solveSeconds": 5.768709458,
+      "totalSeconds": 5.866765291,
+      "geometrySha256": "84f3b54ba3053a43a6d8fb346bb731ff66829bcd0120a561e0c5f19814f29ce8",
+      "refineSha256": "25aa7bb6aa87dfc836bca6cc17ba0febf0079b07032dbea50dd4cc4b68eabc24",
+      "independentError": {
+        "mismatchPixels": 1914,
+        "observedPixels": 109561,
+        "observedFraction": 1,
+        "mismatchFraction": 0.017469720064621535
+      },
+      "templateChecksPassed": true,
+      "geometryPassed": true,
+      "paper": "pass",
+      "refinements": []
+    },
+    {
+      "id": "hard-bibel-star-outline-half",
+      "variant": "instrumented",
+      "repeat": 0,
+      "prepareSeconds": 0.09521262499999997,
+      "solveSeconds": 5.903447625,
+      "totalSeconds": 5.9986602499999995,
+      "geometrySha256": "84f3b54ba3053a43a6d8fb346bb731ff66829bcd0120a561e0c5f19814f29ce8",
+      "refineSha256": "a598097f816e223b8346571e807b374d3ad793a6fa56559d210fba0568bf1b86",
+      "independentError": {
+        "mismatchPixels": 1914,
+        "observedPixels": 109561,
+        "observedFraction": 1,
+        "mismatchFraction": 0.017469720064621535
+      },
+      "templateChecksPassed": true,
+      "geometryPassed": true,
+      "paper": "pass",
+      "refinements": [
+        {
+          "counts": [
+            4,
+            4
+          ],
+          "resolution": 331,
+          "requestedSteps": 320,
+          "computedSteps": 165,
+          "budgetMilliseconds": 699.621916,
+          "elapsedMilliseconds": 791.9303749999999,
+          "selectedError": 0.017570120754648096,
+          "geometryPassed": true,
+          "paperPassed": true,
+          "repairTimeGated": []
+        }
+      ]
+    },
+    {
+      "id": "hard-bibel-star-outline-half",
+      "variant": "instrumented",
+      "repeat": 1,
+      "prepareSeconds": 0.09639979199999998,
+      "solveSeconds": 6.8658287080000004,
+      "totalSeconds": 6.9622285,
+      "geometrySha256": "84f3b54ba3053a43a6d8fb346bb731ff66829bcd0120a561e0c5f19814f29ce8",
+      "refineSha256": "a598097f816e223b8346571e807b374d3ad793a6fa56559d210fba0568bf1b86",
+      "independentError": {
+        "mismatchPixels": 1914,
+        "observedPixels": 109561,
+        "observedFraction": 1,
+        "mismatchFraction": 0.017469720064621535
+      },
+      "templateChecksPassed": true,
+      "geometryPassed": true,
+      "paper": "pass",
+      "refinements": [
+        {
+          "counts": [
+            4,
+            4
+          ],
+          "resolution": 331,
+          "requestedSteps": 320,
+          "computedSteps": 205,
+          "budgetMilliseconds": 699.6574999999993,
+          "elapsedMilliseconds": 771.5271669999993,
+          "selectedError": 0.017570120754648096,
+          "geometryPassed": true,
+          "paperPassed": true,
+          "repairTimeGated": [
+            {
+              "step": 200,
+              "remainingMilliseconds": -14.14020900000014,
+              "error": 0.015580361625030804,
+              "bestError": 0.017880450160184736
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hard-bibel-star-outline-half",
+      "variant": "control",
+      "repeat": 1,
+      "prepareSeconds": 0.09742262500000004,
+      "solveSeconds": 5.9060742909999995,
+      "totalSeconds": 6.0034969160000005,
+      "geometrySha256": "b30dccf4861e79ed022af62c0b256da568c352afa5a35f2168e1e7bce2d956ab",
+      "refineSha256": "25aa7bb6aa87dfc836bca6cc17ba0febf0079b07032dbea50dd4cc4b68eabc24",
+      "independentError": {
+        "mismatchPixels": 2279,
+        "observedPixels": 109561,
+        "observedFraction": 1,
+        "mismatchFraction": 0.020801197506411954
+      },
+      "templateChecksPassed": true,
+      "geometryPassed": true,
+      "paper": "pass",
+      "refinements": []
+    },
+    {
+      "id": "hard-bibel-star-outline-half",
+      "variant": "control",
+      "repeat": 2,
+      "prepareSeconds": 0.09537566599999997,
+      "solveSeconds": 5.763896917,
+      "totalSeconds": 5.859272583,
+      "geometrySha256": "759513932b5f37d7b5689397c0aba6e2c8421e91d2a5c0dc2765876a2ff9cb78",
+      "refineSha256": "25aa7bb6aa87dfc836bca6cc17ba0febf0079b07032dbea50dd4cc4b68eabc24",
+      "independentError": {
+        "mismatchPixels": 1951,
+        "observedPixels": 109561,
+        "observedFraction": 1,
+        "mismatchFraction": 0.017807431476529058
+      },
+      "templateChecksPassed": true,
+      "geometryPassed": true,
+      "paper": "pass",
+      "refinements": []
+    },
+    {
+      "id": "hard-bibel-star-outline-half",
+      "variant": "instrumented",
+      "repeat": 2,
+      "prepareSeconds": 0.09835524999999998,
+      "solveSeconds": 5.750200292000001,
+      "totalSeconds": 5.848555542,
+      "geometrySha256": "84f3b54ba3053a43a6d8fb346bb731ff66829bcd0120a561e0c5f19814f29ce8",
+      "refineSha256": "a598097f816e223b8346571e807b374d3ad793a6fa56559d210fba0568bf1b86",
+      "independentError": {
+        "mismatchPixels": 1914,
+        "observedPixels": 109561,
+        "observedFraction": 1,
+        "mismatchFraction": 0.017469720064621535
+      },
+      "templateChecksPassed": true,
+      "geometryPassed": true,
+      "paper": "pass",
+      "refinements": [
+        {
+          "counts": [
+            4,
+            4
+          ],
+          "resolution": 331,
+          "requestedSteps": 320,
+          "computedSteps": 205,
+          "budgetMilliseconds": 699.6612910000003,
+          "elapsedMilliseconds": 779.2369159999998,
+          "selectedError": 0.017570120754648096,
+          "geometryPassed": true,
+          "paperPassed": true,
+          "repairTimeGated": [
+            {
+              "step": 200,
+              "remainingMilliseconds": -26.240834000000177,
+              "error": 0.015580361625030804,
+              "bestError": 0.017880450160184736
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "photo-gift",
+      "variant": "control",
+      "repeat": 0,
+      "prepareSeconds": 0.10308616699999996,
+      "solveSeconds": 9.510675500000001,
+      "totalSeconds": 9.613761667,
+      "geometrySha256": "6618801dba530035f5473619c8e6de19d72c19ebbd7f3a547f16575e46f106a5",
+      "refineSha256": "25aa7bb6aa87dfc836bca6cc17ba0febf0079b07032dbea50dd4cc4b68eabc24",
+      "independentError": {
+        "mismatchPixels": 2664,
+        "observedPixels": 160000,
+        "observedFraction": 1,
+        "mismatchFraction": 0.01665
+      },
+      "templateChecksPassed": true,
+      "geometryPassed": true,
+      "paper": "pass",
+      "refinements": []
+    },
+    {
+      "id": "photo-gift",
+      "variant": "instrumented",
+      "repeat": 0,
+      "prepareSeconds": 0.10291012499999999,
+      "solveSeconds": 9.629391500000002,
+      "totalSeconds": 9.732301625,
+      "geometrySha256": "c8cda6d458cf93bada8d3c28425aa66fe23f6de39f6fd8906c8924b16e3388f4",
+      "refineSha256": "a598097f816e223b8346571e807b374d3ad793a6fa56559d210fba0568bf1b86",
+      "independentError": {
+        "mismatchPixels": 2652,
+        "observedPixels": 160000,
+        "observedFraction": 1,
+        "mismatchFraction": 0.016575
+      },
+      "templateChecksPassed": true,
+      "geometryPassed": true,
+      "paper": "pass",
+      "refinements": [
+        {
+          "counts": [
+            4,
+            4
+          ],
+          "resolution": 256,
+          "requestedSteps": 750,
+          "computedSteps": 470,
+          "budgetMilliseconds": 4953.802666,
+          "elapsedMilliseconds": 2799.253916,
+          "selectedError": 0.0198516845703125,
+          "geometryPassed": true,
+          "paperPassed": true,
+          "repairTimeGated": []
+        },
+        {
+          "counts": [
+            5,
+            5
+          ],
+          "resolution": 256,
+          "requestedSteps": 750,
+          "computedSteps": 325,
+          "budgetMilliseconds": 1791.574791,
+          "elapsedMilliseconds": 1888.169833,
+          "selectedError": 0.0268707275390625,
+          "geometryPassed": true,
+          "paperPassed": true,
+          "repairTimeGated": []
+        },
+        {
+          "counts": [
+            4,
+            4
+          ],
+          "resolution": 400,
+          "requestedSteps": 160,
+          "computedSteps": 125,
+          "budgetMilliseconds": 937.0987500000001,
+          "elapsedMilliseconds": 1175.4337499999992,
+          "selectedError": 0.0165625,
+          "geometryPassed": true,
+          "paperPassed": true,
+          "repairTimeGated": []
+        }
+      ]
+    },
+    {
+      "id": "photo-gift",
+      "variant": "instrumented",
+      "repeat": 1,
+      "prepareSeconds": 0.10482112499999997,
+      "solveSeconds": 9.606686458,
+      "totalSeconds": 9.711507583,
+      "geometrySha256": "c8cda6d458cf93bada8d3c28425aa66fe23f6de39f6fd8906c8924b16e3388f4",
+      "refineSha256": "a598097f816e223b8346571e807b374d3ad793a6fa56559d210fba0568bf1b86",
+      "independentError": {
+        "mismatchPixels": 2652,
+        "observedPixels": 160000,
+        "observedFraction": 1,
+        "mismatchFraction": 0.016575
+      },
+      "templateChecksPassed": true,
+      "geometryPassed": true,
+      "paper": "pass",
+      "refinements": [
+        {
+          "counts": [
+            4,
+            4
+          ],
+          "resolution": 256,
+          "requestedSteps": 750,
+          "computedSteps": 470,
+          "budgetMilliseconds": 4991.928583,
+          "elapsedMilliseconds": 2770.768,
+          "selectedError": 0.0198516845703125,
+          "geometryPassed": true,
+          "paperPassed": true,
+          "repairTimeGated": []
+        },
+        {
+          "counts": [
+            5,
+            5
+          ],
+          "resolution": 256,
+          "requestedSteps": 750,
+          "computedSteps": 325,
+          "budgetMilliseconds": 1832.042125,
+          "elapsedMilliseconds": 1899.5655000000006,
+          "selectedError": 0.0268707275390625,
+          "geometryPassed": true,
+          "paperPassed": true,
+          "repairTimeGated": []
+        },
+        {
+          "counts": [
+            4,
+            4
+          ],
+          "resolution": 400,
+          "requestedSteps": 160,
+          "computedSteps": 125,
+          "budgetMilliseconds": 951.9418749999995,
+          "elapsedMilliseconds": 1195.4453330000006,
+          "selectedError": 0.0165625,
+          "geometryPassed": true,
+          "paperPassed": true,
+          "repairTimeGated": []
+        }
+      ]
+    },
+    {
+      "id": "photo-gift",
+      "variant": "control",
+      "repeat": 1,
+      "prepareSeconds": 0.20446479099999998,
+      "solveSeconds": 9.520019,
+      "totalSeconds": 9.724483791,
+      "geometrySha256": "092ce4bbb0670a1362fa1f4e5875332e2bae909f84c7e712302f74406e9c020d",
+      "refineSha256": "25aa7bb6aa87dfc836bca6cc17ba0febf0079b07032dbea50dd4cc4b68eabc24",
+      "independentError": {
+        "mismatchPixels": 2655,
+        "observedPixels": 160000,
+        "observedFraction": 1,
+        "mismatchFraction": 0.01659375
+      },
+      "templateChecksPassed": true,
+      "geometryPassed": true,
+      "paper": "pass",
+      "refinements": []
+    },
+    {
+      "id": "photo-gift",
+      "variant": "control",
+      "repeat": 2,
+      "prepareSeconds": 0.10379433399999999,
+      "solveSeconds": 9.591665833,
+      "totalSeconds": 9.695460167,
+      "geometrySha256": "1c11d09536847e118cc84a8b3d34ffbda1768ec2503617f4db361a0810352f7c",
+      "refineSha256": "25aa7bb6aa87dfc836bca6cc17ba0febf0079b07032dbea50dd4cc4b68eabc24",
+      "independentError": {
+        "mismatchPixels": 2667,
+        "observedPixels": 160000,
+        "observedFraction": 1,
+        "mismatchFraction": 0.01666875
+      },
+      "templateChecksPassed": true,
+      "geometryPassed": true,
+      "paper": "pass",
+      "refinements": []
+    },
+    {
+      "id": "photo-gift",
+      "variant": "instrumented",
+      "repeat": 2,
+      "prepareSeconds": 0.10493775000000002,
+      "solveSeconds": 9.555701333,
+      "totalSeconds": 9.660639083,
+      "geometrySha256": "c8cda6d458cf93bada8d3c28425aa66fe23f6de39f6fd8906c8924b16e3388f4",
+      "refineSha256": "a598097f816e223b8346571e807b374d3ad793a6fa56559d210fba0568bf1b86",
+      "independentError": {
+        "mismatchPixels": 2652,
+        "observedPixels": 160000,
+        "observedFraction": 1,
+        "mismatchFraction": 0.016575
+      },
+      "templateChecksPassed": true,
+      "geometryPassed": true,
+      "paper": "pass",
+      "refinements": [
+        {
+          "counts": [
+            4,
+            4
+          ],
+          "resolution": 256,
+          "requestedSteps": 750,
+          "computedSteps": 470,
+          "budgetMilliseconds": 4934.948541999998,
+          "elapsedMilliseconds": 2805.2355409999996,
+          "selectedError": 0.0198516845703125,
+          "geometryPassed": true,
+          "paperPassed": true,
+          "repairTimeGated": []
+        },
+        {
+          "counts": [
+            5,
+            5
+          ],
+          "resolution": 256,
+          "requestedSteps": 750,
+          "computedSteps": 305,
+          "budgetMilliseconds": 1724.8302919999987,
+          "elapsedMilliseconds": 1790.7171660000004,
+          "selectedError": 0.0268707275390625,
+          "geometryPassed": true,
+          "paperPassed": true,
+          "repairTimeGated": []
+        },
+        {
+          "counts": [
+            4,
+            4
+          ],
+          "resolution": 400,
+          "requestedSteps": 160,
+          "computedSteps": 125,
+          "budgetMilliseconds": 970.8090009999987,
+          "elapsedMilliseconds": 1177.8311669999994,
+          "selectedError": 0.0165625,
+          "geometryPassed": true,
+          "paperPassed": true,
+          "repairTimeGated": []
+        }
+      ]
+    },
+    {
+      "id": "photo-warped-checker",
+      "variant": "control",
+      "repeat": 0,
+      "prepareSeconds": 0.135307333,
+      "solveSeconds": 10.203752625,
+      "totalSeconds": 10.339059958,
+      "geometrySha256": "79e5c636c0cf80ea9f7e40b473eae9fb0e90fb04a3284e14cd99976ad6f1de8a",
+      "refineSha256": "25aa7bb6aa87dfc836bca6cc17ba0febf0079b07032dbea50dd4cc4b68eabc24",
+      "independentError": {
+        "mismatchPixels": 2190,
+        "observedPixels": 160000,
+        "observedFraction": 1,
+        "mismatchFraction": 0.0136875
+      },
+      "templateChecksPassed": true,
+      "geometryPassed": true,
+      "paper": "pass",
+      "refinements": []
+    },
+    {
+      "id": "photo-warped-checker",
+      "variant": "instrumented",
+      "repeat": 0,
+      "prepareSeconds": 0.14864108299999998,
+      "solveSeconds": 10.331166375,
+      "totalSeconds": 10.479807458000002,
+      "geometrySha256": "6804437ce119e98bb10a5e139214277ea168c9e67a973aafde5c9210918d3c98",
+      "refineSha256": "a598097f816e223b8346571e807b374d3ad793a6fa56559d210fba0568bf1b86",
+      "independentError": {
+        "mismatchPixels": 2180,
+        "observedPixels": 160000,
+        "observedFraction": 1,
+        "mismatchFraction": 0.013625
+      },
+      "templateChecksPassed": true,
+      "geometryPassed": true,
+      "paper": "pass",
+      "refinements": [
+        {
+          "counts": [
+            9,
+            9
+          ],
+          "resolution": 256,
+          "requestedSteps": 750,
+          "computedSteps": 205,
+          "budgetMilliseconds": 1881.0276249999997,
+          "elapsedMilliseconds": 2102.247875,
+          "selectedError": 0.015960693359375,
+          "geometryPassed": true,
+          "paperPassed": true,
+          "repairTimeGated": []
+        },
+        {
+          "counts": [
+            9,
+            9
+          ],
+          "resolution": 400,
+          "requestedSteps": 160,
+          "computedSteps": 90,
+          "budgetMilliseconds": 894.4850420000002,
+          "elapsedMilliseconds": 1010.0507500000003,
+          "selectedError": 0.01360625,
+          "geometryPassed": true,
+          "paperPassed": true,
+          "repairTimeGated": []
+        }
+      ]
+    },
+    {
+      "id": "photo-warped-checker",
+      "variant": "instrumented",
+      "repeat": 1,
+      "prepareSeconds": 0.131701125,
+      "solveSeconds": 10.23510125,
+      "totalSeconds": 10.366802374999999,
+      "geometrySha256": "96b7050d8d31d2e163d64c12ac7e010302c24bea35c6fba8dc4397a6383deb63",
+      "refineSha256": "a598097f816e223b8346571e807b374d3ad793a6fa56559d210fba0568bf1b86",
+      "independentError": {
+        "mismatchPixels": 2180,
+        "observedPixels": 160000,
+        "observedFraction": 1,
+        "mismatchFraction": 0.013625
+      },
+      "templateChecksPassed": true,
+      "geometryPassed": true,
+      "paper": "pass",
+      "refinements": [
+        {
+          "counts": [
+            9,
+            9
+          ],
+          "resolution": 256,
+          "requestedSteps": 750,
+          "computedSteps": 205,
+          "budgetMilliseconds": 1919.571332999999,
+          "elapsedMilliseconds": 2141.5855409999995,
+          "selectedError": 0.015960693359375,
+          "geometryPassed": true,
+          "paperPassed": true,
+          "repairTimeGated": []
+        },
+        {
+          "counts": [
+            9,
+            9
+          ],
+          "resolution": 400,
+          "requestedSteps": 160,
+          "computedSteps": 85,
+          "budgetMilliseconds": 877.709249999999,
+          "elapsedMilliseconds": 1058.1309169999995,
+          "selectedError": 0.01360625,
+          "geometryPassed": true,
+          "paperPassed": true,
+          "repairTimeGated": []
+        }
+      ]
+    },
+    {
+      "id": "photo-warped-checker",
+      "variant": "control",
+      "repeat": 1,
+      "prepareSeconds": 0.139090875,
+      "solveSeconds": 10.321638334,
+      "totalSeconds": 10.460729208999998,
+      "geometrySha256": "17881093e8699453645194c39e15e2ce1c0f6cf725a0f2e09f18c8a9bd64ce24",
+      "refineSha256": "25aa7bb6aa87dfc836bca6cc17ba0febf0079b07032dbea50dd4cc4b68eabc24",
+      "independentError": {
+        "mismatchPixels": 2185,
+        "observedPixels": 160000,
+        "observedFraction": 1,
+        "mismatchFraction": 0.01365625
+      },
+      "templateChecksPassed": true,
+      "geometryPassed": true,
+      "paper": "pass",
+      "refinements": []
+    },
+    {
+      "id": "photo-warped-checker",
+      "variant": "control",
+      "repeat": 2,
+      "prepareSeconds": 0.13310916600000003,
+      "solveSeconds": 10.317036917,
+      "totalSeconds": 10.450146083,
+      "geometrySha256": "6804437ce119e98bb10a5e139214277ea168c9e67a973aafde5c9210918d3c98",
+      "refineSha256": "25aa7bb6aa87dfc836bca6cc17ba0febf0079b07032dbea50dd4cc4b68eabc24",
+      "independentError": {
+        "mismatchPixels": 2180,
+        "observedPixels": 160000,
+        "observedFraction": 1,
+        "mismatchFraction": 0.013625
+      },
+      "templateChecksPassed": true,
+      "geometryPassed": true,
+      "paper": "pass",
+      "refinements": []
+    },
+    {
+      "id": "photo-warped-checker",
+      "variant": "instrumented",
+      "repeat": 2,
+      "prepareSeconds": 0.138162333,
+      "solveSeconds": 10.240692292,
+      "totalSeconds": 10.378854625,
+      "geometrySha256": "3d5a6fe47f130be1fabb99fa47f99dbbbff69136ea388e70d067833da8ab2e1a",
+      "refineSha256": "a598097f816e223b8346571e807b374d3ad793a6fa56559d210fba0568bf1b86",
+      "independentError": {
+        "mismatchPixels": 2301,
+        "observedPixels": 160000,
+        "observedFraction": 1,
+        "mismatchFraction": 0.01438125
+      },
+      "templateChecksPassed": true,
+      "geometryPassed": true,
+      "paper": "pass",
+      "refinements": [
+        {
+          "counts": [
+            9,
+            9
+          ],
+          "resolution": 256,
+          "requestedSteps": 750,
+          "computedSteps": 125,
+          "budgetMilliseconds": 1454.1856669999988,
+          "elapsedMilliseconds": 1603.0528329999997,
+          "selectedError": 0.0173187255859375,
+          "geometryPassed": true,
+          "paperPassed": true,
+          "repairTimeGated": []
+        },
+        {
+          "counts": [
+            9,
+            9
+          ],
+          "resolution": 400,
+          "requestedSteps": 160,
+          "computedSteps": 85,
+          "budgetMilliseconds": 911.8021669999989,
+          "elapsedMilliseconds": 1022.4088750000001,
+          "selectedError": 0.01433125,
+          "geometryPassed": true,
+          "paperPassed": true,
+          "repairTimeGated": []
+        }
+      ]
+    }
+  ],
+  "artifactsSha256": {
+    "tmp/heart-learning/refinement-repair-clock-v1/state.json": "15e642b0c5007cb2d1bc8ffd824b6897fb298ba7ebcac2cce8846c3698133ae7",
+    "tmp/heart-learning/refinement-repair-clock-v1/results.json": "ff5609eb3285ccf28815473825e257a4ced91c93bc802bf69ccdf2463bb03afd",
+    "tmp/heart-learning/refinement-repair-clock-v1/source.json": "56b0ba897641cc8cfa3c32cf5dd1c8e68d0bf83e7888f835f3129d14af3fc72f",
+    "tmp/heart-learning/refinement-repair-clock-v1/replay.mjs": "f3512b971b1bac822f8d10272d05a65b6ff482084201566974da141b7a6eb04a",
+    "tmp/heart-learning/refinement-repair-clock-v1/run.py": "0aab9f1403b50e1ca2def8cf527eba14ad0711786995d1118d399e8698fad6c0"
+  }
+}

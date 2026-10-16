@@ -88,10 +88,17 @@ source files** remain unchanged through the browser, corpus and test runs.
 The increases expose a remaining scheduling issue. On the gift, faster early
 refinement gives a losing alternative more time, leaving the winning fit only
 89 polishing steps instead of 124. On the half-size star, an improved candidate
-can miss its short-return repair near the deadline. A prepared
-[timing diagnostic](refinement-repair-clock-plan.json) will record the actual
-remaining allowances before changing those policies; it also covers the warped
-checker, whose divergence occurs earlier in fitting.
+can miss its short-return repair near the deadline. The completed
+[18-run timing diagnostic](refinement-repair-clock-results.json) confirms that
+two instrumented half-star runs reach the improved step-200 checkpoint with
+**14–26 ms already beyond** their 700 ms refinement phase. Its only failure is
+short self-clearance, but that phase's repair gate prevents an attempt despite
+time remaining in the enclosing search. All 18 outputs pass their template and
+geometry checks; the three uninstrumented star errors still vary from **1.7470%
+to 2.0801%**. For the warped checker, a slower initial refinement reaches 125
+steps instead of 205 and supplies a worse starting point to polishing. These
+are distinct time-allocation failures; the recorded diagnostic does not prove
+that more repair time will produce a valid improvement.
 
 A [saved-artifact review](gradient-row-bins-quality-review.json) separates
 these timing effects from rendering differences. The maple leaf has identical
