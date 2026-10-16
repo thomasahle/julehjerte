@@ -1,6 +1,6 @@
 {
   "schema": "finalist-retention-clearance-results-1",
-  "status": "focused-fixed-mask-and-hunodan-complete-broader-qa-running",
+  "status": "implemented-and-committed-full-repository-tests-running",
   "plan": "docs/inverse/datasets/finalist-retention-fit-plan.json",
   "runtimeAdopted": false,
   "method": "Prefer an existing lower-error finalist only if it reduces missing features without regressing represented regions. Reserve refinement time. Before clearance can promote another finalist, apply the same existing feature-change audit to the two actual clearance masks. Source masks, candidate count pool, time limit and final acceptance rules are unchanged.",
@@ -605,12 +605,15 @@
       "Floral paper, Santa details and printed-text failures remain.",
       "Child-held and small checker controls remain recognizable with small time-budget differences."
     ],
-    "sourceCropMaskCoverageUnchanged": true
+    "sourceCropMaskCoverageUnchanged": true,
+    "hardPhotoChangedExportsInspected": 9,
+    "hardPhotoFindings": [
+      "All nine changed-error exports reviewed with the unchanged crop/mask and previous export.",
+      "No full-result status changes. Dense checker has the largest increase, from 1.66625% to 1.941875%; surrounding checker strips differ visibly.",
+      "The partial-finalist preference did not select a candidate on any of these 31 cases; no claim of byte-identical or uniformly improved accuracy."
+    ]
   },
   "remainingVerification": [
-    "31-photo automatic-mask benchmark and editable exports",
-    "check/lint/build",
-    "fresh built-app browser smoke",
     "full repository tests"
   ],
   "artifactsSha256": {
@@ -622,11 +625,808 @@
     "tmp/heart-learning/finalist-retention-clearance-v1/cold-repeat-2.log": "73a00e08f68a2758164406770f8a73c28a6c6ba294c62cb29d5e3d708de75311",
     "tmp/heart-learning/finalist-retention-clearance-v1/focused.log": "20532bf7568575bf6b146bcc18c795ce354130065f83b5c378a873265631c143",
     "tmp/heart-learning/finalist-retention-clearance-v1/review-1.png": "24dfcdf56e6a1668bc93f2987da20aa68db824b5fd4960acc23c3baa67afa699",
-    "tmp/heart-learning/finalist-retention-clearance-v1/review-2.png": "d2439d3679b664622a5d93fe3c9843cb0e259d7ed938ee7bb05dcaf052e7a0b8"
+    "tmp/heart-learning/finalist-retention-clearance-v1/review-2.png": "d2439d3679b664622a5d93fe3c9843cb0e259d7ed938ee7bb05dcaf052e7a0b8",
+    "tmp/heart-learning/finalist-retention-clearance-v1/photo-comparison.json": "d48d251172c46e1fe3048ab970630b954a43305e10be897afa19f12163df856f",
+    "tmp/heart-learning/finalist-retention-clearance-v1/checks.json": "a8f048d0f8f9d45628969703549ae19ebd9fefc0bc5eef010b4b66462ad5a2f1",
+    "tmp/heart-learning/finalist-retention-clearance-v1/qa/browser/results.json": "f453f30bf1944f61e00ee82fcaeff462930ead4425fc464da4c4c51a7dd6d9c8",
+    "tmp/heart-learning/finalist-retention-clearance-v1/qa/served-assets.json": "52825cfba6292ee82787fdc7ac0f63da0b2f2f88fada097a3d0f8cc1eeb7b65a",
+    "tmp/heart-learning/finalist-retention-clearance-v1/photos-review-1.png": "924228cba91199b49801546e4356cbdfae6d968699fc154ae8c8e4475c521447",
+    "tmp/heart-learning/finalist-retention-clearance-v1/photos-review-2.png": "783ae27ea4e8eea8096e414cc5cf0c1385a008930ee2cf77b41032b87f5016c2",
+    "tmp/heart-learning/finalist-retention-clearance-v1/photos-review-3.png": "82f6d1d2a1ff3fe6759487b0eaa22fab6078b91fb1a1b4f0943d97372e4362e8"
   },
   "limitations": [
     "No new complete reconstruction in the fixed thirteen-mask cohort; improved checker and bicycle retain source-feature warnings.",
     "Known crop and classification errors remain in the unchanged targets.",
     "Nominal geometry/paper tests do not establish physical cutting or threading."
-  ]
+  ],
+  "runtimeCommit": "bcd30af",
+  "candidateCommitted": true,
+  "photos": {
+    "eligible": 31,
+    "checked": 27,
+    "statusChanges": [],
+    "inputsMasksCropsUnchanged": true,
+    "partialPolicyTriggered": [],
+    "changedErrors": [
+      {
+        "id": "outline-star",
+        "status": "failed",
+        "previousStatus": "failed",
+        "error": 0.0074375,
+        "previousError": 0.00743125,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "leaf",
+        "status": "validated",
+        "previousStatus": "validated",
+        "error": 0.0095125,
+        "previousError": 0.00929375,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "gift",
+        "status": "validated",
+        "previousStatus": "validated",
+        "error": 0.01655,
+        "previousError": 0.016575,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "warped-checker",
+        "status": "validated",
+        "previousStatus": "validated",
+        "error": 0.013625,
+        "previousError": 0.01375625,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "fine-checker",
+        "status": "validated",
+        "previousStatus": "validated",
+        "error": 0.01941875,
+        "previousError": 0.0166625,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "jigsaw",
+        "status": "validated",
+        "previousStatus": "validated",
+        "error": 0.01026875,
+        "previousError": 0.010075,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "maple-leaf",
+        "status": "validated",
+        "previousStatus": "validated",
+        "error": 0.00869375,
+        "previousError": 0.0087625,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "bottom-flower",
+        "status": "validated",
+        "previousStatus": "validated",
+        "error": 0.00733350868623104,
+        "previousError": 0.007421185135084357,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "flettede-viking",
+        "status": "validated",
+        "previousStatus": "validated",
+        "error": 0.0207875,
+        "previousError": 0.02068125,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      }
+    ],
+    "editable": {
+      "converted": 29,
+      "complete": 27,
+      "editorIssues": 0
+    },
+    "rows": [
+      {
+        "id": "oval-figure",
+        "status": "incomplete",
+        "previousStatus": "incomplete",
+        "error": null,
+        "previousError": null,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "eight-point-star",
+        "status": "incomplete",
+        "previousStatus": "incomplete",
+        "error": null,
+        "previousError": null,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "small-figure",
+        "status": "incomplete",
+        "previousStatus": "incomplete",
+        "error": null,
+        "previousError": null,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "deer",
+        "status": "incomplete",
+        "previousStatus": "incomplete",
+        "error": null,
+        "previousError": null,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "top-checker",
+        "status": "incomplete",
+        "previousStatus": "incomplete",
+        "error": null,
+        "previousError": null,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "top-candle",
+        "status": "incomplete",
+        "previousStatus": "incomplete",
+        "error": null,
+        "previousError": null,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "top-tree",
+        "status": "incomplete",
+        "previousStatus": "incomplete",
+        "error": null,
+        "previousError": null,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "partial-top-right",
+        "status": "incomplete",
+        "previousStatus": "incomplete",
+        "error": null,
+        "previousError": null,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "partial-left-checker",
+        "status": "incomplete",
+        "previousStatus": "incomplete",
+        "error": null,
+        "previousError": null,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "nested-squares",
+        "status": "no_crop",
+        "previousStatus": "no_crop",
+        "error": null,
+        "previousError": null,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "outline-star",
+        "status": "failed",
+        "previousStatus": "failed",
+        "error": 0.0074375,
+        "previousError": 0.00743125,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "floral-checker",
+        "status": "validated",
+        "previousStatus": "validated",
+        "error": 0.01334375,
+        "previousError": 0.01334375,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "dense-checker",
+        "status": "validated",
+        "previousStatus": "validated",
+        "error": 0.00699375,
+        "previousError": 0.00699375,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "bird",
+        "status": "validated",
+        "previousStatus": "validated",
+        "error": 0.01963125,
+        "previousError": 0.01963125,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": {
+          "beforeCounts": [
+            4,
+            4
+          ],
+          "beforeError": 0.049835205078125,
+          "beforeMissing": 2,
+          "attempts": [
+            {
+              "counts": [
+                6,
+                6
+              ],
+              "error": 0.04827880859375,
+              "missing": 2,
+              "change": {
+                "passed": false,
+                "missingBefore": 2,
+                "missingAfter": 2,
+                "regressed": [],
+                "enclosuresOpened": [
+                  {
+                    "centerMm": [
+                      62.78570082893745,
+                      50.15438960060286
+                    ],
+                    "sourceAreaMm2": 82.9375,
+                    "intersectionPixels": 1166,
+                    "retention": 0.8786737000753579,
+                    "predictedComponentAreaMm2": 5502.9375,
+                    "touchesBorder": true,
+                    "componentIoU": 0.013218755668420097
+                  }
+                ]
+              },
+              "preferred": false
+            }
+          ],
+          "selectedCounts": null
+        }
+      },
+      {
+        "id": "leaf",
+        "status": "validated",
+        "previousStatus": "validated",
+        "error": 0.0095125,
+        "previousError": 0.00929375,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "partial-right-checker",
+        "status": "incomplete",
+        "previousStatus": "incomplete",
+        "error": null,
+        "previousError": null,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "partial-left-abstract",
+        "status": "incomplete",
+        "previousStatus": "incomplete",
+        "error": null,
+        "previousError": null,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "gift",
+        "status": "validated",
+        "previousStatus": "validated",
+        "error": 0.01655,
+        "previousError": 0.016575,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "gingerbread",
+        "status": "validated",
+        "previousStatus": "validated",
+        "error": 0.010925,
+        "previousError": 0.010925,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "white-birds",
+        "status": "validated",
+        "previousStatus": "validated",
+        "error": 0.00379375,
+        "previousError": 0.00379375,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "flower",
+        "status": "validated",
+        "previousStatus": "validated",
+        "error": 0.00350625,
+        "previousError": 0.00350625,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "warped-checker",
+        "status": "validated",
+        "previousStatus": "validated",
+        "error": 0.013625,
+        "previousError": 0.01375625,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "round-checker",
+        "status": "validated",
+        "previousStatus": "validated",
+        "error": 0.0120875,
+        "previousError": 0.0120875,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "santa",
+        "status": "no_crop",
+        "previousStatus": "no_crop",
+        "error": null,
+        "previousError": null,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "partial-left-diamonds",
+        "status": "incomplete",
+        "previousStatus": "incomplete",
+        "error": null,
+        "previousError": null,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "fine-checker",
+        "status": "validated",
+        "previousStatus": "validated",
+        "error": 0.01941875,
+        "previousError": 0.0166625,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "orb",
+        "status": "validated",
+        "previousStatus": "validated",
+        "error": 0.01134375,
+        "previousError": 0.01134375,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "stacked-hearts",
+        "status": "validated",
+        "previousStatus": "validated",
+        "error": 0.00566875,
+        "previousError": 0.00566875,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "jigsaw",
+        "status": "validated",
+        "previousStatus": "validated",
+        "error": 0.01026875,
+        "previousError": 0.010075,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "candle",
+        "status": "validated",
+        "previousStatus": "validated",
+        "error": 0.0048375,
+        "previousError": 0.0048375,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "maple-leaf",
+        "status": "validated",
+        "previousStatus": "validated",
+        "error": 0.00869375,
+        "previousError": 0.0087625,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "crown",
+        "status": "validated",
+        "previousStatus": "validated",
+        "error": 0.02241875,
+        "previousError": 0.02241875,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "partial-bottom-left",
+        "status": "incomplete",
+        "previousStatus": "incomplete",
+        "error": null,
+        "previousError": null,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "bottom-diamonds",
+        "status": "incomplete",
+        "previousStatus": "incomplete",
+        "error": null,
+        "previousError": null,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "crossed-ribbons",
+        "status": "validated",
+        "previousStatus": "validated",
+        "error": 0.0055283063279704305,
+        "previousError": 0.0055283063279704305,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "bauble",
+        "status": "failed",
+        "previousStatus": "failed",
+        "error": 0.04341979113716356,
+        "previousError": 0.04341979113716356,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "glare-motif",
+        "status": "obscured",
+        "previousStatus": "obscured",
+        "error": null,
+        "previousError": null,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "bottom-flower",
+        "status": "validated",
+        "previousStatus": "validated",
+        "error": 0.00733350868623104,
+        "previousError": 0.007421185135084357,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "faceted-star",
+        "status": "validated",
+        "previousStatus": "validated",
+        "error": 0.00641875,
+        "previousError": 0.00641875,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "partial-bottom-right",
+        "status": "incomplete",
+        "previousStatus": "incomplete",
+        "error": null,
+        "previousError": null,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "bibel-star-8",
+        "status": "validated",
+        "previousStatus": "validated",
+        "error": 0.003675,
+        "previousError": 0.003675,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "bibel-star-curved",
+        "status": "validated",
+        "previousStatus": "validated",
+        "error": 0.0064625,
+        "previousError": 0.0064625,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "bibel-star-outline",
+        "status": "validated",
+        "previousStatus": "validated",
+        "error": 0.0116,
+        "previousError": 0.0116,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "bibel-cross",
+        "status": "validated",
+        "previousStatus": "validated",
+        "error": 0.00243125,
+        "previousError": 0.00243125,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "flettede-puppy",
+        "status": "validated",
+        "previousStatus": "validated",
+        "error": 0.01036875,
+        "previousError": 0.01036875,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      },
+      {
+        "id": "flettede-stonehenge",
+        "status": "validated",
+        "previousStatus": "validated",
+        "error": 0.0143875,
+        "previousError": 0.0143875,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": {
+          "beforeCounts": [
+            3,
+            3
+          ],
+          "beforeError": 0.0520172119140625,
+          "beforeMissing": 1,
+          "attempts": [
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "error": 0.04913330078125,
+              "missing": 1,
+              "change": {
+                "passed": true,
+                "missingBefore": 1,
+                "missingAfter": 1,
+                "regressed": []
+              },
+              "preferred": false
+            }
+          ],
+          "selectedCounts": null
+        }
+      },
+      {
+        "id": "flettede-viking",
+        "status": "validated",
+        "previousStatus": "validated",
+        "error": 0.0207875,
+        "previousError": 0.02068125,
+        "inputEqual": true,
+        "maskEqual": true,
+        "cropEqual": true,
+        "partialPreference": null
+      }
+    ]
+  },
+  "verification": {
+    "checks": [
+      {
+        "stage": "cold-repeat-1",
+        "exitCode": 0,
+        "seconds": 20.282999291000003
+      },
+      {
+        "stage": "cold-repeat-2",
+        "exitCode": 0,
+        "seconds": 20.093979459
+      },
+      {
+        "stage": "focused",
+        "exitCode": 0,
+        "seconds": 137.222096833
+      },
+      {
+        "stage": "replay",
+        "exitCode": 0,
+        "seconds": 122.57964395799999
+      },
+      {
+        "stage": "editor-input",
+        "exitCode": 0,
+        "seconds": 0.4909074580000379
+      },
+      {
+        "stage": "editable",
+        "exitCode": 0,
+        "seconds": 19.27043016600004
+      },
+      {
+        "stage": "hunodan",
+        "exitCode": 0,
+        "seconds": 125.46018604200003
+      },
+      {
+        "stage": "photos",
+        "exitCode": 0,
+        "seconds": 333.184668041
+      },
+      {
+        "stage": "photos-editable",
+        "exitCode": 0,
+        "seconds": 34.17446804200006
+      },
+      {
+        "stage": "check",
+        "exitCode": 0,
+        "seconds": 10.697889374999932
+      },
+      {
+        "stage": "lint",
+        "exitCode": 0,
+        "seconds": 7.374388917000033
+      },
+      {
+        "stage": "build",
+        "exitCode": 0,
+        "seconds": 20.652226625000026
+      }
+    ],
+    "sourceFilesVerified": 920,
+    "browser": {
+      "cases": [
+        {
+          "name": "star",
+          "passed": true,
+          "pageErrors": [],
+          "clickToReadySeconds": 2.179
+        },
+        {
+          "name": "top-hat-preferred",
+          "passed": true,
+          "pageErrors": [],
+          "clickToReadySeconds": 7.573299999952316
+        },
+        {
+          "name": "hunodan-hjfig-05",
+          "passed": true,
+          "pageErrors": [],
+          "clickToReadySeconds": 20.165700000047682
+        }
+      ],
+      "builtAssetsVerified": 173
+    },
+    "repositoryTests": {
+      "status": "running",
+      "directory": "tmp/heart-learning/finalist-retention-clearance-v1/qa"
+    }
+  }
 }

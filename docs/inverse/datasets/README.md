@@ -51,8 +51,14 @@ and all seven changed outputs were inspected. Three focused regressions pass
 in three fresh Node processes with unchanged photographic error bounds; nineteen
 existing routing/clearance regressions pass too. **22/22 Hunodan cases pass**,
 with exactly unchanged errors, a **5.51 s** median and **8.81 s** maximum.
-The 31-photo benchmark and repository QA remain pending; the runtime change is
-not yet adopted. The [plan](finalist-retention-fit-plan.json)
+The automatic-mask benchmark remains **27/31**, with the same crops, masks and
+statuses. All 29 generated pairs convert to editable geometry without editor
+issues. Nine image errors changed; the largest increase is the dense checker,
+**1.67% to 1.94%**. All nine changed-error exports were inspected. The new
+preference selected no candidate on these established 31 cases. Check, lint,
+build and three Chromium upload/solve/editable-export workflows pass. The
+candidate runtime change is committed in `bcd30af`; full repository tests are
+still running, so final adoption remains pending. Nothing was pushed or deployed. The [plan](finalist-retention-fit-plan.json)
 records the cold failure and the separate synthetic-fixture correction.
 
 
