@@ -51,6 +51,18 @@ later paper-check outcomes, so its cause is not yet isolated. This is not a clai
 of uniform photographic-error improvement. Two unresolved crops, the outlined
 star's lost edge feature and the bauble's image error remain failures.
 
+An [offline palette calibration](neural-palette-calibration-results.json) now
+compares all 22 annotated photos using frozen family-held-out predictions. Mean
+paper-identity error on the known annotated patches is 16.90% for the network,
+8.12% when its paper predictions seed an illumination-aware RGB mixture, and
+1.62% when RGB clustering supplies the palette inside its predicted body. Body
+probabilities remain byte-identical. Visual review confirms much cleaner fish,
+candle, bicycle and checker interiors, but substantial foreground leakage and
+printed-paper errors remain. These partial-label scores do not certify boundaries
+or cutting templates. Seven analytical tests pass; the evaluated calibration
+helper is committed for offline use. A separate full-pipeline replay is running;
+no model or palette change has been added to the website.
+
 The [reviewed cream/blue fish photograph](fish-annotation-admission.json) adds one
 visible-body and partial-material annotation. Its handle, cast shadow and four
 narrow contacts remain unknown; no hidden cut connectivity is asserted. Final

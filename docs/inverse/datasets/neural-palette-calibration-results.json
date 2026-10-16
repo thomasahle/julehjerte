@@ -1,0 +1,293 @@
+{
+  "schema": "neural-palette-calibration-results-1",
+  "status": "offline-evaluation-complete",
+  "training": false,
+  "deployed": false,
+  "implementation": "scripts/inverse/learning/palette_calibration.py",
+  "implementationSha256": "9ad5f2dab79cba4a6dce51cdc00f24885e2f3589af6004cfd8fd692dce82c4cb",
+  "scope": "22 previously inspected development photos with partial independent paper-identity annotations. Each neural prediction uses a motif-family-held-out model. Calibration consumes source RGB, predicted body/material fields and geometric source coverage, never annotation masks. Material A/B phase is exchanged only during evaluation. No complete-boundary, source-artwork or template-accuracy claim.",
+  "metrics": {
+    "all": {
+      "network": {
+        "instances": 22,
+        "bodyIoU": 0.7985058069087312,
+        "bodyPixelError": 0.0771011355843417,
+        "bodyFalseNegative": 0.032322961304116826,
+        "backgroundFalsePositive": 0.08871456273908904,
+        "materialPixelError": 0.16896814432385285,
+        "materialJointError": 0.18131532187342933,
+        "jointRegionPixelError": 0.11302622945534435
+      },
+      "learned-affine": {
+        "instances": 22,
+        "bodyIoU": 0.7985058069087312,
+        "bodyPixelError": 0.0771011355843417,
+        "bodyFalseNegative": 0.032322961304116826,
+        "backgroundFalsePositive": 0.08871456273908904,
+        "materialPixelError": 0.08998709757137086,
+        "materialJointError": 0.10316197589916132,
+        "jointRegionPixelError": 0.09499131432870977
+      },
+      "learned-illumination": {
+        "instances": 22,
+        "bodyIoU": 0.7985058069087312,
+        "bodyPixelError": 0.0771011355843417,
+        "bodyFalseNegative": 0.032322961304116826,
+        "backgroundFalsePositive": 0.08871456273908904,
+        "materialPixelError": 0.08116553048954434,
+        "materialJointError": 0.09437268287317732,
+        "jointRegionPixelError": 0.09717994403216314
+      },
+      "rgb-illumination": {
+        "instances": 22,
+        "bodyIoU": 0.7985058069087312,
+        "bodyPixelError": 0.0771011355843417,
+        "bodyFalseNegative": 0.032322961304116826,
+        "backgroundFalsePositive": 0.08871456273908904,
+        "materialPixelError": 0.016168428127190115,
+        "materialJointError": 0.029862846994714868,
+        "jointRegionPixelError": 0.08159525363019225
+      }
+    },
+    "old-nineteen": {
+      "network": {
+        "instances": 19,
+        "bodyIoU": 0.8067843577675284,
+        "bodyPixelError": 0.07425562293860559,
+        "bodyFalseNegative": 0.03433405480771581,
+        "backgroundFalsePositive": 0.08501233389392034,
+        "materialPixelError": 0.17620958200661266,
+        "materialJointError": 0.18909673858559242,
+        "jointRegionPixelError": 0.11021704905807764
+      },
+      "learned-affine": {
+        "instances": 19,
+        "bodyIoU": 0.8067843577675284,
+        "bodyPixelError": 0.07425562293860559,
+        "bodyFalseNegative": 0.03433405480771581,
+        "backgroundFalsePositive": 0.08501233389392034,
+        "materialPixelError": 0.08190218032457726,
+        "materialJointError": 0.09543185498249337,
+        "jointRegionPixelError": 0.08868254168049203
+      },
+      "learned-illumination": {
+        "instances": 19,
+        "bodyIoU": 0.8067843577675284,
+        "bodyPixelError": 0.07425562293860559,
+        "bodyFalseNegative": 0.03433405480771581,
+        "backgroundFalsePositive": 0.08501233389392034,
+        "materialPixelError": 0.07189414814530427,
+        "materialJointError": 0.08539371129025068,
+        "jointRegionPixelError": 0.09126078871037555
+      },
+      "rgb-illumination": {
+        "instances": 19,
+        "bodyIoU": 0.8067843577675284,
+        "bodyPixelError": 0.07425562293860559,
+        "bodyFalseNegative": 0.03433405480771581,
+        "backgroundFalsePositive": 0.08501233389392034,
+        "materialPixelError": 0.018516675140979877,
+        "materialJointError": 0.032142027764260554,
+        "jointRegionPixelError": 0.07889447112092106
+      }
+    },
+    "new-three": {
+      "network": {
+        "instances": 3,
+        "bodyIoU": 0.746074984803016,
+        "bodyPixelError": 0.0951227156740036,
+        "bodyFalseNegative": 0.019586035781323247,
+        "backgroundFalsePositive": 0.11216201209182412,
+        "materialPixelError": 0.12310570566637408,
+        "materialJointError": 0.13203301602972975,
+        "jointRegionPixelError": 0.1308177053047003
+      },
+      "learned-affine": {
+        "instances": 3,
+        "bodyIoU": 0.746074984803016,
+        "bodyPixelError": 0.0951227156740036,
+        "bodyFalseNegative": 0.019586035781323247,
+        "backgroundFalsePositive": 0.11216201209182412,
+        "materialPixelError": 0.14119157346773023,
+        "materialJointError": 0.15211940837139146,
+        "jointRegionPixelError": 0.13494687443408895
+      },
+      "learned-illumination": {
+        "instances": 3,
+        "bodyIoU": 0.746074984803016,
+        "bodyPixelError": 0.0951227156740036,
+        "bodyFalseNegative": 0.019586035781323247,
+        "backgroundFalsePositive": 0.11216201209182412,
+        "materialPixelError": 0.13988428533639805,
+        "materialJointError": 0.15123950289837942,
+        "jointRegionPixelError": 0.13466792773681785
+      },
+      "rgb-illumination": {
+        "instances": 3,
+        "bodyIoU": 0.746074984803016,
+        "bodyPixelError": 0.0951227156740036,
+        "bodyFalseNegative": 0.019586035781323247,
+        "backgroundFalsePositive": 0.11216201209182412,
+        "materialPixelError": 0.0012961970398549592,
+        "materialJointError": 0.01542803545425891,
+        "jointRegionPixelError": 0.09870020952224325
+      }
+    },
+    "checker-family": {
+      "network": {
+        "instances": 14,
+        "bodyIoU": 0.7489471399707917,
+        "bodyPixelError": 0.09500427845506827,
+        "bodyFalseNegative": 0.014871969670843328,
+        "backgroundFalsePositive": 0.12195686665884466,
+        "materialPixelError": 0.18267100260736432,
+        "materialJointError": 0.18944385802444907,
+        "jointRegionPixelError": 0.1386534516733567
+      },
+      "learned-affine": {
+        "instances": 14,
+        "bodyIoU": 0.7489471399707917,
+        "bodyPixelError": 0.09500427845506827,
+        "bodyFalseNegative": 0.014871969670843328,
+        "backgroundFalsePositive": 0.12195686665884466,
+        "materialPixelError": 0.11112649908548489,
+        "materialJointError": 0.11848641471965489,
+        "jointRegionPixelError": 0.12482611758270132
+      },
+      "learned-illumination": {
+        "instances": 14,
+        "bodyIoU": 0.7489471399707917,
+        "bodyPixelError": 0.09500427845506827,
+        "bodyFalseNegative": 0.014871969670843328,
+        "backgroundFalsePositive": 0.12195686665884466,
+        "materialPixelError": 0.09754416969932868,
+        "materialJointError": 0.10486321970875409,
+        "jointRegionPixelError": 0.12832516712325753
+      },
+      "rgb-illumination": {
+        "instances": 14,
+        "bodyIoU": 0.7489471399707917,
+        "bodyPixelError": 0.09500427845506827,
+        "bodyFalseNegative": 0.014871969670843328,
+        "backgroundFalsePositive": 0.12195686665884466,
+        "materialPixelError": 0.025103313479174143,
+        "materialJointError": 0.03259307778062464,
+        "jointRegionPixelError": 0.11154230753756929
+      }
+    },
+    "framed-motif-family": {
+      "network": {
+        "instances": 8,
+        "bodyIoU": 0.8852334740501256,
+        "bodyPixelError": 0.045770635560570185,
+        "bodyFalseNegative": 0.06286219666234545,
+        "backgroundFalsePositive": 0.030540530879516692,
+        "materialPixelError": 0.14498814232770776,
+        "materialJointError": 0.1670903836091448,
+        "jointRegionPixelError": 0.06817859057382278
+      },
+      "learned-affine": {
+        "instances": 8,
+        "bodyIoU": 0.8852334740501256,
+        "bodyPixelError": 0.045770635560570185,
+        "bodyFalseNegative": 0.06286219666234545,
+        "backgroundFalsePositive": 0.030540530879516692,
+        "materialPixelError": 0.0529931449216713,
+        "materialJointError": 0.0763442079632975,
+        "jointRegionPixelError": 0.04278040863422462
+      },
+      "learned-illumination": {
+        "instances": 8,
+        "bodyIoU": 0.8852334740501256,
+        "bodyPixelError": 0.045770635560570185,
+        "bodyFalseNegative": 0.06286219666234545,
+        "backgroundFalsePositive": 0.030540530879516692,
+        "materialPixelError": 0.05250291187242173,
+        "materialJointError": 0.07601424341091798,
+        "jointRegionPixelError": 0.04267580362274796
+      },
+      "rgb-illumination": {
+        "instances": 8,
+        "bodyIoU": 0.8852334740501256,
+        "bodyPixelError": 0.045770635560570185,
+        "bodyFalseNegative": 0.06286219666234545,
+        "backgroundFalsePositive": 0.030540530879516692,
+        "materialPixelError": 0.0005323787612180675,
+        "materialJointError": 0.02508494311937278,
+        "jointRegionPixelError": 0.029187909292282488
+      }
+    }
+  },
+  "verification": {
+    "old19MetricsReproducedWithin": 1e-12,
+    "compiledInputsVerified": 22,
+    "bodyProbabilityArraysUnchanged": true,
+    "sourceFilesVerified": 58,
+    "prototypeAnalyticTestsPassed": 4,
+    "committedAnalyticTestsPassed": 7,
+    "implementationByteIdenticalToEvaluatedPrototype": true,
+    "visualPanelsReviewed": 6,
+    "fullPipelineReplay": "Running separately in tmp/heart-learning/neural-palette-pipeline-v1; no end-to-end improvement claimed."
+  },
+  "rgbPaperErrorRegressions": [
+    {
+      "id": "real-995899fe049540ed-body-1",
+      "networkError": 0.16604157396224017,
+      "rgbError": 0.2168965736443964
+    },
+    {
+      "id": "real-b87b0b19f12724f3-body-1",
+      "networkError": 0.009407069555302166,
+      "rgbError": 0.03933865450399088
+    }
+  ],
+  "calibrationOutcomes": {
+    "learned-affine": {
+      "applied": 22,
+      "models": {
+        "affine-color-segment": 22
+      },
+      "medianSeconds": 0.0025577915000001283
+    },
+    "learned-illumination": {
+      "applied": 22,
+      "models": {
+        "nonnegative-color-mixture": 21,
+        "affine-color-segment": 1
+      },
+      "medianSeconds": 0.0032159165000000822
+    },
+    "rgb-illumination": {
+      "applied": 22,
+      "models": {
+        "nonnegative-color-mixture": 22
+      },
+      "medianSeconds": 0.01996122899999997
+    }
+  },
+  "visualFindings": [
+    "RGB correction restores the fish, bicycle, candle, sailboat and several checker interiors that the network erases or merges.",
+    "Learning only the palette seeds remains vulnerable to confident wrong paper assignments: the fish is still nearly uniform with both learned-seed variants. RGB clustering recovers its two paper identities.",
+    "Foreground probabilities are identical by construction. Handles, hands, neighboring decorations and background patches still leak into the predicted body; the rabbit/bird outline can lose actual paper.",
+    "Printed floral/striped paper is still interpreted partly as weaving. Its annotated material error worsens; a two-color palette cannot generally identify sheet identity beneath arbitrary print.",
+    "Some checker corners still have tiny gaps or bridges. Partial interior annotations do not certify their connectivity, and metrics at 256 pixels do not establish native-resolution boundaries."
+  ],
+  "nextStep": "Compare production, frozen-network and RGB-calibrated fields through the actual crop, fitter and editable-export pipeline. Preserve all failures and score derived-mask agreement separately from photographed material identity.",
+  "artifactsSha256": {
+    "tmp/heart-learning/neural-palette-calibration-v1/plan.json": "c95d73efe9bed80b415df7bffea3bafbe5c144b06aa4b68de7957931d27dab87",
+    "tmp/heart-learning/neural-palette-calibration-v1/results/report.json": "5da32153c3dbde4a4d54df90e2cd016756620b10dc11086199ae2a945256c324",
+    "tmp/heart-learning/neural-palette-calibration-v1/evaluate.py": "b752330aae7aad769783b8311a791ff4870eebf88dc84a10b7f09a99548bff45",
+    "tmp/heart-learning/neural-palette-calibration-v1/test.py": "68d8e1b5785d9fafd0bb0ce5afd8d6ebefaaf8485f4f15d06370ba1c7e24d692",
+    "scripts/inverse/learning/palette_calibration.test.py": "59f80d26f2d4e5215d49c09d29293d325417b98c1b0cd1490292e10312d418e8",
+    "tmp/heart-learning/neural-palette-calibration-v1/results/comparison-3.png": "dd36e9b32b9f4bff03e6ba3dea298e5f1d4cb3d8469b5898e7e5bae6c0b6c1cb",
+    "tmp/heart-learning/neural-palette-calibration-v1/results/comparison-2.png": "d5eed0abd26fd492436cf9011026120bdfe41debc28aede01be6096826060e15",
+    "tmp/heart-learning/neural-palette-calibration-v1/results/comparison-1.png": "d131afaca86e1ffd7654192c4caf5a860fba7ee2ef2f23884f6d64064c2923e2",
+    "tmp/heart-learning/neural-palette-calibration-v1/results/comparison-5.png": "ca4c23d0588b17f3cb88a7c63c87c0764ef5be012441d6c571e098646a05251c",
+    "tmp/heart-learning/neural-palette-calibration-v1/results/comparison-4.png": "13d3569ec19ba8bc7ee064b2239625aecf40a5d8074ce55538f8f91268aaac3c",
+    "tmp/heart-learning/neural-palette-calibration-v1/results/comparison-6.png": "fc58b6b9b21a2174c96e2a6e9133434ed6f6201fb43ce938f74145c352448247",
+    "tmp/heart-learning/neural-palette-calibration-v1/results/learned-illumination.npz": "085de03e0279c6af411551b889c1689fb3abeade44e691e21caf626709306ba2",
+    "tmp/heart-learning/neural-palette-calibration-v1/results/rgb-illumination.npz": "621be7d6bc59f7cf5d900082d824d57271ed280dac5ae30f89d962ef472456c8",
+    "tmp/heart-learning/neural-palette-calibration-v1/results/network.npz": "2129efabde93a21bbb017bd3829da9d34c99013bc3df367928d53726c709d9d2",
+    "tmp/heart-learning/neural-palette-calibration-v1/results/learned-affine.npz": "6105743939d4d94a4294d075763f9c34151d9050ea172e18e1161ea7aabfd4bb"
+  }
+}
