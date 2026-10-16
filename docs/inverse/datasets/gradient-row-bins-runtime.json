@@ -1,0 +1,792 @@
+{
+  "schema": "gradient-row-bins-runtime-1",
+  "status": "integrated-focused-passed-release-qa-pending",
+  "change": "Use 128 row bins through 32 unique cubics, then eight bins per cubic capped at 1024. Only the candidate-segment index changes; interpolation, gradient accumulation order, quadrature, masks and final validity gates remain unchanged.",
+  "sparseEvidence": {
+    "cases": 75,
+    "gradientComparisons": 2700,
+    "scalarComparisons": 1498608,
+    "allExact": true,
+    "method": "Binary/fractional fields, both phases, JavaScript/Wasm, and perturbed controls. The sparse guard retains the original index for graphs where extra buckets add overhead.",
+    "path": "tmp/heart-learning/gradient-bins-v2/results.json"
+  },
+  "smokeFits": {
+    "status": "complete",
+    "results": [
+      {
+        "id": "hunodan-hjfig-01",
+        "variant": "baseline",
+        "prepareSeconds": 0.08312037500000002,
+        "solveSeconds": 3.7086682920000005,
+        "totalSeconds": 3.791788667,
+        "sourceSha256": "0f602686e418c6e266fa6fc82f0a899b24920770cc69f3c1ce0c4004c8407fb6",
+        "boundarySha256": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+        "geometrySha256": "0717b7f54e321855c47d7a8c7b8f90ca238c1d20c832ba9aacde0c539c1f4d6d",
+        "independentError": {
+          "mismatchPixels": 1378,
+          "observedPixels": 140625,
+          "observedFraction": 1,
+          "mismatchFraction": 0.009799111111111111
+        },
+        "featuresPassed": true,
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "selectedCounts": [
+          2,
+          2
+        ],
+        "stages": [
+          {
+            "stage": "directInitializing",
+            "seconds": 0.362062375
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.5141849580000001
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.2617113330000002
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 1.2282783330000002
+          },
+          {
+            "stage": "directSharing",
+            "seconds": 0.141399042
+          },
+          {
+            "stage": "directPolishing",
+            "seconds": 0.4272060409999999
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "selective-degree-reduction",
+            "seconds": 0.05539941599999974
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "shared-run-simplification",
+            "seconds": 0.05708195800000021
+          }
+        ],
+        "retainedCandidates": 10,
+        "passed": true
+      },
+      {
+        "id": "hunodan-hjfig-01",
+        "variant": "candidate",
+        "prepareSeconds": 0.08862687499999998,
+        "solveSeconds": 3.5862420000000004,
+        "totalSeconds": 3.674868875,
+        "sourceSha256": "0f602686e418c6e266fa6fc82f0a899b24920770cc69f3c1ce0c4004c8407fb6",
+        "boundarySha256": "4b77c285d169de854311b63162e4f4ab2da2ccfa4b5e74eb0365f8c5c5e5fc12",
+        "geometrySha256": "0717b7f54e321855c47d7a8c7b8f90ca238c1d20c832ba9aacde0c539c1f4d6d",
+        "independentError": {
+          "mismatchPixels": 1378,
+          "observedPixels": 140625,
+          "observedFraction": 1,
+          "mismatchFraction": 0.009799111111111111
+        },
+        "featuresPassed": true,
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "selectedCounts": [
+          2,
+          2
+        ],
+        "stages": [
+          {
+            "stage": "directInitializing",
+            "seconds": 0.36481366699999995
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.4668342500000001
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.241282375
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 1.2204227500000002
+          },
+          {
+            "stage": "directSharing",
+            "seconds": 0.13321012500000007
+          },
+          {
+            "stage": "directPolishing",
+            "seconds": 0.413286709
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "selective-degree-reduction",
+            "seconds": 0.06448600000000033
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "shared-run-simplification",
+            "seconds": 0.05026420800000005
+          }
+        ],
+        "retainedCandidates": 10,
+        "passed": true
+      },
+      {
+        "id": "hunodan-hjcur-02",
+        "variant": "candidate",
+        "prepareSeconds": 0.10648108300000002,
+        "solveSeconds": 6.3641065,
+        "totalSeconds": 6.4705875829999995,
+        "sourceSha256": "ee27e7b1a962204080c43d064b331286e929ae897f20ff8f5ac082e961caf4de",
+        "boundarySha256": "4b77c285d169de854311b63162e4f4ab2da2ccfa4b5e74eb0365f8c5c5e5fc12",
+        "geometrySha256": "7305d13bf74ed0a1ba720558bd7dea56688bc8a46e529b5bf993549ddc62c7e6",
+        "independentError": {
+          "mismatchPixels": 713,
+          "observedPixels": 140625,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0050702222222222225
+        },
+        "featuresPassed": true,
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "stages": [
+          {
+            "stage": "directInitializing",
+            "seconds": 0.36458616599999993
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.681562208
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.30818162499999996
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 2.9900854999999997
+          },
+          {
+            "stage": "directSharing",
+            "seconds": 0.03732287500000075
+          },
+          {
+            "stage": "directPolishing",
+            "seconds": 0.8631451660000002
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "selective-degree-reduction",
+            "seconds": 0.16487587499999973
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "curve-degree-reduction",
+            "seconds": 0.12956958399999985
+          }
+        ],
+        "retainedCandidates": 26,
+        "passed": true
+      },
+      {
+        "id": "hunodan-hjcur-02",
+        "variant": "baseline",
+        "prepareSeconds": 0.09907158399999998,
+        "solveSeconds": 6.641223374999999,
+        "totalSeconds": 6.740294959,
+        "sourceSha256": "ee27e7b1a962204080c43d064b331286e929ae897f20ff8f5ac082e961caf4de",
+        "boundarySha256": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+        "geometrySha256": "7305d13bf74ed0a1ba720558bd7dea56688bc8a46e529b5bf993549ddc62c7e6",
+        "independentError": {
+          "mismatchPixels": 713,
+          "observedPixels": 140625,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0050702222222222225
+        },
+        "featuresPassed": true,
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "stages": [
+          {
+            "stage": "directInitializing",
+            "seconds": 0.37001420800000007
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.7143491670000001
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.3056556660000001
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 3.177561125
+          },
+          {
+            "stage": "directSharing",
+            "seconds": 0.03969574999999986
+          },
+          {
+            "stage": "directPolishing",
+            "seconds": 0.9141823750000003
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "selective-degree-reduction",
+            "seconds": 0.12936233300000002
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "curve-degree-reduction",
+            "seconds": 0.16551933299999927
+          }
+        ],
+        "retainedCandidates": 26,
+        "passed": true
+      },
+      {
+        "id": "hunodan-hjstr-03",
+        "variant": "baseline",
+        "prepareSeconds": 0.11418049999999999,
+        "solveSeconds": 8.576269875,
+        "totalSeconds": 8.690450375000001,
+        "sourceSha256": "d9ba414af2b114d628d5a1ee4df9b7c6cc875d31452495e8159a06d1e3021f11",
+        "boundarySha256": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+        "geometrySha256": "f56429ad6c7a2faceb7df95a22be4962cf6834878da575768a79c727408c2e1d",
+        "independentError": {
+          "mismatchPixels": 845,
+          "observedPixels": 150544,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0056129769369752365
+        },
+        "featuresPassed": true,
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "selectedCounts": [
+          7,
+          7
+        ],
+        "stages": [
+          {
+            "stage": "directInitializing",
+            "seconds": 0.37567945899999994
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.9215425
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.44723000000000024
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 4.439897208
+          },
+          {
+            "stage": "directSharing",
+            "seconds": 0.05354883399999926
+          },
+          {
+            "stage": "directPolishing",
+            "seconds": 1.0541504169999998
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "selective-degree-reduction",
+            "seconds": 0.1134935000000005
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "curve-degree-reduction",
+            "seconds": 0.10483250000000044
+          }
+        ],
+        "retainedCandidates": 26,
+        "passed": true
+      },
+      {
+        "id": "hunodan-hjstr-03",
+        "variant": "candidate",
+        "prepareSeconds": 0.11050062500000002,
+        "solveSeconds": 7.573758541,
+        "totalSeconds": 7.684259166,
+        "sourceSha256": "d9ba414af2b114d628d5a1ee4df9b7c6cc875d31452495e8159a06d1e3021f11",
+        "boundarySha256": "4b77c285d169de854311b63162e4f4ab2da2ccfa4b5e74eb0365f8c5c5e5fc12",
+        "geometrySha256": "f56429ad6c7a2faceb7df95a22be4962cf6834878da575768a79c727408c2e1d",
+        "independentError": {
+          "mismatchPixels": 845,
+          "observedPixels": 150544,
+          "observedFraction": 1,
+          "mismatchFraction": 0.0056129769369752365
+        },
+        "featuresPassed": true,
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "selectedCounts": [
+          7,
+          7
+        ],
+        "stages": [
+          {
+            "stage": "directInitializing",
+            "seconds": 0.375019875
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.9747299170000001
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.45715737499999975
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 3.5367403750000004
+          },
+          {
+            "stage": "directSharing",
+            "seconds": 0.05322025000000031
+          },
+          {
+            "stage": "directPolishing",
+            "seconds": 0.8889060420000006
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "selective-degree-reduction",
+            "seconds": 0.11058979100000033
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "curve-degree-reduction",
+            "seconds": 0.10583820800000013
+          }
+        ],
+        "retainedCandidates": 26,
+        "passed": true
+      },
+      {
+        "id": "hard-bibel-star-outline-half",
+        "variant": "candidate",
+        "prepareSeconds": 0.09278504199999997,
+        "solveSeconds": 5.579595208,
+        "totalSeconds": 5.67238025,
+        "sourceSha256": "fcb4b3c6c49608d68cc4bdbdfc507efe36c6fe80ecef002d5c31d924b773a606",
+        "boundarySha256": "4b77c285d169de854311b63162e4f4ab2da2ccfa4b5e74eb0365f8c5c5e5fc12",
+        "geometrySha256": "759513932b5f37d7b5689397c0aba6e2c8421e91d2a5c0dc2765876a2ff9cb78",
+        "independentError": {
+          "mismatchPixels": 1951,
+          "observedPixels": 109561,
+          "observedFraction": 1,
+          "mismatchFraction": 0.017807431476529058
+        },
+        "featuresPassed": true,
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "stages": [
+          {
+            "stage": "directPolishing",
+            "detail": "selective-degree-reduction",
+            "seconds": 0.06624295799999981
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "curve-degree-reduction",
+            "seconds": 0.07227570800000012
+          }
+        ],
+        "retainedCandidates": 5,
+        "passed": true
+      },
+      {
+        "id": "hard-bibel-star-outline-half",
+        "variant": "baseline",
+        "prepareSeconds": 0.099391334,
+        "solveSeconds": 5.701365791,
+        "totalSeconds": 5.8007571250000005,
+        "sourceSha256": "fcb4b3c6c49608d68cc4bdbdfc507efe36c6fe80ecef002d5c31d924b773a606",
+        "boundarySha256": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+        "geometrySha256": "759513932b5f37d7b5689397c0aba6e2c8421e91d2a5c0dc2765876a2ff9cb78",
+        "independentError": {
+          "mismatchPixels": 1951,
+          "observedPixels": 109561,
+          "observedFraction": 1,
+          "mismatchFraction": 0.017807431476529058
+        },
+        "featuresPassed": true,
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "stages": [
+          {
+            "stage": "directPolishing",
+            "detail": "selective-degree-reduction",
+            "seconds": 0.0683907079999999
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "curve-degree-reduction",
+            "seconds": 0.06994737499999974
+          }
+        ],
+        "retainedCandidates": 5,
+        "passed": true
+      },
+      {
+        "id": "photo-flettede-puppy",
+        "variant": "baseline",
+        "prepareSeconds": 0.10993916700000003,
+        "solveSeconds": 9.50094475,
+        "totalSeconds": 9.610883917,
+        "sourceSha256": "45bb41ffbb961e933cb29f4effbe47239533035ab522c7e654b7d9c1de1a0dad",
+        "boundarySha256": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+        "geometrySha256": "0af7af8302aa9fd02081164062cb64dfb4135d146600b02d3af7f405c453bb8c",
+        "independentError": {
+          "mismatchPixels": 1649,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.01030625
+        },
+        "featuresPassed": true,
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "selectedCounts": [
+          5,
+          3
+        ],
+        "stages": [
+          {
+            "stage": "directInitializing",
+            "seconds": 0.389525125
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.597010708
+          },
+          {
+            "stage": "directInitializing",
+            "seconds": 0.3885732080000002
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.23532312499999988
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.33552320899999993
+          },
+          {
+            "stage": "directInitializing",
+            "seconds": 0.13396108300000015
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 4.343533332999999
+          },
+          {
+            "stage": "directPolishing",
+            "seconds": 1.304388082999999
+          },
+          {
+            "stage": "directSharing",
+            "seconds": 0.8288822919999984
+          }
+        ],
+        "retainedCandidates": 23,
+        "passed": true
+      },
+      {
+        "id": "photo-flettede-puppy",
+        "variant": "candidate",
+        "prepareSeconds": 0.104200084,
+        "solveSeconds": 9.437533791,
+        "totalSeconds": 9.541733875,
+        "sourceSha256": "45bb41ffbb961e933cb29f4effbe47239533035ab522c7e654b7d9c1de1a0dad",
+        "boundarySha256": "4b77c285d169de854311b63162e4f4ab2da2ccfa4b5e74eb0365f8c5c5e5fc12",
+        "geometrySha256": "9abd524bd01225169574a601f5193600c81271f22925829454d286d8add08f6b",
+        "independentError": {
+          "mismatchPixels": 1659,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.01036875
+        },
+        "featuresPassed": true,
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "selectedCounts": [
+          5,
+          3
+        ],
+        "stages": [
+          {
+            "stage": "directInitializing",
+            "seconds": 0.37159583399999996
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.5869818750000001
+          },
+          {
+            "stage": "directInitializing",
+            "seconds": 0.3873751659999998
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.216056458
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.313134
+          },
+          {
+            "stage": "directInitializing",
+            "seconds": 0.1353120829999998
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 3.5935095830000003
+          },
+          {
+            "stage": "directPolishing",
+            "seconds": 1.1017276250000005
+          },
+          {
+            "stage": "directSharing",
+            "seconds": 1.3743897910000005
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "selective-degree-reduction",
+            "seconds": 0.1603525419999987
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "curve-degree-reduction",
+            "seconds": 0.13804366699999993
+          },
+          {
+            "stage": "directSharing",
+            "seconds": 0.08054604099999961
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "shared-run-simplification",
+            "seconds": 0.13893712500000038
+          }
+        ],
+        "retainedCandidates": 23,
+        "passed": true
+      },
+      {
+        "id": "photo-flower",
+        "variant": "candidate",
+        "prepareSeconds": 0.10005916599999998,
+        "solveSeconds": 5.740147542000001,
+        "totalSeconds": 5.840206708,
+        "sourceSha256": "a6329990af013948c3ba32058af40424949d57280ca3b5ab18ecaaca0f1787a0",
+        "boundarySha256": "4b77c285d169de854311b63162e4f4ab2da2ccfa4b5e74eb0365f8c5c5e5fc12",
+        "geometrySha256": "ee213574b4e67da650a4192f28fcfa776655c1e05604e517aa4c37dfb19b90b1",
+        "independentError": {
+          "mismatchPixels": 561,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00350625
+        },
+        "featuresPassed": true,
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "stages": [
+          {
+            "stage": "directInitializing",
+            "seconds": 0.457222791
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.5949999590000002
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.3112653329999998
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 2.0004410829999997
+          },
+          {
+            "stage": "directSharing",
+            "seconds": 0.6033127079999995
+          },
+          {
+            "stage": "directPolishing",
+            "seconds": 0.5937931250000001
+          },
+          {
+            "stage": "directSharing",
+            "seconds": 0.1504399169999997
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "selective-degree-reduction",
+            "seconds": 0.08198712500000056
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "curve-degree-reduction",
+            "seconds": 0.07946204200000011
+          },
+          {
+            "stage": "directSharing",
+            "seconds": 0.05008212499999991
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "shared-run-simplification",
+            "seconds": 0.06454179199999999
+          }
+        ],
+        "retainedCandidates": 27,
+        "passed": true
+      },
+      {
+        "id": "photo-flower",
+        "variant": "baseline",
+        "prepareSeconds": 0.10540729099999999,
+        "solveSeconds": 5.878812959,
+        "totalSeconds": 5.984220249999999,
+        "sourceSha256": "a6329990af013948c3ba32058af40424949d57280ca3b5ab18ecaaca0f1787a0",
+        "boundarySha256": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+        "geometrySha256": "ee213574b4e67da650a4192f28fcfa776655c1e05604e517aa4c37dfb19b90b1",
+        "independentError": {
+          "mismatchPixels": 561,
+          "observedPixels": 160000,
+          "observedFraction": 1,
+          "mismatchFraction": 0.00350625
+        },
+        "featuresPassed": true,
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "selectedCounts": [
+          3,
+          3
+        ],
+        "stages": [
+          {
+            "stage": "directInitializing",
+            "seconds": 0.45443283399999995
+          },
+          {
+            "stage": "directFitting",
+            "seconds": 0.592048708
+          },
+          {
+            "stage": "directClearance",
+            "seconds": 0.3127734580000001
+          },
+          {
+            "stage": "directRefining",
+            "seconds": 2.098879083
+          },
+          {
+            "stage": "directSharing",
+            "seconds": 0.5997712089999996
+          },
+          {
+            "stage": "directPolishing",
+            "seconds": 0.6259682090000006
+          },
+          {
+            "stage": "directSharing",
+            "seconds": 0.14868366699999933
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "selective-degree-reduction",
+            "seconds": 0.0824935000000005
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "curve-degree-reduction",
+            "seconds": 0.07919495800000004
+          },
+          {
+            "stage": "directSharing",
+            "seconds": 0.04942816700000003
+          },
+          {
+            "stage": "directPolishing",
+            "detail": "shared-run-simplification",
+            "seconds": 0.06572562500000004
+          }
+        ],
+        "retainedCandidates": 27,
+        "passed": true
+      }
+    ]
+  },
+  "editableChecks": {
+    "passed": 12,
+    "sourceFilesVerified": 1065,
+    "record": "tmp/heart-learning/gradient-bins-fits-v1/audit-results.json"
+  },
+  "visualReview": {
+    "photo-flettede-puppy": "Both independent renders were inspected. The silhouette is preserved, with the existing small border/leg imperfections. Ten additional source pixels disagree in the candidate; this is retained, not presented as an accuracy improvement."
+  },
+  "focusedTests": {
+    "passed": 27,
+    "files": 3,
+    "newRegressions": 1
+  },
+  "qaRoot": "tmp/heart-learning/gradient-bins-runtime-v1/qa",
+  "nextAction": "Actual browser Hunodan/photo QA, 110 fresh paired full-pipeline solves across the 55 fixed masks, editable export checks and full repository tests, serially. Two existing no-crop cases remain outside this fixed-mask replay and in the 31-photo denominator.",
+  "artifactsSha256": {
+    "tmp/heart-learning/gradient-bins-runtime-v1/focused.log": "3aba8feaa0fc36dcb242ffc702a7116aa4309d3bef90ca55b57c7cba22976215",
+    "tmp/heart-learning/gradient-bins-runtime-v1/baseline.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
+    "tmp/heart-learning/gradient-bins-runtime-v1/qa/run.py": "d08f53713552c971f3515754979b4e7d206becdff16c0f2c02987c6ba66df1e9",
+    "tmp/heart-learning/gradient-bins-runtime-v1/qa/restart-preview.py": "6747e79fcfec31eabb8daffe87016f1672889b85cc08f6c705b4191dd4569345",
+    "tmp/heart-learning/gradient-bins-runtime-v1/corpus/replay.mjs": "34740b9473531cc4b30cd810ae861bc22c384e7318ce377d41a0c686a9744e52",
+    "tmp/heart-learning/gradient-bins-runtime-v1/corpus/run.py": "403e9f87e0f8109dac39af3146940d08a629a52ccfdd2196a8d855943ce30542",
+    "tmp/heart-learning/gradient-bins-runtime-v1/corpus/audit.mjs": "feb8e00d155c14251f4f6580084600e319f89cc0791847f0f39bbd56415e6766",
+    "tmp/heart-learning/gradient-bins-fits-v1/state.json": "8bf49d2221134f4a0ebabb0691aaf6b1040fa85ed8843827d5f8c44bf45c09cd",
+    "tmp/heart-learning/gradient-bins-fits-v1/results.json": "9d6262da94dfb6398aca1f3c07e89c53cc807aae31750c27182af580d9572e1e",
+    "tmp/heart-learning/gradient-bins-fits-v1/audit-results.json": "8c5bfcb45e907ab8be77b8ce6f8925b77f479bc30ff4f5f716ef3a8e4961e4ad",
+    "tmp/heart-learning/gradient-bins-v2/results.json": "6190016ac9f0d82a9c7a0137b17e9c8c485dbcc29fb2006b2324102d7aab0b6e",
+    "tmp/heart-learning/gradient-bins-v2/source.json": "ae6a824bb120fae83b20fb799657f4f0702f3501adf1c55d7befe8ebcf253900"
+  }
+}

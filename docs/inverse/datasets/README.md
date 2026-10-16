@@ -33,6 +33,18 @@ The inventory, with material annotations updated on 2026-10-16, contains:
 
 ## Current results and limits
 
+A [bounded gradient index](gradient-row-bins-runtime.json) is now integrated
+locally after **27 focused tests**. Sparse designs retain 128 row buckets;
+larger graphs use eight per cubic, capped at 1,024. Across 75 saved/analytic
+geometries, **2,700 gradient comparisons / 1,498,608 scalar values** agree
+exactly, including moved controls and both JavaScript and Wasm. Fresh paired
+solves reduce the dense Hunodan case from **8.69 s to 7.68 s** with identical
+cutting geometry and image error. All twelve smoke-fit exports pass fidelity,
+geometry, paper and source-feature checks. Five of six fitted geometry pairs
+are exact; the puppy's timed fit has ten additional wrong pixels on its 400px
+mask (0.00625 percentage points), preserved in the report. Full browser,
+55-mask paired fitting, editable-export and repository QA are pending.
+
 The [fresh dense-case profile](dense-solver-profile-results.json) identifies the
 boundary-gradient kernel as the largest cost: **2.21 s** sampled self time.
 Both fresh control/profile solves reproduce the browser's exact cutting
@@ -41,8 +53,8 @@ reduces the dense case's median complete gradient call from **2.57 ms to
 1.56 ms** using 1,024 instead of 128 segment-row buckets. All **880 gradient
 comparisons / 614,240 scalar coordinates** agree exactly with the existing
 JavaScript reference across 55 saved geometries, both phases and binary/fractional
-targets. Sparse-graph overhead, fresh-fit quality and browser timings still need
-verification. No runtime bin-count change has been made.
+targets. The subsequent sparse-graph and fresh-fit checks underpin the bounded
+policy above; full release verification remains pending.
 
 The native-fidelity fix now passes all **22 Hunodan**, **four hard-photo** and
 **three smoke** browser workflows, plus **874 application tests** (one skip),

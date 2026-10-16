@@ -19,7 +19,12 @@ const gradientBackend=measuredKernel(sameArray,{
 export const boundaryKernelChoices=()=>gradientBackend.report();
 export function boundaryGradient(graph,points,prob,n,phase,{nquad=64,maskSamples=24,native='auto',weights=null}={}){
   if(weights)prob=boundaryObjective(prob,weights).target;
-  const index=polygonIndex(graph,points,maskSamples);
+  // Dense cuts otherwise scan many segments which cannot cross this row.
+  // Keep small graphs' cheaper index, and bound the denser index's storage.
+  // Buckets only reject impossible intersections; crossing arithmetic and
+  // quadrature remain unchanged for both JavaScript and Wasm derivatives.
+  const bins=graph.edges.length<=32?128:Math.min(1024,8*graph.edges.length);
+  const index=polygonIndex(graph,points,maskSamples,bins);
   if(!quadratureTables.has(nquad))quadratureTables.set(nquad,{B:Array.from({length:nquad},(_,j)=>bernstein((j+.5)/nquad)),D:Array.from({length:nquad},(_,j)=>dbernstein((j+.5)/nquad))});
   const table=quadratureTables.get(nquad);
   const javascript=()=>javascriptBoundaryGradient(graph,points,prob,n,phase,index,table);
