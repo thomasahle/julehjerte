@@ -4,7 +4,7 @@ import { generateCornerChecks, hasThreeCounterLanes } from './cornerChecks';
 import { generateFittedFigure } from './fitted';
 import { sunburstBorder } from './sunburst';
 import { generateTextGrid } from './textGrid';
-import { generateBranchedText, hasOverlappingTextBranches } from './branchedText';
+import { generateBranchedText, hasOverlappingTextBranches, fittedBranchedTextFill } from './branchedText';
 import { generateRepeatedGrid, repeatedGridCache } from './repeatedGrid';
 import { generateCheckeredGrid, checkeredGridCache } from './checkeredGrid';
 import { generateMixedCheckeredGrid, mixedCheckeredGridCache } from './mixedCheckeredGrid';
@@ -905,12 +905,15 @@ function retryBranchedText(request: GeneratorRequest, curveFitter: ReturnType<ty
 	// A neighbouring V-shaped stroke needs aligned columns and higher row
 	// junctions. Retain the separate serif branches, give the unchanged letters
 	// more of the frame, and require room around the complete joined cuts.
-	for (const guardedJunctions of [false, true]) {
+	for (const mode of ['aligned', 'guarded', 'fitted'] as const) {
+		const guardedJunctions = mode !== 'aligned',
+			fittedFill = mode === 'fitted' ? fittedBranchedTextFill(text, font, frame) : undefined,
+			fills = mode === 'fitted' ? fittedFill === undefined ? [] : [fittedFill] : [.9, .84];
 		// A narrowing fork needs its last horizontal junction higher up. Its
 		// vertical divider follows the common air gap instead of shaving a
 		// serif, and extra attachments keep clear of the stitched boundaries.
 		const profiles = guardedJunctions ? [[.2, .35], [.15, .3]] as const : [[.2, .4], [.25, .45]] as const;
-		for (const frameFill of [.9, .84]) for (const rows of profiles) {
+		for (const frameFill of fills) for (const rows of profiles) {
 			let construction: Construction;
 			try {
 				construction = generateBranchedText(text, font, frame, .55, true, rows, frameFill, guardedJunctions);

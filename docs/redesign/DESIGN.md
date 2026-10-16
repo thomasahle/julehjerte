@@ -785,6 +785,15 @@ Reject a new guarded layout if any complete letter-outline segment extends
 outside the frame. Check intervals between frame intersections as well as
 vertices, so narrow concave scallops cannot crop a letter between sample points.
 
+If these guarded branch layouts cannot keep the complete lettering inside a
+concave frame, a final pair of row profiles may shrink the whole unchanged
+letter group to fit. Find the largest contained scale no wider than 84%, using
+20 bisection steps about the frame centre, then retain 94% of that scale to
+leave space for the outside joins. Skip this retry when the 84% layout already
+fits. Preserve all glyph proportions, counters and the frame; keep the 10%
+full-sheet clearance reserve and select fewer sharp tips after fitting.
+Earlier successful layouts return first.
+
 Other nonrepeated text may use the same guarded attachments after all established
 recipes fail, including multiline layouts. Compare the existing two-panel row
 and column arrangements, with padding 16%/12% and frame fill 88%/94% (88% without

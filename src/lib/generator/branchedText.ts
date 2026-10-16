@@ -74,14 +74,7 @@ export function hasOverlappingTextBranches(text: string, font: Font): boolean {
 	});
 }
 
-/** An E's middle and lower serifs can overlap vertically. A rectangular panel
- * cuts those ends into fragile fragments. Separate the stem from its three
- * branches first; divide only the stem between their actual attachment heights.
- * Neighbouring glyphs use ordinary panels, with a column per disconnected part.
- * All original outlines are retained. */
-export function generateBranchedText(text: string, font: Font, frame: Frame,
-	splitFraction = .55, practical = false, junctionRows?: readonly [number, number],
-	frameFill = junctionRows ? .84 : .72, guardedJunctions = false) {
+function placeBranchedText(text: string, font: Font, frame: Frame, frameFill: number): Ring[][] {
 	if (!text.trim() || /\s/.test(text)) throw new ConstructionError('topology', 'Branched text needs one filled line');
 	const glyphs = [...text.normalize('NFC')].map(char => {
 		const glyph = font.glyphs[char];
@@ -100,9 +93,39 @@ export function generateBranchedText(text: string, font: Font, frame: Frame,
 	const [left, right] = extent(placed.flat(), 0), span = Math.max(right - left, height),
 		cx = (left + right) / 2, cy = (low + high) / 2;
 	if (!(span > 0)) throw new ConstructionError('empty', 'Empty text');
-	const uprightGlyphs = placed.map(g => normalizeContours(g.map(r => r.map(([x, y]): Point =>
+	return placed.map(g => normalizeContours(g.map(r => r.map(([x, y]): Point =>
 		[(x - cx) / span, (y - cy) / span]))).map(r => r.map(([x, y]): Point =>
 		[x * 80 * frameFill * (frame === 'oval' ? .75 : 1), y * 80 * frameFill * (frame === 'oval' ? .75 : 1)])));
+}
+
+/** Existing wide layouts can cross a concave frame even when their bounding
+ * boxes fit. Shrink the complete unchanged outlines together about the frame
+ * centre, then leave room for the outside connections. These frames are
+ * star-shaped about their centre, so containment is monotone in this scale.
+ * Return no extra recipe when the established smaller layout already fits. */
+export function fittedBranchedTextFill(text: string, font: Font, frame: Frame): number | undefined {
+	const artwork = placeBranchedText(text, font, frame, 1).flat().map(r => r.map(uprightToSheet)),
+		boundary = frameRing(frame, 80),
+		fits = (fill: number) => contoursWithinBoundary(artwork.map(r => r.map(([x, y]): Point =>
+			[50 + (x - 50) * fill, 50 + (y - 50) * fill])), boundary);
+	if (fits(.84)) return;
+	let low = 0, high = .84;
+	for (let i = 0; i < 20; i++) {
+		const middle = (low + high) / 2;
+		if (fits(middle)) low = middle; else high = middle;
+	}
+	return low * .94;
+}
+
+/** An E's middle and lower serifs can overlap vertically. A rectangular panel
+ * cuts those ends into fragile fragments. Separate the stem from its three
+ * branches first; divide only the stem between their actual attachment heights.
+ * Neighbouring glyphs use ordinary panels, with a column per disconnected part.
+ * All original outlines are retained. */
+export function generateBranchedText(text: string, font: Font, frame: Frame,
+	splitFraction = .55, practical = false, junctionRows?: readonly [number, number],
+	frameFill = junctionRows ? .84 : .72, guardedJunctions = false) {
+	const uprightGlyphs = placeBranchedText(text, font, frame, frameFill);
 	const artwork = uprightGlyphs.flat().map(r => r.map(uprightToSheet)), boundary = frameRing(frame, 80);
 	if (guardedJunctions && !contoursWithinBoundary(artwork, boundary))
 		throw new ConstructionError('clearance', 'The letters extend beyond the frame');

@@ -1,5 +1,49 @@
 # Generator robustness results
 
+## Fit difficult branched text within the selected frame
+
+Four additional configurations now pass: Cinzel **ME** and **EM** in the
+hexagon and scalloped frames. Each uses **8×8 strips**, with the original glyph
+proportions, counters and frame. All four have zero detected needle tips below
+30 degrees. The narrow-tip counts below 45 degrees are one (ME/scalloped),
+three (EM/scalloped), four (ME/hexagon) and six (EM/hexagon).
+
+The earlier guarded layouts could extend beyond the frame. The new final
+fallback measures containment of the complete letter outlines, finds the largest
+fit no wider than the established 84% layout, and keeps 94% of that scale to
+leave space for the outside joins. It tries the two existing guarded row
+profiles, retaining the full topology, export and 10% extra spacing checks.
+This scales the letter group uniformly; it neither clips the serifs nor changes
+the frame. Earlier successful layouts return first. Already-contained layouts
+skip the extra construction. No inverse solver constructs these cuts.
+
+The targeted audit covers **95 configurations: 45 accepted, 50 refused and zero
+invalid accepted outputs**. All **41 earlier successes are exactly unchanged**;
+the four recoveries are supplementary cases. Complete production generation
+matches every inspected preview. All four pass JSON/SVG handoffs, raster
+agreement and independent material connectivity checks, with zero certain or
+possible detached core islands. Final material resolutions are 1,400–4,200;
+some lower-resolution checks were uncertain. Each finished heart and both
+cutting sheets were visually inspected. These checks do not establish physical
+cutting ease, weaving ease or tear strength.
+
+The merged corpus remains **2,888 accepted / 262 refused / zero invalid**.
+This refreshes 54 overlapping-branch cases and retains 3,096 previous records;
+the 41 supplementary cases are outside that corpus. The expected-ID fixture is
+unchanged and matches all 2,888 successes. This is not a new full-matrix audit,
+and support for all combinations remains unfinished.
+
+Final type checking, lint and build pass, with seven existing Svelte warnings.
+The full unit run reports **1,222 passes and one existing Oswald juleman timing
+failure**: 5.497 seconds against its unchanged five-second limit. It took
+706.03 seconds across 70 files. The same test passes alone in **3.82 seconds**.
+All 1,223 unit cases pass across those runs, including five new regressions;
+this is not a single fully green full-suite run. No test timeout was increased.
+The separate inverse suite passes all **177 tests** in **90.04 seconds**.
+Evidence in ignored `tmp/generator/`: `branch-fit-production-{audit,current}.json`,
+`branch-fit-preview-{selected,metrics,material}.json`,
+`branch-fit-preview-gallery-*.png` and `branch-fit-full-test.log`.
+
 ## Guarded text connections: avoid slivers beside panel seams
 
 Fifteen additional text configurations now pass. All retain the original
