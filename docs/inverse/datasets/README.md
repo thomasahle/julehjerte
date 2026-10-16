@@ -33,6 +33,19 @@ The inventory, with material annotations updated on 2026-10-16, contains:
 
 ## Current results and limits
 
+An isolated [supported-count search bound](supported-count-bound-results.json)
+reduces the slow Hunodan hjcur-02 mask replay from **15.65 s to 7.27 s**, with
+**byte-identical exported cutting geometry**. The dense checker and candle
+controls also keep identical geometry; all six editable exports pass. The
+shortcut skips other slit counts only when they cannot displace the already
+valid boundary-supported layout under the existing one-percentage-point
+preference. It is **not yet a runtime change**: 110 fresh paired fits are running
+on 22 browser Hunodan masks, four browser hard-photo masks and 29 prepared masks
+from the 31-photo benchmark. The other two photos still have no crop and remain
+failures. The initial replay accidentally used the final report's finer paper
+resolution as the starting setting; that separate result is retained, and the
+corrected comparison uses the actual captured worker request.
+
 The [native import sampling fix](native-import-sampling-results.json) keeps the
 400px painting surface but reuses the original photographic raster only while
 its exact enlargement still matches every colour and coverage cell. Real browser

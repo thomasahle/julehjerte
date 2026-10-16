@@ -1,0 +1,143 @@
+{
+  "schema": "supported-count-bound-results-1",
+  "status": "smoke-passed-corpus-running",
+  "runtimeChange": false,
+  "method": "Both arms fit the same captured binary mask from fresh grids in serial fresh Node processes. Actual initial worker-request settings are used. Time covers prepare/fit/finish and retained checkpoints, excluding independent rendering and editable conversion.",
+  "rootCause": "A valid four-cut candidate on hjcur-02 needs a finer paper audit. The ordinary-finalists safeguard then also refines two five-cut candidates, although the existing final selection prefers the boundary-supported four-cut fit whenever it is within one percentage point of the best.",
+  "bound": "For a fully valid boundary-supported count with nonnegative source error <=1%, every possible alternative error >=0 leaves it within the existing 1 percentage point preference. A queued same-count alternative may improve it, so that prevents the shortcut. Weighted fits and failed candidates retain the original search.",
+  "qualification": "This only bounds pre-polish selection. Changed scheduling and shared detail state can change final results; smoke and corpus validation are required, not implied by the inequality.",
+  "results": [
+    {
+      "id": "hjcur-02",
+      "baselineSeconds": 15.653655624999999,
+      "candidateSeconds": 7.270794083,
+      "sameGeometry": true,
+      "geometrySha256": "7305d13bf74ed0a1ba720558bd7dea56688bc8a46e529b5bf993549ddc62c7e6",
+      "sourceMaskSha256": "ee27e7b1a962204080c43d064b331286e929ae897f20ff8f5ac082e961caf4de",
+      "independentError": 0.0050702222222222225,
+      "editableError": 0.004963555555555555,
+      "slits": {
+        "left": 4,
+        "right": 4
+      },
+      "allChecksPassed": true,
+      "bound": {
+        "reason": "supported-count-error-bound",
+        "counts": [
+          4,
+          4
+        ],
+        "sourceImageError": 0.005276444444444445,
+        "allowance": 0.01,
+        "skippedFineCounts": [
+          [
+            5,
+            5
+          ],
+          [
+            5,
+            5
+          ]
+        ]
+      }
+    },
+    {
+      "id": "hjstr-03",
+      "baselineSeconds": 9.195664584,
+      "candidateSeconds": 9.476038333,
+      "sameGeometry": true,
+      "geometrySha256": "f56429ad6c7a2faceb7df95a22be4962cf6834878da575768a79c727408c2e1d",
+      "sourceMaskSha256": "d9ba414af2b114d628d5a1ee4df9b7c6cc875d31452495e8159a06d1e3021f11",
+      "independentError": 0.0056129769369752365,
+      "editableError": 0.005446912530555851,
+      "slits": {
+        "left": 7,
+        "right": 7
+      },
+      "allChecksPassed": true,
+      "bound": {
+        "reason": "supported-count-error-bound",
+        "counts": [
+          7,
+          7
+        ],
+        "sourceImageError": 0.0057923264959081735,
+        "allowance": 0.01,
+        "skippedFineCounts": [
+          [
+            8,
+            8
+          ],
+          [
+            8,
+            8
+          ]
+        ]
+      }
+    },
+    {
+      "id": "candle",
+      "baselineSeconds": 3.649255167,
+      "candidateSeconds": 3.37970175,
+      "sameGeometry": true,
+      "geometrySha256": "1bc0dd1dba943690ef6f316b404c1a855be582f7ca0fd9b98fd70ef814ec26f7",
+      "sourceMaskSha256": "263a91fc0a1b6db6db4da860f4145bd52aa0973927285068f8cbe267c9bc175d",
+      "independentError": 0.0048375,
+      "editableError": 0.0048,
+      "slits": {
+        "left": 1,
+        "right": 1
+      },
+      "allChecksPassed": true,
+      "bound": null
+    }
+  ],
+  "editableReplay": {
+    "passed": 6,
+    "cases": 6,
+    "editorIssues": 0,
+    "scope": "Production editable conversion, SVG serialization/parsing, editor intersections, fidelity, features, independent geometry and paper checks. Separate from actual browser timing."
+  },
+  "visualReview": {
+    "file": "tmp/heart-learning/supported-count-bound-v2/comparison.png",
+    "review": "All three source masks and both fitted outputs inspected. Paired geometries are byte-identical and retain the curved checker, dense checker and candle motifs. Photographic boundary unevenness remains."
+  },
+  "earlierReplay": {
+    "path": "tmp/heart-learning/supported-count-bound-v1/results.json",
+    "status": "complete-but-not-browser-input-equivalent",
+    "reason": "It reused final report.settings. For hjcur-02 this starts at materialResolution=700 instead of the captured request value 360, bypassing the coarse-to-fine validation path that triggers extra finalists.",
+    "outcome": "All three paired exports identical and valid; no demonstrated speed improvement. Preserved rather than treated as the requested browser comparison."
+  },
+  "corpusPlan": "tmp/heart-learning/supported-count-bound-corpus-v1/plan.json",
+  "corpusState": "tmp/heart-learning/supported-count-bound-corpus-v1/state.json",
+  "corpusScope": {
+    "actualBrowserHunodanMasks": 22,
+    "actualBrowserHardPhotoMasks": 4,
+    "photoBenchmarkMasks": 29,
+    "unmodifiedEarlierNoCropFailures": [
+      "nested-squares",
+      "santa"
+    ],
+    "totalFits": 110
+  },
+  "nextAction": "Inspect all paired outcomes, independently replay editable exports and actual browser workflows before any runtime adoption.",
+  "artifactsSha256": {
+    "tmp/heart-learning/supported-count-bound-v2/state.json": "5bbe6a24ca39393ea7988744bba422163400d9f0774437d5762a3b823f765477",
+    "tmp/heart-learning/supported-count-bound-v2/results.json": "24273ef8f609003069d9090535ca2f8ef145eb81f64d19e545b7ea817f881d27",
+    "tmp/heart-learning/supported-count-bound-v2/source.json": "25bef5f59f8c87531c25dc361d245b81a70e0214c668362b7158ad8c33297db4",
+    "tmp/heart-learning/supported-count-bound-v2/plan.json": "a2fc8ef860eb9caa8e72a111a0d21b9cf4a8d1bb4d8f2befb662cdf53abdcc8d",
+    "tmp/heart-learning/supported-count-bound-v2/replay.mjs": "ef2a1373995b45ed852edbf0ced46dfa4b46333e22ed3b2bbe589f4d1b494662",
+    "tmp/heart-learning/supported-count-bound-v2/run.py": "c7bbfee4d2ba2506f5effe121d12c2f142e120b8511ba504d5aedff5788128dc",
+    "tmp/heart-learning/supported-count-bound-v2/comparison.png": "b9c26b0d28f4ef0cd4c4e6283a360df3fa21446382c3d31ef8cfea35aa0ce920",
+    "tmp/heart-learning/supported-count-bound-v2/editable/results.json": "9911b7572b0de4d1268e3676d6671b49b290168c1dffd50ce00a6bf55d0d1480",
+    "tmp/heart-learning/supported-count-bound-v1/state.json": "aec44f550fb405195dc361a06216cf80f2a4cc6bb52679f07f125244f68d9bf9",
+    "tmp/heart-learning/supported-count-bound-v1/results.json": "bbe6a4f6175f230fd390623fc2d15730f700507e6be03c70e874001a33e73d45",
+    "tmp/heart-learning/supported-count-bound-v1/source.json": "3fd07d593562d138ede193a2f9c08da2a0b23aa5b38a3aed2f1ea9f18597dcac",
+    "tmp/heart-learning/supported-count-bound-corpus-v1/plan.json": "4344fb5d0a857a29241d8355c6cf4bb62b8c1ca82a75ddc69a1e6aede2eea34d",
+    "tmp/heart-learning/supported-count-bound-corpus-v1/cases.json": "e355f3d50f34ae1eb46a531896a960d746e9d1b7ad80aa9831ed669ffe0011b7",
+    "tmp/heart-learning/supported-count-bound-corpus-v1/source.json": "3ad806b46472df605fadcc09e29cca75b7ec1b2ed46b9f62a9b2fc481f0f362a",
+    "tmp/heart-learning/supported-count-bound-corpus-v1/external-source.json": "50edad0301e3e1162733c1f41dbff2d79455a2951a5aca64b6e33dea9e8a02bd",
+    "tmp/heart-learning/supported-count-bound-corpus-v1/replay.mjs": "7c8fa3892bcd9b291cca0196bf4d364986ce941944bc4056093a0cbd0c91ff19",
+    "tmp/heart-learning/supported-count-bound-corpus-v1/run.py": "a7febf156515cbf816923a61c0092ec4fcf3396b98fae4e127b4272eb3a40f68"
+  }
+}
