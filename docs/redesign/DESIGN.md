@@ -804,6 +804,19 @@ validate the complete design, retain the original outlines and attachments, and
 require the same 10% reserve. Deduplicate completed geometries and prefer fewer
 sharp tips. A successful existing layout returns before this final repair.
 
+An accepted ordinary text recipe or panel retry with remaining sharp tips may
+try one 2-column, 3-row construction per glyph. Aim its attachment fans towards
+the mean of the clipped outline points instead of the cell axes. Keep the ink
+panels, agreed seam contacts, counters and coincident-cut rules. Skip this trial
+when its predicted strip count exceeds either existing sheet or the 20-strip
+cap; repeat frames and tip-free results do not need it. Accept only fewer sharp
+tips (prioritising tips below 30 degrees), no added strips, the full topology and
+fidelity checks, and 10% clearance reserve after shared-join improvement. Compare
+the old and new woven images at 240 samples and allow at most 0.2% disagreement,
+so a different letter spacing or border composition cannot replace the original.
+Otherwise retain the existing result. This is one optional routing trial, not
+a deformation of the glyph or an inverse solve.
+
 Relief-cut construction may cache geometric queries for one unchanged outline,
 routing mode and allowed external ports: notch ray targets, outline-edge positions,
 and the ordered chord choices for the same attachment ports. Compute the chord

@@ -1,5 +1,58 @@
 # Generator robustness results
 
+## Text cutting quality: alternative approaches to divided letters
+
+Cinzel **B** now has **zero tips below 45 degrees**, down from three, in the
+circle, rounded and scalloped frames. Its diamond frame has **one**, down from
+four. All four retain **6×6 strips** and the existing visible composition.
+This is a quality improvement to already supported combinations; it does not
+increase the acceptance count.
+
+The generator tries one optional 2-column, 3-row layout per glyph, aiming its
+attachment fans towards the clipped outline points. It changes the coincident
+connections without deforming the letters. It runs only when a successful
+ordinary recipe or panel retry has sharp tips and already has at least the
+required number of strips. The alternative must improve the tip count, add no
+strips, pass the complete conversion and fidelity checks, retain 10% spacing
+reserve, and differ from the existing woven image by at most 0.2% at 240 samples.
+Otherwise the original result is returned. The candidate for B in the air frame
+would change the composition, so its existing cuts and two sharp tips are kept.
+
+A paired comparison of **39 cases** covers B, ANNA, juleman and ÆØÅ in all six
+fonts' circle frames, plus Cinzel B and BO in all eight nonrepeating frames.
+It retains **37 accepted / two refused / zero invalid**. The four improvements
+above are the only changed outputs; the other 35 complete outputs or refusals
+are identical. After adding the appearance guard, all five initially changed
+cases were rerun; the other 34 records are carried from the paired run because
+the guard only discards changed alternatives. The four retained improvements
+differ from the earlier woven images by less than 0.063% at 500 samples.
+
+All four final production designs pass JSON and SVG handoffs and the independent
+material audit at resolution **1,400**, with zero certain or possible detached
+core islands. The finished hearts and both full cutting sheets were visually
+reviewed. No physical weaving or tear-strength trial was performed. Evidence in
+ignored `tmp/generator/`: `contour-approach-final-audit.json`,
+`contour-approach-{material,metrics}.json`, and `contour-approach-gallery-*.png`.
+
+The merged corpus remains **2,875 accepted / 275 refused / zero invalid**, with
+39 audited records and 3,111 retained from `panel-reserve-current.json`.
+`contour-approach-current.json` exactly matches the unchanged expected-ID fixture.
+This is not a new full-matrix run. A separate 29-case experiment on remaining
+framed-text refusals found no recoveries. Deeper relief beams, extra counter
+attachments and reversible warped partitions were also investigated; none of
+those experiments is part of production. Ablation showed that the useful B
+improvement needs only the changed attachment direction.
+
+Check, lint and build pass with seven existing Svelte warnings. The focused
+selection passes all 15 matching tests, including the two new regressions.
+The full single-worker unit run passes **1,194 tests**, with the existing Oswald
+juleman repeat timing test taking **5.121 seconds** against its unchanged
+five-second limit. That same test passes on the final source in isolation in
+**3.95 seconds**. Thus all 1,195 unit cases pass across runs, but the full run is
+not entirely green. The full run takes 630.11 seconds across 68 files, with no
+source changes during or after it. The separate inverse suite passes all
+**177 tests** in 87.42 seconds.
+
 ## Current coverage: clearance reserve and repeated-text checks
 
 Oswald **ÆØÅ** now works in the hexagon frame with **6×6 strips**. Its original

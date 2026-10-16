@@ -367,7 +367,7 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		const result = generateUsingRecipes(request,
 			(construction, recipe) => rejected.push({ construction, recipe }), curveFitter, repetitionCache);
 		return request.mode === 'text' && request.textFrame === 'repeat-check'
-			? improveSharedConnections(result) : result;
+			? improveSharedConnections(result) : improveTextPanelTips(request, result, curveFitter);
 	} catch (error) {
 		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 		const curvedCandidates = [...rejected];
@@ -425,7 +425,7 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 			}
 		}
 		const panels = retryPanelLayouts(request, curveFitter);
-		if (panels) return panels;
+		if (panels) return improveTextPanelTips(request, panels, curveFitter);
 		const fitted = retryFittedSupports(request, curveFitter);
 		if (fitted) return fitted;
 		if (request.mode === 'figure' && request.style === 'layers') {
@@ -915,6 +915,42 @@ function retryComponentLanes(request: GeneratorRequest, curveFitter: ReturnType<
 		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 	}
 	return best;
+}
+
+/** A divided serif can pass spacing checks but still leave sharp paper tips.
+ * Try one alternate attachment fan, preserving the visible text and frame.
+ * Keep it only when it removes tips, adds no strips and retains the reserve. */
+function improveTextPanelTips(request: GeneratorRequest, original: GeneratorResult,
+	curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult {
+	const frame = request.textFrame ?? 'woven', text = request.text ?? '', font = request.font;
+	if (request.mode !== 'text' || !font || !cutTipCounts(original.design)[1] ||
+		frame === 'repeat' || frame === 'repeat-check') return original;
+	const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n');
+	const strips = 2 * Math.max(...lines.map(line => [...line].length)) + 3 * lines.length + 1;
+	if (strips > Math.min(20, original.design.gridSize.x, original.design.gridSize.y)) return original;
+	try {
+		const shape = frame === 'woven' || frame === 'air' ? undefined : frame;
+		const construction = generateTextGrid(text, font, frame === 'air', shape, {
+			columns: 2, slices: 3, spread: true, filled: true, inkPanels: true,
+			guardSeams: true, practical: true, compound: true, balanced: true,
+			boundaryIslands: true, contourApproaches: true
+		});
+		const result = improveSharedConnections(finishConstruction(request, construction, 'letters', undefined, curveFitter)),
+			design = result.design;
+		if (design.gridSize.x > original.design.gridSize.x || design.gridSize.y > original.design.gridSize.y ||
+			!fewerCutTips(cutTipCounts(design), cutTipCounts(original.design))) return original;
+		const margin = intersectionMarginPx(inferOverlapRect(design.fingers, design.gridSize),
+			gridClearanceScale(design.gridSize.x, design.gridSize.y));
+		if (findFingersWithIssues(design.fingers, margin * 1.1).size) return original;
+		// An earlier recipe may have used different letter spacing or frame
+		// projections. Optimising its cuts must also retain its composition.
+		const before = rasterizeDesign(original.design, 240).data, after = rasterizeDesign(design, 240).data;
+		if (after.reduce((sum, pixel, i) => sum + Number(pixel !== before[i]), 0) / after.length <= .002)
+			return result;
+	} catch (error) {
+		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+	}
+	return original;
 }
 
 /** Keep successful layouts and their latency unchanged. These bounded panel

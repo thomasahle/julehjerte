@@ -53,6 +53,22 @@ function validateHandoffs(design: HeartDesign) {
 // These are expected successes, never a test that passes by accepting a refusal.
 // The larger offline corpus covers 2,028 text and 1,122 figure configurations.
 describe('generator robustness regressions', () => {
+	it('removes the three narrow Cinzel B tips without adding paper strips', () => {
+		const { design } = generate({ mode: 'text', name: 'B', text: 'B', font: fonts.cinzel,
+			textFrame: 'circle', colors });
+		expect(design.gridSize).toEqual({ x: 6, y: 6 });
+		expect(cutTipCounts(design)).toEqual([0, 0]);
+		const margin = intersectionMarginPx(inferOverlapRect(design.fingers, design.gridSize), gridClearanceScale(6));
+		expect(findFingersWithIssues(design.fingers, margin * 1.1).size).toBe(0);
+		validateHandoffs(design);
+	}, 20000);
+	it('keeps the Cinzel B air composition when a tip improvement would rearrange it', () => {
+		const { design } = generate({ mode: 'text', name: 'B', text: 'B', font: fonts.cinzel,
+			textFrame: 'air', colors });
+		expect(design.gridSize).toEqual({ x: 6, y: 6 });
+		expect(cutTipCounts(design)).toEqual([0, 2]);
+		validateHandoffs(design);
+	}, 20000);
 	it('widens invisible approaches when Oswald ÆØÅ narrowly misses the hexagon clearance reserve', () => {
 		const { design } = generate({ mode: 'text', name: 'ÆØÅ', text: 'ÆØÅ', font: fonts.oswald,
 			textFrame: 'hexagon', colors });

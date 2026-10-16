@@ -25,7 +25,7 @@ export function generateTextGrid(
 	font: Font,
 	air = false,
 	frame?: Frame,
-	layout: { padding?: number; frameFill?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; adaptGates?: boolean; onGateChange?: () => void; filled?: boolean; onSeamChange?: () => void; inkPanels?: boolean; bentSpokes?: boolean; adaptivePanels?: boolean; guardSeams?: boolean; boundaryIslands?: boolean } = {}
+	layout: { padding?: number; frameFill?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; adaptGates?: boolean; onGateChange?: () => void; filled?: boolean; onSeamChange?: () => void; inkPanels?: boolean; bentSpokes?: boolean; adaptivePanels?: boolean; guardSeams?: boolean; boundaryIslands?: boolean; contourApproaches?: boolean } = {}
 ) {
 	const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n');
 	const cols = Math.max(...lines.map((l) => [...l].length)),
@@ -197,6 +197,14 @@ export function generateTextGrid(
 					}))
 				);
 			} else {
+				// Dividing a letter can leave its outline off centre in the cell.
+				// Aiming the attachment fan towards those points offers different
+				// approaches to a serif, without moving any outline or shared gate.
+				const points = layout.contourApproaches ? contours.flat() : undefined;
+				const centre: Point | undefined = points && [
+					points.reduce((sum, p) => sum + p[0], 0) / points.length,
+					points.reduce((sum, p) => sum + p[1], 0) / points.length
+				];
 				const connectionAllowed = layout.guardSeams ? panelSeamGuard(gates,
 					[y - h / 2, x + w / 2, y + h / 2, x - w / 2],
 					[row % slices > 0, col % columns < columns - 1, row % slices < slices - 1, col % columns > 0]
@@ -205,7 +213,8 @@ export function generateTextGrid(
 					const local: Edge[] = [];
 					fourPortMotif(
 						local, contours, gates,
-						[Math.PI / 4, (3 * Math.PI) / 4, (-3 * Math.PI) / 4, -Math.PI / 4],
+						centre ? gates.map(p => Math.atan2(centre[1] - p[1], centre[0] - p[0]))
+							: [Math.PI / 4, (3 * Math.PI) / 4, (-3 * Math.PI) / 4, -Math.PI / 4],
 						margin, [0, 1, 2, 3], undefined,
 						{ practical: layout.practical, compound: layout.compound, onCompound: layout.onCompound, balanced: layout.balanced, onCrowded: layout.onCrowded, bentSpokes: layout.bentSpokes, boundaryIslands: layout.boundaryIslands, connectionAllowed }
 					);
