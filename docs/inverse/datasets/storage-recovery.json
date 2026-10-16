@@ -44,8 +44,18 @@
     "originalStateSha256": "5611321d52a0a9c7d55cf394376b0f8d3af49a04f3a86137696e7acb84ccfe90",
     "sourcePinsVerifiedBeforeRetry": 930,
     "retry": "tmp/heart-learning/primitive-boundary-groups-v1/qa/retry-tests.py",
-    "retryStatus": "running",
+    "retryStatus": "passed",
     "logPolicy": "Retry captures the child output through a pipe, keeping a complete in-memory copy as well as the disk log; successful completion requires the complete test summary.",
-    "downstream": "The first queued ribbon experiment aborted before fitting. A new attempt waits for the verified QA retry."
+    "downstream": "The first queued ribbon experiment aborted before fitting. The second attempt started after the full retry passed and all source pins verified.",
+    "retryResult": {
+      "status": "complete",
+      "sourceFilesVerified": 931,
+      "applicationPassed": 865,
+      "applicationSkipped": 1,
+      "inversePassed": 1002,
+      "retryLog": "test-retry.log",
+      "originalAttempt": "failed-test-state.json"
+    },
+    "retryLogSha256": "e38489486331baa6a18c728fb31882dc80086c80e79e5114306a3dc972de7524"
   }
 }

@@ -1,6 +1,6 @@
 {
   "schema": "primitive-boundary-groups-results-1",
-  "status": "candidate-full-tests-retrying-after-inconclusive-run",
+  "status": "adopted-local-runtime-full-qa-passed",
   "plan": "docs/inverse/datasets/primitive-boundary-groups-plan.json",
   "implementation": "Keep both existing final primitive passes. Only after a boundary-objective rejection, retry candidate groups with sequential non-increasing pixel and boundary-plus-complexity costs. The existing source-error, feature, geometry, symmetry and material checks still gate the result. All passes share the existing deadline.",
   "focusedTests": {
@@ -120,9 +120,7 @@
     "exactlyUnchangedErrors": 22,
     "changedErrors": []
   },
-  "remainingVerification": [
-    "Full application and inverse tests controller completion and source-pin verification"
-  ],
+  "remainingVerification": [],
   "ribbonReplay": {
     "status": "complete-on-committed-runtime",
     "rows": [
@@ -415,6 +413,17 @@
         "stage": "browser",
         "exitCode": 0,
         "seconds": 40.10736854100003
+      },
+      {
+        "stage": "test",
+        "exitCode": 1,
+        "seconds": 1157.8055129999998
+      },
+      {
+        "stage": "test-retry",
+        "exitCode": 0,
+        "seconds": 1132.189458042,
+        "logMirrorFailure": null
       }
     ],
     "browser": {
@@ -440,7 +449,18 @@
       ],
       "builtAssetsVerified": 173
     },
-    "repositoryTests": "Original attempt exited 1 during a disk-space incident and lacks a complete inverse-test summary; retry is running. No full-suite pass claimed.",
+    "repositoryTests": {
+      "applicationPassed": 865,
+      "applicationSkipped": 1,
+      "inversePassed": 1002,
+      "failures": 0,
+      "sourceFilesVerified": 931,
+      "log": "tmp/heart-learning/primitive-boundary-groups-v1/qa/test-retry.log",
+      "logSha256": "e38489486331baa6a18c728fb31882dc80086c80e79e5114306a3dc972de7524",
+      "sourcePins": "tmp/heart-learning/primitive-boundary-groups-v1/qa/retry-tests-source.json",
+      "sourcePinsSha256": "dc00a32bfa203c49e02716c6c5ccbd44786f0b24b09a1cf145bf28c62fcedb7d",
+      "originalAttempt": "Inconclusive during a disk-space incident; retained separately and not counted as a pass."
+    },
     "qaState": "tmp/heart-learning/primitive-boundary-groups-v1/qa/state.json",
     "interruptedRun": "docs/inverse/datasets/storage-recovery.json"
   }

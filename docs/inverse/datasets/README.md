@@ -44,10 +44,12 @@ replay passes **22/22** with exactly unchanged errors, median **5.29 s**, maximu
 **8.83 s**. The fresh photo benchmark remains **27/31**, with unchanged masks
 and statuses; all 29 pairs convert without editor issues. All ten changed-error
 outputs were reviewed, including Viking's increase from **2.08% to 2.23%**.
-Check, lint, build and three browser workflows pass. The full-test attempt
-exited without a summary during a [disk-space incident](storage-recovery.json);
-a verified retry is running after reclaiming about 4 GiB of duplicate storage; this is not an additional reconstruction pass or a fix for the
-flower photograph's hidden centre.
+Check, lint, build and three browser workflows pass. The full regression retry
+passes **865 application tests** (one existing skip) and **1,002 inverse tests**,
+with all 931 pinned files unchanged. The earlier incomplete attempt during a
+[disk-space incident](storage-recovery.json) remains recorded separately. This
+is not an additional reconstruction pass or a fix for the flower photograph's
+hidden centre.
 
 
 A [fixed-mask ribbon diagnosis](flower-occlusion-results.json) separates input
