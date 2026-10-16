@@ -1,0 +1,14 @@
+{
+  "schema": "refinement-repair-clock-plan-1",
+  "status": "prepared-not-run-awaiting-serial-release-qa",
+  "reason": "Two browser runs reach the same improved half-star checkpoint at step 200, fail only short self-clearance, and record no repair. A preceding run repaired that checkpoint and returned a lower-error star. The existing 50 ms repair gate is a candidate explanation; saved reports have no checkpoint timestamps.",
+  "method": "Three fresh control/instrumented pairs, alternating order, on the captured half-star native mask with the actual settings and candidate observer. Load-hook instrumentation records per-refinement time allowance, checkpoint time remaining, proposal validity, repair eligibility and selected output. It does not change deadlines, forces, geometry rules or masks.",
+  "instrumentationLimit": "Taking timestamps and storing small records adds overhead. This is a diagnostic of which branch was taken, not a latency benchmark or a claim that instrumentation reproduces an uninstrumented trajectory.",
+  "acceptance": "Establish whether the missing repair was time-gated before designing a change. Any later change must preserve legality, features and total search budget, and demonstrate improved final source-mask error rather than only a better unvalidated checkpoint.",
+  "root": "tmp/heart-learning/refinement-repair-clock-v1",
+  "dependency": "tmp/heart-learning/gradient-bins-runtime-v1/qa/state.json must be complete; the runner asserts this before fitting.",
+  "artifactsSha256": {
+    "tmp/heart-learning/refinement-repair-clock-v1/replay.mjs": "2cdc1349d98b6771d20e4775412b4de457447a922f1d8e86ca5306a21b7bb0a2",
+    "tmp/heart-learning/refinement-repair-clock-v1/run.py": "fd8c6a79b73630642ba207f1840db98ef02225b60b17814def5e9c495168885a"
+  }
+}
