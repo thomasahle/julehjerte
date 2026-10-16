@@ -38,11 +38,12 @@ export function nativeDistanceTransform(seeds,nx,ny){
   return doubles.slice(out/8,out/8+count);
 }
 
-export function nativeCoreLabels(mask,nx,ny,originY,h,w,offset){
-  if(!runtime?.label_core||!byteLattice(mask,nx,ny))return null;
+export function nativeCoreLabels(mask,nx,ny,originY,h,w,offset,diagonal=false){
+  const kernel=runtime?.[diagonal?'label_core_diagonal':'label_core'];
+  if(!kernel||typeof diagonal!=='boolean'||!byteLattice(mask,nx,ny))return null;
   const count=nx*ny,arena=kernelMemory(),input=arena.alloc(count),labels=arena.alloc(count*4),queue=arena.alloc(count*4),sizes=arena.alloc(count*4),anchors=arena.alloc(count);
   const {bytes,integers}=arena.views();bytes.set(mask,input);
-  const parts=runtime.label_core(input,nx,ny,originY,h,w,offset,labels,queue,sizes,anchors);
+  const parts=kernel(input,nx,ny,originY,h,w,offset,labels,queue,sizes,anchors);
   return{labels:integers.slice(labels/4,labels/4+count),sizes:integers.slice(sizes/4,sizes/4+parts),anchored:bytes.slice(anchors,anchors+parts)};
 }
 

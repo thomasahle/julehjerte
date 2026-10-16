@@ -31,6 +31,22 @@ The inventory, with material annotations updated on 2026-10-15, contains:
 
 ## Current results and limits
 
+[A guarded diagonal-connectivity correction](diagonal-paper-core-results.json)
+addresses valid paper checkpoints discarded by four-neighbour lattice labelling.
+The existing clearance guard certifies the whole cell, so diagonally touching
+certain-core cells can connect through their shared safe corner. Only that
+certified mask uses eight neighbours; possible-core labelling, physical widths,
+distance masks and the independent polygon-offset final gate are unchanged.
+Sixteen of 72 analytic corridor cases change from uncertain to pass, all with
+independent offset confirmation; too-narrow controls still fail. An actual tree
+checkpoint now passes at resolution 1000 with identical controls and 0.82625%
+independently rendered disagreement. Two captures contain that same geometry,
+so they are not independent motif successes. The JavaScript and rebuilt Wasm
+implementations agree, and an old cached Wasm module safely falls back for the
+new adjacency mode. All 35 focused tests and ten kernel-compatibility tests pass.
+The broader fresh-fit, browser and full-suite QA is pending; these fixed-geometry
+results do not establish improved live solve rates or unchanged photo errors.
+
 [Thirty-six fresh graph-order comparisons](topology-graph-budget-results.json)
 finish below ten seconds and pass the actual template and feature checks in all
 three arms. Trying detailed recovery first saves about two seconds on a shifted

@@ -7,7 +7,7 @@ import {repairClearanceInitializer} from '../../static/inverse/core/direct/clear
 import {loadSolutionJSON} from '../../static/inverse/core/graph.js';
 import {settings} from '../../static/inverse/core/settings.js';
 import {validate} from '../../static/inverse/core/validate.js';
-import {materialAudit} from '../../static/inverse/core/material.js';
+import {finalMaterialAudit} from '../../static/inverse/core/geometric-material.js';
 import {auditFeatureFidelity} from '../../static/inverse/core/feature-shapes.js';
 import {renderExportedWeave} from './export-renderer.mjs';
 import {cfg,resolution,mask,input,initializer} from './leaf-clearance-fixture.mjs';
@@ -53,7 +53,7 @@ test('fresh fitting finds a checked pair for the upward-shifted photograph witho
     const solution=loadSolutionJSON(answer.files['cut_geometry.json']),checkedCfg=settings(report.settings);
     const geometry=validate(solution,checkedCfg,{checkImage:false,finalGeometry:true});
     assert.equal(geometry.passed,true,JSON.stringify(geometry.issues));
-    const paper=materialAudit(solution,checkedCfg);
+    const paper=finalMaterialAudit(solution,checkedCfg);
     assert.equal(paper.passed,true,JSON.stringify(paper));
     const woven=await renderExportedWeave(answer.files['cut_geometry.json'],resolution);
     const error=woven.mask.reduce((sum,v,i)=>sum+Number(v!==mask[i]),0)/mask.length;

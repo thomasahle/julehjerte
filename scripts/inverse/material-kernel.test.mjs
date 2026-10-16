@@ -10,20 +10,29 @@ import {CurveGraph} from '../../static/inverse/core/direct/curves.js';
 
 const randomMask=(nx,ny,seed=7)=>{let s=seed;return Uint8Array.from({length:nx*ny},()=>{s=(Math.imul(s,1664525)+1013904223)>>>0;return Number(s<0x18000000);});};
 const withoutTime=result=>{delete result.summary.seconds;return result;};
+// Preserve the historical map/area/fold/decision fixtures across the explicit
+// method-description change. No numerical field or map pixel is normalized.
+const historicalHash=result=>{
+  assert.equal(result.summary.method,'Guarded disk-centre lattice on the unfolded capsule. Eight-neighbour certified core and four-neighbour possible core; analytic outline and chord-distance refinement near threshold.');
+  const summary={...result.summary,method:'Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.'};
+  return createHash('sha256').update(JSON.stringify({...result,summary})).digest('hex');
+};
 const bruteDistance=(mask,nx,_ny)=>Float64Array.from(mask,(_,i)=>{
   let best=1e12;for(let j=0;j<mask.length;j++)if(mask[j])best=Math.min(best,(i%nx-j%nx)**2+(Math.floor(i/nx)-Math.floor(j/nx))**2);
   return best;
 });
 // Independent stack traversal. Component membership and numbering must agree
 // even though its neighbour and traversal order differ from the kernel's BFS.
-function componentReference(mask,nx,ny,originY,h,w,offset){
+function componentReference(mask,nx,ny,originY,h,w,offset,diagonal=false){
   const labels=new Int32Array(mask.length),sizes=[],anchored=[];
   for(let i=0;i<mask.length;i++)if(mask[i]&&!labels[i]){
     const id=sizes.length+1,stack=[i];labels[i]=id;let size=0,anchor=false;
     while(stack.length){
       const p=stack.pop(),x=p%nx,y=Math.floor(p/nx),yy=originY+(y+.5)*h;size++;
       anchor||=yy<-offset*1.1||yy>2*w+offset*1.1;
-      for(const[xx,yy]of[[x,y+1],[x+1,y],[x,y-1],[x-1,y]])if(xx>=0&&xx<nx&&yy>=0&&yy<ny){
+      const neighbours=[[x,y+1],[x+1,y],[x,y-1],[x-1,y]];
+      if(diagonal)neighbours.push([x+1,y+1],[x-1,y+1],[x+1,y-1],[x-1,y-1]);
+      for(const[xx,yy]of neighbours)if(xx>=0&&xx<nx&&yy>=0&&yy<ny){
         const q=yy*nx+xx;if(mask[q]&&!labels[q]){labels[q]=id;stack.push(q);}
       }
     }
@@ -41,6 +50,21 @@ test('paper kernels are optional and unsupported inputs retain the JavaScript pa
   assert.deepEqual(distanceTransform([0,256,0],3,1),Float64Array.of(1,0,1));
   assert.equal(nativeDistanceTransform(new Uint8Array(3),2,2),null);
   assert.equal(nativeCoreLabels(new Uint8Array(0),0,0,0,1,2,1),null);
+  assert.equal(nativeCoreLabels(new Uint8Array(4),2,2,0,1,2,1,1),null);
+});
+
+test('a cached kernel without diagonal labels cannot silently supply four-neighbour labels',async t=>{
+  const instantiate=WebAssembly.instantiate.bind(WebAssembly);
+  t.mock.method(WebAssembly,'instantiate',async(...args)=>{
+    const loaded=await instantiate(...args),exports={...loaded.instance.exports};
+    delete exports.label_core_diagonal;
+    return{...loaded,instance:{exports}};
+  });
+  const legacy=await import('../../static/inverse/core/numerical-kernel.js?legacy-labels');
+  assert.equal((await legacy.loadNumericalKernel()).backend,'wasm');
+  const diagonal=Uint8Array.of(1,0,0,1);
+  assert.deepEqual(legacy.nativeCoreLabels(diagonal,2,2,0,1,2,1),componentReference(diagonal,2,2,0,1,2,1));
+  assert.equal(legacy.nativeCoreLabels(diagonal,2,2,0,1,2,1,true),null,'Missing diagonal export must request the JavaScript fallback.');
 });
 
 test('native distance fields match brute-force distances for every small binary arrangement',async()=>{
@@ -60,14 +84,15 @@ test('native distance fields stay exact on tall, wide, empty and dense paper lat
   }
 });
 
-test('native components preserve four-neighbour contacts and anchoring threshold decisions',async()=>{
+test('native components preserve both adjacency rules and anchoring threshold decisions',async()=>{
   await loadNumericalKernel();
   for(const[nx,ny]of[[1,5],[5,1],[2,2],[3,3]])for(let bits=0;bits<2**(nx*ny);bits++){
     const mask=Uint8Array.from({length:nx*ny},(_,i)=>(bits>>i)&1);
-    for(const origin of[-1.6-1e-12,-1.6,-1.6+1e-12,2.6])assert.deepEqual(nativeCoreLabels(mask,nx,ny,origin,1,1,1),componentReference(mask,nx,ny,origin,1,1,1));
+    for(const origin of[-1.6-1e-12,-1.6,-1.6+1e-12,2.6])for(const diagonal of[false,true])assert.deepEqual(nativeCoreLabels(mask,nx,ny,origin,1,1,1,diagonal),componentReference(mask,nx,ny,origin,1,1,1,diagonal));
   }
   for(const[nx,ny]of[[31,89],[89,31]]){
-    const mask=randomMask(nx,ny);assert.deepEqual(nativeCoreLabels(mask,nx,ny,-30,60/nx,60,1.7),componentReference(mask,nx,ny,-30,60/nx,60,1.7));
+    const mask=randomMask(nx,ny);
+    for(const diagonal of[false,true])assert.deepEqual(nativeCoreLabels(mask,nx,ny,-30,60/nx,60,1.7,diagonal),componentReference(mask,nx,ny,-30,60/nx,60,1.7,diagonal));
   }
 });
 
@@ -86,7 +111,7 @@ test('native audits preserve complete historical maps, areas, fold intervals and
     const cfg=settings({width:60,cutError:0,printShrinkPercent:0,materialResolution:resolution,minWidth:3}),solution=fixture(name);
     const previous=withoutTime(materialAudit(solution,cfg,{includeMaps:true,native:false})),current=withoutTime(materialAudit(solution,cfg,{includeMaps:true,native:true}));
     assert.deepEqual(current,previous);
-    if(resolution===180)assert.equal(createHash('sha256').update(JSON.stringify(current)).digest('hex'),hashes[name]);
+    if(resolution===180)assert.equal(historicalHash(current),hashes[name]);
   }
   const cfg=settings({width:60,cutError:0,printShrinkPercent:0,materialResolution:80,minWidth:.7});
   const uncertain=withoutTime(materialAudit(fixture('thin'),cfg,{includeMaps:true}));
@@ -111,7 +136,7 @@ test('outline reuse preserves audits after width, resolution and cut changes',as
     for(const curve of Object.values(data.curves))curve.control_points=curve.control_points.map(p=>p.map(v=>v*width/60));
     const cfg=settings({width,materialResolution:resolution,minWidth,cutError:0,printShrinkPercent:0});
     const result=withoutTime(materialAudit(loadSolutionJSON(data),cfg,{includeMaps:true}));
-    assert.equal(createHash('sha256').update(JSON.stringify(result)).digest('hex'),expected,`${name}, ${width} mm, ${resolution}`);
+    assert.equal(historicalHash(result),expected,`${name}, ${width} mm, ${resolution}`);
   }
 });
 
@@ -152,7 +177,7 @@ test('padded tile indexing preserves complete audits of outlying trial cuts',asy
     for(const native of [false,true]){
       const result=withoutTime(materialAudit(graph.solution(graph.points,1),cfg,{includeMaps:true,native}));
       assert.equal(result.status,status);assert.equal(result.passed,false);
-      assert.equal(createHash('sha256').update(JSON.stringify(result)).digest('hex'),expected,`${mode}, ${width} mm, ${resolution}, native=${native}`);
+      assert.equal(historicalHash(result),expected,`${mode}, ${width} mm, ${resolution}, native=${native}`);
     }
   }
 });

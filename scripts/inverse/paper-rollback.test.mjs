@@ -15,10 +15,10 @@ import {loadNumericalKernel} from '../../static/inverse/core/numerical-kernel.js
 import {readHardPhoto} from './hard-photo-data.mjs';
 import {renderExportedWeave} from './export-renderer.mjs';
 
-async function fixture(name){
+async function fixture(name,raw={}){
   const data=JSON.parse(await fs.readFile(`scripts/inverse/fixtures/${name}-refinement-checkpoint.json`));
   const catalogue=JSON.parse(await fs.readFile(data.sourceCatalogue)),photo=await readHardPhoto(catalogue.source);
-  const cfg=settings({...AUTOMATIC_PRESET,trials:0,preferMatchingSheets:false});
+  const cfg=settings({...AUTOMATIC_PRESET,trials:0,preferMatchingSheets:false,...raw});
   const input=prepare({...photo,quad:data.quad},cfg).target,source=input.sourceImage;
   assert.equal(createHash('sha256').update(source.mask).digest('hex'),data.maskSha256);
   await loadNumericalKernel();
@@ -30,7 +30,7 @@ async function fixture(name){
   return{data,cfg,input,source,fit};
 }
 
-test('a finer verified checkpoint prevents repeated rollback to a poor coarse fit',async()=>{
+test('a finer verified checkpoint avoids rollback and improves independently rendered error',async()=>{
   const {data,cfg,input,source,fit}=await fixture('floral-checker'),original=source.mask.slice(),config=structuredClone(cfg);
   const before=fit(false),packets=[];
   const after=fit(true,{onProgress:(record,solution)=>{if(record.paperVerification)packets.push({record,solution});}});
@@ -52,19 +52,26 @@ test('a finer verified checkpoint prevents repeated rollback to a poor coarse fi
     const rendered=await renderExportedWeave(solutionJSON(solution),400);
     errors.push(rendered.mask.reduce((sum,v,i)=>sum+Number(v!==source.mask[i]),0)/source.mask.length);
   }
-  assert.ok(errors[0]>.04);assert.ok(errors[1]<.018);
-  assert.ok(errors[0]-errors[1]>.025,'Compare fixed work and independently rendered exports, not timing or internal scores.');
+  // Certified diagonal connections already improve the coarse-only fit from
+  // over 4% to 1.81%. Later checkpoints still need the actual finer audit.
+  assert.ok(errors[0]>.018&&errors[0]<.019);assert.ok(errors[1]<.016);
+  assert.ok(errors[0]-errors[1]>.002,'Compare fixed work and independently rendered exports, not timing or internal scores.');
   assert.deepEqual(source.mask,original);assert.deepEqual(cfg,config);
 });
 
 test('without a safe incumbent, finer checking does not interrupt provisional exploration',async()=>{
-  const {fit}=await fixture('gift'),before=fit(false),after=fit(true);
+  // At 360 the guarded diagonal connections now certify a checkpoint. Use
+  // an actually unresolved lattice, without changing cuts or width rules.
+  const {fit}=await fixture('gift',{materialResolution:180}),resolutions=[];
+  const paperAudit=(solution,cfg)=>{resolutions.push(cfg.materialResolution);return materialAudit(solution,cfg);};
+  const before=fit(false),after=fit(true,{paperAudit});
   assert.equal(before.paperPassed,false);assert.equal(after.paperPassed,false);
   assert.equal(before.paper.status,'uncertain');assert.equal(after.paper.status,'uncertain');
   assert.ok(after.history.every(record=>record.paper!=='pass'&&!record.paperVerification));
   assert.equal(after.paperVerification,undefined);
   assert.deepEqual(after.points,before.points);
   assert.equal(after.error,before.error);
+  assert.ok(resolutions.length>0&&resolutions.every(r=>r===180));
 });
 
 test('finer paper checks preserve the final refinement time reserve',async t=>{
@@ -72,9 +79,15 @@ test('finer paper checks preserve the final refinement time reserve',async t=>{
   // Keep the optimization deterministic, with 200 ms left throughout. It
   // still runs every requested step, but cannot spend the 250 ms audit reserve.
   t.mock.method(performance,'now',()=>0);
-  const options={steps:81,deadline:200},before=fit(false,options),after=fit(true,options);
-  assert.equal(after.steps,81);assert.equal(after.paperVerification,undefined);
+  // The first uncertain checkpoint is now at step 120, after earlier safe
+  // diagonal connections. Run far enough to exercise the reserve condition.
+  const resolutions=[],paperAudit=(solution,cfg)=>{resolutions.push(cfg.materialResolution);return materialAudit(solution,cfg);};
+  const options={steps:161,deadline:200},before=fit(false,options),after=fit(true,{...options,paperAudit});
+  assert.equal(after.steps,161);assert.equal(after.paperVerification,undefined);
   assert.ok(after.history.every(record=>!record.paperVerification));
   assert.deepEqual(after.points,before.points);
   assert.equal(after.paperAlternative?.paper.status,'uncertain');
+  assert.ok(after.history.some(record=>record.paper==='pass'));
+  assert.ok(after.history.some(record=>record.paper==='uncertain'));
+  assert.ok(resolutions.length>0&&resolutions.every(r=>r===360));
 });

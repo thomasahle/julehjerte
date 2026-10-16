@@ -1,0 +1,321 @@
+{
+  "schema": 1,
+  "status": "implemented; focused_checks_pass; full_QA_pending",
+  "baselineRuntime": "9cedec4",
+  "rootCause": "Four-neighbour labelling can disconnect a diagonal corridor in the certified paper-core lattice even when every cell along that corridor clears the required rolling-disk radius. Valid finer polishing checkpoints were therefore discarded as uncertain.",
+  "certificate": [
+    "The existing certain-core threshold is R + sqrt(2)*h/2 + geometryTolerance, with a strict distance comparison, where R is half the tolerance-adjusted nominal width.",
+    "Distance to a closed cut or outline is 1-Lipschitz. The half-cell-diagonal guard extends the centre clearance to every point of its closed cell; the existing flattening-tolerance term accounts for the cut approximation.",
+    "Diagonally adjacent certified cells share a certified corner, giving a continuous disk-centre path. This uses the existing guarded model, not a claim of physical paper strength.",
+    "Only certain-core components use eight neighbours. Possible-core connectivity remains four-neighbour; distance masks, physical tolerances, area significance, fold checks and the independent polygon-offset final gate are unchanged."
+  ],
+  "implementation": {
+    "javascript": "static/inverse/core/material.js",
+    "native": "static/inverse/core/direct/native/boundary.c",
+    "compatibility": "Preserve label_core ABI and add label_core_diagonal; a cached module missing the new export returns to the JavaScript implementation.",
+    "wasmBytesBefore": 7592,
+    "wasmBytesAfter": 8034
+  },
+  "capturedChecks": {
+    "scope": "Three fresh tree fits at the old runtime; identical saved controls re-audited without fitting or changing masks. Two captures share the same uncertain geometry.",
+    "changes": [
+      {
+        "repeat": 0,
+        "label": "selected",
+        "resolution": 700,
+        "before": "uncertain",
+        "after": "pass"
+      },
+      {
+        "repeat": 0,
+        "label": "uncertain",
+        "resolution": 700,
+        "before": "uncertain",
+        "after": "pass"
+      },
+      {
+        "repeat": 1,
+        "label": "uncertain",
+        "resolution": 1000,
+        "before": "uncertain",
+        "after": "pass"
+      },
+      {
+        "repeat": 2,
+        "label": "uncertain",
+        "resolution": 1000,
+        "before": "uncertain",
+        "after": "pass"
+      }
+    ],
+    "fixture": "scripts/inverse/fixtures/diagonal-paper-core.json",
+    "fixtureIndependentError": 0.0082625,
+    "independentGeometryAndOffsetPassed": true,
+    "qualification": "Two improved checkpoints still require resolution 1000. This is not evidence that the live ten-second fitter retains them."
+  },
+  "analyticChecks": {
+    "cases": 72,
+    "newlyCertified": 16,
+    "independentOffsetPassedForEveryNewPass": true,
+    "unchangedControls": 9,
+    "changes": [
+      {
+        "gap": 4,
+        "dx": -0.1,
+        "resolution": 120,
+        "before": "uncertain",
+        "after": "pass",
+        "offset": "pass"
+      },
+      {
+        "gap": 4,
+        "dx": 0,
+        "resolution": 120,
+        "before": "uncertain",
+        "after": "pass",
+        "offset": "pass"
+      },
+      {
+        "gap": 4,
+        "dx": 0.1,
+        "resolution": 120,
+        "before": "uncertain",
+        "after": "pass",
+        "offset": "pass"
+      },
+      {
+        "gap": 4.1,
+        "dx": -0.1,
+        "resolution": 120,
+        "before": "uncertain",
+        "after": "pass",
+        "offset": "pass"
+      },
+      {
+        "gap": 4.1,
+        "dx": 0,
+        "resolution": 80,
+        "before": "uncertain",
+        "after": "pass",
+        "offset": "pass"
+      },
+      {
+        "gap": 4.1,
+        "dx": 0,
+        "resolution": 120,
+        "before": "uncertain",
+        "after": "pass",
+        "offset": "pass"
+      },
+      {
+        "gap": 4.1,
+        "dx": 0.1,
+        "resolution": 120,
+        "before": "uncertain",
+        "after": "pass",
+        "offset": "pass"
+      },
+      {
+        "gap": 4.2,
+        "dx": -0.1,
+        "resolution": 120,
+        "before": "uncertain",
+        "after": "pass",
+        "offset": "pass"
+      },
+      {
+        "gap": 4.2,
+        "dx": 0,
+        "resolution": 80,
+        "before": "uncertain",
+        "after": "pass",
+        "offset": "pass"
+      },
+      {
+        "gap": 4.2,
+        "dx": 0,
+        "resolution": 120,
+        "before": "uncertain",
+        "after": "pass",
+        "offset": "pass"
+      },
+      {
+        "gap": 4.2,
+        "dx": 0.1,
+        "resolution": 120,
+        "before": "uncertain",
+        "after": "pass",
+        "offset": "pass"
+      },
+      {
+        "gap": 4.4,
+        "dx": -0.1,
+        "resolution": 80,
+        "before": "uncertain",
+        "after": "pass",
+        "offset": "pass"
+      },
+      {
+        "gap": 4.4,
+        "dx": 0,
+        "resolution": 80,
+        "before": "uncertain",
+        "after": "pass",
+        "offset": "pass"
+      },
+      {
+        "gap": 4.4,
+        "dx": 0,
+        "resolution": 120,
+        "before": "uncertain",
+        "after": "pass",
+        "offset": "pass"
+      },
+      {
+        "gap": 4.4,
+        "dx": 0.1,
+        "resolution": 80,
+        "before": "uncertain",
+        "after": "pass",
+        "offset": "pass"
+      },
+      {
+        "gap": 5,
+        "dx": 0,
+        "resolution": 80,
+        "before": "uncertain",
+        "after": "pass",
+        "offset": "pass"
+      }
+    ],
+    "qualification": "Analytic fixtures isolate paper connectivity, with only one slit family; not complete woven-heart reconstruction tests."
+  },
+  "regressions": {
+    "newTestsBefore": {
+      "pass": 1,
+      "fail": 2
+    },
+    "newTestsAfter": {
+      "pass": 3,
+      "fail": 0
+    },
+    "initialFocusedRun": {
+      "pass": 26,
+      "fail": 4
+    },
+    "revisedFocusedRun": {
+      "pass": 35,
+      "fail": 0
+    },
+    "additionalKernelRun": {
+      "pass": 10,
+      "fail": 0
+    },
+    "testAdjustments": [
+      "Historical audit hashes normalize only the explicitly asserted method-description string; all numerical fields, decisions and map pixels remain compared.",
+      "The 201-step floral coarse-only fit improves from over 4% error to 1.805625%; actual finer checking still reduces independently rendered error to 1.580625%. Test bounds now preserve both the improved baseline and the remaining finer-check benefit.",
+      "The gift checkpoint is now certifiable at resolution 360. The no-safe-incumbent test uses resolution 180, without changing cuts or physical tolerances, and checks that every actual audit stays at 180.",
+      "The time-reserve test runs 161 steps so it reaches the first still-uncertain checkpoint at step 120; it verifies both pass and uncertain states, equal no-fine-audit output, and exclusively resolution-360 audits.",
+      "The fresh upward-leaf integration check reruns the final lattice plus independent polygon-offset audit on the exported controls.",
+      "A simulated cached Wasm module lacking label_core_diagonal retains the old four-neighbour ABI and explicitly declines a diagonal request."
+    ]
+  },
+  "fullQA": {
+    "status": "pending",
+    "root": "tmp/heart-learning/polishing-paper-tail-v1/qa",
+    "comparisonBaseline": "tmp/heart-learning/clearance-handoff-regression-v1/qa/native",
+    "required": [
+      "check",
+      "lint",
+      "build",
+      "private Chromium star/hat",
+      "application and full inverse tests",
+      "22 regular Hunodan under 10 seconds",
+      "47-entry hard-photo inventory, including 31 complete hearts",
+      "editable export checks",
+      "independent error comparison and visual review"
+    ]
+  },
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/polishing-paper-tail-v1/regression-before.log",
+      "sha256": "fab411df51e7e9cf1ced9fd15ec1bc410edb0d12cce65244aa875f54407a3cf7"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-paper-tail-v1/regression-after.log",
+      "sha256": "f8de300a7dfdab688e2d5edf6a1f6b56ef1a804d7019b95542745a8c58b27a04"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-paper-tail-v1/focused-after.log",
+      "sha256": "8d1d7a25e1fc966fdb514e40e08505162c0490931ec3d29925e7b0ab9cf121ee"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-paper-tail-v1/focused-revised.log",
+      "sha256": "d28bb5d3eb99a3fa7c35d99dfcca45bc362f41a2669223afc49eb1f95d904ec2"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-paper-tail-v1/kernel-compatibility.log",
+      "sha256": "4293bc479568c590d0c8bea738f5495b4f256030a6f36126e45e137c78382712"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-paper-tail-v1/rollback-diagnostic.json",
+      "sha256": "714135d94537b82c84d291386d4556df8299f9b811c03099b9a5d1437c28a515"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-paper-tail-v1/rollback-diagnostic.mjs",
+      "sha256": "e57ff776b0a6b069dd43f63d10a485fa662494f83c30ca6416ce95578a7aef50"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-paper-tail-v1/audit.json",
+      "sha256": "dda744d26d4618c4edce2e8804609b6ea9f6ce53c094f1ca267f555a6b24d15d"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-paper-tail-v1/audit.mjs",
+      "sha256": "ef74455e44fd647a38b4b547bf5fbb7e6cee49232f31f03eacd10d0a0680efd5"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-paper-tail-v1/audit-native.json",
+      "sha256": "12dcce4208c4229dd7b5c5ba0a075e14ce9163abd97445da45271c7ccfd172a1"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-paper-tail-v1/audit-native.mjs",
+      "sha256": "3e66dcbae80e0a7dc05e99b338765f24b9c83b6cee43ba7624456f4992045693"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-paper-tail-v1/audit-diagonal.json",
+      "sha256": "65b4eabbfb4abe1ce6062410cf0e99b979782ce37fa896de6693465a25a36fa3"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-paper-tail-v1/audit-diagonal.mjs",
+      "sha256": "610cda18d6dea51ee19e1d38062d6b16faff5229a624696b422c1b9bdb7b8439"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-paper-tail-v1/diagonal-strip.json",
+      "sha256": "b29bc477c3edf3685ef18dc69e2f8e313a572d936ac9ae371822bbd00ecc76bf"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-paper-tail-v1/diagonal-strip.mjs",
+      "sha256": "2031d14be7625f69753ee9605baa9f83e2da9ee7a4df6efb7b68718cf7649eca"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-paper-tail-v1/source.json",
+      "sha256": "43b46edebe8549f2308bb0a197012b554d3fa34d704fa18ce2724fe4212dacaa"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-paper-tail-v1/state.json",
+      "sha256": "29ed513a29d0d5d3f42cd91ada2c631913ad5fe8665417c4eb2ff477e0b068c9"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-paper-tail-v1/tree-0.json",
+      "sha256": "d4e4c7e500dd98e2c2bce4ede64777cd8e8f2d864dd8797fc2034f8c2cd86c7c"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-paper-tail-v1/tree-1.json",
+      "sha256": "b4336987fb47258b5c8bd1d862ef6e64113f4fa487806e1ca171f4eef5ac4e5a"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-paper-tail-v1/tree-2.json",
+      "sha256": "99867bcc3a78ea00dfb8d198d6ba8cec04cb1d44a4c82be6779dea427d83f55b"
+    }
+  ]
+}

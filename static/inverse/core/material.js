@@ -46,13 +46,13 @@ export function distanceTransform(seeds,nx,ny,{native='auto'}={}){
   for(let y=0;y<ny;y++){for(let x=0;x<nx;x++)f[x]=first[y*nx+x];edt(nx);for(let x=0;x<nx;x++)out[y*nx+x]=d[x];}return out;
 }
 export function unfoldedPolylines(solution,k,tol=.01){const w=solution.graph.target.width;return solution.paths[k].map((_,i)=>{let p=pathPolyline(curvesOf(solution,k,i),tol);if(k===1)p=p.map(([x,y])=>[y,x]);return[...p,...p.slice(0,-1).reverse().map(([x,y])=>[x,2*w-y])];});}
-function labelCore(mask,nx,ny,originY,h,w,offset,minArea,native='auto'){
+function labelCore(mask,nx,ny,originY,h,w,offset,minArea,native='auto',diagonal=false){
   if(native==='auto'){
-    if(nx*ny>=16384&&numericalKernel()?.label_core)return componentBackend.run(nx*ny,
-      ()=>labelCore(mask,nx,ny,originY,h,w,offset,minArea,false),()=>labelCore(mask,nx,ny,originY,h,w,offset,minArea,true));
+    if(nx*ny>=16384&&numericalKernel()?.[diagonal?'label_core_diagonal':'label_core'])return componentBackend.run(nx*ny,
+      ()=>labelCore(mask,nx,ny,originY,h,w,offset,minArea,false,diagonal),()=>labelCore(mask,nx,ny,originY,h,w,offset,minArea,true,diagonal));
     native=false;
   }
-  const accelerated=native&&nativeCoreLabels(mask,nx,ny,originY,h,w,offset);
+  const accelerated=native&&nativeCoreLabels(mask,nx,ny,originY,h,w,offset,diagonal);
   if(accelerated){
     const {labels,sizes,anchored}=accelerated,parts=Array.from(sizes,(size,i)=>({id:i+1,anchored:!!anchored[i],area:size*h*h,significant:size*h*h>=minArea}));
     return{labels,parts,anchors:new Set(parts.filter(p=>p.anchored).map(p=>p.id)),floating:parts.filter(p=>!p.anchored&&p.significant)};
@@ -68,6 +68,12 @@ function labelCore(mask,nx,ny,originY,h,w,offset,minArea,native='auto'){
       q=p+1;if(x<nx-1&&mask[q]&&!labels[q]){labels[q]=id;queue[tail++]=q;}
       q=p-nx;if(y>0&&mask[q]&&!labels[q]){labels[q]=id;queue[tail++]=q;}
       q=p+nx;if(y<ny-1&&mask[q]&&!labels[q]){labels[q]=id;queue[tail++]=q;}
+      if(diagonal){
+        q=p-nx-1;if(x>0&&y>0&&mask[q]&&!labels[q]){labels[q]=id;queue[tail++]=q;}
+        q=p-nx+1;if(x<nx-1&&y>0&&mask[q]&&!labels[q]){labels[q]=id;queue[tail++]=q;}
+        q=p+nx-1;if(x>0&&y<ny-1&&mask[q]&&!labels[q]){labels[q]=id;queue[tail++]=q;}
+        q=p+nx+1;if(x<nx-1&&y<ny-1&&mask[q]&&!labels[q]){labels[q]=id;queue[tail++]=q;}
+      }
     }
     parts.push({id,anchored,area:tail*h*h,significant:tail*h*h>=minArea});
   }
@@ -104,13 +110,18 @@ function materialFamily({lines,foldCuts},k,w,cfg,includeMap,native){
   const lattice=paperLattice(w,nx),tileX=lattice.x.map(x=>Math.floor(x/cell)+1),tileY=lattice.y.map(y=>(Math.floor(y/cell)-firstRow)*columns);
   const edt=distanceTransform(seeds,nx,ny,{native});
   const {certain,possible,paper}=paperCoreMasks({lattice,edt,tiles,tileX,tileY,chords,h,R,guard,tol,includeMap},{native});
-  const c=labelCore(certain,nx,ny,originY,h,w,R,cfg.minFeatureArea,native),p=labelCore(possible,nx,ny,originY,h,w,R,cfg.minFeatureArea,native),foldY=Math.min(ny-1,Math.round((w-originY)/h-.5)),fold=[];
+  // Every certain centre clears R by more than half the cell diagonal plus
+  // the flattening tolerance. Its entire closed cell therefore clears R on
+  // the actual curves (distance is 1-Lipschitz). Diagonally adjacent certain
+  // cells share a safe corner, so their disk-centre paths really connect.
+  // Possible cells lack that certificate and retain their existing adjacency.
+  const c=labelCore(certain,nx,ny,originY,h,w,R,cfg.minFeatureArea,native,true),p=labelCore(possible,nx,ny,originY,h,w,R,cfg.minFeatureArea,native),foldY=Math.min(ny-1,Math.round((w-originY)/h-.5)),fold=[];
   for(let j=1;j<foldCuts.length;j++){let certainLength=0,possibleLength=0;for(let x=0;x<nx;x++){const xx=(x+.5)*h;if(xx<=foldCuts[j-1]||xx>=foldCuts[j])continue;const index=foldY*nx+x;if(c.anchors.has(c.labels[index]))certainLength+=h;if(p.anchors.has(p.labels[index]))possibleLength+=h;}fold.push({interval:[foldCuts[j-1],foldCuts[j]],certainCoreLength:certainLength,possibleCoreLength:possibleLength});}
   const certainBad=c.floating.length+fold.filter(f=>f.certainCoreLength<h/2).length,possibleBad=p.floating.length+fold.filter(f=>f.possibleCoreLength<h/2).length,status=possibleBad?'fail':certainBad?'uncertain':'pass';
   let map=null;if(includeMap){map=new Uint8Array(nx*ny);for(let i=0;i<map.length;i++){if(!paper[i])continue;if(certain[i])map[i]=c.anchors.has(c.labels[i])?1:3;else if(possible[i])map[i]=2;else map[i]=4;}}
   return{family:k,status,detachedCertainCoreIslands:c.floating.length,detachedPossibleCoreIslands:p.floating.length,detachedPossibleArea:p.floating.reduce((s,x)=>s+x.area,0),foldIntervals:fold,gridSpacing:h,clearanceGuard:guard,resolution:[nx,ny],originY,map,minimumDiameter:cfg.nominalWidth};
 }
-export function materialAudit(solution,cfg,{includeMaps=false,native='auto'}={}){const start=performance.now(),w=solution.graph.target.width,inputs=[0,1].map(k=>paperInput(solution,k,cfg.geometryTolerance)),first=materialFamily(inputs[0],0,w,cfg,includeMaps,native),families=[first,samePaperInput(inputs[0],inputs[1])?copyFamily(first,1):materialFamily(inputs[1],1,w,cfg,includeMaps,native)],status=families.some(f=>f.status==='fail')?'fail':families.some(f=>f.status==='uncertain')?'uncertain':'pass';return{passed:status==='pass',status,families,summary:{status,requiredRemainingWidth:cfg.minWidth,nominalDiameter:cfg.nominalWidth,gridSpacing:families[0].gridSpacing,clearanceGuard:families[0].clearanceGuard,families:families.map(({family,status,detachedCertainCoreIslands,detachedPossibleCoreIslands,detachedPossibleArea,foldIntervals})=>({family,status,detachedCertainCoreIslands,detachedPossibleCoreIslands,detachedPossibleArea,foldIntervals})),method:'Guarded disk-centre lattice on the unfolded capsule. Four-neighbour connectivity; analytic outline and chord-distance refinement near threshold.',seconds:(performance.now()-start)/1000,limitations:['This replaces the Python GEOS offset implementation; numerical results are not identical.','Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.','Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.','Small tips and features below the explicitly stated area threshold are not certified.']}};}
+export function materialAudit(solution,cfg,{includeMaps=false,native='auto'}={}){const start=performance.now(),w=solution.graph.target.width,inputs=[0,1].map(k=>paperInput(solution,k,cfg.geometryTolerance)),first=materialFamily(inputs[0],0,w,cfg,includeMaps,native),families=[first,samePaperInput(inputs[0],inputs[1])?copyFamily(first,1):materialFamily(inputs[1],1,w,cfg,includeMaps,native)],status=families.some(f=>f.status==='fail')?'fail':families.some(f=>f.status==='uncertain')?'uncertain':'pass';return{passed:status==='pass',status,families,summary:{status,requiredRemainingWidth:cfg.minWidth,nominalDiameter:cfg.nominalWidth,gridSpacing:families[0].gridSpacing,clearanceGuard:families[0].clearanceGuard,families:families.map(({family,status,detachedCertainCoreIslands,detachedPossibleCoreIslands,detachedPossibleArea,foldIntervals})=>({family,status,detachedCertainCoreIslands,detachedPossibleCoreIslands,detachedPossibleArea,foldIntervals})),method:'Guarded disk-centre lattice on the unfolded capsule. Eight-neighbour certified core and four-neighbour possible core; analytic outline and chord-distance refinement near threshold.',seconds:(performance.now()-start)/1000,limitations:['This replaces the Python GEOS offset implementation; numerical results are not identical.','Pass/fail concern this guarded discrete rolling-disk model, not stress or tear resistance.','Uncertain is not accepted by the strict material-core gate. Increase resolution to investigate.','Small tips and features below the explicitly stated area threshold are not certified.']}};}
 export function seededRandom(seed=1729){let a=seed>>>0;return()=>{a+=0x6D2B79F5;let t=Math.imul(a^(a>>>15),1|a);t^=t+Math.imul(t^(t>>>7),61|t);return((t^(t>>>14))>>>0)/4294967296;};}
 export function perturbationAudit(solution,cfg,{onProgress=()=>{},resolution=121}={}){
   const w=solution.graph.target.width,baseRings=closedRings(solution,cfg.geometryTolerance),phase=solution.graph.target.phase^(solution.paths[0].length%2)^(solution.paths[1].length%2),baseline=sampleRings(baseRings.flat(),w,phase,resolution),random=seededRandom(cfg.seed),trials=[];let worst=null;

@@ -98,11 +98,11 @@ void distance_transform(const unsigned char *seeds, int nx, int ny,
   }
 }
 
-/* Four-neighbour flood fill, with the same component discovery and neighbour
+/* Flood fill, with the same component discovery and neighbour
  * order as material.js. Areas and significance are still calculated in JS. */
-int label_core(const unsigned char *mask, int nx, int ny,
+static int label_core_impl(const unsigned char *mask, int nx, int ny,
     double origin_y, double h, double width, double offset,
-    int *labels, int *queue, int *sizes, unsigned char *anchors) {
+    int *labels, int *queue, int *sizes, unsigned char *anchors, int diagonal) {
   const int count=nx*ny;
   int id=0;
   for (int i=0; i<count; ++i) labels[i]=0;
@@ -123,10 +123,33 @@ int label_core(const unsigned char *mask, int nx, int ny,
       if (y>0 && mask[q] && !labels[q]) {labels[q]=id; queue[tail++]=q;}
       q=p+nx;
       if (y<ny-1 && mask[q] && !labels[q]) {labels[q]=id; queue[tail++]=q;}
+      if (diagonal) {
+        q=p-nx-1;
+        if (x>0 && y>0 && mask[q] && !labels[q]) {labels[q]=id; queue[tail++]=q;}
+        q=p-nx+1;
+        if (x<nx-1 && y>0 && mask[q] && !labels[q]) {labels[q]=id; queue[tail++]=q;}
+        q=p+nx-1;
+        if (x>0 && y<ny-1 && mask[q] && !labels[q]) {labels[q]=id; queue[tail++]=q;}
+        q=p+nx+1;
+        if (x<nx-1 && y<ny-1 && mask[q] && !labels[q]) {labels[q]=id; queue[tail++]=q;}
+      }
     }
     sizes[id-1]=tail; anchors[id-1]=anchored;
   }
   return id;
+}
+
+/* Preserve the old ABI. An older cached module simply lacks the diagonal
+ * entry point, so JavaScript can use its matching fallback safely. */
+int label_core(const unsigned char *mask, int nx, int ny,
+    double origin_y, double h, double width, double offset,
+    int *labels, int *queue, int *sizes, unsigned char *anchors) {
+  return label_core_impl(mask,nx,ny,origin_y,h,width,offset,labels,queue,sizes,anchors,0);
+}
+int label_core_diagonal(const unsigned char *mask, int nx, int ny,
+    double origin_y, double h, double width, double offset,
+    int *labels, int *queue, int *sizes, unsigned char *anchors) {
+  return label_core_impl(mask,nx,ny,origin_y,h,width,offset,labels,queue,sizes,anchors,1);
 }
 
 void boundary_gradient(const double *points, int coordinates,
