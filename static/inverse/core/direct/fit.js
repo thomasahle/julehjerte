@@ -31,6 +31,7 @@ import {recoverClampedFeatures} from './clamped-features.js';
 import {polishCandidate} from './polish.js';
 import {repairClearanceInitializer} from './clearance-repair.js';
 import {recoverCornerTopology} from './corner-topology.js';
+import {featureImprovingFinalist} from './feature-finalists.js';
 
 export {borderEvidence,supportedBorderCounts,gridCountLimit,gridFinalists} from './counts.js';
 const featureSeed=c=>['feature-weighted-grid','feature-preserving-grid','feature-sampling-grid','fitted-boundary-rerouting'].includes(c.seed);
@@ -168,7 +169,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   };
   const finalists=gridFinalists(coarse,weights?[]:evidence),remainingSeeds=coarse.filter(r=>!finalists.includes(r));
   const fine=stage('directFitting',()=>finalists.map(fitSeed).sort((a,b)=>a.error+.005*(a.model.counts[0]+a.model.counts[1])-b.error-.005*(b.model.counts[0]+b.model.counts[1])));
-  let coarseTopology=null,boundaryCandidate=null,finalistPreference=null,colourPreferredGrid=false;
+  let coarseTopology=null,boundaryCandidate=null,finalistPreference=null,colourPreferredGrid=false,partialPreferredGrid=false;
   const poorGrid=coarse[0].error>2*cfg.maxImageError&&fine.every(r=>r.error>cfg.maxImageError);
   // On a poor fit, the cut-count bonus can put a simpler grid that erases an
   // opening ahead of a better image fit that keeps it. Order the existing
@@ -182,7 +183,17 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     // refinement time only when it also improves the previous first fit.
     // A worse colour-retaining grid can still need a different traced route.
     colourPreferredGrid=!retained.get(originalFirst)&&retained.get(fine[0])&&fine[0].error<=originalFirst.error;
-    finalistPreference.reservesRefinement=colourPreferredGrid;
+    // When no grid retains every feature, a lower-error finalist can still
+    // recover missing regions without sacrificing any already retained one.
+    // Give that existing routing refinement time before a long MILP retry.
+    if(!fine.some(seed=>retained.get(seed))){
+      const preference=featureImprovingFinalist(source,fine,cfg,sourceFeatures);
+      finalistPreference.partialImprovement=preference.report;
+      if(preference.selected){
+        fine.splice(fine.indexOf(preference.selected),1);fine.unshift(preference.selected);partialPreferredGrid=true;
+      }
+    }
+    finalistPreference.reservesRefinement=colourPreferredGrid||partialPreferredGrid;
     finalistPreference.after=fine.map(describe);
   }
   // Spend this extra routing budget only when even the best initial grid is
@@ -269,7 +280,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   // Only shorten routing when colour protection selected a better-fitting
   // ordinary layout or scheduled a dedicated feature start. Otherwise trees
   // can lose useful smoothing/edge-profile retries.
-  const featurePreferredGrid=colourPreferredGrid||earlyFeatureInitialization?.scheduled===1;
+  const featurePreferredGrid=colourPreferredGrid||partialPreferredGrid||earlyFeatureInitialization?.scheduled===1;
   const reserveRefinement=competitiveGrid||featurePreferredGrid,probeRouting=featurePreferredGrid&&(features.passed||earlyFeatureInitialization?.enclosurePending===true);
   // A fine grid just above the image limit can still refine into a good fit.
   // Giving it the full routing budget creates a cliff: a one-pixel crop shift
@@ -283,7 +294,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   // A lower-error grid that loses a region cannot justify shortening routing
   // for the worse-fitting grid selected to preserve it. Those two different
   // candidates do not establish one promising local-refinement start.
-  const featureTradeoff=finalistPreference?.before[0]?.featuresRetained===false&&!colourPreferredGrid;
+  const featureTradeoff=finalistPreference?.before[0]?.featuresRetained===false&&!colourPreferredGrid&&!partialPreferredGrid;
   const gridRoutingWeight=features.passed&&!featureTradeoff&&cfg.maxImageError>0?Math.max(0,Math.min(1,Math.min(...fine.map(r=>r.error))/cfg.maxImageError-1)):1;
   const reservedRecoverySeconds=Math.max(0,(refinementTimeLeft(deadline)-2000)/1000),ordinaryRecoverySeconds=(deadline-performance.now())/1000*.9;
   const interpolatedRecoverySeconds=reservedRecoverySeconds+(ordinaryRecoverySeconds-reservedRecoverySeconds)*gridRoutingWeight;
@@ -596,7 +607,14 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
         // work to feature initialization instead of starving its viable seed.
         const alternativeColoursBeforeClearance=lowerScore&&geometry.passed&&!alternativeColours?retainsGridColours(retry):null;
         const recoverFeatures=alternativeColoursBeforeClearance===true;
-        const competitive=lowerScore&&(!originalColours||alternativeColours);
+        // A partial-feature preference must survive clearance scheduling too.
+        // The cut-count bonus alone cannot send us back to the layout that
+        // erased those regions. Compare actual clearance masks; retain the
+        // alternative in the queue even when it cannot take first priority.
+        const featureChange=partialPreferredGrid?auditFeatureFidelityChange(source,
+          gridMask(clear.model,source.resolution,clear.phase,clear.floor),
+          gridMask(alternate.clear.model,source.resolution,alternate.clear.phase,alternate.clear.floor),cfg,sourceFeatures):null;
+        const competitive=lowerScore&&(!originalColours||alternativeColours)&&(!featureChange||featureChange.passed);
         let preferred=competitive&&geometry.passed&&(!cfg.requireMaterialCore||paper?.passed),repair=null;
         // A better coarse routing can start with a narrow neck that the
         // common curve fitter repairs quickly. A geometry-valid start can
@@ -615,7 +633,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
             }
           }
         }
-        clearanceComparison={initialCounts:clear.model.counts,initialGridError:selected.error,initialClearanceError:clear.error,alternativeCounts:alternate.clear.model.counts,alternativeGridError:retry.error,alternativeClearanceError:alternate.clear.error,initialColours:originalColours,alternativeColours,alternativeColoursBeforeClearance,alternativeGeometry:geometry.passed,alternativePaper:paper?.status,...(repair?{repair:repair.report}:{}),seconds:(performance.now()-at)/1000,preferred};
+        clearanceComparison={initialCounts:clear.model.counts,initialGridError:selected.error,initialClearanceError:clear.error,alternativeCounts:alternate.clear.model.counts,alternativeGridError:retry.error,alternativeClearanceError:alternate.clear.error,initialColours:originalColours,alternativeColours,alternativeColoursBeforeClearance,alternativeGeometry:geometry.passed,alternativePaper:paper?.status,...(featureChange?{featureChange}:{}),...(repair?{repair:repair.report}:{}),seconds:(performance.now()-at)/1000,preferred};
         if(preferred){fine.splice(fine.indexOf(retry),1);fine.splice(i,0,retry);i--;continue;}
       }
     }

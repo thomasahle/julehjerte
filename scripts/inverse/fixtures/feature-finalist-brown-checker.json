@@ -1,0 +1,101 @@
+{
+  "schema": "fixed-derived-mask-regression-1",
+  "id": "real-1fa372c6288da69f",
+  "description": "Fixed classified photographic mask for solver scheduling. Crop and material errors are deliberately retained; not ground-truth artwork or templates.",
+  "qaReserved": true,
+  "source": {
+    "sha256": "1fa372c6288da69f4154beb1a5ff043361bacc6be7fe567742b9dad6e6361cd6",
+    "origins": [
+      {
+        "imageUrl": "https://i.pinimg.com/originals/2b/11/10/2b1110a96a81393ba078f5dd9ccc84e6.jpg",
+        "sourcePages": [
+          "https://dk.pinterest.com/pin/826762444117656882/"
+        ],
+        "source": "pinterest",
+        "sourceGroup": "pinterest-pin-826762444117656882",
+        "importFile": "tmp/heart-training-real/pinterest-expanded/assets/1fa372c6288da69f4154beb1a5ff043361bacc6be7fe567742b9dad6e6361cd6.jpg",
+        "author": null,
+        "rights": {
+          "status": "unknown",
+          "fact": "Pinterest uploader is not assumed to be the photographer or rights holder; original source rights remain unverified."
+        },
+        "observedSourceLinks": [
+          "http://antjebebic.stampinup.net/"
+        ],
+        "pinTitle": "D\u00e4nisches Herz als T\u00fcrdekoration, mit dem Produktset \"perfekter Pick-Up \" von Stampin'Up! | Papierdeko, Deko papier, Zum verschenken",
+        "publicPinRetrievedAt": "2026-10-12T16:03:53.445497+00:00",
+        "publicPinPageSha256": "3483b4b0b445bd816f6f57df0cc4cb71d7922358ba570a4d59e7ba71f38cae7f",
+        "pinDiscoveryPaths": [
+          {
+            "url": "https://dk.pinterest.com/pin/826762444117656882/",
+            "discovery": "Public keyword search",
+            "searchTitle": "d\u00e4nisches Herz als T\u00fcrdekoration, mit dem Produktset \"perfekter Pick-Up \" von Stampin'Up! | Dekorpapier, Papierkarten, Papierschmuck",
+            "queries": [
+              "site:pinterest.com/pin/ \"d\u00e4nisches Herz\" Papier"
+            ],
+            "observedSearchUrls": [
+              "https://de.pinterest.com/pin/dnisches-herz-als-trdekoration-mit-dem-produktset-perfekter-pickup-von-stampinup--826762444117656882/"
+            ]
+          }
+        ],
+        "pinImportLedger": "tmp/heart-training-real/pinterest-expanded/imports.json",
+        "retrievedAt": null,
+        "importedAt": "2026-10-12T16:07:29.166624+00:00",
+        "finalUrl": "https://i.pinimg.com/originals/2b/11/10/2b1110a96a81393ba078f5dd9ccc84e6.jpg"
+      }
+    ],
+    "sourceGroups": [
+      "pinterest-pin-826762444117656882",
+      "publisher:antjebebic.stampinup.net"
+    ]
+  },
+  "mask": {
+    "file": "scripts/inverse/fixtures/feature-finalist-brown-checker.png",
+    "sha256": "e3458ac55e59a4932c5a69e1e7e20d9434721792344abc864a27b45f26bd7d6d",
+    "resolution": 400,
+    "maskSha256": "b8f5992f738f30fd83d459a50f3db52f470bfeb6cce0a797b9d785cd40608211",
+    "encoding": "PNG black = binary mask 1; white = 0"
+  },
+  "crop": {
+    "quad": [
+      [
+        532.7616470037315,
+        281.6939297064561
+      ],
+      [
+        897.9777785662426,
+        577.6496426325875
+      ],
+      [
+        544.5280695947689,
+        952.4726863617271
+      ],
+      [
+        189.90511336775543,
+        587.5275475341857
+      ]
+    ],
+    "needsReview": true,
+    "provenance": {
+      "method": "Offline projective body-only outline; no paper-colour objective or gate",
+      "humanReviewed": false
+    }
+  },
+  "materialField": {
+    "path": "real-1fa372c6288da69f-material.f32",
+    "sha256": "09167a0fb74771dafc858d3e8806741da02c6bfb24cc727812d962296ca07775"
+  },
+  "baseline": {
+    "error": 0.0959,
+    "counts": [
+      1,
+      2
+    ],
+    "templateChecksPassed": false
+  },
+  "limitations": [
+    "Unchanged input includes photographic classification and crop defects.",
+    "Source-group QA reservation remains in effect; do not add this fixture to neural training.",
+    "No physical cutting or assembly test."
+  ]
+}
