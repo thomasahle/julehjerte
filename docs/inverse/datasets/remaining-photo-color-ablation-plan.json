@@ -1,6 +1,6 @@
 {
   "schema": "remaining-photo-color-ablation-plan-1",
-  "status": "prepared",
+  "status": "complete",
   "root": "tmp/heart-learning/remaining-color-ablation-v1",
   "method": "Four additional fits: existing red-white-mixture classifier on both frozen crop variants of outline-star and bauble. Compare with the preceding crop study on identical photo bytes, crop coordinates, observation coverage and fitting settings. hardPhotoTarget mask mode discards classifier probabilities before fitting; no soft fitting objective change.",
   "reason": "Original saved bauble target misclassifies five of twenty-six existing reviewed material samples, all on the frame. Historical visual crop covers only twenty-three samples and still misclassifies four: lower global target error must not be interpreted as faithful recovery.",
@@ -15,5 +15,6 @@
   "artifactsSha256": {
     "tmp/heart-learning/remaining-color-ablation-v1/run.py": "8837e115b88d836933f838b7d3661fe25e3cccaffd9e5e42d59fcc43562d01ee",
     "tmp/heart-learning/remaining-color-ablation-v1/diagnostics.json": "11e97eda2a8c2bcc744d5526052d1125d43ce9a196ec8dcabe40e82f0d59aaeb"
-  }
+  },
+  "results": "docs/inverse/datasets/remaining-photo-color-ablation-results.json"
 }

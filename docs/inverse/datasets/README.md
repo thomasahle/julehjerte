@@ -95,9 +95,16 @@ classified correctly, versus 21/26 with the automatic crop. Several red-frame
 samples are misclassified before solving in both arms. Source overlays, crops,
 masks and all four reconstructions were inspected; historical coordinates remain
 disputed, and their different targets prevent a direct error ranking. A separate
-[classifier comparison](remaining-photo-color-ablation-plan.json) now tests the
-existing color-mixture mode on those fixed crops, still passing binary masks to
-the same fitter. Neither diagnostic updates the automatic benchmark.
+[completed classifier comparison](remaining-photo-color-ablation-results.json)
+passes three of four changed-mask checks, but worsens bauble source-material
+agreement: **21/26 to 18/26** on the automatic crop, and **19/26 to 18/26** on the
+historical crop (three samples remain outside that crop). All eight reviewed
+upper/lower frame samples are misclassified on the automatic crop. Both star
+crops pass, with rounded tips and imperfect joins still visible. All masks and
+exported renders were inspected. This confirms the earlier source-material
+review: a lower error against a damaged target is not better reconstruction.
+The fitter still receives binary masks. Neither diagnostic changes the runtime
+or automatic benchmark.
 
 A [saved-field junction diagnostic](material-junction-diagnostic.json) separates
 three possible causes of the learned checkers' gaps. Both 400px masks reproduce
@@ -114,8 +121,8 @@ without any learned model. With 8×8 coverage quadrature, synthetic mask errors
 are only **0.0131% and 0.0800%**. Even the native binary checker has no
 four-neighbour path between diagonally touching cells, so that raster diagnostic
 is not a test of true contact geometry. The audit preserves this negative
-control rather than attributing every gap to the network. Soft-field fitting
-and explicit contact supervision remain untested alternatives; no runtime model,
+control rather than attributing every gap to the network. At the time of that audit, soft-field fitting
+and explicit contact supervision were untested alternatives; no runtime model,
 new reconstruction success, or exact photographed junction label is claimed.
 
 The [completed binary-versus-soft replay](material-soft-objective-results.json)
