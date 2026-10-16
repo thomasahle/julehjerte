@@ -34,6 +34,8 @@ def main():
     parser.add_argument('--input', type=Path, required=True)
     parser.add_argument('--model-source', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--paper-points', action='store_true',
+                        help='Compare the interior point with two points seeded by frozen paper probabilities')
     args = parser.parse_args()
     started = time.perf_counter()
     source, output = args.model_source.resolve(), args.output.resolve()
@@ -47,7 +49,7 @@ def main():
     if prior['status'] != 'complete' or prior['resolution'] != 256:
         raise ValueError('Require a completed 256-pixel frozen prediction probe')
     output.mkdir()  # Never overwrite a previously inspected experiment.
-    methods = ['unchanged', 'sam-box', 'sam-box-point']
+    methods = ['unchanged', 'sam-box-point', 'sam-box-papers'] if args.paper_points else ['unchanged', 'sam-box', 'sam-box-point']
     scope = ('Development photographs; automatically prompted pretrained segmentation, no annotation, '
              'supplied corners, ROI, retraining or templates. Frozen RGB material estimates are unchanged. '
              'Pretraining overlap with these public photographs is unknown.')
@@ -59,6 +61,7 @@ def main():
         'modelSourceSha256': {str(p.relative_to(source)): sha(p) for p in sorted((source/'mobile_sam').rglob('*.py'))},
         'driverSha256': sha(__file__), 'promptHelperSha256': sha(Path(__file__).with_name('prompted_foreground.py')),
         'methods': methods, 'promptRule': 'Largest 8-connected .5 body component inside source; box padded 5% per axis; optional deepest interior point. Ties use first row-major component/pixel.',
+        'paperPointRule': ('One deepest point per predicted paper: same component, body >= .8, material <= .2 or >= .8. Require at least 16 cells per paper. Missing seeds produce an explicit failed prompt, no fallback.' if args.paper_points else None),
         'predictionRule': 'Single mask per prompt (multimask_output=False); no per-photo selection or fallback. Sigmoid of native logits, bilinear sample to frozen 256-pixel window; outside source is zero.',
         'runtime': {'device': 'cpu', 'dtype': 'float32', 'torchThreads': 2, 'torchInteropThreads': 1},
         'dependencies': {p: importlib.metadata.version(p) for p in ['torch', 'torchvision', 'numpy', 'scipy', 'Pillow', 'timm', 'safetensors']},
@@ -94,7 +97,8 @@ def main():
                 if sha(file) != asset['sha256']:
                     raise ValueError('Frozen input prediction changed')
                 fields[key] = np.fromfile(file, dtype='<f4').reshape(256, 256)
-            prompt = automatic_prompts(fields['body'], old['window'], old['dimensions'])
+            prompt = automatic_prompts(fields['body'], old['window'], old['dimensions'],
+                                       paper_probability=fields['material'] if args.paper_points else None)
             row = {k: v for k, v in old.items() if k != 'assets'}
             row.update(assets={}, prompt=prompt, timing={}, sam={})
             predictions = {'unchanged': fields['body']}
@@ -107,6 +111,12 @@ def main():
                     kwargs = {'box': np.asarray(prompt['box']), 'multimask_output': False, 'return_logits': True}
                     if method == 'sam-box-point':
                         kwargs.update(point_coords=np.asarray([prompt['point']]), point_labels=np.array([1]))
+                    if method == 'sam-box-papers':
+                        if prompt['paperPoints'] is None:
+                            predictions[method] = np.zeros((256, 256), np.float32)
+                            row['sam'][method] = {'unavailableReason': 'Insufficient confident samples of both papers'}
+                            continue
+                        kwargs.update(point_coords=np.asarray(prompt['paperPoints']), point_labels=np.ones(2, dtype=int))
                     logits, quality, _ = predictor.predict(**kwargs)
                     predictions[method] = probability_window(logits[0], old['window'])
                     row['timing'][method+'DecodeAndSampleSeconds'] = time.perf_counter()-start

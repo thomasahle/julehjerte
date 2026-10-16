@@ -935,7 +935,12 @@
     "tmp/heart-learning/mobilesam-foreground-v1/pipeline-checks.json": "777badf06d452919bcce1b2fff03cb74925b5afa5a60044182432aafbad60449",
     "tmp/heart-learning/mobilesam-foreground-v1/editable/results.json": "6d2150f0402b26240643c4abf51fc4bfa7568b5fa0f497aeb2ba44318400ee0b",
     "tmp/heart-learning/mobilesam-foreground-v1/source-paper-scores.json": "7de9a506e43f5ea72af0c8d6c387e3f49d96675061d08b792f079c5c7b056639",
-    "tmp/heart-learning/mobilesam-foreground-v1/reconstruction-figures.json": "f3d622bc3f53ae911e0ddd7d69781784f417c677b517cb4cfdba276809e78cf2"
+    "tmp/heart-learning/mobilesam-foreground-v1/reconstruction-figures.json": "f3d622bc3f53ae911e0ddd7d69781784f417c677b517cb4cfdba276809e78cf2",
+    "tmp/heart-learning/mobilesam-foreground-diagnostics-v1/summary.json": "30ef0792096b6d542f36d12b629b857fa1dad808afca4b2d4abd5b78d725013b",
+    "tmp/heart-learning/mobilesam-foreground-diagnostics-v1/results/report.json": "45163fd30ceab05265cd27e9c19d212a1815c1fbfacdc41018cf038567bf2bfe",
+    "tmp/heart-learning/mobilesam-foreground-diagnostics-v1/debug-crop.mjs": "bf5433bd280cb5a1a6f3ac3cc5e4c617f039a38b68be928532f1bea622de2418",
+    "tmp/heart-learning/mobilesam-foreground-diagnostics-v1/source.json": "63e1839d5cd4ccf6db6bd3ee7c57d6859f4a170443c18073676581dcd6dc9950",
+    "tmp/heart-learning/mobilesam-foreground-diagnostics-v1/state.json": "24fa9f0e4bdf4b394228c59e716ec4809b9c3bad19aa6f4487f7191da90835c8"
   },
   "pipeline": {
     "status": "complete",
@@ -1435,5 +1440,592 @@
       "conversionPassed": 26
     }
   },
-  "inferenceImplementationCommit": "df5a9db"
+  "inferenceImplementationCommit": "df5a9db",
+  "failureTrace": {
+    "scope": "Post-hoc debug trace of eight failed single-point crops; closest means minimum sum of gate violations, not a new selection policy. Same fields and thresholds.",
+    "rows": [
+      {
+        "id": "real-3f7b76e1a98e808f-body-1",
+        "reasonCounts": {
+          "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.": 14,
+          "The two-colour foreground does not clearly support both heart lobes and lower edges.": 1
+        },
+        "attempts": 15,
+        "closestToGates": [
+          {
+            "degrees": 268.1162839505241,
+            "evidence": {
+              "lobeOutlineSupport": [
+                0.6111111111111112,
+                0.9722222222222222
+              ],
+              "lowerEdgeSupport": [
+                0.9556962025316456,
+                0.9936708860759493
+              ],
+              "capColourLoss": [
+                0.0010912102171059658,
+                0.03162060295279586
+              ],
+              "rejectedQuad": [
+                [
+                  842.5380559573157,
+                  525.8830031113077
+                ],
+                [
+                  422.094690900196,
+                  959.5911330662958
+                ],
+                [
+                  -19.674044675134645,
+                  540.4605313750885
+                ],
+                [
+                  417.533036049093,
+                  123.00070641775734
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "real-45744a03afddccb1-body-1",
+        "reasonCounts": {
+          "The two-colour foreground does not clearly support both heart lobes and lower edges.": 2,
+          "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.": 15
+        },
+        "attempts": 17,
+        "closestToGates": [
+          {
+            "degrees": 0,
+            "evidence": {
+              "lobeOutlineSupport": [
+                0.4722222222222222,
+                0.8333333333333334
+              ],
+              "lowerEdgeSupport": [
+                0.9236111111111112,
+                1
+              ],
+              "capColourLoss": [
+                0.001235731170199107,
+                0.010286289334488243
+              ],
+              "rejectedQuad": [
+                [
+                  1171.4993133829205,
+                  1280.4568925623823
+                ],
+                [
+                  2150.541092478022,
+                  2139.9783081096193
+                ],
+                [
+                  1187.6846105998088,
+                  3184.230566738227
+                ],
+                [
+                  313.32729041828185,
+                  2304.499486893634
+                ]
+              ]
+            }
+          },
+          {
+            "degrees": 6.778218726294256,
+            "evidence": {
+              "lobeOutlineSupport": [
+                0.4722222222222222,
+                0.8611111111111112
+              ],
+              "lowerEdgeSupport": [
+                0.9791666666666666,
+                0.8333333333333334
+              ],
+              "capColourLoss": [
+                0.0012316653920362236,
+                0.010457720038589734
+              ],
+              "rejectedQuad": [
+                [
+                  1171.229336037975,
+                  1280.109633252711
+                ],
+                [
+                  2151.2409825670156,
+                  2140.2066905660795
+                ],
+                [
+                  1189.5687525151272,
+                  3180.4736528292797
+                ],
+                [
+                  314.0701069279962,
+                  2304.648920395463
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "real-68d8f25d8891df62-body-1",
+        "reasonCounts": {
+          "The two-colour foreground does not clearly support both heart lobes and lower edges.": 6,
+          "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.": 12,
+          "No nondegenerate heart-shape fit": 2
+        },
+        "attempts": 20,
+        "closestToGates": [
+          {
+            "degrees": 337.5,
+            "evidence": {
+              "lobeOutlineSupport": [
+                0.6388888888888888,
+                0.6111111111111112
+              ],
+              "lowerEdgeSupport": [
+                0.5511811023622047,
+                0.8031496062992126
+              ],
+              "capColourLoss": [
+                0.17053961253419933,
+                0.06929633175591346
+              ],
+              "rejectedQuad": [
+                [
+                  212.35278397044615,
+                  146.70744132732014
+                ],
+                [
+                  317.84374803353825,
+                  315.11315101681726
+                ],
+                [
+                  135.8483249781172,
+                  443.41131369851826
+                ],
+                [
+                  29.265854533396894,
+                  248.04575767174407
+                ]
+              ]
+            }
+          },
+          {
+            "degrees": 0,
+            "evidence": {
+              "lobeOutlineSupport": [
+                0.3888888888888889,
+                0.4722222222222222
+              ],
+              "lowerEdgeSupport": [
+                1,
+                0.8441558441558441
+              ],
+              "capColourLoss": [
+                0.29481552548238404,
+                0.323772912506594
+              ],
+              "rejectedQuad": [
+                [
+                  234.22237076367801,
+                  91.69527597301922
+                ],
+                [
+                  313.96933923881335,
+                  316.99255823435453
+                ],
+                [
+                  152.11210384911985,
+                  445.98976679147995
+                ],
+                [
+                  25.715308604825026,
+                  250.3167818224741
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "real-990ac34431be87fe-body-1",
+        "reasonCounts": {
+          "The two-colour foreground does not clearly support both heart lobes and lower edges.": 4,
+          "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.": 14
+        },
+        "attempts": 18,
+        "closestToGates": [
+          {
+            "degrees": 0,
+            "evidence": {
+              "lobeOutlineSupport": [
+                0.8055555555555556,
+                0.5833333333333334
+              ],
+              "lowerEdgeSupport": [
+                0.8240740740740741,
+                0.9166666666666666
+              ],
+              "capColourLoss": [
+                0.0036216794897081764,
+                0.00012066984915859447
+              ],
+              "rejectedQuad": [
+                [
+                  290.71460495999196,
+                  150.3238638732366
+                ],
+                [
+                  401.9367579725722,
+                  282.07305633355065
+                ],
+                [
+                  284.30664052441193,
+                  418.04272845216383
+                ],
+                [
+                  156.81294453811552,
+                  281.3365839711241
+                ]
+              ]
+            }
+          },
+          {
+            "degrees": 19.132668928940006,
+            "evidence": {
+              "lobeOutlineSupport": [
+                0.75,
+                0.4722222222222222
+              ],
+              "lowerEdgeSupport": [
+                1,
+                0.5176470588235295
+              ],
+              "capColourLoss": [
+                0.003992455199030397,
+                0.005747540315727983
+              ],
+              "rejectedQuad": [
+                [
+                  292.7365148119891,
+                  144.8933545804481
+                ],
+                [
+                  400.17260978283616,
+                  283.58783203151415
+                ],
+                [
+                  286.748800267546,
+                  419.7850818379545
+                ],
+                [
+                  157.365377915379,
+                  282.7087434649295
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "real-995899fe049540ed-body-1",
+        "reasonCounts": {
+          "The two-colour foreground does not clearly support both heart lobes and lower edges.": 4,
+          "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.": 7
+        },
+        "attempts": 11,
+        "closestToGates": [
+          {
+            "degrees": 0,
+            "evidence": {
+              "lobeOutlineSupport": [
+                0.8611111111111112,
+                0.75
+              ],
+              "lowerEdgeSupport": [
+                0.9939393939393939,
+                0.9818181818181818
+              ],
+              "capColourLoss": [
+                0.1606175267926432,
+                0.3942947476988748
+              ],
+              "rejectedQuad": [
+                [
+                  860.7834199189815,
+                  237.64759855129418
+                ],
+                [
+                  1347.1227371387783,
+                  729.7725643265059
+                ],
+                [
+                  818.6266351947609,
+                  1320.899732085999
+                ],
+                [
+                  312.2184141536046,
+                  772.9721694396042
+                ]
+              ]
+            }
+          },
+          {
+            "degrees": 347.0929107988272,
+            "evidence": {
+              "lobeOutlineSupport": [
+                0.8055555555555556,
+                0.3611111111111111
+              ],
+              "lowerEdgeSupport": [
+                0.7289156626506024,
+                0.9819277108433735
+              ],
+              "capColourLoss": [
+                0.1771888889027051,
+                0.49220530782806016
+              ],
+              "rejectedQuad": [
+                [
+                  833.1292102737344,
+                  196.56329623598378
+                ],
+                [
+                  1312.9572611132362,
+                  773.952880514374
+                ],
+                [
+                  807.8909483618141,
+                  1321.021704230375
+                ],
+                [
+                  209.2610749831926,
+                  654.9253917471583
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "real-cdae5c890b6933cd-body-1",
+        "reasonCounts": {
+          "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.": 12,
+          "Multiple heart-sized foreground bands": 2,
+          "The two-colour foreground does not clearly support both heart lobes and lower edges.": 2,
+          "Crowded frame: select one heart with a rough rectangle": 2
+        },
+        "attempts": 18,
+        "closestToGates": [
+          {
+            "degrees": 45,
+            "evidence": {
+              "lobeOutlineSupport": [
+                0.5,
+                0.6666666666666666
+              ],
+              "lowerEdgeSupport": [
+                0.7692307692307693,
+                0.38461538461538464
+              ],
+              "capColourLoss": [
+                0.29272751238163885,
+                0.8068926387866264
+              ],
+              "rejectedQuad": [
+                [
+                  391.2874764196018,
+                  200.40396960491995
+                ],
+                [
+                  489.0627332928079,
+                  216.99010458537165
+                ],
+                [
+                  492.0155377458705,
+                  343.1233179732417
+                ],
+                [
+                  413.8407958457806,
+                  295.42562145224434
+                ]
+              ]
+            }
+          },
+          {
+            "degrees": 22.5,
+            "evidence": {
+              "lobeOutlineSupport": [
+                0.6388888888888888,
+                0.75
+              ],
+              "lowerEdgeSupport": [
+                0.5,
+                0.39473684210526316
+              ],
+              "capColourLoss": [
+                0.3144625350516011,
+                0.7959894094289507
+              ],
+              "rejectedQuad": [
+                [
+                  401.9170676049074,
+                  191.8406148385191
+                ],
+                [
+                  526.9184447918831,
+                  194.30245629854056
+                ],
+                [
+                  494.3503596514958,
+                  346.7138582844346
+                ],
+                [
+                  410.3714865171915,
+                  292.70172730737323
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "real-cf2d0fcff65d7386-body-1",
+        "reasonCounts": {
+          "Crowded frame: select one heart with a rough rectangle": 7,
+          "No nondegenerate heart-shape fit": 1,
+          "The two-colour foreground does not clearly support both heart lobes and lower edges.": 3,
+          "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.": 3
+        },
+        "attempts": 14,
+        "closestToGates": [
+          {
+            "degrees": 112.5,
+            "evidence": {
+              "lobeOutlineSupport": [
+                0.5833333333333334,
+                0.3611111111111111
+              ],
+              "lowerEdgeSupport": [
+                0.4127659574468085,
+                0.30638297872340425
+              ],
+              "capColourLoss": [
+                0.03867153602014799,
+                0.46803119094542445
+              ],
+              "rejectedQuad": [
+                [
+                  95.67017097674946,
+                  314.24270349025727
+                ],
+                [
+                  250.7258468138438,
+                  4.145164851475485
+                ],
+                [
+                  632.7607487232008,
+                  57.712818206745084
+                ],
+                [
+                  410.2492745250576,
+                  402.59057411716043
+                ]
+              ]
+            }
+          },
+          {
+            "degrees": 45,
+            "evidence": {
+              "lobeOutlineSupport": [
+                0.027777777777777776,
+                0.1111111111111111
+              ],
+              "lowerEdgeSupport": [
+                0.7149122807017544,
+                0.5877192982456141
+              ],
+              "capColourLoss": [
+                0.9389364326817048,
+                0.5984650986798036
+              ],
+              "rejectedQuad": [
+                [
+                  162.689248548523,
+                  108.7945309824278
+                ],
+                [
+                  599.1452110859984,
+                  -121.61877207179708
+                ],
+                [
+                  599.1772651919459,
+                  512.6233533357399
+                ],
+                [
+                  321.24657495570784,
+                  512.7617868913028
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "real-d5b0aa8d4d2465ee-body-1",
+        "reasonCounts": {
+          "The two-colour foreground does not clearly support both heart lobes and lower edges.": 1,
+          "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.": 18
+        },
+        "attempts": 19,
+        "closestToGates": [
+          {
+            "degrees": 0,
+            "evidence": {
+              "lobeOutlineSupport": [
+                1,
+                1
+              ],
+              "lowerEdgeSupport": [
+                1,
+                0.6101694915254238
+              ],
+              "capColourLoss": [
+                0.394539445397666,
+                0.1488785397023108
+              ],
+              "rejectedQuad": [
+                [
+                  422.6976169902131,
+                  115.85616344244413
+                ],
+                [
+                  552.296989920703,
+                  317.0451672782502
+                ],
+                [
+                  347.4215381264286,
+                  454.18402343170396
+                ],
+                [
+                  216.51745967708254,
+                  240.46703075794105
+                ]
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "sourceFilesVerified": 102,
+    "findings": [
+      "The rotated green/gold star DOES reach an upright fit at 268.12 degrees. Its lower-edge supports exceed .95 and both cap-colour losses are low, but one lobe support is .611, below .65. Its failure is not simply missing rotation search.",
+      "Rabbit likewise has strong lower edges and low cap-colour loss, but its fitted left lobe support is .472. Accurate silhouette prediction alone has not fixed the shape fit.",
+      "Floral/striped has adequate lobe and lower-edge support but cap-colour loss .394 exceeds .30. The two-flat-paper colour assumption fails on this printed paper.",
+      "Other failures combine leaked foreground, incomplete paper segmentation and poor fitted outlines. Support thresholds were not weakened."
+    ]
+  }
 }

@@ -17,6 +17,7 @@ The inventory, with material annotations updated on 2026-10-16, contains:
 | Synthetic photographic views in existing experiments | 768 | Original 512 plus 256 supplementary views; all 5,952 referenced assets verified. |
 | Unassigned radial-motif candidates | 64 geometries / 256 views | One additional recipe group with exact shared approaches; not used in training. All 1,984 referenced assets verified. |
 | Pretrained encoder checkpoints | 2 | MobileNetV3-Small: researched timm LAMB weights and the TorchVision weights used by the experiment. |
+| Pretrained segmentation checkpoint | 1 | Pinned official MobileSAM weights, 10,130,092 instantiated parameters; automatic-prompt experiments only, no browser integration. |
 | Trained proposal models | 4 | Same 880,466-parameter network: random/ImageNet, balanced loss, and broader corner data; synthetic-only, offline. |
 | Trained foreground models | 5 | RGB-only, 880,449 parameters; random/ImageNet, background augmentation, and paired clutter/control runs, all offline. |
 | Decoder-adaptation checkpoints | 4 | One synthetic control and three grouped real/synthetic folds; no all-data or deployed model. |
@@ -47,8 +48,24 @@ hidden overlap corners. Printed-paper classification and small reconstruction
 artifacts remain, and the bicycle's published construction is outside the
 regular model. SAM image encoding takes a median 0.52 seconds on this CPU;
 proposal-network inference, startup and browser execution are not included.
-No model is integrated. A follow-up with one automatically selected point on
-each predicted paper is being evaluated; it has no template result yet.
+All 26 exports convert to editable SVG, with the same 22 complete passes across
+the three arms and no editor geometry issues. No model is integrated.
+
+The [two-paper prompt follow-up](mobilesam-paper-prompts-results.json) completes
+another 66 crop attempts. It recovers the hand-held printed checker and foliage
+checker, but loses the aircraft and ribbon checker, leaving 14/22 proposals.
+On the ribbon checker, one positive prompt lands on blue background wrongly
+included by the original neural silhouette. The single-point predictions and
+crop coordinates reproduce exactly. All six mask/crop panels and both prompt
+panels were reviewed; nine prompt/alignment tests pass. No two-paper template
+replay or per-photo best-arm combination is claimed.
+
+Detailed traces also separate segmentation from locator failures. The rotated
+green/gold star reaches the upright orientation and has strong lower-edge and
+cap-colour support, but one fitted lobe misses the support threshold. Rabbit
+has a similar shape-fit failure. Floral/striped instead fails the assumption
+that each lobe has one paper colour, despite adequate outline support. These
+are specific next targets; no acceptance thresholds were weakened.
 
 A [published-template review](bicycle-template-review.json) qualifies the
 bicycle failure: the designer's matching PDF requires additional enclosed

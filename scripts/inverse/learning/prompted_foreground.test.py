@@ -45,6 +45,26 @@ class PromptTests(unittest.TestCase):
         expected = np.tile([0, .1, .3, .6], (4, 1))
         np.testing.assert_allclose(probability_window(logits, [-1, 0, 3, 4], 4), expected, atol=1e-7)
 
+    def test_both_papers_get_interior_prompts_and_phase_is_exchangeable(self):
+        p = np.ones((16, 16)); material = np.zeros((16, 16)); material[:, 8:] = 1
+        result = automatic_prompts(p, [0, 0, 16, 16], [16, 16], paper_probability=material)
+        exchanged = automatic_prompts(p, [0, 0, 16, 16], [16, 16], paper_probability=1-material)
+        self.assertEqual(result['paperPoints'], [[3, 3], [11, 3]])
+        self.assertEqual(exchanged['paperPoints'], result['paperPoints'][::-1])
+        baseline = automatic_prompts(p, [0, 0, 16, 16], [16, 16])
+        self.assertEqual({k: result[k] for k in baseline}, baseline)
+
+    def test_missing_paper_cannot_invent_second_prompt(self):
+        result = automatic_prompts(np.ones((16, 16)), [0, 0, 16, 16], [16, 16],
+                                   paper_probability=np.zeros((16, 16)))
+        self.assertIsNone(result['paperPoints'])
+        self.assertEqual(result['paperSeedPixels'], [256, 0])
+
+    def test_paper_prompt_validation(self):
+        for material in [np.zeros((4, 4)), np.full((16, 16), np.nan), np.full((16, 16), -1)]:
+            with self.assertRaises(ValueError):
+                automatic_prompts(np.ones((16, 16)), [0, 0, 16, 16], [16, 16], paper_probability=material)
+
 
 if __name__ == '__main__':
     unittest.main()
