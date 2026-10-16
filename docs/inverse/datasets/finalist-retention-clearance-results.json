@@ -1,8 +1,8 @@
 {
   "schema": "finalist-retention-clearance-results-1",
-  "status": "implemented-and-committed-full-repository-tests-running",
+  "status": "complete-local-runtime-qa",
   "plan": "docs/inverse/datasets/finalist-retention-fit-plan.json",
-  "runtimeAdopted": false,
+  "runtimeAdopted": true,
   "method": "Prefer an existing lower-error finalist only if it reduces missing features without regressing represented regions. Reserve refinement time. Before clearance can promote another finalist, apply the same existing feature-change audit to the two actual clearance masks. Source masks, candidate count pool, time limit and final acceptance rules are unchanged.",
   "fixedMaskComparison": {
     "status": "complete",
@@ -613,9 +613,7 @@
       "The partial-finalist preference did not select a candidate on any of these 31 cases; no claim of byte-identical or uniformly improved accuracy."
     ]
   },
-  "remainingVerification": [
-    "full repository tests"
-  ],
+  "remainingVerification": [],
   "artifactsSha256": {
     "tmp/heart-learning/finalist-retention-clearance-v1/audit.json": "a92c2aa293f84305a1fed0b4b70f1d884722530ebec6e2e9c83de44defea7b42",
     "tmp/heart-learning/finalist-retention-clearance-v1/pipeline/report.json": "1aec41cf0157ea2e9e6346d28d545dfa3091a7b87e4292b0a6c6c5936ed488bf",
@@ -632,7 +630,11 @@
     "tmp/heart-learning/finalist-retention-clearance-v1/qa/served-assets.json": "52825cfba6292ee82787fdc7ac0f63da0b2f2f88fada097a3d0f8cc1eeb7b65a",
     "tmp/heart-learning/finalist-retention-clearance-v1/photos-review-1.png": "924228cba91199b49801546e4356cbdfae6d968699fc154ae8c8e4475c521447",
     "tmp/heart-learning/finalist-retention-clearance-v1/photos-review-2.png": "783ae27ea4e8eea8096e414cc5cf0c1385a008930ee2cf77b41032b87f5016c2",
-    "tmp/heart-learning/finalist-retention-clearance-v1/photos-review-3.png": "82f6d1d2a1ff3fe6759487b0eaa22fab6078b91fb1a1b4f0943d97372e4362e8"
+    "tmp/heart-learning/finalist-retention-clearance-v1/photos-review-3.png": "82f6d1d2a1ff3fe6759487b0eaa22fab6078b91fb1a1b4f0943d97372e4362e8",
+    "tmp/heart-learning/finalist-retention-clearance-v1/qa/source.json": "505b37f2716bcf1983bf5724742beaed6feeaab776f118ba5f6c1ed1aa9344cc",
+    "tmp/heart-learning/finalist-retention-clearance-v1/qa/test.log": "00bc73442a23c4367a94e2cb7ec298717c0113a6d16366609f3ae740da3755e4",
+    "tmp/heart-learning/finalist-retention-clearance-v1/qa/checks.json": "e40673ba0714daf70f6f91705b28e3688d040c2013d672dd68153c27f3a8833b",
+    "tmp/heart-learning/finalist-retention-clearance-v1/qa/state.json": "62ae9cacf7fdf2313ad2103ebdf755ac54d6b7be411f2c4799078c438500a64f"
   },
   "limitations": [
     "No new complete reconstruction in the fixed thirteen-mask cohort; improved checker and bicycle retain source-feature warnings.",
@@ -1425,8 +1427,28 @@
       "builtAssetsVerified": 173
     },
     "repositoryTests": {
-      "status": "running",
-      "directory": "tmp/heart-learning/finalist-retention-clearance-v1/qa"
+      "status": "passed",
+      "applicationPassed": 865,
+      "applicationSkipped": 1,
+      "inversePassed": 1001,
+      "sourceFilesVerified": 922,
+      "checks": [
+        {
+          "stage": "preview",
+          "exitCode": 0,
+          "seconds": 1.378587625
+        },
+        {
+          "stage": "browser",
+          "exitCode": 0,
+          "seconds": 40.918352207999995
+        },
+        {
+          "stage": "test",
+          "exitCode": 0,
+          "seconds": 1136.92539625
+        }
+      ]
     }
   },
   "bicycleConstructionQualification": {
@@ -1436,5 +1458,6 @@
     "construction": "The published green sheet contains additional enclosed cutouts (yellow regions explicitly marked for removal). Its actual construction is outside the regular slit-chain model.",
     "evaluation": "Keep the fixed-mask denominator, missing-detail warnings and existing regression unchanged. Improvement demonstrates safer candidate scheduling; it is not evidence of recovering this published template.",
     "nextAction": "Do not spend further regular-solver optimization on this known irregular reference; the user allowed irregular designs to be excluded from regular-solver goals."
-  }
+  },
+  "deployment": "Local branch only; not pushed or deployed."
 }

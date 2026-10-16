@@ -62,8 +62,10 @@ issues. Nine image errors changed; the largest increase is the dense checker,
 **1.67% to 1.94%**. All nine changed-error exports were inspected. The new
 preference selected no candidate on these established 31 cases. Check, lint,
 build and three Chromium upload/solve/editable-export workflows pass. The
-candidate runtime change is committed in `bcd30af`; full repository tests are
-still running, so final adoption remains pending. Nothing was pushed or deployed. The [plan](finalist-retention-fit-plan.json)
+runtime change is committed in `bcd30af`. Full repository QA passes **865
+application tests** (one existing skip) and **1,001 inverse tests**, with all
+922 pinned sources unchanged. This is adopted on the local branch only;
+nothing was pushed or deployed. The [plan](finalist-retention-fit-plan.json)
 records the cold failure and the separate synthetic-fixture correction.
 
 
