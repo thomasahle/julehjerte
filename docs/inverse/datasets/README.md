@@ -32,6 +32,26 @@ The inventory, with material annotations updated on 2026-10-16, contains:
 
 ## Current results and limits
 
+A [component-wise locator study](locator-diameter-components-results.json)
+separates cap-side colour purity from the reward for a visible colour step at
+the lobe diameter. Removing only the contrast reward recovers the rotated star
+and rabbit, but loses aircraft: **14 to 15 crop proposals, 12 to 11 checked
+reconstructions**. Removing only purity retains the original 14 proposal IDs.
+All 66 crop attempts, 44 paired fitting attempts and 29 editable-export audits
+complete; all eight reconstruction panels were inspected. The global change
+is rejected. A fallback restricted to unsupported crops remains untested.
+
+The offline learned-material replay now preserves the production rectifier's
+source coverage through fitting, independent scoring and editable conversion.
+For the newly recovered star, 159 of 160,000 rectified pixels lie outside full
+source support and are excluded. Its 0.75% observed-mask disagreement still
+fails the feature check: a thin dark strip visible near the photographed outer
+edge is omitted. Rabbit passes at 0.57%; candle loses a border feature. All 23
+accepted outputs pass editable checks. The rejected bicycle cannot pass editor
+geometry conversion, so the controller's nonzero exit is retained in the
+report. Twelve focused Node checks and six analytic corner-metric tests pass.
+No learned model or locator-objective change is integrated into the website.
+
 A [locator-objective isolation](locator-diameter-isolation-results.json) confirms
 that the strong colour-step term at the two lobe diameters can pull an accurate
 silhouette into a poor crop fit. With identical SAM fields, removing only that
