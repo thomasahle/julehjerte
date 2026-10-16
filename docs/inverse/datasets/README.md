@@ -51,9 +51,27 @@ native-fidelity run. All three smoke workflows and four hard-photo workflows
 also pass. The full-size star is unchanged; the three other photo fits have
 slightly lower mask errors in this run, but the puppy still takes **20.52 s**
 and visual review still shows thin false seams and frame defects. These are
-single-run timings, not a guarantee for all machines or photographs. Check,
-lint and build pass; the serial **110-fit / 55-mask** comparison, editable-export
-audits and full repository tests are still running.
+single-run timings, not a guarantee for all machines or photographs.
+
+The [completed 110-fit / 55-mask comparison](gradient-row-bins-corpus-results.json)
+retains **53/55 passing masks** in both arms: 22 Hunodan, four hard-photo variants
+and 27 of the 29 cropped photo cases. The outline star and bauble still fail
+source-feature checks; the two earlier no-crop cases were not rerun here. All
+110 editable conversions pass fidelity, geometry, paper and SVG round-trip
+checks; those checks do not turn the four failed source reconstructions into
+successes. All 55 cut-count pairs stay unchanged, and 38 geometries are exact.
+Mask error falls on nine cases, stays equal on 41, and rises on five by
+**0.00125–0.05 percentage points**. All 17 changed geometry pairs have been
+visually reviewed. Check, lint and build pass; the full repository tests are
+still running.
+
+The increases expose a remaining scheduling issue. On the gift, faster early
+refinement gives a losing alternative more time, leaving the winning fit only
+89 polishing steps instead of 124. On the half-size star, an improved candidate
+can miss its short-return repair near the deadline. A prepared
+[timing diagnostic](refinement-repair-clock-plan.json) will record the actual
+remaining allowances before changing those policies; it also covers the warped
+checker, whose divergence occurs earlier in fitting.
 
 The [fresh dense-case profile](dense-solver-profile-results.json) identifies the
 boundary-gradient kernel as the largest cost: **2.21 s** sampled self time.
