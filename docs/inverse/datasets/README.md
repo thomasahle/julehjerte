@@ -42,8 +42,18 @@ solves reduce the dense Hunodan case from **8.69 s to 7.68 s** with identical
 cutting geometry and image error. All twelve smoke-fit exports pass fidelity,
 geometry, paper and source-feature checks. Five of six fitted geometry pairs
 are exact; the puppy's timed fit has ten additional wrong pixels on its 400px
-mask (0.00625 percentage points), preserved in the report. Full browser,
-55-mask paired fitting, editable-export and repository QA are pending.
+mask (0.00625 percentage points), preserved in the report.
+
+The rebuilt app now passes all **22 Hunodan browser cases below ten seconds**:
+**6.09 s median, 8.87 s maximum**, from Find to editable-ready. Every Hunodan
+mask, cutting geometry and exported SVG is unchanged from the previous
+native-fidelity run. All three smoke workflows and four hard-photo workflows
+also pass. The full-size star is unchanged; the three other photo fits have
+slightly lower mask errors in this run, but the puppy still takes **20.52 s**
+and visual review still shows thin false seams and frame defects. These are
+single-run timings, not a guarantee for all machines or photographs. Check,
+lint and build pass; the serial **110-fit / 55-mask** comparison, editable-export
+audits and full repository tests are still running.
 
 The [fresh dense-case profile](dense-solver-profile-results.json) identifies the
 boundary-gradient kernel as the largest cost: **2.21 s** sampled self time.
