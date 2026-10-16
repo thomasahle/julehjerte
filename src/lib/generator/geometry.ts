@@ -1,4 +1,5 @@
 import { createLocalRouter } from './localRoutes';
+import { createSharedCutValidator } from './sharedCutValidation';
 import { cellTipCounts, fewerCutTips } from './cutQuality';
 import { gridClearance } from '$lib/geometry/clearance';
 /** Direct contour constructions. No image fitting, search solver, or raster mask.
@@ -266,10 +267,11 @@ function nestedBlock(...args: Parameters<typeof block>) {
 	}
 	const contours = (node: Contour): Ring[] => [node.ring, ...node.children.flatMap(contours)];
 	const rings = contours(node), routeLocal = createLocalRouter();
+	const clearSharedCuts = createSharedCutValidator(rings);
 	let best: Edge[] | undefined, cost = Infinity;
 	for (const candidate of perforatedOutline(node, [entry, exit], [0, 1], false, false, true)) {
 		const routes = routeLocal(candidate, [entry.point, exit.point]);
-		if (!routes || !clearSharedCuts(candidate, rings)) continue;
+		if (!routes || !clearSharedCuts(candidate)) continue;
 		const score = cuttingCost(routes, 1.5);
 		if (score < cost) { cost = score; best = candidate; }
 	}
@@ -772,6 +774,7 @@ function contourMotif(
 	// Candidate routes reuse the same immutable outline points. Keep point
 	// identities and graph storage for this cell across its routing attempts.
 	const routeLocal = createLocalRouter();
+	const clearSharedCuts = createSharedCutValidator(contours);
 	const nodes = forest(contours).sort(
 		(a, b) => {
 			const selected = (r: Ring) => Number(!!options.root && r.includes(options.root[0]));
@@ -884,13 +887,13 @@ function contourMotif(
 			if (!(error instanceof ConstructionError)) throw error;
 			continue;
 		}
-		if (!allowedConnections(exterior) || !clearSharedCuts(exterior, contours)) continue;
+		if (!allowedConnections(exterior) || !clearSharedCuts(exterior)) continue;
 		let attachmentAttempts = 0;
 		for (const interior of perforatedOutline(base, ports, bridgePorts, options.practical, options.touching, options.nested)) {
 			const local = [...interior, ...exterior];
 			try {
 				const routes = routeLocal(local, gates);
-				if (!routes || !allowedConnections(local) || !clearSharedCuts(local, contours)) continue;
+				if (!routes || !allowedConnections(local) || !clearSharedCuts(local)) continue;
 				fallback ??= local;
 				if (!alternatives.has(portKey) && alternatives.size < (options.practical ? 64 : 8))
 					alternatives.set(portKey, { edges: local, ports });
@@ -930,7 +933,7 @@ function contourMotif(
 			if (options.practical && ++portAttempts > 8) break;
 			if (++reliefAttempts > 256) break relief;
 			const routes = routeLocal(relieved, gates);
-			if (!routes || !allowedConnections(relieved) || !clearSharedCuts(relieved, contours)) continue;
+			if (!routes || !allowedConnections(relieved) || !clearSharedCuts(relieved)) continue;
 			if (options.practical) {
 				ranked.push({ edges: relieved, routes, score: cuttingCost(routes, margin) });
 				continue;
@@ -958,7 +961,7 @@ function contourMotif(
 				for (const second of relieveNotches(first, base.ring, local.ports, bridgePorts, true)) {
 					if (++secondCount > 4) break;
 					const routes = routeLocal(second, gates);
-					if (!routes || !allowedConnections(second) || !clearSharedCuts(second, contours)) continue;
+					if (!routes || !allowedConnections(second) || !clearSharedCuts(second)) continue;
 					if (acceptRoutes ? acceptRoutes(routes) : usableRoutes(routes, margin)) {
 						edges.push(...second);
 						options.onCompound?.();
@@ -1348,26 +1351,6 @@ function* perforatedOutline(node: Contour, ports: Port[], bridgePorts: readonly 
 	}
 }
 
-function clearSharedCuts(edges: Edge[], contours: Ring[]): boolean {
-	const shared = edges.filter((e) => e.family === 'AB');
-	const crosses = (a: Point, b: Point, c: Point, d: Point) => {
-		const u = sub(b, a),
-			v = sub(d, c),
-			det = cross(u, v);
-		if (Math.abs(det) < EPS) return false;
-		const t = cross(sub(c, a), v) / det,
-			s = cross(sub(c, a), u) / det;
-		return t > EPS && t < 1 - EPS && s >= -EPS && s <= 1 + EPS;
-	};
-	return shared.every(
-		(e, i) =>
-			contours.every((r) =>
-				r.every((p, j) => !crosses(e.from, e.to, p, r[(j + 1) % r.length]))
-			) &&
-			shared.slice(i + 1).every((f) => !crosses(e.from, e.to, f.from, f.to))
-	);
-}
-
 export function generateFourPortFigure(
 	rings: Ring[],
 	shape: Frame = 'circle',
@@ -1462,8 +1445,9 @@ export function relieveMotifTips(edges: Edge[], contours: Ring[], gates: Point[]
 		if (fewerCutTips(tips, original)) choices.push({ edges: candidate, tips });
 	}
 	choices.sort((a, b) => a.tips[0] - b.tips[0] || a.tips[1] - b.tips[1]);
+	const clearSharedCuts = createSharedCutValidator(contours);
 	for (const choice of choices)
-		if (clearSharedCuts(choice.edges, contours) && usableMotif(choice.edges, gates, margin))
+		if (clearSharedCuts(choice.edges) && usableMotif(choice.edges, gates, margin))
 			return choice.edges;
 }
 

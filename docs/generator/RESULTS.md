@@ -1,5 +1,45 @@
 # Generator robustness results
 
+## Faster local crossing checks, with unchanged designs
+
+The local motif validator now prepares outline segment bounds once per
+construction and reuses them for the candidate attachments and relief chords.
+Disjoint bounds skip the original intersection calculation. The bounds include
+its endpoint tolerance, and nearby segments use the unchanged exact rule.
+Full-sheet spacing checks still run separately. There is no global contour
+cache or change to candidate order.
+
+A replay compared **333,444 local validation calls** across two difficult Kalam
+repeats and seven figure requests, including three refused cases. Every answer
+matched. Aggregate time in these checks fell from **9.71 to 0.47 seconds**;
+this measures only local crossing validation, not complete generation
+(`shared-clearance-final-probe.json`, `shared-clearance-figure-replay.json`).
+Both paw captures remain identical to their earlier material-audited designs.
+
+A separate paired production run compared eight complete successful outputs:
+Kalam ANNA/EMMA repeat, Nunito ANNA checkerboard, Oswald JULEMAND checkerboard,
+paw oval/plain and oval/rays, layered crown and coffee circle/check. **All eight
+designs are exactly identical.** Their combined generation time was **40.11
+seconds before and 36.51 seconds after**, about 9% less in this single run
+(`shared-clearance-paired.json`). Individual results vary; this is not a general
+latency guarantee.
+
+This optimisation adds no newly accepted cases. The retained corpus remains
+**2,851 accepted / 299 refused / zero invalid**, without claiming a fresh full
+matrix run. More-lane, horizontal-lane and counter-attachment experiments still
+failed topology or spacing checks and were not added to production.
+
+Verification: the full single-worker unit run has **1,152 passed / one timed
+out** out of 1,153 tests, in 606.95 seconds (`shared-clearance-tests.log`). The
+existing Kalam EMMA ordinary-repeat case exceeds its unchanged 30-second limit
+in that run, then passes alone in **17.62 seconds**
+(`shared-clearance-kalam.log`). There are no assertion failures; every unit case
+is covered by a pass, but this is **not** a clean single full-suite run. The
+three new validator regressions pass. Check, lint and production build pass
+with the seven existing Svelte warnings. All **177 inverse tests pass** in
+95.71 seconds (`shared-clearance-inverse.log`). Full-run timing instability
+remains.
+
 ## Current coverage: wider connections between separate components
 
 The Tabler paw now works in all three oval frames: plain, rays and check. The

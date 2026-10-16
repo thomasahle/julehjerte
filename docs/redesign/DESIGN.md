@@ -707,6 +707,13 @@ segment's box. Precompute those bounds for the connection's routing candidates.
 Keep exact crossing, distance and endpoint checks for nearby obstacles; the
 optimisation must preserve the selected cutting geometry.
 
+Local motif crossing checks also reuse the unchanged outline's segment bounds
+across candidate attachments and relief chords. Include the exact intersection
+rule's endpoint tolerance in those bounds; nearby segments retain the original
+test. Scope the prepared validator to one immutable motif construction rather
+than caching mutable contours globally. This pruning changes neither candidate
+order nor acceptance, and does not replace the final paper-path spacing check.
+
 ## 8. Constraints and process
 
 - SvelteKit static adapter, `trailingSlash: 'always'`, everything prerendered; keep it that way.
