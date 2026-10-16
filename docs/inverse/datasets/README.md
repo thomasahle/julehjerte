@@ -33,6 +33,18 @@ The inventory, with material annotations updated on 2026-10-16, contains:
 
 ## Current results and limits
 
+The [native import sampling fix](native-import-sampling-results.json) keeps the
+400px painting surface but reuses the original photographic raster only while
+its exact enlargement still matches every colour and coverage cell. Real browser
+erasing switches back to the edited 400px mask; Undo restores the native raster.
+The anchor upload falls from **19.72 s to 6.00 s**, with painting-grid error
+**1.45% to 1.02%** and no extra central seam. All **22 Hunodan browser workflows**
+and four hard-photo uploads pass editable export checks. **20/22** finish under
+ten seconds (median **6.23 s**); hjcur-02 and hjstr-03 still take **15.44 s** and
+**10.31 s**. All 22 previews were reviewed. Check, lint, build, 57 focused tests
+and **871 application tests** (one skip) pass; full inverse QA is still running.
+The changes are committed locally, with no push or deployment.
+
 A [selective boundary-cleanup candidate](primitive-boundary-groups-results.json)
 keeps useful straightening edits when an unrelated subpixel-supported bend makes
 the whole batch fail its objective. Fourteen focused tests pass. An untimed
