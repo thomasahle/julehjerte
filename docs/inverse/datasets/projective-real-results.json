@@ -218,8 +218,68 @@
   "verification": {
     "focusedTestsPassed": 20,
     "checkLintBuildPassed": true,
-    "sourceFilesVerifiedSoFar": 896,
-    "repositoryTestSuite": "Running under tmp/heart-learning/projective-real-v1/run.py; not claimed complete.",
+    "repositoryTestSuite": {
+      "status": "passed",
+      "applicationPassed": 865,
+      "applicationSkipped": 1,
+      "inversePassed": 998,
+      "sourceFilesVerified": 896,
+      "checkLintBuildPassed": true,
+      "sourceSha256": "2f04b0ca24c027dc534cada08b86f27b4511cb5222ceffb48fa733ce9bdfdc06",
+      "logsSha256": {
+        "tmp/heart-learning/projective-real-v1/check.log": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092",
+        "tmp/heart-learning/projective-real-v1/lint.log": "2b7add329ca80a0f26dcb26c7eb139cd28b3768793c6b0797002f91a54119a34",
+        "tmp/heart-learning/projective-real-v1/build.log": "ea702ee9004a845805ea6aabd8af2f81097d98901dab096cc3441be1083d8a5e",
+        "tmp/heart-learning/projective-real-v1/test.log": "51b67c49dadd91855e33e7cbdff77b39e9475364d6cf22a747676638177879ef"
+      },
+      "checks": [
+        {
+          "stage": "focused",
+          "exitCode": 0,
+          "seconds": 0.9075770000000001
+        },
+        {
+          "stage": "crop",
+          "exitCode": 0,
+          "seconds": 51.930364875
+        },
+        {
+          "stage": "pipeline",
+          "exitCode": 0,
+          "seconds": 269.446428166
+        },
+        {
+          "stage": "editor-input",
+          "exitCode": 0,
+          "seconds": 0.6696583749999832
+        },
+        {
+          "stage": "editable",
+          "exitCode": 0,
+          "seconds": 32.25074466700005
+        },
+        {
+          "stage": "check",
+          "exitCode": 0,
+          "seconds": 16.931025458000022
+        },
+        {
+          "stage": "lint",
+          "exitCode": 0,
+          "seconds": 8.338743583000053
+        },
+        {
+          "stage": "build",
+          "exitCode": 0,
+          "seconds": 22.16112049999998
+        },
+        {
+          "stage": "test",
+          "exitCode": 0,
+          "seconds": 1113.410027292
+        }
+      ]
+    },
     "visualReview": {
       "status": "complete",
       "fallbackPhotoPanelsInspected": 20,
@@ -268,7 +328,8 @@
         "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/projective-real-v1/export-review-1.png": "aa73fa5b015063f123739bf7a0d5d45f9d588ab28bb9eb5fc53247f7cb74c180",
         "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/projective-real-v1/projective-vs-affine.png": "a513577570e24bbc80f803012fdc0c759229fd7f27581ab2d87afa4f7dacba0c"
       }
-    }
+    },
+    "sourceFilesVerified": 896
   },
   "limitations": [
     "Counts refer to agreement with classified masks plus independent geometry/paper/editor checks, not unknown original cutting templates.",
@@ -287,7 +348,8 @@
     "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/projective-real-v1/corner-audit.json": "8bf85e4ddf84595b5e7f72a0bcc536cbd8037f01309f366845028ba66713aa1c",
     "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/projective-real-v1/source-paper-scores.json": "391b6764d24294d499b5aa643c53d673069375e80732c7b60678e4fa4f2c7b9b",
     "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/projective-real-v1/visual-review.json": "788734b1047f3bcc9d93f183b91faad431b3d543cab3f77a618bb58686537727",
-    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/projective-real-v1/fitter-diagnosis.json": "0a60aedb5c84740058a8c2565ca232fc4efeb0a9d5df7f1ca8cceb1f16da2c5d"
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/projective-real-v1/fitter-diagnosis.json": "0a60aedb5c84740058a8c2565ca232fc4efeb0a9d5df7f1ca8cceb1f16da2c5d",
+    "tmp/heart-learning/projective-real-v1/qa.json": "d078b797962c2c115d41b91e0fe62ec27722b6bb72fda98c1093d3fc8a5a9374"
   },
   "nextStep": "Audit feature initialization using existing alternate cut-count finalists on the fixed failed masks. Separately evaluate crop corner evidence without restoring unreliable hard coarse-mask gates. Keep the projective prototype offline pending stronger real-photo corner and material validation."
 }

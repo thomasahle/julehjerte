@@ -50,7 +50,8 @@ loses the center grid: feature initialization stays near (1,2) despite an
 existing lower-error (5,5) finalist, before roughly six seconds of unsuccessful
 MILP recovery. The next solver diagnostic will test those already available
 alternate count bases on the fixed failed masks. Check, lint, build and twenty
-focused tests pass; the full repository suite is running.
+focused tests pass. Full repository QA also passes: **865 application tests**
+(one skipped) and **998 inverse tests**; all 896 pinned sources verify unchanged.
 
 A [projective body-only crop comparison](projective-body-results.json) now
 recovers all sixteen controlled synthetic overlaps behind small notch occluders
