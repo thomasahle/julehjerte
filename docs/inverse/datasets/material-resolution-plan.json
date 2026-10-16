@@ -1,0 +1,35 @@
+{
+  "schema": "material-resolution-plan-1",
+  "status": "declared-before-outcomes",
+  "cases": 22,
+  "methods": [
+    "coarse",
+    "crop-rgb"
+  ],
+  "scope": "Paired fresh fits on all frozen conditional-fallback crops, source RGB, observations and RGB palettes. Six unresolved crops remain in both denominators.",
+  "hypothesis": "Enlarging a 256-pixel full-photo material field can disconnect narrow regions and round corners. Applying the same colours to actual crop RGB can preserve the photographed topology.",
+  "singleCaseDevelopmentEvidence": "docs/inverse/datasets/material-resolution-diagnostic.json",
+  "invariants": [
+    "No re-estimated palette, moved crop, new network inference, saved template initialization or new annotation.",
+    "Binary handoff for both arms; actual source support retained through fitting and export evaluation.",
+    "Same ten-second budget and geometry, paper, feature and 3% mask gates. Rotate method order by source index.",
+    "Score every export against BOTH masks. Evaluate existing fixed partial source-paper samples independently.",
+    "Inspect every mask and exported weave; lower error against a changed target does not establish better reconstruction.",
+    "Require all original coarse target masks to reproduce exactly. Keep all failures and rejected exports in reports."
+  ],
+  "pythonPortVerification": {
+    "analyticalNodeChecks": 9,
+    "pythonCalibrationChecks": 7,
+    "exactStarMaskPixels": 160000
+  },
+  "hashes": {
+    "tmp/heart-learning/locator-contrast-fallback-v1/pipeline/report.json": "fdcee15fdf8f7506b4d4f8830ddb227e2f2226f1f32e00d67f44f169cd920bdc",
+    "tmp/heart-learning/neural-palette-calibration-v1/results/report.json": "5da32153c3dbde4a4d54df90e2cd016756620b10dc11086199ae2a945256c324",
+    "scripts/inverse/learning/paper-mixture.mjs": "7293d425771a4289f16464ffff3680a3b40334ab7258793defb88c3b43f2a7a5",
+    "scripts/inverse/learning/replay-material-resolution.mjs": "ce99d2e30a9e28f809d2c85ebf0b9ce005f14a14506f84f96ce430c2ae5586cc",
+    "scripts/inverse/paper-mixture.test.mjs": "78c4c130c0ad43d217723ad0e6f288bae43394acb7906774430c2fcc7c8575f7",
+    "scripts/inverse/fixtures/paper-mixture-python.json": "ddbab1c7dbd8cc95145209fb065da6879a4fa962ef4403b5d2a04f600da6470c",
+    "tmp/heart-learning/material-resolution-v1/run.py": "62f5a446c79f361fbba7b77e92990c0028d02893fa59c6277676d37b3289c9a3",
+    "tmp/heart-learning/material-resolution-v1/editor-input.mjs": "da2005873ee1d72da172ddffc81f1446093ac76d6671a6ae03caa2b35cc34a4b"
+  }
+}
