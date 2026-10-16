@@ -58,14 +58,13 @@ describe('repeated letters with alternating backgrounds', () => {
 				if (char === 'A') expect(sample(x + 2.5, y + 2.5)).toBe(1 ^ background);
 			}
 	}, 20000);
-	it('avoids needle points and reduces sharp tongues in the exported ANNA cuts', () => {
+	it('removes the narrow N notches from the exported ANNA cuts', () => {
 		const design = make('ANNA');
 		const turns = cutTurns(design);
-		// Before route optimization there were 34 tips narrower than 45°, eight
-		// narrower than 30°. Comparing connection layouts improves 16 to 8.
-		// Measure actual cut tangents, not the routing score.
-		expect(turns.filter(turn => turn > 135).length).toBeLessThanOrEqual(8);
-		expect(Math.max(...turns)).toBeLessThan(150);
+		// Moving the connections alone left eight 38° notches. Extra coincident
+		// chords divide those corners between the sheets without changing N.
+		expect(cutTipCounts(design)).toEqual([0, 0]);
+		expect(Math.max(...turns)).toBeLessThan(135);
 	}, 20000);
 	it('keeps JUL’s broad connections when the alternate layout creates sharp tips', () => {
 		expect(Math.max(...cutTurns(make('JUL')))).toBeLessThan(135);

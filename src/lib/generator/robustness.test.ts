@@ -52,6 +52,15 @@ function validateHandoffs(design: HeartDesign) {
 // These are expected successes, never a test that passes by accepting a refusal.
 // The larger offline corpus covers 2,028 text and 1,122 figure configurations.
 describe('generator robustness regressions', () => {
+	it('keeps the wider Oswald JULEMAND cuts when notch relief creates a thin neck', () => {
+		const { design } = generate({ mode: 'text', name: 'JULEMAND', text: 'JULEMAND',
+			font: fonts.oswald, textFrame: 'repeat-check', colors });
+		// A candidate with only 16 tips loses the clearance reserve and has an
+		// uncertain material core. Keep the established 24-tip construction.
+		expect(design.gridSize).toEqual({ x: 8, y: 8 });
+		expect(cutTipCounts(design)).toEqual([24, 24]);
+		validateHandoffs(design);
+	}, 20000);
 	for (const [fontId, text, tips] of [
 		['oswald', 'jul', [0, 3]], ['righteous', 'jul', [0, 0]],
 		['righteous', 'Sofie', [4, 10]], ['righteous', 'William', [0, 0]]

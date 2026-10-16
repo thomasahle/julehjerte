@@ -7,7 +7,7 @@ import { repeatedText } from './repeatedText';
 import { cellTipCounts, fewerCutTips } from './cutQuality';
 import {
 	ConstructionError, type Font, type Ring, type Point, type Edge,
-	twoPortMotif, usableMotif, add, compile
+	twoPortMotif, usableMotif, relieveMotifTips, add, compile
 } from './geometry';
 
 type LetterCell = {
@@ -17,6 +17,7 @@ type LetterCell = {
 	insets: [number, number];
 	usable?: boolean;
 	tips?: [number, number];
+	relieved?: LetterCell | null;
 };
 
 /** Scoped to one text/font/fill request; shared by its construction passes. */
@@ -25,7 +26,7 @@ export function checkeredGridCache() {
 }
 
 export function generateCheckeredGrid(text: string, font: Font, fill = .82, contactInset = .35,
-	options: { balanced?: boolean; onCrowded?: () => void; repair?: boolean; onRepair?: () => void; optimize?: boolean; cache?: ReturnType<typeof checkeredGridCache> } = {}) {
+	options: { balanced?: boolean; onCrowded?: () => void; repair?: boolean; onRepair?: () => void; optimize?: boolean; relieve?: boolean; cache?: ReturnType<typeof checkeredGridCache> } = {}) {
 	const repeated = repeatedText(text);
 	if (!repeated) throw new ConstructionError('empty', 'Empty text');
 	const word = repeated.split('\n')[0];
@@ -111,10 +112,24 @@ export function generateCheckeredGrid(text: string, font: Font, fill = .82, cont
 				// its two connections on the same sides of the grid-edge midpoint.
 				const tips = (cell: LetterCell) => cell.tips ??= cellTipCounts(cell.edges,
 					cell.gates.map((point, i) => ({ point, axis: (q + i) % 2 })));
+				const relieve = (candidate: LetterCell) => {
+					if (options.relieve && tips(candidate)[1] && usable(candidate)) {
+						if (candidate.relieved === undefined) {
+							const dx = candidate.origin[0] - origin[0], dy = candidate.origin[1] - origin[1];
+							const localContours = dx || dy ? contours.map(r => r.map(([x, y]): Point => [x + dx, y + dy])) : contours;
+							const improved = relieveMotifTips(candidate.edges, localContours, candidate.gates,
+								gridClearance(n), [q % 2, (q + 1) % 2]);
+							candidate.relieved = improved ? { ...candidate, edges: improved, tips: undefined, usable: true } : null;
+						}
+					}
+					return options.relieve && candidate.relieved || candidate;
+				};
+				piece = relieve(piece);
 				const prefix = `${matrix[row][col]}:${q}:`;
 				for (const [id, candidate] of cache) {
-					if (id.startsWith(prefix) && fewerCutTips(tips(candidate), tips(piece)) && usable(candidate))
-						piece = candidate;
+					if (!id.startsWith(prefix)) continue;
+					const improved = relieve(candidate);
+					if (fewerCutTips(tips(improved), tips(piece)) && usable(improved)) piece = improved;
 				}
 			}
 			if (options.repair && piece !== cache.get(baseKey)) options.onRepair?.();

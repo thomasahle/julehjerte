@@ -684,6 +684,28 @@ function generateUsingRecipes(request: GeneratorRequest,
 				} catch (error) {
 					if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 				}
+				let bestTips = cutTipCounts(improveSharedConnections(best).design);
+				// A further chord can split the narrow notch of a solid letter such
+				// as N. Reuse cached cells, then try one wider pair of grid contacts.
+				// The original remains available if the joined cuts lose clearance.
+				if (bestTips[1]) for (const inset of [bestInset, .2]) {
+					try {
+						const construction = generateCheckeredGrid(text, request.font, .82, inset,
+							{ cache, optimize: true, relieve: true });
+						const candidate = finish(construction, 'letters');
+						const rounded = improveSharedConnections(candidate).design, tips = cutTipCounts(rounded);
+						if (fewerCutTips(tips, bestTips)) {
+							const rect = inferOverlapRect(rounded.fingers, rounded.gridSize);
+							const margin = intersectionMarginPx(rect, gridClearanceScale(rounded.gridSize.x, rounded.gridSize.y));
+							// A smaller tip count alone can hide a new thin neck. Leave a
+							// clearance reserve for the additional cuts on both sheets.
+							if (!findFingersWithIssues(rounded.fingers, margin * 1.1).size) { best = candidate; bestTips = tips; }
+						}
+						if (!bestTips[1]) break;
+					} catch (error) {
+						if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+					}
+				}
 				return best;
 			}
 			if (crowded) for (const inset of small ? [.35, .25] : [.35]) {

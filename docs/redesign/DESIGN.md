@@ -672,6 +672,18 @@ the outer border adds two strips per sheet to the inner three-strip design.
 This changes local connection selection only; the completed heart must pass the
 same spacing, topology and artwork checks. Existing valid layouts return first.
 
+Working checkerboard text may split remaining sharp corners in solid glyphs
+with one additional coincident chord per cached cell. Retain the cell's existing
+outer connections and exact outline. Rank at most 128 local chords by actual
+paper-tip angles, then validate open paths and clearance. Keep counter and
+detached-component routing unchanged. Cache both improvements and unsuccessful
+attempts; compare completed, rounded hearts before accepting a change. One extra
+contact pair at 20%/80% of the cell edges can expose a better route. Preserve the
+original complete heart whenever the new arrangement fails validation or does
+not improve its exported cuts; additional cuts require 10% extra full-sheet
+clearance after rounding. Nunito ANNA must retain its exact cyclic 4×4
+checkerboard while eliminating all cutting tips narrower than 45°.
+
 ## 8. Constraints and process
 
 - SvelteKit static adapter, `trailingSlash: 'always'`, everything prerendered; keep it that way.

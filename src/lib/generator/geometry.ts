@@ -1,4 +1,5 @@
 import { createLocalRouter } from './localRoutes';
+import { cellTipCounts, fewerCutTips } from './cutQuality';
 import { gridClearance } from '$lib/geometry/clearance';
 /** Direct contour constructions. No image fitting, search solver, or raster mask.
  * A visible outline belongs to one sheet. A connecting cut belongs to both;
@@ -1420,6 +1421,36 @@ function usableRoutes(routes: Ring[], margin: number): boolean {
 export function usableMotif(edges: Edge[], gates: Point[], margin: number): boolean {
 	const routes = createLocalRouter()(edges, gates);
 	return !!routes && usableRoutes(routes, margin);
+}
+
+/** Divide a sharp outline corner with one additional coincident cut. Reuse the
+ * working letter's external connections: no new attachment search or outline
+ * changes. This simple operation applies to one solid contour; counters and
+ * detached components retain their established routing. */
+export function relieveMotifTips(edges: Edge[], contours: Ring[], gates: Point[], margin: number,
+	axes: number[]): Edge[] | undefined {
+	const nodes = forest(contours);
+	if (nodes.length !== 1 || nodes[0].children.length || gates.length !== 2) return;
+	const ring = nodes[0].ring;
+	const ports = gates.map(gate => {
+		const edge = edges.find(e => e.family === 'AB' && (near(e.from, gate) || near(e.to, gate)));
+		return edge && ringPort(ring, near(edge.from, gate) ? edge.to : edge.from);
+	});
+	if (!ports.every((port): port is Port => !!port)) return;
+	const contacts = gates.map((point, i) => ({ point, axis: axes[i] }));
+	const original = cellTipCounts(edges, contacts);
+	if (!original[1]) return;
+	const choices: { edges: Edge[]; tips: [number, number] }[] = [];
+	let attempts = 0;
+	for (const candidate of relieveNotches(edges, ring, ports, [0, 1], true)) {
+		if (++attempts > 128) break;
+		const tips = cellTipCounts(candidate, contacts);
+		if (fewerCutTips(tips, original)) choices.push({ edges: candidate, tips });
+	}
+	choices.sort((a, b) => a.tips[0] - b.tips[0] || a.tips[1] - b.tips[1]);
+	for (const choice of choices)
+		if (clearSharedCuts(choice.edges, contours) && usableMotif(choice.edges, gates, margin))
+			return choice.edges;
 }
 
 /** Each letter keeps its own connections to the frame. Joining a whole word

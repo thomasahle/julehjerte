@@ -1,6 +1,78 @@
 # Generator robustness results
 
-## Current coverage: alternate connections for detached components
+## Current quality: fewer narrow checkerboard corners
+
+The remaining eight Nunito ANNA tips were 38° corners in the visible N outline.
+Moving or rounding the existing invisible connections could not remove them.
+The checkerboard generator now tries one extra coincident chord through a solid
+letter, retaining its existing outer connections and exact outline. It reuses
+cached letter cells, ranks at most 128 local chords by paper-tip angles, and can
+try one additional 20%/80% pair of grid contacts. Both successful and unsuccessful
+local attempts are cached. Counters and detached glyph parts continue to use
+the established routing.
+
+New complete hearts are compared after shared-join rounding and must retain
+**10% extra full-sheet clearance**. Otherwise the earlier complete design stays
+in place. This matters: an Oswald JULEMAND candidate reduced its tip count from
+24 to 16 but introduced eight uncertain material cores, still unresolved at
+resolution 6,000. Its earlier cuts pass that audit. The extra clearance check
+rejects that candidate; a dedicated regression preserves the earlier cuts.
+
+Verified improvements use the same font outlines, cyclic text, checkerboard,
+physical strip counts and coincident cuts. Counts below show tips narrower than
+30° / 45° in the actual exported paths:
+
+| Font and input | Before | After |
+|---|---:|---:|
+| Nunito ANNA | 0 / 8 | **0 / 0** |
+| Nunito JULEMAND, including JULE / MAND | 16 / 24 | 8 / 8 |
+| Nunito EMMA | 12 / 12 | 8 / 8 |
+| Nunito OSCAR | 0 / 10 | 0 / 5 |
+| Nunito SØREN | 0 / 30 | 0 / 20 |
+| Nunito ANNA / BO | 0 / 12 | 0 / 6 |
+| Bree Serif A / nnn | 8 / 12 | 0 / 12 |
+| Righteous JULEMAND, including JULE / MAND | 0 / 8 | **0 / 0** |
+| Righteous ABCDEFGHIJ | 40 / 80 | **0 / 0** |
+| Kalam SØREN | 0 / 30 | 0 / 10 |
+| Kalam ANNA / BO | 0 / 18 | 0 / 6 |
+
+All thirteen changed designs pass the independent guarded material audit with
+zero certain or possible detached core islands. Resolution 1,400 suffices for
+ANNA and several other patterns; dense patterns needed 2,800 or 4,200, and
+Nunito SØREN needed 6,000. Uncertain lower-resolution results were not counted
+as passes. Both JSON/SVG handoffs pass, and the finished heart plus both paper
+sheets were reviewed (`notch-reserve-material.json`, `notch-reserve-metrics.json`,
+`notch-reserve-gallery-{0..12}.png`). These checks do not certify physical tear
+strength or remove every small feature from the other fonts.
+
+The exhaustive prototype that first eliminated ANNA's tips took roughly seven
+seconds. The final cached construction takes about **1.13 seconds**, versus
+0.95 seconds for the earlier eight-tip result in the paired production capture.
+It preserves the exact 4×4 ANNA / NNAA / NAAN / AANN pattern. This is a bounded
+quality improvement, not a general latency fix for the remaining hard cases.
+
+The paired audit covered **all 198 checkerboard inputs** across six fonts.
+After adding the clearance reserve, all sixteen changed candidates were
+regenerated through the final production code: thirteen improve and three keep
+their earlier cuts exactly. In total, **134 remain accepted, 64 remain refused**;
+121 accepted outputs stay exactly identical. No accepted combination was lost.
+The thirteen improvements reduce the combined tip counts from **92 / 276 to
+24 / 83** (`notch-relief-audit.json`, `notch-reserve-audit.json`).
+
+The merged corpus remains **2,847 accepted / 303 refused / zero invalid**;
+text **1,743 / 285**, figures **1,104 / 18**. The other 2,952 records retain prior
+results (`notch-reserve-current.json`). This change improves existing cuts;
+remaining refusals, wider catalogue/size coverage and difficult-text latency
+remain unfinished.
+
+The final production code passes all **1,141 existing unit tests** in 492.71
+seconds and all **177 inverse-engine tests** in 105.64 seconds
+(`notch-reserve-tests.log`). The additional Oswald clearance regression passes
+separately in 1.58 seconds (`notch-reserve-guard-test.log`). The thirteen focused
+checkerboard tests pass in 16.95 seconds. Type checking, lint and the production
+build pass, with seven existing warnings. No test timeout was increased.
+
+## Previous coverage: alternate connections for detached components
 
 Detached components originally used only the nearest active gate. That approach
 can cross a letter's stem or leave no clear path from a separate sail to the
