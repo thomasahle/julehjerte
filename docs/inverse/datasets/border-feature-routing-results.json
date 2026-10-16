@@ -1,0 +1,214 @@
+{
+  "schema": "border-feature-routing-results-1",
+  "status": "causal-experiments-complete-production-qa-running",
+  "runtimeCommit": "97f5c49f63a19fd421410494f05735de8b82c738",
+  "scope": "One controlled photographic-mask regression. Broad production and fixed-input material-resolution checks are recorded separately. No model deployed.",
+  "interventions": [
+    {
+      "experiment": "rabbit-border-intervention-v1",
+      "method": "original",
+      "targetChangedPixels": 0,
+      "originalMaskError": 0.0635625,
+      "geometryPassed": false,
+      "paperStatus": "fail",
+      "fullTemplateChecksPassed": false,
+      "originalFeaturesPassed": false,
+      "slits": {
+        "left": 3,
+        "right": 4
+      },
+      "retry": {
+        "scheduled": 0,
+        "stage": "before-recovery"
+      }
+    },
+    {
+      "experiment": "rabbit-border-intervention-v1",
+      "method": "border-region-flipped",
+      "targetChangedPixels": 61,
+      "originalMaskError": 0.0126,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "fullTemplateChecksPassed": true,
+      "originalFeaturesPassed": false,
+      "slits": {
+        "left": 3,
+        "right": 4
+      },
+      "retry": {
+        "scheduled": 1,
+        "stage": "after-recovery",
+        "trigger": "weak-region",
+        "previousError": 0.0452880859375,
+        "proposal": {
+          "error": 0.03448486328125,
+          "featuresPassed": true,
+          "preferred": true
+        }
+      }
+    },
+    {
+      "experiment": "rabbit-interior-retry-v1",
+      "method": "original",
+      "targetChangedPixels": 0,
+      "originalMaskError": 0.0635625,
+      "geometryPassed": false,
+      "paperStatus": "fail",
+      "fullTemplateChecksPassed": false,
+      "originalFeaturesPassed": false,
+      "slits": {
+        "left": 3,
+        "right": 4
+      },
+      "retry": {
+        "scheduled": 0,
+        "stage": "before-recovery",
+        "interiorOnly": false
+      }
+    },
+    {
+      "experiment": "rabbit-interior-retry-v2",
+      "method": "original",
+      "targetChangedPixels": 0,
+      "originalMaskError": 0.01393125,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "fullTemplateChecksPassed": false,
+      "originalFeaturesPassed": false,
+      "slits": {
+        "left": 3,
+        "right": 4
+      },
+      "retry": {
+        "scheduled": 1,
+        "stage": "before-recovery",
+        "trigger": "weak-region",
+        "interiorOnly": true,
+        "previousError": 0.0457000732421875,
+        "proposal": {
+          "error": 0.03472900390625,
+          "featuresPassed": false,
+          "routingFeaturesPassed": true,
+          "featureChange": {
+            "passed": true,
+            "missingBefore": 1,
+            "missingAfter": 1,
+            "regressed": []
+          },
+          "preferred": true
+        }
+      }
+    }
+  ],
+  "findings": [
+    "The original 61-pixel isolated boundary component changes 0.038125% of the 400x400 mask. Removing only it recovers the main motif, but does not count as success on the original source.",
+    "Allowing interior initialization after tracing is insufficient: tracing exhausts its available time before the proposal runs.",
+    "The guarded proposal before tracing improves the unchanged original mask from 6.35625% to 1.393125% disagreement and passes geometry and paper checks. The original border-feature warning remains, so this is not an additional fully checked reconstruction.",
+    "Only proposal scheduling uses the interior subset. Its seed must lower full-image error and pass a full-source feature-change audit. Final refinement and acceptance continue to use all original source pixels and features."
+  ],
+  "regression": {
+    "test": "scripts/inverse/border-feature-routing.test.mjs",
+    "fixture": "scripts/inverse/fixtures/rabbit-border-routing.json",
+    "assertions": [
+      "unchanged source mask and probabilities",
+      "independently rendered error below 2%",
+      "geometry and nominal paper checks pass",
+      "one accepted interior retry before tracing",
+      "full-source feature warning remains and full template acceptance is false"
+    ],
+    "focusedSuite": "New regression and both existing weak-feature-routing tests passed before full QA."
+  },
+  "artifactsSha256": {
+    "tmp/heart-learning/rabbit-border-intervention-v1/plan.json": "c363d8b03b2fb5dfb28cd50cda899acd03f2a05d57ac600b3cdec2399e018abb",
+    "tmp/heart-learning/rabbit-border-intervention-v1/report.json": "93d22d3c3e3ddd11be7a2bbfad6d434678aad69fd39d77231662d2b9f51ca16a",
+    "tmp/heart-learning/rabbit-border-intervention-v1/replay.mjs": "db7be1b59ef53fc97492dcf0c3ac907c48ca1bf5f6f72b7f288b28ea28a2cab3",
+    "tmp/heart-learning/rabbit-interior-retry-v1/plan.json": "a022d29c4cb3e022dde98c8f6c13b62c1a610646d8da9e46dee4cebba396a7ed",
+    "tmp/heart-learning/rabbit-interior-retry-v1/report.json": "101a513621202183c589f4d027b0827be852826d5ab290e79b5d0d5f6dbbaf0b",
+    "tmp/heart-learning/rabbit-interior-retry-v1/replay.mjs": "7afe006a816da0c107cb916beb56cfbf5092c9da761f2ed9a2ea30ad6c315dbc",
+    "tmp/heart-learning/rabbit-interior-retry-v2/plan.json": "a1025b1026edbbe655f7f048751eb288ace9bb24be4125534a16968cbc0f6384",
+    "tmp/heart-learning/rabbit-interior-retry-v2/report.json": "cb622427a72a0de4529c17dd5c5f667c96fa4327ae2c5d1fcfc99e3007caccf9",
+    "tmp/heart-learning/rabbit-interior-retry-v2/replay.mjs": "7afe006a816da0c107cb916beb56cfbf5092c9da761f2ed9a2ea30ad6c315dbc"
+  },
+  "visualReview": {
+    "comparison": "tmp/heart-learning/border-feature-routing-v1/rabbit-comparison.png",
+    "inspected": true,
+    "findings": [
+      "The guarded retry recovers both ears and the main rabbit body.",
+      "Small protrusions and seams remain at the surrounding grid/border; the result is not a perfect reconstruction.",
+      "The fixed target includes a thin isolated strip near the lower border that still fails feature retention."
+    ]
+  },
+  "productionQA": {
+    "status": "running",
+    "directory": "tmp/heart-learning/border-feature-routing-v1/qa",
+    "completedStages": [
+      {
+        "stage": "check",
+        "command": [
+          "npm",
+          "run",
+          "check"
+        ],
+        "exitCode": 0,
+        "seconds": 10.939251167
+      },
+      {
+        "stage": "lint",
+        "command": [
+          "npm",
+          "run",
+          "lint"
+        ],
+        "exitCode": 0,
+        "seconds": 7.080103999999999
+      },
+      {
+        "stage": "build",
+        "command": [
+          "npm",
+          "run",
+          "build"
+        ],
+        "exitCode": 0,
+        "seconds": 16.783871875000003
+      },
+      {
+        "stage": "preview",
+        "command": [
+          "python3",
+          "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/border-feature-routing-v1/qa/restart-preview.py"
+        ],
+        "exitCode": 0,
+        "seconds": 1.2508618330000019
+      },
+      {
+        "stage": "browser",
+        "command": [
+          "node",
+          "scripts/inverse/paint-browser-test.mjs"
+        ],
+        "exitCode": 0,
+        "seconds": 17.915488166000003
+      },
+      {
+        "stage": "hunodan",
+        "command": [
+          "node",
+          "scripts/inverse/hunodan-speed-benchmark.mjs"
+        ],
+        "exitCode": 0,
+        "seconds": 122.933937792
+      }
+    ],
+    "hunodan": {
+      "count": 22,
+      "passed": 22,
+      "medianSeconds": 5.252163167000001,
+      "maximumSeconds": 8.792395250000002,
+      "allErrorsExactlyEqualToPreviousProduction": true,
+      "timingScope": "Preparation + solve + validate + export. Excludes decoding, worker startup and independent external replay.",
+      "comparison": "tmp/heart-learning/sharing-original-scale-v1/production-qa/hunodan/results.json",
+      "sha256": "01a633841ecf87475a2c63475db0f04f3fd4fd4ed4d2e45956067af010d7c7da"
+    }
+  }
+}

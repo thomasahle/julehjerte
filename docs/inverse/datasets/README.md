@@ -32,6 +32,27 @@ The inventory, with material annotations updated on 2026-10-16, contains:
 
 ## Current results and limits
 
+A [controlled border-fragment experiment](border-feature-routing-results.json)
+isolates a fitter scheduling failure. On the rabbit, changing only 61 of 160,000
+mask pixels recovers the main motif; that diagnostic does not count as a fit to
+the original photo. The production fix instead keeps every target pixel and
+allows a guarded interior-feature proposal before tracing consumes its time.
+Original-mask disagreement falls from **6.36% to 1.39%**, with valid geometry and
+nominal paper checks. The unresolved border feature still fails the final
+feature check: this is a much better candidate, not a new fully checked pass.
+The focused regression passes; broad production QA is in progress.
+
+The [completed material-resolution comparison](material-resolution-results.json)
+runs 44 fresh fits on the same 22 fixed crops, with identical frozen paper
+colours. Classifying the actual crop RGB instead of interpolating the coarse
+full-photo material field improves the star, but reduces complete checked
+reconstruction from **13/22 to 12/22**. It exposes small border components and
+paint flecks, and does not solve printed decoration being mistaken for a paper
+boundary. All 32 exports were visually inspected; all 25 accepted outputs pass
+editable checks. Two already rejected candidates fail editor conversion. The
+global classification change is rejected. These results precede the guarded
+fitter retry above; a fixed-input replay will measure that change separately.
+
 A [conditional crop fallback](locator-contrast-fallback-results.json) improves
 the SAM-assisted development pipeline from **12/22 to 13/22 checked
 reconstructions**, retaining all twelve previous passes and adding rabbit.
@@ -44,7 +65,7 @@ panels were inspected. All 876 pinned sources remain unchanged. Crop search
 takes a median 0.64 s and maximum 5.14 s, excluding model inference; fitting
 and engine export take a median 7.69 s and maximum 9.63 s separately. This is
 an actual fixed-policy replay, not a union selected by template quality. It
-remains offline; higher-resolution material classification is the next test.
+remains offline; the subsequent material-resolution test is described above.
 
 A [component-wise locator study](locator-diameter-components-results.json)
 separates cap-side colour purity from the reward for a visible colour step at
@@ -75,8 +96,8 @@ component. Applying the same frozen paper colours to the actual 400-pixel crop
 RGB joins it to the large dark region touching the border. The existing weave
 then passes the unchanged feature check, but its error against this sharper
 target rises from 0.75% to 1.25%. Six diagnostic artifacts reproduce exactly.
-This is a fixed-output re-score on one inspected photo; a full-dataset fitting
-comparison is still required before adopting higher-resolution classification.
+This is a fixed-output re-score on one inspected photo; the full-dataset fitting
+comparison above subsequently rejected a global classification replacement.
 
 A [locator-objective isolation](locator-diameter-isolation-results.json) confirms
 that the strong colour-step term at the two lobe diameters can pull an accurate

@@ -1,0 +1,16 @@
+{
+  "schema": "rabbit-border-intervention-plan-1",
+  "status": "declared-before-outcomes",
+  "scope": "Diagnostic perturbation, not a new success benchmark. Compare fresh fitting of the original sharper rabbit mask with the same mask after flipping exactly the 61-pixel isolated border region already identified by its feature failure. Score both outputs against BOTH masks and retain original-feature failures.",
+  "hypothesis": "A tiny missed border component suppresses useful weak-interior-region initialization and changes routing. Isolate it from the other roughly 0.7% of classification changes.",
+  "methods": [
+    "original",
+    "border-region-flipped"
+  ],
+  "invariants": [
+    "Same frozen crop and all other source pixels.",
+    "Ten-second allowance and unchanged geometry, paper, feature and error gates.",
+    "No imported curves or manually chosen slit counts.",
+    "This diagnostic edits the target, so a fit to the edited mask cannot be counted as success on the original."
+  ]
+}

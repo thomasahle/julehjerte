@@ -1,0 +1,479 @@
+{
+  "schema": "material-resolution-results-1",
+  "status": "complete-experiment-global-replacement-rejected",
+  "deployed": false,
+  "training": false,
+  "plan": "docs/inverse/datasets/material-resolution-plan.json",
+  "scope": "44 fresh fits on the same 22 selected crops. Coarse 256-pixel full-photo material map versus applying identical frozen colours to actual 400-pixel crop RGB. No crop, colour, inference, budget or acceptance changes.",
+  "summary": {
+    "coarse": {
+      "statuses": {
+        "checked-derived-mask": 13,
+        "review-required": 3,
+        "crop-unresolved": 6
+      },
+      "exported": 16,
+      "editableConverted": 16,
+      "completeEditable": 13
+    },
+    "crop-rgb": {
+      "statuses": {
+        "checked-derived-mask": 12,
+        "review-required": 4,
+        "crop-unresolved": 6
+      },
+      "exported": 16,
+      "editableConverted": 14,
+      "completeEditable": 12
+    }
+  },
+  "gainedCheckedMaskIds": [
+    "real-3f7b76e1a98e808f-body-1",
+    "real-8c875dd0f298b5a4-body-1"
+  ],
+  "lostCheckedMaskIds": [
+    "real-45744a03afddccb1-body-1",
+    "real-a414dfffbd2362ae-body-1",
+    "real-c4a9ee6e2d0a4185-body-1"
+  ],
+  "baselineMasksReproducedExactly": true,
+  "crossScores": [
+    {
+      "id": "real-12ce3c9180f7f317-body-1",
+      "targetDifference": 0.00343125,
+      "coarseFit": {
+        "coarse": {
+          "error": 0.00373125,
+          "features": true
+        },
+        "crop-rgb": {
+          "error": 0.0048375,
+          "features": true
+        }
+      },
+      "cropRgbFit": {
+        "coarse": {
+          "error": 0.00496875,
+          "features": true
+        },
+        "crop-rgb": {
+          "error": 0.0035125,
+          "features": true
+        }
+      }
+    },
+    {
+      "id": "real-2044b1d98ed6f262-body-1",
+      "targetDifference": 0.0063875,
+      "coarseFit": {
+        "coarse": {
+          "error": 0.01205,
+          "features": true
+        },
+        "crop-rgb": {
+          "error": 0.0161625,
+          "features": true
+        }
+      },
+      "cropRgbFit": {
+        "coarse": {
+          "error": 0.01220625,
+          "features": true
+        },
+        "crop-rgb": {
+          "error": 0.01423125,
+          "features": true
+        }
+      }
+    },
+    {
+      "id": "real-340f5e5b0f447889-body-1",
+      "targetDifference": 0.00399375,
+      "coarseFit": {
+        "coarse": {
+          "error": 0.0141875,
+          "features": true
+        },
+        "crop-rgb": {
+          "error": 0.01710625,
+          "features": true
+        }
+      },
+      "cropRgbFit": {
+        "coarse": {
+          "error": 0.01614375,
+          "features": true
+        },
+        "crop-rgb": {
+          "error": 0.014575,
+          "features": true
+        }
+      }
+    },
+    {
+      "id": "real-39f3a1ba97852876-body-1",
+      "targetDifference": 0.004775,
+      "coarseFit": {
+        "coarse": {
+          "error": 0.00515625,
+          "features": true
+        },
+        "crop-rgb": {
+          "error": 0.00806875,
+          "features": true
+        }
+      },
+      "cropRgbFit": {
+        "coarse": {
+          "error": 0.0070375,
+          "features": true
+        },
+        "crop-rgb": {
+          "error": 0.006025,
+          "features": true
+        }
+      }
+    },
+    {
+      "id": "real-3f7b76e1a98e808f-body-1",
+      "targetDifference": 0.008727422876483506,
+      "coarseFit": {
+        "coarse": {
+          "error": 0.007488691887563266,
+          "features": false
+        },
+        "crop-rgb": {
+          "error": 0.012487409363054536,
+          "features": true
+        }
+      },
+      "cropRgbFit": {
+        "coarse": {
+          "error": 0.011355034065102196,
+          "features": false
+        },
+        "crop-rgb": {
+          "error": 0.00710706264350198,
+          "features": true
+        }
+      }
+    },
+    {
+      "id": "real-45744a03afddccb1-body-1",
+      "targetDifference": 0.00699375,
+      "coarseFit": {
+        "coarse": {
+          "error": 0.005675,
+          "features": true
+        },
+        "crop-rgb": {
+          "error": 0.01003125,
+          "features": false
+        }
+      },
+      "cropRgbFit": {
+        "coarse": {
+          "error": 0.06383125,
+          "features": true
+        },
+        "crop-rgb": {
+          "error": 0.0635625,
+          "features": false
+        }
+      }
+    },
+    {
+      "id": "real-5330aa8b62176216-body-1",
+      "targetDifference": 0.00315,
+      "coarseFit": {
+        "coarse": {
+          "error": 0.046875,
+          "features": false
+        },
+        "crop-rgb": {
+          "error": 0.0479125,
+          "features": false
+        }
+      },
+      "cropRgbFit": {
+        "coarse": {
+          "error": 0.09929375,
+          "features": false
+        },
+        "crop-rgb": {
+          "error": 0.09934375,
+          "features": false
+        }
+      }
+    },
+    {
+      "id": "real-710703159f609111-body-1",
+      "targetDifference": 0.006125,
+      "coarseFit": {
+        "coarse": {
+          "error": 0.0026375,
+          "features": true
+        },
+        "crop-rgb": {
+          "error": 0.0074375,
+          "features": true
+        }
+      },
+      "cropRgbFit": {
+        "coarse": {
+          "error": 0.00771875,
+          "features": true
+        },
+        "crop-rgb": {
+          "error": 0.00456875,
+          "features": true
+        }
+      }
+    },
+    {
+      "id": "real-80794af7903e5d29-body-1",
+      "targetDifference": 0.00721875,
+      "coarseFit": {
+        "coarse": {
+          "error": 0.0108875,
+          "features": true
+        },
+        "crop-rgb": {
+          "error": 0.01233125,
+          "features": true
+        }
+      },
+      "cropRgbFit": {
+        "coarse": {
+          "error": 0.014875,
+          "features": true
+        },
+        "crop-rgb": {
+          "error": 0.01066875,
+          "features": true
+        }
+      }
+    },
+    {
+      "id": "real-8c875dd0f298b5a4-body-1",
+      "targetDifference": 0.00398125,
+      "coarseFit": {
+        "coarse": {
+          "error": 0.0194,
+          "features": false
+        },
+        "crop-rgb": {
+          "error": 0.02070625,
+          "features": true
+        }
+      },
+      "cropRgbFit": {
+        "coarse": {
+          "error": 0.0180625,
+          "features": false
+        },
+        "crop-rgb": {
+          "error": 0.01696875,
+          "features": true
+        }
+      }
+    },
+    {
+      "id": "real-a414dfffbd2362ae-body-1",
+      "targetDifference": 0.01029375,
+      "coarseFit": {
+        "coarse": {
+          "error": 0.009675,
+          "features": true
+        },
+        "crop-rgb": {
+          "error": 0.01601875,
+          "features": false
+        }
+      },
+      "cropRgbFit": {
+        "coarse": {
+          "error": 0.01368125,
+          "features": true
+        },
+        "crop-rgb": {
+          "error": 0.013375,
+          "features": false
+        }
+      }
+    },
+    {
+      "id": "real-abf590088db891f9-body-1",
+      "targetDifference": 0.00230625,
+      "coarseFit": {
+        "coarse": {
+          "error": 0.0057125,
+          "features": true
+        },
+        "crop-rgb": {
+          "error": 0.00691875,
+          "features": true
+        }
+      },
+      "cropRgbFit": {
+        "coarse": {
+          "error": 0.00785625,
+          "features": true
+        },
+        "crop-rgb": {
+          "error": 0.0075625,
+          "features": true
+        }
+      }
+    },
+    {
+      "id": "real-b87b0b19f12724f3-body-1",
+      "targetDifference": 0.01238125,
+      "coarseFit": {
+        "coarse": {
+          "error": 0.00655625,
+          "features": true
+        },
+        "crop-rgb": {
+          "error": 0.0163375,
+          "features": true
+        }
+      },
+      "cropRgbFit": {
+        "coarse": {
+          "error": 0.0162875,
+          "features": true
+        },
+        "crop-rgb": {
+          "error": 0.00715625,
+          "features": true
+        }
+      }
+    },
+    {
+      "id": "real-c0cc1ce97cf5e6a6-body-1",
+      "targetDifference": 0.02476875,
+      "coarseFit": {
+        "coarse": {
+          "error": 0.01606875,
+          "features": true
+        },
+        "crop-rgb": {
+          "error": 0.0368375,
+          "features": false
+        }
+      },
+      "cropRgbFit": {
+        "coarse": {
+          "error": 0.02309375,
+          "features": true
+        },
+        "crop-rgb": {
+          "error": 0.019175,
+          "features": true
+        }
+      }
+    },
+    {
+      "id": "real-c4a9ee6e2d0a4185-body-1",
+      "targetDifference": 0.01308125,
+      "coarseFit": {
+        "coarse": {
+          "error": 0.01065625,
+          "features": true
+        },
+        "crop-rgb": {
+          "error": 0.0194,
+          "features": false
+        }
+      },
+      "cropRgbFit": {
+        "coarse": {
+          "error": 0.016125,
+          "features": true
+        },
+        "crop-rgb": {
+          "error": 0.01669375,
+          "features": false
+        }
+      }
+    },
+    {
+      "id": "real-e936e08ac62db19b-body-1",
+      "targetDifference": 0.00734375,
+      "coarseFit": {
+        "coarse": {
+          "error": 0.00563125,
+          "features": true
+        },
+        "crop-rgb": {
+          "error": 0.009775,
+          "features": true
+        }
+      },
+      "cropRgbFit": {
+        "coarse": {
+          "error": 0.00968125,
+          "features": true
+        },
+        "crop-rgb": {
+          "error": 0.0052875,
+          "features": true
+        }
+      }
+    }
+  ],
+  "verification": {
+    "status": "complete-audit-with-rejected-conversions",
+    "sourceFilesVerified": 875,
+    "allExpectedExportsAudited": 32,
+    "allAcceptedOutputsPassEditable": true,
+    "controllerStatePreserved": {
+      "status": "failed",
+      "stage": "editable",
+      "exitCode": 1
+    },
+    "rejectedConversions": [
+      {
+        "id": "real-45744a03afddccb1-body-1-crop-rgb",
+        "error": "The converted cuts fail the editor\u2019s crossing or minimum-spacing checks, including without simplification.",
+        "engineChecksPassed": false
+      },
+      {
+        "id": "real-5330aa8b62176216-body-1-crop-rgb",
+        "error": "The converted cuts fail the editor\u2019s crossing or minimum-spacing checks, including without simplification.",
+        "engineChecksPassed": false
+      }
+    ]
+  },
+  "visualReview": {
+    "allEightPanelsInspected": true,
+    "outputs": 32,
+    "notes": [
+      "Star corners/rays are sharper and its fresh fit passes at 0.7107% on actual crop RGB classification.",
+      "Sharper rabbit fit has visibly wrong routing and 6.36% disagreement; the coarse fit still matches the sharper target at 1.0031%, although it loses a tiny border feature.",
+      "Painted checker exposes unpainted flecks; candle exposes narrow border strips. Their substantial shapes remain recognizable but final feature checks fail.",
+      "Printed-heart checker gains a derived-mask pass but still misidentifies printed decoration as paper. This is not recovered paper ground truth.",
+      "Several checker and framed motifs retain small border/seam distortions in both arms."
+    ]
+  },
+  "findings": [
+    "Changing classification resolution reduces complete checked recovery from 13 to 12, so do not globally replace the coarse targets.",
+    "The masks differ by only 0.699375% on rabbit, yet the selected slit counts change from 3/3 to 3/4 and its main shape deteriorates. Cross-scoring establishes a much better original-target fit already exists; this is not simply an impossible sharper target.",
+    "On rabbit, the finer mask adds a 61-pixel isolated border region. The early feature initializer skips that border region and no weak-interior-region proposal runs. A controlled perturbation is needed to isolate the scheduling effect.",
+    "Both targets retain the same source observations, including the star pixels beyond the photograph. No padding contributes to scores.",
+    "All 25 accepted outputs pass editable validation. Rabbit and bicycle crop-RGB candidates fail editor geometry conversion and were already rejected by engine checks; the controller remains failed at that audit."
+  ],
+  "nextStep": "Isolate the rabbit border fragment and weak-region scheduling without weakening final feature gates. Evaluate image noise and printed-paper identity separately from path fitting.",
+  "artifactsSha256": {
+    "tmp/heart-learning/material-resolution-v1/plan.json": "9aae5327a3852e84e4ba76ff4cb7a5b359733d174c5ceaaf32bbcbbdfc8cb0e6",
+    "tmp/heart-learning/material-resolution-v1/source.json": "ce2a17fb09867a286fb30ce25a61723480d7b2c3af717c53ade07c9b6da9a400",
+    "tmp/heart-learning/material-resolution-v1/state.json": "78aee66b39122a45136f06e391473cb1a8ddfdb634892a164d91385b12cbfc85",
+    "tmp/heart-learning/material-resolution-v1/checks.json": "52f96b3309b1efac8696083442d382be8e2bda99f681197203ad09479634a3d4",
+    "tmp/heart-learning/material-resolution-v1/pipeline/report.json": "621c4af50e468c92ddb08f772336f9439ec7fede409d25e0d986d5753951b809",
+    "tmp/heart-learning/material-resolution-v1/editable/results.json": "f468ca8056308c0fa02274713b3abb38aa800597c0cc8b151bf20119a11e80d6",
+    "tmp/heart-learning/material-resolution-v1/source-paper-scores.json": "94172b769b9fd7a289012b3c1089aef8b93ca610eae5b4adb3bceb450e411506",
+    "tmp/heart-learning/material-resolution-v1/reconstruction-figures.json": "e6948b2dfb78f72db42b60f85d66ca3debc96dc0ab9cf5da28cefd1af0cf6ca8",
+    "tmp/heart-learning/material-resolution-v1/post-audit-verification.json": "4da5c082dc60c46cc450b876aca1836073485749b17a53d51936ca34d518f51e"
+  }
+}
