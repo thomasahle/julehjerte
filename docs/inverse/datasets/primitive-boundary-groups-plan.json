@@ -1,0 +1,22 @@
+{
+  "schema": "primitive-boundary-groups-plan-1",
+  "status": "declared-before-implementation",
+  "input": "tmp/heart-learning/flower-occlusion-v1/report.json",
+  "inputSha256": "f91adb64448987e67789c1199eee311c229a4ee212780ad03b61821e42e26f93",
+  "hypothesis": "The global boundary score vetoes safe independent straightening edits alongside harmful ones, leaving supported near-straight spans unnecessarily curved.",
+  "proposal": "Keep the existing pixel-based selection first. Only if its entire proposal fails the existing boundary objective, retry the same grouped edits sequentially, requiring both non-increasing pixel error and non-increasing boundary-plus-primitive cost for each accepted group. Preserve shared/symmetry grouping and the common deadline.",
+  "invariants": [
+    "No new fitting trajectory, slit count search, mask, crop, or uncertainty change.",
+    "No reduction of source-feature, symmetry, geometry, material or objective requirements.",
+    "Do not infer that small-span cleanup recovers hidden centre topology.",
+    "Record failures and additional elapsed time; baseline and proposed cleanup must start from identical saved geometry."
+  ],
+  "evaluation": [
+    "Eight frozen ribbon-diagnostic exports, including exact latent-mask controls.",
+    "Meaningful analytic regression for an image-neutral harmful bend plus an independently useful one, including weighted masks and input immutability.",
+    "Existing primitive/shared/symmetry tests.",
+    "Fixed saved corpus of 22 Hunodan, 31 photo benchmark exports and 13 difficult fixed masks before considering runtime adoption.",
+    "Independent export renderer and editable conversion for changed candidates; visual review.",
+    "Full check/lint/test/build and browser QA if adopting a production change."
+  ]
+}

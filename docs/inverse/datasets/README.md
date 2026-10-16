@@ -33,6 +33,17 @@ The inventory, with material annotations updated on 2026-10-16, contains:
 
 ## Current results and limits
 
+A [fixed-mask ribbon diagnosis](flower-occlusion-results.json) separates input
+agreement from recovering the underlying weave. The synthetic ribbon-corrupted
+grid fits within **0.37%** but differs from its known clean design by **5.25%**.
+Supplying the correct ribbon uncertainty recovers the clean grid exactly in this
+control; hiding an unrelated border does not. The real flower-cap photograph
+still has distorted central cuts after cap and ribbon observations are excluded,
+despite **0.25%** observed-region error. All eight diagnostic outputs convert to
+editable SVG without editor issues; no real-photograph pass is added. These are
+manual uncertainty interventions, not automatic segmentation or deployed changes.
+
+
 An [existing-finalist comparison](finalist-retention-fit-results.json) improves
 the fixed brown checker from **9.59% to 2.48%** mask disagreement and the bicycle
 from **4.69% to 3.29%**, with geometry and nominal-paper checks passing. It prefers
