@@ -26,5 +26,11 @@
     "The 8px and 16px margins also discard visible paper; this is uncertainty sensitivity, not automatic occlusion detection.",
     "Cropping still includes decorative caps; their coarse exclusion also removes valid border observations."
   ],
-  "execution": "After the currently running primitive-cleanup QA finishes; no concurrent fitting jobs."
+  "execution": "After the currently running primitive-cleanup QA finishes; no concurrent fitting jobs.",
+  "replayScript": {
+    "path": "tmp/heart-learning/ribbon-coverage-v1/replay.mjs",
+    "sha256": "cf1c0ee6831daca3bc1a31f4b0f025894dfe122f45957530422d16a9776fda17",
+    "syntaxCheck": "node --check passed; fitting has not run",
+    "guard": "Refuses to start until the existing QA controller completes and all its source pins still match."
+  }
 }

@@ -99,7 +99,6 @@
   "limitations": [
     "No new complete photographic reconstruction pass is claimed.",
     "This only removes near-straight cubic handle freedom; it does not repair the flower photo's hidden centre or infer paper identity behind ribbons.",
-    "The eight-row ribbon probe predates the final cached-score refactor; the full-QA controller reruns it on the exact committed source.",
     "Fresh Hunodan/photo benchmarks, full repository checks, and browser workflows remain pending."
   ],
   "artifactsSha256": {
@@ -126,5 +125,174 @@
     "check/lint/build",
     "three browser workflows",
     "full application and inverse tests"
-  ]
+  ],
+  "ribbonReplay": {
+    "status": "complete-on-committed-runtime",
+    "rows": [
+      {
+        "id": "real-202b8421f50252f2",
+        "arm": "unchanged",
+        "curvedBefore": 96,
+        "curvedAfter": 96,
+        "sourceErrorBefore": 0.0350875,
+        "sourceErrorAfter": 0.0350875,
+        "independentErrorBefore": 0.03535625,
+        "independentErrorAfter": 0.03535625,
+        "knownCleanErrorBefore": null,
+        "knownCleanErrorAfter": null,
+        "geometry": true,
+        "paper": "pass",
+        "featureChange": {
+          "passed": true,
+          "missingBefore": 0,
+          "missingAfter": 0,
+          "regressed": []
+        }
+      },
+      {
+        "id": "real-202b8421f50252f2",
+        "arm": "caps-unobserved",
+        "curvedBefore": 40,
+        "curvedAfter": 40,
+        "sourceErrorBefore": 0.005652573529411765,
+        "sourceErrorAfter": 0.005652573529411765,
+        "independentErrorBefore": 0.005689338235294118,
+        "independentErrorAfter": 0.005689338235294118,
+        "knownCleanErrorBefore": null,
+        "knownCleanErrorAfter": null,
+        "geometry": true,
+        "paper": "pass",
+        "featureChange": {
+          "passed": true,
+          "missingBefore": 0,
+          "missingAfter": 0,
+          "regressed": []
+        }
+      },
+      {
+        "id": "real-202b8421f50252f2",
+        "arm": "ribbon-unobserved",
+        "curvedBefore": 93,
+        "curvedAfter": 93,
+        "sourceErrorBefore": 0.03612081969022479,
+        "sourceErrorAfter": 0.03612081969022479,
+        "independentErrorBefore": 0.03607667120414996,
+        "independentErrorAfter": 0.03607667120414996,
+        "knownCleanErrorBefore": null,
+        "knownCleanErrorAfter": null,
+        "geometry": true,
+        "paper": "pass",
+        "featureChange": {
+          "passed": true,
+          "missingBefore": 0,
+          "missingAfter": 0,
+          "regressed": []
+        }
+      },
+      {
+        "id": "real-202b8421f50252f2",
+        "arm": "caps-and-ribbon-unobserved",
+        "curvedBefore": 52,
+        "curvedAfter": 39,
+        "sourceErrorBefore": 0.002427938553593004,
+        "sourceErrorAfter": 0.0024164317358034634,
+        "independentErrorBefore": 0.0025084862781197858,
+        "independentErrorAfter": 0.0025314999136988666,
+        "knownCleanErrorBefore": null,
+        "knownCleanErrorAfter": null,
+        "geometry": true,
+        "paper": "pass",
+        "featureChange": {
+          "passed": true,
+          "missingBefore": 0,
+          "missingAfter": 0,
+          "regressed": []
+        }
+      },
+      {
+        "id": "known-two-cut-ribbon",
+        "arm": "unchanged",
+        "curvedBefore": 4,
+        "curvedAfter": 2,
+        "sourceErrorBefore": 0.00386875,
+        "sourceErrorAfter": 0.00386875,
+        "independentErrorBefore": 0.003675,
+        "independentErrorAfter": 0.003675,
+        "knownCleanErrorBefore": 0.052525,
+        "knownCleanErrorAfter": 0.0525,
+        "geometry": true,
+        "paper": "pass",
+        "featureChange": {
+          "passed": true,
+          "missingBefore": 0,
+          "missingAfter": 0,
+          "regressed": []
+        }
+      },
+      {
+        "id": "known-two-cut-ribbon",
+        "arm": "caps-unobserved",
+        "curvedBefore": 23,
+        "curvedAfter": 23,
+        "sourceErrorBefore": 0.0017922794117647058,
+        "sourceErrorAfter": 0.0017922794117647058,
+        "independentErrorBefore": 0.001479779411764706,
+        "independentErrorAfter": 0.001479779411764706,
+        "knownCleanErrorBefore": 0.0626625,
+        "knownCleanErrorAfter": 0.0626625,
+        "geometry": true,
+        "paper": "pass",
+        "featureChange": {
+          "passed": true,
+          "missingBefore": 0,
+          "missingAfter": 0,
+          "regressed": []
+        }
+      },
+      {
+        "id": "known-two-cut-ribbon",
+        "arm": "ribbon-unobserved",
+        "curvedBefore": 0,
+        "curvedAfter": 0,
+        "sourceErrorBefore": 0,
+        "sourceErrorAfter": 0,
+        "independentErrorBefore": 0,
+        "independentErrorAfter": 0,
+        "knownCleanErrorBefore": 0,
+        "knownCleanErrorAfter": 0,
+        "geometry": true,
+        "paper": "pass",
+        "featureChange": {
+          "passed": true,
+          "missingBefore": 0,
+          "missingAfter": 0,
+          "regressed": []
+        }
+      },
+      {
+        "id": "known-two-cut-ribbon",
+        "arm": "caps-and-ribbon-unobserved",
+        "curvedBefore": 0,
+        "curvedAfter": 0,
+        "sourceErrorBefore": 0,
+        "sourceErrorAfter": 0,
+        "independentErrorBefore": 0,
+        "independentErrorAfter": 0,
+        "knownCleanErrorBefore": 3.125e-05,
+        "knownCleanErrorAfter": 3.125e-05,
+        "geometry": true,
+        "paper": "pass",
+        "featureChange": {
+          "passed": true,
+          "missingBefore": 0,
+          "missingAfter": 0,
+          "regressed": []
+        }
+      }
+    ],
+    "changedOutputsReviewed": 2,
+    "finding": "The weighted real case has 13 fewer curved spans, but the central hooks remain. Independent observed error increases by two weighted pixels despite a one-pixel source-sampler improvement; this is a sampling difference, not a new reconstruction success. The exact correctly masked synthetic controls retain zero clean-mask error.",
+    "reportSha256": "dd582d077d2628a481e14cb3cc7cfe75581f17c80518785b3d78a530c4ea2a7c",
+    "reviewImageSha256": "7357ad4bd3ba01cd73c4f9ac7dcdad63bd8456e0ccb9478a8d58b08a9a04cd29"
+  }
 }
