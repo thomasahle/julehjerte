@@ -2,13 +2,52 @@
   "schema": "refinement-repair-clock-plan-1",
   "status": "prepared-not-run-awaiting-serial-release-qa",
   "reason": "Two browser runs reach the same improved half-star checkpoint at step 200, fail only short self-clearance, and record no repair. A preceding run repaired that checkpoint and returned a lower-error star. The existing 50 ms repair gate is a candidate explanation; saved reports have no checkpoint timestamps.",
-  "method": "Three fresh control/instrumented pairs, alternating order, on the captured half-star native mask with the actual settings and candidate observer. Load-hook instrumentation records per-refinement time allowance, checkpoint time remaining, proposal validity, repair eligibility and selected output. It does not change deadlines, forces, geometry rules or masks.",
+  "method": "Three fresh control/instrumented pairs per case (18 fits), alternating order, on captured native masks with actual settings and candidate observers. Load-hook instrumentation records per-refinement time allowance, checkpoint time remaining, proposal validity, repair eligibility and selected output. It does not change deadlines, forces, geometry rules or masks.",
   "instrumentationLimit": "Taking timestamps and storing small records adds overhead. This is a diagnostic of which branch was taken, not a latency benchmark or a claim that instrumentation reproduces an uninstrumented trajectory.",
   "acceptance": "Establish whether the missing repair was time-gated before designing a change. Any later change must preserve legality, features and total search budget, and demonstrate improved final source-mask error rather than only a better unvalidated checkpoint.",
   "root": "tmp/heart-learning/refinement-repair-clock-v1",
   "dependency": "tmp/heart-learning/gradient-bins-runtime-v1/qa/state.json must be complete; the runner asserts this before fitting.",
   "artifactsSha256": {
-    "tmp/heart-learning/refinement-repair-clock-v1/replay.mjs": "2cdc1349d98b6771d20e4775412b4de457447a922f1d8e86ca5306a21b7bb0a2",
-    "tmp/heart-learning/refinement-repair-clock-v1/run.py": "fd8c6a79b73630642ba207f1840db98ef02225b60b17814def5e9c495168885a"
+    "tmp/heart-learning/refinement-repair-clock-v1/replay.mjs": "f3512b971b1bac822f8d10272d05a65b6ff482084201566974da141b7a6eb04a",
+    "tmp/heart-learning/refinement-repair-clock-v1/run.py": "0aab9f1403b50e1ca2def8cf527eba14ad0711786995d1118d399e8698fad6c0",
+    "tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-gift/baseline/engine-report.json": "0a694974e50b103cbbb1b8ba3bb8cca4a7974548296cff8f653f9fcf508a8111",
+    "tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-gift/candidate/engine-report.json": "91e6bf0edbaf62a5df1641238331551e7649764c45d7d7c738129b5b2336223d",
+    "tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-warped-checker/baseline/engine-report.json": "bb4fac91bb00113ef9f3d809d6841734a8aa594bf3d72aba098ccc8ab6c57fc2",
+    "tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-warped-checker/candidate/engine-report.json": "d97d588077de26a31effb89a84791067256b6522ab8c2c594ccddeaba37f0a9b"
+  },
+  "cases": [
+    "hard-bibel-star-outline-half",
+    "photo-gift",
+    "photo-warped-checker"
+  ],
+  "additionalFindings": {
+    "photo-gift": {
+      "baselineIndependentError": 0.01659375,
+      "candidateIndependentError": 0.01709375,
+      "firstRefinementSeconds": [
+        3.199414333,
+        2.8117307080000007
+      ],
+      "alternativeRefinementSeconds": [
+        1.4232626660000005,
+        1.8742837079999999
+      ],
+      "lastPolishStep": [
+        124,
+        89
+      ],
+      "evidence": "Both arms select 4+4 cuts and enter polish with identical checkpoint errors at steps 0, 40 and 80. The losing 5+5 alternative receives more time in the candidate arm, and the selected 4+4 trajectory stops earlier during polishing. This identifies budget allocation as a concrete source of the final discrepancy; repeated instrumentation will check the deadlines.",
+      "visualReview": "Both independent renders inspected: motif is retained; thin seams and uneven frame edges remain. The 80 additional wrong pixels are not treated as unchanged quality."
+    },
+    "photo-warped-checker": {
+      "baselineIndependentError": 0.0143125,
+      "candidateIndependentError": 0.0145625,
+      "lastPolishStep": [
+        84,
+        84
+      ],
+      "evidence": "Both arms select 9+9 cuts. The candidate enters polishing with a worse checkpoint, so the difference occurs before the final polishing cutoff. Per-refinement timing is needed to identify that earlier divergence.",
+      "visualReview": "Both independent renders inspected: motif structure is retained with small boundary and central-join differences; 40 additional wrong pixels are retained in the comparison."
+    }
   }
 }
