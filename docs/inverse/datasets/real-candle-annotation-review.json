@@ -1,5 +1,5 @@
 {
-  "status": "reviewed_candidate; not_admitted_or_trained",
+  "status": "raster_review_complete; not_admitted_or_trained",
   "source": {
     "assetId": "real-c4a9ee6e2d0a4185",
     "file": "tmp/heart-training-real/assets/c4a9ee6e2d0a418519f0ea2d1ce4a63be83c3883b2bc75bc54e0e69375435edf.jpg",
@@ -32,7 +32,21 @@
     "positiveFourSectorObservations": 6,
     "ordinaryEdgeControls": 3,
     "separateNarrowNeckObservations": 1,
-    "exactJunctionOrCutTruth": false
+    "exactJunctionOrCutTruth": false,
+    "compiledRasters": {
+      "resolutions": [
+        256,
+        768
+      ],
+      "nativePhotoRechecked": true,
+      "findings": [
+        "Both paper identities match the muted teal and pale grey-green regions visible in the source.",
+        "Handle/cleft overlap, narrow flame-tip connection, and flame/body neck remain unknown rather than asserted as exact joins.",
+        "The body outline follows the paper, with the right-hand cast shadow outside the labelled paper core.",
+        "At 256 pixels the flame and narrow framed contacts retain only small known interiors; the larger unknown band is deliberate, not exact junction supervision."
+      ],
+      "admission": "Ready for the planned combined printed-paper/candle admission after the running solver source freeze. Final parent-path metadata must still be compiled/verified before the corpus counts change."
+    }
   },
   "verification": {
     "sourceFileHash": true,
@@ -40,7 +54,7 @@
     "polygonGeometry": true,
     "materialParentHash": true,
     "allocation": "unassigned",
-    "rasterCompilation": "pending until heavy solver work completes",
+    "rasterCompilation": "Complete at 256 and 768 pixels; both manifests verified by the compiler replay before the coverage QA started.",
     "modelTraining": "none"
   },
   "integration": "Keep source and related candle motif families grouped in any later evaluation. Do not change existing study denominators. Add to the existing pending printed-paper annotation only after raster review.",
@@ -89,5 +103,81 @@
     "Compile and independently verify body/material labels at 256 and 768 pixels after the current serial solver jobs.",
     "Inspect compiled overlays before moving the reviewed coordinates into the dataset.",
     "Integrate together with the previously reviewed printed-paper candidate and pending non-paper-source correction; preserve source groups and prior study inputs."
+  ],
+  "compiledArtifacts": [
+    {
+      "resolution": 256,
+      "manifest": "tmp/heart-learning/contact-annotation-admission-v1/labels-256/manifest.json",
+      "manifestSha256": "8acb7cf8a5efc8cbd558de53a9861d63f7951c83d52ad49281b66cb6813dc8a0",
+      "bodyPixelCounts": {
+        "0": 28565,
+        "1": 18544,
+        "255": 18427
+      },
+      "materialPixelCounts": {
+        "0": 5653,
+        "1": 7606,
+        "255": 52277
+      },
+      "assets": [
+        {
+          "kind": "rgb",
+          "path": "tmp/heart-learning/contact-annotation-admission-v1/labels-256/real-c4a9ee6e2d0a4185-body-1-rgb.png",
+          "sha256": "1f7e88f1f3d0ebb4b1758accd76a6e046c35fe4a4d5f87e7439c91f66dd86631"
+        },
+        {
+          "kind": "body",
+          "path": "tmp/heart-learning/contact-annotation-admission-v1/labels-256/real-c4a9ee6e2d0a4185-body-1-body.png",
+          "sha256": "7127e0bf47c35852c4cd11a59abbcbd7decfc51452fafb29973fd7016bc4af1a"
+        },
+        {
+          "kind": "materials",
+          "path": "tmp/heart-learning/contact-annotation-admission-v1/labels-256/real-c4a9ee6e2d0a4185-body-1-materials.png",
+          "sha256": "18d3206c7ce4f4902ee1c50fe2ab22bf45fcff944a1d587d81fb4b13386caa41"
+        },
+        {
+          "kind": "overlay",
+          "path": "tmp/heart-learning/contact-annotation-admission-v1/labels-256/real-c4a9ee6e2d0a4185-body-1-overlay.png",
+          "sha256": "673ddc303c9fa6fcd2e694f42900b26776ee6c0b00c979998b5bc49f7779198a"
+        }
+      ]
+    },
+    {
+      "resolution": 768,
+      "manifest": "tmp/heart-learning/contact-annotation-admission-v1/labels-768/manifest.json",
+      "manifestSha256": "42e33999f623f0e48f70dfbf540226f3b1d5f2423f42165c409536b34f88294b",
+      "bodyPixelCounts": {
+        "0": 257114,
+        "1": 166955,
+        "255": 165755
+      },
+      "materialPixelCounts": {
+        "0": 50925,
+        "1": 68258,
+        "255": 470641
+      },
+      "assets": [
+        {
+          "kind": "rgb",
+          "path": "tmp/heart-learning/contact-annotation-admission-v1/labels-768/real-c4a9ee6e2d0a4185-body-1-rgb.png",
+          "sha256": "9fd507d0b4ade992741d6d817c3e63aab99594119de076c8397d3dc306a9e2cf"
+        },
+        {
+          "kind": "body",
+          "path": "tmp/heart-learning/contact-annotation-admission-v1/labels-768/real-c4a9ee6e2d0a4185-body-1-body.png",
+          "sha256": "355a36cfa79ed5e69c2b25a7d1ed5e4fc39a42748d54a33b0e2caa6bd5d75c59"
+        },
+        {
+          "kind": "materials",
+          "path": "tmp/heart-learning/contact-annotation-admission-v1/labels-768/real-c4a9ee6e2d0a4185-body-1-materials.png",
+          "sha256": "cc9472fad89fcda19de6eecd5abc0d35ad11c547e4c7db87b97873079360444f"
+        },
+        {
+          "kind": "overlay",
+          "path": "tmp/heart-learning/contact-annotation-admission-v1/labels-768/real-c4a9ee6e2d0a4185-body-1-overlay.png",
+          "sha256": "e3eef1d9b3b439754135fcd3dec94468c05bbbaca3521193dd55a9ede5465340"
+        }
+      ]
+    }
   ]
 }
