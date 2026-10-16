@@ -464,6 +464,8 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		if (sunburstComponents) return sunburstComponents;
 		const fittedComponents = retryFittedComponentEnvelope(request, curveFitter);
 		if (fittedComponents) return fittedComponents;
+		const fittedGates = retryFittedGateClearance(request, curveFitter);
+		if (fittedGates) return fittedGates;
 		const chainContacts = retryChainContacts(request, curveFitter);
 		if (chainContacts) return chainContacts;
 		const closePanels: Construction[] = [];
@@ -618,6 +620,31 @@ function retryFittedComponentEnvelope(request: GeneratorRequest, curveFitter: Re
 		} catch (error) {
 			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 		}
+	}
+	return best;
+}
+
+/** A gate directly on the main outline can force a connection to a detached
+ * part to double back to the same point. Start just outside the silhouette so
+ * its invisible approach can reach a different outline point. Keep five strips
+ * on each sheet, and retain all earlier successful layouts. */
+function retryFittedGateClearance(request: GeneratorRequest, curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult | undefined {
+	if (request.mode !== 'figure' || request.style !== 'fitted') return;
+	const rings = normalizeContours(request.contours ?? []), count = forest(rings).length;
+	if (count < 2 || count > 8) return;
+	let best: GeneratorResult | undefined;
+	for (const padding of [2, 3]) try {
+		const construction = generateFittedFigure(rings, request.frameSize, request.scale,
+			fourPortMotif, undefined, padding);
+		const result = improveSharedConnections(finishConstruction(request, construction, 'silhouette', undefined, curveFitter));
+		const margin = intersectionMarginPx(inferOverlapRect(result.design.fingers, result.design.gridSize),
+			gridClearanceScale(result.design.gridSize.x, result.design.gridSize.y));
+		if (findFingersWithIssues(result.design.fingers, margin * 1.1).size) continue;
+		const tips = cutTipCounts(result.design);
+		if (!best || fewerCutTips(tips, cutTipCounts(best.design))) best = result;
+		if (!tips[1]) return best;
+	} catch (error) {
+		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 	}
 	return best;
 }

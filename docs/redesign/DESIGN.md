@@ -487,6 +487,14 @@ connection length. Keep the motif fixed, validate the whole expanded envelope,
 require 10% extra clearance after fitting, and stop at zero narrow tips. Earlier
 successful layouts retain their original gates and curves. The fitted paw uses
 seven strips per sheet and must pass the independent material-connectivity audit.
+If the component layouts also fail, a whole-motif fitted construction may move
+its four silhouette support gates outward by two or three five-strip clearance
+units. A gate lying directly on the main outline can otherwise force an island's
+shared connection to return to the same point. The offset makes room to attach
+elsewhere without moving the artwork or adding a visible frame outline. Keep
+five strips per sheet, validate the expanded fitted region and the complete cut
+paths, require 10% clearance reserve, and prefer fewer sharp tips. Stop at zero
+narrow tips; earlier successful layouts and their iteration cost stay unchanged.
 Neighbouring cells share a gate between their nearest boundaries. If a third
 island occupies that gate, move it into the surrounding space. Shared A/B cuts
 can then detour around other cuts using a bounded geometric visibility graph:

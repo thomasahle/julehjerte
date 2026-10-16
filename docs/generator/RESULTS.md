@@ -1,5 +1,52 @@
 # Generator robustness results
 
+## Fitted figures: room for shared connections to separate parts
+
+The Phosphor **sailboat** now works in the close-fitting frame, with **5×5 strips**
+and **zero detected tips below 45 degrees**. Both original sailboat components
+are unchanged. The shared connections start slightly outside the silhouette,
+so a detached part can join a different point on the main outline instead of
+forcing a return to the same support point. No visible enclosing shape is added.
+
+This is a final fitted-only fallback for two to eight components. It tries two
+or three local clearance units of outward offset, retaining all earlier valid
+layouts. The complete conversion, topology and artwork checks still apply,
+followed by a 10% spacing reserve and sharp-tip comparison. The first tip-free
+result ends the retry; there are only two added construction attempts.
+
+A paired audit of **76 cases** covers all **51 fitted motifs**, all **22 sailboat
+frames**, and the other outstanding figure failures. It yields **69 accepted /
+seven refused / zero invalid**. The sailboat is the only changed result; the
+other **75 complete outputs or refusal codes/messages are identical**. Every
+accepted result passed both JSON and SVG handoff checks. The final sailboat
+exactly matches the audited prototype, which passed the independent material
+check at resolution **1,400** with zero certain or possible detached core
+islands. The full heart and both cutting sheets were visually inspected.
+These digital checks do not establish physical weaving ease or tear strength.
+
+The merged corpus is now **2,876 accepted / 274 refused / zero invalid**:
+text remains **1,761 / 267**, and figures are **1,115 / 7**. The expected-ID
+fixture exactly matches the 2,876 accepted cases. This refreshes 76 records
+and retains 3,074 from `contour-approach-current.json`; it is not a fresh full
+matrix run, nor a complete audit of the larger motif catalogue or nondefault
+sizes. The broader goal of supporting all combinations remains incomplete.
+
+Type checking, lint, build and all seven focused fitted tests pass, with the
+same seven existing Svelte warnings. The full unit run reports **1,196 passes
+and one existing Oswald juleman timing failure**: 5.530 seconds against its
+unchanged five-second limit. The same test passes on the final source when run
+alone in **3.76 seconds**. All 1,197 unit cases pass across those runs; this is
+not a single fully green full-suite run. No existing test timeout was increased.
+The separate inverse suite passes all **177 tests** in 93.22 seconds.
+Evidence in ignored `tmp/generator/`: `padded-support-{audit,current,material,metrics}.json`,
+`padded-support-production-39.json`, and `padded-support-gallery-0.png`.
+
+The same research pass tested mean-outline attachment directions on the eleven
+remaining non-Cinzel decorative-text failures and all eight previous figure
+failures. Neither sweep recovered a combination. Moving direct silhouette gates
+outward, rather than changing only their direction, produced the sailboat fix.
+The text-direction, figure-direction and other padding experiments remain private.
+
 ## Text cutting quality: alternative approaches to divided letters
 
 Cinzel **B** now has **zero tips below 45 degrees**, down from three, in the

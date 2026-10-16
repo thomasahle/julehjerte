@@ -7,7 +7,7 @@ import {
 import { gridClearance } from '$lib/geometry/clearance';
 
 export function generateFittedFigure(rings: Ring[], size = 70, scale = .7, route = fourPortMotif,
-	angleOffsets: readonly [number, number, number, number] = [0, 0, 0, 0]) {
+	angleOffsets: readonly [number, number, number, number] = [0, 0, 0, 0], padding = 0) {
 	const artwork = rings.filter(r => r.length).map(r =>
 		r.map(p => uprightToSheet([p[0] * size * scale, p[1] * size * scale]))
 	);
@@ -18,7 +18,13 @@ export function generateFittedFigure(rings: Ring[], size = 70, scale = .7, route
 	const angles = [-3 * Math.PI / 4, -Math.PI / 4, Math.PI / 4, 3 * Math.PI / 4]
 		.map((angle, i) => angle + angleOffsets[i]);
 	const gates = angles.map(angle => artwork.map(r => support(r, angle).point)
-		.reduce((a, b) => dot(a, direction(angle)) > dot(b, direction(angle)) ? a : b));
+		.reduce((a, b) => dot(a, direction(angle)) > dot(b, direction(angle)) ? a : b))
+		.map((p, i): [number, number] => [
+			p[0] + padding * gridClearance(5) * Math.cos(angles[i]),
+			p[1] + padding * gridClearance(5) * Math.sin(angles[i])
+		]);
+	// An outward offset leaves space for a coincident connection to a detached
+	// part before reaching the main silhouette. It adds no visible frame edge.
 	// Each support point has clear outward horizontal and vertical projections.
 	const edges: Edge[] = [];
 	route(edges, artwork, gates, angles.map(a => a + Math.PI), gridClearance(5));
