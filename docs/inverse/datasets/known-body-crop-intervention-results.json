@@ -267,7 +267,7 @@
       "knownBodyIoU": 0.8206528552282563
     }
   ],
-  "nextExperiment": "tmp/heart-learning/body-threshold-crop-v1/plan.json: one fixed foreground probability offset, with unchanged source RGB/materials. This operating point is chosen on development data and is not an app change or an unseen test.",
+  "nextExperiment": "Complete and rejected: docs/inverse/datasets/body-threshold-crop-results.json. A fixed .75 foreground offset improves partial-label body IoU but reduces crop proposals from 3/22 to 2/22.",
   "limitations": [
     "The correction uses independently annotated body/background pixels. These counts are not model accuracy or template reconstruction success.",
     "Unknown pixels retain their original predictions; this is not a perfect-silhouette oracle.",

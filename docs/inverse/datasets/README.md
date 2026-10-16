@@ -72,8 +72,12 @@ were inspected, the unchanged controls reproduce exactly, and all 99 pinned
 files match. This identifies background leakage as the strongest tested cause,
 but the paper corrections lose the candle and six cases still fail with both
 corrections. These are annotation-assisted crop counts, not model or template
-success rates. A fixed foreground-probability offset is now being tested
-without annotations in the detector; it remains an offline development probe.
+success rates. A [fixed foreground-probability offset](body-threshold-crop-results.json)
+was then tested without annotations in the detector. It improves partial-label
+body IoU from 79.85% to 83.66%, but reduces crop proposals from 3/22 to 2/22 and
+is rejected. The lost foliage checker fails lower-edge support, despite good
+lobe and cap-colour evidence. Better pixel overlap alone does not establish
+better corner detection; no neural change is integrated.
 
 [Initial narrow-neck recovery](initial-paper-separation-results.json) reuses the
 existing local separation retry after a complete paper-failed refinement block,

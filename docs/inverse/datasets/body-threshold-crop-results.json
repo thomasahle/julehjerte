@@ -1,0 +1,388 @@
+{
+  "schema": "body-threshold-crop-results-1",
+  "status": "complete-not-integrated",
+  "scope": "Development diagnostic: a fixed .75 foreground threshold implemented as a log-odds offset, versus unchanged frozen body. Original RGB-calibrated material probabilities remain unchanged. No labels, supplied corners, ROI, fitting or training enter this probe.",
+  "training": false,
+  "deployed": false,
+  "plan": {
+    "schema": "body-threshold-crop-plan-1",
+    "status": "declared-before-crop-outcomes",
+    "question": "Can a single conservative foreground probability offset remove enough background leakage to improve crop proposals without retraining?",
+    "developmentChoice": "Partial-label sensitivity on the existing 22 development photos shows threshold .75 reduces mean background false positives from 8.87% to 4.79%, while increasing missed paper from 3.23% to 5.49%. This selects a diagnostic operating point, not an independently validated app setting.",
+    "threshold": 0.75,
+    "methods": [
+      "unchanged",
+      "threshold-0.75"
+    ],
+    "probabilityTransform": "p_new = p*(1-t)/(p*(1-t)+(1-p)*t), t=.75; one fixed transform for every photograph.",
+    "invariants": [
+      "Frozen model predictions; no retraining or per-photo threshold selection.",
+      "Material probabilities and full source photos are byte-identical in both arms.",
+      "No annotations, rough selections, supplied corners or saved templates enter detection.",
+      "Locator support thresholds, geometry fitting and orientation budgets are unchanged."
+    ],
+    "evaluation": [
+      "Replay all 22 photographs in alternating arm order.",
+      "Require unchanged controls to reproduce the preceding frozen crop outcomes.",
+      "Inspect every new, lost and moved proposal; counts alone do not prove correct overlap geometry.",
+      "Do not perform full template fitting until crop review supports a useful improvement."
+    ],
+    "artifactsSha256": {
+      "tmp/heart-learning/body-threshold-crop-v1/export.py": "463f0241cb1b4c02ed2709e14ad04b66d68edbeda0b944b01d9684a3c68b5e64",
+      "tmp/heart-learning/body-threshold-crop-v1/replay.mjs": "0f84cdfc517de7435e2f45b9d20a9d62954aac507b3d0373e23bbd0ce5931c35",
+      "tmp/heart-learning/body-threshold-crop-v1/run.py": "590a102bd058b673635f92b330f030cb18f5f5dd3ee2c5a668146b1b45193e9c",
+      "tmp/heart-learning/known-body-crop-intervention-v1/threshold-sensitivity.json": "55cb05c472db5a37d93c5182cd63fbef80b810c29510e8c0344fc07929975f83"
+    }
+  },
+  "sourceFilesVerified": 99,
+  "unchangedControlReproducedExactly": true,
+  "summary": {
+    "unchanged": {
+      "count": 3,
+      "ids": [
+        "real-c4a9ee6e2d0a4185-body-1",
+        "real-cf2d0fcff65d7386-body-1",
+        "real-d5b0aa8d4d2465ee-body-1"
+      ],
+      "gainsAgainstUnchanged": [],
+      "lossesAgainstUnchanged": [],
+      "reasons": {
+        "The two-colour foreground does not clearly support both heart lobes and lower edges.": 12,
+        "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.": 7
+      }
+    },
+    "threshold-0.75": {
+      "count": 2,
+      "ids": [
+        "real-c4a9ee6e2d0a4185-body-1",
+        "real-cf2d0fcff65d7386-body-1"
+      ],
+      "gainsAgainstUnchanged": [],
+      "lossesAgainstUnchanged": [
+        "real-d5b0aa8d4d2465ee-body-1"
+      ],
+      "reasons": {
+        "The two-colour foreground does not clearly support both heart lobes and lower edges.": 11,
+        "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.": 7,
+        "No nondegenerate heart-shape fit": 1,
+        "Multiple heart-sized foreground bands": 1
+      }
+    }
+  },
+  "changedOrRetainedProposalReview": [
+    {
+      "id": "real-c4a9ee6e2d0a4185-body-1",
+      "arms": {
+        "unchanged": {
+          "proposed": true,
+          "status": "needs_review",
+          "reason": null,
+          "quad": [
+            [
+              538.2380783041172,
+              542.8714573121522
+            ],
+            [
+              906.5768927800937,
+              890.0927651709717
+            ],
+            [
+              499.13237342912714,
+              1255.2522190031975
+            ],
+            [
+              129.6297998690879,
+              881.571290071795
+            ]
+          ],
+          "bodyAgreement": {
+            "knownRegionIoU": 0.939014604397368,
+            "knownRegionError": 0.02419919760555308,
+            "truePositive": 17553,
+            "falsePositive": 149,
+            "falseNegative": 991,
+            "knownPixels": 47109,
+            "scope": "Partial independently annotated body/background only. Not overlap-corner accuracy; fixed-threshold diagnostic."
+          },
+          "initialOrSelectedEvidence": {
+            "lowerEdgeSupport": [
+              1,
+              0.837037037037037
+            ],
+            "lobeOutlineSupport": [
+              0.6666666666666666,
+              0.8055555555555556
+            ],
+            "capColourLoss": [
+              0.006904344712148822,
+              0.003716982690541104
+            ]
+          },
+          "orientationAttempts": 0
+        },
+        "threshold-0.75": {
+          "proposed": true,
+          "status": "needs_review",
+          "reason": null,
+          "quad": [
+            [
+              523.1831949929319,
+              526.8955779369745
+            ],
+            [
+              902.284094326027,
+              887.6289148595413
+            ],
+            [
+              495.86347535266077,
+              1243.8957571698647
+            ],
+            [
+              111.57119088936575,
+              851.7694316175349
+            ]
+          ],
+          "bodyAgreement": {
+            "knownRegionIoU": 0.9341249798506259,
+            "knownRegionError": 0.02602475110912989,
+            "truePositive": 17385,
+            "falsePositive": 67,
+            "falseNegative": 1159,
+            "knownPixels": 47109,
+            "scope": "Partial independently annotated body/background only. Not overlap-corner accuracy; fixed-threshold diagnostic."
+          },
+          "initialOrSelectedEvidence": {
+            "lowerEdgeSupport": [
+              0.9323308270676691,
+              0.7969924812030075
+            ],
+            "lobeOutlineSupport": [
+              0.75,
+              0.7222222222222222
+            ],
+            "capColourLoss": [
+              0.016442379276007644,
+              0.005190888673408839
+            ]
+          },
+          "orientationAttempts": 0
+        }
+      },
+      "unchangedControl": {
+        "priorProposed": true,
+        "currentProposed": true,
+        "quadExactlyReproduced": true
+      }
+    },
+    {
+      "id": "real-cf2d0fcff65d7386-body-1",
+      "arms": {
+        "unchanged": {
+          "proposed": true,
+          "status": "needs_review",
+          "reason": null,
+          "quad": [
+            [
+              267.52791923296286,
+              92.04246163283335
+            ],
+            [
+              515.6271859995176,
+              248.4765924252941
+            ],
+            [
+              342.5040253623698,
+              516.4397010249045
+            ],
+            [
+              86.70020890416556,
+              322.7555040156153
+            ]
+          ],
+          "bodyAgreement": {
+            "knownRegionIoU": 0.981300120644383,
+            "knownRegionError": 0.009748247350215497,
+            "truePositive": 27655,
+            "falsePositive": 511,
+            "falseNegative": 16,
+            "knownPixels": 54061,
+            "scope": "Partial independently annotated body/background only. Not overlap-corner accuracy; fixed-threshold diagnostic."
+          },
+          "initialOrSelectedEvidence": {
+            "lowerEdgeSupport": [
+              0.9333333333333333,
+              0.9575757575757575
+            ],
+            "lobeOutlineSupport": [
+              0.9166666666666666,
+              0.9722222222222222
+            ],
+            "capColourLoss": [
+              0.0013684222268232626,
+              0.0019148529977419055
+            ]
+          },
+          "orientationAttempts": 1
+        },
+        "threshold-0.75": {
+          "proposed": true,
+          "status": "needs_review",
+          "reason": null,
+          "quad": [
+            [
+              268.50995863087593,
+              93.16201859211174
+            ],
+            [
+              511.92204904439234,
+              245.5122606462863
+            ],
+            [
+              345.83183766712045,
+              519.3556516208529
+            ],
+            [
+              86.14744769192235,
+              322.03759835028706
+            ]
+          ],
+          "bodyAgreement": {
+            "knownRegionIoU": 0.9830339321357285,
+            "knownRegionError": 0.008804868574388192,
+            "truePositive": 27580,
+            "falsePositive": 385,
+            "falseNegative": 91,
+            "knownPixels": 54061,
+            "scope": "Partial independently annotated body/background only. Not overlap-corner accuracy; fixed-threshold diagnostic."
+          },
+          "initialOrSelectedEvidence": {
+            "lowerEdgeSupport": [
+              0.9936305732484076,
+              0.8471337579617835
+            ],
+            "lobeOutlineSupport": [
+              1,
+              0.9444444444444444
+            ],
+            "capColourLoss": [
+              0.003970217901979576,
+              0.006069131403238979
+            ]
+          },
+          "orientationAttempts": 1
+        }
+      },
+      "unchangedControl": {
+        "priorProposed": true,
+        "currentProposed": true,
+        "quadExactlyReproduced": true
+      }
+    },
+    {
+      "id": "real-d5b0aa8d4d2465ee-body-1",
+      "arms": {
+        "unchanged": {
+          "proposed": true,
+          "status": "needs_review",
+          "reason": null,
+          "quad": [
+            [
+              423.09273680754245,
+              114.93511466268794
+            ],
+            [
+              552.3857477688855,
+              317.776310326819
+            ],
+            [
+              346.58809564300515,
+              455.9101583222169
+            ],
+            [
+              217.95552322544154,
+              241.3941637865114
+            ]
+          ],
+          "bodyAgreement": {
+            "knownRegionIoU": 0.9486404833836858,
+            "knownRegionError": 0.016011679107113423,
+            "truePositive": 12560,
+            "falsePositive": 680,
+            "falseNegative": 0,
+            "knownPixels": 42469,
+            "scope": "Partial independently annotated body/background only. Not overlap-corner accuracy; fixed-threshold diagnostic."
+          },
+          "initialOrSelectedEvidence": {
+            "lowerEdgeSupport": [
+              0.7741935483870968,
+              0.6532258064516129
+            ],
+            "lobeOutlineSupport": [
+              0.6666666666666666,
+              0.8055555555555556
+            ],
+            "capColourLoss": [
+              0.03706309077808897,
+              0.001553076403081197
+            ]
+          },
+          "orientationAttempts": 0
+        },
+        "threshold-0.75": {
+          "proposed": false,
+          "status": "needs_review",
+          "reason": "The two-colour foreground does not clearly support both heart lobes and lower edges.",
+          "quad": null,
+          "bodyAgreement": null,
+          "initialOrSelectedEvidence": {
+            "lowerEdgeSupport": [
+              0.9672131147540983,
+              0.6229508196721312
+            ],
+            "lobeOutlineSupport": [
+              0.8333333333333334,
+              0.8055555555555556
+            ],
+            "capColourLoss": [
+              0.056134815412706374,
+              0.0038784515412444926
+            ]
+          },
+          "orientationAttempts": 18
+        }
+      },
+      "unchangedControl": {
+        "priorProposed": true,
+        "currentProposed": true,
+        "quadExactlyReproduced": true
+      }
+    }
+  ],
+  "panelsInspected": [
+    5,
+    6
+  ],
+  "findings": [
+    "The fixed .75 log-odds shift improves partial-label body IoU from 79.85% to 83.66%, but reduces crop proposals from 3/22 to 2/22. No new proposal is recovered.",
+    "The lost foliage-background checker retains adequate lobe support (0.833,0.806) and low cap-colour loss (0.056,0.004), but right lower-edge support drops from 0.653 to 0.623, below the unchanged 0.65 threshold. The failure is therefore not a soft cap-confidence veto.",
+    "The two retained proposals move: partial known-region body IoU drops slightly for the candle and improves slightly for the blue/yellow checker. Both changed proposals and the lost checker were visually inspected.",
+    "Background clutter remains visible in the adjusted masks. A single global operating-point shift does not reproduce the benefits of correcting known background pixels.",
+    "This rejects the tested operating point only; it does not prove that every calibration method or threshold fails. No full template fitting is justified by these crop outcomes."
+  ],
+  "artifactsSha256": {
+    "tmp/heart-learning/body-threshold-crop-v1/source.json": "d78cdd987a2e8dced294bb64046201268c9bbbdc742e5b48e6e966767d16262b",
+    "tmp/heart-learning/body-threshold-crop-v1/state.json": "9891c81fd9f2a478fa4fb60260641b8daac6e3d2ee06836e2c3947bcc6adf136",
+    "tmp/heart-learning/body-threshold-crop-v1/checks.json": "f7e0db5eedf7d9b2b01c0983b3c2ce5486d8b59d2bcd51b8de29044927c5aa11",
+    "tmp/heart-learning/body-threshold-crop-v1/plan.json": "14996c756978710081e27249b7ebd0127d423d7f96a61d5d9c56012113a02b63",
+    "tmp/heart-learning/body-threshold-crop-v1/export.py": "463f0241cb1b4c02ed2709e14ad04b66d68edbeda0b944b01d9684a3c68b5e64",
+    "tmp/heart-learning/body-threshold-crop-v1/export.log": "59eeff0f02f6ef884045697c42ab150d773b61bd893d857bb7d5be0fc75bc480",
+    "tmp/heart-learning/body-threshold-crop-v1/replay.mjs": "0f84cdfc517de7435e2f45b9d20a9d62954aac507b3d0373e23bbd0ce5931c35",
+    "tmp/heart-learning/body-threshold-crop-v1/run.py": "590a102bd058b673635f92b330f030cb18f5f5dd3ee2c5a668146b1b45193e9c",
+    "tmp/heart-learning/body-threshold-crop-v1/probe/manifest.json": "355f1ceab0e878741d1214048230e2962020d6735ce96925033351ba88e78187",
+    "tmp/heart-learning/body-threshold-crop-v1/results/report.json": "ad6a44ecc554b49488d0c576f4686a4ad95bb14ce55342728728bd0287e2e7da",
+    "tmp/heart-learning/body-threshold-crop-v1/review.py": "e2df1a6dc8929824a217f60b781e128c187faae3f3c4711604ec83907e2040d0",
+    "tmp/heart-learning/body-threshold-crop-v1/review.json": "a29052d63d9de8957ee081c92913186d546206c6e86b78f313e524b843258acf",
+    "tmp/heart-learning/body-threshold-crop-v1/comparison-5.png": "560a59bac6c9e57287eca42f3136b5c6513f40aee6f67a384d8df5c21aac8b43",
+    "tmp/heart-learning/body-threshold-crop-v1/comparison-6.png": "33083ea9e77ef228da5e8c91c5eaaf2b619f35a568b0fb9acfcd6a7035dcdba8"
+  }
+}
