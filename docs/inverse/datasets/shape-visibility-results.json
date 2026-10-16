@@ -89,10 +89,14 @@
   ],
   "verification": {
     "focusedNodeTestsPassed": 16,
-    "sourceFilesVerifiedSoFar": 896,
     "cropFitAndEditableStagesPassed": true,
     "checkLintBuildPassed": true,
-    "repositoryTestSuite": "Running under controller tmp/heart-learning/shape-visibility-v1/run.py; not yet claimed complete.",
+    "repositoryTestSuite": {
+      "status": "passed",
+      "applicationPassed": 865,
+      "applicationSkipped": 1,
+      "inversePassed": 994
+    },
     "visualReview": {
       "status": "complete",
       "allThirtyTwoSyntheticImagesInspected": true,
@@ -115,7 +119,8 @@
         "tmp/heart-learning/shape-visibility-v1/real-review-5.png": "ab70a2b71ad6381523f567c4ff62bbbb9491e8f6da522947334693e3dd1701b8",
         "tmp/heart-learning/shape-visibility-v1/changed-export-1.png": "6add8e40b04ceaf7df35a118d1dba46518b57876c8746e86eaf921ec912ffd61"
       }
-    }
+    },
+    "sourceFilesVerified": 896
   },
   "nextStep": "Test a fully projective silhouette construction with separate visibility confidence, beginning with exact-shape diagnostic controls and the existing frozen predicted fields. Keep source material and observation coverage unchanged initially; do not lower corner-support thresholds to manufacture additional successes.",
   "artifactsSha256": {
@@ -128,6 +133,7 @@
     "tmp/heart-learning/shape-visibility-v1/selection-audit.json": "22ff81ac90871aac5f3f455b16bf23829bbcdc9069d8e8c98861f203c1e8c73f",
     "tmp/heart-learning/shape-visibility-v1/real-crop-diagnostics.json": "685513b98bd6eba4ea120119d6e3ba79ea5876874bbfddbf82d076252bd5b1da",
     "tmp/heart-learning/shape-visibility-v1/visual-review.json": "d2ba1c787bea2f19616d9287146b316d50789e3458b89049ea997dfd04493cc3",
-    "tmp/heart-learning/shape-visibility-v1/source.json": "1ffb1c6201d1409ed232da9266fe2c4ef4468ed4804fccb77270efcdf5204823"
+    "tmp/heart-learning/shape-visibility-v1/source.json": "1ffb1c6201d1409ed232da9266fe2c4ef4468ed4804fccb77270efcdf5204823",
+    "tmp/heart-learning/shape-visibility-v1/checks.json": "7bf262f903c6efb9f87806e1111ad48b6d61e2763de9203fc433554a5fc12d86"
   }
 }

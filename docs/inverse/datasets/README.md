@@ -33,6 +33,19 @@ The inventory, with material annotations updated on 2026-10-16, contains:
 
 ## Current results and limits
 
+A [projective body-only crop comparison](projective-body-results.json) now
+recovers all sixteen controlled synthetic overlaps behind small notch occluders
+within 5% maximum corner error. With frozen predicted segmentation, median
+maximum corner error is **1.22% original / 1.50% occluded**, with **15/16 and
+16/16** within 5%. Exact-body diagnostic controls have **1.23%** median error,
+all within 3%. All 48 comparisons were visually inspected; one source clips a
+corner and remains included. Four focused tests and lint pass. This uses the
+existing projective model with colour terms removed, not additional training.
+The sixteen geometries belong to one training-source recipe family; this is
+not held-out photo accuracy. Crop fitting alone takes roughly 0.2 seconds
+median, excluding neural inference and template solving. The adapter remains
+offline pending the fixed real-photo and export comparison.
+
 A [separate shape/visibility experiment](shape-visibility-results.json) rejects
 the known false small-checker notch, but **adds no accepted real-photo crops**.
 All 22 original supported crops, masks, coverage and pass/fail results remain
@@ -48,8 +61,8 @@ sixteen occluded crops, at **5.52% and 14.00%** maximum corner error. Neither
 meets the declared 5% threshold. All 32 synthetic images, 20 real fallback
 rejections and three changed exports were inspected. This variant remains
 offline and is not adopted. Sixteen focused Node tests, type checking, lint
-and build pass; the full repository test suite is still running. The next
-comparison needs a projective model and uncertain visibility evidence.
+and build pass. Full repository QA passes: 865 application tests (one skipped)
+and 994 inverse tests, with all 896 pinned sources verified unchanged.
 
 
 A [foreground-occlusion pilot](foreground-occlusion-results.json) adds sixteen
