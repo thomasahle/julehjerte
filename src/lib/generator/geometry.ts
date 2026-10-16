@@ -748,9 +748,16 @@ function contourMotif(
 	margin = 1.5,
 	bridgePorts: readonly number[] = [0, 1, 2, 3],
 	acceptRoutes?: (routes: Ring[]) => boolean,
-	options: { root?: Ring; visibleIslands?: boolean; strict?: boolean; practical?: boolean; originalOnly?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; touching?: boolean; bentSpokes?: boolean; strokeTips?: boolean; nested?: boolean } = {}
+	options: { root?: Ring; visibleIslands?: boolean; strict?: boolean; practical?: boolean; originalOnly?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; touching?: boolean; bentSpokes?: boolean; strokeTips?: boolean; nested?: boolean; connectionAllowed?: (point: Point) => boolean } = {}
 ) {
 	const count = gates.length;
+	// A clipped outline belongs to two neighbouring cells. Attaching an extra
+	// shared cut at its seam crossing can branch the joined paper path, even
+	// when each cell is valid alone. Enforce the seam's agreed contacts while
+	// selecting routes, including counter connections and notch relief.
+	const connectionAllowed = options.connectionAllowed;
+	const allowedConnections = (edges: Edge[]) => !connectionAllowed ||
+		edges.every(e => e.family !== 'AB' || connectionAllowed(e.from) && connectionAllowed(e.to));
 	// Candidate routes reuse the same immutable outline points. Keep their
 	// rounded graph keys for this cell instead of formatting them at every walk.
 	const pointKeys = new WeakMap<Point, string>();
@@ -826,7 +833,8 @@ function contourMotif(
 	const seenPorts = new Set<string>();
 	routing: for (const indices of combinations) {
 		const ports = indices.map((index, j) => candidates[j][index]);
-		if (!ports.every((p): p is Port => p != null) || !cyclic(base.ring, ports))
+		if (!ports.every((p): p is Port => p != null) || !cyclic(base.ring, ports) ||
+			ports.some(p => connectionAllowed && !connectionAllowed(p.point)))
 			continue;
 		const portKey = ports.map((p) => p.index.toFixed(8)).join(',');
 		if (seenPorts.has(portKey)) continue;
@@ -856,13 +864,13 @@ function contourMotif(
 			if (!(error instanceof ConstructionError)) throw error;
 			continue;
 		}
-		if (!clearSharedCuts(exterior, contours)) continue;
+		if (!allowedConnections(exterior) || !clearSharedCuts(exterior, contours)) continue;
 		let attachmentAttempts = 0;
 		for (const interior of perforatedOutline(base, ports, bridgePorts, options.practical, options.touching, options.nested)) {
 			const local = [...interior, ...exterior];
 			try {
 				const routes = localRoutes(local, gates, pointKeys);
-				if (!routes || !clearSharedCuts(local, contours)) continue;
+				if (!routes || !allowedConnections(local) || !clearSharedCuts(local, contours)) continue;
 				fallback ??= local;
 				if (!alternatives.has(portKey) && alternatives.size < (options.practical ? 64 : 8))
 					alternatives.set(portKey, { edges: local, ports });
@@ -902,7 +910,7 @@ function contourMotif(
 			if (options.practical && ++portAttempts > 8) break;
 			if (++reliefAttempts > 256) break relief;
 			const routes = localRoutes(relieved, gates, pointKeys);
-			if (!routes || !clearSharedCuts(relieved, contours)) continue;
+			if (!routes || !allowedConnections(relieved) || !clearSharedCuts(relieved, contours)) continue;
 			if (options.practical) {
 				ranked.push({ edges: relieved, routes, score: cuttingCost(routes, margin) });
 				continue;
@@ -930,7 +938,7 @@ function contourMotif(
 				for (const second of relieveNotches(first, base.ring, local.ports, bridgePorts, true)) {
 					if (++secondCount > 4) break;
 					const routes = localRoutes(second, gates, pointKeys);
-					if (!routes || !clearSharedCuts(second, contours)) continue;
+					if (!routes || !allowedConnections(second) || !clearSharedCuts(second, contours)) continue;
 					if (acceptRoutes ? acceptRoutes(routes) : usableRoutes(routes, margin)) {
 						edges.push(...second);
 						options.onCompound?.();

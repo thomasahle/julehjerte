@@ -65,6 +65,30 @@ const b1 = (u: number) => 3 * u * (1 - u) ** 2;
 const b2 = (u: number) => 3 * u * u * (1 - u);
 const b3 = (u: number) => u ** 3;
 
+/** A fitting pass evaluates each parameter in the least-squares solve, its
+ * error measurement and the next Newton step. Reuse these four coefficients
+ * without changing their arithmetic or rounding. Keep the cache local to the
+ * current pass so it cannot retain samples from previous designs. */
+function basisAt(u: number[]): Float64Array {
+  const weights = new Float64Array(u.length * 4);
+  for (let i = 0; i < u.length; i++) {
+    weights[4 * i] = b0(u[i]!);
+    weights[4 * i + 1] = b1(u[i]!);
+    weights[4 * i + 2] = b2(u[i]!);
+    weights[4 * i + 3] = b3(u[i]!);
+  }
+  return weights;
+}
+
+function evalWithBasis(c: BezierSegment, weights: Float64Array, i: number): Pt {
+  const w0 = weights[4 * i]!, w1 = weights[4 * i + 1]!,
+    w2 = weights[4 * i + 2]!, w3 = weights[4 * i + 3]!;
+  return {
+    x: w0 * c.p0.x + w1 * c.p1.x + w2 * c.p2.x + w3 * c.p3.x,
+    y: w0 * c.p0.y + w1 * c.p1.y + w2 * c.p2.y + w3 * c.p3.y
+  };
+}
+
 function evalCubic(c: BezierSegment, u: number): Pt {
   // Both coordinates use the same basis; keep the arithmetic order unchanged.
   const w0 = b0(u), w1 = b1(u), w2 = b2(u), w3 = b3(u);
@@ -156,7 +180,7 @@ function chordLengthParameterize(points: Pt[], first: number, last: number): num
 }
 
 /** Least-squares cubic through the run, with both endpoints and tangents fixed. */
-function generateBezier(points: Pt[], first: number, last: number, u: number[], tHat1: Pt, tHat2: Pt): BezierSegment {
+function generateBezier(points: Pt[], first: number, last: number, weights: Float64Array, tHat1: Pt, tHat2: Pt): BezierSegment {
   const p0 = points[first]!;
   const p3 = points[last]!;
   const n = last - first + 1;
@@ -167,8 +191,8 @@ function generateBezier(points: Pt[], first: number, last: number, u: number[], 
   let x0 = 0;
   let x1 = 0;
   for (let i = 0; i < n; i++) {
-    const ui = u[i]!;
-    const w0 = b0(ui), w1 = b1(ui), w2 = b2(ui), w3 = b3(ui);
+    const w0 = weights[4 * i]!, w1 = weights[4 * i + 1]!,
+      w2 = weights[4 * i + 2]!, w3 = weights[4 * i + 3]!;
     const a0 = mul(tHat1, w1);
     const a1 = mul(tHat2, w2);
     c00 += dot(a0, a0);
@@ -199,8 +223,8 @@ function generateBezier(points: Pt[], first: number, last: number, u: number[], 
 }
 
 /** One Newton-Raphson step towards the parameter that puts `p` closest to the curve. */
-function newtonRaphsonRootFind(curve: BezierSegment, derivative: ReturnType<typeof derivatives>, p: Pt, u: number): number {
-  const d = sub(evalCubic(curve, u), p);
+function newtonRaphsonRootFind(derivative: ReturnType<typeof derivatives>, onCurve: Pt, p: Pt, u: number): number {
+  const d = sub(onCurve, p);
   const d1 = evalCubicD1(derivative, u);
   const d2 = evalCubicD2(derivative, u);
   const numerator = dot(d, d1);
@@ -214,12 +238,12 @@ function computeMaxError(
   first: number,
   last: number,
   curve: BezierSegment,
-  u: number[]
+  weights: Float64Array
 ): { maxError: number; splitPoint: number } {
   let maxError = 0;
   let splitPoint = Math.floor((last - first + 1) / 2) + first;
   for (let i = first + 1; i < last; i++) {
-    const dist = len(sub(evalCubic(curve, u[i - first]!), points[i]!));
+    const dist = len(sub(evalWithBasis(curve, weights, i - first), points[i]!));
     if (dist >= maxError) {
       maxError = dist;
       splitPoint = i;
@@ -263,8 +287,9 @@ function fitRun(
   }
 
   let u = chordLengthParameterize(points, first, last);
-  let curve = generateBezier(points, first, last, u, tHat1, tHat2);
-  let best = { curve, first, last, ...computeMaxError(points, first, last, curve, u) };
+  let weights = basisAt(u);
+  let curve = generateBezier(points, first, last, weights, tHat1, tHat2);
+  let best = { curve, first, last, ...computeMaxError(points, first, last, curve, weights) };
   if (best.maxError < tolerance) return best;
 
   // A better parameterisation may still bring the fit inside the tolerance.
@@ -274,9 +299,10 @@ function fitRun(
   // time instead; see REPARAMETERIZE_PASSES.
   for (let pass = 0; pass < REPARAMETERIZE_PASSES; pass++) {
     const derivative = derivatives(curve);
-    const uPrime = u.map((ui, i) => newtonRaphsonRootFind(curve, derivative, points[first + i]!, ui));
-    curve = generateBezier(points, first, last, uPrime, tHat1, tHat2);
-    const measured = { curve, first, last, ...computeMaxError(points, first, last, curve, uPrime) };
+    const uPrime = u.map((ui, i) => newtonRaphsonRootFind(derivative, evalWithBasis(curve, weights, i), points[first + i]!, ui));
+    weights = basisAt(uPrime);
+    curve = generateBezier(points, first, last, weights, tHat1, tHat2);
+    const measured = { curve, first, last, ...computeMaxError(points, first, last, curve, weights) };
     // Keep the best fit seen: a diverging reparameterisation must not lose the
     // split point the plain least-squares fit already found.
     if (measured.maxError < best.maxError) best = measured;

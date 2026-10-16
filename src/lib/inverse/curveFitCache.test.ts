@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { BezierSegment } from '$lib/geometry/bezierSegments';
 import { splitBezierAt } from '$lib/geometry/bezierSegments';
 import * as fitting from './simplifyCurves';
-import { createTranslatedCurveFitter } from './curveFitCache';
+import { createExactCurveFitter, createTranslatedCurveFitter } from './curveFitCache';
 
 const curve: BezierSegment = {
   p0: { x: 0, y: 0 }, p1: { x: 40, y: 5 },
@@ -14,6 +14,30 @@ function translate(segments: BezierSegment[], x: number, y: number): BezierSegme
   return segments.map(s => ({ p0: move(s.p0), p1: move(s.p1), p2: move(s.p2), p3: move(s.p3) }));
 }
 afterEach(() => vi.restoreAllMocks());
+
+describe('exact curve fitting cache', () => {
+  it('reuses identical runs without exposing cached controls to converter edits', () => {
+    const spy = vi.spyOn(fitting, 'simplifyCubicChain'), fit = createExactCurveFitter();
+    const first = fit(source(), .05), expected = structuredClone(first);
+    first[0].p1.x += 17;
+    const second = fit(source(), .05);
+    expect(second).toEqual(expected);
+    second[0].p0.y = 35;
+    expect(fit(source(), .05)).toEqual(expected);
+    expect(spy).toHaveBeenCalledTimes(1);
+  });
+
+  it('refits changed controls or tolerances and does not share across requests', () => {
+    const spy = vi.spyOn(fitting, 'simplifyCubicChain'), fit = createExactCurveFitter();
+    const input = source();
+    fit(input, .05);
+    input[0].p1.x += 1e-11;
+    fit(input, .05);
+    fit(input, .1);
+    createExactCurveFitter()(input, .1);
+    expect(spy).toHaveBeenCalledTimes(4);
+  });
+});
 
 describe('translated curve fitting cache', () => {
   it('reuses a translated outline while retaining its endpoints and fitting accuracy', () => {

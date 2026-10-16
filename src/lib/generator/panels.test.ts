@@ -1,5 +1,5 @@
 import { it, expect } from 'vitest';
-import { clipContours, filledSeamGate, generatePanelFigure, panelDividers } from './panels';
+import { clipContours, filledSeamGate, generatePanelFigure, panelDividers, panelSeamGuard } from './panels';
 import { convertValidatedCutGeometry } from '$lib/inverse/toHeartDesign';
 import { type Ring, type Point, inside, uprightToSheet } from './geometry';
 import cat from '../../../static/generator/motifs/ph-cat.json';
@@ -87,4 +87,17 @@ it('moves dividers away from near-coincident tips without creating narrow panels
 	expect(Math.min(...boundaries.slice(1).map((p, i) => p - boundaries[i]))).toBeGreaterThan(2.5);
 	// Without a useful gap near the nominal seam, retain the uniform position.
 	expect(panelDividers([-10, 10], -10, 10, 4)).toEqual([-5, 0, 5]);
+});
+
+it('permits a shared cut only at the gate belonging to its internal seam', () => {
+	const gates = [[0, -10], [10, 0], [0, 10], [-10, 0]].map(p => uprightToSheet(p as Point));
+	const allowed = panelSeamGuard(gates, [-10, 10, 10, -10], [true, true, false, false]);
+	for (const point of [[0, 0], [0, -10], [10, 0], [-10, 4], [4, 10]])
+		expect(allowed(uprightToSheet(point as Point))).toBe(true);
+	for (const point of [[4, -10], [10, 4], [10, -10]])
+		expect(allowed(uprightToSheet(point as Point))).toBe(false);
+	// An external side's silhouette contact can fall on an internal seam.
+	// That does not turn it into the agreed gate for the internal side.
+	gates[2] = uprightToSheet([10, 4]);
+	expect(allowed(gates[2])).toBe(false);
 });

@@ -1,5 +1,88 @@
 # Generator robustness results
 
+## Current coverage: align shared contacts across clipped panels
+
+The last-resort text layout now reserves each internal panel seam for its agreed
+shared-cut contact. Previously an extra invisible cut could attach at another
+clipped outline vertex: each cell was valid alone, but stitching them produced
+a branching cut. The restriction applies during route selection, counter
+connections and notch relief. An optional division through wider gaps in the
+letter's coordinates keeps the clipping and stitching lines aligned across
+rows. Letter outlines and counters remain unchanged; counters use coincident
+cuts, never cutouts.
+
+The figure fallbacks add a vertical two-panel layout and move a two-panel seam
+away from small outline details in fitted and layered frames. They run after
+all established straight and curved constructions. Existing successful layouts
+therefore return before these new choices are attempted.
+
+Seven previously refused combinations now pass through the application generator:
+
+| Input / frame | Paper strips | Tips below 30° / below 45° |
+|---|---|---|
+| Cinzel BO / air | 8×8 | 0 / 0 |
+| Cinzel BO / oval | 8×8 | 1 / 3 |
+| Tabler bow / fitted | 4×4 | 0 / 2 |
+| Snowflake / oval plain | 4×4 | 0 / 6 |
+| Snowflake / oval rays | 4×4 | 0 / 10 |
+| Snowflake / oval checks | 4×4 | 0 / 6 |
+| Phosphor butterfly / layered | 8×8 | 1 / 2 |
+
+Both JSON and SVG handoffs pass for all seven, including the editor's geometry
+checks, no-cutout assertion and rendered-weave comparison. The heart and both
+cutting sheets were rendered and inspected (`seam-production-gallery-{0..6}`;
+the final cached outputs in `seam-final-gallery-{0..6}` are identical).
+All seven pass the separate guarded rolling-disk connectivity audit at
+resolution 1,400 (`seam-production-material.json`). This discrete model does
+not certify physical tear resistance or the remaining fine tips.
+
+The prototype produced a curved butterfly with fewer tips, but its material
+check failed. The chosen straight construction passes at both 1,400 and 2,800.
+Three oval coffee-cup prototypes remain uncertain at both resolutions and were
+not added. Those are not accepted recoveries (`seam-prototype-material.json`,
+`seam-refined-material.json`).
+
+The final bounded fallback was scanned against all **338 previous refusals**;
+it recovered these seven and refused the remaining 331 (`seam-fallback-audit.json`).
+Seven full production generations and their handoffs were then checked. Combined
+coverage is **2,819 accepted / 331 refused / zero invalid**: text **1,735 / 293**,
+figures **1,084 / 38** (`seam-current.json`). The other 3,143 full-pipeline records
+retain `nested-current.json` results; this was not a fresh run of all 3,150 cases.
+All seven recoveries are pinned in the expected corpus. The broader goal is
+unfinished, including other sizes and the rest of the icon catalog.
+
+Curve fitting also reuses the same Bernstein coefficients within each fitting
+pass, preserving arithmetic order. A bounded cache scoped to a generation request
+reuses exactly identical outline fits across candidate layouts. Tolerance is
+part of the key, returned controls are isolated from later edits, and no artwork
+is retained between requests. All **132 paired fits are identical**; the final
+comparison took 855 ms before and 597 ms after the coefficient change
+(`seam-fit-comparison-final.log`). All seven final production designs also match
+their pre-cache versions exactly. These are local measurements, not a browser
+latency guarantee.
+
+The full Cinzel BO/oval path remains slow: the focused end-to-end test measured
+about 28 seconds before caching and 22 seconds with the retained changes, over
+its 20-second limit. Its new unit regression therefore isolates the adaptive
+panel construction and validates both exports; full-generation coverage is in
+the offline production audit above. No existing test timeout was raised. The
+latency problem remains open; the new fallback itself takes roughly one second,
+with most time spent on preceding unsuccessful constructions.
+
+Type checking, lint and the production build pass, with seven existing warnings
+(`seam-check-final.log`, `seam-lint-final.log`, `seam-build-final.log`). The full
+single-worker `npm test` run reports **1,113 passed / two timed out** in 750
+seconds (`seam-tests.log`). All new regressions pass. The only failures are the
+existing Kalam `A` and `ANNA` ordinary-repeat tests, at 20.04 and 21.89 seconds
+against their unchanged 20-second limits. Both pass together in the focused
+rerun (15.25 seconds of tests; `seam-kalam-focused.log`). The full suite is not
+green, and its timing issue remains unresolved. All **177 inverse-engine tests
+pass** separately (`seam-inverse.log`).
+
+The old Cinzel curved retry has completed all 199 cases. Its sole recovery is
+BO/diamond, which was already supported; it adds no new coverage. Its durations
+include earlier process suspensions and are not latency measurements.
+
 ## Current coverage: reconnect nested counters in the layered frame
 
 The layered frame has one additional fallback for nested contours. When a

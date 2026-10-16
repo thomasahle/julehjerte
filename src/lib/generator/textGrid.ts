@@ -18,14 +18,14 @@ import {
 	connectCellGrid
 } from './geometry';
 import { gridClearance } from '$lib/geometry/clearance';
-import { clipContours, stitch, filledSeamGate } from './panels';
+import { clipContours, stitch, filledSeamGate, panelDividers, panelSeamGuard } from './panels';
 
 export function generateTextGrid(
 	text: string,
 	font: Font,
 	air = false,
 	frame?: Frame,
-	layout: { padding?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; adaptGates?: boolean; onGateChange?: () => void; filled?: boolean; onSeamChange?: () => void; inkPanels?: boolean; bentSpokes?: boolean } = {}
+	layout: { padding?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; adaptGates?: boolean; onGateChange?: () => void; filled?: boolean; onSeamChange?: () => void; inkPanels?: boolean; bentSpokes?: boolean; adaptivePanels?: boolean; guardSeams?: boolean } = {}
 ) {
 	const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n');
 	const cols = Math.max(...lines.map((l) => [...l].length)),
@@ -75,6 +75,19 @@ export function generateTextGrid(
 	let edges: Edge[] = [];
 	const slices = layout.slices ?? 1;
 	const columns = layout.columns ?? 1;
+	// All rows share their horizontal dividers. Each source column likewise
+	// chooses one set of vertical dividers for all its glyphs, so adjoining
+	// panels use exactly the same clip and stitch coordinates.
+	const splitsY = layout.adaptivePanels
+		? panelDividers(points.map(p => p[1] - cy), -height / 2, height / 2, slices) : undefined;
+	const splitsX = layout.adaptivePanels ? widths.map((width, col) => {
+		const values = matrix.flatMap(row => {
+			const xs = row[col].glyph.contours.flat().map(p => p[0]);
+			const cx = xs.length ? (Math.min(...xs) + Math.max(...xs)) / 2 : 0;
+			return xs.map(x => x - cx);
+		}), inkWidth = Math.max(height * .1, width - padding);
+		return panelDividers(values, -inkWidth / 2, inkWidth / 2, columns);
+	}) : undefined;
 	const artwork: Ring[] = [],
 		cells: Point[][][] = [],
 		background: Ring[] = [];
@@ -95,13 +108,13 @@ export function generateTextGrid(
 				y = (-fullHeight / 2 + (row + 0.5) * cellHeight / slices) * scale;
 			let w = widths[sourceCol] * scale / columns,
 				h = cellHeight * scale / slices;
-			if (layout.inkPanels) {
+			if (layout.inkPanels || layout.adaptivePanels) {
 				// More panels should divide the letter, not its surrounding margin.
 				// Retain the outside gates and distribute only the internal seams
 				// over the ink dimensions. Blank cells still need positive widths.
 				const inkWidth = Math.max(height * .1, widths[sourceCol] - padding);
-				const xLine = (i: number) => glyphX + (i === 0 ? -widths[sourceCol] / 2 : i === columns ? widths[sourceCol] / 2 : (i / columns - .5) * inkWidth) * scale;
-				const yLine = (i: number) => glyphY + (i === 0 ? -cellHeight / 2 : i === slices ? cellHeight / 2 : (i / slices - .5) * height) * scale;
+				const xLine = (i: number) => glyphX + (i === 0 ? -widths[sourceCol] / 2 : i === columns ? widths[sourceCol] / 2 : splitsX?.[sourceCol][i - 1] ?? (i / columns - .5) * inkWidth) * scale;
+				const yLine = (i: number) => glyphY + (i === 0 ? -cellHeight / 2 : i === slices ? cellHeight / 2 : splitsY?.[i - 1] ?? (i / slices - .5) * height) * scale;
 				const lo = xLine(col % columns), hi = xLine(col % columns + 1),
 					up = yLine(row % slices), down = yLine(row % slices + 1);
 				x = (lo + hi) / 2; y = (up + down) / 2;
@@ -164,7 +177,8 @@ export function generateTextGrid(
 			}
 			const contours = upright.map(r => r.map(uprightToSheet));
 			// Identical cells share routing across rows and columns.
-			const key = char + ':' + widths[sourceCol] + ':' + row % slices + ':' + col % columns,
+			const key = char + ':' + widths[sourceCol] + ':' + row % slices + ':' + col % columns +
+				(layout.adaptivePanels ? ':' + sourceCol : ''),
 				prior = cached.get(key);
 			if (prior) {
 				const dx = x - prior.x,
@@ -183,13 +197,17 @@ export function generateTextGrid(
 					}))
 				);
 			} else {
+				const connectionAllowed = layout.guardSeams ? panelSeamGuard(gates,
+					[y - h / 2, x + w / 2, y + h / 2, x - w / 2],
+					[row % slices > 0, col % columns < columns - 1, row % slices < slices - 1, col % columns > 0]
+				) : undefined;
 				const construct = () => {
 					const local: Edge[] = [];
 					fourPortMotif(
 						local, contours, gates,
 						[Math.PI / 4, (3 * Math.PI) / 4, (-3 * Math.PI) / 4, -Math.PI / 4],
 						margin, [0, 1, 2, 3], undefined,
-						{ practical: layout.practical, compound: layout.compound, onCompound: layout.onCompound, balanced: layout.balanced, onCrowded: layout.onCrowded, bentSpokes: layout.bentSpokes }
+						{ practical: layout.practical, compound: layout.compound, onCompound: layout.onCompound, balanced: layout.balanced, onCrowded: layout.onCrowded, bentSpokes: layout.bentSpokes, connectionAllowed }
 					);
 					return local;
 				};
@@ -223,16 +241,16 @@ export function generateTextGrid(
 	}
 	if (slices > 1) {
 		const dividers = Array.from({length: rows}, (_, row) => Array.from({length: slices - 1}, (_, i) =>
-			(layout.inkPanels
-				? -fullHeight / 2 + (row + .5) * cellHeight + ((i + 1) / slices - .5) * height
+			(layout.inkPanels || layout.adaptivePanels
+				? -fullHeight / 2 + (row + .5) * cellHeight + (splitsY?.[i] ?? ((i + 1) / slices - .5) * height)
 				: -fullHeight / 2 + (row + (i + 1) / slices) * cellHeight) * scale)).flat();
 		edges = stitch(edges, dividers, 1);
 	}
 	if (columns > 1) {
 		let cursor = -span / 2;
-		const dividers = widths.flatMap(width => {
-			const values = Array.from({length: columns - 1}, (_, i) => (layout.inkPanels
-				? cursor + width / 2 + ((i + 1) / columns - .5) * Math.max(height * .1, width - padding)
+		const dividers = widths.flatMap((width, col) => {
+			const values = Array.from({length: columns - 1}, (_, i) => (layout.inkPanels || layout.adaptivePanels
+				? cursor + width / 2 + (splitsX?.[col][i] ?? ((i + 1) / columns - .5) * Math.max(height * .1, width - padding))
 				: cursor + (i + 1) * width / columns) * scale);
 			cursor += width;
 			return values;

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { generate } from './generate';
 import { generateComponentFigure } from './components';
+import { generateTextGrid } from './textGrid';
 import { cutTipCounts } from './cutQuality';
 import { convertValidatedCutGeometry } from '$lib/inverse/toHeartDesign';
 import type { Font, TextFrame, Ring } from './geometry';
@@ -179,6 +180,22 @@ describe('generator robustness regressions', () => {
 			expect(design.gridSize).toEqual({ x: 10, y: 10 });
 			validateHandoffs(design);
 		}, 20000);
+	it('joins Cinzel BO panels without branching cuts in air', () => {
+		const { design } = generate({ mode: 'text', name: 'BO', text: 'BO', textFrame: 'air', font: fonts.cinzel, colors });
+		expect(design.gridSize).toEqual({ x: 8, y: 8 });
+		validateHandoffs(design);
+	}, 20000);
+	it('aligns adaptive Cinzel BO seams through the oval frame', () => {
+		const construction = generateTextGrid('BO', fonts.cinzel, false, 'oval', {
+			columns: 2, slices: 3, filled: true, spread: true,
+			practical: true, compound: true, guardSeams: true, adaptivePanels: true
+		});
+		const { design } = convertValidatedCutGeometry(construction.geometry, {
+			name: 'BO', colors, tolerance: .025, clearanceScale: gridClearanceScale(8, 8)
+		});
+		expect(design.gridSize).toEqual({ x: 8, y: 8 });
+		validateHandoffs(design);
+	});
 	for (const [text, textFrame, size] of [
 		['B', 'woven', 5], ['B', 'air', 6], ['B', 'circle', 6],
 		['B', 'rounded', 6], ['B', 'scalloped', 6], ['BO', 'rounded', 8]

@@ -24,10 +24,34 @@ import sailboat from '../../../static/generator/motifs/ph-sailboat.json';
 import cookie from '../../../static/generator/motifs/tb-cookie.json';
 import cat from '../../../static/generator/motifs/ph-cat.json';
 import tablerGift from '../../../static/generator/motifs/tb-gift.json';
+import bow from '../../../static/generator/motifs/tb-bow.json';
+import butterfly from '../../../static/generator/motifs/ph-butterfly.json';
 const colors = { left: '#fff', right: '#b91313' };
 const examples = { tree, horse, bird, star, snowflake };
 
 describe('complete motif frames', () => {
+ for (const [name, motif, style, size] of [
+  ['bow', bow, 'fitted', 4], ['butterfly', butterfly, 'layers', 8]
+ ] as const) {
+  it(`moves the ${name} panel seam clear of narrow outline details`, () => {
+   const { design } = generate({ mode: 'figure', name, contours: motif.contours as Ring[], colors, style });
+   expect(design.gridSize).toEqual({ x: size, y: size });
+   expect(design).not.toHaveProperty('leftCutouts');
+   expect(design).not.toHaveProperty('rightCutouts');
+   const restored = normalizeHeartDesign(serializeHeartDesign(design));
+   expect(rasterizeDesign(restored!, 240).data).toEqual(rasterizeDesign(design, 240).data);
+  }, 20000);
+ }
+ for (const style of ['plain', 'rays', 'check'] as const) {
+  it(`divides the oval snowflake vertically in ${style}`, () => {
+   const { design } = generate({ mode: 'figure', name: 'Snowflake', contours: snow.contours as Ring[], colors, frame: 'oval', style });
+   expect(design.gridSize).toEqual({ x: 4, y: 4 });
+   expect(design).not.toHaveProperty('leftCutouts');
+   expect(design).not.toHaveProperty('rightCutouts');
+   const restored = normalizeHeartDesign(serializeHeartDesign(design));
+   expect(rasterizeDesign(restored!, 240).data).toEqual(rasterizeDesign(design, 240).data);
+  }, 20000);
+ }
  for (const [name, motif] of Object.entries({ gift, bicycle, coffee, snow, sailboat })) {
   it(`keeps ${name} and its counters in the six-strip checked-tip frame`, () => {
    const { design } = generate({ mode: 'figure', name, contours: motif.contours as Ring[], colors, style: 'corners' });

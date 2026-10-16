@@ -1,3 +1,4 @@
+import { createExactCurveFitter } from '$lib/inverse/curveFitCache';
 import { generateLayeredFigure } from './layers';
 import { generateCornerChecks } from './cornerChecks';
 import { generateFittedFigure } from './fitted';
@@ -288,7 +289,7 @@ type Construction = ReturnType<typeof generateFigure> & {
 };
 
 function finishConstruction(request: GeneratorRequest, r: Construction, recipe: GeneratorResult['recipe'],
-	geometry = r.geometry): GeneratorResult {
+	geometry = r.geometry, curveFitter?: ReturnType<typeof createExactCurveFitter>): GeneratorResult {
 	const curved = geometry !== r.geometry;
 	// The polygon prechecks describe the original straight cuts. A curved retry
 	// is checked on its actual cubics by the complete converter below.
@@ -308,6 +309,7 @@ function finishConstruction(request: GeneratorRequest, r: Construction, recipe: 
 		name: request.name,
 		colors: request.colors,
 		tolerance: 0.025,
+		curveFitter,
 		reuseTranslatedFits: curved || request.mode === 'text' &&
 			(request.textFrame === 'repeat' || request.textFrame === 'repeat-check'),
 		clearanceScale,
@@ -343,10 +345,11 @@ function improveCheckerConnections(result: GeneratorResult): GeneratorResult {
  * Moving coincident cuts preserves the artwork and graph endpoints; the entire
  * result must pass the same topology, spacing and fidelity checks again. */
 export function generate(request: GeneratorRequest): GeneratorResult {
+	const curveFitter = createExactCurveFitter();
 	const rejected: { construction: Construction; recipe: GeneratorResult['recipe'] }[] = [];
 	try {
 		const result = generateUsingRecipes(request,
-			(construction, recipe) => rejected.push({ construction, recipe }));
+			(construction, recipe) => rejected.push({ construction, recipe }), curveFitter);
 		return request.mode === 'text' && request.textFrame === 'repeat-check'
 			? improveCheckerConnections(result) : result;
 	} catch (error) {
@@ -362,7 +365,7 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 			let retry: Construction | undefined;
 			try {
 				retry = { ...construction, edges, geometry: compile(edges) };
-				return finishConstruction(request, retry, recipe);
+				return finishConstruction(request, retry, recipe, undefined, curveFitter);
 			} catch (retryError) {
 				if (!(retryError instanceof ConstructionError) && !(retryError instanceof CutGeometryError)) throw retryError;
 				if (retry) curvedCandidates.push({ construction: retry, recipe });
@@ -378,7 +381,7 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 				const construction = generateFourPortFigure(normalizeContours(request.contours ?? []),
 					'circle', size * .8, request.scale ?? .7, 'rays', fourPortMotif, 2);
 				retry = sunburstBorder(construction, size);
-				return finishConstruction(request, retry, 'nested');
+				return finishConstruction(request, retry, 'nested', undefined, curveFitter);
 			} catch (retryError) {
 				if (!(retryError instanceof ConstructionError) && !(retryError instanceof CutGeometryError)) throw retryError;
 				if (retry) curvedCandidates.push({ construction: retry, recipe: 'nested' });
@@ -400,24 +403,84 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 			const geometry = curveSharedCuts(construction.geometry);
 			if (!geometry) continue;
 			try {
-				return finishConstruction(request, construction, recipe, geometry);
+				return finishConstruction(request, construction, recipe, geometry, curveFitter);
 			} catch (retryError) {
 				if (!(retryError instanceof ConstructionError) && !(retryError instanceof CutGeometryError)) throw retryError;
 			}
 		}
+		const panels = retryPanelLayouts(request, curveFitter);
+		if (panels) return panels;
 		throw error;
 	}
 }
 
+/** Keep successful layouts and their latency unchanged. These bounded panel
+ * alternatives run only after the established straight and curved routes fail. */
+function retryPanelLayouts(request: GeneratorRequest, curveFitter?: ReturnType<typeof createExactCurveFitter>): GeneratorResult | undefined {
+	const recipes: Array<() => Construction> = [];
+	let recipe: GeneratorResult['recipe'] = 'letters';
+	if (request.mode === 'text') {
+		const frame = request.textFrame ?? 'woven', text = request.text ?? '', font = request.font;
+		if (!font || !text.trim() || frame === 'repeat' || frame === 'repeat-check') return;
+		const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n');
+		if (2 * Math.max(...lines.map(line => [...line].length)) + 3 * lines.length + 1 > 20) return;
+		const shape = frame === 'woven' || frame === 'air' ? undefined : frame;
+		for (const adaptivePanels of [false, true]) recipes.push(() =>
+			generateTextGrid(text, font, frame === 'air', shape, {
+				columns: 2, slices: 3, filled: true, spread: true,
+				practical: true, compound: true, guardSeams: true, adaptivePanels
+			}));
+	} else {
+		const rings = normalizeContours(request.contours ?? []), size = request.frameSize ?? 70, scale = request.scale ?? .7;
+		if (request.style === 'corners') return;
+		if (request.style === 'layers') {
+			recipe = 'nested';
+			recipes.push(() => generateLayeredFigure(rings, size, scale,
+				{ columns: 2, rows: 1, filled: true, adaptive: true }));
+		} else if (request.style === 'fitted') {
+			recipe = 'silhouette';
+			recipes.push(() => generatePanelFigure(rings, undefined, size, scale,
+				2, 'check', 1, false, fourPortMotif, 'ray', true));
+		} else {
+			const sunburst = request.style === 'sunburst', shape = sunburst ? 'circle' : (request.frame ?? 'circle'),
+				style = request.style === 'sunburst' ? 'rays' : (request.style ?? 'rays');
+			recipe = rings.length === 1 ? 'silhouette' : 'nested';
+			recipes.push(() => {
+				const result = generatePanelFigure(rings, shape, sunburst ? size * .8 : size,
+					scale, 1, style, 2, true, fourPortMotif, 'ray');
+				return sunburst ? sunburstBorder(result, size) : result;
+			});
+		}
+	}
+	for (const construct of recipes) {
+		let result: Construction | undefined;
+		try {
+			result = construct();
+			return finishConstruction(request, result, recipe, undefined, curveFitter);
+		} catch (error) {
+			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		}
+		if (!result) continue;
+		const geometry = curveSharedCuts(result.geometry);
+		if (!geometry) continue;
+		try {
+			return finishConstruction(request, result, recipe, geometry, curveFitter);
+		} catch (error) {
+			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		}
+	}
+}
+
 function generateUsingRecipes(request: GeneratorRequest,
-	onRejected: (construction: Construction, recipe: GeneratorResult['recipe']) => void): GeneratorResult {
+	onRejected: (construction: Construction, recipe: GeneratorResult['recipe']) => void,
+	curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult {
 	if (request.mode === 'figure') {
 		const contours = normalizeContours(request.contours ?? []);
 		if (!contours.length) throw new ConstructionError('empty', 'No contour');
 		request = { ...request, contours };
 	}
 	const finish = (construction: Construction, recipe: GeneratorResult['recipe']) => {
-		try { return finishConstruction(request, construction, recipe); }
+		try { return finishConstruction(request, construction, recipe, undefined, curveFitter); }
 		catch (error) {
 			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 			onRejected(construction, recipe);
@@ -641,7 +704,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 			// global retry replaces them with new straight segments.
 			const geometry = curveSharedCuts(construction.geometry);
 			if (!geometry) throw error;
-			return finishConstruction(request, construction, 'nested', geometry);
+			return finishConstruction(request, construction, 'nested', geometry, curveFitter);
 		}
 	}
 	if (request.style === 'corners') {

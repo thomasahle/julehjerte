@@ -160,6 +160,8 @@ export type CutGeometryOptions = {
   preserveShared?: boolean;
   /** Reuse repeated generated outline sections within this conversion. */
   reuseTranslatedFits?: boolean;
+  /** Optional request-local reuse of exact outline fits across candidate layouts. */
+  curveFitter?: typeof simplifyCubicChain;
 };
 
 export type ConvertedHeart = {
@@ -498,7 +500,8 @@ export function convertCutGeometry(
 ): ConvertedHeart {
   const geometry = parseCutGeometry(json);
   const scale = SPAN / geometry.square_width_mm;
-  const fit = opts.reuseTranslatedFits ? createTranslatedCurveFitter() : simplifyCubicChain;
+  const baseFit = opts.curveFitter ?? simplifyCubicChain;
+  const fit = opts.reuseTranslatedFits ? createTranslatedCurveFitter(baseFit) : baseFit;
 
   const families: Array<{ paths: CutReference[][]; lobe: LobeId; axis: 'x' | 'y'; label: string }> = [
     { paths: geometry.A_overlap_paths, lobe: 'right', axis: 'y', label: 'A' },

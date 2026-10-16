@@ -209,6 +209,19 @@ export function panelDividers(values: number[], low: number, high: number, count
 	});
 }
 
+/** Shared cuts may meet an internal seam only at that seam's agreed gate.
+ * Bounds and flags follow the gates: top, right, bottom, left, in upright space.
+ * Outer sides are unrestricted. Use the same tolerance as divider stitching. */
+export function panelSeamGuard(gates: Point[], bounds: number[], internal: boolean[]) {
+	return (point: Point) => {
+		const u = (point[0] - point[1]) * Math.SQRT1_2,
+			v = (point[0] + point[1] - 100) * Math.SQRT1_2;
+		return internal.every((seam, side) => !seam ||
+			Math.abs((side % 2 ? u : v) - bounds[side]) >= 1e-5 ||
+			distance(point, gates[side]) < 1e-5);
+	};
+}
+
 export function generatePanelFigure(
 	rings: Ring[],
 	frame: Frame | undefined,
