@@ -114,7 +114,7 @@
     "allTwentyFallbackPhotoPanelsInspected": true,
     "allFiveNewAndFourChangedExportsInspected": true,
     "allPriorCropsMasksCoverageAndPassFailOutcomesRetained": true,
-    "fullRepositoryQA": "Running separately in tmp/heart-learning/notch-overlap-qa-v1; do not report it as complete until its controller finishes."
+    "fullRepositoryQA": "Complete: 865 application tests (one skipped), 989 inverse tests, type checking, lint and build. See notch-overlap-qa.json."
   },
   "artifactsSha256": {
     "tmp/heart-learning/notch-local-support-v1/plan.json": "722fab0a5efe8978b2a60cf669d4cf0b215535bfd637eb46719f93c2052024f2",

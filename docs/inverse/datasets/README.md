@@ -49,8 +49,9 @@ with a **30px** notch error while passing the prototype's local checks. The
 current synthetic scenes explicitly forbid foreground occlusion of the selected
 heart. Further work needs visibility/occlusion supervision and independent
 perspective evidence; lower target-mask error does not resolve either issue.
-Both prototypes remain offline. Eleven focused checks pass; full repository QA
-is running separately and is not yet claimed complete.
+Both prototypes remain offline. Eleven focused checks and [full repository
+QA](notch-overlap-qa.json) pass: 865 application tests (one skipped), 989 inverse
+tests, type checking, lint and build. All 880 pinned source files are unchanged.
 
 The [frozen new-photo comparison](new-photo-generalization-results.json) completes
 on twenty additional source photographs: **4/20** checked reconstructions with
