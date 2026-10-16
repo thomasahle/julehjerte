@@ -62,8 +62,9 @@ checks; those checks do not turn the four failed source reconstructions into
 successes. All 55 cut-count pairs stay unchanged, and 38 geometries are exact.
 Mask error falls on nine cases, stays equal on 41, and rises on five by
 **0.00125–0.05 percentage points**. All 17 changed geometry pairs have been
-visually reviewed. Check, lint and build pass; the full repository tests are
-still running.
+visually reviewed. The complete release checks pass: **874 application tests**
+(one skip), **1,004 inverse tests**, check, lint and build. All **1,011 pinned
+source files** remain unchanged through the browser, corpus and test runs.
 
 The increases expose a remaining scheduling issue. On the gift, faster early
 refinement gives a losing alternative more time, leaving the winning fit only
@@ -91,7 +92,8 @@ reduces the dense case's median complete gradient call from **2.57 ms to
 comparisons / 614,240 scalar coordinates** agree exactly with the existing
 JavaScript reference across 55 saved geometries, both phases and binary/fractional
 targets. The subsequent sparse-graph and fresh-fit checks underpin the bounded
-policy above; full release verification remains pending.
+policy above; the completed browser, corpus and release verification is recorded
+above.
 
 The native-fidelity fix now passes all **22 Hunodan**, **four hard-photo** and
 **three smoke** browser workflows, plus **874 application tests** (one skip),

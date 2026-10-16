@@ -1,6 +1,6 @@
 {
   "schema": "gradient-row-bins-corpus-1",
-  "status": "fits-and-editable-audit-complete-full-suite-running",
+  "status": "fits-editable-audit-and-release-qa-complete",
   "method": "Fresh prepare + design for both arms on 55 fixed native masks, with captured production settings and candidate observers. Alternating arm order; the baseline loader substitutes only the preceding boundary.js. Times include preparation and solving, excluding file writes, independent render and editable conversion. One pair per mask, not repeated latency measurements.",
   "runtimeCommit": "94da53a899f449ceb9da79e042263059589d49c4",
   "sourceFilesVerified": 1011,
@@ -1779,6 +1779,14 @@
     "completeCandidatePassed": 106,
     "sourceFilesVerified": 1011
   },
+  "releaseQA": {
+    "status": "complete",
+    "seconds": 2415.69567575,
+    "sourceFilesVerified": 1011,
+    "applicationPassed": 874,
+    "applicationSkipped": 1,
+    "inversePassed": 1004
+  },
   "artifactsSha256": {
     "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/results.json": "fedeb0a5ee7d4fdc1ffcf4d12a8d0be2ef94143005053debd037d4c64a8649c5",
     "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/state.json": "6aee1f968736e14eb1aa0369f65acfd8211280ebc903a05a7341eb1df2186c6b",
@@ -1786,9 +1794,13 @@
     "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/replay.mjs": "34740b9473531cc4b30cd810ae861bc22c384e7318ce377d41a0c686a9744e52",
     "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/run.py": "403e9f87e0f8109dac39af3146940d08a629a52ccfdd2196a8d855943ce30542",
     "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/audit.mjs": "feb8e00d155c14251f4f6580084600e319f89cc0791847f0f39bbd56415e6766",
-    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/summarize-corpus.py": "2731a66ce5c572caceb2888a72a178e6478eae4445bb32b95b51dd9d6faba22d",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/summarize-corpus.py": "162152a96302cc90d421ac00ddf53991182ef00958a618565f7aa08eadc8df42",
     "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/audit-results.json": "a9c2a44c843f2d37e7c4cde2d5470457f7e1df8771c6029a11dcba2a318844ab",
     "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/audit-source.json": "124307ffaaf7104f4cbd5fa91e0d3fa9a48ae8f2253de7e7387e7ccd277a3c1e",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/qa/state.json": "2d5d60175822d4bb01e7b0d19f03ff348ddbcd321177a8278fdea47e58a14561",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/qa/checks.json": "953925b91e15d153602ed382324846e5e2608f6bf92ee188fd320a6987e9d5a1",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/qa/source.json": "124307ffaaf7104f4cbd5fa91e0d3fa9a48ae8f2253de7e7387e7ccd277a3c1e",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/qa/test.log": "818ec9547ed005c095de73c12acbfac1d70312f29c276430187ee6dd63cba723",
     "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-gift/baseline/woven.png": "c3636cef3dca140e0cddd0ceecdf912eed4b3feb8158a5d007aa906626479150",
     "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-gift/candidate/woven.png": "4a383edcb6fa327f704cb9c4f5884b02b3a9b188ba88eb09ea821e14473a928d",
     "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/gradient-bins-runtime-v1/corpus/photo-warped-checker/baseline/woven.png": "2e3142acf0c716ebe09a852a8ba51123861d13b83ae8cfd012030d55d9451ad8",

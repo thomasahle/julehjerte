@@ -1,6 +1,6 @@
 {
   "schema": "gradient-row-bins-runtime-1",
-  "status": "integrated-browser-and-paired-corpus-passed-full-suite-running",
+  "status": "integrated-browser-paired-corpus-and-full-suite-passed",
   "change": "Use 128 row bins through 32 unique cubics, then eight bins per cubic capped at 1024. Only the candidate-segment index changes; interpolation, gradient accumulation order, quadrature, masks and final validity gates remain unchanged.",
   "sparseEvidence": {
     "cases": 75,
@@ -774,7 +774,7 @@
     "newRegressions": 1
   },
   "qaRoot": "tmp/heart-learning/gradient-bins-runtime-v1/qa",
-  "nextAction": "Finish the existing serial full repository test run. Then run the prepared 18-fit timing diagnostic for the half-star repair gate and the gift/warped-checker time allocation, without changing validity or fidelity tolerances.",
+  "nextAction": "Use the queued three-case repeated timing diagnostic to distinguish candidate allocation from missed repair windows before changing scheduling.",
   "artifactsSha256": {
     "tmp/heart-learning/gradient-bins-runtime-v1/focused.log": "3aba8feaa0fc36dcb242ffc702a7116aa4309d3bef90ca55b57c7cba22976215",
     "tmp/heart-learning/gradient-bins-runtime-v1/baseline.js": "5233508124030053fdee008a4ebc5031c28c6ae085c5998587ea91bd7492941e",
@@ -793,7 +793,11 @@
     "tmp/heart-learning/gradient-bins-runtime-v1/qa/browser-hunodan/results.json": "1b45c27369a5b36ccb2c4a95d2338e040a0b1b074105900b1b00888d02c2e141",
     "tmp/heart-learning/native-conversion-fidelity-v1/qa/browser-hunodan/results.json": "56531b0090b196129ba9d2bfc3a3ce477631d7397ed642b62188a250fdbfef93",
     "tmp/heart-learning/gradient-bins-runtime-v1/qa/browser-photos/results.json": "78c8306f207aee58b05d3bc5c2ab65b3d13a50bd1be51c72bb76377db64cb11f",
-    "tmp/heart-learning/native-conversion-fidelity-v1/qa/browser-photos/results.json": "42bf1ee1153adeafe592b72dde67a9a7027ac8af0808050763885ca650e0311f"
+    "tmp/heart-learning/native-conversion-fidelity-v1/qa/browser-photos/results.json": "42bf1ee1153adeafe592b72dde67a9a7027ac8af0808050763885ca650e0311f",
+    "tmp/heart-learning/gradient-bins-runtime-v1/qa/state.json": "2d5d60175822d4bb01e7b0d19f03ff348ddbcd321177a8278fdea47e58a14561",
+    "tmp/heart-learning/gradient-bins-runtime-v1/qa/checks.json": "953925b91e15d153602ed382324846e5e2608f6bf92ee188fd320a6987e9d5a1",
+    "tmp/heart-learning/gradient-bins-runtime-v1/qa/source.json": "124307ffaaf7104f4cbd5fa91e0d3fa9a48ae8f2253de7e7387e7ccd277a3c1e",
+    "tmp/heart-learning/gradient-bins-runtime-v1/qa/test.log": "818ec9547ed005c095de73c12acbfac1d70312f29c276430187ee6dd63cba723"
   },
   "browserQA": {
     "status": "complete",
@@ -1323,5 +1327,13 @@
       "sourceFilesVerified": 1011
     },
     "report": "gradient-row-bins-corpus-results.json"
+  },
+  "releaseQA": {
+    "status": "complete",
+    "seconds": 2415.69567575,
+    "sourceFilesVerified": 1011,
+    "applicationPassed": 874,
+    "applicationSkipped": 1,
+    "inversePassed": 1004
   }
 }
