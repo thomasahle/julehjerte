@@ -795,7 +795,14 @@
     "tmp/heart-learning/sharing-area-tail-v1/results.json": "84b2e50ba819473d057207188fd3d065c9a8848dc98f1160b73b49b926cc1d24",
     "tmp/heart-learning/sharing-area-tail-v1/replay.mjs": "5de7fb048222b09463cc3f524925136f81331292de3ce1f8c322e7285cf02579",
     "tmp/heart-learning/sharing-area-tail-v1/candidate/inverse/core/direct/share.js": "199dfd9659c6b6b4f015b88a01cbc5af276a62f642fac1602a67915d5b51d9e9",
-    "tmp/heart-learning/sharing-area-tail-v1/matrix.py": "7bcaf9f870d21ba74edf47d7cf258da4a761289330a0b86f08c6b201ac5cf2c2"
+    "tmp/heart-learning/sharing-area-tail-v1/matrix.py": "7bcaf9f870d21ba74edf47d7cf258da4a761289330a0b86f08c6b201ac5cf2c2",
+    "tmp/heart-learning/sharing-area-tail-v1/round-checker-audit.mjs": "190c4a06f15ce2e41e61afef6f6f3a30e45fb86f537ef6d1554af10a312af6e4",
+    "tmp/heart-learning/sharing-area-tail-v1/round-checker-audit.json": "7802082d7baeca81b3a8c467265c64b2cc485e7500f59809f33235c2e54ea0df",
+    "tmp/heart-learning/sharing-area-tail-v1/matrix-state.json": "f8c56ad64fb282d936484eadc774904763a25b62fcb6214ad1284ac46d74f6b8",
+    "tmp/heart-learning/sharing-area-tail-v1/matrix-baseline.log": "bf3f5f74a6a4c2453a3bcf5af61a668645e753c74fb98e966aa194ec76d8da72",
+    "tmp/heart-learning/sharing-area-tail-current-v1/matrix.mjs": "212bed7381827334007b7f499201ab5e57db5c38d9a46a000f7549db654c2208",
+    "tmp/heart-learning/sharing-area-tail-current-v1/matrix.py": "564db66d797770b217f730d0976d7bcc35cb584e15cbb301022a1aa7f5543402",
+    "tmp/heart-learning/sharing-area-tail-current-v1/corpus/hunodan-editor-input/results.json": "26643ffc6a065e364f0a1633f40ade92c8eb6d3c835a0baf5f10ddf140eb1d26"
   },
   "tailRecovery": {
     "status": "offline-four-case-comparison-complete",
@@ -944,6 +951,42 @@
       }
     ],
     "interpretation": "Viking, bird and hat retain exactly the ordinary output scores. Gift gains two shared spans with lower original-source and fractional-coverage error, while independent binary error stays unchanged. Gift alignment costs 3.39 versus 2.38 seconds; no end-to-end speed or recovery improvement is claimed.",
-    "nextExperiment": "Paired alignment on 47 earlier frozen accepted exports (22 Hunodan and 25 photos), using identical mask PNGs and no fresh fitting. Live matrix controller records hashes and checks under tmp/heart-learning/sharing-area-tail-v1."
+    "nextExperiment": "Paired alignment on the latest verified outputs: 22 regular Hunodan exports and 27 accepted photographic exports, under tmp/heart-learning/sharing-area-tail-current-v1. Rebuilt Hunodan source masks reproduce all saved independent errors exactly. Partially observed photographs retain their observed.bin masks; scoring excludes missing pixels. Final paper checks include both lattice and polygon offsets. This is still a fixed-export local operation study, not a new timed solve.",
+    "historicalMatrix": {
+      "status": "stopped-on-baseline-before-testing-candidate",
+      "reason": "Historical round-checker is paper-uncertain at its saved 700-sample setting under the current audit, both before and after ordinary alignment. Both pass at 1000; polygon offsets pass at both resolutions. No proposed area recovery was involved.",
+      "audit": [
+        {
+          "name": "before",
+          "resolution": 700,
+          "status": "uncertain",
+          "lattice": "uncertain",
+          "offset": "pass"
+        },
+        {
+          "name": "before",
+          "resolution": 1000,
+          "status": "pass",
+          "lattice": "pass",
+          "offset": "pass"
+        },
+        {
+          "name": "after",
+          "resolution": 700,
+          "status": "uncertain",
+          "lattice": "uncertain",
+          "offset": "pass"
+        },
+        {
+          "name": "after",
+          "resolution": 1000,
+          "status": "pass",
+          "lattice": "pass",
+          "offset": "pass"
+        }
+      ],
+      "failureLog": "tmp/heart-learning/sharing-area-tail-v1/matrix-baseline.log",
+      "sourceGeometry": "tmp/heart-learning/return-projection-speed-v1/production-release/photos/round-checker/automatic/cut_geometry.json"
+    }
   }
 }
