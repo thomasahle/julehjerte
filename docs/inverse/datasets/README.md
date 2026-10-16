@@ -33,6 +33,20 @@ The inventory, with material annotations updated on 2026-10-16, contains:
 
 ## Current results and limits
 
+The native-fidelity fix now passes all **22 Hunodan**, **four hard-photo** and
+**three smoke** browser workflows, plus **874 application tests** (one skip),
+check, lint and build. The inverse suite is still running. The puppy's original
+six-pixel conversion regression is gone, including through editable SVG export.
+Every Hunodan SVG remains byte-identical, but this fresh run has **21/22 below
+ten seconds**, median **6.15 s**, maximum **10.24 s**. About 0.30 s of the dense
+case's paired slowdown occurs inside the unchanged solver and 0.065 s after its
+result. A [fresh solver profile](dense-solver-profile-plan.json) is queued after
+QA to find more speed margin. The hard-photo fits retain timing sensitivity:
+the half-size star's painting error rises from 1.8394% to 2.0081%, while the
+compressed star improves. These changes are preserved in the
+[browser comparison](native-conversion-fidelity-results.json), not described as
+unchanged photo quality.
+
 The combined count-bound and curve-cache **actual-browser** run completes all
 **22 regular Hunodan cases below ten seconds**, measured from Find snit to
 editable-ready: **5.98 s median, 9.85 s maximum**. Every painting mask, fitted
@@ -44,8 +58,9 @@ conversion gap predates the curve cache. The
 [native conversion fix](native-conversion-fidelity-results.json) now requires
 both grids to pass while an imported mask is unchanged, preserving free-border
 weights and observation coverage. Its regression, SVG round trip and related
-checks pass (80 focused tests); renewed browser and full repository QA are
-pending. The failed run remains recorded, not counted as complete QA.
+checks pass (80 focused tests); the renewed browser results are above, with
+full inverse QA still pending. The failed run remains recorded, not counted as
+complete QA.
 
 [Cached curve evaluation](curve-evaluation-cache-results.json) reduces the
 editable-conversion stage by **33%** across 110 saved inputs (65 distinct fitted
