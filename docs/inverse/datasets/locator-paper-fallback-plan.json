@@ -1,0 +1,30 @@
+{
+  "schema": "locator-paper-fallback-plan-1",
+  "status": "declared-before-outcomes",
+  "scope": "Fresh crop selection and full fitting on all 22 development photographs using frozen automatic MobileSAM predictions. Existing single-point + contrast fallback policy first. Only if it has no supported crop, try the original locator with the automatic two-paper prompt silhouette.",
+  "rationale": "Earlier two-paper prompting recovered hand-held and foliage checkers but lost aircraft and ribbon checker. Test conditional scheduling rather than global replacement or selection by resulting template score.",
+  "invariants": [
+    "No original source pixels, learned fields, paper palettes, masks or known corner references are changed.",
+    "Supported primary crops must match exactly, including resulting classified masks and observation coverage.",
+    "Only crop support determines whether to invoke the third attempt; no labels, template scores or manual per-image method assignments.",
+    "Use the original locator for the two-paper branch, with no new threshold or objective change.",
+    "All 22 photos remain in the denominator; no learned model is integrated or retrained.",
+    "Ten-second fitting allowance and unchanged image, feature, geometry, nominal paper and editable checks.",
+    "Review new crops and outputs visually. Compare the fixed independent source-paper and approximate corner references where available.",
+    "Cached model outputs exclude inference time; report crop attempts and time separately from fitting, never as browser latency."
+  ],
+  "parents": {
+    "tmp/heart-learning/locator-contrast-fallback-v1/probe/manifest.json": "0c8ede9bac6bb4823db7742c86c02667bd399cb17526052d3850899e52d2cbf0",
+    "tmp/heart-learning/mobilesam-paper-prompts-v1/probe/manifest.json": "bae5a131bae054284a3aeb6da0fa0e33a1428a25fa65f07be4f62b229ed828a5"
+  },
+  "baseline": "tmp/heart-learning/locator-contrast-fallback-v1/pipeline/report.json",
+  "sourceSha256": {
+    "tmp/heart-learning/locator-paper-fallback-v1/run.py": "66650350006b65bb5e6e3a8eb726b73c4c7feab16c838ebc25477f7062190c60",
+    "tmp/heart-learning/locator-paper-fallback-v1/editor-input.mjs": "da2005873ee1d72da172ddffc81f1446093ac76d6671a6ae03caa2b35cc34a4b",
+    "tmp/heart-learning/locator-paper-fallback-v1/review-reconstructions.py": "ad901cfc9a27805df81656b2fe9edbf4f93ada5a84b4219f4a11d78ea35398dc",
+    "tmp/heart-learning/locator-paper-fallback-v1/fallback-crop.mjs": "9553db8e54846913942d99a4670d4b9126994bedc800cbc0b9c4beaeffb5747d",
+    "tmp/heart-learning/locator-paper-fallback-v1/pipeline-replay.mjs": "518c262d97736aebcdd5215ad0c84670eedfb22822bdb9e9f7e4a51a0e2c4fa6",
+    "tmp/heart-learning/locator-paper-fallback-v1/replay.mjs": "dc537250656bb41f25cce2031e180f4c4d98f0280dc5f582e3944867597297f6",
+    "tmp/heart-learning/locator-paper-fallback-v1/score-source.py": "d12ba7c76eb328239af304c1f8e40eb007208cb4f539c5140614c0181aca8f77"
+  }
+}

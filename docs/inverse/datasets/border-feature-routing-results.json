@@ -266,6 +266,29 @@
           "Orb has a lower image error but more small protrusions along its top border; do not interpret the lower score as uniformly cleaner geometry.",
           "Other changes are small at the displayed scale. These time-limited runs do not isolate timing variation from code effects; none exercises the new interior-only retry."
         ]
+      },
+      "orbCandidateDiagnosis": {
+        "previousSelectedCounts": [
+          4,
+          4
+        ],
+        "currentSelectedCounts": [
+          5,
+          5
+        ],
+        "fourCutCandidateUnchanged": {
+          "sourceImageError": 0.01430625,
+          "selectionScore": 0.020834255037304517
+        },
+        "previousFiveCutCandidate": {
+          "sourceImageError": 0.01435625,
+          "selectionScore": 0.021386788341198115
+        },
+        "currentFiveCutCandidate": {
+          "sourceImageError": 0.01333125,
+          "selectionScore": 0.02046420149161271
+        },
+        "interpretation": "Both runs retained the same four-cut candidate. The five-cut candidate improved enough to win the existing selection score in this time-limited run. The new border-only retry did not trigger. More cuts lower disagreement here but add visible border protrusions."
       }
     },
     "artifactSha256": {
