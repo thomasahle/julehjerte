@@ -73,6 +73,15 @@ can miss its short-return repair near the deadline. A prepared
 remaining allowances before changing those policies; it also covers the warped
 checker, whose divergence occurs earlier in fitting.
 
+A [saved-artifact review](gradient-row-bins-quality-review.json) separates
+these timing effects from rendering differences. The maple leaf has identical
+polishing histories but receives different final shared-cut cleanup. The
+puppy also has identical polishing histories; extra cleanup improves its
+engine pixel-center score by five pixels while increasing independent SVG
+threshold error by fourteen pixels, and fractional-coverage error also rises.
+Thus exact gradients and a better engine score do not establish unchanged
+exported-image quality. These small increases remain in the comparison.
+
 The [fresh dense-case profile](dense-solver-profile-results.json) identifies the
 boundary-gradient kernel as the largest cost: **2.21 s** sampled self time.
 Both fresh control/profile solves reproduce the browser's exact cutting
