@@ -12,6 +12,7 @@ import { normalizeContours } from './contours';
 import { gridClearanceScale } from '$lib/geometry/clearance';
 import { generatePanelFigure } from './panels';
 import { generateComponentFigure } from './components';
+import { generateComponentLanes } from './componentLanes';
 import { rerouteSharedCuts } from './sharedCuts';
 import { curveSharedCuts, curveSharpSharedTips } from './curvedCuts';
 import {
@@ -423,8 +424,36 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 				if (!(retryError instanceof ConstructionError) && !(retryError instanceof CutGeometryError)) throw retryError;
 			}
 		}
+		const lanes = retryComponentLanes(request, curveFitter);
+		if (lanes) return lanes;
 		throw error;
 	}
+}
+
+/** Keep islands in parallel lanes when a rectangular cell grid cannot connect
+ * them cleanly. A clearance reserve keeps long shared approaches away from the
+ * neighbouring paper after curve fitting and rounding. */
+function retryComponentLanes(request: GeneratorRequest, curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult | undefined {
+	if (request.mode !== 'figure' || request.style === 'fitted' || request.style === 'corners' || request.style === 'layers') return;
+	const rings = normalizeContours(request.contours ?? []), size = request.frameSize ?? 70,
+		sunburst = request.style === 'sunburst', frame = sunburst ? 'circle' : (request.frame ?? 'circle'),
+		style = request.style === 'sunburst' ? 'rays' : (request.style ?? 'rays');
+	let best: GeneratorResult | undefined;
+	for (const aligned of [false, true]) try {
+		const inner = generateComponentLanes(rings, frame, sunburst ? size * .8 : size,
+			request.scale, style, aligned, sunburst ? 2 : 0);
+		const construction = sunburst ? sunburstBorder(inner, size) : inner;
+		const result = improveSharedConnections(finishConstruction(request, construction, 'nested', undefined, curveFitter));
+		const rect = inferOverlapRect(result.design.fingers, result.design.gridSize),
+			margin = intersectionMarginPx(rect, gridClearanceScale(result.design.gridSize.x, result.design.gridSize.y));
+		if (findFingersWithIssues(result.design.fingers, margin * 1.1).size) continue;
+		const tips = cutTipCounts(result.design);
+		if (!best || fewerCutTips(tips, cutTipCounts(best.design))) best = result;
+		if (tips[0] === 0 && tips[1] === 0) return best;
+	} catch (error) {
+		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+	}
+	return best;
 }
 
 /** Keep successful layouts and their latency unchanged. These bounded panel

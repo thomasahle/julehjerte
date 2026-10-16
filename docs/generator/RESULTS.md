@@ -1,5 +1,67 @@
 # Generator robustness results
 
+## Current coverage: separate component lanes with a clearance reserve
+
+A final figure fallback now groups disconnected components into three vertical
+lanes. Each lane has one open cutting path on each paper; counters stay with their
+parent and open through coincident A/B connections. The construction uses the
+chosen frame's existing attachment arcs. It tries direct connections and an
+aligned approach above and below the artwork, routes around neighbouring lanes,
+then rounds the shared joins. All visible motif outlines remain unchanged.
+
+The selected cuts must retain **10% more spacing than the standard grid-based
+minimum**, after fitting and rounding. This reserve matters: an initially clear
+curve can otherwise skim the coffee handle closely enough to leave an uncertain
+paper connection. It also selects the aligned scalloped-frame layout over a
+same-tip-count direct layout. The ordinary recipes and their successful outputs
+return before this bounded two-layout fallback. No solver, font changes, cutouts
+or runtime material rasterization were added.
+
+Twelve previously refused combinations now pass the full application generator:
+
+| Input / frame styles | Paper strips | Tips below 30° / below 45° |
+|---|---|---|
+| Coffee / circle rays, checks, plain | 4×4 | 0 / 2 |
+| Coffee / scalloped rays, checks, plain | 4×4 | 0 / 2 |
+| Coffee / hexagon plain | 4×4 | 0 / 6 |
+| Coffee / oval rays, checks | 4×4 | 0 / 0 |
+| Bicycle / diamond rays, checks, plain | 4×4 | 0 / 1 |
+
+The twelve captured production designs are **exactly identical** to the checked
+prototypes (`component-lanes-final.json`, `component-lanes-final-{0..11}.json`).
+Both JSON and SVG handoffs preserve the rendered weave, retain every cut and pass
+the editor's geometry checks. The regression tests also check the 10% reserve
+through both exports. The finished hearts and both paper sheets were rendered;
+representatives of all five frame shapes were inspected in `clear-lane-gallery-*`.
+
+Eleven pass the separate guarded paper-connectivity audit at resolution 1,400.
+The bicycle/diamond/plain case is uncertain at 1,400, with a single missing lattice
+connection, and **passes at 2,800** (`clear-lane-material.json`,
+`lane-bicycle-material-hires.json`). These checks concern a discrete geometric
+model and do not certify physical tear strength. Coffee/oval/plain still fails
+the new clearance reserve and remains refused. Shorter curve handles did not
+repair the initial uncertain candidates; those changes were not retained.
+
+A fresh production run of all **37 previous figure refusals** gives **12 accepted /
+25 refused / zero invalid** (`component-lanes-production.json`). Combined coverage
+is **2,832 accepted / 318 refused / zero invalid**: text **1,735 / 293**, figures
+**1,097 / 25** (`component-lanes-current.json`). The other 3,113 full-pipeline
+records retain their previous results; this is not a fresh run of all 3,150 cases.
+All twelve recoveries are added to the expected corpus. Remaining combinations,
+ANNA's eight N-corner tips, difficult text latency, other sizes and wider catalogue
+coverage remain unfinished.
+
+Five new regression tests pass in 21.87 seconds. Type checking, lint and the
+production build pass, with seven existing warnings (`component-lanes-focused.log`,
+`component-lanes-check.log`, `component-lanes-lint.log`, `component-lanes-build.log`).
+The single-worker full unit run reports **1,120 passed / two timed out** in
+792.74 seconds (`component-lanes-tests.log`). All new tests pass. The timeouts
+are the existing Kalam A and ANNA ordinary-repeat cases, at 20.82 and 23.10
+seconds against their unchanged 20-second limits. Both pass together in the
+focused rerun in 16.22 seconds (`component-lanes-kalam-isolated.log`); the full
+suite is still not green. All **177 inverse-engine tests pass** separately in
+93.92 seconds (`component-lanes-inverse.log`).
+
 ## Current coverage: tilted partitions inside layered frames
 
 A final layered-frame fallback tilts the internal panel seams before clipping
