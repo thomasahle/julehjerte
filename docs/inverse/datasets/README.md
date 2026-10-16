@@ -53,8 +53,18 @@ those pixels previously caused clipped photos to throw or moved the estimator's
 inset. All eighteen focused tests, type checking, lint and build pass. A private
 Chromium replay toggles the red/white option on a real clipped collage crop, then
 returns to Automatic for editing, undo/redo, solving and SVG download. The
-downloaded result passes geometry/paper checks at 0.55% observed disagreement;
-this does not establish a quality improvement from changing classification.
+downloaded result passes geometry/paper checks at 0.55% observed disagreement.
+The subsequent full run passes 865 application tests (one skipped) and 962/967
+inverse tests; the five pre-existing fitter assertions remain. Type checking,
+lint and build pass. This does not establish a quality improvement from changing
+classification.
+
+[Fresh regression outcome checks](fitter-regression-outcomes.json) independently
+validate the blue-star and horizontally shifted puppy exports. Both pass geometry
+and paper checks, retaining the original error and small-opening requirements.
+Three focused tests now check those outcomes instead of requiring historical
+uncertain intermediate states; all three pass. The full-run count above remains
+the earlier frozen run, and the gift/Viking regressions remain unresolved.
 
 [Keeping the best valid rollback point](best-safe-rollback-results.json) restores
 the shifted bird's small eye while preserving exploration through worse valid

@@ -1,0 +1,181 @@
+{
+  "scope": "Fresh source-only replays of existing blue-star and horizontally shifted puppy tests. Exported-image, local-feature, actual geometry and paper outcomes are recorded independently of historical route assertions.",
+  "runtimeCommit": "d71e2d114ed962d92eafaccf3bcc21f283ab75c0",
+  "runtimeChanged": false,
+  "sourceFilesVerified": 117,
+  "results": [
+    {
+      "case": "blue-star",
+      "maskSha256": "3ce29580911b533c11961dfd4ff58799c3d9463dd09fb7303ce4edbc649ea0e9",
+      "seconds": 6.749511083,
+      "templateChecksPassed": true,
+      "independentGeometryPassed": true,
+      "independentPaperStatus": "pass",
+      "materialResolution": 360,
+      "inputUnchanged": true,
+      "renders": [
+        {
+          "resolution": 400,
+          "disagreement": 0.0039375,
+          "featuresPassed": true,
+          "components": [
+            {
+              "centerMm": [
+                51.00301161929715,
+                49.890093694822575
+              ],
+              "sourceAreaMm2": 1097.3125,
+              "intersectionPixels": 17462,
+              "retention": 0.9945890527994532,
+              "predictedComponentAreaMm2": 1095.5625,
+              "touchesBorder": false,
+              "componentIoU": 0.9908079891057648
+            },
+            {
+              "centerMm": [
+                51.820425389441034,
+                49.32089236625079
+              ],
+              "sourceAreaMm2": 1773.375,
+              "intersectionPixels": 21536,
+              "retention": 0.7590047226333968,
+              "predictedComponentAreaMm2": 1355.125,
+              "touchesBorder": false,
+              "componentIoU": 0.7551192145862553
+            }
+          ]
+        },
+        {
+          "resolution": 800,
+          "disagreement": 0.0067875,
+          "featuresPassed": true,
+          "components": [
+            {
+              "centerMm": [
+                51.00301161929715,
+                49.890093694822575
+              ],
+              "sourceAreaMm2": 1097.3125,
+              "intersectionPixels": 69656,
+              "retention": 0.9918551005297033,
+              "predictedComponentAreaMm2": 1096.09375,
+              "touchesBorder": false,
+              "componentIoU": 0.9849268968637764
+            },
+            {
+              "centerMm": [
+                51.820425389441034,
+                49.32089236625079
+              ],
+              "sourceAreaMm2": 1773.375,
+              "intersectionPixels": 58273,
+              "retention": 0.5134365968844717,
+              "predictedComponentAreaMm2": 921.984375,
+              "touchesBorder": false,
+              "componentIoU": 0.5101374420029765
+            },
+            {
+              "centerMm": [
+                89.90500504286435,
+                92.45165153807362
+              ],
+              "sourceAreaMm2": 123.9375,
+              "intersectionPixels": 7814,
+              "retention": 0.9851235501765002,
+              "predictedComponentAreaMm2": 124.484375,
+              "touchesBorder": true,
+              "componentIoU": 0.9664811379097094
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "puppy-x1",
+      "maskSha256": "a96eea21b65604e2a7b9b93d6823cdd58937bebd66fceeb80e9a1f5c2812c1cc",
+      "seconds": 24.428346207999997,
+      "templateChecksPassed": true,
+      "independentGeometryPassed": true,
+      "independentPaperStatus": "pass",
+      "materialResolution": 700,
+      "inputUnchanged": true,
+      "renders": [
+        {
+          "resolution": 400,
+          "disagreement": 0.00918125,
+          "featuresPassed": true,
+          "components": [
+            {
+              "centerMm": [
+                61.013392857142854,
+                75.70982142857143
+              ],
+              "sourceAreaMm2": 7,
+              "intersectionPixels": 112,
+              "retention": 1,
+              "predictedComponentAreaMm2": 9.5,
+              "touchesBorder": false,
+              "componentIoU": 0.7368421052631579
+            }
+          ]
+        },
+        {
+          "resolution": 800,
+          "disagreement": 0.0103328125,
+          "featuresPassed": true,
+          "components": [
+            {
+              "centerMm": [
+                15.03139400921659,
+                5.367511520737327
+              ],
+              "sourceAreaMm2": 108.5,
+              "intersectionPixels": 6901,
+              "retention": 0.9938076036866359,
+              "predictedComponentAreaMm2": 109.875,
+              "touchesBorder": true,
+              "componentIoU": 0.9754063604240283
+            },
+            {
+              "centerMm": [
+                61.013392857142854,
+                75.70982142857143
+              ],
+              "sourceAreaMm2": 7,
+              "intersectionPixels": 444,
+              "retention": 0.9910714285714286,
+              "predictedComponentAreaMm2": 9.34375,
+              "touchesBorder": false,
+              "componentIoU": 0.7375415282392026
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "testCorrections": {
+    "floral-checker": "Continue to 201 steps because guarded diagonal connections now certify the earlier 81-step result. The later retained uncertain alternative still passes an actual 700-resolution paper audit on unchanged coordinates and independently improves the exported image. Original 2.8% error limit retained.",
+    "blue-star": "Allow paper to pass at the requested resolution rather than requiring a historical finer-audit route. Independently validate exported geometry and paper. Original 0.52% error limit at 400 pixels retained.",
+    "puppy-x1": "Remove the requirement to visit a feature-passing but paper-uncertain intermediate state. Preserve the final 700-resolution audit, opening enclosure/IoU, exported errors and initialization-reuse checks."
+  },
+  "verification": {
+    "focusedTests": 3,
+    "passed": 3,
+    "command": "node --test --test-concurrency=1 --test-name-pattern='a coarse paper pass retains|a fresh blue-star fit|a horizontal crop shift keeps' scripts/inverse/refinement-checkpoints.test.mjs scripts/inverse/feature-seeds.test.mjs",
+    "fullRun": "The earlier pinned full run remains 962/967 inverse tests; these focused results do not replace that denominator.",
+    "lintExitCode": 0
+  },
+  "limitations": [
+    "Existing development regression fixtures, not unseen-photo evaluation.",
+    "Independent raster error remains resolution-dependent; no new 800-pixel limit is asserted for the blue-star test.",
+    "Small contour bumps and uneven frame details remain visible in the exports.",
+    "Gift and Viking failures are not corrected by this change."
+  ],
+  "artifacts": {
+    "tmp/heart-learning/fitter-regression-outcomes-v1/source.json": "b8036a76562928893f283b9a13e7e576423f6c1acff0b6886c9c6692a7870460",
+    "tmp/heart-learning/fitter-regression-outcomes-v1/results.json": "78967a29d5c10fb9a9b89aa9ee49d1c401433413df41b910d7eaf7fd5907c842",
+    "tmp/heart-learning/fitter-regression-outcomes-v1/replay.mjs": "aae931cad9b6d8a6807b9aef0d53d3065e30c2a2afefd415d88c6e57781d21d2",
+    "tmp/heart-learning/fitter-regression-outcomes-v1/verification/focused.log": "4392ae60e57986085dd10a505829cf41eee0f5120d5d3f07cca7437c731c79d3",
+    "tmp/heart-learning/fitter-regression-outcomes-v1/verification/lint.log": "2b7add329ca80a0f26dcb26c7eb139cd28b3768793c6b0797002f91a54119a34"
+  }
+}

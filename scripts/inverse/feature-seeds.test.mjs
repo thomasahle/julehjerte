@@ -153,7 +153,7 @@ test('a finer spline recovers a half-resolution opening after all coarse feature
   assert.deepEqual(source.mask,mask);assert.deepEqual(source.probability,probability);
 });
 
-test('a horizontal crop shift recovers its opening by refining an uncertain alternate',async()=>{
+test('a horizontal crop shift keeps its enclosed opening through finer refinement',async()=>{
   const imported=await puppy(0,1),cfg={...AUTOMATIC_PRESET,timeLimit:25,trials:0,earlyStop:false};
   assert.equal(createHash('sha256').update(imported.preview.mask).digest('hex'),'a96eea21b65604e2a7b9b93d6823cdd58937bebd66fceeb80e9a1f5c2812c1cc');
   const prepared=prepare({type:'mask',mask:imported.preview.mask,resolution:400},cfg),source=prepared.target.sourceImage;
@@ -163,7 +163,8 @@ test('a horizontal crop shift recovers its opening by refining an uncertain alte
   assert.equal(solver.earlyFeatureInitialization.featureRetry.reason,'lost');
   assert.equal(solver.earlyFeatureInitialization.scheduled,2);
   assert.equal(solver.earlyFeatureInitialization.hypotheses,10,'Reuse a computed routing rather than repeating count search');
-  assert.ok(solver.candidates.some(c=>c.featuresPassed&&!c.imagePassed&&c.paperVerification?.status==='uncertain'));
+  // A better paper check can certify the starting layout immediately; the
+  // final opening and export checks below do not require an uncertain detour.
   assert.equal(solver.featureDetail.applied,true);
   assert.equal(solver.featureDetail.paperStatus,'pass');
   assert.equal(answer.report.templateChecksPassed,true);

@@ -80,6 +80,36 @@
           "sha256": "5d6dca6d3235b2fda6ad56bfb7f0fe43fc7337390014e6038f60c8b833572e44"
         }
       ]
+    },
+    "fullQA": {
+      "status": "complete",
+      "commit": "d71e2d114ed962d92eafaccf3bcc21f283ab75c0",
+      "sourceFilesVerified": 797,
+      "applicationTests": {
+        "passed": 865,
+        "skipped": 1
+      },
+      "inverseTests": {
+        "passed": 962,
+        "total": 967,
+        "failed": 5
+      },
+      "typecheckErrors": 0,
+      "lintErrors": 0,
+      "buildPassed": true,
+      "checks": {
+        "path": "tmp/heart-learning/irregular-mixture-fix-v1/full-qa/checks.json",
+        "sha256": "aa3f8ba980e4858503940ba2b5f01ddf75ae93f91399ed06a5573c6875f07b8d"
+      },
+      "testLog": {
+        "path": "tmp/heart-learning/irregular-mixture-fix-v1/full-qa/test.log",
+        "sha256": "f8fb885c1d2cfbe578dd7f95a65fbabef0f2013b34ba04757287f50eca0ddd15"
+      },
+      "sourceManifest": {
+        "path": "tmp/heart-learning/irregular-mixture-fix-v1/full-qa/source.json",
+        "sha256": "2df16723cb33e8f9057d893999dd4290e17071ae0c7d4915a3342a3dbc97235d"
+      },
+      "qualification": "Five pre-existing fitter regression assertions still fail. The observer regression is fixed. Later outcome-based test corrections are recorded separately and are not retroactively counted as passing this run."
     }
   },
   "regressions": [
@@ -90,7 +120,7 @@
   ],
   "limitations": [
     "No claim that mixture classification is the best choice for every photograph.",
-    "This follow-up has focused and browser verification; the preceding full suite had five fitter failures and one outdated observer assertion. The observer assertion is corrected here.",
+    "The complete frozen-source QA passes 962/967 inverse tests and all 865 application tests (one skipped). Five pre-existing fitter regression assertions remain; follow-up outcome audits distinguish obsolete route assertions from actual quality regressions.",
     "No changes pushed or deployed."
   ]
 }
