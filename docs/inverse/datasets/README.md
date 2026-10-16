@@ -41,6 +41,17 @@ mark other hearts as background. A subsequent training protocol must specify a
 rough-ROI/prompt task or label all hearts rather than silently mixing those tasks.
 Source groups remain intact and motif-family relationships remain unresolved.
 
+A [current-label task audit](real-photo-instance-task-audit.json) found one
+identifiable woven basket in each of the existing 24 body-annotated photographs,
+so the draft ambiguity does not explain the completed single-heart model failures.
+Neither current labels nor drafts supply an independent model input selection cue.
+Six inspected locations on other baskets in the two drafts are supervised as
+background by the body loss. A subsequent selected-instance experiment should
+record and consume a rough box (and a point if ambiguous), with independent
+evaluation prompts and unchanged source/family grouping. All 24 source and
+annotation references and 15 audit artifacts verify; no labels, allocations or
+training results changed.
+
 ## Current results and limits
 
 A [checkpoint repair allowance](refinement-checkpoint-completion.json) is now
