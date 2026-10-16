@@ -4,16 +4,28 @@ import { sub, dot, cross, mix, distance, type Point, type Edge } from './geometr
  * endpoints and all visible outlines stay fixed. This bounded visibility graph
  * is a routing construction; its result still needs the full-sheet validators. */
 export function rerouteSharedCuts(source: Edge[], margin: number): Edge[] {
+	return rerouteCuts(source, margin, source.filter(e => e.family === 'AB' && e.kind === 'shared'));
+}
+
+/** Route selected frame leads around cuts on their own sheet. Crossings with
+ * the other sheet are part of the weave; shared cuts belong to both sheets.
+ * Keep the frame arcs and endpoints fixed, then validate the completed heart. */
+export function rerouteFrameCuts(source: Edge[], margin: number, leads: Edge[]): Edge[] {
+	return rerouteCuts(source, margin, leads.filter(e => e.kind === 'frame' && e.family !== 'AB'));
+}
+
+function rerouteCuts(source: Edge[], margin: number, selected: Edge[]): Edge[] {
 	let edges = source;
 	const project = (p: Point, a: Point, b: Point) => Math.max(0, Math.min(1,
 		dot(sub(p, a), sub(b, a)) / Math.max(1e-20, dot(sub(b, a), sub(b, a)))));
-	for (const original of source.filter(e => e.family === 'AB' && e.kind === 'shared')) {
+	for (const original of selected) {
 		const from = original.from, to = original.to, reach = margin * 7;
 		const bounds = [
 			Math.min(from[0], to[0]) - reach, Math.min(from[1], to[1]) - reach,
 			Math.max(from[0], to[0]) + reach, Math.max(from[1], to[1]) + reach
 		];
 		const relevant = edges.filter(e => e !== original &&
+			(e.family === original.family || e.family === 'AB' || original.family === 'AB') &&
 			Math.min(e.from[0], e.to[0]) <= bounds[2] && Math.max(e.from[0], e.to[0]) >= bounds[0] &&
 			Math.min(e.from[1], e.to[1]) <= bounds[3] && Math.max(e.from[1], e.to[1]) >= bounds[1]);
 		const padded = relevant.map(edge => ({

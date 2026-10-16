@@ -33,7 +33,7 @@ function componentEnvelope(points: Ring): Ring {
  * small neighbouring islands separate while sharing a larger body below them. */
 export function generateComponentFigure(rings: Ring[], frame: Frame | 'fitted' = 'circle', size = 70, scale = .7,
 	style: 'rays' | 'check' | 'plain' = 'rays', route = fourPortMotif, columns: 2 | 3 | 4 = 2, extraStrips = 0,
-	wideContacts = false) {
+	wideContacts = false, spread = true) {
 	const upright = rings.map(r => r.map(([x, y]): Point => [
 		x * size * scale * (frame === 'oval' ? .75 : 1), y * size * scale * (frame === 'oval' ? .75 : 1)
 	]));
@@ -138,7 +138,7 @@ export function generateComponentFigure(rings: Ring[], frame: Frame | 'fitted' =
 		route(edges, contours, gates, gates.map(p => Math.atan2(center[1] - p[1], center[0] - p[0])), margin);
 	}
 	if (splits.length) edges = stitch(edges, [...new Set(splits)].sort((a, b) => a - b));
-	connectCellGrid(edges, cells, boundary, style, true);
+	connectCellGrid(edges, cells, boundary, style, spread);
 	edges = rerouteSharedCuts(edges, margin);
 	const artwork = upright.map(r => r.map(uprightToSheet));
 	return { edges, artwork, geometry: compile(edges), domain: [envelope] };

@@ -427,6 +427,14 @@ band's two extra strips per sheet in local routing clearance, and use the
 clipped component's phase at each shared seam. Require 10% extra clearance on
 the complete fitted sheets; prefer fewer sharp tips. Earlier successful
 sunburst layouts keep their cuts.
+If a wider component grid still crosses the outer ring, its final fallback may
+detour the inner frame's paper-edge leads around cuts on the same sheet. Keep
+both circles, all artwork contours and the paper-edge endpoints fixed. A/B
+crossings are allowed; coincident cuts obstruct both sheets. Use the existing
+bounded visibility routing with 20% construction reserve, then require 10%
+clearance on the completed, rounded sheets. Do not change successful earlier
+layouts. The paw sunburst uses nine actual strips per sheet and has no cutting
+tips below 45°; its separate material-connectivity audit must also pass.
 
 Framed words keep independent four-port cells for each letter, with a common font baseline and
 widths fitted to the glyphs. Text entry accepts three lines of ten characters. Multiline layouts

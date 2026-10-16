@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { rerouteSharedCuts } from './sharedCuts';
+import { rerouteSharedCuts, rerouteFrameCuts } from './sharedCuts';
 import { add, mix, type Edge, type Ring } from './geometry';
 import { fingerHasIntersectionIssues } from '$lib/editor/curveIssues';
 import type { Finger } from '$lib/types/heart';
@@ -16,6 +16,25 @@ const finger = (id: string, points: Ring): Finger => ({
 });
 
 describe('invisible connection detours', () => {
+	it('allows a frame lead to cross the other sheet but clears cuts belonging to its own', () => {
+		const lead: Edge = { from: [20, 50], to: [80, 50], family: 'A', kind: 'frame' };
+		const other: Edge = { from: [50, 20], to: [50, 80], family: 'B', kind: 'frame' };
+		const crossing = [lead, other];
+		expect(rerouteFrameCuts(crossing, 1, [lead])).toBe(crossing);
+		for (const family of ['A', 'AB'] as const) {
+			const edges = [...crossing];
+			add(edges, obstacle, family, 'outline');
+			const result = rerouteFrameCuts(edges, 1, [lead]);
+			expect(result.filter(e => e !== other && e.kind === 'outline')).toEqual(edges.slice(2));
+			expect(result).toContain(other);
+			const path = result.filter(e => e.family === 'A' && e.kind === 'frame');
+			expect(path.length).toBeGreaterThan(1);
+			expect(path[0].from).toEqual(lead.from);
+			expect(path.at(-1)!.to).toEqual(lead.to);
+			const routed = finger('frame', [path[0].from, ...path.map(e => e.to)]);
+			expect(fingerHasIntersectionIssues(routed, [routed, finger('obstacle', obstacle)], 1)).toBe(false);
+		}
+	});
 	it('routes around an intervening outline with the editor clearance intact', () => {
 		const edges: Edge[] = [];
 		add(edges, obstacle, 'A', 'outline');

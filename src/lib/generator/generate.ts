@@ -13,7 +13,7 @@ import { gridClearance, gridClearanceScale } from '$lib/geometry/clearance';
 import { generatePanelFigure } from './panels';
 import { generateComponentFigure } from './components';
 import { generateComponentLanes } from './componentLanes';
-import { rerouteSharedCuts } from './sharedCuts';
+import { rerouteSharedCuts, rerouteFrameCuts } from './sharedCuts';
 import { curveSharedCuts, curveSharpSharedTips } from './curvedCuts';
 import {
 	convertValidatedCutGeometry,
@@ -447,6 +447,8 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		}
 		const sunburstPanels = retrySunburstPanels(request, curveFitter);
 		if (sunburstPanels) return sunburstPanels;
+		const sunburstComponents = retrySunburstComponents(request, curveFitter);
+		if (sunburstComponents) return sunburstComponents;
 		const textPanels = retryTextPanelIslands(request, curveFitter);
 		if (textPanels) return textPanels;
 		let bestRepeated: GeneratorResult | undefined;
@@ -482,6 +484,37 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		if (bestRepeated) return bestRepeated;
 		throw error;
 	}
+}
+
+/** Wide component grids can send a frame lead through the outer circle. Route
+ * those leads around their own sheet's border while retaining both circular
+ * outlines, the motif and every paper-edge endpoint. */
+function retrySunburstComponents(request: GeneratorRequest, curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult | undefined {
+	if (request.mode !== 'figure' || request.style !== 'sunburst') return;
+	const rings = normalizeContours(request.contours ?? []), count = forest(rings).length;
+	if (count < 2 || count > 8) return;
+	const size = request.frameSize ?? 70;
+	let best: GeneratorResult | undefined;
+	for (const columns of [4, 3, 2] as const) for (const route of [fourPortMotif, balancedFourPortMotif]) try {
+		const inner = generateComponentFigure(rings, 'circle', size * .8, request.scale ?? .7,
+			'check', route, columns, 2, true, false), outer = sunburstBorder(inner, size);
+		const margin = gridClearance(outer.geometry.A_overlap_paths.length + 1,
+			outer.geometry.B_overlap_paths.length + 1);
+		const leads = inner.edges.filter(e => e.kind === 'frame' &&
+			[e.from, e.to].some(p => p.some(v => v === 0 || v === 100)));
+		const edges = rerouteFrameCuts(outer.edges, margin * 1.2, leads);
+		const construction = { ...outer, edges, geometry: compile(edges) };
+		const result = improveSharedConnections(finishConstruction(request, construction, 'nested', undefined, curveFitter));
+		const actualMargin = intersectionMarginPx(inferOverlapRect(result.design.fingers, result.design.gridSize),
+			gridClearanceScale(result.design.gridSize.x, result.design.gridSize.y));
+		if (findFingersWithIssues(result.design.fingers, actualMargin * 1.1).size) continue;
+		const tips = cutTipCounts(result.design);
+		if (!best || fewerCutTips(tips, cutTipCounts(best.design))) best = result;
+		if (!tips[0] && !tips[1]) return best;
+	} catch (error) {
+		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+	}
+	return best;
 }
 
 /** Slanted panel projections can graze the outer sunburst's diagonal corners.

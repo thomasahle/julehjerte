@@ -1,6 +1,49 @@
 # Generator robustness results
 
-## Current coverage: stars and snowflake in the sunburst frame
+## Current coverage: paw in the sunburst frame
+
+A wide component grid could send its inner frame leads through the outer
+sunburst circle. A final fallback now detours those leads around cuts on their
+own sheet. Crossings with the other sheet remain allowed; shared cuts belong to
+both. Both circles, the motif and every paper-edge endpoint remain fixed. The
+bounded routing uses 20% extra construction clearance; the completed, fitted
+heart must retain 10% extra clearance and is ranked by sharp-tip counts.
+
+This recovers the Tabler paw with **9×9 actual strips and no tips below 45°**.
+The complete production design exactly matches the audited prototype. JSON/SVG
+handoffs pass, and the independent material audit passes at resolution **4,200**
+with zero certain or possible detached core islands. At 1,400 and 2,800 the audit
+was uncertain on one sheet; those results were not counted as passes. The heart
+and both full cutting sheets were visually reviewed. Evidence is in
+`frame-route-{audit,metrics,material}.json`, `frame-route-production-tb-paw.json`
+and `frame-route-gallery-0.png`. These are digital checks, not physical weaving
+or tear-strength measurements.
+
+All **51 default sunburst motifs** were freshly compared with the previous
+generator: **50 accepted / one refused / zero invalid**. All **49 previously
+accepted complete outputs are exactly unchanged**. Coffee still refuses. Paw
+generation took 3.86 seconds during the audit, which was not an isolated latency
+benchmark.
+
+The merged corpus is **2,861 accepted / 289 refused / zero invalid**: text is
+unchanged at 1,750 / 278; figures are 1,111 / 11. `frame-route-current.json`
+refreshes the 51 sunburst records and retains the other 3,099 from
+`sunburst-square-current.json`. This is not a fresh full-matrix run. Other sizes
+and the broader searchable catalogue remain incompletely verified.
+
+Moving the component dividers to wider coordinate gaps recovered none of 108
+trials. Moving fitted-grid ray origins toward their components recovered none
+of 60 trials. Those experiments are not included. The new production fallback
+runs only after established sunburst layouts fail; the shared-cut routing keeps
+its previous obstacle rules and candidate order.
+
+All **1,164 unit tests across 67 files** pass in one full run with unchanged time
+limits (603.25 seconds), followed by **177 passing inverse tests** (87.32 seconds).
+Both focused regressions pass. Check, lint and production build pass with the
+seven existing Svelte warnings. Logs are
+`frame-route-{focused,tests,check,lint,build}.log`.
+
+## Previous coverage: stars and snowflake in the sunburst frame
 
 The sunburst's slanted inner projections could pass about 0.2 units from a
 corner of its outer circle, even when the motif's own cuts were clear. A final
