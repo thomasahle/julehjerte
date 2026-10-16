@@ -1,0 +1,25 @@
+{
+  "schema": "locator-diameter-components-plan-1",
+  "status": "declared-before-outcomes",
+  "scope": "Offline isolation of the two diameter-loss components on 22 frozen SAM box-plus-point silhouettes. Same RGB material estimates and unchanged crop gates. Baseline uses cap-side foreign colour minus .60 times boundary contrast; separate arms remove only the contrast reward or only the cap-side purity penalty.",
+  "cases": 22,
+  "methods": [
+    "baseline",
+    "no-contrast",
+    "no-purity"
+  ],
+  "hypothesis": "A visible colour step is not required at an invisible/shared cut or same-colour border, so rewarding that contrast can displace otherwise valid physical overlap geometry. Cap-side purity may still be useful. Separate both effects before choosing a change.",
+  "invariants": [
+    "Frozen source photographs and probabilities; no new segmentation or manual corners.",
+    "Geometry parameterization, support thresholds, colour gates, iterations and orientation allowance unchanged.",
+    "Baseline crop coordinates must reproduce. No per-photo best-arm selection.",
+    "Inspect all outputs, then assess full templates and independent source references for any candidate improvement."
+  ],
+  "artifactsSha256": {
+    "tmp/heart-learning/locator-diameter-components-v1/probe/manifest.json": "ada85633148dea7ba28770b28b575317fb3619a56df166e2473526b831d17b26",
+    "tmp/heart-learning/locator-diameter-components-v1/no-contrast-crop.mjs": "80362f737714282b9e3d8e8520e858d7969181d230afc14ff64baf1cb31eb6e9",
+    "tmp/heart-learning/locator-diameter-components-v1/no-purity-crop.mjs": "fde5cefb1530f00ef866fba3e88530be9d7047b688e2b6a61676eba249df2e1e",
+    "tmp/heart-learning/locator-diameter-components-v1/replay.mjs": "f8200c1f6a2dab6c681a5c183676099abba0a7f6db78262d6499de1320b1abd7",
+    "tmp/heart-learning/locator-diameter-components-v1/run.py": "99b20120f5989a5d7ff375c4a1fbfa85c24cac1da21d1314c0bbcaf0bab3512e"
+  }
+}

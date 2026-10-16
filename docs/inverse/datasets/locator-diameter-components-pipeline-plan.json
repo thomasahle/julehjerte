@@ -1,0 +1,20 @@
+{
+  "schema": "locator-diameter-components-pipeline-plan-1",
+  "status": "declared-before-fitting",
+  "cases": 22,
+  "methods": [
+    "baseline",
+    "no-contrast"
+  ],
+  "scope": "All 22 fixed-source photographs and their frozen crop proposals; baseline versus removal of only the diameter contrast reward. Same 10-second fitting budget and existing geometry, paper, feature and 3% observed-mask gates. No model inference or per-photo best-arm selection.",
+  "coverage": "Both arms carry complete bilinear source support through binary handoff, independent scoring and editable conversion. Missing source pixels are not classified artwork. This is an evaluation correction; clipped cases may differ from earlier coverage-blind runs.",
+  "independentReferences": "Existing six approximate visible references; fixed notch/right/tip/left corner correspondence. No annotations enter cropping or fitting.",
+  "review": "Inspect every exported weave and changes relative to original baseline; record failures without relaxing gates.",
+  "hashes": {
+    "tmp/heart-learning/locator-diameter-components-v1/probe/manifest.json": "ada85633148dea7ba28770b28b575317fb3619a56df166e2473526b831d17b26",
+    "tmp/heart-learning/locator-diameter-components-v1/pipeline-replay.mjs": "a0dfb47dc8056e1c4a59e57d905258938082ae4372e4da0d670705d107ff866f",
+    "tmp/heart-learning/locator-diameter-components-v1/editor-input.mjs": "da2005873ee1d72da172ddffc81f1446093ac76d6671a6ae03caa2b35cc34a4b",
+    "tmp/heart-learning/locator-diameter-components-v1/run-pipeline.py": "7477734f9fa1be677fea16ecf65ebdaff739f8ab901574d4c05eea3a5eec56ec",
+    "scripts/inverse/learning/material-target.mjs": "036b4e763f8ab7a1dfa6b8e56bb8db6717d7219351409e11cd4022c1271c93af"
+  }
+}
