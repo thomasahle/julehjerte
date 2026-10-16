@@ -7,5 +7,10 @@
   "change": "Only for poor unweighted, unconstrained grids with no colour-retaining ordinary finalist, prefer an EXISTING finalist that has lower original image error, fewer missing features and passes auditFeatureFidelityChange against the incumbent. Choose the lowest-error eligible candidate. Reserve ordinary local-refinement time; do not add feature/count searches or use the rejected alternate-base feature seeding.",
   "validation": "Independent mask rendering, full image/feature/geometry/paper checks and editable conversion. Inspect changed exports. If useful, add a regression and run existing focused, Hunodan, 31-photo and full repository checks before adopting.",
   "stoppingRule": "Do not adopt a net regression or claim a full reconstruction from a better initializer alone.",
-  "sourceHash": "3df91dd597ba37163cb0bc9ca9cd04a6f3e9454ec791cf410777e2e9c67e0ac1"
+  "sourceHash": "3df91dd597ba37163cb0bc9ca9cd04a6f3e9454ec791cf410777e2e9c67e0ac1",
+  "clearanceFollowUp": {
+    "reason": "Cold regression selected the same improved (5,5) finalist but the subsequent clearance comparison immediately prioritized the old (1,2) finalist again using its cut-count bonus. This consumes refinement time despite the already measured loss of source features. A cold replay reached 3.159375% versus the warmed study\u2019s 2.47625%; an earlier regression missed its 3.5% bound.",
+    "change": "When partial-feature retention earned priority, require the existing full-source feature-change audit before a clearance alternative can displace it. Compare the actual clearance masks. Preserve all queued alternatives, deadlines, source pixels and final acceptance checks.",
+    "validation": "Correct the synthetic test fixture from (1,1) to (2,3): (1,1) actually retained all four protected checker cells, making its missing-feature expectation false. Keep photographic error bounds unchanged. Repeat cold focused tests, then the 13 fixed masks and full benchmark/QA gates."
+  }
 }
