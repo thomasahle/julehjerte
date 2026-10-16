@@ -1,0 +1,240 @@
+{
+  "schema": "remaining-photo-crop-ablation-plan-1",
+  "status": "prepared-waiting-for-serial-QA-and-soft-study",
+  "root": "tmp/heart-learning/remaining-crop-ablation-v1",
+  "hypothesis": "The remaining two fixed-mask failures may be driven partly by crop placement and edge classification. The saved bauble crop contains background and one corner outside the image; outline-star fails on a small near-edge classified region.",
+  "intervention": "Four fresh fits on two development photographs. Only crop coordinates change; raw image bytes and algorithm/settings stay fixed. Previously disputed manual coordinates are a diagnostic intervention, not a new cropper or cutting ground truth. Different crops change classified targets, so their raw disagreement percentages cannot be ranked as reconstruction quality.",
+  "rows": [
+    {
+      "id": "outline-star",
+      "variant": "saved-automatic",
+      "override": "tmp/heart-learning/remaining-crop-ablation-v1/outline-star-saved-automatic.json",
+      "quad": [
+        [
+          430.32931226516513,
+          171.9092353088924
+        ],
+        [
+          525.2431230765773,
+          267.80938630026435
+        ],
+        [
+          403.3299806510149,
+          349.9830567410715
+        ],
+        [
+          320.83807769917655,
+          259.9176512630082
+        ]
+      ],
+      "settings": {
+        "algorithm": "auto",
+        "polygonal": false,
+        "identicalSheets": false,
+        "resolution": 400,
+        "fitTolerance": 0.5,
+        "maxSpan": 15,
+        "smoothRadius": 0,
+        "snapRadius": 1.5,
+        "borderRadius": 3,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "sharpPenalty": 50,
+        "acutePenalty": 30,
+        "turnPenalty": 3,
+        "maxTurn": 175,
+        "localNeighborhoodFactor": 8,
+        "roundHidden": false,
+        "timeLimit": 10,
+        "trials": 0
+      },
+      "expectedMaskSha256": "311d3c3542ec6605918892cfcecae25749f176d32dcf563b65e2ffdc1336ce3e",
+      "expectedValidSha256": null
+    },
+    {
+      "id": "outline-star",
+      "variant": "historical-visual",
+      "override": "tmp/heart-learning/remaining-crop-ablation-v1/outline-star-historical-visual.json",
+      "quad": [
+        [
+          429.8125,
+          181.2525
+        ],
+        [
+          518.4625,
+          265.9625
+        ],
+        [
+          402.2325,
+          341.8075
+        ],
+        [
+          319.4925,
+          264.9775
+        ]
+      ],
+      "settings": {
+        "algorithm": "auto",
+        "polygonal": false,
+        "identicalSheets": false,
+        "resolution": 400,
+        "fitTolerance": 0.5,
+        "maxSpan": 15,
+        "smoothRadius": 0,
+        "snapRadius": 1.5,
+        "borderRadius": 3,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "sharpPenalty": 50,
+        "acutePenalty": 30,
+        "turnPenalty": 3,
+        "maxTurn": 175,
+        "localNeighborhoodFactor": 8,
+        "roundHidden": false,
+        "timeLimit": 10,
+        "trials": 0
+      },
+      "expectedMaskSha256": null,
+      "expectedValidSha256": null
+    },
+    {
+      "id": "bauble",
+      "variant": "saved-automatic",
+      "override": "tmp/heart-learning/remaining-crop-ablation-v1/bauble-saved-automatic.json",
+      "quad": [
+        [
+          585.124945734859,
+          905.2805093237887
+        ],
+        [
+          680.4272015903496,
+          1020.2331968915895
+        ],
+        [
+          619.5033182277817,
+          1139.311696191154
+        ],
+        [
+          466.440010833398,
+          1022.8877039896092
+        ]
+      ],
+      "settings": {
+        "algorithm": "auto",
+        "polygonal": false,
+        "identicalSheets": false,
+        "resolution": 400,
+        "fitTolerance": 0.5,
+        "maxSpan": 15,
+        "smoothRadius": 0,
+        "snapRadius": 1.5,
+        "borderRadius": 3,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "sharpPenalty": 50,
+        "acutePenalty": 30,
+        "turnPenalty": 3,
+        "maxTurn": 175,
+        "localNeighborhoodFactor": 8,
+        "roundHidden": false,
+        "timeLimit": 10,
+        "trials": 0
+      },
+      "expectedMaskSha256": "00b9ea58bb82c87c687e9ea7595f89ec9baadf597ca2663f9845f58093876ce2",
+      "expectedValidSha256": "20a1ac9fc487002dfba870e2613857cbc550363e6f46f5cde3a9645607d36dca"
+    },
+    {
+      "id": "bauble",
+      "variant": "historical-visual",
+      "override": "tmp/heart-learning/remaining-crop-ablation-v1/bauble-historical-visual.json",
+      "quad": [
+        [
+          570.09,
+          941.20375
+        ],
+        [
+          681.395,
+          1019.01875
+        ],
+        [
+          579.94,
+          1102.74375
+        ],
+        [
+          472.575,
+          1018.03375
+        ]
+      ],
+      "settings": {
+        "algorithm": "auto",
+        "polygonal": false,
+        "identicalSheets": false,
+        "resolution": 400,
+        "fitTolerance": 0.5,
+        "maxSpan": 15,
+        "smoothRadius": 0,
+        "snapRadius": 1.5,
+        "borderRadius": 3,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "sharpPenalty": 50,
+        "acutePenalty": 30,
+        "turnPenalty": 3,
+        "maxTurn": 175,
+        "localNeighborhoodFactor": 8,
+        "roundHidden": false,
+        "timeLimit": 10,
+        "trials": 0
+      },
+      "expectedMaskSha256": null,
+      "expectedValidSha256": null
+    }
+  ],
+  "dependency": "tmp/heart-learning/material-soft-objective-v1/state.json must become complete; no fitting, model inference or crop optimization is allowed before that.",
+  "verification": [
+    "Preflight must reproduce both saved automatic masks and observation coverage exactly.",
+    "Both arms must use the captured current automatic fitting settings, original file bytes and decoded pixels.",
+    "Independent exported-curve renderer and unchanged image/feature/geometry/paper acceptance.",
+    "Inspect source quadrilaterals, rectified photographs, masks and reconstructions before interpreting scores.",
+    "Retain every failure; do not update the automatic 27/31 benchmark headline from manual-coordinate interventions."
+  ],
+  "sourceHashes": {
+    "tmp/heart-learning/primitive-boundary-groups-v1/qa/photos/results.json": "058b0e252c7ad7be3eb59aebfe8d17b37ec9bc9efd6a87ccb888c0fb2bd2a9a6",
+    "scripts/inverse/hard-photo-cases.json": "a104debdefa7629136a238106304a877daa57fee31abef9ebf09d48c69f87917",
+    "scripts/inverse/fixtures/hard-photos/collage.png": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+    "tmp/heart-learning/supported-count-bound-corpus-v1/cases.json": "e355f3d50f34ae1eb46a531896a960d746e9d1b7ad80aa9831ed669ffe0011b7",
+    "tmp/heart-learning/remaining-crop-ablation-v1/outline-star-saved-automatic.json": "710b1e00d190a716e5a8b47d355c2fc9087d9dc695eb8a4ea12747016dd97c92",
+    "tmp/heart-learning/remaining-crop-ablation-v1/bauble-saved-automatic.json": "2c4c0e02d2f63498ea3a8bc48d2e435fdaac3393f05dd25429938e0a30cc77cb",
+    "tmp/heart-learning/remaining-crop-ablation-v1/outline-star-historical-visual.json": "de759ee8234be4e237ac54417c73b2991338d4d1dea84e5336879b7de17ff987",
+    "tmp/heart-learning/remaining-crop-ablation-v1/bauble-historical-visual.json": "f769024557880679d29d5dbd5c613b6fa5a3f25822d20248d6e89761023efced"
+  },
+  "scriptSnapshots": {
+    "run.py": "from pathlib import Path\nimport hashlib,json,os,subprocess,time\n\nroot=Path(__file__).resolve().parent\nread=lambda p:json.loads(Path(p).read_text())\nsha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()\nwrite=lambda name,data:(root/name).write_text(json.dumps(data,indent=2)+'\\n')\ndependency=root.parent/'material-soft-objective-v1'\nassert read(dependency/'state.json')['status']=='complete'\nassert not (root/'state.json').exists()\ninputs=read(root/'inputs.json')\npins=read(dependency/'source.json');pins.update(inputs['sourceHashes'])\nfor p in [root/'inputs.json',root/'preflight.mjs',root/'run.py',root/'after-soft.py',Path('scripts/inverse/hard-photo-benchmark.mjs'),Path('scripts/inverse/hard-photo-target.mjs'),Path('scripts/inverse/hard-photo-data.mjs')]:pins[str(p)]=sha(p)\nwrite('source.json',pins)\ndef verify():\n    for p,h in pins.items():assert sha(p)==h,p\ndef execute(name,command,completed):\n    verify()\n    with (root/(name+'.log')).open('w')as log:\n        p=subprocess.Popen(command,stdout=log,stderr=subprocess.STDOUT)\n        write('state.json',dict(status='running',stage=name,controllerPid=os.getpid(),pid=p.pid,completed=completed,total=4))\n        code=p.wait()\n    verify()\n    if code:\n        write('state.json',dict(status='failed',stage=name,exitCode=code));raise SystemExit(code)\n\nstarted=time.monotonic();execute('preflight',['node',str(root/'preflight.mjs')],0)\npreflight=read(root/'preflight.json');assert preflight['status']=='passed'\nrows=inputs['rows'][:2]+list(reversed(inputs['rows'][2:]));results=[]\nfor row in rows:\n    name=row['id']+'-'+row['variant'];output=root/name\n    execute(name,['node','scripts/inverse/hard-photo-benchmark.mjs','--ids='+row['id'],'--crop=fixed','--crop-overrides='+row['override'],'--target=mask','--seconds=10','--presets=automatic','--output='+str(output)],len(results))\n    result=read(output/'results.json')['results'][0]\n    assert result['id']==row['id']\n    assert max(abs(a-b) for p,q in zip(result['effectiveQuad'],row['quad']) for a,b in zip(p,q))<1e-9\n    run=result['runs'][0]\n    assert run['settings']==row['settings'],'Keep all fitting settings fixed.'\n    expected=next(p for p in preflight['results']if p['id']==row['id']and p['variant']==row['variant'])\n    assert run['fittingMaskSha256']==expected['maskSha256']\n    assert run['observation'].get('sha256')==expected['validSha256']\n    results.append(dict(id=row['id'],variant=row['variant'],status=result['status'],passed=run['passed'],\n        maskSha256=run['fittingMaskSha256'],observedFraction=run['observation']['observedPixels']/run['observation']['totalPixels'],\n        seconds=run.get('solveAndValidationSeconds'),independentError=run.get('independentImageComparison'),\n        features=run.get('independentFeatures'),selectedCounts=run.get('report',{}).get('solver',{}).get('selectedCounts'),\n        report=str(output/'results.json')))\n    write('results.json',dict(status='running',results=results));print(name,result['status'],flush=True)\nverify();write('results.json',dict(status='complete',results=results))\nwrite('state.json',dict(status='complete',seconds=time.monotonic()-started,sourceFilesVerified=len(pins)))\n",
+    "after-soft.py": "from pathlib import Path\nimport json,os,subprocess,time\n\nroot=Path(__file__).resolve().parent\ndependency=root.parent/'material-soft-objective-v1'\nread=lambda p:json.loads(Path(p).read_text())\nwrite=lambda data:(root/'dependency-state.json').write_text(json.dumps(data,indent=2)+'\\n')\nassert not (root/'dependency-state.json').exists()\nwhile True:\n    p=dependency/'state.json'\n    state=read(p)if p.exists()else read(dependency/'dependency-state.json')\n    if state['status']=='complete'and p.exists():break\n    if state['status']not in ['running','waiting']:\n        write(dict(status='dependency-failed',dependency=state));raise SystemExit(1)\n    pid=state['controllerPid']\n    try:os.kill(pid,0)\n    except ProcessLookupError:\n        if p.exists()and read(p)['status']=='complete':break\n        write(dict(status='dependency-handle-missing',dependency=state));raise SystemExit(1)\n    write(dict(status='waiting',controllerPid=os.getpid(),dependencyPid=pid,dependencyStage=state.get('id',state.get('dependencyStage'))))\n    time.sleep(5)\nwith (root/'controller.log').open('w')as log:\n    p=subprocess.Popen(['python3',str(root/'run.py')],stdout=log,stderr=subprocess.STDOUT)\n    write(dict(status='running',controllerPid=os.getpid(),pid=p.pid));code=p.wait()\nwrite(dict(status='complete'if code==0 else'failed',exitCode=code));raise SystemExit(code)\n",
+    "preflight.mjs": "import fs from 'node:fs/promises';\nimport assert from 'node:assert/strict';\nimport {createHash} from 'node:crypto';\nimport {prepare} from '../../../static/inverse/core/engine.js';\nimport {readHardPhoto} from '../../../scripts/inverse/hard-photo-data.mjs';\nimport {hardPhotoTarget} from '../../../scripts/inverse/hard-photo-target.mjs';\nconst root=new URL('.',import.meta.url),read=async p=>JSON.parse(await fs.readFile(p));\nconst sha=b=>createHash('sha256').update(b).digest('hex');\nconst inputs=await read(new URL('inputs.json',root)),pins=await read(new URL('source.json',root));\nfor(const[p,h]of Object.entries(pins))assert.equal(sha(await fs.readFile(p)),h,p);\nconst photo=await readHardPhoto(inputs.source),results=[];\nfor(const row of inputs.rows){\n  const imported=prepare({...photo,quad:row.quad},row.settings);\n  const target=hardPhotoTarget(imported,'mask',row.settings),source=target.sourceImage;\n  const maskSha256=sha(source.mask),validSha256=source.validMask?sha(source.validMask):null;\n  if(row.variant==='saved-automatic'){\n    assert.equal(maskSha256,row.expectedMaskSha256,row.id+' must reproduce the corpus mask exactly');\n    assert.equal(validSha256,row.expectedValidSha256,row.id+' must reproduce observation coverage exactly');\n  }\n  results.push({id:row.id,variant:row.variant,maskSha256,validSha256,\n    observedPixels:source.validMask?.reduce((a,b)=>a+b,0)??source.mask.length,totalPixels:source.mask.length});\n}\nawait fs.writeFile(new URL('preflight.json',root),JSON.stringify({status:'passed',results},null,2)+'\\n');\nconsole.log('All four targets prepared; both saved automatic masks and coverage reproduce exactly.');\n"
+  },
+  "artifactsSha256": {
+    "tmp/heart-learning/remaining-crop-ablation-v1/run.py": "44e640bbcf1a117844c6f305aa4252bd2a6615d27e4afa05b2447836f1ba8ca8",
+    "tmp/heart-learning/remaining-crop-ablation-v1/after-soft.py": "575e6841f3dc8c082c5221d3e09e449849d035b9f41a458e9619f2c43b2d8da6",
+    "tmp/heart-learning/remaining-crop-ablation-v1/preflight.mjs": "0c594d20de36af1fb354af9e4386e490879cf0dd4bcf91927ff445c2d5eb4673",
+    "tmp/heart-learning/remaining-crop-ablation-v1/inputs.json": "2c548b2ca2c42d41d7e0efe0f8464f77a21a68a76a4bb92dd4a6b27e3f659fcb",
+    "tmp/heart-learning/remaining-crop-ablation-v1/outline-star-crop-selection.png": "503ff720d1e16f8c41ac044c18d9f06cb4bb25eea5207b81ab1a40b0a70fd010",
+    "tmp/heart-learning/remaining-crop-ablation-v1/bauble-crop-selection.png": "70c8c2a59aee37654c8b2e70911d35f07af458859b81fa2e4ee416daba5d22d7"
+  },
+  "prefitVisualReview": {
+    "outline-star": "Both saved quadrilaterals inspected on the original source ROI. Historical visual selection is more inset, while automatic selection includes more of the noisy bottom edge; neither is asserted ground truth.",
+    "bauble": "Both saved quadrilaterals inspected on the original source ROI with out-of-frame area shown grey. Automatic bottom corner is below the image and right/lower side contains visible background. Historical selection is inside the visible paper but its top overlap corner is not established as ground truth."
+  }
+}

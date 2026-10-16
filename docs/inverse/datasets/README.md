@@ -74,6 +74,17 @@ also disables the current feature-initialization/recovery branches. No corrected
 crop or changed recovery policy has been tested here. The two historical missing
 crops remain outside this fixed-mask replay, so the photo result stays **27/31**.
 
+A [four-fit crop intervention](remaining-photo-crop-ablation-plan.json) is queued
+after the soft-field study. It compares the saved automatic coordinates with the
+existing historical visual coordinates on these two sources, using identical
+pixels and fitting settings. Source-coordinate overlays were reviewed before any
+new fits: the bauble's automatic bottom corner is outside the photo, while the
+historical crop lies inside the visible paper but is not established as the true
+overlap. Both historical corner sets remain disputed diagnostic inputs. Preflight
+must reproduce the old automatic masks and coverage exactly; changing targets
+prevents directly ranking their raw image-error percentages. This does not update
+the automatic benchmark or claim a cropper improvement.
+
 A [saved-field junction diagnostic](material-junction-diagnostic.json) separates
 three possible causes of the learned checkers' gaps. Both 400px masks reproduce
 exactly before fitting from the saved 256px predictions; the experiment then
