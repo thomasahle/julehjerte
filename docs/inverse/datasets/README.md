@@ -33,6 +33,25 @@ The inventory, with material annotations updated on 2026-10-16, contains:
 
 ## Current results and limits
 
+The [fixed real-photo projective comparison](projective-real-results.json)
+adds ten crop proposals and five checked derived masks: the additional-photo
+cohort moves from **4/20 to 9/20**, while the earlier group remains **15/22**.
+All 22 prior crops, masks, coverage and statuses are unchanged. All 32 exported
+pairs convert to editable geometry; 24 pass the complete checks. All twenty
+fallback photo panels and twelve new/changed exports were inspected. This is
+an offline result, not deployed or ground-truth reconstruction accuracy.
+
+The remaining errors span the whole pipeline. The floral-paper crop still has
+**14.01% maximum corner offset** against an approximate reference, and its
+material classification disagrees on **15.05% of covered labelled source
+pixels** before fitting. Printed text is similarly mistaken for a weave. On
+the brown checker, the crop includes decoration, then a low-count finalist
+loses the center grid: feature initialization stays near (1,2) despite an
+existing lower-error (5,5) finalist, before roughly six seconds of unsuccessful
+MILP recovery. The next solver diagnostic will test those already available
+alternate count bases on the fixed failed masks. Check, lint, build and twenty
+focused tests pass; the full repository suite is running.
+
 A [projective body-only crop comparison](projective-body-results.json) now
 recovers all sixteen controlled synthetic overlaps behind small notch occluders
 within 5% maximum corner error. With frozen predicted segmentation, median
@@ -44,7 +63,7 @@ existing projective model with colour terms removed, not additional training.
 The sixteen geometries belong to one training-source recipe family; this is
 not held-out photo accuracy. Crop fitting alone takes roughly 0.2 seconds
 median, excluding neural inference and template solving. The adapter remains
-offline pending the fixed real-photo and export comparison.
+offline; the fixed real-photo and export comparison above records its limits.
 
 A [separate shape/visibility experiment](shape-visibility-results.json) rejects
 the known false small-checker notch, but **adds no accepted real-photo crops**.
