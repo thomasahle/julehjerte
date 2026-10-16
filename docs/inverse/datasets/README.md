@@ -44,8 +44,19 @@ accuracy. Sixteen learned inputs stop at crop rejection; ten retain internal
 quadrilaterals, including both plausible overlaps and visibly wrong ones. Printed
 paper, reflections and wrong-object selection remain upstream failures. The
 production flower-cap crop is visibly oversized and its reconstruction fails.
-No learned model is integrated. The next diagnostic fits rejected proposals
-separately, without counting them as automatic successes.
+No learned model is integrated.
+
+The [rejected-crop diagnostic](new-photo-rejected-crops-results.json) then fits
+all ten available final rejected quadrilaterals, with no manual corner changes.
+**Six produce checked editable masks**, and all ten candidates convert. All ten
+outputs were inspected and all 884 pinned sources remain unchanged. This does
+not raise the automatic 4/20 count: the visibly undersized small-checker crop
+still fits at 0.77%, and another crop cuts through a bird. Flower/flame caps and
+the framed bird show useful candidates blocked by the outline model; a global
+relaxation would also admit incorrect crops. The four remaining fits fail on
+image/paper quality or retained features. Crop evidence must be evaluated
+separately from downstream mask fit; printed paper and reflections still need
+material supervision.
 
 A [conditional two-paper segmentation fallback](locator-paper-fallback-results.json)
 raises the offline development result from **13/22 to 15/22 checked
