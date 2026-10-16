@@ -47,14 +47,28 @@ new adjacency mode. All 35 focused tests and ten kernel-compatibility tests pass
 Type checking, lint, build and the private Chromium star/hat checks pass; the
 star's exported geometry is unchanged from the preceding browser replay. The
 application suite passes 857 tests with one skip. The full inverse suite passes
-945/953: eight assertions fail on historical hashes, uncertain checkpoint
-requirements or internal fitting routes. Their early failures do not establish
-that the final outputs pass. In particular, the shifted bird's long-allowance
-test takes 88 seconds and selects a different route, so its speed regression
-needs diagnosis. Paired fresh puppy/bird replays are prepared, with complete
-output capture and independent geometry, paper, image and feature checks. The
-serial Hunodan/photo corpus is still running; no fresh solve-rate or unchanged
-photo-error claim follows from the fixed-geometry results above.
+945/953; the remaining assertions include genuine regressions as well as
+historical method hashes and changed checkpoint trajectories. The terminal
+corpus still passes all 22 regular Hunodan designs below ten seconds (maximum
+9.018 seconds), but `hjfla-01` disagreement increases from 0.7107% to 0.7182%.
+Complete photographs remain 26/31 and editable exports 48/48. Six accepted
+photographs have higher error, most visibly round-checker (1.215% to 2.7144%).
+All seventeen changed photo comparisons were visually reviewed; the quality
+regression gate fails. Source crop and classified-mask hashes are unchanged.
+
+Twelve paired fresh puppy/bird replays, with two reversed-order repeats and
+independently checked saved exports, confirm that the shifted bird is a real
+failure: the eye opens in both current short and long runs, despite valid cuts
+and paper. The old runs preserve it. The long current runs take about 87 seconds
+versus about 14 previously. Puppy instead improves and passes both repeats.
+Round-checker capture confirms that identical 4+4 candidate controls change from
+paper-pass to uncertain at resolution 700. Diagonal labelling merges previously
+sub-threshold floating core fragments into two 0.2653 mm² components, exceeding
+the unchanged 0.25 mm² threshold. The same controls pass the current lattice at
+1000 and the independent polygon-offset check. A bounded finer verification is
+being tested; neither the threshold nor the photographed mask should be changed
+to recover this candidate.
+
 
 [Thirty-six fresh graph-order comparisons](topology-graph-budget-results.json)
 finish below ten seconds and pass the actual template and feature checks in all

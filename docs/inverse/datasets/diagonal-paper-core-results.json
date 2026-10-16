@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "status": "implemented; focused_checks_pass; full_inverse_945_of_953; corpus_in_progress",
+  "status": "implemented; full_QA_complete_with_quality_and_shifted_bird_regressions",
   "baselineRuntime": "9cedec4",
   "rootCause": "Four-neighbour labelling can disconnect a diagonal corridor in the certified paper-core lattice even when every cell along that corridor clears the required rolling-disk radius. Valid finer polishing checkpoints were therefore discarded as uncertain.",
   "certificate": [
@@ -221,7 +221,7 @@
     ]
   },
   "fullQA": {
-    "status": "application_and_inverse_checks_complete; corpus_in_progress",
+    "status": "complete_with_failures",
     "root": "tmp/heart-learning/polishing-paper-tail-v1/qa",
     "comparisonBaseline": "tmp/heart-learning/clearance-handoff-regression-v1/qa/native",
     "required": [
@@ -301,8 +301,503 @@
     ],
     "nextDiagnosis": {
       "root": "tmp/heart-learning/polishing-paper-regressions-v1",
-      "status": "prepared; not_started",
-      "protocol": "Paired fresh before/current puppy and bird fits with exact input hashes, two reversed-order repeats, actual output saved before independent geometry/paper/render/feature checks. Start only after the serial corpus run completes."
+      "status": "complete",
+      "protocol": "Twelve serial fresh fits, two reversed-order before/current repeats, frozen source and mask hashes, outputs saved before independent geometry/paper/export-render/feature checks.",
+      "results": [
+        {
+          "name": "0-bird-10-before",
+          "seconds": 9.783223625,
+          "templateChecksPassed": true,
+          "selectedInitialization": "fitted-boundary-rerouting",
+          "independentGeometryPassed": true,
+          "independentPaperStatus": "pass",
+          "independentMaskError": 0.0252375,
+          "eye": {
+            "centerMm": [
+              23.10141509433962,
+              46.09198113207547
+            ],
+            "sourceAreaMm2": 3.3125,
+            "intersectionPixels": 52,
+            "retention": 0.9811320754716981,
+            "predictedComponentAreaMm2": 3.25,
+            "touchesBorder": false,
+            "componentIoU": 0.9811320754716981
+          }
+        },
+        {
+          "name": "0-bird-10-current",
+          "seconds": 9.817986625,
+          "templateChecksPassed": false,
+          "selectedInitialization": "feature-preserving-grid",
+          "independentGeometryPassed": true,
+          "independentPaperStatus": "pass",
+          "independentMaskError": 0.02934375,
+          "eye": {
+            "centerMm": [
+              23.10141509433962,
+              46.09198113207547
+            ],
+            "sourceAreaMm2": 3.3125,
+            "intersectionPixels": 53,
+            "retention": 1,
+            "predictedComponentAreaMm2": 5633.4375,
+            "touchesBorder": true,
+            "componentIoU": 0.0005880068785710323
+          }
+        },
+        {
+          "name": "0-bird-180-before",
+          "seconds": 13.664298375,
+          "templateChecksPassed": true,
+          "selectedInitialization": "fitted-boundary-rerouting",
+          "independentGeometryPassed": true,
+          "independentPaperStatus": "pass",
+          "independentMaskError": 0.0248625,
+          "eye": {
+            "centerMm": [
+              23.10141509433962,
+              46.09198113207547
+            ],
+            "sourceAreaMm2": 3.3125,
+            "intersectionPixels": 52,
+            "retention": 0.9811320754716981,
+            "predictedComponentAreaMm2": 3.25,
+            "touchesBorder": false,
+            "componentIoU": 0.9811320754716981
+          }
+        },
+        {
+          "name": "0-bird-180-current",
+          "seconds": 86.69165808300001,
+          "templateChecksPassed": false,
+          "selectedInitialization": "grid",
+          "independentGeometryPassed": true,
+          "independentPaperStatus": "pass",
+          "independentMaskError": 0.017825,
+          "eye": {
+            "centerMm": [
+              23.10141509433962,
+              46.09198113207547
+            ],
+            "sourceAreaMm2": 3.3125,
+            "intersectionPixels": 0,
+            "retention": 0,
+            "predictedComponentAreaMm2": 0,
+            "touchesBorder": null,
+            "componentIoU": 0
+          }
+        },
+        {
+          "name": "0-puppy-25-before",
+          "seconds": 24.389752834000003,
+          "templateChecksPassed": true,
+          "selectedInitialization": "feature-weighted-grid",
+          "independentGeometryPassed": true,
+          "independentPaperStatus": "pass",
+          "independentMaskError": 0.0108875,
+          "eye": null
+        },
+        {
+          "name": "0-puppy-25-current",
+          "seconds": 24.235489292,
+          "templateChecksPassed": true,
+          "selectedInitialization": "feature-weighted-grid",
+          "independentGeometryPassed": true,
+          "independentPaperStatus": "pass",
+          "independentMaskError": 0.0091875,
+          "eye": null
+        },
+        {
+          "name": "1-bird-10-before",
+          "seconds": 10.010662042,
+          "templateChecksPassed": true,
+          "selectedInitialization": "fitted-boundary-rerouting",
+          "independentGeometryPassed": true,
+          "independentPaperStatus": "pass",
+          "independentMaskError": 0.02521875,
+          "eye": {
+            "centerMm": [
+              23.10141509433962,
+              46.09198113207547
+            ],
+            "sourceAreaMm2": 3.3125,
+            "intersectionPixels": 52,
+            "retention": 0.9811320754716981,
+            "predictedComponentAreaMm2": 3.25,
+            "touchesBorder": false,
+            "componentIoU": 0.9811320754716981
+          }
+        },
+        {
+          "name": "1-bird-10-current",
+          "seconds": 9.7820005,
+          "templateChecksPassed": false,
+          "selectedInitialization": "feature-preserving-grid",
+          "independentGeometryPassed": true,
+          "independentPaperStatus": "pass",
+          "independentMaskError": 0.02934375,
+          "eye": {
+            "centerMm": [
+              23.10141509433962,
+              46.09198113207547
+            ],
+            "sourceAreaMm2": 3.3125,
+            "intersectionPixels": 53,
+            "retention": 1,
+            "predictedComponentAreaMm2": 5633.4375,
+            "touchesBorder": true,
+            "componentIoU": 0.0005880068785710323
+          }
+        },
+        {
+          "name": "1-bird-180-before",
+          "seconds": 13.507223416,
+          "templateChecksPassed": true,
+          "selectedInitialization": "fitted-boundary-rerouting",
+          "independentGeometryPassed": true,
+          "independentPaperStatus": "pass",
+          "independentMaskError": 0.0248625,
+          "eye": {
+            "centerMm": [
+              23.10141509433962,
+              46.09198113207547
+            ],
+            "sourceAreaMm2": 3.3125,
+            "intersectionPixels": 52,
+            "retention": 0.9811320754716981,
+            "predictedComponentAreaMm2": 3.25,
+            "touchesBorder": false,
+            "componentIoU": 0.9811320754716981
+          }
+        },
+        {
+          "name": "1-bird-180-current",
+          "seconds": 87.827542334,
+          "templateChecksPassed": false,
+          "selectedInitialization": "grid",
+          "independentGeometryPassed": true,
+          "independentPaperStatus": "pass",
+          "independentMaskError": 0.01781875,
+          "eye": {
+            "centerMm": [
+              23.10141509433962,
+              46.09198113207547
+            ],
+            "sourceAreaMm2": 3.3125,
+            "intersectionPixels": 0,
+            "retention": 0,
+            "predictedComponentAreaMm2": 0,
+            "touchesBorder": null,
+            "componentIoU": 0
+          }
+        },
+        {
+          "name": "1-puppy-25-before",
+          "seconds": 24.47866675,
+          "templateChecksPassed": true,
+          "selectedInitialization": "feature-weighted-grid",
+          "independentGeometryPassed": true,
+          "independentPaperStatus": "pass",
+          "independentMaskError": 0.0108875,
+          "eye": null
+        },
+        {
+          "name": "1-puppy-25-current",
+          "seconds": 24.205846417,
+          "templateChecksPassed": true,
+          "selectedInitialization": "feature-weighted-grid",
+          "independentGeometryPassed": true,
+          "independentPaperStatus": "pass",
+          "independentMaskError": 0.0091875,
+          "eye": null
+        }
+      ],
+      "finding": "Puppy improves and passes in both current repeats. Shifted bird genuinely fails in all four current fits: the enclosed eye opens despite valid geometry and paper. Both old short and long fits pass. Long current fits take about 87 seconds versus about 14 previously. This is not merely an internal-route assertion change."
+    },
+    "corpus": {
+      "hunodanPassed": 22,
+      "hunodanTotal": 22,
+      "hunodanErrorRegressions": [
+        {
+          "id": "hjfla-01",
+          "passed": true,
+          "qualityPassed": true,
+          "seconds": 6.183448916999998,
+          "previousSeconds": 9.515122125000001,
+          "error": 0.007181803385416667,
+          "previousError": 0.007107204861111111,
+          "errorDelta": 7.459852430555594e-05
+        }
+      ],
+      "photoPassed": 26,
+      "photoPassRegressions": [],
+      "photoErrorRegressions": [
+        {
+          "id": "leaf",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.00929375,
+          "error": 0.0095125,
+          "errorDelta": 0.0002187500000000002
+        },
+        {
+          "id": "round-checker",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.01215,
+          "error": 0.02714375,
+          "errorDelta": 0.014993750000000002
+        },
+        {
+          "id": "orb",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.0118875,
+          "error": 0.01255,
+          "errorDelta": 0.0006624999999999999
+        },
+        {
+          "id": "jigsaw",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.00974375,
+          "error": 0.010125,
+          "errorDelta": 0.00038124999999999964
+        },
+        {
+          "id": "maple-leaf",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.00869375,
+          "error": 0.0087625,
+          "errorDelta": 6.874999999999937e-05
+        },
+        {
+          "id": "flettede-viking",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.02091875,
+          "error": 0.02414375,
+          "errorDelta": 0.0032249999999999987
+        }
+      ],
+      "editablePassed": 48,
+      "editableTotal": 48,
+      "passed": false,
+      "hunodanMaximumSeconds": 9.01769375,
+      "completePhotoTotal": 31
+    },
+    "visualReview": {
+      "status": "reviewed",
+      "panels": [
+        "tmp/heart-learning/polishing-paper-tail-v1/qa/native/visual-comparison-0.png",
+        "tmp/heart-learning/polishing-paper-tail-v1/qa/native/visual-comparison-1.png",
+        "tmp/heart-learning/polishing-paper-tail-v1/qa/native/visual-comparison-2.png",
+        "tmp/heart-learning/polishing-paper-tail-v1/qa/native/visual-comparison-3.png",
+        "tmp/heart-learning/polishing-paper-tail-v1/qa/native/visual-comparison-4.png"
+      ],
+      "cases": [
+        {
+          "id": "outline-star",
+          "previousStatus": "failed",
+          "status": "failed",
+          "previousPassed": false,
+          "passed": false,
+          "previousError": 0.00754375,
+          "error": 0.0074625,
+          "errorDelta": -8.124999999999973e-05,
+          "observation": "Still fails despite low mask disagreement."
+        },
+        {
+          "id": "floral-checker",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.01410625,
+          "error": 0.0131625,
+          "errorDelta": -0.0009437500000000001,
+          "observation": "Arrangement retained; thin seams and awkward contacts remain."
+        },
+        {
+          "id": "dense-checker",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.00700625,
+          "error": 0.00699375,
+          "errorDelta": -1.2500000000000358e-05,
+          "observation": "Tiny measured change; same checker arrangement."
+        },
+        {
+          "id": "bird",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.02470625,
+          "error": 0.01968125,
+          "errorDelta": -0.005024999999999998,
+          "observation": "Unshifted corpus body improves, but seam/contact artifacts remain. Separate shifted-input replays fail."
+        },
+        {
+          "id": "leaf",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.00929375,
+          "error": 0.0095125,
+          "errorDelta": 0.0002187500000000002,
+          "observation": "Small contour/contact shift; main motif retained, error increases."
+        },
+        {
+          "id": "gingerbread",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.01094375,
+          "error": 0.010925,
+          "errorDelta": -1.874999999999967e-05,
+          "observation": "Tiny contour change; main motif retained."
+        },
+        {
+          "id": "flower",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.00376875,
+          "error": 0.00350625,
+          "errorDelta": -0.00026250000000000015,
+          "observation": "Petals retained with a small contour improvement."
+        },
+        {
+          "id": "warped-checker",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.0145125,
+          "error": 0.01363125,
+          "errorDelta": -0.0008812500000000001,
+          "observation": "Overall arrangement retained; thin seams/contacts remain."
+        },
+        {
+          "id": "round-checker",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.01215,
+          "error": 0.02714375,
+          "errorDelta": 0.014993750000000002,
+          "observation": "Major visible regression: extra thin stripes and distorted upper-left/top geometry."
+        },
+        {
+          "id": "fine-checker",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.01800625,
+          "error": 0.017075,
+          "errorDelta": -0.0009312500000000015,
+          "observation": "Arrangement retained; thin seams and awkward contacts remain."
+        },
+        {
+          "id": "orb",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.0118875,
+          "error": 0.01255,
+          "errorDelta": 0.0006624999999999999,
+          "observation": "Small contour/contact shift; main motif retained, error increases."
+        },
+        {
+          "id": "jigsaw",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.00974375,
+          "error": 0.010125,
+          "errorDelta": 0.00038124999999999964,
+          "observation": "Small contour/contact shift; main motif retained, error increases."
+        },
+        {
+          "id": "maple-leaf",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.00869375,
+          "error": 0.0087625,
+          "errorDelta": 6.874999999999937e-05,
+          "observation": "Small contour/contact shift; main motif retained, error increases."
+        },
+        {
+          "id": "bauble",
+          "previousStatus": "failed",
+          "status": "failed",
+          "previousPassed": false,
+          "passed": false,
+          "previousError": 0.03125,
+          "error": 0.02555625,
+          "errorDelta": -0.005693750000000001,
+          "observation": "Mask error improves but the broken frame persists; still fails."
+        },
+        {
+          "id": "flettede-puppy",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.0104,
+          "error": 0.01036875,
+          "errorDelta": -3.125000000000003e-05,
+          "observation": "Opening retained in both outputs."
+        },
+        {
+          "id": "flettede-stonehenge",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.01823125,
+          "error": 0.0143875,
+          "errorDelta": -0.0038437500000000017,
+          "observation": "Improved sun outline; building retained."
+        },
+        {
+          "id": "flettede-viking",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.02091875,
+          "error": 0.02414375,
+          "errorDelta": 0.0032249999999999987,
+          "observation": "Worse fine gaps around hull/figure; sail and hull retained, with thin false connectors."
+        }
+      ]
     }
   },
   "artifacts": [
@@ -405,6 +900,86 @@
     {
       "path": "tmp/heart-learning/polishing-paper-tail-v1/qa/served-assets.json",
       "sha256": "73e954948ce2f485f6ab658bb61e0a0269a580393d9c7eb0cdc519db6460e553"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-paper-tail-v1/qa/state.json",
+      "sha256": "2d77b281268350f5b568312e3d323cd9d27aae6cce2795c8202a1f099513df91"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-paper-tail-v1/qa/native/native-gates.json",
+      "sha256": "29f572a51a6fff600ed8f1f9c29f8c66cc6c573675b2d292ba86c204cc37da91"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-paper-tail-v1/qa/native/hunodan-comparison.json",
+      "sha256": "a0e2ec15d734566170df5578fbb54deb4eaefb717b77355d30990d6ef40ec56f"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-paper-tail-v1/qa/native/photo-comparison.json",
+      "sha256": "4cc8aec17cb9301dceb4b96184a5fc8fbe1306baf3a2aee2dd278052b9eb5076"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-paper-tail-v1/qa/native/visual-review.json",
+      "sha256": "6155399a8bc22ded0274c563aeed7af211daca26bf05181c08c3021fbbf73651"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-paper-regressions-v1/state.json",
+      "sha256": "70a20e0ed7db68cd48e8d405aa340a3361f632092c6d450978f2ae7f9ccfe5bb"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-paper-regressions-v1/source.json",
+      "sha256": "d758d897ff0c25c43516849d50ca1d6869c869357408bd61b8d8393c4ad742f0"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-paper-regressions-v1/checks.json",
+      "sha256": "306806d79b68e6d8b7710a2b60f58382805ba61a52f4bd1b3467710b5102629f"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-paper-regressions-v1/0-bird-10-before.json",
+      "sha256": "537fe2c1e0b3d5548606dc3021ec8a077edaee348ebfe61e48cb23ac9c473821"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-paper-regressions-v1/0-bird-10-current.json",
+      "sha256": "5da1066f02d3d65a5a18e71f2b264fc76e829d3729fb80a104fdf24b4d76f8a2"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-paper-regressions-v1/0-bird-180-before.json",
+      "sha256": "617c2a0d0f0018c683050a54e4edd0d33b59dc1b7c4917f56555f0e6365cf0ef"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-paper-regressions-v1/0-bird-180-current.json",
+      "sha256": "4dfb4fb0a033a612e8831bafa301740dbc822c1027cac99aa0e29cf5e54ce981"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-paper-regressions-v1/0-puppy-25-before.json",
+      "sha256": "dee4e3d4f8ed77a05c84e765eb771c398fc6695ab3d032c0b24822cb02ba223d"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-paper-regressions-v1/0-puppy-25-current.json",
+      "sha256": "ca86bc72c243e12dc96bae320ccc134de9aa4210b5a3a49ca9fa4b746d0d8d35"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-paper-regressions-v1/1-bird-10-before.json",
+      "sha256": "2f6b9d3f9ab691942ce402b0ebe67ddb217388b0c3ed1a5d32df7b1c97eb7f8b"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-paper-regressions-v1/1-bird-10-current.json",
+      "sha256": "f741a30edd69b845cab8ad9fa6bd1dd80411256460dfcfcdeef6b666c48f346d"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-paper-regressions-v1/1-bird-180-before.json",
+      "sha256": "80e07018dea3a51e4d7025e739844eaf12bfa2f7c4ca8c166a2759d3800b6b34"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-paper-regressions-v1/1-bird-180-current.json",
+      "sha256": "cf6b68809b3c42259c36fbbaccae42ca2cbc29f8f16a156872b8c9b433d65c67"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-paper-regressions-v1/1-puppy-25-before.json",
+      "sha256": "be7f533a8eab97de982f74aff61f9a2910e0fc791833e455e2e937e6165fb422"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-paper-regressions-v1/1-puppy-25-current.json",
+      "sha256": "4005542ec4eee78e24baa3736861dc43bdc786644b4ebda3b379ce5bd058b50c"
     }
   ]
 }
