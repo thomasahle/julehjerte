@@ -159,5 +159,12 @@
     "role": "Known-mask counterfactual, not a photorealistic training sample; hidden reference pixels and cut counts never enter fitting or selection.",
     "score": "Report disagreement with the known clean grid independently of observed-region fit, while still retaining disagreement with the corrupted input."
   },
-  "replaySha256": "18f44da72f817fa2de3b187ce5c28ab1805643e5ebcef6769545a90cb511578a"
+  "replaySha256": "1dafd1c1215f74ab76395e4891947f69ea8ff4c353c644ad756562721604f69d",
+  "annotationVisualReview": {
+    "image": "tmp/heart-learning/flower-occlusion-v1/annotation.png",
+    "sha256": "43ebe495499717cdcfca8d0fdf8898955871d5a6df5f03baf432ce98670a6bb6",
+    "reviewedBeforeFitting": true,
+    "finding": "Cyan polygons cover the visible gold strips and a conservative fringe. Magenta limits discard the top and left decorative-cap intrusions, together with valid border pixels. These are manually supplied diagnostic regions, not an automatic detector."
+  },
+  "routingQualification": "Observation weights use the existing weighted direct-fitting path. The unweighted arm may also try MILP; differences include the pipeline response to uncertainty, not only an isolated loss gradient."
 }
