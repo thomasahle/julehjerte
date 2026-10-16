@@ -38,8 +38,21 @@ paper and feature checks; all 22 Hunodan geometries remain byte-identical.
 Four photographic outputs change, with mixed small error differences across
 render resolutions. The orb improves consistently and supplies a regression
 that fails before the correction and passes afterward. All 111 focused checks
-pass. Fresh complete QA is pending; the slower area-recovery proposal remains
-offline and no uniform photographic improvement is claimed.
+pass. Fresh browser, build, Hunodan and photographic checks also pass: all 22
+Hunodan designs finish below ten seconds (maximum 8.83 s), and the photographic
+benchmark retains 27/31 with identical crops and classified inputs. Quality
+changes are mixed: Viking improves, while fine-checker, orb and floral-checker
+worsen. Those photo runs already enter sharing with different refined candidates,
+so the timed-run differences cannot all be attributed to this scoring change.
+Hunodan hjsta-03 gains three disagreement pixels at 383×383. The application
+tests pass; the full inverse suite is still running. The slower area-recovery
+proposal remains offline and no uniform photographic improvement is claimed.
+
+A [partial-body intervention](known-body-crop-intervention-plan.json) is queued
+after the live QA run. It corrects only annotated background, only annotated
+paper, or both, keeping material probabilities and unknown pixels unchanged.
+This diagnostic separates background leakage from omitted paper and remaining
+locator assumptions; it is not a trained-model or reconstruction success score.
 
 [Initial narrow-neck recovery](initial-paper-separation-results.json) reuses the
 existing local separation retry after a complete paper-failed refinement block,

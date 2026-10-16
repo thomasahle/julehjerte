@@ -1,6 +1,6 @@
 {
   "schema": "sharing-original-scale-results-1",
-  "status": "integrated-focused-tests-pass-full-QA-pending",
+  "status": "integrated-fresh-browser-hunodan-photo-checks-pass-full-suite-running",
   "change": "Fine-scale shared-cut image checks area-resample the original classified mask and its observation weights directly. Source-free callers keep their existing objective. No new alignment pass, extra rounds or acceptance-threshold relaxation.",
   "scope": "Local additional alignment on 49 fixed accepted exports. All source probability fields in this probe equal their binary masks, making its probability-or-mask prototype equivalent to the integrated classified-mask reference. This does not establish fresh solve success or runtime.",
   "fixedMatrix": {
@@ -197,5 +197,184 @@
     "static/inverse/core/direct/share.js": "4a9dc8272771895dea2c0c0b27df643c6733f236384d85195fac2a5332566a28",
     "scripts/inverse/sharing-source-scale.test.mjs": "a23d9bae63bd5d81efed9996feb1b53c43019aad8b052c278d53f55fd57da0c1",
     "scripts/inverse/fixtures/sharing-original-scale-orb.json": "6d47e5021c1434a60cbcb1514b3a55f9f41e0e67d32573dafa6e3d731211a7a4"
+  },
+  "freshPipeline": {
+    "scope": "Each prepare + solve + validate + export <=10 seconds; independent error <= that case\u2019s validated release error, plus at most 1 percentage point for an identical pair; unchanged geometry, strict paper and substantial feature checks. Decode and independent external replay are timed separately. Optional retained snapshots reproduce the compute-worker observer; thread startup and message transfer are excluded.",
+    "qaCommit": "eee81257007125a35fb90000e63edc218e04f47b",
+    "hunodan": {
+      "cases": 22,
+      "passed": 22,
+      "medianSeconds": 5.154380437999999,
+      "maximumSeconds": 8.828164792000003,
+      "previousRunErrorChanges": [
+        {
+          "id": "hjsta-01",
+          "baselineError": 0.007929362880886427,
+          "candidateError": 0.007922437673130193,
+          "deltaPercentagePoints": -0.0006925207756233731
+        },
+        {
+          "id": "hjsta-03",
+          "baselineError": 0.012332213049376572,
+          "candidateError": 0.012352664480635904,
+          "deltaPercentagePoints": 0.002045143125933152
+        }
+      ]
+    },
+    "photos": {
+      "baseline": {
+        "catalogCases": 47,
+        "reviewableCases": 31,
+        "fittedCases": 29,
+        "passed": 27,
+        "statuses": {
+          "incomplete": 15,
+          "no_crop": 2,
+          "failed": 2,
+          "validated": 27,
+          "obscured": 1
+        },
+        "maximumTotalSeconds": 11.11092633300001,
+        "maximumSolveAndValidationSeconds": 10.470584457999998
+      },
+      "candidate": {
+        "catalogCases": 47,
+        "reviewableCases": 31,
+        "fittedCases": 29,
+        "passed": 27,
+        "statuses": {
+          "incomplete": 15,
+          "no_crop": 2,
+          "failed": 2,
+          "validated": 27,
+          "obscured": 1
+        },
+        "maximumTotalSeconds": 11.051972041,
+        "maximumSolveAndValidationSeconds": 10.46118966600002
+      },
+      "inputComparisons": "Original file and decoded-pixel hashes, catalog metadata, effective automatic crops, classified/fitting mask and probability hashes, observation metadata, settings and criteria match for every paired case.",
+      "passRegressions": [],
+      "errorChanges": [
+        {
+          "id": "outline-star",
+          "baselineError": 0.00743125,
+          "candidateError": 0.00753125,
+          "errorDelta": 9.99999999999994e-05,
+          "baselineSeconds": 9.594397416,
+          "candidateSeconds": 9.710889
+        },
+        {
+          "id": "floral-checker",
+          "baselineError": 0.01315,
+          "candidateError": 0.01415625,
+          "errorDelta": 0.0010062500000000002,
+          "baselineSeconds": 10.67750475,
+          "candidateSeconds": 10.747536375
+        },
+        {
+          "id": "dense-checker",
+          "baselineError": 0.00699375,
+          "candidateError": 0.00700625,
+          "errorDelta": 1.2500000000000358e-05,
+          "baselineSeconds": 9.858824499999999,
+          "candidateSeconds": 10.135130749999997
+        },
+        {
+          "id": "bird",
+          "baselineError": 0.019675,
+          "candidateError": 0.01963125,
+          "errorDelta": -4.375000000000212e-05,
+          "baselineSeconds": 10.041992208000003,
+          "candidateSeconds": 10.369042916999998
+        },
+        {
+          "id": "leaf",
+          "baselineError": 0.0095125,
+          "candidateError": 0.00929375,
+          "errorDelta": -0.0002187500000000002,
+          "baselineSeconds": 10.166923166,
+          "candidateSeconds": 10.306644916999998
+        },
+        {
+          "id": "warped-checker",
+          "baselineError": 0.013625,
+          "candidateError": 0.01375625,
+          "errorDelta": 0.00013124999999999942,
+          "baselineSeconds": 10.84632429199999,
+          "candidateSeconds": 10.843257375
+        },
+        {
+          "id": "fine-checker",
+          "baselineError": 0.017075,
+          "candidateError": 0.01941875,
+          "errorDelta": 0.0023437499999999986,
+          "baselineSeconds": 11.11092633300001,
+          "candidateSeconds": 11.051972041
+        },
+        {
+          "id": "orb",
+          "baselineError": 0.01255,
+          "candidateError": 0.01331875,
+          "errorDelta": 0.0007687500000000003,
+          "baselineSeconds": 10.16213166699998,
+          "candidateSeconds": 10.056191541000008
+        },
+        {
+          "id": "jigsaw",
+          "baselineError": 0.010125,
+          "candidateError": 0.01005625,
+          "errorDelta": -6.87500000000011e-05,
+          "baselineSeconds": 10.298772874999996,
+          "candidateSeconds": 10.314035417000007
+        },
+        {
+          "id": "faceted-star",
+          "baselineError": 0.0065,
+          "candidateError": 0.00641875,
+          "errorDelta": -8.124999999999973e-05,
+          "baselineSeconds": 8.931960124999984,
+          "candidateSeconds": 9.610961333000013
+        },
+        {
+          "id": "flettede-viking",
+          "baselineError": 0.02223125,
+          "candidateError": 0.0204625,
+          "errorDelta": -0.0017687499999999995,
+          "baselineSeconds": 10.31158808299998,
+          "candidateSeconds": 10.459202374999993
+        }
+      ],
+      "remainingFailures": [
+        "nested-squares",
+        "outline-star",
+        "santa",
+        "bauble"
+      ]
+    },
+    "inputComparison": "Original file and decoded-pixel hashes, catalog metadata, effective automatic crops, classified/fitting mask and probability hashes, observation metadata, settings and criteria match for every paired case.",
+    "browser": {
+      "cases": [
+        "star",
+        "top-hat-preferred"
+      ],
+      "passed": 2,
+      "screenshotsInspected": true,
+      "visualFindings": "Both shared-boundary silhouettes remain intact; small contour notches remain in the free-border hat."
+    },
+    "verification": "Type check, lint, production build, browser, Hunodan, photographic and editable replay commands exited 0. App tests passed 865 with 1 skipped. Full inverse suite is still running; no full-QA claim yet.",
+    "limitations": [
+      "Comparison is against a previous timed run, not an interleaved repeated timing study.",
+      "Fine-checker, orb, floral-checker and Viking already enter shared-cut processing with different refined candidates. Their initial fixed-count fitting attempts match; later wall-clock-bounded refinement differs. Changes cannot all be attributed to the shared-cut sampling patch.",
+      "Hunodan hjsta-01 and hjsta-03 have different early sharing decisions and subsequent polishing results; hjsta-03 independent error increases by three pixels at 383x383.",
+      "The known four photo failures remain; mask disagreement does not establish original cutting-path recovery."
+    ],
+    "artifactsSha256": {
+      "tmp/heart-learning/sharing-original-scale-v1/production-qa/hunodan/results.json": "cd404dd1f28380a14cf14f094cc08ec3e9b6b266de734420dbc40be7e1363d75",
+      "tmp/heart-learning/sharing-original-scale-v1/production-qa/photos/results.json": "c64584648211f55685238aa9f7f62f11f2bcd066ffe77d0d079fed8db434b1df",
+      "tmp/heart-learning/sharing-original-scale-v1/production-qa/comparison.json": "b345ffb5b79dffd1bff1f1ea888cbe69da9195fd504369c27753036fcf7f249d",
+      "tmp/heart-learning/sharing-original-scale-v1/production-qa/compare.py": "d82d0a1c7d0d6d4f0fa6006ff924964efa32e435c808e1604fb154edde00b4c7",
+      "tmp/heart-learning/sharing-original-scale-v1/production-qa/browser/results.json": "3b8529cfec0d9ee7064b62a7e5d3e9445939f84efd8a8a178bb5cc53efd0a29e",
+      "tmp/heart-learning/sharing-original-scale-v1/production-qa/editable/results.json": "b4ef1d5e72bb2fdb1562cea6db607088504560c87f69f5b03034a082423c2794"
+    }
   }
 }
