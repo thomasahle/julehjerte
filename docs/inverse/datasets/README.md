@@ -25,12 +25,35 @@ The inventory, with material annotations updated on 2026-10-16, contains:
 | Printed-paper photographic variants | 96 | Three ink recipes on the same 32 training replay geometries, plus 32 byte-identical controls. Exact body, material and graph labels retained. |
 | Training background variants | 2,040 | Five changes to each of 408 original training views; geometry labels and split groups unchanged. |
 | Training scene variants | 2,448 | Neighbours and handles paired with all six backgrounds for the same 408 training views; no new geometry families. |
+| Foreground occlusion pilot | 16 views | Sixteen existing training geometries, with exact visible/hidden paper labels; generated and reviewed, no training. |
 | Source-photo material QA samples | 78 integrated + 25 new | Four hearts in two reserved photographs; sparse assistant-reviewed development observations, not dense labels or training data. The new jigsaw review is not yet in the common benchmark fixture. |
 | Sparse four-sector neighbourhood observations | 25 on two sources, plus 8 ordinary-edge controls | Reviewed locations and uncertainty boxes; exact physical joining is unknown. Development observations, not training labels. |
 | Real visible-body annotations | 24 | Includes newly admitted printed-checker/candle/fish instances and one reserved gold-angel instance. Uncertain pixels are excluded; the completed corrected-family study retains its original nineteen instances. |
 | Real partial paper-material annotations | 22 heart instances | Nineteen enter the completed corrected-family study; three new instances remain unassigned and unused in training. Separate body and material uncertainty; all are reviewed development examples. |
 
 ## Current results and limits
+
+A [foreground-occlusion pilot](foreground-occlusion-results.json) adds sixteen
+ribbon-covered views from sixteen existing training geometries. It supplies
+separate complete-paper, visible-paper, hidden-paper and foreground-object
+coverage, and masks material observation where paper is covered. Every ribbon
+crosses the known notch while hiding only **0.31–1.85%** of the paper. Original
+camera and cutting labels are unchanged; 160 source assets and 64 generated
+assets verify. All sixteen panels were inspected and seven focused tests pass.
+These are raster-composited training examples from one procedural family; no
+retraining or real-photo reconstruction gain is claimed.
+
+The [paired frozen-model diagnostic](foreground-occlusion-inference-results.json)
+then isolates the visibility assumption. The small CNN retains most covered
+paper (mean probability **97.88% → 89.32%**). MobileSAM drops from **98.31% to
+14.57%** with its original box and point held fixed; recomputing prompts gives
+**14.98%**. All sixteen CNN comparisons and three-arm SAM panels were inspected.
+SAM is describing visible paper, while the notch cropper interprets its absence
+as background. Complete-shape evidence and visibility therefore need separate
+roles; globally unioning the masks would also admit foreground objects. These
+are controlled perturbations of training-source images, not held-out recovery
+results. No model was retrained.
+
 
 An [affine notch/edge prototype](notch-overlap-results.json) produces no new
 accepted crops. A subsequent [local-support variant](notch-local-support-results.json)

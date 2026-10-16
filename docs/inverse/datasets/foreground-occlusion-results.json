@@ -1,0 +1,58 @@
+{
+  "schema": "foreground-occlusion-pilot-results-1",
+  "status": "generated-verified-and-visually-reviewed",
+  "plan": "docs/inverse/datasets/foreground-occlusion-plan.json",
+  "deployed": false,
+  "trainingPerformed": false,
+  "sourceGeometries": 16,
+  "augmentedViews": 16,
+  "families": [
+    "procedural-lattice"
+  ],
+  "experimentalSplit": "train only; development and recipe holdouts excluded",
+  "verification": {
+    "status": "passed",
+    "manifestSha256": "2a4b3df18a96d60f7d80bfe67f37433bda5356a5cd8a7bc2bcda4e8609f80670",
+    "sourceGeometries": 16,
+    "augmentedViews": 16,
+    "sourceAssetsVerified": 160,
+    "outputAssetsVerified": 64,
+    "hiddenBodyFraction": {
+      "minimum": 0.003075849963352084,
+      "maximum": 0.018499653786420822
+    },
+    "trainingPerformed": false,
+    "visualReview": "separate-required",
+    "checks": [
+      "Exact declared experimental training selection; no development or recipe holdouts.",
+      "Original camera, cutting geometry and source assets unchanged.",
+      "Projected foreground coverage, visible/hidden partition and material observation agree.",
+      "Every ribbon covers the notch and some overlap paper.",
+      "PNG compositing reproduces exactly; uncovered RGB pixels are unchanged."
+    ]
+  },
+  "visualReview": {
+    "status": "complete",
+    "allSixteenPanelsInspected": true,
+    "acceptedForControlledSyntheticExperiment": true,
+    "notes": [
+      "All ribbons cross the known notch and enter the overlap; the visible masks retain the expected inward indentation.",
+      "Hidden-paper and complete-paper fields agree with the source outline. Material-observation support removes the covered overlap while leaving latent labels unchanged.",
+      "Rotation, paper color, background and perspective vary with the original source views. All sixteen geometries belong to the procedural-lattice family.",
+      "Composited ribbons are crisp flat-color rectangles with no shadows; these are mechanism-focused synthetic examples, not new real photographs or evidence of model improvement."
+    ],
+    "panelsSha256": {
+      "tmp/heart-learning/foreground-occlusion-pilot-v1/review-1.png": "f37364703d2448db32a721481e7a12361958097884de5413da1c8a3b5b1a4f99",
+      "tmp/heart-learning/foreground-occlusion-pilot-v1/review-2.png": "ec6d5cfaec09cb4a1060588b110c18fc83ea1e18e7919ec424c3d900a0b6fd2c",
+      "tmp/heart-learning/foreground-occlusion-pilot-v1/review-3.png": "204e50bada9bca3aaeb275fc14df707e19f05ec7d71cb41195b67e92b2207044",
+      "tmp/heart-learning/foreground-occlusion-pilot-v1/review-4.png": "239b775772c577e346e54aeff0d88e2e31aef778f92ee08711b27706fa1f2b12"
+    }
+  },
+  "focusedTestsPassed": 7,
+  "artifactsSha256": {
+    "tmp/heart-learning/foreground-occlusion-pilot-v1/dataset/manifest.json": "2a4b3df18a96d60f7d80bfe67f37433bda5356a5cd8a7bc2bcda4e8609f80670",
+    "tmp/heart-learning/foreground-occlusion-pilot-v1/dataset/verification.json": "878c4ea0b33ea25b916045377230f2bfc2b71405225175fbc0df4c965b7db6b5",
+    "tmp/heart-learning/foreground-occlusion-pilot-v1/visual-review.json": "fbdf717e1e49256db13eca2e3b263ee5a9d30280fb7cb917ff5861ab8abaad2f"
+  },
+  "nextStep": "The frozen CNN and fixed/adaptive-prompt MobileSAM comparison is complete; see foreground-occlusion-inference-results.json. No retraining performed."
+}
