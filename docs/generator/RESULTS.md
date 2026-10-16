@@ -1,5 +1,50 @@
 # Generator robustness results
 
+## Current coverage: tilted partitions inside layered frames
+
+A final layered-frame fallback tilts the internal panel seams before clipping
+and routing the motif, then restores its original coordinates before attaching
+the frame. This can avoid grazing a small detail without distorting the visible
+motif or its circular border. The existing successful layouts return before this
+bounded two-angle fallback. Shared connections in the selected new construction
+receive the same checked corner rounding used by the text checkerboard.
+
+The Tabler paw now works in the layered frame with nine strips per sheet. Its
+straight prototype had **three tips below 30° / four below 45°**; the selected
+rounded construction has **one / one**. It retains the paw outline, medallion and
+both complete outer bands, with coincident cuts and no cutouts. JSON and SVG
+handoffs preserve the rendered weave and pass the editor's spacing checks.
+The production output exactly matches the inspected prototype and passes the
+separate paper-connectivity audit at resolution 1,400; the identical prototype
+also passes at 2,800. At frame sizes 60, 70 and 80, the default motif scale
+passes the same audit. The six smaller/larger motif-scale combinations in that
+nine-case sweep remain refused (`tilted-size-material.json`). These discrete
+checks do not certify physical tear strength.
+Artifacts: `tilted-production-gallery-0.png`, `tilted-production-material.json`,
+`shear-quality-material-hires.json` under `tmp/generator/`.
+
+A fresh full-pipeline run of **all 51 layered-frame cases** gives **50 accepted /
+one refused / zero invalid**, with no regressions (`tilted-layers.json`). The
+crown remains refused. Combined coverage is **2,820 accepted / 330 refused / zero
+invalid**, with **1,085 / 37** figures and the unchanged **1,735 / 293** text cases
+(`tilted-current.json`). The other 3,099 records retain their previous results;
+this is not a fresh run of all 3,150 cases. The paw is added to the expected corpus.
+
+Tilted coffee-cup prototypes passed the geometry checks but remained uncertain
+in the material audit, including at higher resolution, so that fallback was not
+added to the oval frames. Additional ANNA checkerboard experiments have not yet
+improved its eight narrow N-corner tips. The broader goal remains unfinished,
+including the remaining refused combinations, other sizes and icon-catalog coverage.
+
+Type checking, lint and the production build pass, with seven existing warnings
+(`tilted-check.log`, `tilted-lint.log`, `tilted-build.log`). The single-worker full
+unit run reports **1,116 passed / one timed out** in 756 seconds
+(`tilted-tests.log`). All new tests pass. The remaining timeout is the existing
+Kalam ANNA ordinary-repeat case: 21.99 seconds against its unchanged 20-second
+limit. It passes alone in 8.05 seconds (`tilted-kalam-focused.log`); the full suite
+is still not green. All **177 inverse-engine tests pass** separately in 86.74
+seconds (`tilted-inverse.log`).
+
 ## Current coverage: align shared contacts across clipped panels
 
 The last-resort text layout now reserves each internal panel seam for its agreed

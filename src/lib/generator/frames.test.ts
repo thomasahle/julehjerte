@@ -6,9 +6,13 @@ import { generateLayeredFigure } from './layers';
 import { generateCornerChecks } from './cornerChecks';
 import { defaults, readGeneratorState } from './state';
 import { templateVariants } from './templates';
-import { inside, type Ring } from './geometry';
+import { inside, uprightToSheet, type Point, type Ring } from './geometry';
+import { normalizeContours } from './contours';
 import { rasterizeDesign } from '$lib/paint/rasterize';
-import { serializeHeartDesign, normalizeHeartDesign } from '$lib/utils/heartDesign';
+import { serializeHeartDesign, normalizeHeartDesign, serializeHeartToSVG, parseHeartFromSVG } from '$lib/utils/heartDesign';
+import { inferOverlapRect } from '$lib/utils/overlapRect';
+import { findFingersWithIssues, intersectionMarginPx } from '$lib/editor/curveIssues';
+import { gridClearanceScale } from '$lib/geometry/clearance';
 import tree from '../../../static/generator/motifs/tree.json';
 import horse from '../../../static/generator/motifs/ph-horse.json';
 import bird from '../../../static/generator/motifs/ph-bird.json';
@@ -26,10 +30,39 @@ import cat from '../../../static/generator/motifs/ph-cat.json';
 import tablerGift from '../../../static/generator/motifs/tb-gift.json';
 import bow from '../../../static/generator/motifs/tb-bow.json';
 import butterfly from '../../../static/generator/motifs/ph-butterfly.json';
+import paw from '../../../static/generator/motifs/tb-paw.json';
 const colors = { left: '#fff', right: '#b91313' };
 const examples = { tree, horse, bird, star, snowflake };
 
 describe('complete motif frames', () => {
+ it('tilts invisible panel seams without distorting the paw, medallion or outer bands', () => {
+  const rings = normalizeContours(paw.contours as Ring[]);
+  const result = generateLayeredFigure(rings, 70, .7,
+   { columns: 2, rows: 2, filled: false, adaptive: true, shear: -.2 });
+  expect(result.artwork.slice(1)).toEqual(rings.map(r => r.map(([x, y]) => uprightToSheet([x * .7 * 70, y * .7 * 70]))));
+  expect(result.artwork[0]).toEqual(Array.from({ length: 96 }, (_, i) =>
+   uprightToSheet([.5 * Math.cos(i * Math.PI / 48) * 70, .5 * Math.sin(i * Math.PI / 48) * 70] as Point)));
+  for (const t of [7, 11, 89, 93]) {
+   expect(result.edges).toContainEqual({ from: [t, 0], to: [t, 100], family: 'A', kind: 'frame' });
+   expect(result.edges).toContainEqual({ from: [0, t], to: [100, t], family: 'B', kind: 'frame' });
+  }
+ });
+ it('rounds the layered paw connections and keeps its open cuts through both exports', () => {
+  const { design } = generate({ mode: 'figure', name: 'Paw', contours: paw.contours as Ring[], colors, style: 'layers' });
+  expect(design.gridSize).toEqual({ x: 9, y: 9 });
+  expect(cutTipCounts(design)).toEqual([1, 1]);
+  const before = rasterizeDesign(design, 240).data;
+  for (const restored of [normalizeHeartDesign(serializeHeartDesign(design)), parseHeartFromSVG(serializeHeartToSVG(design))]) {
+   expect(restored).not.toBeNull();
+   expect(restored!.fingers).toHaveLength(design.fingers.length);
+   expect(restored).not.toHaveProperty('leftCutouts');
+   expect(restored).not.toHaveProperty('rightCutouts');
+   const rect = inferOverlapRect(restored!.fingers, restored!.gridSize);
+   const margin = intersectionMarginPx(rect, gridClearanceScale(9, 9));
+   expect(findFingersWithIssues(restored!.fingers, margin).size).toBe(0);
+   expect(rasterizeDesign(restored!, 240).data).toEqual(before);
+  }
+ }, 20000);
  for (const [name, motif, style, size] of [
   ['bow', bow, 'fitted', 4], ['butterfly', butterfly, 'layers', 8]
  ] as const) {

@@ -233,12 +233,17 @@ export function generatePanelFigure(
 	spread = false,
 	route = fourPortMotif,
 	attachments: 'support' | 'ray' | 'filled' = 'support',
-	adaptive = false
+	adaptive = false,
+	shear = 0
 ) {
 	const factor = size * scale * (frame === 'oval' ? 0.75 : 1);
-	const upright = rings.map((r) =>
+	const artworkUpright = rings.map((r) =>
 		r.map(([x, y]) => [x * factor, y * factor] as Point)
 	);
+	// Work in coordinates with horizontal panel seams, then undo the shear
+	// before attaching the frame. Only the invisible partition is tilted:
+	// the visible motif, counters and surrounding frame keep their shape.
+	const upright = shear ? artworkUpright.map(r => r.map(([x, y]): Point => [x, y - shear * x])) : artworkUpright;
 	const points = upright.flat();
 	if (!points.length) throw new ConstructionError('empty', 'No contour');
 	const xs = points.map((p) => p[0]),
@@ -328,8 +333,18 @@ export function generatePanelFigure(
 		}
 	}
 	edges = stitch(stitch(edges, vertical), horizontal, 1);
+	if (shear) {
+		const restore = (p: Point): Point => {
+			const x = (p[0] - p[1]) * Math.SQRT1_2,
+				y = (p[0] + p[1] - 100) * Math.SQRT1_2;
+			return uprightToSheet([x, y + shear * x]);
+		};
+		edges = edges.map(edge => ({ ...edge, from: restore(edge.from), to: restore(edge.to) }));
+		for (const row of cells) for (const gates of row)
+			for (let side = 0; side < gates.length; side++) gates[side] = restore(gates[side]);
+	}
 	connectCellGrid(edges, cells, frame ? frameRing(frame, size) : undefined, style, spread);
-	const artwork = upright.map(r => r.map(uprightToSheet));
+	const artwork = artworkUpright.map(r => r.map(uprightToSheet));
 	return {
 		geometry: compile(edges),
 		edges,

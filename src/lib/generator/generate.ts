@@ -322,11 +322,11 @@ function finishConstruction(request: GeneratorRequest, r: Construction, recipe: 
 	return { design, recipe };
 }
 
-/** Improve only the selected checkerboard, once. Shared curves meet the letter
+/** Improve only the selected construction, once. Shared curves meet the artwork
  * across its outline rather than forming a narrow point along it. Keep the
  * original whenever bending fails full-sheet checks or does not improve the
- * actual exported cuts. Letter outlines, strip count and connections stay fixed. */
-function improveCheckerConnections(result: GeneratorResult): GeneratorResult {
+ * actual exported cuts. Visible outlines, strip count and connections stay fixed. */
+function improveSharedConnections(result: GeneratorResult): GeneratorResult {
 	const design = curveSharpSharedTips(result.design);
 	if (!design || !fewerCutTips(cutTipCounts(design), cutTipCounts(result.design))) return result;
 	const rect = inferOverlapRect(design.fingers, design.gridSize);
@@ -351,7 +351,7 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		const result = generateUsingRecipes(request,
 			(construction, recipe) => rejected.push({ construction, recipe }), curveFitter);
 		return request.mode === 'text' && request.textFrame === 'repeat-check'
-			? improveCheckerConnections(result) : result;
+			? improveSharedConnections(result) : result;
 	} catch (error) {
 		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 		const curvedCandidates = [...rejected];
@@ -410,6 +410,19 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		}
 		const panels = retryPanelLayouts(request, curveFitter);
 		if (panels) return panels;
+		if (request.mode === 'figure' && request.style === 'layers') {
+			// A level seam can graze a toe or arm and leave a tiny fragment.
+			// Tilt the internal partition, keeping both outer bands and the
+			// motif unchanged. Validate spacing after restoring its coordinates.
+			const rings = normalizeContours(request.contours ?? []);
+			for (const shear of [-.2, .2]) try {
+				const construction = generateLayeredFigure(rings, request.frameSize, request.scale,
+					{ columns: 2, rows: 2, filled: false, adaptive: true, shear });
+				return improveSharedConnections(finishConstruction(request, construction, 'nested', undefined, curveFitter));
+			} catch (retryError) {
+				if (!(retryError instanceof ConstructionError) && !(retryError instanceof CutGeometryError)) throw retryError;
+			}
+		}
 		throw error;
 	}
 }

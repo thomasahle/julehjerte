@@ -5,14 +5,14 @@ import { generateFittedFigure } from './fitted';
 import { generatePanelFigure } from './panels';
 
 export function generateLayeredFigure(rings: Ring[], size = 70, scale = .7,
-	panels?: { columns: number; rows: number; filled: boolean; adaptive?: boolean }, route = fourPortMotif) {
+	panels?: { columns: number; rows: number; filled: boolean; adaptive?: boolean; shear?: number }, route = fourPortMotif) {
 	if (!rings.flat().length) throw new ConstructionError('empty', 'No contour');
 	const circle: Ring = Array.from({ length: 96 }, (_, i) =>
 		[.5 * Math.cos(i * Math.PI / 48), .5 * Math.sin(i * Math.PI / 48)] as Point
 	);
 	const shapes = [circle, ...rings.map(r => r.map(([x, y]) => [x * scale, y * scale] as Point))];
 	const result = panels
-		? generatePanelFigure(shapes, undefined, size, 1, panels.columns, 'check', panels.rows, false, route, panels.filled ? 'filled' : 'ray', panels.adaptive)
+		? generatePanelFigure(shapes, undefined, size, 1, panels.columns, 'check', panels.rows, false, route, panels.filled ? 'filled' : 'ray', panels.adaptive, panels.shear)
 		: generateFittedFigure(shapes, size, 1, route);
 	if (panels) {
 		// The fitted recipe already includes this band. Panel routing must
