@@ -1,6 +1,65 @@
 # Generator robustness results
 
-## Current coverage: detached dots in repeated text
+## Current coverage: overlapping serif branches
+
+An E's middle and lower serif ends can overlap vertically. Rectangular panels
+clip those ends into tiny fragments, even when the main strokes have room.
+The new construction separates a connected stem from its three branches,
+clips only the stem between their actual attachment heights, and gives each
+complete branch its own cell. Neighbouring letters use ordinary panels with
+extra columns for separate parts. Inter-letter joins stay within their common
+vertical interval, avoiding nearest-corner attachments at another row's seam.
+All original contours and the selected frame remain intact; there are no cutouts.
+
+Cinzel **Hej!** now works with the **circle, diamond, hexagon, rounded and
+scalloped** frames, using ten actual strips per sheet. Four frames have no tips
+below 45 degrees; the hexagon has four, none below 30 degrees. A standalone
+Cinzel **E** also works in all six decorative frames with six strips per sheet:
+its hexagon has one tip below 45 degrees, and the other five have none. E is
+additional coverage outside the fixed 3,150-case corpus.
+
+A cached detector recognizes overlapping branch extents in the original glyph
+and selects this construction before trying generic rectangular layouts. The
+first late-fallback draft passed geometric checks but timed out in all eleven
+new regression tests. Moving the topology-specific construction first fixed
+that delay without changing any timeout. Other topologies retain the earlier
+recipe order. The detector matches none of the corpus's 1,098 previously
+accepted decorative-frame text cases, and the final implementation regenerated
+47 earlier results exactly, including all six fonts' ANNA checkerboards, their
+six decorative frames, and the five preceding ordinary-repeat recoveries.
+
+All eleven final production captures pass the 10% extra clearance check,
+JSON/SVG round trips and independent material audits at resolution 1,400, with
+zero certain or possible detached core islands. The finished hearts and both
+complete cutting sheets were visually reviewed. These are digital checks, not
+physical weaving or tear tests. Final generation took 0.115–0.843 seconds in
+this audit; this is not an isolated benchmark or a speed fix for every input.
+Evidence: `branched-final-production.json`, `branched-final-{material,metrics}.json`,
+`branched-final-gallery-0..10.png`, `branched-final-preservation.json`, and
+`branched-detector-audit.json`, all under the ignored `tmp/generator/` directory.
+
+The merged corpus is **2,872 accepted / 278 refused / zero invalid**: text is
+1,760 / 268, figures 1,112 / 10. `branched-current.json` retains 3,048 older
+records and refreshes 102 previously refused framed, single-line text cases.
+Five successes are from final production; 97 refusals are retained from the
+late-fallback draft, before the construction-order change. That draft's full
+108-case run also included the six standalone E cases. This is not a fresh
+full-matrix run. The broader catalogue and nondefault sizes remain incompletely
+verified.
+
+The focused final run passes all 30 selected tests, including the eleven new
+regressions, with the original timeouts. Final check, lint and build pass with
+seven existing Svelte warnings. The full unit run completed **1,181 passing /
+one timing failure** across 67 files in 626.68 seconds. The existing Oswald
+juleman repeat regression took 5.65 seconds against its unchanged five-second
+limit while the broader audit was running. It passed alone in 4.12 seconds
+without source or timeout changes. All 1,182 unit cases therefore have a passing
+result, but this was not one entirely green full run. All **177 inverse-engine
+tests pass** in 89.60 seconds. Logs: `branched-tests.log`,
+`branched-oswald-isolated.log`, `branched-inverse.log`, and
+`branched-final-{focused,check,lint,build}.log`.
+
+## Previous coverage: detached dots in repeated text
 
 A detached dot or accent previously kept a fixed assignment of its outline arcs
 to the two paper sheets. Reversing that assignment can separate the dot from a

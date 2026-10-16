@@ -53,6 +53,24 @@ function validateHandoffs(design: HeartDesign) {
 // These are expected successes, never a test that passes by accepting a refusal.
 // The larger offline corpus covers 2,028 text and 1,122 figure configurations.
 describe('generator robustness regressions', () => {
+	for (const textFrame of ['circle', 'diamond', 'hexagon', 'oval', 'rounded', 'scalloped'] as const)
+		it(`keeps overlapping Cinzel E serifs on separate strips in ${textFrame}`, () => {
+			const { design } = generate({ mode: 'text', name: 'E', text: 'E', font: fonts.cinzel, textFrame, colors });
+			expect(design.gridSize).toEqual({ x: 6, y: 6 });
+			expect(cutTipCounts(design)).toEqual([0, textFrame === 'hexagon' ? 1 : 0]);
+			const margin = intersectionMarginPx(inferOverlapRect(design.fingers, design.gridSize), gridClearanceScale(6));
+			expect(findFingersWithIssues(design.fingers, margin * 1.1).size).toBe(0);
+			validateHandoffs(design);
+		});
+	for (const textFrame of ['circle', 'diamond', 'hexagon', 'rounded', 'scalloped'] as const)
+		it(`joins branched Cinzel Hej! letters through clear gaps in ${textFrame}`, () => {
+			const { design } = generate({ mode: 'text', name: 'Hej!', text: 'Hej!', font: fonts.cinzel, textFrame, colors });
+			expect(design.gridSize).toEqual({ x: 10, y: 10 });
+			expect(cutTipCounts(design)).toEqual([0, textFrame === 'hexagon' ? 4 : 0]);
+			const margin = intersectionMarginPx(inferOverlapRect(design.fingers, design.gridSize), gridClearanceScale(10));
+			expect(findFingersWithIssues(design.fingers, margin * 1.1).size).toBe(0);
+			validateHandoffs(design);
+		});
 	for (const [fontId, text, tips] of [
 		['breeserif', 'Hej!', [0, 0]], ['righteous', 'Hej!', [0, 0]],
 		['righteous', 'juleman', [0, 0]], ['oswald', 'Hej!', [0, 2]],

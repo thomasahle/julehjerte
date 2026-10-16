@@ -4,6 +4,7 @@ import { generateCornerChecks } from './cornerChecks';
 import { generateFittedFigure } from './fitted';
 import { sunburstBorder } from './sunburst';
 import { generateTextGrid } from './textGrid';
+import { generateBranchedText, hasOverlappingTextBranches } from './branchedText';
 import { generateRepeatedGrid, repeatedGridCache } from './repeatedGrid';
 import { generateCheckeredGrid, checkeredGridCache } from './checkeredGrid';
 import { generateMixedCheckeredGrid, mixedCheckeredGridCache } from './mixedCheckeredGrid';
@@ -348,6 +349,16 @@ function improveSharedConnections(result: GeneratorResult): GeneratorResult {
  * result must pass the same topology, spacing and fidelity checks again. */
 export function generate(request: GeneratorRequest): GeneratorResult {
 	const curveFitter = createExactCurveFitter();
+	const frame = request.textFrame ?? 'woven';
+	const overlappingBranches = request.mode === 'text' && request.font &&
+		frame !== 'woven' && frame !== 'air' && frame !== 'repeat' && frame !== 'repeat-check' &&
+		hasOverlappingTextBranches(request.text ?? '', request.font);
+	if (overlappingBranches) {
+		// Rectangular panels repeatedly clip these overlapping ends. Use their
+		// actual branch topology first, so iteration need not exhaust that work.
+		const result = retryBranchedText(request, curveFitter);
+		if (result) return result;
+	}
 	const repetitionCache = request.mode === 'text' && request.textFrame === 'repeat' ? repeatedGridCache() : undefined;
 	const rejected: { construction: Construction; recipe: GeneratorResult['recipe'] }[] = [];
 	try {
@@ -453,6 +464,8 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		if (fittedComponents) return fittedComponents;
 		const textPanels = retryTextPanelIslands(request, curveFitter);
 		if (textPanels) return textPanels;
+		const branches = overlappingBranches ? undefined : retryBranchedText(request, curveFitter);
+		if (branches) return branches;
 		let bestRepeated: GeneratorResult | undefined;
 		const islandRoutes = [[false, false], [true, false], [true, true]].flatMap(([islandFlip, fresh]) =>
 			(islandFlip ? [0] : [0, 1, 2, 3]).map(islandRank => ({ islandRank, islandFlip, fresh })));
@@ -642,6 +655,37 @@ function retryTextPanelIslands(request: GeneratorRequest, curveFitter: ReturnTyp
 		// validate its outside connections with the same clearance reserve.
 		if (best) return best;
 	}
+}
+
+/** Overlapping serif ends need independent branches rather than tighter clips.
+ * Other topology uses these bounded alternatives only as a final fallback. */
+function retryBranchedText(request: GeneratorRequest, curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult | undefined {
+	const frame = request.textFrame ?? 'woven', text = request.text ?? '', font = request.font;
+	if (request.mode !== 'text' || !font || !text.trim() || /\s/.test(text) ||
+		frame === 'woven' || frame === 'air' || frame === 'repeat' || frame === 'repeat-check') return;
+	let best: GeneratorResult | undefined;
+	for (const splitFraction of [.55, .48, .62]) for (const practical of [false, true]) try {
+		const construction = generateBranchedText(text, font, frame, splitFraction, practical);
+		let candidate: GeneratorResult;
+		try {
+			candidate = finishConstruction(request, construction, 'letters', undefined, curveFitter);
+		} catch (error) {
+			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			const geometry = curveSharedCuts(construction.geometry);
+			if (!geometry) continue;
+			candidate = finishConstruction(request, construction, 'letters', geometry, curveFitter);
+		}
+		const result = improveSharedConnections(candidate), design = result.design,
+			margin = intersectionMarginPx(inferOverlapRect(design.fingers, design.gridSize),
+				gridClearanceScale(design.gridSize.x, design.gridSize.y));
+		if (findFingersWithIssues(design.fingers, margin * 1.1).size) continue;
+		const tips = cutTipCounts(design);
+		if (!best || fewerCutTips(tips, cutTipCounts(best.design))) best = result;
+		if (!tips[1]) return best;
+	} catch (error) {
+		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+	}
+	return best;
 }
 
 /** Separate islands need room around their shared gate, not just the shortest

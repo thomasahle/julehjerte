@@ -698,6 +698,20 @@ alternate-phase layout to avoid retaining narrow tips from the old cells.
 Keep earlier successful whole hearts unchanged and require the same clearance,
 open-path, artwork and export checks. This fallback does not add cutouts.
 
+Framed text may separate a connected stem from three branches whose
+serif ends overlap vertically. Clip only the stem at heights between the branch
+attachments; retain each complete branch in its own cell. Neighbouring glyphs
+use ordinary panels, adding columns for disconnected pieces. Keep inter-letter
+joins inside the common vertical interval rather than at the nearest corner.
+Stitch only agreed seam contacts and preserve every glyph contour. This bounded
+construction compares three stem divisions, retains at most 20 actual strips
+per sheet, and requires 10% extra clearance after shared-tip rounding. Detect
+overlapping branch extents in the original glyph and use this construction
+first for that topology; cache the detector per immutable font and glyph.
+Other topologies try it only after earlier recipes fail. Empty panels and
+unsupported topologies continue through the established recipes; they must
+never be silently replaced with different lettering.
+
 
 If a sunburst figure still fails after the existing recipes and shared-cut
 repairs, its four-port medallion may retry using the complete five-strip grid:
