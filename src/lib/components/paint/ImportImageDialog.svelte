@@ -969,6 +969,9 @@
 					</div>
 					{#if previewMask}
 						<p class="hint">{symmetryText}</p>
+						{#if previewMask.validMask?.some(v => !v)}
+							<p class="hint">{tr('paintMissingPhotoPixels')}</p>
+						{/if}
 					{:else if livePhoto && cropNote}
 						<!-- The crop is showing, so the line under it says what is still
 						     missing; `cropNote` is which of those three it is. -->

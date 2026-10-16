@@ -262,7 +262,7 @@ export { handoffToDraw, takeHandoff };
 
 /** The session as plain JSON-safe data. Unused for now; see the note at the top. */
 export type SerializedSession = {
-	mask: { size: number; cells: string } | null;
+	mask: { size: number; cells: string; observed?: string } | null;
 	symmetry: SymmetrySettings;
 	found: SymmetrySettings | null;
 	sourceName: string | null;
@@ -271,7 +271,10 @@ export type SerializedSession = {
 
 export function serialize(): SerializedSession {
 	return {
-		mask: session.mask ? { size: session.mask.size, cells: packMask(session.mask) } : null,
+		mask: session.mask ? {
+			size: session.mask.size, cells: packMask(session.mask),
+			...(session.mask.validMask ? { observed: packMask({ size: session.mask.size, data: session.mask.validMask }) } : {})
+		} : null,
 		symmetry: { ...session.symmetry },
 		found: session.found ? { ...session.found } : null,
 		sourceName: session.sourceName,
@@ -317,6 +320,12 @@ export function restore(raw: unknown): boolean {
 		if (typeof m.size !== 'number' || typeof m.cells !== 'string') return false;
 		mask = unpackMask(m.size, m.cells);
 		if (!mask) return false;
+		if (m.observed !== undefined) {
+			if (typeof m.observed !== 'string') return false;
+			const observed = unpackMask(m.size, m.observed);
+			if (!observed) return false;
+			mask.validMask = observed.data;
+		}
 	}
 
 	Object.assign(session, freshSession());

@@ -17,7 +17,12 @@
 export const MASK_SIZE = 400;
 
 /** Row-major cells, `data[y * size + x]`, each `0` (left colour) or `1` (right). */
-export type Mask = { size: number; data: Uint8Array };
+export type Mask = {
+	size: number;
+	data: Uint8Array;
+	/** Real photo or painted cells; zero is unobserved. Absent means all known. */
+	validMask?: Uint8Array;
+};
 
 /**
  * A half-open region of cells, `x0 <= x < x1`, used to report what an edit
@@ -68,7 +73,15 @@ export function createMask(fill: 0 | 1 = 0, size: number = MASK_SIZE): Mask {
 }
 
 export function cloneMask(m: Mask): Mask {
-	return { size: m.size, data: new Uint8Array(m.data) };
+	return { size: m.size, data: new Uint8Array(m.data), ...(m.validMask ? { validMask: m.validMask.slice() } : {}) };
+}
+
+/** An explicit brush/eraser write also specifies previously unknown cells. */
+export function paintCell(m: Mask, index: number, value: 0 | 1): boolean {
+	const changed = m.data[index] !== value || !!m.validMask && !m.validMask[index];
+	m.data[index] = value;
+	if (m.validMask) m.validMask[index] = 1;
+	return changed;
 }
 
 /** True when nothing has been painted: every cell is the left colour. */
@@ -113,11 +126,17 @@ export function resample(data: Uint8Array, from: number, to: number): Uint8Array
  * where either came from; the caller pairs it with `resample` when the two were
  * measured at different resolutions.
  */
-export function maskMismatch(a: Uint8Array, b: Uint8Array): number {
+export function maskMismatch(a: Uint8Array, b: Uint8Array, validMask?: Uint8Array): number {
 	if (a.length !== b.length || !a.length) throw new Error('Masks must have the same size.');
-	let differing = 0;
-	for (let i = 0; i < a.length; i++) if ((a[i] ? 1 : 0) !== (b[i] ? 1 : 0)) differing++;
-	return differing / a.length;
+	if (validMask && validMask.length !== a.length) throw new Error('Observation mask must match the compared masks.');
+	let differing = 0, counted = 0;
+	for (let i = 0; i < a.length; i++) {
+		if (validMask && !validMask[i]) continue;
+		counted++;
+		if ((a[i] ? 1 : 0) !== (b[i] ? 1 : 0)) differing++;
+	}
+	if (!counted) throw new Error('Comparison requires observed pixels.');
+	return differing / counted;
 }
 
 /**

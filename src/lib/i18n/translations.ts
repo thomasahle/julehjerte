@@ -219,6 +219,7 @@ export const translations = {
     /** {size} = celler pr. side af masken */
     paintMaskPill: 'Maske · {size} × {size} · to farver',
     paintCanvasHint: 'Mal på den flettede firkant. Lapperne uden om viser papirfarverne.',
+    paintMissingPhotoPixels: 'Skraverede områder ligger uden for billedet. Mal på dem for at vælge en farve.',
     /** {size} = celler pr. side af masken */
     paintCanvasLabel: 'Masken som hjerte, {size} × {size} celler i to papirfarver',
     paintCanvasEmptyLabel: 'Tomt hjerte uden maske',
@@ -737,6 +738,7 @@ export const translations = {
     /** {size} = cells per side of the mask */
     paintMaskPill: 'Mask · {size} × {size} · two colours',
     paintCanvasHint: 'Paint on the woven square. The lobes around it show the paper colours.',
+    paintMissingPhotoPixels: 'Shaded areas are outside the photo. Paint them to choose a colour.',
     /** {size} = cells per side of the mask */
     paintCanvasLabel: 'The mask as a heart, {size} × {size} cells in two paper colours',
     paintCanvasEmptyLabel: 'An empty heart with no mask',

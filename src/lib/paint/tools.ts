@@ -8,7 +8,7 @@
  */
 
 import type { Vec } from '$lib/types/heart';
-import { clampBox, emptyBox, get, isEmptyBox, unionBox, type Box, type Mask } from './mask';
+import { clampBox, emptyBox, get, isEmptyBox, paintCell, unionBox, type Box, type Mask } from './mask';
 import { closedPointMaps, type Transform } from './symmetry';
 
 /** What the pen lays down: a radius in cells, and the paper colour it paints. */
@@ -27,8 +27,7 @@ export function stampCircle(m: Mask, x: number, y: number, brush: Brush): Box {
 		for (let cx = box.x0; cx < box.x1; cx++) {
 			const dx = cx - x;
 			if (dx * dx + dy * dy > r2) continue;
-			if (m.data[row + cx] === brush.value) continue;
-			m.data[row + cx] = brush.value;
+			if (!paintCell(m, row + cx, brush.value)) continue;
 			changed = unionBox(changed, { x0: cx, y0: cy, x1: cx + 1, y1: cy + 1 });
 		}
 	}
@@ -75,8 +74,7 @@ export function rect(m: Mask, a: Vec, b: Vec, value: 0 | 1): Box {
 	for (let cy = box.y0; cy < box.y1; cy++) {
 		const row = cy * m.size;
 		for (let cx = box.x0; cx < box.x1; cx++) {
-			if (m.data[row + cx] === value) continue;
-			m.data[row + cx] = value;
+			if (!paintCell(m, row + cx, value)) continue;
 			changed = unionBox(changed, { x0: cx, y0: cy, x1: cx + 1, y1: cy + 1 });
 		}
 	}
@@ -95,7 +93,10 @@ export function floodFill(m: Mask, x: number, y: number, value: 0 | 1): Box {
 	const sy = Math.round(y);
 	if (sx < 0 || sy < 0 || sx >= m.size || sy >= m.size) return emptyBox();
 	const target = get(m, sx, sy);
-	if (target === value) return emptyBox();
+	if (target === value && (!m.validMask || m.validMask.every(Boolean))) return emptyBox();
+	// Same-colour fill still observes missing cells. Colour cannot mark visited
+	// spans in that case, so track them separately to avoid cycling forever.
+	const seen = target === value ? new Uint8Array(m.data.length) : null;
 
 	let changed = emptyBox();
 	const stack: number[] = [sx, sy];
@@ -103,21 +104,25 @@ export function floodFill(m: Mask, x: number, y: number, value: 0 | 1): Box {
 		const py = stack.pop()!;
 		const px = stack.pop()!;
 		const row = py * m.size;
-		if (m.data[row + px] !== target) continue;
+		if (m.data[row + px] !== target || seen?.[row + px]) continue;
 
 		let left = px;
-		while (left > 0 && m.data[row + left - 1] === target) left--;
+		while (left > 0 && m.data[row + left - 1] === target && !seen?.[row + left - 1]) left--;
 		let right = px;
-		while (right < m.size - 1 && m.data[row + right + 1] === target) right++;
-		for (let i = left; i <= right; i++) m.data[row + i] = value;
-		changed = unionBox(changed, { x0: left, y0: py, x1: right + 1, y1: py + 1 });
+		while (right < m.size - 1 && m.data[row + right + 1] === target && !seen?.[row + right + 1]) right++;
+		let first = right + 1, last = left - 1;
+		for (let i = left; i <= right; i++) {
+			if (paintCell(m, row + i, value)) { first = Math.min(first, i); last = i; }
+			if (seen) seen[row + i] = 1;
+		}
+		if (first <= last) changed = unionBox(changed, { x0: first, y0: py, x1: last + 1, y1: py + 1 });
 
 		for (const ny of [py - 1, py + 1]) {
 			if (ny < 0 || ny >= m.size) continue;
 			const nrow = ny * m.size;
 			let inSpan = false;
 			for (let i = left; i <= right; i++) {
-				if (m.data[nrow + i] === target) {
+				if (m.data[nrow + i] === target && !seen?.[nrow + i]) {
 					if (!inSpan) {
 						stack.push(i, ny);
 						inSpan = true;
@@ -193,10 +198,10 @@ export function applySymmetric(m: Mask, box: Box, transforms: Transform[], value
 	for (let y = box.y0; y < box.y1; y++) {
 		const row = y * m.size;
 		for (let x = box.x0; x < box.x1; x++) {
-			if (m.data[row + x] !== value) continue;
+			if (m.data[row + x] !== value || m.validMask && !m.validMask[row + x]) continue;
 			for (const map of maps) {
 				const p = map(x, y, m.size);
-				m.data[p.y * m.size + p.x] = value;
+				paintCell(m, p.y * m.size + p.x, value);
 			}
 		}
 	}
@@ -251,7 +256,7 @@ export function applySymmetricEdit(
 	if (!maps.length) return { ...box };
 
 	const changed = imagesOf(m, box, maps);
-	const before = m.data.slice();
+	const before = m.data.slice(), observed = m.validMask?.slice();
 	for (const layer of EDIT_LAYERS) {
 		for (let y = box.y0; y < box.y1; y++) {
 			const row = y * m.size;
@@ -261,9 +266,11 @@ export function applySymmetricEdit(
 				// The cell itself as well as its images: the layer below may have
 				// mirrored its own value over this very cell a moment ago.
 				m.data[row + x] = value;
+				if (m.validMask && observed) m.validMask[row + x] = observed[row + x]!;
 				for (const map of maps) {
 					const p = map(x, y, m.size);
 					m.data[p.y * m.size + p.x] = value;
+					if (m.validMask && observed) m.validMask[p.y * m.size + p.x] = observed[row + x]!;
 				}
 			}
 		}

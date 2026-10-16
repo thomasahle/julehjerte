@@ -7,6 +7,16 @@ import {AUTOMATIC_PRESET} from '../../static/inverse/core/presets.js';
 import {readHardPhoto} from './hard-photo-data.mjs';
 import {hardPhotoTarget} from './hard-photo-target.mjs';
 
+test('Mal benchmark carries missing photograph pixels into the fitting objective',()=>{
+  const n=64,rgba=new Uint8ClampedArray(n*n*4).fill(255);
+  for(let y=0;y<n;y++)for(let x=0;x<n/2;x++)rgba.fill(0,4*(y*n+x),4*(y*n+x)+3);
+  const imported=prepare({type:'pixels',rgba,imageWidth:n,imageHeight:n,quad:[[0,0],[128,0],[128,128],[0,128]]},AUTOMATIC_PRESET);
+  const target=hardPhotoTarget(imported,'mask',AUTOMATIC_PRESET);
+  assert.equal(target.sourceImage.validMask.reduce((sum,v)=>sum+v,0),32*32);
+  assert.deepEqual(target.sourceImage.weights,Float64Array.from(target.sourceImage.validMask));
+  assert.notEqual(target.sourceImage.validMask,imported.preview.validMask);
+});
+
 test('photo and Mal tracks preserve the frozen binary import and distinguish explicit mixture probabilities',async()=>{
   const fixture=JSON.parse(await fs.readFile('scripts/inverse/fixtures/photographic-puppy-fit.json'));
   const catalogue=JSON.parse(await fs.readFile(fixture.sourceCatalogue));

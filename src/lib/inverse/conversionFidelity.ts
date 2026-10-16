@@ -29,11 +29,16 @@ export function conversionFidelity(original: HeartDesign, reference?: Conversion
     throw new Error('Conversion comparison requires a square binary mask.');
   }
   const target = reference?.mask.data.slice();
-  const weights = reference?.weights && Float64Array.from(reference.weights);
+  let weights = reference?.weights && Float64Array.from(reference.weights);
+  const observed = reference?.mask.validMask;
+  if (observed && (observed.length !== resolution * resolution || observed.some(v => v !== 0 && v !== 1))) {
+    throw new Error('Conversion observation mask must contain one binary value per pixel.');
+  }
   if (weights && (weights.length !== resolution * resolution ||
       weights.some(value => !Number.isFinite(value) || value < 0))) {
     throw new Error('Conversion comparison weights must match the mask and be finite and nonnegative.');
   }
+  if (observed) weights = Float64Array.from(observed, (v, i) => v * (weights?.[i] ?? 1));
   const mass = weights ? weights.reduce((sum, value) => sum + value, 0) : resolution * resolution;
   if (!(mass > 0) || !Number.isFinite(mass)) throw new Error('Conversion comparison needs positive image weight.');
   const sourceError = (mask: Uint8Array): number | undefined => {

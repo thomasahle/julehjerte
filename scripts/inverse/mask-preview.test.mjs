@@ -5,6 +5,15 @@ import {loadSVG,sampleTarget} from '../../static/inverse/core/input.js';
 import {prepare} from '../../static/inverse/core/engine.js';
 import {AUTOMATIC_PRESET} from '../../static/inverse/core/presets.js';
 
+test('missing photo pixels create no boundary or continuation through unobserved cells',()=>{
+  const mask=Uint8Array.of(0,0,1,0,0,1,0,0,1),validMask=Uint8Array.of(0,1,1,0,0,0,0,1,1);
+  const source={mask,validMask,resolution:3},preview=originalMaskBoundaries(source,100);
+  assert.equal(preview.segments,2);
+  assert.ok(preview.svg.includes('d="M2,0V1 M2,2V3"'));
+  const changed=Uint8Array.from(mask,(v,i)=>validMask[i]?v:1-v);
+  assert.deepEqual(originalMaskBoundaries({...source,mask:changed},100),preview);
+});
+
 test('original boundary previews reconstruct every binary two-by-two arrangement',()=>{
   for(const width of [37,100])for(let bits=0;bits<16;bits++){
     const mask=Uint8Array.from({length:4},(_,i)=>(bits>>i)&1),preview=originalMaskBoundaries({mask,resolution:2},width);

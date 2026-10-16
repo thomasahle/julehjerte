@@ -462,6 +462,7 @@ export function maskToArtwork(mask: Mask, frame?: Frame): MaskInput {
 		type: 'mask',
 		mask: new Uint8Array(mask.data),
 		resolution: mask.size,
+		...(mask.validMask ? { validMask: mask.validMask.slice() } : {}),
 		...(frame?.mode === 'free' ? { weights: frameWeights(mask, frame) } : {})
 	};
 }

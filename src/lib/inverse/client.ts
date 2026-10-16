@@ -9,7 +9,7 @@ import type { EngineProgress } from './engine';
 export type Point = [number, number];
 export type ArtworkInput =
   | { type: 'svg' | 'json'; text: string }
-  | { type: 'mask'; mask: Uint8Array; resolution: number; weights?: Float32Array; seedCells?: number }
+  | { type: 'mask'; mask: Uint8Array; resolution: number; weights?: Float32Array; validMask?: Uint8Array; seedCells?: number }
   | { type: 'pixels'; rgba: Uint8ClampedArray; imageWidth: number; imageHeight: number; quad?: Point[]; roi?: number[]; cropProvenance?: Record<string, unknown> };
 
 /** The pixel arm of ArtworkInput, which corner detection and the mask both need by name. */
@@ -32,6 +32,7 @@ export interface PreparedArtwork {
   boundaries: string;
   mask: Uint8Array;
   weights?: Float64Array;
+  validMask?: Uint8Array;
   resolution: number;
   metadata: {
     curves: number;

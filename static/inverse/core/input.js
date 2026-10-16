@@ -41,13 +41,40 @@ export function loadSVG(text,{width=100,maxSpan=12,tolerance=.01}={}){
 }
 function gaussianSolve(a,b){const n=b.length;a=a.map((r,i)=>[...r,b[i]]);for(let k=0;k<n;k++){let p=k;for(let i=k+1;i<n;i++)if(Math.abs(a[i][k])>Math.abs(a[p][k]))p=i;if(Math.abs(a[p][k])<1e-12)throw new Error('Degenerate crop quadrilateral.');[a[k],a[p]]=[a[p],a[k]];const v=a[k][k];for(let j=k;j<=n;j++)a[k][j]/=v;for(let i=0;i<n;i++)if(i!==k){const z=a[i][k];for(let j=k;j<=n;j++)a[i][j]-=z*a[k][j];}}return a.map(r=>r[n]);}
 export function rectify(rgba,width,height,n,quad=null,background='#ffffff'){
+  return rectifyWithCoverage(rgba,width,height,n,quad,background).rgb;
+}
+
+/** Keep display RGB unchanged, but distinguish real samples from padding.
+ * A pixel is observed only when its complete bilinear support is inside the
+ * photograph. Alpha inside the source still composites to the chosen paper.
+ */
+export function rectifyWithCoverage(rgba,width,height,n,quad=null,background='#ffffff'){
   if(!(rgba instanceof Uint8ClampedArray||rgba instanceof Uint8Array)||rgba.length!==4*width*height)throw new Error('Invalid image pixels.');if(width*height>24e6)throw new Error('Image exceeds 24 megapixels.');if(!Number.isInteger(n)||n<32||n>600)throw new Error('Tracing resolution must be 32–600.');
   const bg=hexColor(background);let h=null;if(quad){if(!Array.isArray(quad)||quad.length!==4||quad.some(p=>p.length!==2||p.some(x=>!Number.isFinite(x))))throw new Error('Select four finite crop corners.');const signs=quad.map((p,i)=>cross(sub(quad[(i+1)%4],p),sub(quad[(i+2)%4],quad[(i+1)%4])));if(signs.some(x=>Math.abs(x)<1e-6)||!(signs.every(x=>x>0)||signs.every(x=>x<0)))throw new Error('The crop corners must form a convex quadrilateral in order.');const a=[],b=[];[[0,0],[1,0],[1,1],[0,1]].forEach(([u,v],i)=>{const [x,y]=quad[i];a.push([u,v,1,0,0,0,-u*x,-v*x],[0,0,0,u,v,1,-u*y,-v*y]);b.push(x,y);});h=gaussianSolve(a,b);}else if(Math.abs(width-height)>1)throw new Error('Select the four corners of the square overlap, or use a square image.');
-  const rgb=new Uint8Array(n*n*3);for(let y=0;y<n;y++)for(let x=0;x<n;x++){const u=(x+.5)/n,v=(y+.5)/n,den=h?h[6]*u+h[7]*v+1:1,xx=h?(h[0]*u+h[1]*v+h[2])/den-.5:u*width-.5,yy=h?(h[3]*u+h[4]*v+h[5])/den-.5:v*height-.5,x0=Math.floor(xx),y0=Math.floor(yy),dx=xx-x0,dy=yy-y0;let vals=[0,0,0];for(let j=0;j<2;j++)for(let i=0;i<2;i++){const w=(i?dx:1-dx)*(j?dy:1-dy),px=x0+i,py=y0+j;for(let k=0;k<3;k++){let z=bg[k];if(px>=0&&py>=0&&px<width&&py<height){const index=4*(py*width+px),alpha=rgba[index+3]/255;z=alpha*rgba[index+k]+(1-alpha)*bg[k];}vals[k]+=w*z;}}for(let k=0;k<3;k++)rgb[3*(y*n+x)+k]=Math.round(vals[k]);}return rgb;
+  const rgb=new Uint8Array(n*n*3),validMask=new Uint8Array(n*n).fill(1);let missing=0;for(let y=0;y<n;y++)for(let x=0;x<n;x++){const u=(x+.5)/n,v=(y+.5)/n,den=h?h[6]*u+h[7]*v+1:1,xx=h?(h[0]*u+h[1]*v+h[2])/den-.5:u*width-.5,yy=h?(h[3]*u+h[4]*v+h[5])/den-.5:v*height-.5,x0=Math.floor(xx),y0=Math.floor(yy),dx=xx-x0,dy=yy-y0;let vals=[0,0,0],observed=true;for(let j=0;j<2;j++)for(let i=0;i<2;i++){const w=(i?dx:1-dx)*(j?dy:1-dy),px=x0+i,py=y0+j;if(w>1e-12&&(px<0||py<0||px>=width||py>=height))observed=false;for(let k=0;k<3;k++){let z=bg[k];if(px>=0&&py>=0&&px<width&&py<height){const index=4*(py*width+px),alpha=rgba[index+3]/255;z=alpha*rgba[index+k]+(1-alpha)*bg[k];}vals[k]+=w*z;}}for(let k=0;k<3;k++)rgb[3*(y*n+x)+k]=Math.round(vals[k]);if(!observed){validMask[y*n+x]=0;missing++;}}return{rgb,validMask:missing?validMask:null};
 }
 export function rgbToLab(rgb){const linear=rgb.map(v=>{v/=255;return v<=.04045?v/12.92:((v+.055)/1.055)**2.4;}),[r,g,b]=linear,xyz=[(.4124564*r+.3575761*g+.1804375*b)/.95047,.2126729*r+.7151522*g+.072175*b,(.0193339*r+.119192*g+.9503041*b)/1.08883],f=xyz.map(x=>x>.008856?Math.cbrt(x):7.787*x+16/116);return[116*f[1]-16,500*(f[0]-f[1]),200*(f[1]-f[2])];}
 export function otsu(values){const hist=Array(256).fill(0);for(const v of values)hist[v]++;let sum=0;hist.forEach((c,i)=>sum+=c*i);let w0=0,s0=0,best=-1,t=128;for(let i=0;i<256;i++){w0+=hist[i];s0+=i*hist[i];const w1=values.length-w0;if(!w0||!w1)continue;const score=w0*w1*(s0/w0-(sum-s0)/w1)**2;if(score>best){best=score;t=i;}}return t;}
-export function quantize(rgb,{mode='auto',threshold=128,swatches=['#bd1111','#ffffff'],invert=false}={}){
+/** Validate and own a binary observation field; absent means fully observed. */
+function observedMask(mask,length){
+  if(mask==null)return null;
+  if(mask.length!==length||Array.from(mask).some(v=>v!==0&&v!==1))throw new Error('Observation mask must contain one binary value per image pixel.');
+  if(!mask.some(v=>v===1))throw new Error('The crop must contain observed image pixels.');
+  return mask.every(v=>v===1)?null:Uint8Array.from(mask);
+}
+
+export function quantize(rgb,{mode='auto',threshold=128,swatches=['#bd1111','#ffffff'],invert=false,validMask=null}={}){
+  const observed=observedMask(validMask,rgb.length/3);
+  if(observed){
+    // Palette/threshold estimation must never see synthetic background.
+    // Fitting weights cannot undo a classification already changed by it.
+    const count=observed.reduce((sum,v)=>sum+v,0),samples=new Uint8Array(3*count);
+    for(let i=0,j=0;i<observed.length;i++)if(observed[i]){samples.set(rgb.slice(3*i,3*i+3),3*j++);}
+    const classified=quantize(samples,{mode,threshold,swatches,invert});
+    const mask=new Uint8Array(observed.length),probability=classified.probability?new Float32Array(observed.length).fill(.5):null;
+    for(let i=0,j=0;i<observed.length;i++)if(observed[i]){mask[i]=classified.mask[j];if(probability)probability[i]=classified.probability[j];j++;}
+    return{mask,probability,metadata:{...classified.metadata,observedPixels:count,missingPixels:observed.length-count}};
+  }
   const n=rgb.length/3,gray=new Uint8Array(n);let chroma=0;for(let i=0;i<n;i++){const c=[rgb[3*i],rgb[3*i+1],rgb[3*i+2]];gray[i]=Math.round(.2126*c[0]+.7152*c[1]+.0722*c[2]);chroma+=Math.max(...c)-Math.min(...c);}if(mode==='auto')mode=chroma/n<5?'otsu':'lab';
   const mask=new Uint8Array(n);let centers=null,cutoff=null,mixture=null,probability=null;
   if(['threshold','otsu'].includes(mode)){cutoff=mode==='otsu'?otsu(gray):threshold;if(!Number.isFinite(cutoff)||cutoff<0||cutoff>255)throw new Error('Threshold must be 0–255.');for(let i=0;i<n;i++)mask[i]=gray[i]<=cutoff?1:0;}
@@ -123,8 +150,15 @@ export function preprocessPixels({rgba,imageWidth,imageHeight,quad=null,cropProv
   const requestedResolution=settings.resolution??400;
   if(!Number.isInteger(requestedResolution)||requestedResolution<32||requestedResolution>600)throw new Error('Tracing resolution must be 32–600.');
   const n=Math.min(requestedResolution,Math.max(32,Math.min(imageWidth,imageHeight))),width=settings.width||100;
-  const rgb=rectify(rgba,imageWidth,imageHeight,n,quad,settings.background||'#ffffff'),quantized=quantize(rgb,settings);
+  const {rgb,validMask}=rectifyWithCoverage(rgba,imageWidth,imageHeight,n,quad,settings.background||'#ffffff'),quantized=quantize(rgb,{...settings,validMask});
   const target=settings.algorithm==='direct'?{width,phase:0,curves:[],metadata:{input:'photograph for direct fitting',paperColors:colorsSafe(settings.paperColors),direct:true,preprocessing:{...quantized.metadata,actualResolution:n,traceUsed:false,traceChangeFraction:0,totalChangeFraction:0,sourceMaskComponents:components(quantized.mask,n,1).length,vectorSampleComponents:components(quantized.mask,n,1).length}},sourceImage:{mask:quantized.mask,probability:quantized.probability||Float32Array.from(quantized.mask),resolution:n}}:preprocessMask(quantized.mask,n,{...settings,width},quantized.metadata);
+  if(validMask){
+    target.sourceImage.validMask=validMask;
+    target.metadata.preprocessing.observationMethod='complete-bilinear-support';
+    // Existing weighted initialization and topology paths must also see the
+    // missing observations, without making them editable photographed pixels.
+    target.sourceImage.weights=Float64Array.from(validMask);
+  }
   target.metadata.sourceImage={widthPixels:imageWidth,heightPixels:imageHeight,cropCorners:quad?quad.map(p=>[...p]):null,cropProvenance};
   target.metadata.preprocessing.requestedResolution=requestedResolution;
   return{target,rgb,mask:quantized.mask,n};
@@ -137,10 +171,15 @@ export function preprocessBinaryMask(input,settings={}){
   const n=input.resolution;
   if(!Number.isInteger(n)||n<32||n>600||input.mask?.length!==n*n)throw new Error('A binary mask must be a square of 32–600 pixels per side.');
   if(Array.from(input.mask).some(v=>v!==0&&v!==1))throw new Error('A binary mask must contain only zero and one.');
-  const mask=Uint8Array.from(input.mask,v=>settings.invert?1-v:v),importance=imageWeights(input.weights,n*n);
+  const mask=Uint8Array.from(input.mask,v=>settings.invert?1-v:v),validMask=observedMask(input.validMask,n*n),importance=imageWeights(input.weights,n*n);
   const seedCells=input.seedCells??4;
   if(!Number.isInteger(seedCells)||seedCells<2||seedCells>8)throw new Error('The supporting grid must have 2–8 cells per side.');
   const sourceImage={mask,probability:Float32Array.from(mask),resolution:n,...(importance?{weights:Float64Array.from(importance.values),seedCells}:{})};
+  if(validMask){
+    sourceImage.validMask=validMask;
+    sourceImage.weights=Float64Array.from(validMask,(v,i)=>v*(importance?importance.values[i]:1));
+    imageWeights(sourceImage.weights,n*n); // Reject no observed, protected pixels.
+  }
   const count=components(mask,n,1).length;
   const target={width:settings.width||100,phase:0,curves:[],sourceImage,metadata:{input:'Binary artwork mask',direct:true,paperColors:colorsSafe(settings.paperColors),
     preprocessing:{method:'binary',actualResolution:n,inverted:!!settings.invert,traceUsed:false,traceChangeFraction:0,totalChangeFraction:0,sourceMaskComponents:count,vectorSampleComponents:count},

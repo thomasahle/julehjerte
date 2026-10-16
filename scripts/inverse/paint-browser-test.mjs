@@ -567,14 +567,17 @@ try{
      assert.ok(row.sharedLengthMm>minimumSharedLength,'The hat must retain its long exact shared cuts.');
     }
     const rendered=rasterizeDesign(design,200).data,wanted=resample(Uint8Array.from(observed.prepared.mask),observed.prepared.resolution,200);
-    row.wholeOriginalError=maskMismatch(rendered,wanted);
-    const regions=free?frameMismatch(rendered,wanted,200,{mode:'free',shape:'diamond',size:frameSize}):null;
+    const observedSmall=observed.prepared.validMask?resample(Uint8Array.from(observed.prepared.validMask),observed.prepared.resolution,200):undefined;
+    row.wholeOriginalError=maskMismatch(rendered,wanted,observedSmall);
+    const regions=free?frameMismatch(rendered,wanted,200,{mode:'free',shape:'diamond',size:frameSize},observedSmall):null;
     row.editableError=regions?.inside??row.wholeOriginalError;
     if(regions)row.borderChange=regions.outside;
     // Keep the historical 200-cell score, but measure the accuracy gate against
     // the actual solved mask. Nearest-neighbour downsampling moves edge pixels
     // and can turn a 0.3% source error into 0.6% at a different sampling phase.
     const resolution=observed.prepared.resolution,sourceMask=Uint8Array.from(observed.prepared.mask),sourceRendered=rasterizeDesign(design,resolution).data;
+    const sourceValid=observed.prepared.validMask?Uint8Array.from(observed.prepared.validMask):undefined;
+    const sourceReference={mask:sourceMask,resolution,...(sourceValid?{validMask:sourceValid,weights:Float64Array.from(sourceValid)}:{})};
     row.sourceResolution=resolution;
     if(['hard-bibel-star-outline','hard-bibel-star-outline-jpeg75'].includes(name)&&!engineReference){
      assert.equal(row.detectedCrop?.paperModel,'two-paper-colours-from-interior-chromaticity');
@@ -587,8 +590,8 @@ try{
      assert.equal(classified.correct,28);assert.equal(exported.correct,28,'Downloaded templates must preserve all reviewed original-photo points.');
     }
     if(hardPhoto||photoMask){
-     row.editableFeatures=auditFeatureFidelity({mask:sourceMask,resolution},sourceRendered,observed.result.report.settings);
-     row.featureComponents=featureComponentMetrics({mask:sourceMask,resolution},sourceRendered);
+     row.editableFeatures=auditFeatureFidelity(sourceReference,sourceRendered,observed.result.report.settings);
+     row.featureComponents=featureComponentMetrics(sourceReference,sourceRendered);
      if(name==='stacked-hearts-mask'&&!engineReference&&!stopMode){
       assert.equal(observed.result.report.solver.cornerTopologyInitialization?.accepted,true);
       assert.deepEqual(row.selectedCounts,[3,3]);
@@ -619,7 +622,7 @@ try{
      row.originalArtworkError=differing/resolution**2;
      assert.ok(row.originalArtworkError<.05,`Original checker artwork disagreement: ${row.originalArtworkError}`);
     }
-    row.sourceEditableError=free?frameMismatch(sourceRendered,sourceMask,resolution,{mode:'free',shape:'diamond',size:frameSize}).inside:maskMismatch(sourceRendered,sourceMask);
+    row.sourceEditableError=free?frameMismatch(sourceRendered,sourceMask,resolution,{mode:'free',shape:'diamond',size:frameSize},sourceValid).inside:maskMismatch(sourceRendered,sourceMask,sourceValid);
     if(name==='maple-leaf-mask'&&!engineReference){
      assert.ok(row.sourceEditableError<.012,'The downloaded maple must retain the improved source fit.');
      if(row.selectedCounts.reduce((sum,n)=>sum+n,0)>6){
@@ -653,10 +656,10 @@ try{
     // flag. Compare the same honoured symmetry with simplification disabled.
     const raw=convertCutGeometry(geometry,{name:'unsimplified',tolerance:0,enforce:row.honouredSymmetry});
     assert.deepEqual(raw.honoured,row.honouredSymmetry);
-    row.conversionFidelity=conversionFidelity(raw.design,{mask:{size:resolution,data:sourceMask},weights:observed.prepared.weights??undefined})(design);
+    row.conversionFidelity=conversionFidelity(raw.design,{mask:{size:resolution,data:sourceMask,...(sourceValid?{validMask:sourceValid}:{})},weights:observed.prepared.weights??undefined})(design);
     assert.equal(row.conversionFidelity.passed,true,`Editable SVG lost fitted weave fidelity: ${JSON.stringify(row.conversionFidelity)}`);
     if(hardPhoto||photoMask){
-     row.conversionFeatures=auditFeatureFidelityChange({mask:sourceMask,resolution},rasterizeDesign(raw.design,resolution).data,sourceRendered,observed.result.report.settings);
+     row.conversionFeatures=auditFeatureFidelityChange(sourceReference,rasterizeDesign(raw.design,resolution).data,sourceRendered,observed.result.report.settings);
      assert.equal(row.conversionFeatures.passed,true,'Conversion must not erode a source feature, including one that was already imperfect.');
     }
     assert.ok(Math.abs(row.displayedError-row.sourceEditableError)<=.00051,`Displayed mismatch ${row.displayedError} disagrees with exported heart ${row.sourceEditableError}`);

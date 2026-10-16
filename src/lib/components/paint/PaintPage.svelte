@@ -52,7 +52,7 @@
 		type SymmetrySettings
 	} from '$lib/editor/session.svelte';
 	import { clampFrameSize, frameMismatch, shapeCells } from '$lib/paint/frame';
-	import { createMask, isEmpty, maskMismatch, type Mask } from '$lib/paint/mask';
+	import { cloneMask, createMask, isEmpty, maskMismatch, type Mask } from '$lib/paint/mask';
 	import { detectSymmetry, transformsFor } from '$lib/paint/symmetry';
 	import { rasterizeDesign } from '$lib/paint/rasterize';
 	import {
@@ -216,6 +216,11 @@
 		void revision;
 		void strokes;
 		return !session.mask || isEmpty(session.mask);
+	});
+	let hasMissingPhotoPixels = $derived.by(() => {
+		void revision;
+		void strokes;
+		return session.mask?.validMask?.some(v => !v) ?? false;
 	});
 	let busy = $derived(session.status === 'searching' || session.status === 'importing');
 	/**
@@ -636,7 +641,7 @@
 			// Preserve the original drawing; a free band carries zero image weight.
 			// Checker patterns may seed the search, but never replace this target.
 			const frame = { ...session.frame };
-			const target = { size: mask.size, data: new Uint8Array(mask.data) };
+			const target = cloneMask(mask);
 			await prepareMask(target, colors, onProgress, frame);
 			solveStarted = true;
 			const solved = await findCuts(
@@ -667,9 +672,9 @@
 			// pixels and can exaggerate the disagreement with the fitted curves.
 			const woven = rasterizeDesign(converted.design, target.size).data;
 			const wanted = target.data;
-			const mismatch = maskMismatch(woven, wanted);
+			const mismatch = maskMismatch(woven, wanted, target.validMask);
 			const regions = frame.mode === 'free'
-				? frameMismatch(woven, wanted, target.size, frame) : undefined;
+				? frameMismatch(woven, wanted, target.size, frame, target.validMask) : undefined;
 
 			// The rows the panel shows are the converter's, not `solved.report.symmetry.
 			// honoured` (PAINT.md §11). Both are true statements about different
@@ -918,6 +923,9 @@
 					<p class="canvas-pill">
 						<strong>{t('paintMaskPill', lang, { size: session.mask?.size ?? 400 })}</strong>
 						<span>{t('paintCanvasHint', lang)}</span>
+						{#if hasMissingPhotoPixels}
+							<span>{t('paintMissingPhotoPixels', lang)}</span>
+						{/if}
 					</p>
 
 					{#if notice}

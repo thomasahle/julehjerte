@@ -31,6 +31,20 @@ The inventory, with material annotations updated on 2026-10-15, contains:
 
 ## Current results and limits
 
+[Preserving photographic coverage](photo-observation-results.json) now separates
+real source pixels from crop padding through colour estimation, editing and
+fitting. Missing areas are hatched; painting specifies their colour, and
+Undo/Redo preserves that distinction. The real collage browser replay retains
+coverage through the worker and downloaded SVG, with geometry/paper checks
+passing and 0.55% observed-mask disagreement. Crossed-ribbons now passes in the
+three-case clipped-photo replay, bottom-flower still passes, and bauble remains
+failed with a worse fit. Both old/new exports are rescored against both old/new
+observed classifications, because neither the target nor denominator stayed
+unchanged. All 865 application tests and twelve focused core checks pass;
+ordinary star/hat browser exports remain byte-identical. The complete inverse
+suite and regular Hunodan timing replay are running; no full-corpus improvement
+is claimed yet.
+
 [Keeping the best valid rollback point](best-safe-rollback-results.json) restores
 the shifted bird's small eye while preserving exploration through worse valid
 checkpoints. Fresh isolated fits pass in 9.79 seconds with a ten-second allowance

@@ -52,7 +52,7 @@
 		type Selection
 	} from '$lib/paint/selection';
 	import { transformsFor, type SymmetrySettings } from '$lib/paint/symmetry';
-	import { colourChannels } from '$lib/paint/drawHeart';
+	import { colourChannels, missingPixelChannels } from '$lib/paint/drawHeart';
 	import { fitHeart, insideSquare, toMask, toSquare, type HeartLayout, type Pt } from '$lib/paint/heartLayout';
 	import {
 		frameHandles,
@@ -529,7 +529,7 @@
 		const image = new ImageData(w, h);
 		const [left, right] = paper;
 		for (let i = 0; i < sel.cells.length; i++) {
-			const colour = sel.cells[i] === 1 ? right! : left!;
+			const colour = sel.validMask && !sel.validMask[i] ? missingPixelChannels(i, w) : sel.cells[i] === 1 ? right! : left!;
 			image.data[4 * i] = colour[0]!;
 			image.data[4 * i + 1] = colour[1]!;
 			image.data[4 * i + 2] = colour[2]!;
@@ -729,7 +729,7 @@
 				const i = row + x;
 				// Only 1 is the right paper. A value the mask may grow (a "free" cell,
 				// PAINT.md §11) is neither paper and must not be painted as if it were.
-				const colour = mask.data[i] === 1 ? right! : left!;
+				const colour = mask.validMask && !mask.validMask[i] ? missingPixelChannels(i, mask.size) : mask.data[i] === 1 ? right! : left!;
 				pixels[4 * i] = colour[0]!;
 				pixels[4 * i + 1] = colour[1]!;
 				pixels[4 * i + 2] = colour[2]!;

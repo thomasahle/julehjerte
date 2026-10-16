@@ -102,7 +102,7 @@ function countDisagreement(
 			const here = y * m.size + x;
 			const p = mapPoint(e, x, y, m.size);
 			const there = p.y * m.size + p.x;
-			if (region && (!region[here] || !region[there])) continue;
+			if (region && (!region[here] || !region[there]) || m.validMask && (!m.validMask[here] || !m.validMask[there])) continue;
 			counted++;
 			if (m.data[here] !== m.data[there]) differing++;
 		}
@@ -116,7 +116,7 @@ function countDisagreement(
  */
 export function disagreement(m: Mask, t: Transform, region?: Uint8Array): number {
 	const { differing, counted } = countDisagreement(m, ELEMENTS[t], region);
-	return counted ? differing / counted : 0;
+	return counted ? differing / counted : m.validMask ? Infinity : 0;
 }
 
 /** The generators of the symmetry the settings ask for; §5's table, deduplicated. */
@@ -216,9 +216,12 @@ export function symmetrize(m: Mask, transforms: Transform[], region?: Uint8Array
 				for (const index of cells) done[index] = 1;
 				continue;
 			}
+			const known = m.validMask ? cells.filter(index => m.validMask![index]) : cells;
 			let ones = 0;
-			for (const index of cells) ones += m.data[index]!;
-			const value = ones * 2 === cells.length ? m.data[cells[0]!]! : ones * 2 > cells.length ? 1 : 0;
+			for (const index of known) ones += m.data[index]!;
+			const value = !known.length ? 0 : ones * 2 === known.length ? m.data[known[0]!]! : ones * 2 > known.length ? 1 : 0;
+			// Symmetry can propose colours for missing photo cells, but these are
+			// still unobserved until the visitor explicitly paints them.
 			for (const index of cells) {
 				m.data[index] = value;
 				done[index] = 1;
@@ -247,7 +250,7 @@ export function detectSymmetry(m: Mask, tolerance = 0.03, region?: Uint8Array): 
 	let ones = 0;
 	let counted = 0;
 	for (let i = 0; i < m.data.length; i++) {
-		if (region && !region[i]) continue;
+		if (region && !region[i] || m.validMask && !m.validMask[i]) continue;
 		counted++;
 		ones += m.data[i]!;
 	}
@@ -260,8 +263,13 @@ export function detectSymmetry(m: Mask, tolerance = 0.03, region?: Uint8Array): 
 	// holds exactly one cell of the minority colour, so this is the share of the ink
 	// the transform fails to explain: 0 for an exact symmetry, 1 for a picture as
 	// unlike its image as two unrelated drawings with this much ink in them.
-	const holds = (t: Transform) =>
-		countDisagreement(m, ELEMENTS[t], region).differing / (2 * ink) <= tolerance;
+	const incomplete = m.validMask?.some(v => !v) ?? false;
+	const holds = (t: Transform) => {
+		const compared = countDisagreement(m, ELEMENTS[t], region);
+		// Missing counterparts are not evidence of symmetry. Require the
+		// ordinary observed region to be comparable before proposing a fold.
+		return (!incomplete || compared.counted >= counted) && compared.differing / (2 * ink) <= tolerance;
+	};
 	const mirrored = holds('mirrorX') && holds('mirrorY');
 	const lobes: SymmetryMode = holds('transpose') ? 'sym' : holds('antiTranspose') ? 'anti' : 'off';
 	const lobe: SymmetryMode = mirrored ? 'sym' : holds('rotate180') ? 'anti' : 'off';

@@ -77,6 +77,19 @@ describe('conversion preserves the combined weave', () => {
     expect(before(original).passed).toBe(true);
   });
 
+  it('keeps missing photo pixels separate from editable border weights', () => {
+    const original = raw(), mask = { size: target.size, data: target.data.slice(), validMask: Uint8Array.from(weights) };
+    const before = conversionFidelity(original, { mask });
+    for (let i = 0; i < mask.data.length; i++) if (!mask.validMask[i]) mask.data[i] ^= 1;
+    const after = conversionFidelity(original, { mask });
+    expect(after(original).sourceError).toBe(before(original).sourceError);
+    expect(before(original).sourceError).toBe(mismatch(original));
+    mask.validMask.fill(1); mask.data.fill(0);
+    expect(before(original).sourceError).toBe(mismatch(original));
+    expect(() => conversionFidelity(original, { mask: { ...mask, validMask: new Uint8Array(mask.data.length) } })).toThrow(/positive image weight/);
+    expect(() => conversionFidelity(original, { mask: { ...mask, validMask: new Uint8Array(1) } })).toThrow(/observation/);
+  });
+
   it('rejects malformed comparison masks and weights', () => {
     const original = raw();
     expect(() => conversionFidelity(original, { mask: { size: 2, data: new Uint8Array(3) } })).toThrow(/binary mask/);

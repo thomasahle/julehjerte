@@ -84,7 +84,7 @@ declare module '$inverse/locator/locator.js' {
 
 declare module '$inverse/core/engine.js' {
   import type { EngineSolution } from '$inverse/core/graph.js';
-  import type { ArtworkInput } from '$lib/inverse/client';
+  import type { ArtworkInput, PreparedArtwork } from '$lib/inverse/client';
   export function finish(solution: EngineSolution, settings: Record<string, unknown>, onProgress?: (event: Record<string, unknown>) => void, options?: { refine?: boolean; deadline?: number }): { files: Record<string, string>; report: Record<string, unknown> };
   /**
    * Classify artwork into the engine's own two-colour reading of the woven
@@ -98,8 +98,8 @@ declare module '$inverse/core/engine.js' {
     settings?: Record<string, unknown>,
     onProgress?: (event: { stage: string }) => void
   ): {
-    target: { sourceImage: { weights?: Float64Array } };
-    preview: { mask: Uint8Array; weights?: Float64Array; resolution: number; metadata: Record<string, unknown> };
+    target: { sourceImage: { weights?: Float64Array; validMask?: Uint8Array } };
+    preview: PreparedArtwork;
   };
 
   /**

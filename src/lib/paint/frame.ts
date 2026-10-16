@@ -244,8 +244,8 @@ export function mismatchInside(a: Uint8Array, b: Uint8Array, size: number, frame
 }
 
 /** Compare the protected motif and permitted border changes independently. */
-export function frameMismatch(a: Uint8Array, b: Uint8Array, size: number, frame: Frame): { inside: number; outside: number } {
-	if (a.length !== b.length || a.length !== size * size) {
+export function frameMismatch(a: Uint8Array, b: Uint8Array, size: number, frame: Frame, validMask?: Uint8Array): { inside: number; outside: number } {
+	if (a.length !== b.length || a.length !== size * size || validMask && validMask.length !== a.length) {
 		throw new Error('Masks must both be size × size cells.');
 	}
 	const count = [0, 0];
@@ -253,6 +253,7 @@ export function frameMismatch(a: Uint8Array, b: Uint8Array, size: number, frame:
 	for (let y = 0; y < size; y++) {
 		const row = y * size;
 		for (let x = 0; x < size; x++) {
+			if (validMask && !validMask[row + x]) continue;
 			const region = insideCell(frame, size, x, y) ? 1 : 0;
 			count[region]!++;
 			if ((a[row + x] ? 1 : 0) !== (b[row + x] ? 1 : 0)) differing[region]!++;

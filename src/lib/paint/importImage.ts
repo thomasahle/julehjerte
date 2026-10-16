@@ -112,7 +112,13 @@ export async function decodeImageFile(file: File): Promise<DecodedImage> {
 export function maskFromPrepared(prepared: PreparedArtwork): Mask {
 	const from = prepared.resolution;
 	if (!from || prepared.mask.length !== from * from) return createMask(0);
-	return { size: MASK_SIZE, data: resample(prepared.mask, from, MASK_SIZE) };
+	if (prepared.validMask && (prepared.validMask.length !== from * from || prepared.validMask.some(v => v !== 0 && v !== 1))) {
+		throw new Error('Invalid observation mask from photo preparation.');
+	}
+	return {
+		size: MASK_SIZE, data: resample(prepared.mask, from, MASK_SIZE),
+		...(prepared.validMask ? { validMask: resample(prepared.validMask, from, MASK_SIZE) } : {})
+	};
 }
 
 /** Twice the signed area of the triangle `a b c`; the sign is the turn's direction. */

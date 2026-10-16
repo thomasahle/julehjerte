@@ -36,6 +36,8 @@ export type Selection = {
 	source: CellRect;
 	/** Those cells, row-major, `source` wide and `source` tall. */
 	cells: Uint8Array;
+	/** Observation follows the same transform as the selected colours. */
+	validMask?: Uint8Array;
 	/** Where they stand now. A fresh selection stands exactly where it was lifted. */
 	placement: Placement;
 };
@@ -126,12 +128,13 @@ export function lift(m: Mask, r: CellRect): Selection | null {
 	if (isEmptyRect(r)) return null;
 	const w = r.x1 - r.x0;
 	const h = r.y1 - r.y0;
-	const cells = new Uint8Array(w * h);
+	const cells = new Uint8Array(w * h), validMask = m.validMask ? new Uint8Array(w * h) : undefined;
 	for (let y = 0; y < h; y++) {
 		const from = (r.y0 + y) * m.size + r.x0;
 		cells.set(m.data.subarray(from, from + w), y * w);
+		if (validMask) validMask.set(m.validMask!.subarray(from, from + w), y * w);
 	}
-	return { source: { ...r }, cells, placement: placementOf(r) };
+	return { source: { ...r }, cells, ...(validMask ? { validMask } : {}), placement: placementOf(r) };
 }
 
 /** The placement's own axes on the mask: `u` across it, `v` down it. */
@@ -301,6 +304,8 @@ export function stamp(m: Mask, sel: Selection, marks?: Uint8Array): Box {
 			if (marks) marks[row + cx] = EDIT_LAID;
 			covered = unionBox(covered, { x0: cx, y0: cy, x1: cx + 1, y1: cy + 1 });
 			m.data[row + cx] = sel.cells[sy * w + sx]!;
+			if (sel.validMask && !m.validMask) m.validMask = new Uint8Array(m.data.length).fill(1);
+			if (m.validMask) m.validMask[row + cx] = sel.validMask?.[sy * w + sx] ?? 1;
 		}
 	}
 	return covered;

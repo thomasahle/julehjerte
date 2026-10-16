@@ -60,7 +60,7 @@ export function installPaintObservation(){
 export function collectPaintObservation(){
   const {result,error,prepared,marks,solveSettings,crop}=window.__paintQA;
   const seconds=(start,end)=>marks?.[start]===null||marks?.[end]===null||!marks?null:(marks[end]-marks[start])/1000;
-  return{result,error,solveSettings,crop,prepared:prepared?{mask:Array.from(prepared.mask),resolution:prepared.resolution,weights:prepared.weights?Array.from(prepared.weights):null}:null,
+  return{result,error,solveSettings,crop,prepared:prepared?{mask:Array.from(prepared.mask),resolution:prepared.resolution,weights:prepared.weights?Array.from(prepared.weights):null,validMask:prepared.validMask?Array.from(prepared.validMask):null}:null,
     marks:marks&&{...marks},timings:{
       clickToPrepareRequestSeconds:seconds('click','prepareSent'),
       prepareRoundTripSeconds:seconds('prepareSent','prepared'),

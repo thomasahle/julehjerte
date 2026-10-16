@@ -166,6 +166,14 @@ function photoCanvas(photo: RectifiedPhoto): HTMLCanvasElement | null {
 	return canvas;
 }
 
+const UNKNOWN_LIGHT = [224, 224, 224, 255] as const;
+const UNKNOWN_DARK = [185, 185, 185, 255] as const;
+
+/** Missing photo pixels have neutral hatching, distinct from either paper. */
+export function missingPixelChannels(index: number, width: number): readonly number[] {
+	return Math.floor((index % width + Math.floor(index / width)) / 4) % 2 ? UNKNOWN_LIGHT : UNKNOWN_DARK;
+}
+
 /** The mask as an image of its two paper colours, one pixel per cell. */
 function maskCanvas(mask: Mask, colors: HeartColors): HTMLCanvasElement | null {
 	const left = colourChannels(colors.left);
@@ -178,7 +186,7 @@ function maskCanvas(mask: Mask, colors: HeartColors): HTMLCanvasElement | null {
 	if (!ctx) return null;
 	const image = ctx.createImageData(mask.size, mask.size);
 	for (let i = 0; i < mask.data.length; i++) {
-		image.data.set(mask.data[i] ? right : left, i * 4);
+		image.data.set(mask.validMask && !mask.validMask[i] ? missingPixelChannels(i, mask.size) : mask.data[i] ? right : left, i * 4);
 	}
 	ctx.putImageData(image, 0, 0);
 	return canvas;
