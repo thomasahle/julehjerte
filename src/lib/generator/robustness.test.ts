@@ -51,6 +51,15 @@ function validateHandoffs(design: HeartDesign) {
 // These are expected successes, never a test that passes by accepting a refusal.
 // The larger offline corpus covers 2,028 text and 1,122 figure configurations.
 describe('generator robustness regressions', () => {
+	it('opens repeated Kalam EMMA with multiple shared connections and intact counters', () => {
+		const { design } = generate({ mode: 'text', name: 'EMMA', text: 'EMMA',
+			font: fonts.kalam, textFrame: 'repeat', colors });
+		expect(design.gridSize).toEqual({ x: 8, y: 4 });
+		expect(cutTipCounts(design)).toEqual([4, 4]);
+		const margin = intersectionMarginPx(inferOverlapRect(design.fingers, design.gridSize), gridClearanceScale(8, 4));
+		expect(findFingersWithIssues(design.fingers, margin * 1.1).size).toBe(0);
+		validateHandoffs(design);
+	}, 30000);
 	for (const fontId of ['nunito', 'breeserif', 'oswald', 'kalam', 'righteous'])
 		it(`keeps three ${fontId} text rows inside the diamond frame`, () => {
 			const { design } = generate({ mode: 'text', name: 'A B O', text: 'A\nB\nO',

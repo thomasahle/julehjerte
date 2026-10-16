@@ -12,6 +12,7 @@ import { rasterizeDesign } from '$lib/paint/rasterize';
 import moonStars from '../../../static/generator/motifs/ph-moon-stars.json';
 import rabbit from '../../../static/generator/motifs/ph-rabbit.json';
 import butterfly from '../../../static/generator/motifs/tb-butterfly.json';
+import snow from '../../../static/generator/motifs/snow.json';
 
 it('changes fitted attachments without moving the silhouette or adding a surrounding shape', () => {
 	const rings = normalizeContours(moonStars.contours as Ring[]);
@@ -23,12 +24,13 @@ it('changes fitted attachments without moving the silhouette or adding a surroun
 	for (const gate of c.domain[0]) expect(c.artwork.flat()).toContainEqual(gate);
 });
 
-for (const [name, motif, tips] of [
-	['moon and stars', moonStars, [0, 1]], ['rabbit', rabbit, [0, 3]], ['butterfly', butterfly, [3, 6]]
+for (const [name, motif, tips, strips] of [
+	['moon and stars', moonStars, [0, 1], 5], ['rabbit', rabbit, [0, 3], 5],
+	['butterfly', butterfly, [3, 6], 5], ['snowflake', snow, [0, 7], 4]
 ] as const) it(`fits the grid to ${name} and retains its cuts through both exports`, () => {
 	const { design } = generate({ mode: 'figure', name, contours: motif.contours as Ring[], style: 'fitted',
 		colors: { left: '#fffdf5', right: '#b72f2b' } });
-	expect(design.gridSize).toEqual({ x: 5, y: 5 });
+	expect(design.gridSize).toEqual({ x: strips, y: strips });
 	expect(cutTipCounts(design)).toEqual(tips);
 	const original = rasterizeDesign(design, 240).data;
 	for (const restored of [normalizeHeartDesign(serializeHeartDesign(design)), parseHeartFromSVG(serializeHeartToSVG(design))]) {
@@ -38,7 +40,7 @@ for (const [name, motif, tips] of [
 		expect(restored).not.toHaveProperty('rightCutouts');
 		const rect = inferOverlapRect(restored!.fingers, restored!.gridSize);
 		expect(findFingersWithIssues(restored!.fingers,
-			intersectionMarginPx(rect, gridClearanceScale(5, 5))).size).toBe(0);
+			intersectionMarginPx(rect, gridClearanceScale(strips, strips))).size).toBe(0);
 		expect(rasterizeDesign(restored!, 240).data).toEqual(original);
 	}
 }, 20000);

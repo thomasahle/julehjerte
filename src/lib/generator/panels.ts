@@ -234,7 +234,8 @@ export function generatePanelFigure(
 	route = fourPortMotif,
 	attachments: 'support' | 'ray' | 'filled' = 'support',
 	adaptive = false,
-	shear = 0
+	shear = 0,
+	angleOffsets: readonly [number, number, number, number] = [0, 0, 0, 0]
 ) {
 	const factor = size * scale * (frame === 'oval' ? 0.75 : 1);
 	const artworkUpright = rings.map((r) =>
@@ -317,7 +318,9 @@ export function generatePanelFigure(
 							continue;
 						}
 					}
-					const angle = angles[side] + Math.PI, d = direction(angle);
+					// An outer support may move along the same silhouette without
+					// changing the shared seam between neighbouring panels.
+					const angle = angles[side] + Math.PI + angleOffsets[side], d = direction(angle);
 					gates[side] = contours.map(r => support(r, angle).point)
 						.reduce((a, b) => dot(a, d) > dot(b, d) ? a : b);
 				}

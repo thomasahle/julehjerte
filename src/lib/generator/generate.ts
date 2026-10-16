@@ -347,10 +347,11 @@ function improveSharedConnections(result: GeneratorResult): GeneratorResult {
  * result must pass the same topology, spacing and fidelity checks again. */
 export function generate(request: GeneratorRequest): GeneratorResult {
 	const curveFitter = createExactCurveFitter();
+	const repetitionCache = request.mode === 'text' && request.textFrame === 'repeat' ? repeatedGridCache() : undefined;
 	const rejected: { construction: Construction; recipe: GeneratorResult['recipe'] }[] = [];
 	try {
 		const result = generateUsingRecipes(request,
-			(construction, recipe) => rejected.push({ construction, recipe }), curveFitter);
+			(construction, recipe) => rejected.push({ construction, recipe }), curveFitter, repetitionCache);
 		return request.mode === 'text' && request.textFrame === 'repeat-check'
 			? improveSharedConnections(result) : result;
 	} catch (error) {
@@ -428,6 +429,23 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		}
 		const lanes = retryComponentLanes(request, curveFitter);
 		if (lanes) return lanes;
+		if (repetitionCache && request.font) try {
+			// Multiple concave corners can require two invisible connections.
+			// Retain successful letter cells and try this only after all earlier
+			// whole-heart repairs, so established designs stay unchanged.
+			if (!repetitionCache.failed.size) repetitionCache.cells.clear();
+			repetitionCache.crowded.clear();
+			const construction = generateRepeatedGrid(request.text ?? '', request.font,
+				true, repetitionCache, true, false, false, true);
+			const result = improveSharedConnections(finishConstruction(request, construction, 'letters', undefined, curveFitter));
+			// Keep a reserve around these extra connections after curve fitting.
+			// A barely clear neck can still be uncertain on the unfolded paper.
+			const rect = inferOverlapRect(result.design.fingers, result.design.gridSize),
+				margin = intersectionMarginPx(rect, gridClearanceScale(result.design.gridSize.x, result.design.gridSize.y));
+			if (!findFingersWithIssues(result.design.fingers, margin * 1.1).size) return result;
+		} catch (retryError) {
+			if (!(retryError instanceof ConstructionError) && !(retryError instanceof CutGeometryError)) throw retryError;
+		}
 		throw error;
 	}
 }
@@ -451,6 +469,18 @@ function retryFittedSupports(request: GeneratorRequest, curveFitter: ReturnType<
 		const tips = cutTipCounts(result.design);
 		if (!best || fewerCutTips(tips, cutTipCounts(best.design))) best = result;
 		if (tips[0] === 0 && tips[1] === 0) return best;
+	} catch (error) {
+		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+	}
+	if (best) return best;
+	// Divide a deeply concave silhouette into two rows. Adjust only its outer
+	// contacts: both neighbours still agree on the original internal seam.
+	for (const offset of [.15, -.15]) try {
+		const construction = generatePanelFigure(rings, undefined, request.frameSize ?? 70,
+			request.scale ?? .7, 1, 'check', 2, false, fourPortMotif, 'support', false, 0,
+			[offset, offset, offset, offset]);
+		const result = improveSharedConnections(finishConstruction(request, construction, 'silhouette', undefined, curveFitter));
+		if (!best || fewerCutTips(cutTipCounts(result.design), cutTipCounts(best.design))) best = result;
 	} catch (error) {
 		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 	}
@@ -542,7 +572,7 @@ function retryPanelLayouts(request: GeneratorRequest, curveFitter?: ReturnType<t
 
 function generateUsingRecipes(request: GeneratorRequest,
 	onRejected: (construction: Construction, recipe: GeneratorResult['recipe']) => void,
-	curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult {
+	curveFitter: ReturnType<typeof createExactCurveFitter>, repetitionCache?: ReturnType<typeof repeatedGridCache>): GeneratorResult {
 	if (request.mode === 'figure') {
 		const contours = normalizeContours(request.contours ?? []);
 		if (!contours.length) throw new ConstructionError('empty', 'No contour');
@@ -645,7 +675,7 @@ function generateUsingRecipes(request: GeneratorRequest,
 			throw last;
 		}
 		if (frame === 'repeat') {
-			const cache = repeatedGridCache();
+			const cache = repetitionCache ?? repeatedGridCache();
 			let last: unknown;
 			// Keep both established layouts before changing attachment candidates.
 			for (const [bentSpokes, strokeTips] of [[false, false], [true, false], [false, true], [true, true]]) {

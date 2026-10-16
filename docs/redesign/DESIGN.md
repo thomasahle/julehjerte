@@ -646,6 +646,16 @@ radians within their original quadrants. Attach to actual silhouette vertices, p
 motif and outer bands. Try the bounded rotation/reflection patterns, skip identical completed
 constructions, and select by sharp-tip counts after full validation and shared-join rounding.
 Do not add a substitute enclosing shape or change existing successful layouts.
+If those whole-silhouette supports fail, the close-fitting frame may divide it
+into two horizontal panels and vary only the outer support directions by ±0.15.
+Keep internal seams and their agreed contacts fixed.
+
+Ordinary repeated letters may finally use two coincident relief chords for
+independent concave corners, after all established whole-heart repairs fail.
+Reuse successful letter cells; preserve the exact outlines, counters and cyclic
+letter field. Round only shared joins, then require 10% extra full-sheet clearance
+for this fallback. An uncertain material candidate must not be counted as a
+verified success merely because the ordinary editor spacing check accepts it.
 
 
 If a sunburst figure still fails after the existing recipes and shared-cut

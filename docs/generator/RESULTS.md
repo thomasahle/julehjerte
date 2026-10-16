@@ -1,5 +1,87 @@
 # Generator robustness results
 
+## Current coverage: divided fitted supports and compound repeated letters
+
+The last close-fitting figure retry can divide a concave silhouette into two
+horizontal panels, moving only the outer support directions by ±0.15 radians.
+The internal seam and its agreed contacts remain fixed. The snowflake now works
+on **4×4 strips**, with **zero tips below 30° and seven below 45°**. Its production
+capture exactly matches the prototype that passed the guarded material audit at
+resolution 1,400, with no detached certain or possible cores on either sheet
+(`panel-support-production-20.json`, `snow-support-quality-material.json`).
+Both handoffs pass. All 45 previously successful fitted designs remain exactly
+identical; the fresh 51-motif fitted audit now gives **46 accepted / five refused
+/ zero invalid** (`panel-support-production.json`).
+
+Ordinary repeating text now has one final compound-connection retry. Two
+coincident chords can relieve independent concave corners while preserving the
+letter outline and its counters. It reuses successful cells from the previous
+attempts, and runs after all established whole-heart repairs. It rounds shared
+joins and requires **10% extra clearance** in the finished design. Earlier
+successful outputs return before this retry; the alternating-background frame
+is unchanged. There is no inverse solve or runtime material rasterization.
+
+Four previously refused Kalam inputs now work:
+
+| Text | Strips | Tips below 30° / below 45° |
+|---|---|---|
+| EMMA | 8×4 | 4 / 4 |
+| JULEMAND | 16×8 | 7 / 12 |
+| JULE followed by a newline and MAND | 16×8 | 7 / 12 |
+| amy | 6×3 | 0 / 2 |
+
+The full generator, JSON/SVG handoffs and guarded material check pass for all
+four. Material resolution is 1,400, with zero detached certain or possible core
+islands on either sheet (`compound-repeat-{quality,extra}-material.json`). The
+finished hearts and both paper patterns were visually reviewed. The new EMMA
+regression also checks the additional clearance reserve. These checks do not
+certify physical tear strength or eliminate all small tips.
+
+The first compound candidate for M&M passes the editor's ordinary spacing check
+but remains **uncertain** in the independent material audit at resolutions 1,400,
+2,800 and 4,200. Its two questionable connections also fail the new 10% reserve,
+so the final implementation keeps this case refused. It is not added to the
+expected-success corpus. Lowering the material requirement was not used to count
+it as a success (`compound-repeat-ampersand-material{-4200,}.json`).
+
+The audit of all **59 previously refused ordinary-repeat cases** recovers four
+and retains 55 refusals, with zero invalid outputs. The five initial candidates
+were regenerated after adding the clearance reserve; all four accepted captures
+are exactly identical to the material-audited designs
+(`compound-repeat-refusals.json`, `compound-repeat-guarded.json`). Combined with
+the 51 fitted motifs, merged coverage is **2,840 accepted / 310 refused / zero
+invalid**: text **1,739 / 289**, figures **1,101 / 21**
+(`compound-repeat-current.json`). The other 3,040 records retain their previous
+results; this is not a fresh run of all 3,150 cases. All five new successes are
+included in the expected corpus.
+
+All eight sampled earlier text successes produce exactly identical complete
+results before and after this change (`compound-repeat-preservation.json`).
+This includes difficult Kalam A/ANNA/LOVE repeats, Bree Serif jul and Oswald
+William, plus the Nunito repeated and alternating patterns. Existing generator
+latency is not claimed improved. The four new accepted inputs take roughly
+12–22 seconds in the fresh audit; fast iteration remains unfinished.
+
+An isolated mixed two/four-port quality experiment still leaves eight narrow
+ANNA tips in all four tested routing variants, so it was not enabled
+(`mixed-quality-results.json`). A separate local relief-ray caching prototype
+is also not part of this change; its equivalence/timing evidence is recorded in
+`relief-cache-paired.json` for follow-up.
+
+Type checking, lint and production build pass after the final clearance change,
+with seven existing warnings (`compound-repeat-final-{check,lint,build}.log`).
+The single-worker full unit run finishes in **783.09 seconds** with **1,133 passed
+/ one timeout** (`compound-repeat-tests.log`). All new regressions pass. The
+existing Kalam ANNA ordinary-repeat case takes **21.31 seconds** against its
+unchanged 20-second limit; the full suite is not green. The focused latest-source
+run of that case and the new EMMA clearance regression passes both in 26.53
+seconds total (`compound-repeat-final-focused.log`). No timeout was increased.
+
+All **177 inverse-engine tests pass** separately in 90.65 seconds
+(`compound-repeat-inverse.log`). The remaining refusal corpus, other sizes/catalogue
+entries, difficult-text latency and ANNA's eight visible N-corner tips are still
+unfinished.
+
 ## Current coverage: adapt fitted supports and reuse local route graphs
 
 The final close-fitting fallback moves the four support directions by ±0.15 or
