@@ -1,0 +1,632 @@
+{
+  "schema": "finalist-retention-clearance-results-1",
+  "status": "focused-fixed-mask-and-hunodan-complete-broader-qa-running",
+  "plan": "docs/inverse/datasets/finalist-retention-fit-plan.json",
+  "runtimeAdopted": false,
+  "method": "Prefer an existing lower-error finalist only if it reduces missing features without regressing represented regions. Reserve refinement time. Before clearance can promote another finalist, apply the same existing feature-change audit to the two actual clearance masks. Source masks, candidate count pool, time limit and final acceptance rules are unchanged.",
+  "fixedMaskComparison": {
+    "status": "complete",
+    "maskCropCoverageUnchanged": true,
+    "checkedBefore": 5,
+    "checkedAfter": 5,
+    "editableConverted": 13,
+    "editableComplete": 5,
+    "editorIssues": 0,
+    "changed": [
+      "real-5330aa8b62176216-body-1",
+      "real-995899fe049540ed-body-1",
+      "real-1fa372c6288da69f",
+      "real-931ac5ea86dbe082",
+      "real-c7bc99827b382da7",
+      "real-d6d0462384722949",
+      "real-e9131a2d52b78220"
+    ],
+    "rows": [
+      {
+        "id": "real-3f7b76e1a98e808f-body-1",
+        "baselineStatus": "review-required",
+        "status": "review-required",
+        "baselineError": 0.0074949481046790245,
+        "error": 0.0074949481046790245,
+        "wovenUnchanged": true,
+        "paper": "pass",
+        "geometry": true,
+        "solverSeconds": 9.062942666,
+        "partialImprovement": null
+      },
+      {
+        "id": "real-5330aa8b62176216-body-1",
+        "baselineStatus": "review-required",
+        "status": "review-required",
+        "baselineError": 0.04688125,
+        "error": 0.03286875,
+        "wovenUnchanged": false,
+        "paper": "pass",
+        "geometry": true,
+        "solverSeconds": 9.179523417,
+        "partialImprovement": {
+          "beforeCounts": [
+            3,
+            4
+          ],
+          "beforeError": 0.08062744140625,
+          "beforeMissing": 3,
+          "attempts": [
+            {
+              "counts": [
+                6,
+                6
+              ],
+              "error": 0.0760650634765625,
+              "missing": 2,
+              "change": {
+                "passed": false,
+                "missingBefore": 3,
+                "missingAfter": 2,
+                "regressed": [
+                  {
+                    "value": 1,
+                    "areaMm2": 18,
+                    "centerMm": [
+                      58.38368055555556,
+                      42.72743055555556
+                    ],
+                    "retainedFraction": 0,
+                    "retainedBefore": 0.3402777777777778,
+                    "requiredRetention": 0.3402777777777778
+                  }
+                ]
+              },
+              "preferred": false
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "error": 0.078277587890625,
+              "missing": 2,
+              "change": {
+                "passed": true,
+                "missingBefore": 3,
+                "missingAfter": 2,
+                "regressed": []
+              },
+              "preferred": true
+            }
+          ],
+          "selectedCounts": [
+            4,
+            4
+          ]
+        }
+      },
+      {
+        "id": "real-8c875dd0f298b5a4-body-1",
+        "baselineStatus": "review-required",
+        "status": "review-required",
+        "baselineError": 0.0194,
+        "error": 0.0194,
+        "wovenUnchanged": true,
+        "paper": "pass",
+        "geometry": true,
+        "solverSeconds": 9.125779457999997,
+        "partialImprovement": {
+          "beforeCounts": [
+            5,
+            3
+          ],
+          "beforeError": 0.0509033203125,
+          "beforeMissing": 1,
+          "attempts": [],
+          "selectedCounts": null
+        }
+      },
+      {
+        "id": "real-995899fe049540ed-body-1",
+        "baselineStatus": "review-required",
+        "status": "review-required",
+        "baselineError": 0.036575,
+        "error": 0.03656875,
+        "wovenUnchanged": false,
+        "paper": "pass",
+        "geometry": true,
+        "solverSeconds": 9.0525845,
+        "partialImprovement": {
+          "beforeCounts": [
+            4,
+            4
+          ],
+          "beforeError": 0.083343505859375,
+          "beforeMissing": 7,
+          "attempts": [],
+          "selectedCounts": null
+        }
+      },
+      {
+        "id": "real-1fa372c6288da69f",
+        "baselineStatus": "review-required",
+        "status": "review-required",
+        "baselineError": 0.0959,
+        "error": 0.02135,
+        "wovenUnchanged": false,
+        "paper": "pass",
+        "geometry": true,
+        "solverSeconds": 9.0481005,
+        "partialImprovement": {
+          "beforeCounts": [
+            1,
+            2
+          ],
+          "beforeError": 0.0970001220703125,
+          "beforeMissing": 5,
+          "attempts": [
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "error": 0.0762939453125,
+              "missing": 2,
+              "change": {
+                "passed": true,
+                "missingBefore": 5,
+                "missingAfter": 2,
+                "regressed": []
+              },
+              "preferred": true
+            }
+          ],
+          "selectedCounts": [
+            5,
+            5
+          ]
+        }
+      },
+      {
+        "id": "real-202b8421f50252f2",
+        "baselineStatus": "review-required",
+        "status": "review-required",
+        "baselineError": 0.034,
+        "error": 0.034,
+        "wovenUnchanged": true,
+        "paper": "pass",
+        "geometry": true,
+        "solverSeconds": 9.138193625,
+        "partialImprovement": {
+          "beforeCounts": [
+            3,
+            3
+          ],
+          "beforeError": 0.08441162109375,
+          "beforeMissing": 1,
+          "attempts": [
+            {
+              "counts": [
+                4,
+                5
+              ],
+              "error": 0.072540283203125,
+              "missing": 1,
+              "change": {
+                "passed": false,
+                "missingBefore": 1,
+                "missingAfter": 1,
+                "regressed": [
+                  {
+                    "value": 0,
+                    "areaMm2": 53.625,
+                    "centerMm": [
+                      69.82954545454545,
+                      67.96532634032634
+                    ],
+                    "retainedFraction": 0.31934731934731936,
+                    "retainedBefore": 0.3368298368298368,
+                    "requiredRetention": 0.3368298368298368
+                  }
+                ]
+              },
+              "preferred": false
+            },
+            {
+              "counts": [
+                4,
+                4
+              ],
+              "error": 0.0754547119140625,
+              "missing": 2,
+              "change": {
+                "passed": false,
+                "missingBefore": 1,
+                "missingAfter": 2,
+                "regressed": [
+                  {
+                    "value": 0,
+                    "areaMm2": 58.625,
+                    "centerMm": [
+                      15.14818763326226,
+                      6.822228144989339
+                    ],
+                    "retainedFraction": 0.5607675906183369,
+                    "retainedBefore": 0.8176972281449894,
+                    "requiredRetention": 0.6
+                  },
+                  {
+                    "value": 0,
+                    "areaMm2": 53.625,
+                    "centerMm": [
+                      69.82954545454545,
+                      67.96532634032634
+                    ],
+                    "retainedFraction": 0.32517482517482516,
+                    "retainedBefore": 0.3368298368298368,
+                    "requiredRetention": 0.3368298368298368
+                  }
+                ]
+              },
+              "preferred": false
+            }
+          ],
+          "selectedCounts": null
+        }
+      },
+      {
+        "id": "real-931ac5ea86dbe082",
+        "baselineStatus": "review-required",
+        "status": "review-required",
+        "baselineError": 0.0208375,
+        "error": 0.02061875,
+        "wovenUnchanged": false,
+        "paper": "pass",
+        "geometry": true,
+        "solverSeconds": 9.090533916,
+        "partialImprovement": {
+          "beforeCounts": [
+            5,
+            8
+          ],
+          "beforeError": 0.0702972412109375,
+          "beforeMissing": 3,
+          "attempts": [],
+          "selectedCounts": null
+        }
+      },
+      {
+        "id": "real-962159dea653810f",
+        "baselineStatus": "checked-derived-mask",
+        "status": "checked-derived-mask",
+        "baselineError": 0.01086875,
+        "error": 0.01086875,
+        "wovenUnchanged": true,
+        "paper": "pass",
+        "geometry": true,
+        "solverSeconds": 9.107161167,
+        "partialImprovement": null
+      },
+      {
+        "id": "real-9b47cfbdf0004f4d",
+        "baselineStatus": "checked-derived-mask",
+        "status": "checked-derived-mask",
+        "baselineError": 0.00589375,
+        "error": 0.00589375,
+        "wovenUnchanged": true,
+        "paper": "pass",
+        "geometry": true,
+        "solverSeconds": 4.212667790999999,
+        "partialImprovement": null
+      },
+      {
+        "id": "real-c7bc99827b382da7",
+        "baselineStatus": "checked-derived-mask",
+        "status": "checked-derived-mask",
+        "baselineError": 0.005772754848676269,
+        "error": 0.0057915178655192035,
+        "wovenUnchanged": false,
+        "paper": "pass",
+        "geometry": true,
+        "solverSeconds": 9.238601916,
+        "partialImprovement": null
+      },
+      {
+        "id": "real-d6d0462384722949",
+        "baselineStatus": "review-required",
+        "status": "review-required",
+        "baselineError": 0.0348,
+        "error": 0.03490625,
+        "wovenUnchanged": false,
+        "paper": "pass",
+        "geometry": true,
+        "solverSeconds": 9.189216874999998,
+        "partialImprovement": {
+          "beforeCounts": [
+            4,
+            4
+          ],
+          "beforeError": 0.09942626953125,
+          "beforeMissing": 6,
+          "attempts": [],
+          "selectedCounts": null
+        }
+      },
+      {
+        "id": "real-e4baad0c914577c8",
+        "baselineStatus": "checked-derived-mask",
+        "status": "checked-derived-mask",
+        "baselineError": 0.0111375,
+        "error": 0.0111375,
+        "wovenUnchanged": true,
+        "paper": "pass",
+        "geometry": true,
+        "solverSeconds": 8.808093584000002,
+        "partialImprovement": null
+      },
+      {
+        "id": "real-e9131a2d52b78220",
+        "baselineStatus": "checked-derived-mask",
+        "status": "checked-derived-mask",
+        "baselineError": 0.00721875,
+        "error": 0.0074,
+        "wovenUnchanged": false,
+        "paper": "pass",
+        "geometry": true,
+        "solverSeconds": 9.093106791999992,
+        "partialImprovement": null
+      }
+    ]
+  },
+  "coldRegression": {
+    "freshProcesses": 3,
+    "testsPerProcess": 3,
+    "allPassed": true,
+    "photographicErrorBoundsUnchanged": true
+  },
+  "existingFocusedRegressions": {
+    "passed": 19,
+    "failed": 0
+  },
+  "hunodan": {
+    "cases": 22,
+    "passed": 22,
+    "medianSeconds": 5.514029479500001,
+    "maxSeconds": 8.813226000000002,
+    "unchangedErrors": 22,
+    "changedErrors": [],
+    "partialPolicyTriggered": [],
+    "rows": [
+      {
+        "id": "hjfig-01",
+        "passed": true,
+        "seconds": 3.994949958,
+        "error": 0.009799111111111111,
+        "previousError": 0.009799111111111111,
+        "delta": 0.0,
+        "partialPreference": null
+      },
+      {
+        "id": "hjfig-02",
+        "passed": true,
+        "seconds": 5.069569499999998,
+        "error": 0.013340444444444445,
+        "previousError": 0.013340444444444445,
+        "delta": 0.0,
+        "partialPreference": null
+      },
+      {
+        "id": "hjfig-03",
+        "passed": true,
+        "seconds": 3.529517666,
+        "error": 0.006634666666666666,
+        "previousError": 0.006634666666666666,
+        "delta": 0.0,
+        "partialPreference": null
+      },
+      {
+        "id": "hjfig-04",
+        "passed": true,
+        "seconds": 3.973230541000001,
+        "error": 0.013824,
+        "previousError": 0.013824,
+        "delta": 0.0,
+        "partialPreference": null
+      },
+      {
+        "id": "hjfig-05",
+        "passed": true,
+        "seconds": 5.695183084,
+        "error": 0.008021555177909465,
+        "previousError": 0.008021555177909465,
+        "delta": 0.0,
+        "partialPreference": null
+      },
+      {
+        "id": "hjfla-01",
+        "passed": true,
+        "seconds": 5.855377542000002,
+        "error": 0.007181803385416667,
+        "previousError": 0.007181803385416667,
+        "delta": 0.0,
+        "partialPreference": null
+      },
+      {
+        "id": "hjcur-01",
+        "passed": true,
+        "seconds": 5.332875875000002,
+        "error": 0.005148444444444444,
+        "previousError": 0.005148444444444444,
+        "delta": 0.0,
+        "partialPreference": null
+      },
+      {
+        "id": "hjcur-02",
+        "passed": true,
+        "seconds": 8.813226000000002,
+        "error": 0.0050702222222222225,
+        "previousError": 0.0050702222222222225,
+        "delta": 0.0,
+        "partialPreference": null
+      },
+      {
+        "id": "hjcur-03",
+        "passed": true,
+        "seconds": 4.893111082999996,
+        "error": 0.004522666666666667,
+        "previousError": 0.004522666666666667,
+        "delta": 0.0,
+        "partialPreference": null
+      },
+      {
+        "id": "hjcur-04",
+        "passed": true,
+        "seconds": 7.344086875000001,
+        "error": 0.005639111111111111,
+        "previousError": 0.005639111111111111,
+        "delta": 0.0,
+        "partialPreference": null
+      },
+      {
+        "id": "hjcur-05",
+        "passed": true,
+        "seconds": 3.661059125,
+        "error": 0.00933688888888889,
+        "previousError": 0.00933688888888889,
+        "delta": 0.0,
+        "partialPreference": null
+      },
+      {
+        "id": "hjhih-01",
+        "passed": true,
+        "seconds": 6.297467708999997,
+        "error": 0.006040430615586996,
+        "previousError": 0.006040430615586996,
+        "delta": 0.0,
+        "partialPreference": null
+      },
+      {
+        "id": "hjhih-02",
+        "passed": true,
+        "seconds": 4.410537833000002,
+        "error": 0.003899406226779104,
+        "previousError": 0.003899406226779104,
+        "delta": 0.0,
+        "partialPreference": null
+      },
+      {
+        "id": "hjhih-04",
+        "passed": true,
+        "seconds": 7.650800750000009,
+        "error": 0.007776029627903062,
+        "previousError": 0.007776029627903062,
+        "delta": 0.0,
+        "partialPreference": null
+      },
+      {
+        "id": "hjstr-01",
+        "passed": true,
+        "seconds": 4.058000708000007,
+        "error": 0.007550237322696868,
+        "previousError": 0.007550237322696868,
+        "delta": 0.0,
+        "partialPreference": null
+      },
+      {
+        "id": "hjstr-02",
+        "passed": true,
+        "seconds": 6.136047250000003,
+        "error": 0.004365548980933596,
+        "previousError": 0.004365548980933596,
+        "delta": 0.0,
+        "partialPreference": null
+      },
+      {
+        "id": "hjstr-03",
+        "passed": true,
+        "seconds": 8.632963375000006,
+        "error": 0.0056129769369752365,
+        "previousError": 0.0056129769369752365,
+        "delta": 0.0,
+        "partialPreference": null
+      },
+      {
+        "id": "hjsta-01",
+        "passed": true,
+        "seconds": 4.890723874999996,
+        "error": 0.007922437673130193,
+        "previousError": 0.007922437673130193,
+        "delta": 0.0,
+        "partialPreference": null
+      },
+      {
+        "id": "hjsta-02",
+        "passed": true,
+        "seconds": 4.268298708000002,
+        "error": 0.0038045247395833335,
+        "previousError": 0.0038045247395833335,
+        "delta": 0.0,
+        "partialPreference": null
+      },
+      {
+        "id": "hjsta-03",
+        "passed": true,
+        "seconds": 7.431215665999989,
+        "error": 0.012352664480635904,
+        "previousError": 0.012352664480635904,
+        "delta": 0.0,
+        "partialPreference": null
+      },
+      {
+        "id": "hjsta-04",
+        "passed": true,
+        "seconds": 6.415811832999999,
+        "error": 0.0050250552896055544,
+        "previousError": 0.0050250552896055544,
+        "delta": 0.0,
+        "partialPreference": null
+      },
+      {
+        "id": "hjsta-05",
+        "passed": true,
+        "seconds": 5.9928043329999925,
+        "error": 0.010624446293860237,
+        "previousError": 0.010624446293860237,
+        "delta": 0.0,
+        "partialPreference": null
+      }
+    ]
+  },
+  "visualReview": {
+    "changedExportsInspected": 7,
+    "panels": [
+      "review-1.png",
+      "review-2.png"
+    ],
+    "findings": [
+      "The central brown checker is recovered; cells remain distorted and decorations produce false seams.",
+      "Bicycle frame retention improves, but wheels/details remain incomplete.",
+      "Floral paper, Santa details and printed-text failures remain.",
+      "Child-held and small checker controls remain recognizable with small time-budget differences."
+    ],
+    "sourceCropMaskCoverageUnchanged": true
+  },
+  "remainingVerification": [
+    "31-photo automatic-mask benchmark and editable exports",
+    "check/lint/build",
+    "fresh built-app browser smoke",
+    "full repository tests"
+  ],
+  "artifactsSha256": {
+    "tmp/heart-learning/finalist-retention-clearance-v1/audit.json": "a92c2aa293f84305a1fed0b4b70f1d884722530ebec6e2e9c83de44defea7b42",
+    "tmp/heart-learning/finalist-retention-clearance-v1/pipeline/report.json": "1aec41cf0157ea2e9e6346d28d545dfa3091a7b87e4292b0a6c6c5936ed488bf",
+    "tmp/heart-learning/finalist-retention-clearance-v1/hunodan-comparison.json": "9e2f81f05da8278f9fd854859a41ad3252f2618b61ae3adffa08cce52e7af3a5",
+    "tmp/heart-learning/finalist-retention-clearance-v1/source.json": "21ef22dec9e4ade2a30984d1d71ce1f24a39b44ce582d6a2126f5ee826ab6457",
+    "tmp/heart-learning/finalist-retention-clearance-v1/cold-repeat-1.log": "5fc3369ccf0d408e9d60b95f0e7c788f4a8c77c75545c9eb32883fd704b1b0a7",
+    "tmp/heart-learning/finalist-retention-clearance-v1/cold-repeat-2.log": "73a00e08f68a2758164406770f8a73c28a6c6ba294c62cb29d5e3d708de75311",
+    "tmp/heart-learning/finalist-retention-clearance-v1/focused.log": "20532bf7568575bf6b146bcc18c795ce354130065f83b5c378a873265631c143",
+    "tmp/heart-learning/finalist-retention-clearance-v1/review-1.png": "24dfcdf56e6a1668bc93f2987da20aa68db824b5fd4960acc23c3baa67afa699",
+    "tmp/heart-learning/finalist-retention-clearance-v1/review-2.png": "d2439d3679b664622a5d93fe3c9843cb0e259d7ed938ee7bb05dcaf052e7a0b8"
+  },
+  "limitations": [
+    "No new complete reconstruction in the fixed thirteen-mask cohort; improved checker and bicycle retain source-feature warnings.",
+    "Known crop and classification errors remain in the unchanged targets.",
+    "Nominal geometry/paper tests do not establish physical cutting or threading."
+  ]
+}
