@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "status": "implemented; focused_checks_pass; full_QA_pending",
+  "status": "implemented; focused_checks_pass; full_inverse_945_of_953; corpus_in_progress",
   "baselineRuntime": "9cedec4",
   "rootCause": "Four-neighbour labelling can disconnect a diagonal corridor in the certified paper-core lattice even when every cell along that corridor clears the required rolling-disk radius. Valid finer polishing checkpoints were therefore discarded as uncertain.",
   "certificate": [
@@ -221,7 +221,7 @@
     ]
   },
   "fullQA": {
-    "status": "pending",
+    "status": "application_and_inverse_checks_complete; corpus_in_progress",
     "root": "tmp/heart-learning/polishing-paper-tail-v1/qa",
     "comparisonBaseline": "tmp/heart-learning/clearance-handoff-regression-v1/qa/native",
     "required": [
@@ -234,7 +234,76 @@
       "47-entry hard-photo inventory, including 31 complete hearts",
       "editable export checks",
       "independent error comparison and visual review"
-    ]
+    ],
+    "runtimeCommit": "9a7e0e5",
+    "sourceFilesVerified": 787,
+    "checks": {
+      "typecheck": "pass",
+      "lint": "pass_with_two_existing_warnings",
+      "build": "pass",
+      "privateChromiumStarAndHat": "pass",
+      "applicationPassed": 857,
+      "applicationSkipped": 1,
+      "inversePassed": 945,
+      "inverseTotal": 953,
+      "inverseSeconds": 1130.39735375
+    },
+    "failures": [
+      {
+        "test": "feature-seeds: horizontal puppy crop shift",
+        "assertion": "Requires an intermediate feature-retaining, image-failing candidate to have paperVerification.status uncertain.",
+        "location": "scripts/inverse/feature-seeds.test.mjs:166",
+        "qualification": "Stopped before final template, render and opening checks. Fresh report and exported controls were not captured in this run."
+      },
+      {
+        "test": "fitted-rerouting: shifted bird, 10 seconds",
+        "assertion": "selectedInitialization is feature-preserving-grid rather than fitted-boundary-rerouting.",
+        "location": "scripts/inverse/fitted-rerouting.test.mjs:62",
+        "qualification": "Stopped before final template, render, opening and timing assertions. Fresh output needs independent replay."
+      },
+      {
+        "test": "fitted-rerouting: shifted bird, 180 seconds",
+        "assertion": "selectedInitialization is grid rather than fitted-boundary-rerouting.",
+        "location": "scripts/inverse/fitted-rerouting.test.mjs:62",
+        "durationSeconds": 88.09179575,
+        "qualification": "Stopped before final outcome assertions. The observed duration exceeds the intended fast path; do not dismiss this as only a route-name mismatch."
+      },
+      {
+        "test": "numerical-speed: paper acceleration preserves complete audits",
+        "assertion": "Historical complete-audit hash includes the old method-description string.",
+        "location": "scripts/inverse/numerical-speed.test.mjs:17",
+        "qualification": "Equivalent straight/neck/thin maps already pass the explicit description-only normalization in material-kernel.test.mjs; this duplicate assertion still needs updating."
+      },
+      {
+        "test": "refinement-checkpoints: longer refinement",
+        "assertion": "Requires an invalid historical checkpoint with lower image error than the selected fit.",
+        "location": "scripts/inverse/refinement-checkpoints.test.mjs:30",
+        "qualification": "Fixed-work trajectory changed; retain a genuinely unresolved/invalid-competitor fixture rather than dropping coverage."
+      },
+      {
+        "test": "refinement-checkpoints: coarse pass retains uncertain alternative",
+        "assertion": "Requires the coarse-only selected error to exceed 4%.",
+        "location": "scripts/inverse/refinement-checkpoints.test.mjs:51",
+        "qualification": "Earlier fixed-work diagnostics found the same floral coarse-only fit improves to 1.805625%; alternate-retention checks still need real coverage."
+      },
+      {
+        "test": "refinement-checkpoints: photographic fit through polishing",
+        "assertion": "Requires paperVerification.source rollback-checkpoint; actual is undefined.",
+        "location": "scripts/inverse/refinement-checkpoints.test.mjs:97",
+        "qualification": "Stopped before independent image-quality checks. Earlier certification can change this path, but that does not establish this uncaptured output passes."
+      },
+      {
+        "test": "retained-paper-failure: coarse failure alternative",
+        "assertion": "Historical optimizer/incumbent hash changed.",
+        "location": "scripts/inverse/retained-paper-failure.test.mjs:31",
+        "qualification": "Connectivity can legitimately change which actual checkpoints pass; preserve fixed-work alternative-retention coverage with measured current geometry."
+      }
+    ],
+    "nextDiagnosis": {
+      "root": "tmp/heart-learning/polishing-paper-regressions-v1",
+      "status": "prepared; not_started",
+      "protocol": "Paired fresh before/current puppy and bird fits with exact input hashes, two reversed-order repeats, actual output saved before independent geometry/paper/render/feature checks. Start only after the serial corpus run completes."
+    }
   },
   "artifacts": [
     {
@@ -316,6 +385,26 @@
     {
       "path": "tmp/heart-learning/polishing-paper-tail-v1/tree-2.json",
       "sha256": "99867bcc3a78ea00dfb8d198d6ba8cec04cb1d44a4c82be6779dea427d83f55b"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-paper-tail-v1/qa/source.json",
+      "sha256": "2dd3bdf788828ed75b051d0667e99b88ebc8fb3837b6340965fb489533e5fd11"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-paper-tail-v1/qa/test.log",
+      "sha256": "4203fe4c81e54e48ed384dc7d33d6a70c9409cbdd320df58c8990077555749e2"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-paper-tail-v1/qa/browser/results.json",
+      "sha256": "9e719f1d6c9d560880b4c7f3144b86edec152ab13bbcc4564de7400ae9df62ab"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-paper-tail-v1/qa/browser/visual-review.json",
+      "sha256": "0721d595c4b7594ab986121214c0c77c1a855ce00c3ade8a4b128d579827f17f"
+    },
+    {
+      "path": "tmp/heart-learning/polishing-paper-tail-v1/qa/served-assets.json",
+      "sha256": "73e954948ce2f485f6ab658bb61e0a0269a580393d9c7eb0cdc519db6460e553"
     }
   ]
 }

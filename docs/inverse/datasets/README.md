@@ -44,8 +44,17 @@ independently rendered disagreement. Two captures contain that same geometry,
 so they are not independent motif successes. The JavaScript and rebuilt Wasm
 implementations agree, and an old cached Wasm module safely falls back for the
 new adjacency mode. All 35 focused tests and ten kernel-compatibility tests pass.
-The broader fresh-fit, browser and full-suite QA is pending; these fixed-geometry
-results do not establish improved live solve rates or unchanged photo errors.
+Type checking, lint, build and the private Chromium star/hat checks pass; the
+star's exported geometry is unchanged from the preceding browser replay. The
+application suite passes 857 tests with one skip. The full inverse suite passes
+945/953: eight assertions fail on historical hashes, uncertain checkpoint
+requirements or internal fitting routes. Their early failures do not establish
+that the final outputs pass. In particular, the shifted bird's long-allowance
+test takes 88 seconds and selects a different route, so its speed regression
+needs diagnosis. Paired fresh puppy/bird replays are prepared, with complete
+output capture and independent geometry, paper, image and feature checks. The
+serial Hunodan/photo corpus is still running; no fresh solve-rate or unchanged
+photo-error claim follows from the fixed-geometry results above.
 
 [Thirty-six fresh graph-order comparisons](topology-graph-budget-results.json)
 finish below ten seconds and pass the actual template and feature checks in all
