@@ -1,0 +1,1358 @@
+{
+  "schema": "material-junction-diagnostic-1",
+  "status": "completed-read-only-diagnostic-with-synthetic-null",
+  "sourceStudy": "tmp/heart-learning/material-corrected-scenes-v1",
+  "sourcePipelineReportSha256": "ed6eb47a87cdba304dfb84d58f70146727f542a9bc911e38dc156bfb53ba2c92",
+  "scriptSha256": "9377e23b7e114c229896d5ebf700832d6b1a48b1f3b7e596a0b5e9b4c46558be",
+  "scope": "Two already inspected checker photographs, fixed saved fields and accepted crops. No model/solver execution, threshold selection for deployment, new annotation or reconstruction success.",
+  "method": "Approximate visible grid junction centers chosen from saved RGB crop. Compute four-neighbor maximum-bottleneck paths for high and low diagonal probability pairs. Values are diagnostic connection levels, not assumed continuous saddles or guaranteed interval bounds. Interior ports can route around each other; report ordering explicitly and test cutoff intersections only for empirically ordered, separated cases. Sensitivity includes radius 14/18/22, center shifts up to two crop pixels, and alternating corner ports on the patch boundary.",
+  "limitations": [
+    "Approximate visible junction neighborhoods do not certify exact physical contact or hidden cutting geometry.",
+    "Connection levels include finite raster/field resolution and port choice; neither ordered cases nor a common cutoff would prove desired physical topology.",
+    "Sparse known-material pixel error excludes uncertain edges; it is not full-image accuracy.",
+    "This is a diagnostic on previously inspected development photos, not a new independent benchmark.",
+    "Known-mask blindness is a property of labels/loss. These photos are held out of the model producing their predictions, so this is not a claim that their own omitted pixels directly caused that particular model output."
+  ],
+  "codeReferences": [
+    {
+      "file": "scripts/inverse/learning/real_materials_learning.py",
+      "lines": "28-45",
+      "sha256": "cc3fa5448f9804c5f4e2ae3c407dbb9281a1cfbf3c332ab7d7a9e3d753907a16"
+    },
+    {
+      "file": "scripts/inverse/datasets/real_materials.py",
+      "lines": "61-80",
+      "sha256": "86ec6dd4d4d8af2289eda79925cd7c68d9df87719a49adf9fb2d0078858a175e"
+    },
+    {
+      "file": "scripts/inverse/learning/material_pilot.py",
+      "lines": "15-34",
+      "sha256": "d365d74cb838756b2ff730b8b3003da8fd68a768a9e3e05a0c1264f2e37f36a9"
+    },
+    {
+      "file": "scripts/inverse/learning/foreground.py",
+      "lines": "53-54,100-114",
+      "sha256": "dfef778c09e376c9be851ba69e4e9831c4a921cc05aeaae7ef86b8e440ff1dc4"
+    },
+    {
+      "file": "scripts/inverse/learning/model.py",
+      "lines": "40-50",
+      "sha256": "d23659db131eb826ce713d67bdaa870f032c9ef295715b210d83d02abedd382b"
+    },
+    {
+      "file": "tmp/heart-learning/material-corrected-scenes-v1/material-fields.mjs",
+      "lines": "27-35",
+      "sha256": "a4528b8668b7e44fed80f0ed96eaf8f4058cfec57525319cf92e66cb4fefc8f6"
+    }
+  ],
+  "findings": [
+    "Both checker masks exactly reproduce from untouched model probabilities before the template solver; tracing and MILP cannot be the initial cause of those gaps.",
+    "Separated opposite sector evidence remains at all original neighborhoods, while connection levels vary spatially. Center/radius/boundary-port sensitivity below assesses whether one global threshold could reconcile these particular diagnostic levels; it is not exact junction ground truth.",
+    "All 625 examined field-patch pixels are unknown in partial real-material labels. Complementing only these patches changes neither branch of the image-wide material BCE.",
+    "Blue/yellow labeled-interior error is zero for thresholds 0.55 through 0.85, so this score cannot choose visible contact geometry.",
+    "256px letterboxed probabilities are bilinearly sampled into a 400px overlap. Upsampling adds no new evidence; the shallow RGB path means encoder stride alone does not establish the cause.",
+    "Completed ideal-checker resampling null also has no common diagnostic cutoff, despite only 0.013125% / 0.08% synthetic mask error with 8x8 coverage. Diagnostic level spread is not by itself a neural-calibration or physical-topology failure metric."
+  ],
+  "interpretationCorrection": "The completed ideal-checker null supersedes the earlier interpretation of no common cutoff as evidence of neural spatial miscalibration or lost true junction topology. Perfect continuous checker contacts also develop varying diagnostic connection levels under this raster chain; native binary400 yields degenerate [0,1] levels. Learned-field spread alone does not distinguish model calibration from sampling. The measured unknown-pixel loss blindness, interior-error plateau and pre-solver mask defects remain independent findings.",
+  "cases": [
+    {
+      "id": "real-cf2d0fcff65d7386-body-1",
+      "predictionSha256": "c6a6064fde9452de0182a976cce732ba8a207ce9f3aa2a1d386c2bba8740eb51",
+      "savedMaskExactlyReproduced": true,
+      "labelPhaseExchanged": true,
+      "sourceWindow": [
+        -0.0,
+        -42.99999999999999,
+        600.0,
+        557.0
+      ],
+      "cropQuad": [
+        [
+          269.6566235852156,
+          87.98097580989706
+        ],
+        [
+          522.2190583368354,
+          249.9246756115092
+        ],
+        [
+          331.5569886421618,
+          513.1140177033036
+        ],
+        [
+          91.43374025661117,
+          323.5791139234461
+        ]
+      ],
+      "targetProvenance": {
+        "manifest": "tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials/manifest.json",
+        "manifestSha256": "1be905bd82bf5f18793ef2d31fa573f7dd976b5218991437d3c8d4902ccc95f6",
+        "annotationFile": "scripts/inverse/datasets/real-materials.json",
+        "annotationSha256": "fae5ef1cf8f1fbf4661776e05454da849be1dcada9f778d88e522d5d29773709",
+        "imageSha256": "cf2d0fcff65d7386a7295376e03a6b3f027645b74c361e0035bcc46220a6a6d9",
+        "materialLabels": "tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials/real-cf2d0fcff65d7386-body-1-materials.png",
+        "materialLabelsSha256": "18ff0e44102e05def001f3db8a89c331308c647ba4a3a4dde438029a7a2e5ffd",
+        "boundaryUncertaintyPixels": 2,
+        "materialPixelCounts": {
+          "0": 9548,
+          "1": 9156,
+          "255": 46832
+        },
+        "scope": "Partial assistant-reviewed material identities with independent body supervision. A/B order is local to each image. No cutting-path labels or assigned train/test split.",
+        "transform": {
+          "scale": 0.4266666666666667,
+          "offset": [
+            0.0,
+            18.346666666666664
+          ],
+          "resolution": 256
+        }
+      },
+      "partialAnnotationThresholdDiagnostic": [
+        {
+          "threshold": 0.1,
+          "partialKnownMaterialError": 0.25951668092386654
+        },
+        {
+          "threshold": 0.15,
+          "partialKnownMaterialError": 0.07094739093242088
+        },
+        {
+          "threshold": 0.2,
+          "partialKnownMaterialError": 0.017696749358426005
+        },
+        {
+          "threshold": 0.25,
+          "partialKnownMaterialError": 0.0043306244653550045
+        },
+        {
+          "threshold": 0.3,
+          "partialKnownMaterialError": 0.001924721984602224
+        },
+        {
+          "threshold": 0.35,
+          "partialKnownMaterialError": 0.0009088964927288281
+        },
+        {
+          "threshold": 0.4,
+          "partialKnownMaterialError": 0.00037425149700598805
+        },
+        {
+          "threshold": 0.45,
+          "partialKnownMaterialError": 0.00016039349871685202
+        },
+        {
+          "threshold": 0.5,
+          "partialKnownMaterialError": 5.3464499572284e-05
+        },
+        {
+          "threshold": 0.55,
+          "partialKnownMaterialError": 0.0
+        },
+        {
+          "threshold": 0.6,
+          "partialKnownMaterialError": 0.0
+        },
+        {
+          "threshold": 0.65,
+          "partialKnownMaterialError": 0.0
+        },
+        {
+          "threshold": 0.7,
+          "partialKnownMaterialError": 0.0
+        },
+        {
+          "threshold": 0.75,
+          "partialKnownMaterialError": 0.0
+        },
+        {
+          "threshold": 0.8,
+          "partialKnownMaterialError": 0.0
+        },
+        {
+          "threshold": 0.85,
+          "partialKnownMaterialError": 0.0
+        },
+        {
+          "threshold": 0.9,
+          "partialKnownMaterialError": 0.001657399486740804
+        }
+      ],
+      "junctions": [
+        {
+          "cropCenter": [
+            101,
+            99
+          ],
+          "radius": 18,
+          "portInset": 4,
+          "sectorProbabilities": [
+            0.9602562785148621,
+            0.24107515811920166,
+            0.1283576935529709,
+            0.9096058011054993
+          ],
+          "sectorSeparation": 0.6685306429862976,
+          "highConnectionLevel": 0.8573304414749146,
+          "lowDisconnectionLevel": 0.8585520386695862,
+          "connectionLevelsOrdered": true,
+          "levelMidpoint": 0.8579412400722504,
+          "fieldCenter": [
+            121.53857438481826,
+            97.28607555249872
+          ],
+          "knownMaterialPixelsIn5x5": 0
+        },
+        {
+          "cropCenter": [
+            200,
+            99
+          ],
+          "radius": 18,
+          "portInset": 4,
+          "sectorProbabilities": [
+            0.13972720503807068,
+            0.9320937395095825,
+            0.9309229254722595,
+            0.11573302745819092
+          ],
+          "sectorSeparation": 0.7911957204341888,
+          "highConnectionLevel": 0.8040991425514221,
+          "lowDisconnectionLevel": 0.8050835132598877,
+          "connectionLevelsOrdered": true,
+          "levelMidpoint": 0.8045913279056549,
+          "fieldCenter": [
+            147.23136147437384,
+            114.63793302325367
+          ],
+          "knownMaterialPixelsIn5x5": 0
+        },
+        {
+          "cropCenter": [
+            296,
+            99
+          ],
+          "radius": 18,
+          "portInset": 4,
+          "sectorProbabilities": [
+            0.9443833827972412,
+            0.29014527797698975,
+            0.11692997068166733,
+            0.9546140432357788
+          ],
+          "sectorSeparation": 0.6542381048202515,
+          "highConnectionLevel": 0.8475030660629272,
+          "lowDisconnectionLevel": 0.8491475582122803,
+          "connectionLevelsOrdered": true,
+          "levelMidpoint": 0.8483253121376038,
+          "fieldCenter": [
+            173.3289729231581,
+            132.26319230742578
+          ],
+          "knownMaterialPixelsIn5x5": 0
+        },
+        {
+          "cropCenter": [
+            101,
+            193
+          ],
+          "radius": 18,
+          "portInset": 4,
+          "sectorProbabilities": [
+            0.07739847153425217,
+            0.914680004119873,
+            0.9225016832351685,
+            0.08677128702402115
+          ],
+          "sectorSeparation": 0.8279087170958519,
+          "highConnectionLevel": 0.7720770835876465,
+          "lowDisconnectionLevel": 0.7841998338699341,
+          "connectionLevelsOrdered": true,
+          "levelMidpoint": 0.7781384587287903,
+          "fieldCenter": [
+            103.46969410028491,
+            121.41463304969837
+          ],
+          "knownMaterialPixelsIn5x5": 0
+        },
+        {
+          "cropCenter": [
+            200,
+            193
+          ],
+          "radius": 18,
+          "portInset": 4,
+          "sectorProbabilities": [
+            0.8938378095626831,
+            0.08527214080095291,
+            0.09572083503007889,
+            0.9328222274780273
+          ],
+          "sectorSeparation": 0.7981169745326042,
+          "highConnectionLevel": 0.727286696434021,
+          "lowDisconnectionLevel": 0.7299997806549072,
+          "connectionLevelsOrdered": true,
+          "levelMidpoint": 0.7286432385444641,
+          "fieldCenter": [
+            128.86236203987974,
+            139.4241661024132
+          ],
+          "knownMaterialPixelsIn5x5": 0
+        },
+        {
+          "cropCenter": [
+            296,
+            193
+          ],
+          "radius": 18,
+          "portInset": 4,
+          "sectorProbabilities": [
+            0.12200421839952469,
+            0.938690721988678,
+            0.9293509721755981,
+            0.1016453206539154
+          ],
+          "sectorSeparation": 0.8073467537760735,
+          "highConnectionLevel": 0.6565585732460022,
+          "lowDisconnectionLevel": 0.6612070798873901,
+          "connectionLevelsOrdered": true,
+          "levelMidpoint": 0.6588828265666962,
+          "fieldCenter": [
+            154.66107844202622,
+            157.72168556225645
+          ],
+          "knownMaterialPixelsIn5x5": 0
+        },
+        {
+          "cropCenter": [
+            101,
+            289
+          ],
+          "radius": 18,
+          "portInset": 4,
+          "sectorProbabilities": [
+            0.9386188983917236,
+            0.24608075618743896,
+            0.32535797357559204,
+            0.9303975701332092
+          ],
+          "sectorSeparation": 0.6050395965576172,
+          "highConnectionLevel": 0.8762795329093933,
+          "lowDisconnectionLevel": 0.8786718845367432,
+          "connectionLevelsOrdered": true,
+          "levelMidpoint": 0.8774757087230682,
+          "fieldCenter": [
+            84.83427050722183,
+            146.2997328770951
+          ],
+          "knownMaterialPixelsIn5x5": 0
+        },
+        {
+          "cropCenter": [
+            200,
+            289
+          ],
+          "radius": 18,
+          "portInset": 4,
+          "sectorProbabilities": [
+            0.16541585326194763,
+            0.9444449543952942,
+            0.9119777679443359,
+            0.11697899550199509
+          ],
+          "sectorSeparation": 0.7465619146823883,
+          "highConnectionLevel": 0.8080742955207825,
+          "lowDisconnectionLevel": 0.8092204928398132,
+          "connectionLevelsOrdered": true,
+          "levelMidpoint": 0.8086473941802979,
+          "fieldCenter": [
+            109.91300289345979,
+            164.99350830740443
+          ],
+          "knownMaterialPixelsIn5x5": 0
+        },
+        {
+          "cropCenter": [
+            296,
+            289
+          ],
+          "radius": 18,
+          "portInset": 4,
+          "sectorProbabilities": [
+            0.9245082139968872,
+            0.15722399950027466,
+            0.2430131435394287,
+            0.9523204565048218
+          ],
+          "sectorSeparation": 0.6814950704574585,
+          "highConnectionLevel": 0.8520321249961853,
+          "lowDisconnectionLevel": 0.854978621006012,
+          "connectionLevelsOrdered": true,
+          "levelMidpoint": 0.8535053730010986,
+          "fieldCenter": [
+            135.39883014220015,
+            183.99073368172407
+          ],
+          "knownMaterialPixelsIn5x5": 0
+        }
+      ],
+      "summary": {
+        "count": 9,
+        "orderedSeparatedCount": 9,
+        "minimumLevel": 0.6588828265666962,
+        "maximumLevel": 0.8774757087230682,
+        "medianLevel": 0.8086473941802979,
+        "minimumSectorSeparation": 0.6050395965576172,
+        "orderedMinimumLevel": 0.6588828265666962,
+        "orderedMaximumLevel": 0.8774757087230682,
+        "orderedMaxHighConnectionLevel": 0.8762795329093933,
+        "orderedMinLowDisconnectionLevel": 0.6612070798873901,
+        "oneThresholdBetweenAllOrderedConnectionLevels": false,
+        "known5x5Pixels": 0
+      },
+      "maskedLossBlindSpotWitness": {
+        "perturbation": "Complement only 5x5 field patches around approximate junction centers. No artifact enters inference or training. BCE computed in float64 from saved probabilities with numerical clipping; equality is exact because no known pixel changes. Body output remains unchanged.",
+        "changedPixels": 225,
+        "changedKnownPixels": 0,
+        "originalDirectExchangedBCE": [
+          2.86669341289522,
+          0.07529325177742477
+        ],
+        "perturbedDirectExchangedBCE": [
+          2.86669341289522,
+          0.07529325177742477
+        ],
+        "exactlyEqual": true
+      },
+      "sensitivitySummary": [
+        {
+          "portMode": "interior-diagonals",
+          "configurations": 15,
+          "radii": [
+            14,
+            18,
+            22
+          ],
+          "centerShifts": [
+            [
+              0,
+              0
+            ],
+            [
+              -2,
+              0
+            ],
+            [
+              2,
+              0
+            ],
+            [
+              0,
+              -2
+            ],
+            [
+              0,
+              2
+            ]
+          ],
+          "orderedSeparatedCounts": [
+            9,
+            9
+          ],
+          "commonCutoffConfigurations": 0
+        },
+        {
+          "portMode": "boundary-corners",
+          "configurations": 15,
+          "radii": [
+            14,
+            18,
+            22
+          ],
+          "centerShifts": [
+            [
+              0,
+              0
+            ],
+            [
+              -2,
+              0
+            ],
+            [
+              2,
+              0
+            ],
+            [
+              0,
+              -2
+            ],
+            [
+              0,
+              2
+            ]
+          ],
+          "orderedSeparatedCounts": [
+            9,
+            9
+          ],
+          "commonCutoffConfigurations": 0
+        }
+      ]
+    },
+    {
+      "id": "real-d5b0aa8d4d2465ee-body-1",
+      "predictionSha256": "197c40899528d1bbdd8ea9ad865f417efa31de06f9612f5635ca270142916ce6",
+      "savedMaskExactlyReproduced": true,
+      "labelPhaseExchanged": false,
+      "sourceWindow": [
+        -0.0,
+        -119.99999999999997,
+        720.0,
+        600.0
+      ],
+      "cropQuad": [
+        [
+          424.01186903211675,
+          113.39774188701209
+        ],
+        [
+          551.6858722279059,
+          318.2460751691032
+        ],
+        [
+          346.58809564300515,
+          455.9101583222169
+        ],
+        [
+          217.24781562320555,
+          240.213944832005
+        ]
+      ],
+      "targetProvenance": {
+        "manifest": "tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-curved/manifest.json",
+        "manifestSha256": "42780e542336415ca00b72e707a697295f3a4e69720e3538d7685f2c281c1af1",
+        "annotationFile": "scripts/inverse/datasets/real-materials-curved.json",
+        "annotationSha256": "2b2dea584e023ac296d603aedb17efd802a7082e54e4fd7f936182461abfad12",
+        "imageSha256": "d5b0aa8d4d2465eeee9b25ff43d919d584705256523c711f545d04bae4bde3a6",
+        "materialLabels": "tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-curved/real-d5b0aa8d4d2465ee-body-1-materials.png",
+        "materialLabelsSha256": "c9c252b6bec2510b5851714b3f9aa3a4c8d872ee0bdff6066526f0a0f398d850",
+        "boundaryUncertaintyPixels": 5,
+        "materialPixelCounts": {
+          "0": 1682,
+          "1": 2373,
+          "255": 61481
+        },
+        "scope": "Partial assistant-reviewed material identities with independent body supervision. A/B order is local to each image. No cutting-path labels or assigned train/test split.",
+        "transform": {
+          "scale": 0.35555555555555557,
+          "offset": [
+            0.0,
+            42.66666666666666
+          ],
+          "resolution": 256
+        }
+      },
+      "partialAnnotationThresholdDiagnostic": [
+        {
+          "threshold": 0.1,
+          "partialKnownMaterialError": 0.0002466091245376079
+        },
+        {
+          "threshold": 0.15,
+          "partialKnownMaterialError": 0.0
+        },
+        {
+          "threshold": 0.2,
+          "partialKnownMaterialError": 0.0004932182490752158
+        },
+        {
+          "threshold": 0.25,
+          "partialKnownMaterialError": 0.0069050554870530205
+        },
+        {
+          "threshold": 0.3,
+          "partialKnownMaterialError": 0.015289765721331689
+        },
+        {
+          "threshold": 0.35,
+          "partialKnownMaterialError": 0.0281134401972873
+        },
+        {
+          "threshold": 0.4,
+          "partialKnownMaterialError": 0.04784217016029593
+        },
+        {
+          "threshold": 0.45,
+          "partialKnownMaterialError": 0.07003699136868063
+        },
+        {
+          "threshold": 0.5,
+          "partialKnownMaterialError": 0.09001233045622688
+        },
+        {
+          "threshold": 0.55,
+          "partialKnownMaterialError": 0.11220715166461159
+        },
+        {
+          "threshold": 0.6,
+          "partialKnownMaterialError": 0.14229346485819974
+        },
+        {
+          "threshold": 0.65,
+          "partialKnownMaterialError": 0.19161528976572134
+        },
+        {
+          "threshold": 0.7,
+          "partialKnownMaterialError": 0.23847102342786683
+        },
+        {
+          "threshold": 0.75,
+          "partialKnownMaterialError": 0.2833538840937115
+        },
+        {
+          "threshold": 0.8,
+          "partialKnownMaterialError": 0.3297163995067818
+        },
+        {
+          "threshold": 0.85,
+          "partialKnownMaterialError": 0.4004932182490752
+        },
+        {
+          "threshold": 0.9,
+          "partialKnownMaterialError": 0.5435265104808878
+        }
+      ],
+      "junctions": [
+        {
+          "cropCenter": [
+            84,
+            87
+          ],
+          "radius": 18,
+          "portInset": 4,
+          "sectorProbabilities": [
+            0.5920889377593994,
+            0.01613415777683258,
+            0.01575085148215294,
+            0.5086142420768738
+          ],
+          "sectorSeparation": 0.4924800843000412,
+          "highConnectionLevel": 0.40972214937210083,
+          "lowDisconnectionLevel": 0.40972214937210083,
+          "connectionLevelsOrdered": true,
+          "levelMidpoint": 0.40972214937210083,
+          "fieldCenter": [
+            144.7016370093596,
+            107.74356340494376
+          ],
+          "knownMaterialPixelsIn5x5": 0
+        },
+        {
+          "cropCenter": [
+            162,
+            87
+          ],
+          "radius": 18,
+          "portInset": 4,
+          "sectorProbabilities": [
+            0.01619568280875683,
+            0.8314010500907898,
+            0.5900006890296936,
+            0.018015624955296516
+          ],
+          "sectorSeparation": 0.5719850640743971,
+          "highConnectionLevel": 0.4393092095851898,
+          "lowDisconnectionLevel": 0.44655942916870117,
+          "connectionLevelsOrdered": true,
+          "levelMidpoint": 0.4429343193769455,
+          "fieldCenter": [
+            153.52088640439962,
+            122.008593205045
+          ],
+          "knownMaterialPixelsIn5x5": 0
+        },
+        {
+          "cropCenter": [
+            240,
+            87
+          ],
+          "radius": 18,
+          "portInset": 4,
+          "sectorProbabilities": [
+            0.937687873840332,
+            0.17911440134048462,
+            0.11683211475610733,
+            0.9467498064041138
+          ],
+          "sectorSeparation": 0.7585734724998474,
+          "highConnectionLevel": 0.9346128702163696,
+          "lowDisconnectionLevel": 0.9313768744468689,
+          "connectionLevelsOrdered": false,
+          "levelMidpoint": 0.9329948723316193,
+          "fieldCenter": [
+            162.39909465311678,
+            136.3689882416886
+          ],
+          "knownMaterialPixelsIn5x5": 0
+        },
+        {
+          "cropCenter": [
+            320,
+            87
+          ],
+          "radius": 18,
+          "portInset": 4,
+          "sectorProbabilities": [
+            0.32962802052497864,
+            0.982780933380127,
+            0.962924063205719,
+            0.2605813145637512
+          ],
+          "sectorSeparation": 0.6332960426807404,
+          "highConnectionLevel": 0.9453948736190796,
+          "lowDisconnectionLevel": 0.9474791884422302,
+          "connectionLevelsOrdered": true,
+          "levelMidpoint": 0.9464370310306549,
+          "fieldCenter": [
+            171.5668166965514,
+            151.19766835841034
+          ],
+          "knownMaterialPixelsIn5x5": 0
+        },
+        {
+          "cropCenter": [
+            84,
+            163
+          ],
+          "radius": 18,
+          "portInset": 4,
+          "sectorProbabilities": [
+            0.015408126637339592,
+            0.7495936751365662,
+            0.6558274626731873,
+            0.021349819377064705
+          ],
+          "sectorSeparation": 0.6344776432961226,
+          "highConnectionLevel": 0.27781257033348083,
+          "lowDisconnectionLevel": 0.2803676128387451,
+          "connectionLevelsOrdered": true,
+          "levelMidpoint": 0.279090091586113,
+          "fieldCenter": [
+            130.97073767236506,
+            116.32655931690242
+          ],
+          "knownMaterialPixelsIn5x5": 0
+        },
+        {
+          "cropCenter": [
+            162,
+            163
+          ],
+          "radius": 18,
+          "portInset": 4,
+          "sectorProbabilities": [
+            0.8392573595046997,
+            0.05256141349673271,
+            0.0778149962425232,
+            0.9154517650604248
+          ],
+          "sectorSeparation": 0.7614423632621765,
+          "highConnectionLevel": 0.7658742666244507,
+          "lowDisconnectionLevel": 0.7680768370628357,
+          "connectionLevelsOrdered": true,
+          "levelMidpoint": 0.7669755518436432,
+          "fieldCenter": [
+            139.81172986601928,
+            130.73013195248606
+          ],
+          "knownMaterialPixelsIn5x5": 0
+        },
+        {
+          "cropCenter": [
+            240,
+            163
+          ],
+          "radius": 18,
+          "portInset": 4,
+          "sectorProbabilities": [
+            0.06291009485721588,
+            0.9534041881561279,
+            0.8565282225608826,
+            0.0934821292757988
+          ],
+          "sectorSeparation": 0.7630460932850838,
+          "highConnectionLevel": 0.7648495435714722,
+          "lowDisconnectionLevel": 0.7656356692314148,
+          "connectionLevelsOrdered": true,
+          "levelMidpoint": 0.7652426064014435,
+          "fieldCenter": [
+            148.71228243915243,
+            145.23073920061506
+          ],
+          "knownMaterialPixelsIn5x5": 0
+        },
+        {
+          "cropCenter": [
+            320,
+            163
+          ],
+          "radius": 18,
+          "portInset": 4,
+          "sectorProbabilities": [
+            0.9667914509773254,
+            0.1636272668838501,
+            0.2783161401748657,
+            0.9501513242721558
+          ],
+          "sectorSeparation": 0.67183518409729,
+          "highConnectionLevel": 0.9501513242721558,
+          "lowDisconnectionLevel": 0.9512907862663269,
+          "connectionLevelsOrdered": true,
+          "levelMidpoint": 0.9507210552692413,
+          "fieldCenter": [
+            157.90355780172075,
+            160.20498636638303
+          ],
+          "knownMaterialPixelsIn5x5": 0
+        },
+        {
+          "cropCenter": [
+            84,
+            239
+          ],
+          "radius": 18,
+          "portInset": 4,
+          "sectorProbabilities": [
+            0.8506256937980652,
+            0.05614583566784859,
+            0.054883673787117004,
+            0.8935123682022095
+          ],
+          "sectorSeparation": 0.7944798581302166,
+          "highConnectionLevel": 0.6069628596305847,
+          "lowDisconnectionLevel": 0.6088514924049377,
+          "connectionLevelsOrdered": true,
+          "levelMidpoint": 0.6079071760177612,
+          "fieldCenter": [
+            117.02767834903113,
+            125.04217351195682
+          ],
+          "knownMaterialPixelsIn5x5": 0
+        },
+        {
+          "cropCenter": [
+            162,
+            239
+          ],
+          "radius": 18,
+          "portInset": 4,
+          "sectorProbabilities": [
+            0.09289511293172836,
+            0.947994589805603,
+            0.8845572471618652,
+            0.27747389674186707
+          ],
+          "sectorSeparation": 0.6070833504199982,
+          "highConnectionLevel": 0.7858676314353943,
+          "lowDisconnectionLevel": 0.7895423173904419,
+          "connectionLevelsOrdered": true,
+          "levelMidpoint": 0.7877049744129181,
+          "fieldCenter": [
+            125.89003266565241,
+            139.58688555532194
+          ],
+          "knownMaterialPixelsIn5x5": 0
+        },
+        {
+          "cropCenter": [
+            240,
+            239
+          ],
+          "radius": 18,
+          "portInset": 4,
+          "sectorProbabilities": [
+            0.934360921382904,
+            0.10073088109493256,
+            0.32084500789642334,
+            0.9301527738571167
+          ],
+          "sectorSeparation": 0.6093077659606934,
+          "highConnectionLevel": 0.8761340379714966,
+          "lowDisconnectionLevel": 0.8761340379714966,
+          "connectionLevelsOrdered": true,
+          "levelMidpoint": 0.8761340379714966,
+          "fieldCenter": [
+            134.81255566050075,
+            154.23034518511582
+          ],
+          "knownMaterialPixelsIn5x5": 0
+        },
+        {
+          "cropCenter": [
+            320,
+            239
+          ],
+          "radius": 18,
+          "portInset": 4,
+          "sectorProbabilities": [
+            0.1645153909921646,
+            0.891014814376831,
+            0.9059034585952759,
+            0.108346126973629
+          ],
+          "sectorSeparation": 0.7264994233846664,
+          "highConnectionLevel": 0.743883490562439,
+          "lowDisconnectionLevel": 0.7522338628768921,
+          "connectionLevelsOrdered": true,
+          "levelMidpoint": 0.7480586767196655,
+          "fieldCenter": [
+            144.02700813534233,
+            169.3529134210176
+          ],
+          "knownMaterialPixelsIn5x5": 0
+        },
+        {
+          "cropCenter": [
+            84,
+            317
+          ],
+          "radius": 18,
+          "portInset": 4,
+          "sectorProbabilities": [
+            0.0455869622528553,
+            0.8964618444442749,
+            0.8084821105003357,
+            0.036587972193956375
+          ],
+          "sectorSeparation": 0.7628951482474804,
+          "highConnectionLevel": 0.48026078939437866,
+          "lowDisconnectionLevel": 0.4870855212211609,
+          "connectionLevelsOrdered": true,
+          "levelMidpoint": 0.4836731553077698,
+          "fieldCenter": [
+            102.49188913366343,
+            134.12829499246737
+          ],
+          "knownMaterialPixelsIn5x5": 0
+        },
+        {
+          "cropCenter": [
+            162,
+            317
+          ],
+          "radius": 18,
+          "portInset": 4,
+          "sectorProbabilities": [
+            0.9505225419998169,
+            0.14045201241970062,
+            0.29484987258911133,
+            0.9145002365112305
+          ],
+          "sectorSeparation": 0.6196503639221191,
+          "highConnectionLevel": 0.9145002365112305,
+          "lowDisconnectionLevel": 0.9230714440345764,
+          "connectionLevelsOrdered": true,
+          "levelMidpoint": 0.9187858402729034,
+          "fieldCenter": [
+            111.37574480947755,
+            148.82063553656604
+          ],
+          "knownMaterialPixelsIn5x5": 0
+        },
+        {
+          "cropCenter": [
+            240,
+            317
+          ],
+          "radius": 18,
+          "portInset": 4,
+          "sectorProbabilities": [
+            0.1553182750940323,
+            0.8898016214370728,
+            0.8235915303230286,
+            0.08159520477056503
+          ],
+          "sectorSeparation": 0.6682732552289963,
+          "highConnectionLevel": 0.7685474753379822,
+          "lowDisconnectionLevel": 0.7712996006011963,
+          "connectionLevelsOrdered": true,
+          "levelMidpoint": 0.7699235379695892,
+          "fieldCenter": [
+            120.320400494478,
+            163.61352864169766
+          ],
+          "knownMaterialPixelsIn5x5": 0
+        },
+        {
+          "cropCenter": [
+            320,
+            317
+          ],
+          "radius": 18,
+          "portInset": 4,
+          "sectorProbabilities": [
+            0.8922730684280396,
+            0.03711198270320892,
+            0.26073724031448364,
+            0.7713568210601807
+          ],
+          "sectorSeparation": 0.510619580745697,
+          "highConnectionLevel": 0.7713568210601807,
+          "lowDisconnectionLevel": 0.7979550361633301,
+          "connectionLevelsOrdered": true,
+          "levelMidpoint": 0.7846559286117554,
+          "fieldCenter": [
+            129.55822100095244,
+            178.8912649894286
+          ],
+          "knownMaterialPixelsIn5x5": 0
+        }
+      ],
+      "summary": {
+        "count": 16,
+        "orderedSeparatedCount": 15,
+        "minimumLevel": 0.279090091586113,
+        "maximumLevel": 0.9507210552692413,
+        "medianLevel": 0.7684495449066162,
+        "minimumSectorSeparation": 0.4924800843000412,
+        "orderedMinimumLevel": 0.279090091586113,
+        "orderedMaximumLevel": 0.9507210552692413,
+        "orderedMaxHighConnectionLevel": 0.9501513242721558,
+        "orderedMinLowDisconnectionLevel": 0.2803676128387451,
+        "oneThresholdBetweenAllOrderedConnectionLevels": false,
+        "known5x5Pixels": 0
+      },
+      "maskedLossBlindSpotWitness": {
+        "perturbation": "Complement only 5x5 field patches around approximate junction centers. No artifact enters inference or training. BCE computed in float64 from saved probabilities with numerical clipping; equality is exact because no known pixel changes. Body output remains unchanged.",
+        "changedPixels": 400,
+        "changedKnownPixels": 0,
+        "originalDirectExchangedBCE": [
+          0.22983734459947122,
+          2.637325832607572
+        ],
+        "perturbedDirectExchangedBCE": [
+          0.22983734459947122,
+          2.637325832607572
+        ],
+        "exactlyEqual": true
+      },
+      "sensitivitySummary": [
+        {
+          "portMode": "interior-diagonals",
+          "configurations": 15,
+          "radii": [
+            14,
+            18,
+            22
+          ],
+          "centerShifts": [
+            [
+              0,
+              0
+            ],
+            [
+              -2,
+              0
+            ],
+            [
+              2,
+              0
+            ],
+            [
+              0,
+              -2
+            ],
+            [
+              0,
+              2
+            ]
+          ],
+          "orderedSeparatedCounts": [
+            15,
+            16
+          ],
+          "commonCutoffConfigurations": 0
+        },
+        {
+          "portMode": "boundary-corners",
+          "configurations": 15,
+          "radii": [
+            14,
+            18,
+            22
+          ],
+          "centerShifts": [
+            [
+              0,
+              0
+            ],
+            [
+              -2,
+              0
+            ],
+            [
+              2,
+              0
+            ],
+            [
+              0,
+              -2
+            ],
+            [
+              0,
+              2
+            ]
+          ],
+          "orderedSeparatedCounts": [
+            16,
+            16
+          ],
+          "commonCutoffConfigurations": 0
+        }
+      ]
+    }
+  ],
+  "resamplingControl": {
+    "schema": "material-ideal-checker-resampling-control-1",
+    "scriptSha256": "d185a83feef4cfbb7e4b804d337e488fc1a8a69b82f0033099f27ddee20b1466",
+    "auditScriptSha256": "9377e23b7e114c229896d5ebf700832d6b1a48b1f3b7e596a0b5e9b4c46558be",
+    "method": "An ideal continuous piecewise-constant checker uses vertical/horizontal boundaries at the approximate photographed grid centers. The checker is projected to the saved 256x256 source window, using fixed 1x1/4x4/8x8 box coverage samples per field pixel; bilinear resampling returns to the saved 400x400 crop. Boundary-corner diagnostic ports use radius18. A direct native400 hard checker is also measured without any resize; integer grid boundaries fall between pixels. No colors, learned model, source photographs, training annotations or solver enter this synthetic control.",
+    "limitations": [
+      "This tests this particular raster chain, not the camera point-spread function, JPEG, colors, network architecture or actual nonstraight photographed grid.",
+      "Approximate photo centers become exact synthetic junctions only in this control. They are not asserted to be exact junction ground truth in the photos.",
+      "Coverage averaging is deterministic numerical quadrature, not the exact PIL resizing kernel or an asserted physical camera model.",
+      "Native hard checker gives a degenerate diagnostic: both same-color diagonal pairs lack a four-neighbor path (levels0,1), despite exact continuum corner contact. The raster reachability diagnostic is therefore not a topology ground-truth test."
+    ],
+    "cases": [
+      {
+        "id": "real-cf2d0fcff65d7386-body-1",
+        "controls": [
+          {
+            "kind": "native-400-hard-checker",
+            "nativeFieldSupersamplingPerAxis": null,
+            "summary": {
+              "count": 9,
+              "orderedSeparatedCount": 9,
+              "minimumLevel": 0.5,
+              "maximumLevel": 0.5,
+              "medianLevel": 0.5,
+              "minimumSectorSeparation": 1.0,
+              "orderedMinimumLevel": 0.5,
+              "orderedMaximumLevel": 0.5,
+              "orderedMaxHighConnectionLevel": 0.0,
+              "orderedMinLowDisconnectionLevel": 1.0,
+              "oneThresholdBetweenAllOrderedConnectionLevels": true
+            },
+            "maskErrorAgainstSyntheticNative400": 0.0
+          },
+          {
+            "kind": "projected-256-bilinear-400",
+            "nativeFieldSupersamplingPerAxis": 1,
+            "summary": {
+              "count": 9,
+              "orderedSeparatedCount": 9,
+              "minimumLevel": 0.11397908255457878,
+              "maximumLevel": 0.8836564123630524,
+              "medianLevel": 0.4876014143228531,
+              "minimumSectorSeparation": 1.0,
+              "orderedMinimumLevel": 0.11397908255457878,
+              "orderedMaximumLevel": 0.8836564123630524,
+              "orderedMaxHighConnectionLevel": 0.8781107664108276,
+              "orderedMinLowDisconnectionLevel": 0.12965363264083862,
+              "oneThresholdBetweenAllOrderedConnectionLevels": false
+            },
+            "maskErrorAgainstSyntheticNative400": 0.0067375
+          },
+          {
+            "kind": "projected-256-bilinear-400",
+            "nativeFieldSupersamplingPerAxis": 4,
+            "summary": {
+              "count": 9,
+              "orderedSeparatedCount": 9,
+              "minimumLevel": 0.3474850058555603,
+              "maximumLevel": 0.5918408930301666,
+              "medianLevel": 0.4930845648050308,
+              "minimumSectorSeparation": 1.0,
+              "orderedMinimumLevel": 0.3474850058555603,
+              "orderedMaximumLevel": 0.5918408930301666,
+              "orderedMaxHighConnectionLevel": 0.5526477098464966,
+              "orderedMinLowDisconnectionLevel": 0.3500250577926636,
+              "oneThresholdBetweenAllOrderedConnectionLevels": false
+            },
+            "maskErrorAgainstSyntheticNative400": 0.00014375
+          },
+          {
+            "kind": "projected-256-bilinear-400",
+            "nativeFieldSupersamplingPerAxis": 8,
+            "summary": {
+              "count": 9,
+              "orderedSeparatedCount": 9,
+              "minimumLevel": 0.3579777032136917,
+              "maximumLevel": 0.5984806716442108,
+              "medianLevel": 0.5095009803771973,
+              "minimumSectorSeparation": 1.0,
+              "orderedMinimumLevel": 0.3579777032136917,
+              "orderedMaximumLevel": 0.5984806716442108,
+              "orderedMaxHighConnectionLevel": 0.5577089190483093,
+              "orderedMinLowDisconnectionLevel": 0.36134469509124756,
+              "oneThresholdBetweenAllOrderedConnectionLevels": false
+            },
+            "maskErrorAgainstSyntheticNative400": 0.00013125
+          }
+        ]
+      },
+      {
+        "id": "real-d5b0aa8d4d2465ee-body-1",
+        "controls": [
+          {
+            "kind": "native-400-hard-checker",
+            "nativeFieldSupersamplingPerAxis": null,
+            "summary": {
+              "count": 16,
+              "orderedSeparatedCount": 16,
+              "minimumLevel": 0.5,
+              "maximumLevel": 0.5,
+              "medianLevel": 0.5,
+              "minimumSectorSeparation": 1.0,
+              "orderedMinimumLevel": 0.5,
+              "orderedMaximumLevel": 0.5,
+              "orderedMaxHighConnectionLevel": 0.0,
+              "orderedMinLowDisconnectionLevel": 1.0,
+              "oneThresholdBetweenAllOrderedConnectionLevels": true
+            },
+            "maskErrorAgainstSyntheticNative400": 0.0
+          },
+          {
+            "kind": "projected-256-bilinear-400",
+            "nativeFieldSupersamplingPerAxis": 1,
+            "summary": {
+              "count": 16,
+              "orderedSeparatedCount": 16,
+              "minimumLevel": 0.08285098895430565,
+              "maximumLevel": 0.9193691611289978,
+              "medianLevel": 0.3067307583987713,
+              "minimumSectorSeparation": 1.0,
+              "orderedMinimumLevel": 0.08285098895430565,
+              "orderedMaximumLevel": 0.9193691611289978,
+              "orderedMaxHighConnectionLevel": 0.8908705115318298,
+              "orderedMinLowDisconnectionLevel": 0.107136070728302,
+              "oneThresholdBetweenAllOrderedConnectionLevels": false
+            },
+            "maskErrorAgainstSyntheticNative400": 0.0143625
+          },
+          {
+            "kind": "projected-256-bilinear-400",
+            "nativeFieldSupersamplingPerAxis": 4,
+            "summary": {
+              "count": 16,
+              "orderedSeparatedCount": 16,
+              "minimumLevel": 0.3298056274652481,
+              "maximumLevel": 0.6529296636581421,
+              "medianLevel": 0.5016341283917427,
+              "minimumSectorSeparation": 1.0,
+              "orderedMinimumLevel": 0.3298056274652481,
+              "orderedMaximumLevel": 0.6529296636581421,
+              "orderedMaxHighConnectionLevel": 0.6457846164703369,
+              "orderedMinLowDisconnectionLevel": 0.35349828004837036,
+              "oneThresholdBetweenAllOrderedConnectionLevels": false
+            },
+            "maskErrorAgainstSyntheticNative400": 0.000925
+          },
+          {
+            "kind": "projected-256-bilinear-400",
+            "nativeFieldSupersamplingPerAxis": 8,
+            "summary": {
+              "count": 16,
+              "orderedSeparatedCount": 16,
+              "minimumLevel": 0.34855540096759796,
+              "maximumLevel": 0.6696789860725403,
+              "medianLevel": 0.5075887739658356,
+              "minimumSectorSeparation": 1.0,
+              "orderedMinimumLevel": 0.34855540096759796,
+              "orderedMaximumLevel": 0.6696789860725403,
+              "orderedMaxHighConnectionLevel": 0.6565790772438049,
+              "orderedMinLowDisconnectionLevel": 0.36855435371398926,
+              "oneThresholdBetweenAllOrderedConnectionLevels": false
+            },
+            "maskErrorAgainstSyntheticNative400": 0.0008
+          }
+        ]
+      }
+    ]
+  },
+  "binaryHandoff": {
+    "schema": "material-probability-handoff-audit-1",
+    "status": "complete-preparation-only",
+    "scriptSha256": "eac66e22297e20dfc82f57f30da02dbbd440e494f3b0e8a7bcad3fa56a7f4a74",
+    "sourceHashes": {
+      "tmp/heart-learning/material-corrected-scenes-v1/replay.mjs": "4cfa896b8368fd3a9688c7832998aa29de3d564b07a239d6a526c9618f2c9ed3",
+      "tmp/heart-learning/material-corrected-scenes-v1/material-fields.mjs": "a4528b8668b7e44fed80f0ed96eaf8f4058cfec57525319cf92e66cb4fefc8f6",
+      "scripts/inverse/hard-photo-target.mjs": "5a8c1a1611e2d0b11fe14c2221c00795430bf10a2591b42adcdb9f770f81afaa",
+      "scripts/inverse/learning/replay-material-resolution.mjs": "ce99d2e30a9e28f809d2c85ebf0b9ce005f14a14506f84f96ce430c2ae5586cc",
+      "src/lib/paint/importImage.ts": "cafe9ded492a7ebd0d8ee51a07d547d07e5819e206b75219687a47b2b2dd996d",
+      "src/lib/inverse/engine.ts": "b689f7befede702a9e65589822b4ccf7266b978f519a9affd96e93924b7acc6c",
+      "static/inverse/core/input.js": "3c06f87592ca411d719df3d4b432cc969b760cf8e4f4012de0365c372ee0c82e",
+      "static/inverse/core/direct/fit.js": "50ae4fc936ee928084c373c92012ff315b8c40b467f8815919e7deab671668d4",
+      "static/inverse/core/direct/image-objective.js": "04b1b901f53dabbc5e0aa3264a692fce1bd9fdeb014406f05413c52f7f8c4e0f"
+    },
+    "cases": [
+      {
+        "id": "real-cf2d0fcff65d7386-body-1",
+        "resolution": 400,
+        "predictionSha256": "c6a6064fde9452de0182a976cce732ba8a207ce9f3aa2a1d386c2bba8740eb51",
+        "maskSha256": "3b990d8aef3b681f058d99e8bb4584bf2c371950ff7cbdb413308956a9946c3d",
+        "maskExactlyReproduced": true,
+        "fitterReceivesBinaryProbability": true,
+        "pixels": 160000,
+        "fractionalPredictionPixels": 160000,
+        "betweenOneAndNinetyNinePercentPixels": 160000,
+        "meanAbsoluteSoftToBinaryDifference": 0.13023290356911021
+      },
+      {
+        "id": "real-d5b0aa8d4d2465ee-body-1",
+        "resolution": 400,
+        "predictionSha256": "197c40899528d1bbdd8ea9ad865f417efa31de06f9612f5635ca270142916ce6",
+        "maskSha256": "e0ec3f16946c593492bf8570d4075e3da26970a3a6bf83fadce2a74d9eb73988",
+        "maskExactlyReproduced": true,
+        "fitterReceivesBinaryProbability": true,
+        "pixels": 160000,
+        "fractionalPredictionPixels": 160000,
+        "betweenOneAndNinetyNinePercentPixels": 155077,
+        "meanAbsoluteSoftToBinaryDifference": 0.16764345083680238
+      }
+    ],
+    "findings": [
+      "The corrected real-photo experiment thresholds the predicted field and prepares a binary mask. Saved probability PNGs do not enter its fitter.",
+      "This matches the current paint workflow: importing stores mask cells, and Find snit prepares that binary drawing. Native sourceRaster preserves original binary cells, not photographic mixture values.",
+      "The direct fitter can consume sourceImage.probability for its multi-scale objective. A future soft-field ablation can keep sourceImage.mask, crop, coverage and all final binary-mask/geometry/paper checks fixed.",
+      "This is an explicit mask-track design, not proof of a runtime defect. Passing learned soft values is untested, and cross-entropy probabilities are not automatically calibrated photographic coverage."
+    ],
+    "scope": "Two previously inspected development predictions. No model inference, fitter run, threshold tuning, runtime edit, new success claim or browser change."
+  },
+  "nextExperiment": "Compare fixed masks with their saved soft prediction fields on the same crop and with unchanged independent binary-mask, geometry, paper and source-feature checks. Include the ideal checker controls so an improvement is measured against known continuous geometry. This is unrun; learned probabilities are not established photographic coverage.",
+  "artifactsSha256": {
+    "tmp/heart-learning/material-topology-audit-v1/report.json": "3f57d00925d1adcff40d48120ea2a705ec1f46776dd5041908dbe44a8e514ad3",
+    "tmp/heart-learning/material-topology-audit-v1/resampling-control.json": "da385a022c3751db80193cdb4fd55a8440ff96f8ab7aa3c7984efd7ecc2381fe",
+    "tmp/heart-learning/material-topology-audit-v1/handoff.json": "908f399ae6dd01944a81c46557edda5c50db6270dc4c666584ec4d05991d034c",
+    "tmp/heart-learning/material-topology-audit-v1/audit.py": "9377e23b7e114c229896d5ebf700832d6b1a48b1f3b7e596a0b5e9b4c46558be",
+    "tmp/heart-learning/material-topology-audit-v1/resampling_control.py": "d185a83feef4cfbb7e4b804d337e488fc1a8a69b82f0033099f27ddee20b1466",
+    "tmp/heart-learning/material-topology-audit-v1/handoff.mjs": "eac66e22297e20dfc82f57f30da02dbbd440e494f3b0e8a7bcad3fa56a7f4a74"
+  },
+  "sourceSnapshots": [
+    {
+      "path": "tmp/heart-learning/material-topology-audit-v1/audit.py",
+      "sha256": "9377e23b7e114c229896d5ebf700832d6b1a48b1f3b7e596a0b5e9b4c46558be",
+      "text": "\"\"\"Saved-field diagnostic only: no inference, fitting, training or project edits.\"\"\"\nfrom pathlib import Path\nimport hashlib,json,heapq\nimport numpy as np\nfrom PIL import Image\nroot=Path.cwd();study=root/'tmp/heart-learning/material-corrected-scenes-v1';out=root/'tmp/heart-learning/material-topology-audit-v1'\nread=lambda p:json.loads(p.read_bytes())\nsha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()\nprobe=read(study/'probe/manifest.json');pipeline=read(study/'pipeline/report.json');training=read(study/'candidate/report.json')\nlabelrows={}\nfor audit in training['labelAudits']:\n directory=Path(audit['directory']);manifest=read(directory/'manifest.json')\n for row in manifest['instances']:labelrows[row['id']]=(directory,row,audit,manifest)\ndef homography(to,n=400):\n rows=[];values=[]\n for (x,y),(u,v) in zip([[0,0],[n,0],[n,n],[0,n]],to):\n  rows.extend([[x,y,1,0,0,0,-u*x,-u*y],[0,0,0,x,y,1,-v*x,-v*y]]);values.extend([u,v])\n return np.r_[np.linalg.solve(rows,values),1].reshape(3,3)\ndef project(h,pts):\n pts=np.asarray(pts);p=np.c_[pts.reshape(-1,2),np.ones(pts.size//2)]@h.T\n return (p[:,:2]/p[:,2:]).reshape(pts.shape)\ndef sample(a,points):\n x,y=points[...,0]-.5,points[...,1]-.5;w=a.shape[1];h=a.shape[0]\n x0=np.floor(x).astype(int);y0=np.floor(y).astype(int);dx=x-x0;dy=y-y0;result=np.zeros(x.shape)\n for j in [0,1]:\n  for i in [0,1]:\n   xi=x0+i;yi=y0+j;good=(xi>=0)&(xi<w)&(yi>=0)&(yi<h)\n   z=np.full(x.shape,.5);z[good]=a[yi[good],xi[good]]\n   result+=(dx if i else 1-dx)*(dy if j else 1-dy)*z\n return result.astype(np.float32)\ndef bottleneck(a,start,finish):\n # Maximum possible minimum pixel value on a four-neighbour path.\n n,m=a.shape;best=np.full(a.shape,-1.);best[start]=a[start];q=[(-float(a[start]),start)]\n while q:\n  neg,(y,x)=heapq.heappop(q);value=-neg\n  if value<best[y,x]:continue\n  if (y,x)==finish:return value\n  for yy,xx in [(y-1,x),(y+1,x),(y,x-1),(y,x+1)]:\n   if 0<=yy<n and 0<=xx<m:\n    new=min(value,float(a[yy,xx]))\n    if new>best[yy,xx]:best[yy,xx]=new;heapq.heappush(q,(-new,(yy,xx)))\n raise RuntimeError('Unconnected patch')\ndef levels(p,cx,cy,r=18,inset=4):\n x=int(round(cx));y=int(round(cy));a=p[y-r:y+r+1,x-r:x+r+1]\n corners=[(inset,inset),(inset,2*r-inset),(2*r-inset,inset),(2*r-inset,2*r-inset)]\n values=[float(a[q])for q in corners]\n if values[0]+values[3]>=values[1]+values[2]:high=[0,3];low=[1,2]\n else:high=[1,2];low=[0,3]\n highlevel=bottleneck(a,corners[high[0]],corners[high[1]])\n lowlevel=1-bottleneck(1-a,corners[low[0]],corners[low[1]])\n return {'cropCenter':[x,y],'radius':r,'portInset':inset,'sectorProbabilities':values,'sectorSeparation':min(values[i]for i in high)-max(values[i]for i in low),'highConnectionLevel':highlevel,'lowDisconnectionLevel':lowlevel,'connectionLevelsOrdered':highlevel<=lowlevel+1e-7,'levelMidpoint':.5*(highlevel+lowlevel)}\ndef summarize(js):\n ordered=[j for j in js if j['connectionLevelsOrdered'] and j['sectorSeparation']>0]\n s={'count':len(js),'orderedSeparatedCount':len(ordered),'minimumLevel':min(j['levelMidpoint']for j in js),'maximumLevel':max(j['levelMidpoint']for j in js),'medianLevel':float(np.median([j['levelMidpoint']for j in js])),'minimumSectorSeparation':min(j['sectorSeparation']for j in js)}\n if ordered:\n  s.update(orderedMinimumLevel=min(j['levelMidpoint']for j in ordered),orderedMaximumLevel=max(j['levelMidpoint']for j in ordered),orderedMaxHighConnectionLevel=max(j['highConnectionLevel']for j in ordered),orderedMinLowDisconnectionLevel=min(j['lowDisconnectionLevel']for j in ordered))\n  s['oneThresholdBetweenAllOrderedConnectionLevels']=s['orderedMaxHighConnectionLevel']<=s['orderedMinLowDisconnectionLevel']\n return s\ndef material_bce(a,lab):\n known=lab!=255;t=lab[known].astype(np.float64);z=np.clip(a[known].astype(np.float64),1e-7,1-1e-7)\n return [float(np.mean(-q*np.log(z)-(1-q)*np.log1p(-z))) for q in [t,1-t]]\nresults=[]\nfor identity,xs,ys in [('real-cf2d0fcff65d7386-body-1',[101,200,296],[99,193,289]),('real-d5b0aa8d4d2465ee-body-1',[84,162,240,320],[87,163,239,317])]:\n source=next(x for x in probe['rows']if x['id']==identity);run=next(x for x in pipeline['rows']if x['id']==identity and x['method']=='candidate-joint')\n file=study/'probe'/source['assets']['candidate']['material']['path'];assert sha(file)==source['assets']['candidate']['material']['sha256']\n field=np.fromfile(file,dtype='<f4').reshape(256,256);h=homography(run['selectedCrop']['quad'])\n yy,xx=np.mgrid[:400,:400];points=project(h,np.stack([xx+.5,yy+.5],axis=-1));w=source['window'];points=(points-[w[0],w[1]])*[256/(w[2]-w[0]),256/(w[3]-w[1])];p=sample(field,points)\n maskfile=study/'pipeline'/run['assets']['mask.png']['path'];mask=np.asarray(Image.open(maskfile).convert('L'))>=128\n assert not np.any((p>=.5)!=mask),'Probability replay differs from saved accepted mask'\n directory,labelrow,audit,manifest=labelrows[identity];labfile=directory/labelrow['assets']['materials']['path'];assert sha(labfile)==labelrow['assets']['materials']['sha256']\n lab=np.asarray(Image.open(labfile));known=lab!=255\n phase=int(np.mean((field[known]>=.5)!=lab[known])>np.mean((field[known]<.5)!=lab[known]))\n scores=[]\n for t in np.arange(.1,.901,.05):\n  q=(field>=t)^bool(phase);scores.append({'threshold':round(float(t),2),'partialKnownMaterialError':float(np.mean(q[known]!=lab[known]))})\n junctions=[levels(p,x,y)for y in ys for x in xs];changed=field.copy();patches=np.zeros(field.shape,dtype=bool)\n for j in junctions:\n  s=project(h,np.array([j['cropCenter']]))[0];t=labelrow['transform'];f=s*t['scale']+t['offset'];cx,cy=np.floor(f).astype(int);j['fieldCenter']=f.tolist();j['knownMaterialPixelsIn5x5']=int((lab[cy-2:cy+3,cx-2:cx+3]!=255).sum());patches[cy-2:cy+3,cx-2:cx+3]=True\n changed[patches]=1-changed[patches];before=material_bce(field,lab);after=material_bce(changed,lab);assert before==after\n sensitivity=[]\n for inset in [4,0]:\n  for radius in [14,18,22]:\n   for dx,dy in [(0,0),(-2,0),(2,0),(0,-2),(0,2)]:\n    js=[levels(p,x+dx,y+dy,radius,inset)for y in ys for x in xs]\n    sensitivity.append({'portMode':'boundary-corners' if inset==0 else 'interior-diagonals','radius':radius,'centerShift':[dx,dy],'summary':summarize(js)})\n summary=summarize(junctions);summary['known5x5Pixels']=sum(j['knownMaterialPixelsIn5x5']for j in junctions)\n annotations=read(root/audit['annotations']);annotation=next(x for x in annotations['instances']if x['id']==identity)\n results.append({'id':identity,'predictionSha256':sha(file),'savedMaskExactlyReproduced':True,'labelPhaseExchanged':bool(phase),'sourceWindow':w,'cropQuad':run['selectedCrop']['quad'],'targetProvenance':{'manifest':str((directory/'manifest.json').relative_to(root)),'manifestSha256':sha(directory/'manifest.json'),'annotationFile':audit['annotations'],'annotationSha256':audit['annotationsSha256'],'imageSha256':labelrow['imageSha256'],'materialLabels':str(labfile.relative_to(root)),'materialLabelsSha256':sha(labfile),'boundaryUncertaintyPixels':annotation['boundaryUncertaintyPixels'],'materialPixelCounts':labelrow['materialPixelCounts'],'scope':manifest['scope'],'transform':labelrow['transform']},'partialAnnotationThresholdDiagnostic':scores,'junctions':junctions,'summary':summary,'sensitivity':sensitivity,'maskedLossBlindSpotWitness':{'perturbation':'Complement only 5x5 field patches around approximate junction centers. No artifact enters inference or training. BCE computed in float64 from saved probabilities with numerical clipping; equality is exact because no known pixel changes. Body output remains unchanged.','changedPixels':int(patches.sum()),'changedKnownPixels':int((patches&known).sum()),'originalDirectExchangedBCE':before,'perturbedDirectExchangedBCE':after,'exactlyEqual':before==after}})\ncode=[('scripts/inverse/learning/real_materials_learning.py','28-45'),('scripts/inverse/datasets/real_materials.py','61-80'),('scripts/inverse/learning/material_pilot.py','15-34'),('scripts/inverse/learning/foreground.py','53-54,100-114'),('scripts/inverse/learning/model.py','40-50'),('tmp/heart-learning/material-corrected-scenes-v1/material-fields.mjs','27-35')]\nreport={'schema':'material-topology-readonly-audit-2','status':'complete-read-only-analysis','sourceStudy':str(study.relative_to(root)),'sourcePipelineReportSha256':sha(study/'pipeline/report.json'),'scriptSha256':sha(Path(__file__)),'scope':'Two already inspected checker photographs, fixed saved fields and accepted crops. No model/solver execution, threshold selection for deployment, new annotation or reconstruction success.','method':'Approximate visible grid junction centers chosen from saved RGB crop. Compute four-neighbor maximum-bottleneck paths for high and low diagonal probability pairs. Values are diagnostic connection levels, not assumed continuous saddles or guaranteed interval bounds. Interior ports can route around each other; report ordering explicitly and test cutoff intersections only for empirically ordered, separated cases. Sensitivity includes radius 14/18/22, center shifts up to two crop pixels, and alternating corner ports on the patch boundary.','limitations':['Approximate visible junction neighborhoods do not certify exact physical contact or hidden cutting geometry.','Connection levels include finite raster/field resolution and port choice; neither ordered cases nor a common cutoff would prove desired physical topology.','Sparse known-material pixel error excludes uncertain edges; it is not full-image accuracy.','This is a diagnostic on previously inspected development photos, not a new independent benchmark.','Known-mask blindness is a property of labels/loss. These photos are held out of the model producing their predictions, so this is not a claim that their own omitted pixels directly caused that particular model output.'],'codeReferences':[{'file':f,'lines':lines,'sha256':sha(root/f)}for f,lines in code],'findings':['Both checker masks exactly reproduce from untouched model probabilities before the template solver; tracing and MILP cannot be the initial cause of those gaps.','Separated opposite sector evidence remains at all original neighborhoods, while connection levels vary spatially. Center/radius/boundary-port sensitivity below assesses whether one global threshold could reconcile these particular diagnostic levels; it is not exact junction ground truth.','All 625 examined field-patch pixels are unknown in partial real-material labels. Complementing only these patches changes neither branch of the image-wide material BCE.','Blue/yellow labeled-interior error is zero for thresholds 0.55 through 0.85, so this score cannot choose visible contact geometry.','256px letterboxed probabilities are bilinearly sampled into a 400px overlap. Upsampling adds no new evidence; the shallow RGB path means encoder stride alone does not establish the cause.'],'falsificationAndNextControls':['If the separated boundary-port connection levels collapsed under small center/radius shifts, the apparent variation could come from approximate neighborhood placement. Sensitivity results are included.','Pass an exact clean checker through only the saved camera/resampling chain and compute the same levels. Comparable spread would implicate sampling before learned segmentation; no retraining is needed.','In a future controlled development-only ablation, add phase-invariant visible-junction/edge supervision while holding body/interior labels and family groups fixed. Compare contact geometry and unchanged interior error; no gain is claimed here.'],'cases':results}\ncontrol=out/'resampling-control.json'\nif control.exists():\n null=read(control)\n report['completedNullControl']={'file':str(control.relative_to(root)),'script':str((out/'resampling_control.py').relative_to(root)),'cases':[{'id':c['id'],'controls':[{'kind':v['kind'],'supersampling':v['nativeFieldSupersamplingPerAxis'],'minimumLevel':v['summary']['minimumLevel'],'maximumLevel':v['summary']['maximumLevel'],'maskErrorAgainstSyntheticNative400':v['maskErrorAgainstSyntheticNative400']}for v in c['controls']]}for c in null['cases']]}\n report['interpretationCorrection']='The completed ideal-checker null supersedes the earlier interpretation of no common cutoff as evidence of neural spatial miscalibration or lost true junction topology. Perfect continuous checker contacts also develop varying diagnostic connection levels under this raster chain; native binary400 yields degenerate [0,1] levels. Learned-field spread alone does not distinguish model calibration from sampling. The measured unknown-pixel loss blindness, interior-error plateau and pre-solver mask defects remain independent findings.'\n report['findings'].append('Completed ideal-checker resampling null also has no common diagnostic cutoff, despite only 0.013125% / 0.08% synthetic mask error with 8x8 coverage. Diagnostic level spread is not by itself a neural-calibration or physical-topology failure metric.')\n report['falsificationAndNextControls'][1]='Completed resampling control falsifies attribution of the no-common-cutoff diagnostic to neural miscalibration alone. A future matched native-probability contact-head or local geometric reconstruction comparison needs a continuous-geometry/contact-aware metric, not four-neighbor reachability alone.'\n(out/'report.json').write_text(json.dumps(report,indent=2)+'\\n')\nfor row in results:\n print(row['id'],json.dumps(row['summary']))\n print('BCE',row['maskedLossBlindSpotWitness'])\n for mode in ['interior-diagonals','boundary-corners']:\n  ss=[x['summary']for x in row['sensitivity']if x['portMode']==mode]\n  print(mode,{'runs':len(ss),'orderedCounts':[min(s['orderedSeparatedCount']for s in ss),max(s['orderedSeparatedCount']for s in ss)],'commonCutoffRuns':sum(s.get('oneThresholdBetweenAllOrderedConnectionLevels',False)for s in ss),'orderedRanges':[[round(s.get('orderedMinimumLevel',-1),3),round(s.get('orderedMaximumLevel',-1),3)]for s in ss]})\n"
+    },
+    {
+      "path": "tmp/heart-learning/material-topology-audit-v1/resampling_control.py",
+      "sha256": "d185a83feef4cfbb7e4b804d337e488fc1a8a69b82f0033099f27ddee20b1466",
+      "text": "\"\"\"Ideal checker control: no learned model, source image or training execution.\"\"\"\nfrom pathlib import Path\nimport contextlib,io,json,hashlib\nwith contextlib.redirect_stdout(io.StringIO()):\n import audit as a\nimport numpy as np\nroot=Path.cwd();out=root/'tmp/heart-learning/material-topology-audit-v1';base=json.loads((out/'report.json').read_text());cases=[]\nfor case in base['cases']:\n centers=[j['cropCenter']for j in case['junctions']];xs=sorted(set(c[0]for c in centers));ys=sorted(set(c[1]for c in centers));h=a.homography(case['cropQuad']);inverse=np.linalg.inv(h);w=np.asarray(case['sourceWindow']);yy,xx=np.mgrid[:256,:256];pix=np.stack([xx,yy],axis=-1);yc,xc=np.mgrid[:400,:400];crop=np.stack([xc+.5,yc+.5],axis=-1);points=a.project(h,crop);fieldpoints=(points-w[:2])*[256/(w[2]-w[0]),256/(w[3]-w[1])]\n expected=(np.searchsorted(xs,crop[...,0],side='right')+np.searchsorted(ys,crop[...,1],side='right'))%2\n native=[a.levels(expected.astype(np.float32),x,y,r=18,inset=0)for x,y in centers]\n controls=[{'kind':'native-400-hard-checker','nativeFieldSupersamplingPerAxis':None,'summary':a.summarize(native),'junctions':native,'maskErrorAgainstSyntheticNative400':0.0}]\n for ss in [1,4,8]:\n  field=np.zeros((256,256),dtype=float)\n  for sy in range(ss):\n   for sx in range(ss):\n    source=w[:2]+(pix+[(sx+.5)/ss,(sy+.5)/ss])*(w[2:]-w[:2])/256\n    rect=a.project(inverse,source)\n    v=(np.searchsorted(xs,rect[...,0],side='right')+np.searchsorted(ys,rect[...,1],side='right'))%2\n    field+=v/(ss*ss)\n  p=a.sample(field.astype(np.float32),fieldpoints)\n  js=[a.levels(p,x,y,r=18,inset=0)for x,y in centers]\n  controls.append({'kind':'projected-256-bilinear-400','nativeFieldSupersamplingPerAxis':ss,'summary':a.summarize(js),'junctions':js,'maskErrorAgainstSyntheticNative400':float(np.mean((p>=.5)!=expected))})\n cases.append({'id':case['id'],'controls':controls})\nr={'schema':'material-ideal-checker-resampling-control-1','scriptSha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'auditScriptSha256':hashlib.sha256((out/'audit.py').read_bytes()).hexdigest(),'method':'An ideal continuous piecewise-constant checker uses vertical/horizontal boundaries at the approximate photographed grid centers. The checker is projected to the saved 256x256 source window, using fixed 1x1/4x4/8x8 box coverage samples per field pixel; bilinear resampling returns to the saved 400x400 crop. Boundary-corner diagnostic ports use radius18. A direct native400 hard checker is also measured without any resize; integer grid boundaries fall between pixels. No colors, learned model, source photographs, training annotations or solver enter this synthetic control.','limitations':['This tests this particular raster chain, not the camera point-spread function, JPEG, colors, network architecture or actual nonstraight photographed grid.','Approximate photo centers become exact synthetic junctions only in this control. They are not asserted to be exact junction ground truth in the photos.','Coverage averaging is deterministic numerical quadrature, not the exact PIL resizing kernel or an asserted physical camera model.','Native hard checker gives a degenerate diagnostic: both same-color diagonal pairs lack a four-neighbor path (levels0,1), despite exact continuum corner contact. The raster reachability diagnostic is therefore not a topology ground-truth test.'],'cases':cases}\n(out/'resampling-control.json').write_text(json.dumps(r,indent=2)+'\\n')\nfor c in cases:\n print(c['id'])\n for v in c['controls']:print(v['kind'],v['nativeFieldSupersamplingPerAxis'],v['summary'],'synthetic mask error',v['maskErrorAgainstSyntheticNative400'])\n"
+    },
+    {
+      "path": "tmp/heart-learning/material-topology-audit-v1/handoff.mjs",
+      "sha256": "eac66e22297e20dfc82f57f30da02dbbd440e494f3b0e8a7bcad3fa56a7f4a74",
+      "text": "/** Replay only preparation of saved predictions; no model or fitting. */\nimport fs from 'node:fs/promises';\nimport assert from 'node:assert/strict';\nimport {createHash} from 'node:crypto';\nimport {prepare} from '../../../static/inverse/core/engine.js';\nimport {materialMask} from '../material-corrected-scenes-v1/material-fields.mjs';\n\nconst root='tmp/heart-learning/material-corrected-scenes-v1';\nconst out='tmp/heart-learning/material-topology-audit-v1';\nconst read=async p=>JSON.parse(await fs.readFile(p,'utf8'));\nconst hash=x=>createHash('sha256').update(x).digest('hex');\nconst probe=await read(root+'/probe/manifest.json');\nconst pipeline=await read(root+'/pipeline/report.json');\nconst identities=['real-cf2d0fcff65d7386-body-1','real-d5b0aa8d4d2465ee-body-1'];\nconst cases=[];\nfor(const id of identities){\n  const source=probe.rows.find(x=>x.id===id);\n  const row=pipeline.rows.find(x=>x.id===id&&x.method==='candidate-joint');\n  const asset=source.assets.candidate.material;\n  const bytes=await fs.readFile(root+'/probe/'+asset.path);\n  assert.equal(hash(bytes),asset.sha256);\n  const field=Float32Array.from({length:probe.resolution**2},(_,i)=>bytes.readFloatLE(4*i));\n  const predicted=materialMask(field,probe.resolution,source.window,row.selectedCrop.quad,row.resolution);\n  assert.equal(hash(predicted.mask),row.targetMaskSha256);\n  const target=prepare({type:'mask',resolution:row.resolution,mask:predicted.mask.slice()},\n    {...pipeline.configuration,invert:false,removeSpecks:0,fillHoles:0}).target;\n  assert.deepEqual(target.sourceImage.mask,predicted.mask);\n  assert.deepEqual(target.sourceImage.probability,Float32Array.from(predicted.mask));\n  let fractional=0,uncertain=0,absoluteDifference=0;\n  for(let i=0;i<predicted.mask.length;i++){\n    const p=predicted.probability[i];\n    fractional+=Number(p>0&&p<1);\n    uncertain+=Number(p>.01&&p<.99);\n    absoluteDifference+=Math.abs(p-predicted.mask[i]);\n  }\n  cases.push({id,resolution:row.resolution,predictionSha256:hash(bytes),maskSha256:hash(predicted.mask),\n    maskExactlyReproduced:true,fitterReceivesBinaryProbability:true,pixels:predicted.mask.length,\n    fractionalPredictionPixels:fractional,betweenOneAndNinetyNinePercentPixels:uncertain,\n    meanAbsoluteSoftToBinaryDifference:absoluteDifference/predicted.mask.length});\n}\nconst sources=['tmp/heart-learning/material-corrected-scenes-v1/replay.mjs',\n  'tmp/heart-learning/material-corrected-scenes-v1/material-fields.mjs',\n  'scripts/inverse/hard-photo-target.mjs','scripts/inverse/learning/replay-material-resolution.mjs',\n  'src/lib/paint/importImage.ts','src/lib/inverse/engine.ts','static/inverse/core/input.js',\n  'static/inverse/core/direct/fit.js','static/inverse/core/direct/image-objective.js'];\nconst sourceHashes={};for(const p of sources)sourceHashes[p]=hash(await fs.readFile(p));\nconst report={schema:'material-probability-handoff-audit-1',status:'complete-preparation-only',\n  scriptSha256:hash(await fs.readFile(new URL(import.meta.url))),sourceHashes,cases,\n  findings:[\n    'The corrected real-photo experiment thresholds the predicted field and prepares a binary mask. Saved probability PNGs do not enter its fitter.',\n    'This matches the current paint workflow: importing stores mask cells, and Find snit prepares that binary drawing. Native sourceRaster preserves original binary cells, not photographic mixture values.',\n    'The direct fitter can consume sourceImage.probability for its multi-scale objective. A future soft-field ablation can keep sourceImage.mask, crop, coverage and all final binary-mask/geometry/paper checks fixed.',\n    'This is an explicit mask-track design, not proof of a runtime defect. Passing learned soft values is untested, and cross-entropy probabilities are not automatically calibrated photographic coverage.'\n  ],scope:'Two previously inspected development predictions. No model inference, fitter run, threshold tuning, runtime edit, new success claim or browser change.'};\nawait fs.writeFile(out+'/handoff.json',JSON.stringify(report,null,2)+'\\n');\nconsole.log(JSON.stringify(cases,null,2));\n"
+    }
+  ]
+}

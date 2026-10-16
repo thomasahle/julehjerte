@@ -33,6 +33,25 @@ The inventory, with material annotations updated on 2026-10-16, contains:
 
 ## Current results and limits
 
+A [saved-field junction diagnostic](material-junction-diagnostic.json) separates
+three possible causes of the learned checkers' gaps. Both 400px masks reproduce
+exactly before fitting from the saved 256px predictions; the experiment then
+passes only binary cells to the fitter. All **625 pixels** in the 25 inspected
+5×5 junction patches are unknown in the partial material labels, and changing
+those predictions leaves both phases of the masked training loss unchanged.
+The blue/yellow photograph's annotated-interior error is also zero throughout
+thresholds 0.55–0.85. Those labels and scores cannot resolve contact quality.
+
+An ideal continuous-checker control **rejects a stronger calibration claim**:
+the same projection and resampling produce spatially varying connection levels
+without any learned model. With 8×8 coverage quadrature, synthetic mask errors
+are only **0.0131% and 0.0800%**. Even the native binary checker has no
+four-neighbour path between diagonally touching cells, so that raster diagnostic
+is not a test of true contact geometry. The audit preserves this negative
+control rather than attributing every gap to the network. Soft-field fitting
+and explicit contact supervision remain untested alternatives; no runtime model,
+new reconstruction success, or exact photographed junction label is claimed.
+
 A [bounded gradient index](gradient-row-bins-runtime.json) is now integrated
 locally after **27 focused tests**. Sparse designs retain 128 row buckets;
 larger graphs use eight per cubic, capped at 1,024. Across 75 saved/analytic
