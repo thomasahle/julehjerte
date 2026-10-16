@@ -153,6 +153,7 @@ export function recoverShared(candidate,prob,n,cfg,{deadline=Infinity,input={},r
   // can trade a few edge pixels while their combined edit still improves the
   // incoming fit; requiring strict descent after each would block that pair.
   const sourceErrorLimit=sourceError;
+  let selected=best,selectedSourceError=sourceError,selectedAccepted=0;
   for(let round=0;round<rounds&&performance.now()<deadline;round++){
     const paths=best.graph.nested(best.points),before=best.graph.solution(best.points,best.phase,input),ease=easeMetrics(before,cfg);let changed=false;
     const order=identicalSheets?templatePathOrder(paths).map(f=>f.map(p=>p.index)):null;
@@ -190,10 +191,17 @@ export function recoverShared(candidate,prob,n,cfg,{deadline=Infinity,input={},r
         const check=validate(solution,cfg,{checkImage:false});if(!check.passed){rejected.push({reason:'geometry',issues:check.issues.slice(0,3),...c});continue;}
         if(cfg.requireMaterialCore&&!materialAudit(solution,cfg).passed){rejected.push({reason:'paper',...c});continue;}
         accepted.push({...c,errorBefore:best.error,errorAfter:error,bigErrorBefore:bigError,bigErrorAfter:highError,...(source?{sourceErrorBefore:sourceError,sourceErrorAfter:nextSourceError}:{})});
-        best={...best,graph,points:points.slice(),error,geometryPassed:true,validation:check};bigError=highError;sourceWoven=woven;sourceError=nextSourceError;changed=true;break proposals;
+        best={...best,graph,points:points.slice(),error,geometryPassed:true,validation:check};bigError=highError;sourceWoven=woven;sourceError=nextSourceError;
+        // Keep exploring complementary edits, but do not return a later
+        // checkpoint that fits the original artwork worse. Equal source
+        // errors retain the later exact alignments. Without a source image,
+        // the fitting/high-resolution gates already enforce descent.
+        if(!source||sourceError<=selectedSourceError){selected=best;selectedSourceError=sourceError;selectedAccepted=accepted.length;}
+        changed=true;break proposals;
       }catch(e){rejected.push({reason:e.message,...c});}
     }if(!changed)break;
-  }return{...best,sharing:{accepted,rejected}};
+  }return{...selected,sharing:{accepted:accepted.slice(0,selectedAccepted),rejected,
+    ...(selectedAccepted<accepted.length?{unselected:accepted.slice(selectedAccepted),selection:{reason:'best_source_checkpoint',selectedError:selectedSourceError,lastError:sourceError}}:{})}};
 }
 
 /** Finish the actual selected solution, after polishing and matching-sheet

@@ -74,7 +74,20 @@ unlimited extra pass on a saved export can remove more seams, but that does not
 establish a faster or better complete solver. A separate floral-checker replay
 reproduces a selection defect: later accepted alignment can discard the best
 source-image checkpoint even though earlier temporary regressions enable later
-gains. This is the next targeted correction.
+gains. The checkpoint-selection correction is described below.
+
+[Shared-cut checkpoint selection](sharing-best-checkpoint.json) now retains the
+lowest original-source error while still exploring complementary alignments.
+Its regression fixture requires temporary score increases before later gains,
+and keeps the later checkpoint when scores tie. All **112 focused tests** pass.
+In 56 paired saved-geometry replays, **52 outputs are byte-identical** and four
+retain a lower production-source score. All 112 geometries/paper audits and 56
+feature-change comparisons pass. Independent rendering improves two changed
+cases but worsens the already failing bauble by two pixels and the historical
+floral checker by one; those small sampling disagreements remain recorded.
+All four changed pairs were inspected and retain their broader visual defects.
+Full fresh-fit, browser and repository QA is pending; this is not a new photo
+benchmark success or a demonstrated speed improvement.
 
 The [completed paired corpus and editable audits](refinement-checkpoint-corpus-results.json)
 retain **53/55 passing masks** in both arms, including all 22 Hunodan and four
