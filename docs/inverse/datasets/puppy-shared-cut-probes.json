@@ -1,0 +1,212 @@
+{
+  "schema": "puppy-shared-cut-probes-1",
+  "status": "complete-no-runtime-change",
+  "method": "Saved-geometry diagnostics plus one fresh native-mask fit to capture finalization stages. No crop, classification, source mask, topology, legality or error threshold changes. Unlimited-time probes are explicitly separate from the three paired two-second sharing-budget replays.",
+  "findings": [
+    "Adding hidden-control short-return projection to the saved browser export repairs one local geometry proposal, but a separate cutting-quality gate still rejects it. All three final accepted alignments and geometry are unchanged from the baseline additional pass.",
+    "An additional unlimited-time pass on the saved browser export accepts a 17.21 mm alignment and two shorter runs. This demonstrates remaining opportunities after cleanup, not a complete fresh-solve improvement or a faster schedule.",
+    "A fresh fit captured before/after sharing, degree reduction and shared-run simplification. Three paired replays reserve one second of the existing two-second sharing allowance for after degree reduction. Every baseline and reserved result has exactly the same 1.2511505588% independent source-mask disagreement; the reserved pass accepts no additional alignments. All six pass feature, geometry and paper checks. Reserving time alone does not fix the fresh case.",
+    "For one 28.60 mm proposal, midpoint blending lowers the minimum bend radius from 0.4424873 mm to 0.3542412 mm; choosing the first path lowers it to 0.2106879 mm. The defect is on a visible join. The unchanged cutting-quality gate correctly rejects both.",
+    "Adding quarter-position blends to the existing midpoint/endpoint proposals changes none of the accepted sequences on the three frozen stages. Alignment time increases from 5.812/3.191/2.801 s to 8.108/4.998/4.501 s. Do not integrate this broader search.",
+    "A separate floral-checker replay reproduces a previously recorded selection defect: nine valid alignment steps reach 1.920625% source-mask disagreement at step seven/eight, then return 1.92125% at step nine. Intermediate steps four/five also worsen the score before later gains. Retaining the best source checkpoint while continuing search is the next targeted correction."
+  ],
+  "visualReview": "The fresh final puppy and additionally aligned saved-browser export were inspected at 780 pixels. Thin seams disappear from the central silhouette in the additional pass; the left frame/neck and surrounding corner shapes remain distorted. These outputs come from different fitting histories and are not a paired visual proof of a fresh-runtime improvement.",
+  "runtimeDecision": "Do not integrate the hidden-repair, reserved-schedule or quarter-blend proposals. Preserve all rejection gates. Investigate best-checkpoint selection separately.",
+  "pairedScheduleResults": [
+    {
+      "variant": "baseline",
+      "repeat": 0,
+      "seconds": 2.589175208,
+      "sharedSeconds": 2.013018042,
+      "initialAlignments": 3,
+      "afterPrimitivesAlignments": 0,
+      "independentError": {
+        "mismatchPixels": 1903,
+        "observedPixels": 152100,
+        "observedFraction": 1,
+        "mismatchFraction": 0.012511505588428666
+      },
+      "geometrySha256": "468011cacbab55ff7e913613f18f385625ef9ea9249344f3c3708cf863e59ee0"
+    },
+    {
+      "variant": "reserved",
+      "repeat": 0,
+      "seconds": 2.643251833,
+      "sharedSeconds": 1.193963458,
+      "initialAlignments": 2,
+      "afterPrimitivesAlignments": 0,
+      "independentError": {
+        "mismatchPixels": 1903,
+        "observedPixels": 152100,
+        "observedFraction": 1,
+        "mismatchFraction": 0.012511505588428666
+      },
+      "geometrySha256": "7e33119103873d39ffe128071b4086cc842019874c22083137c8cbe854079b32"
+    },
+    {
+      "variant": "baseline",
+      "repeat": 1,
+      "seconds": 2.551038458,
+      "sharedSeconds": 2.0134794580000004,
+      "initialAlignments": 3,
+      "afterPrimitivesAlignments": 0,
+      "independentError": {
+        "mismatchPixels": 1903,
+        "observedPixels": 152100,
+        "observedFraction": 1,
+        "mismatchFraction": 0.012511505588428666
+      },
+      "geometrySha256": "468011cacbab55ff7e913613f18f385625ef9ea9249344f3c3708cf863e59ee0"
+    },
+    {
+      "variant": "reserved",
+      "repeat": 1,
+      "seconds": 2.638008708,
+      "sharedSeconds": 1.170309042,
+      "initialAlignments": 2,
+      "afterPrimitivesAlignments": 0,
+      "independentError": {
+        "mismatchPixels": 1903,
+        "observedPixels": 152100,
+        "observedFraction": 1,
+        "mismatchFraction": 0.012511505588428666
+      },
+      "geometrySha256": "7e33119103873d39ffe128071b4086cc842019874c22083137c8cbe854079b32"
+    },
+    {
+      "variant": "baseline",
+      "repeat": 2,
+      "seconds": 2.540553708,
+      "sharedSeconds": 2.010383875,
+      "initialAlignments": 3,
+      "afterPrimitivesAlignments": 0,
+      "independentError": {
+        "mismatchPixels": 1903,
+        "observedPixels": 152100,
+        "observedFraction": 1,
+        "mismatchFraction": 0.012511505588428666
+      },
+      "geometrySha256": "468011cacbab55ff7e913613f18f385625ef9ea9249344f3c3708cf863e59ee0"
+    },
+    {
+      "variant": "reserved",
+      "repeat": 2,
+      "seconds": 2.65962875,
+      "sharedSeconds": 1.1945606249999998,
+      "initialAlignments": 2,
+      "afterPrimitivesAlignments": 0,
+      "independentError": {
+        "mismatchPixels": 1903,
+        "observedPixels": 152100,
+        "observedFraction": 1,
+        "mismatchFraction": 0.012511505588428666
+      },
+      "geometrySha256": "7e33119103873d39ffe128071b4086cc842019874c22083137c8cbe854079b32"
+    }
+  ],
+  "blendResults": [
+    {
+      "id": "before-sharing",
+      "variant": "baseline",
+      "seconds": 5.811582415999999,
+      "independentError": {
+        "mismatchPixels": 1905,
+        "observedPixels": 152100,
+        "observedFraction": 1,
+        "mismatchFraction": 0.01252465483234714
+      },
+      "accepted": 6
+    },
+    {
+      "id": "before-sharing",
+      "variant": "quarter",
+      "seconds": 8.107972542,
+      "independentError": {
+        "mismatchPixels": 1905,
+        "observedPixels": 152100,
+        "observedFraction": 1,
+        "mismatchFraction": 0.01252465483234714
+      },
+      "accepted": 6
+    },
+    {
+      "id": "after-primitives",
+      "variant": "baseline",
+      "seconds": 3.191319125,
+      "independentError": {
+        "mismatchPixels": 1898,
+        "observedPixels": 152100,
+        "observedFraction": 1,
+        "mismatchFraction": 0.012478632478632479
+      },
+      "accepted": 3
+    },
+    {
+      "id": "after-primitives",
+      "variant": "quarter",
+      "seconds": 4.998469959000002,
+      "independentError": {
+        "mismatchPixels": 1898,
+        "observedPixels": 152100,
+        "observedFraction": 1,
+        "mismatchFraction": 0.012478632478632479
+      },
+      "accepted": 3
+    },
+    {
+      "id": "browser-final",
+      "variant": "baseline",
+      "seconds": 2.8013028340000017,
+      "independentError": {
+        "mismatchPixels": 1730,
+        "observedPixels": 152100,
+        "observedFraction": 1,
+        "mismatchFraction": 0.011374095989480604
+      },
+      "accepted": 3
+    },
+    {
+      "id": "browser-final",
+      "variant": "quarter",
+      "seconds": 4.5014375,
+      "independentError": {
+        "mismatchPixels": 1730,
+        "observedPixels": 152100,
+        "observedFraction": 1,
+        "mismatchFraction": 0.011374095989480604
+      },
+      "accepted": 3
+    }
+  ],
+  "captureState": {
+    "status": "complete",
+    "seconds": 21.02348,
+    "sourceFilesVerified": 529,
+    "stages": [
+      "before-sharing",
+      "after-sharing",
+      "after-primitives",
+      "after-simplification"
+    ]
+  },
+  "replayState": {
+    "status": "complete",
+    "seconds": 18.474448125,
+    "sourceFilesVerified": 531
+  },
+  "artifactsSha256": {
+    "tmp/heart-learning/shared-phase-capture-v1/capture.mjs": "e137ff4f746dc75cfc7ba2959964c8b941fc0a0b4de2c4285f7bf205fa2051f6",
+    "tmp/heart-learning/shared-phase-capture-v1/replay.mjs": "b9d6ab6e0002cf1932ea3b1165c0c287a4a1b9d131dafea4e74d805fcd048869",
+    "tmp/heart-learning/shared-phase-capture-v1/state.json": "26aca1b8132c1d546f53d408d24cf77c842736ebcdd742d9ee57eaff389f1fe5",
+    "tmp/heart-learning/shared-phase-capture-v1/replay-state.json": "ab6b31acaafe42128cb0c67c39c0c74d89ba3efd532880a70092a16f3cf56f52",
+    "tmp/heart-learning/shared-phase-capture-v1/replay-sources.json": "065951445d9aaef293a4e7e4ebbcd64ff84f04b6c280647457f69ad9b1ac56b8",
+    "tmp/heart-learning/shared-phase-capture-v1/quality.mjs": "f3e561a3325566cd3d163bf75354bced8175b438581be6c7cc429bc805d7277b",
+    "tmp/heart-learning/shared-phase-capture-v1/quality-results.json": "0436540b0768e78be8dfea8dd138e0db8eb2430128e7ca1642d0e6591faee14b",
+    "tmp/heart-learning/shared-phase-capture-v1/blend-replay.mjs": "410c6c1f74d802e57ca3be87ddf1bd908197807608eab3dbde488d0d7b3533a7",
+    "tmp/heart-learning/shared-phase-capture-v1/blend-results.json": "407e9015e80cc8c6bd0dc4474146f6e3e9ca0c7bb0baa1e991144405924faabc",
+    "tmp/heart-learning/shared-return-probe-v1/run.mjs": "5338f7ba9e7780f7e8ca389ec3ed928271ac0037645c79543df76ec7ac3325df",
+    "tmp/heart-learning/shared-return-probe-v1/results.json": "482e8e5ad1d9b8e1077182cb219d2ec4f58f1f288aae7d0a927107323a877094",
+    "tmp/heart-learning/shared-best-checkpoint-v1/probe.mjs": "ccae99f4566685560d7582d5c71909028cdf13fa33cdea6af994f01531f2b699",
+    "tmp/heart-learning/shared-best-checkpoint-v1/baseline.json": "a40d720717ac0681516561ed7a4110f80e6c5eecc945ee870b1cf1045bdfbb13"
+  }
+}

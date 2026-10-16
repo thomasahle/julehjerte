@@ -64,6 +64,18 @@ cuts. Its visible thin seams and frame defects remain. Check, lint and build
 pass. Full release verification is now complete: **874 application tests plus one
 skip and 1,007 inverse tests pass**, with all **1,018 pinned sources unchanged**.
 
+A [controlled puppy alignment study](puppy-shared-cut-probes.json) rejects
+three proposed fixes: hidden-return repair adds no accepted alignment, reserving
+half the sharing allowance for after degree reduction gives no image gain in
+three paired replays, and quarter-position blend proposals add time without
+changing any result on three saved stages. One remaining long alignment would
+worsen a visible join's bend radius; the quality rejection is warranted. An
+unlimited extra pass on a saved export can remove more seams, but that does not
+establish a faster or better complete solver. A separate floral-checker replay
+reproduces a selection defect: later accepted alignment can discard the best
+source-image checkpoint even though earlier temporary regressions enable later
+gains. This is the next targeted correction.
+
 The [completed paired corpus and editable audits](refinement-checkpoint-corpus-results.json)
 retain **53/55 passing masks** in both arms, including all 22 Hunodan and four
 hard-photo variants. All 55 slit-count pairs are unchanged; 41 cutting geometries
