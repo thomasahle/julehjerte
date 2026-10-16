@@ -7,6 +7,7 @@ import {Cubic} from '../bezier.js';
 import {distanceTransform} from '../material.js';
 import {CurveGraph} from './curves.js';
 import {resizeObjective} from './image-objective.js';
+import {observedFeatureImportance} from './feature-objective.js';
 import {smallInteriorFeatures} from '../feature-shapes.js';
 export {smallInteriorFeatures} from '../feature-shapes.js';
 
@@ -20,7 +21,7 @@ function featureObjective(source,features,selected,cfg,n){
   for(const feature of selected)for(const pixel of feature.pixels)centres[pixel]=1;
   const haloMm=cfg.minWidth/2,haloPixels=haloMm*source.resolution/cfg.width,distance=distanceTransform(centres,source.resolution,source.resolution);
   for(let i=0;i<weights.length;i++)if(distance[i]<=haloPixels**2)weights[i]=1;
-  return resizeObjective(source.probability||Float32Array.from(source.mask),source.resolution,n,weights);
+  return resizeObjective(source.probability||Float32Array.from(source.mask),source.resolution,n,observedFeatureImportance(source,weights));
 }
 
 /** After reassigning a small opening to valid cutting paths, polish its shape

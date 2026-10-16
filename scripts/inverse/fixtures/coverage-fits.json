@@ -1,0 +1,127 @@
+{
+  "description": "Unedited frozen classified photographic masks, not ground-truth cutting paths. Copied from the existing native corpus; independent source references and byte hashes retained. Tests initialize fresh grids. The bauble intentionally retains its incomplete crop and known fidelity failure.",
+  "cases": [
+    {
+      "id": "photo-bird",
+      "resolution": 400,
+      "settings": {
+        "algorithm": "auto",
+        "polygonal": false,
+        "identicalSheets": false,
+        "resolution": 400,
+        "fitTolerance": 0.5,
+        "maxSpan": 15,
+        "smoothRadius": 0,
+        "snapRadius": 1.5,
+        "borderRadius": 3,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "sharpPenalty": 50,
+        "acutePenalty": 30,
+        "turnPenalty": 3,
+        "maxTurn": 175,
+        "localNeighborhoodFactor": 8,
+        "roundHidden": false,
+        "timeLimit": 10,
+        "trials": 0
+      },
+      "sourceRecord": "tmp/heart-learning/primitive-boundary-groups-v1/qa/photos/results.json",
+      "mask": {
+        "sha256": "7137173fa17abe3f8f7788ddb7d321fe48258a4a3f4c2f8b3171b9ff9f15a16f",
+        "deflate": "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"
+      }
+    },
+    {
+      "id": "hunodan-hjfig-05",
+      "resolution": 337,
+      "settings": {
+        "algorithm": "auto",
+        "polygonal": false,
+        "identicalSheets": false,
+        "resolution": 400,
+        "fitTolerance": 0.5,
+        "maxSpan": 15,
+        "smoothRadius": 0,
+        "snapRadius": 1.5,
+        "borderRadius": 3,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "sharpPenalty": 50,
+        "acutePenalty": 30,
+        "turnPenalty": 3,
+        "maxTurn": 175,
+        "localNeighborhoodFactor": 8,
+        "roundHidden": false,
+        "width": 100,
+        "minWidth": 2,
+        "cutError": 0.25,
+        "timeLimit": 180,
+        "preferMatchingSheets": true,
+        "matchingErrorAllowance": 0.01,
+        "progressGeometry": true,
+        "earlyStop": false,
+        "removeSpecks": 0,
+        "fillHoles": 0,
+        "minRadius": 0.8,
+        "kerf": 0,
+        "printShrinkPercent": 0.2,
+        "materialResolution": 360,
+        "trials": 12,
+        "requireMaterialCore": true,
+        "paperColors": [
+          "#b91313",
+          "#ffffff"
+        ],
+        "symmetry": {}
+      },
+      "sourceRecord": "tmp/heart-learning/native-import-sampling-v1/qa/browser-hunodan/results.json",
+      "mask": {
+        "sha256": "21b2a95a5c08ee3be0cdf509e2fc23116e4dfcede03fd3d49cce724906e8ae9e",
+        "deflate": "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"
+      }
+    },
+    {
+      "id": "photo-bauble",
+      "resolution": 400,
+      "settings": {
+        "algorithm": "auto",
+        "polygonal": false,
+        "identicalSheets": false,
+        "resolution": 400,
+        "fitTolerance": 0.5,
+        "maxSpan": 15,
+        "smoothRadius": 0,
+        "snapRadius": 1.5,
+        "borderRadius": 3,
+        "gridPortals": false,
+        "neighbors": 16,
+        "connectorVariants": 2,
+        "junctionBalancePenalty": 0,
+        "gridPreference": 0,
+        "sharpPenalty": 50,
+        "acutePenalty": 30,
+        "turnPenalty": 3,
+        "maxTurn": 175,
+        "localNeighborhoodFactor": 8,
+        "roundHidden": false,
+        "timeLimit": 10,
+        "trials": 0
+      },
+      "sourceRecord": "tmp/heart-learning/primitive-boundary-groups-v1/qa/photos/results.json",
+      "mask": {
+        "sha256": "00b9ea58bb82c87c687e9ea7595f89ec9baadf597ca2663f9845f58093876ce2",
+        "deflate": "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"
+      },
+      "validMask": {
+        "sha256": "20a1ac9fc487002dfba870e2613857cbc550363e6f46f5cde3a9645607d36dca",
+        "deflate": "eNrt0TEBADAQhLB7/6ZrogNDIgHuAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADgu0mQ2uFH6oYfsR1+pG74EdvhR+qGH7EdfqRu+NG64Udshx+pG37EdviRuuFHbIcfqRt+xHb4kbrhR+uGH7EdfqRu+BHb4Ufqhh+xHX6kbvgR2+FH6oYfrRt+xHb4kbrhR2yHH6kbfsR2+JG64Udshx+pG37EdviRuuFH64YfsR1+pG74EdvhR+qGH7EdfqRu+BHb4Ufqhh+tG37EdviRuuFHbIcfqRt+xHb4kbrhR2yHH6kbfsR2+JG64Ufrhh+xHX6kbvgR2+FH6oYfsR1+pG74EdvhR+qGH60bfsR2+JG64Udshx+pG37EdviRuuFHbIcfqRt+tG5sDylQXzQ="
+      }
+    }
+  ]
+}

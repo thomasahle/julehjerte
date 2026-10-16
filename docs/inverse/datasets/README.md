@@ -136,8 +136,17 @@ The four partial-bauble comparisons expose a promotion blocker: observed error
 improves from **4.34–4.38% to 2.00–2.15%**, but the candidate fails self-clearance
 and paper checks. Its initially illegal feature grid consumes the budget before
 an ordinary legal fallback is retained. Both arms remain failed cases; better
-image resemblance is not a legality improvement. A bounded ordinary-fallback
-experiment is underway. No coverage candidate is integrated.
+image resemblance is not a legality improvement. The [subsequent selection
+comparison and integration](coverage-recovery-integration.json) resolve that
+regression: an existing geometry-valid ordinary finalist now receives the first
+refinement window ahead of the illegal feature seed, which remains queued.
+All fourteen comparison outputs pass geometry and paper checks; the two bauble
+repeats still fail fidelity at **4.38–4.40%**, near the old baseline. A shorter
+fallback pass was rejected because it lost more image accuracy. The puppy also
+spends more time on the ordinary candidate (13.5–14.0 s in this targeted replay),
+so this is not a uniform speed improvement. All 55 isolated focused tests and
+eight new tests on the integrated sources pass. The coverage changes are
+committed locally; full release QA is pending under `coverage-release-v1`.
 
 The [completed paired corpus and editable audits](refinement-checkpoint-corpus-results.json)
 retain **53/55 passing masks** in both arms, including all 22 Hunodan and four

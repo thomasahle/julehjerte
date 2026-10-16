@@ -151,10 +151,18 @@ export function gridPaths(model,width=100,floor=.008){
     return xs.map((x,k)=>(f?[ys[k],x]:[x,ys[k]]).map(v=>v*width));
   })));
 }
-export function fitGrid(prob,size,counts,phase,{steps=280,k=16,initial=null,seed=0,floor=.008,clearance=0,resolution=96,optimizationTarget=null,weights=null,deadline=Infinity,onProgress=()=>{},preferCheckpoint=null}={}){
+export function fitGrid(prob,size,counts,phase,{steps=280,k=16,initial=null,seed=0,floor=.008,clearance=0,resolution=96,optimizationTarget=null,optimizationObjective=null,weights=null,deadline=Infinity,onProgress=()=>{},preferCheckpoint=null}={}){
+  if(optimizationTarget&&optimizationObjective)throw new Error('Supply only one grid optimization objective.');
+  if(optimizationObjective){
+    if(optimizationObjective.probability?.length!==resolution*resolution)throw new Error('Optimization objective must match the grid resolution.');
+    if(imageWeights(weights,prob.length)&&optimizationObjective.weights==null)throw new Error('Weighted grid objectives must include their resampled weights.');
+    imageWeights(optimizationObjective.weights,resolution*resolution);
+  }
   if(optimizationTarget&&optimizationTarget.length!==resolution*resolution)throw new Error('Optimization target must match the grid resolution.');
   if(optimizationTarget&&imageWeights(weights,prob.length))throw new Error('Weighted grids must resample their target and weights together.');
-  const resized=weights?resizeObjective(prob,size,resolution,weights):null,target=optimizationTarget||resized?.probability||resize(prob,size,resolution),model=gridModel(counts,k,seed,initial),adam=new Adam(model.z.length,initial ? .015 : .04);
+  // A jointly resampled native objective avoids changing the image pyramid
+  // merely because a small portion of the source is unobserved.
+  const resized=optimizationObjective||(weights?resizeObjective(prob,size,resolution,weights):null),target=optimizationTarget||resized?.probability||resize(prob,size,resolution),model=gridModel(counts,k,seed,initial),adam=new Adam(model.z.length,initial ? .015 : .04);
   // Keep a feature-retaining point while following the original gradient.
   // If none exists, return the ordinary best fallback; this is not a geometry
   // or source-fidelity certificate. Callers still validate the final curves.

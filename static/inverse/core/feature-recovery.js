@@ -9,6 +9,7 @@ import {auditFeatureFidelity} from './feature-shapes.js';
 import {visibleReturnEvidence,rejectedRoutingQuality,repairRejectedRouting} from './direct/rejected-routing.js';
 import {visibleMarginIssue} from './solver.js';
 import {visibleSelfIntersectionIssue} from './self-intersections.js';
+import {initializationMask,referenceError} from './image-reference.js';
 
 // Trace-order heuristic only; bounded repair has no witness-deficit cutoff.
 const VISIBLE_RETURN_TRACE_DEFICIT=.15;
@@ -17,12 +18,14 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{},{
   const start=performance.now(),report={method:'trace-milp',budgetSeconds:seconds,accepted:false,attempts:[]};
   try{
     onProgress({stage:'graph'});
-    const source=input.sourceImage,remaining=()=>seconds-(performance.now()-start)/1000;
+    // Unobserved colours supply no trace evidence. The canonical guide is
+    // only a routing proposal; every score still uses the original source.
+    const source=input.sourceImage,tracingMask=initializationMask(source),remaining=()=>seconds-(performance.now()-start)/1000;
     const choices=[{neighbors:Math.min(8,cfg.neighbors),connectorVariants:1},{neighbors:cfg.neighbors,connectorVariants:cfg.connectorVariants}];
     let solution=null,rejectedRepairUsed=false;const deferred=[],denseSeeds=[],ordinaryTargets=new Map();
     const trace=(smoothRadius,borderSeed=null)=>{
       if(!borderSeed&&ordinaryTargets.has(smoothRadius))return ordinaryTargets.get(smoothRadius);
-      const target=preprocessMask(borderSeed?.mask||source.mask,source.resolution,{...cfg,algorithm:'trace',fitTolerance:.75,smoothRadius,snapRadius:1.5,maxSpan:30,borderRadius:borderSeed?0:3},input.metadata.preprocessing);
+      const target=preprocessMask(borderSeed?.mask||tracingMask,source.resolution,{...cfg,algorithm:'trace',fitTolerance:.75,smoothRadius,snapRadius:1.5,maxSpan:30,borderRadius:borderSeed?0:3},input.metadata.preprocessing);
       target.sourceImage=source;
       target.metadata.preprocessing.traceUsed=true;
       target.metadata.sourceImage=input.metadata.sourceImage;
@@ -36,7 +39,7 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{},{
       // densifying an earlier seed can consume the whole remaining budget.
       const graphChoices=borderSeed?choices.slice(0,1):denseRetryOf!==null?choices.slice(1):choices,target=trace(smoothRadius,borderSeed);
       if(borderSeed){
-        const sampled=sampleTarget(target,source.resolution),imageError=sampled.reduce((sum,v,i)=>sum+Number(v!==source.mask[i]),0)/sampled.length;
+        const sampled=sampleTarget(target,source.resolution),imageError=referenceError(source,sampled).mismatchFraction;
         // A larger inset may reach the motif itself. Keep this provisional
         // geometry within a small whole-image error before spending MILP time.
         if(imageError>Math.min(.05,2*cfg.maxImageError)){
@@ -126,7 +129,7 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{},{
       const before=visibleReturnEvidence(original,cfg);
       if(before.shortReturns){
         const smoother=trace(.5),after=visibleReturnEvidence(smoother,cfg);
-        const mismatch=target=>{const mask=sampleTarget(target,source.resolution);return{mask,error:mask.reduce((s,v,i)=>s+Number(v!==source.mask[i]),0)/mask.length};};
+        const mismatch=target=>{const mask=sampleTarget(target,source.resolution);return{mask,error:referenceError(source,mask).mismatchFraction};};
         const a=mismatch(original),b=mismatch(smoother);
         const graph=reindex({target:smoother,edges:smoother.curves.map(curve=>({curve,visible:true}))}),endpoints=inspectBoundaryEndpoints(graph,cfg.nominalWidth).issue;
         const severeReturns=before.maximumRelativeDeficit>VISIBLE_RETURN_TRACE_DEFICIT;
@@ -156,7 +159,7 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{},{
       // that side only, retaining the ordinary interpretation elsewhere. A
       // timeout is not a reason to abandon a viable graph for another seed.
       const retryable=report.attempts.every(a=>!a.solver||a.solver.termination==='candidate_graph_exhausted');
-      if(retryable)for(const seed of oppositeBorderSeeds(source.mask,source.resolution,cfg.width,cfg.nominalWidth)){
+      if(retryable)for(const seed of oppositeBorderSeeds(tracingMask,source.resolution,cfg.width,cfg.nominalWidth)){
         for(const smoothRadius of [.3,.5]){
           if(remaining()<.25)break;
           report.borderSeedRetry=true;
@@ -180,7 +183,7 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{},{
       report.seedTopologyRetry=proposal;
       if(proposal.junctionsAfter<proposal.junctionsBefore&&!inspectBoundaryEndpoints(b,cfg.nominalWidth).issue&&!visibleMarginIssue(b,cfg)&&!visibleSelfIntersectionIssue(b,cfg)){
         const mask=sampleTarget(after,source.resolution);
-        proposal.traceImageError=mask.reduce((sum,v,i)=>sum+Number(v!==source.mask[i]),0)/mask.length;
+        proposal.traceImageError=referenceError(source,mask).mismatchFraction;
         proposal.maximumImageError=Math.min(.05,2*cfg.maxImageError);
         proposal.featuresPassed=auditFeatureFidelity(source,mask,cfg).passed;
         if(proposal.traceImageError<=proposal.maximumImageError&&proposal.featuresPassed){
@@ -222,8 +225,7 @@ export async function recoverImageFeatures(input,cfg,seconds,onProgress=()=>{},{
     }
     if(!solution)throw new Error('Feature recovery found no validated routing within its budget.');
     const woven=sampleWeave(solution,source.resolution);
-    let mismatch=0,observed=0;for(let i=0;i<woven.length;i++){if(source.validMask&&!source.validMask[i])continue;observed++;mismatch+=woven[i]!==source.mask[i];}
-    report.imageError=mismatch/observed;report.features=auditFeatureFidelity(source,woven,cfg);
+    report.imageError=referenceError(source,woven).mismatchFraction;report.features=auditFeatureFidelity(source,woven,cfg);
     const verifiedCfg=verifiedPaperSettings(solution,cfg);
     report.geometryPassed=validate(solution,verifiedCfg).passed;report.paperPassed=materialAudit(solution,verifiedCfg).passed;
     report.accepted=report.imageError<=cfg.maxImageError&&report.features.passed&&report.geometryPassed&&(!cfg.requireMaterialCore||report.paperPassed);

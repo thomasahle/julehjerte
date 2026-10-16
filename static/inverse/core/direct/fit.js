@@ -73,7 +73,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   const source=input.sourceImage,weights=sourceWeights(source),orbit=symmetryOrbit(cfg.symmetry),symmetryRequested=requestedSymmetry(cfg.symmetry).length>0,
     classified=source.probability||Float32Array.from(source.mask),objective=orbitObjective(classified,source.resolution,orbit,weights),fullProb=objective.probability,fullWeights=objective.weights,
     n=Math.min(256,source.resolution),resized=resizeObjective(fullProb,source.resolution,n,fullWeights),prob=resized.probability,fitWeights=resized.weights,
-    gridTarget=fullWeights?null:resize(fullProb,source.resolution,96),rawGuide=weights?Float64Array.from(initializationMask(source)):null,guideProb=rawGuide&&orbit?orbitMean(rawGuide,source.resolution,orbit):rawGuide,
+    gridTarget=fullWeights?null:resize(fullProb,source.resolution,96),gridObjective=fullWeights?resizeObjective(fullProb,source.resolution,96,fullWeights):null,rawGuide=weights?Float64Array.from(initializationMask(source)):null,guideProb=rawGuide&&orbit?orbitMean(rawGuide,source.resolution,orbit):rawGuide,
     start=performance.now(),fastSeconds=Math.min(cfg.timeLimit,10),shortBudget=cfg.timeLimit<=fastSeconds;
   let deadline=start+fastSeconds*1000-Math.min(1300,fastSeconds*200);
   const numericalBackend=await loadBoundaryKernel();
@@ -165,7 +165,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     // geometry stage starts. Its extra routing goes straight to clearance,
     // retaining the same region emphasis through both refinement stages.
     if(r.protectFeatures)return r;
-    const at=performance.now(),next=fitGrid(prob,n,r.model.counts,r.phase,{k:r.model.k,optimizationTarget:gridTarget,weights:fitWeights,steps:150,initial:r.model.z,deadline:performance.now()+800,preferCheckpoint:featureSeed(r)?retainsGridFeature:null});
+    const at=performance.now(),next=fitGrid(prob,n,r.model.counts,r.phase,{k:r.model.k,optimizationTarget:gridTarget,optimizationObjective:gridObjective,weights:fitWeights,steps:150,initial:r.model.z,deadline:performance.now()+800,preferCheckpoint:featureSeed(r)?retainsGridFeature:null});
     attempts.push({stage:'fine',counts:r.model.counts,controlPoints:r.model.k,phase:r.phase,error:next.error,steps:next.steps,seconds:(performance.now()-at)/1000});return next.error<r.error?{...next,...(r.seed?{seed:r.seed}:{})}:r;
   };
   const finalists=gridFinalists(coarse,weights?[]:evidence),remainingSeeds=coarse.filter(r=>!finalists.includes(r));
@@ -238,7 +238,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   // suppress a useful interior proposal or spend its time on tracing. Only
   // proposal scheduling uses this subset; all source features remain mandatory
   // at final acceptance, and a proposal cannot regress their current fidelity.
-  const routingIndices=poorGrid&&!features.passed&&!weights&&!symmetryRequested?interiorFeatureIndices(source,sourceFeatures,sourceFeatures.map((_,j)=>j),cfg):[];
+  const routingIndices=poorGrid&&!features.passed&&!symmetryRequested?interiorFeatureIndices(source,sourceFeatures,sourceFeatures.map((_,j)=>j),cfg):[];
   const routingFeatures=routingIndices.map(j=>sourceFeatures[j]);
   const interiorRetry=routingFeatures.length>0&&auditFeatureFidelity(source,initialGridMask,cfg,routingFeatures).passed;
   const eligible=interiorRetry?routingIndices:features.regions.map((_,j)=>j);
@@ -274,7 +274,9 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   // This is time remaining AFTER clearance and polishing reserves. Requiring
   // another 3.5 seconds here skipped useful starts after modest initialization
   // delays and spent the remaining budget on unsuccessful traced recovery.
-  const featureTimeAvailable=()=>!symmetryRequested&&!weights&&refinementTimeLeft(deadline)>2500;
+  // Feature objectives retain source coverage and importance. Missing pixels
+  // do not disable observed-feature proposals; traced recovery keeps its guard.
+  const featureTimeAvailable=()=>!symmetryRequested&&refinementTimeLeft(deadline)>2500;
   if(missingFeature&&featureTimeAvailable())initializeEarlyFeature(features.regions.flatMap((r,j)=>(r.retainedFraction<features.minimumRetention||r.enclosureLost)?[j]:[]));
   if(interiorRetry&&weakRegion!==null&&featureTimeAvailable())initializeEarlyFeature([weakRegion],weakRegion,'before-recovery');
   // Retaining a large region does not mean a coarse grid keeps its branches.
@@ -304,7 +306,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   // can only exhaust the first graphs. This floor never exceeds the ordinary
   // routing allowance or changes an already reserved feature-grid probe.
   const recoverySeconds=Math.min(probeRouting?.75:20,reserveRefinement?reservedRecoverySeconds:Math.min(ordinaryRecoverySeconds,Math.max(1,interpolatedRecoverySeconds)));
-  const needsRecovery=(!features.passed||poorGrid&&!boundaryCandidate)&&!symmetryRequested&&!weights;
+  const needsRecovery=(!features.passed||poorGrid&&!boundaryCandidate)&&!symmetryRequested;
   const fullRecoverySeconds=Math.min(20,competitiveGrid?(refinementTimeLeft(deadline)-2000)/1000:(deadline-performance.now())/1000*.9);
   // A longer allowance need not delay a useful grid behind the entire routing
   // search. Keep its unused routing budget as a fallback after the first grid;
@@ -328,7 +330,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       // Keep the unchanged seed too; neither is a successful result until it
       // passes the same original-source gates as the independent grids.
       const raw=graph.solution(graph.points,phase,input),validation=validate(raw,recoveryCfg),paper=materialAudit(raw,recoveryCfg);
-      recoveredCandidates.push({graph,points:graph.points.slice(),phase,counts,seed:'feature-recovery',error:mismatch(renderCurves(graph,graph.points,phase,n,32),prob),geometryPassed:validation.passed,paperPassed:paper.passed,validation,history:[],...(verification?{paperVerification:verification}:{})});
+      recoveredCandidates.push({graph,points:graph.points.slice(),phase,counts,seed:'feature-recovery',error:mismatch(renderCurves(graph,graph.points,phase,n,32),prob,fitWeights),geometryPassed:validation.passed,paperPassed:paper.passed,validation,history:[],...(verification?{paperVerification:verification}:{})});
       // A recovered routing can still differ substantially from the image.
       // Give it the normal polishing step count within the same time reserve;
       // Constraint projection can interrupt the image trajectory. Allow up to
@@ -347,7 +349,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       // A checkpoint can finish just beyond the provisional routing's short
       // phase. Let its bounded clearance repair complete before rollback,
       // without extending gradient work or the enclosing search deadline.
-      const candidate=stage('directRefining',()=>refineCurves(graph,fullProb,source.resolution,phase,recoveryCfg,{input,steps:topologyRetry?800:320,rate:.008,selection:'mask',deadline:polishDeadline,repairDeadline:Math.min(until,polishDeadline+400),onProgress:cfg.progressGeometry||hasCandidateObserver(onProgress)?(r,solution)=>{
+      const candidate=stage('directRefining',()=>refineCurves(graph,fullProb,source.resolution,phase,recoveryCfg,{input,weights:fullWeights,steps:topologyRetry?800:320,rate:.008,selection:'mask',deadline:polishDeadline,repairDeadline:Math.min(until,polishDeadline+400),onProgress:cfg.progressGeometry||hasCandidateObserver(onProgress)?(r,solution)=>{
         if(verification)solution.report={...solution.report,paperVerification:{...verification,status:r.paper}};
         onProgress({stage:'directRefining',counts,...r},solution);
       }:undefined}));
@@ -502,7 +504,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
         if(!candidate.imagePassed&&!symmetryRequested&&!r.geometry&&error<=cfg.maxImageError&&(!rejected||error<rejected.error)&&auditFeatureFidelity(source,woven,cfg,sourceFeatures).passed)rejected={solution,error};
         onProgress({stage:'directPolishing',detail:'small-feature-shape',counts:candidate.counts,...r,weightedError:r.error,error},solution);
       }}));
-      refined.error=mismatch(renderCurves(plan.graph,refined.points,refined.phase,n,32),prob);
+      refined.error=mismatch(renderCurves(plan.graph,refined.points,refined.phase,n,32),prob,fitWeights);
       refined.paperVerification={...verification,status:refined.paper?.status};
       Object.assign(refined,{counts:candidate.counts,seed:candidate.seed});
       refined.imagePassed=assess(refined);
@@ -528,7 +530,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
         featureDetailAttempts.at(-1).rerouting=routed.report;
         if(routed.graph){
           const raw=routed.graph.solution(routed.graph.points,routed.phase,input),validation=validate(raw,detailCfg),paper=materialAudit(raw,detailCfg);
-          const result={graph:routed.graph,points:routed.graph.points.slice(),phase:routed.phase,counts:routed.graph.families.map(f=>f.length),seed:'fitted-boundary-rerouting',geometryPassed:validation.passed,paperPassed:paper.passed,paper:paper.summary,validation,history:[],error:mismatch(renderCurves(routed.graph,routed.graph.points,routed.phase,n,32),prob),paperVerification:{...verification,source:'fitted-boundary-rerouting',status:paper.status},matching:matchingSummary(raw)};
+          const result={graph:routed.graph,points:routed.graph.points.slice(),phase:routed.phase,counts:routed.graph.families.map(f=>f.length),seed:'fitted-boundary-rerouting',geometryPassed:validation.passed,paperPassed:paper.passed,paper:paper.summary,validation,history:[],error:mismatch(renderCurves(routed.graph,routed.graph.points,routed.phase,n,32),prob,fitWeights),paperVerification:{...verification,source:'fitted-boundary-rerouting',status:paper.status},matching:matchingSummary(raw)};
           routed.report.refinementAccepted=assess(result);
           if(routed.report.refinementAccepted)return result;
         }
@@ -558,8 +560,8 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     const verification=protectedObjective?{requestedResolution:cfg.materialResolution,resolution:refinementCfg.materialResolution,source:'feature-preserving-refinement'}:null;
     // Clearance grids need to retain colours; free refinement may still close
     // an opening. Enclosure is mandatory only for the accepted template.
-    const clear=stage('directClearance',()=>fitGrid(objectiveProb,n,selected.model.counts,selected.phase,{k:selected.model.k,optimizationTarget:protectedObjective?null:gridTarget,weights:objectiveWeights,steps:150,initial:refloor(selected,floor),floor,clearance:floor+.0015,deadline:performance.now()+Math.min(800,allocation*.15),preferCheckpoint:featureSeed(selected)?retainsGridColours:null}));
-    attempts.push({stage:'clearance',counts:clear.model.counts,controlPoints:clear.model.k,phase:clear.phase,error:protectedObjective?mismatch(gridMask(clear.model,n,clear.phase,clear.floor),prob):clear.error,steps:clear.steps,...(protectedObjective?{weightedError:clear.error}:{})});
+    const clear=stage('directClearance',()=>fitGrid(objectiveProb,n,selected.model.counts,selected.phase,{k:selected.model.k,optimizationTarget:protectedObjective?null:gridTarget,optimizationObjective:protectedObjective?null:gridObjective,weights:objectiveWeights,steps:150,initial:refloor(selected,floor),floor,clearance:floor+.0015,deadline:performance.now()+Math.min(800,allocation*.15),preferCheckpoint:featureSeed(selected)?retainsGridColours:null}));
+    attempts.push({stage:'clearance',counts:clear.model.counts,controlPoints:clear.model.k,phase:clear.phase,error:protectedObjective?mismatch(gridMask(clear.model,n,clear.phase,clear.floor),prob,fitWeights):clear.error,steps:clear.steps,...(protectedObjective?{weightedError:clear.error}:{})});
     const graph=new CurveGraph(gridPaths(clear.model,cfg.width,clear.floor),cfg.width);
     const prepared={clear,graph,protectedObjective,objectiveProb,objectiveWeights,refinementCfg,verification};
     preparations.set(selected,prepared);return prepared;
@@ -567,6 +569,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   const extraGridComparisons=[];
   let countSearchBound=null;
   let clearanceComparison=null;
+  let initialGeometryComparison=null;
   let stoppedEarly=false;
   for(let i=0;i<fine.length&&!stoppedEarly;i++){
     // Initialization (including a speculative topology solve) can exhaust the
@@ -642,8 +645,9 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
         if(preferred){fine.splice(fine.indexOf(retry),1);fine.splice(i,0,retry);i--;continue;}
       }
     }
-    if(featureSeed(selected)&&selected.model.k===16&&!selected.protectFeatures&&!samplingRecovery&&featureSamplingContext&&!weights&&!symmetryRequested&&!candidates.some(c=>c.imagePassed)){
-      const initialGeometry=validate(graph.solution(graph.points,clear.phase,input),refinementCfg,{checkImage:false});
+    const initialFeatureGeometry=featureSeed(selected)&&!candidates.some(c=>c.geometryPassed&&c.paperPassed)?validate(graph.solution(graph.points,clear.phase,input),refinementCfg,{checkImage:false}):null;
+    if(featureSeed(selected)&&selected.model.k===16&&!selected.protectFeatures&&!samplingRecovery&&featureSamplingContext&&!symmetryRequested&&!candidates.some(c=>c.imagePassed)){
+      const initialGeometry=initialFeatureGeometry||validate(graph.solution(graph.points,clear.phase,input),refinementCfg,{checkImage:false});
       // Compare this bounded alternate before committing the refinement
       // budget. Waiting for a failed full fit starves it on a cold worker.
       // It must keep source colours, satisfy geometry/paper checks, and beat
@@ -656,6 +660,21 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
         samplingRecovery.preflight={initialCounts:clear.model.counts,initialError:clear.error,initialGeometry,alternativeCounts:alternate.clear.model.counts,alternativeError:alternate.clear.error,alternativeGeometry:geometry,alternativePaper:paper?.status,preferred};
         if(preferred){fine.splice(i,0,retry);i--;continue;}
         fine.splice(i+1,0,retry);
+      }
+    }
+    // An illegal feature seed can consume the whole budget before any
+    // ordinary finalist is refined. Give an existing geometry-valid layout
+    // the first refinement window; retain the feature proposal immediately
+    // behind it. Image fidelity and strict paper checks still decide success.
+    if(initialFeatureGeometry?.passed===false&&!initialGeometryComparison&&!candidates.some(c=>c.geometryPassed&&c.paperPassed)){
+      const ordinary=fine.slice(i+1).find(r=>!featureSeed(r));
+      if(ordinary){
+        const at=performance.now(),alternative=prepareRefinement(ordinary,Math.max(0,deadline-at));
+        const solution=alternative.graph.solution(alternative.graph.points,alternative.clear.phase,input);
+        const geometry=validate(solution,alternative.refinementCfg,{checkImage:false}),paper=geometry.passed?materialAudit(solution,alternative.refinementCfg):null;
+        const preferred=geometry.passed&&(!cfg.requireMaterialCore||paper?.status!=='fail');
+        initialGeometryComparison={initialCounts:clear.model.counts,initialGeometry:initialFeatureGeometry,alternativeCounts:alternative.clear.model.counts,alternativeGeometry:geometry,alternativePaper:paper?.status,preferred,seconds:(performance.now()-at)/1000};
+        if(preferred){fine.splice(fine.indexOf(ordinary),1);fine.splice(i,0,ordinary);i--;continue;}
       }
     }
     // Ordinary grids can also repeat an identical failed block after the
@@ -679,7 +698,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       onProgress({stage:'directRefining',counts:clear.model.counts,...r},solution);
     }}));
     if(protectedObjective){
-      candidate.error=mismatch(renderCurves(graph,candidate.points,candidate.phase,n,32),prob);
+      candidate.error=mismatch(renderCurves(graph,candidate.points,candidate.phase,n,32),prob,fitWeights);
     }
     if(verification)candidate.paperVerification={...verification,status:candidate.paper?.status};
     candidate.counts=clear.model.counts;candidate.seed=selected.seed;addCandidate(candidate);
@@ -708,7 +727,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     // Preserve the first refined checkpoint and all existing finalists. Only
     // unsuccessful feature retention earns this additional initialization;
     // regular successful designs and exhausted short budgets keep their path.
-    if(!candidate.imagePassed&&candidate.originalFeatures?.missing.length&&!featureInitialization&&!weights&&!symmetryRequested&&searchDeadline()-performance.now()>6500){
+    if(!candidate.imagePassed&&candidate.originalFeatures?.missing.length&&!featureInitialization&&!symmetryRequested&&searchDeadline()-performance.now()>6500){
       const missed=candidate.originalFeatures.regions.flatMap((r,j)=>(r.retainedFraction<candidate.originalFeatures.minimumRetention||r.enclosureLost)?[j]:[]);
       featureSamplingContext={missed,counts:candidate.counts};
       const extra=stage('directInitializing',()=>initializeFeatureSeeds({source,features:sourceFeatures,missed,counts:candidate.counts,cfg,evidence,maximumCount}));
@@ -732,7 +751,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       featureInitialization.scheduled++;
       featureInitialization.featureRetry={counts:alternate.model.counts,controlPoints:alternate.model.k,phase:alternate.phase,reason:candidate.originalFeatures.enclosures?.opened?'opened':'lost'};
     }
-    if(featureSeed(candidate)&&!candidates.some(c=>c.imagePassed)&&featureSamplingContext&&!samplingRecovery&&!weights&&!symmetryRequested){
+    if(featureSeed(candidate)&&!candidates.some(c=>c.imagePassed)&&featureSamplingContext&&!samplingRecovery&&!symmetryRequested){
       const retry=samplingSeed('unsuccessful-refinement');
       if(retry)fine.splice(i+1,0,retry);
     }
@@ -833,7 +852,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   const solution=candidate.graph.solution(candidate.points,candidate.phase,input);
   const paper={passed:candidate.paperPassed};
   solution.report={countSearch:countSearchReport,finalistPreference,deferredFeatureRecovery,...(recoveryHistory.length>1?{featureRecoveryAttempts:recoveryHistory}:{}),algorithm:'direct-bezier',numericalBackend,imported:false,termination:!candidate.geometryPassed?'geometry_failure':!paper.passed?'paper_failure':candidate.originalImageError>cfg.maxImageError?'image_mismatch':'candidate_found',seconds:(performance.now()-start)/1000,
-    stoppedEarly,countSearchBound,clearanceComparison,extraGridComparisons,earlyClampedFeatureRecovery,clampedFeatureRecovery:candidate.clampedFeatureRecovery,refinementFeaturesPassed:candidate.originalFeatures?.passed,refinementBudget:{requestedSeconds:cfg.timeLimit,maximumSearchSeconds:searchSeconds(),verifiedAlternative},earlyFeatureInitialization,featureInitialization,samplingRecovery,featureDetail,featureDetailAttempts,outlineDetail,paperVerification:candidate.paperVerification,matchingPreference:{enabled:cfg.preferMatchingSheets,...matchingEvidence,...matchingSummary(solution),identicalCandidateBonus:0},optimizationResolution:n,sourceResolution:source.resolution,scaleSampling:'Each fitting scale is area-resampled directly from the original classified source; no chained downsampling',initialization:'Fresh ordered grids, soft border endpoint proposals and alternating row dynamic programming; independent shapes for both sheets',countsSearched:attempts.filter(a=>a.stage==='coarse').map(a=>({counts:a.counts,phase:a.phase})),attempts,selectedCounts:candidate.counts,candidates:candidates.map(c=>({counts:c.counts,error:c.error,sourceImageError:c.originalImageError,imagePassed:c.imagePassed,featuresPassed:c.originalFeatures?.passed,enclosuresOpened:c.originalFeatures?.enclosures?.opened,score:c.score,geometry:c.geometryPassed,paper:c.paperPassed,paperVerification:c.paperVerification})),
+    stoppedEarly,countSearchBound,clearanceComparison,initialGeometryComparison,extraGridComparisons,earlyClampedFeatureRecovery,clampedFeatureRecovery:candidate.clampedFeatureRecovery,refinementFeaturesPassed:candidate.originalFeatures?.passed,refinementBudget:{requestedSeconds:cfg.timeLimit,maximumSearchSeconds:searchSeconds(),verifiedAlternative},earlyFeatureInitialization,featureInitialization,samplingRecovery,featureDetail,featureDetailAttempts,outlineDetail,paperVerification:candidate.paperVerification,matchingPreference:{enabled:cfg.preferMatchingSheets,...matchingEvidence,...matchingSummary(solution),identicalCandidateBonus:0},optimizationResolution:n,sourceResolution:source.resolution,scaleSampling:'Each fitting scale is area-resampled directly from the original classified source; no chained downsampling',initialization:'Fresh ordered grids, soft border endpoint proposals and alternating row dynamic programming; independent shapes for both sheets',countsSearched:attempts.filter(a=>a.stage==='coarse').map(a=>({counts:a.counts,phase:a.phase})),attempts,selectedCounts:candidate.counts,candidates:candidates.map(c=>({counts:c.counts,error:c.error,sourceImageError:c.originalImageError,imagePassed:c.imagePassed,featuresPassed:c.originalFeatures?.passed,enclosuresOpened:c.originalFeatures?.enclosures?.opened,score:c.score,geometry:c.geometryPassed,paper:c.paperPassed,paperVerification:c.paperVerification})),
     borderEvidence:evidence,supportedBorderCounts:supportedBorderCounts(evidence),borderCountsAreHardConstraints:false,traceUsed:['coarse-boundary-topology','feature-recovery'].includes(candidate.seed),cornerTopologyInitialization:cornerTopology?.report,topologyInitialization:topology?.report,coarseTopologyInitialization:coarseTopology?.report,selectedInitialization:candidate.seed||'grid',featureRecovery:recovery?.report||null,freeCoordinates:'Both coordinates of anchors and handles; endpoints remain on assigned sides',stages:timings,checkpoints:candidate.history,localFeaturePolish:candidate.localFeaturePolish,sharing:candidate.sharing||{accepted:[],rejected:[]},estimatedMaskMismatch:candidate.error,minimumNominalWidth:cfg.nominalWidth,physicalAssemblyTested:false};
   return solution;
 }

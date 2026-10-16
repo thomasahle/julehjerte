@@ -4,6 +4,8 @@
  */
 import {initializeCounts} from './counts.js';
 import {resizeObjective} from './image-objective.js';
+import {sourceWeights} from '../image-reference.js';
+import {observedFeatureImportance} from './feature-objective.js';
 import {fitGrid,gridMask,mismatch} from './grid.js';
 import {auditImageFeatures} from '../image-features.js';
 import {featureComponentMetrics} from '../feature-shapes.js';
@@ -31,9 +33,10 @@ export function initializeFeatureSeeds({source,features,missed,counts,cfg,eviden
     if(pair.some(c=>c>maximumCount||(c+1)*(cfg.nominalWidth+.35)>=cfg.width))continue;
     if(!options.some(o=>o.phase===phase&&o.counts.every((c,i)=>c===pair[i])))options.push({counts:pair,phase});
   }
-  const boost=16,n=Math.min(256,resolution),fullProb=source.probability||Float32Array.from(source.mask),fullWeights=new Float64Array(resolution*resolution).fill(1/boost);
-  for(const index of interior)for(const pixel of features[index].pixels)fullWeights[pixel]=1;
-  const weighted=resizeObjective(fullProb,resolution,n,fullWeights),original=resizeObjective(fullProb,resolution,n);
+  const boost=16,n=Math.min(256,resolution),fullProb=source.probability||Float32Array.from(source.mask),emphasis=new Float64Array(resolution*resolution).fill(1/boost);
+  for(const index of interior)for(const pixel of features[index].pixels)emphasis[pixel]=1;
+  const fullWeights=observedFeatureImportance(source,emphasis);
+  const weighted=resizeObjective(fullProb,resolution,n,fullWeights),original=resizeObjective(fullProb,resolution,n,sourceWeights(source));
   const attempts=[],small=smallInteriorFeatures(source,interior.map(i=>features[i]),cfg),coarseNearMisses=[],alternativeChoices=[];
   const closedFeatures=seed=>featureComponentMetrics(source,gridMask(seed.model,resolution,seed.phase,seed.floor),cfg.width,small).every(part=>part.intersectionPixels>0&&part.touchesBorder===false);
   const search=(options,protectFeatures=false,k=16)=>initializeCounts({options,fullProb,resolution,prob:weighted.probability,n,evidence,weights:weighted.weights,fullWeights},{k,retainAlternatives:!protectFeatures&&k===16}).seeds.map(({alternatives=[],...seed})=>{
@@ -42,7 +45,7 @@ export function initializeFeatureSeeds({source,features,missed,counts,cfg,eviden
       // displacing an established joint/finer route (the small puppy case).
       if(seed.model.counts.every((count,f)=>count===counts[f]))alternativeChoices.push(...alternatives);
       const woven=gridMask(seed.model,resolution,seed.phase,seed.floor),audit=auditImageFeatures(source,woven,cfg.width,features);
-      seed.error=mismatch(gridMask(seed.model,n,seed.phase,seed.floor),original.probability);
+      seed.error=mismatch(gridMask(seed.model,n,seed.phase,seed.floor),original.probability,original.weights);
       seed.featuresPassed=audit.passed;seed.seed=protectFeatures?'feature-preserving-grid':'feature-weighted-grid';
       if(protectFeatures)seed.protectFeatures=true;
       attempts.push({counts:seed.model.counts,controlPoints:k,phase:seed.phase,error:seed.error,featuresPassed:audit.passed,missing:audit.missing.length,protectFeatures});
@@ -52,8 +55,8 @@ export function initializeFeatureSeeds({source,features,missed,counts,cfg,eviden
   const refineNearMiss=seed=>{
     const retainsColours=r=>auditImageFeatures(source,gridMask(r.model,resolution,r.phase,r.floor),cfg.width,features).passed;
     const refined=fitGrid(original.probability,n,seed.model.counts,seed.phase,{k:seed.model.k,initial:seed.model.z,floor:seed.floor,
-      optimizationTarget:resizeObjective(fullProb,resolution,96).probability,steps:150,preferCheckpoint:retainsColours});
-    const error=mismatch(gridMask(refined.model,n,refined.phase,refined.floor),original.probability),featuresPassed=retainsColours(refined);
+      weights:original.weights,optimizationTarget:original.weights?null:resizeObjective(fullProb,resolution,96).probability,optimizationObjective:original.weights?resizeObjective(fullProb,resolution,96,sourceWeights(source)):null,steps:150,preferCheckpoint:retainsColours});
+    const error=mismatch(gridMask(refined.model,n,refined.phase,refined.floor),original.probability,original.weights),featuresPassed=retainsColours(refined);
     const accepted=featuresPassed&&error<=Math.min(.1,3*cfg.maxImageError);
     return{seed:{...refined,error,featuresPassed,seed:'feature-weighted-grid'},report:{counts:seed.model.counts,phase:seed.phase,initialError:seed.error,error,featuresPassed,steps:refined.steps,accepted}};
   };
@@ -72,7 +75,7 @@ export function initializeFeatureSeeds({source,features,missed,counts,cfg,eviden
     // Its lowest weighted error can lose a feature while a runner-up keeps
     // it. Reuse one base-count layout after the established winners fail.
     // Neither the original error cutoff nor the final feature gate changes.
-    const alternatives=alternativeChoices.map(seed=>({...seed,error:mismatch(gridMask(seed.model,n,seed.phase,seed.floor),original.probability)}))
+    const alternatives=alternativeChoices.map(seed=>({...seed,error:mismatch(gridMask(seed.model,n,seed.phase,seed.floor),original.probability,original.weights)}))
       .filter(seed=>seed.error<=Math.min(.12,4*cfg.maxImageError)&&auditImageFeatures(source,gridMask(seed.model,resolution,seed.phase,seed.floor),cfg.width,features).passed)
       .sort((a,b)=>a.error-b.error);
     if(alternatives.length){
@@ -112,7 +115,7 @@ export function initializeFeatureSeeds({source,features,missed,counts,cfg,eviden
 export function featureRefinementObjective(source,features,n){
   const weights=new Float64Array(source.mask.length).fill(1/16);
   for(const feature of features)for(const pixel of feature.pixels)weights[pixel]=1;
-  return resizeObjective(source.probability||Float32Array.from(source.mask),source.resolution,n,weights);
+  return resizeObjective(source.probability||Float32Array.from(source.mask),source.resolution,n,observedFeatureImportance(source,weights));
 }
 
 /** A different DP lattice is a fallback starting shape, never a new target or
@@ -123,13 +126,14 @@ export function initializeFeatureSampling({source,features,missed,counts,cfg,evi
   const report={counts,initializationResolution,emphasizedRegions:interior.length,attempts:[],retained:0};
   if(!interior.length)return{seeds:[],report};
   const resolution=source.resolution,n=Math.min(256,resolution),fullProb=source.probability||Float32Array.from(source.mask);
-  const fullWeights=new Float64Array(resolution*resolution).fill(1/16);
-  for(const index of interior)for(const pixel of features[index].pixels)fullWeights[pixel]=1;
-  const weighted=resizeObjective(fullProb,resolution,n,fullWeights),original=resizeObjective(fullProb,resolution,n);
+  const emphasis=new Float64Array(resolution*resolution).fill(1/16);
+  for(const index of interior)for(const pixel of features[index].pixels)emphasis[pixel]=1;
+  const fullWeights=observedFeatureImportance(source,emphasis);
+  const weighted=resizeObjective(fullProb,resolution,n,fullWeights),original=resizeObjective(fullProb,resolution,n,sourceWeights(source));
   const options=[1,-1].map(phase=>({counts,phase}));
   const search=initializeCounts({options,fullProb,resolution,prob:weighted.probability,n,evidence,weights:weighted.weights,fullWeights},{initializationResolution});
   const seeds=search.seeds.map(seed=>{
-    const error=mismatch(gridMask(seed.model,n,seed.phase,seed.floor),original.probability);
+    const error=mismatch(gridMask(seed.model,n,seed.phase,seed.floor),original.probability,original.weights);
     const featuresPassed=auditImageFeatures(source,gridMask(seed.model,resolution,seed.phase,seed.floor),cfg.width,features).passed;
     report.attempts.push({phase:seed.phase,error,featuresPassed});
     return{...seed,error,featuresPassed,seed:'feature-sampling-grid'};
