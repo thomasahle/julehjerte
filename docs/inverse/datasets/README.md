@@ -106,7 +106,8 @@ to the preceding release. Five independent errors improve and eleven worsen
 within the same acceptance status; timed searches follow different refinement
 paths. The largest change in either direction does not use the new checkpoint
 selection branch. These are not uniform quality gains or new photo successes.
-Type checking, lint and build pass; the full test suite is still running.
+Full QA passes: type checking, lint, build, **874 application tests** (one
+skipped), and **1,008 inverse tests**. All 1,025 pinned source files verify.
 
 A [coverage perturbation study](coverage-perturbation-plan.json) is prepared:
 mark just one corner pixel as unobserved while keeping all mask colours fixed.

@@ -1,6 +1,6 @@
 {
   "schema": "sharing-best-checkpoint-1",
-  "status": "focused-and-frozen-replay-passed-release-qa-pending",
+  "status": "focused-frozen-and-full-release-qa-passed",
   "problem": "Shared-cut search retains one original-source error ceiling so complementary edits may temporarily worsen the score. It previously returned the last accepted state even after visiting a better valid source-image checkpoint.",
   "change": "Retain the lowest original-source disagreement checkpoint while continuing the same search. Equal scores select the later checkpoint to preserve additional exact alignments. No-source searches retain the established last state, whose fitting/high-resolution errors already descend. Actual selected-prefix proposals remain in sharing.accepted; the later explored suffix is preserved in sharing.unselected with selection diagnostics.",
   "criteriaUnchanged": [
@@ -46,7 +46,7 @@
   "visualReview": "All four changed render pairs inspected. Changes are minute at the source resolution; uneven checker cells, imperfect contacts and missing bauble frame remain. The frozen comparison establishes retention of the lowest production-source score, not recovery of those motifs.",
   "qualification": "Independent antialiased rendering disagrees with the source pixel-centre sampler at some boundary pixels. It improves fine checker by three pixels and jigsaw by two, but worsens the already failing bauble by two observed pixels and historical floral checker by one. These tradeoffs are retained rather than claiming every rendering metric improves.",
   "releaseQA": {
-    "status": "browser-native-and-editable-passed-full-suite-running",
+    "status": "complete",
     "report": "docs/inverse/datasets/sharing-best-checkpoint-release-qa.json",
     "browserPassed": 29,
     "nativePassed": 53,
@@ -57,7 +57,11 @@
       "photo-bauble"
     ],
     "qualification": "Fresh timed fits have both error increases and decreases. No uniform full-fit quality improvement is claimed.",
-    "root": "tmp/heart-learning/shared-best-checkpoint-v1/qa"
+    "root": "tmp/heart-learning/shared-best-checkpoint-v1/qa",
+    "applicationPassed": 874,
+    "applicationSkipped": 1,
+    "inversePassed": 1008,
+    "sourceFilesVerified": 1025
   },
   "results": [
     {

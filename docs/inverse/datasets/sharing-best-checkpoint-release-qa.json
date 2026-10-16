@@ -1,6 +1,6 @@
 {
   "schema": "sharing-best-checkpoint-release-qa-1",
-  "status": "full-test-suite-running",
+  "status": "complete",
   "runtimeCommit": "1561381",
   "completedChecks": [
     {
@@ -47,6 +47,15 @@
       "stage": "corpus-audit",
       "exitCode": 0,
       "seconds": 46.58717245799994
+    },
+    {
+      "stage": "test",
+      "exitCode": 0,
+      "seconds": 1139.132033125,
+      "completeSummary": true,
+      "applicationPassed": 874,
+      "applicationSkipped": 1,
+      "inversePassed": 1008
     }
   ],
   "sourceFilesVerified": 1025,
@@ -496,7 +505,7 @@
     ]
   },
   "native": {
-    "status": "native-and-editable-complete-full-suite-pending",
+    "status": "complete",
     "caseCount": 55,
     "passed": 53,
     "failures": [
@@ -1195,9 +1204,25 @@
   },
   "artifactsSha256": {
     "tmp/heart-learning/shared-best-checkpoint-v1/qa/browser-comparison.json": "d5eb523daacfc7decfa7123de8c1a8a8ce679c268d22ae443fa6e0ac0d751184",
-    "tmp/heart-learning/shared-best-checkpoint-v1/corpus/comparison.json": "624d7b622956cd972d2b1bbe6385e489e9f0d0df766896a228e1d799dbd0c997",
+    "tmp/heart-learning/shared-best-checkpoint-v1/corpus/comparison.json": "c035e49e1548f39fcb8f1f838a6e63a43acd7f7a941eebee9b52aae3a37aa05a",
     "tmp/heart-learning/shared-best-checkpoint-v1/corpus/audit-results.json": "66a19d958cb0ca554ec59087583f29f82d500fe3773c1419910f6da85f5900f1",
     "tmp/heart-learning/shared-best-checkpoint-v1/qa/source.json": "900909af04396371503f7e434dc62b0328377d4900d256f4d121f79776904c1d",
-    "tmp/heart-learning/shared-best-checkpoint-v1/qa/served-assets.json": "9f165c7c7f6790f0d5ce945833ca07ac860f525b9b05c99156a34ca37ae4e82f"
+    "tmp/heart-learning/shared-best-checkpoint-v1/qa/served-assets.json": "9f165c7c7f6790f0d5ce945833ca07ac860f525b9b05c99156a34ca37ae4e82f",
+    "tmp/heart-learning/shared-best-checkpoint-v1/qa/test.log": "95284a7602300e8a7c15d2cd65cb5a53565babe2a74d72f9b6d401c7bd06989b",
+    "tmp/heart-learning/shared-best-checkpoint-v1/qa/state.json": "016173ed9d2f82d01086d4bfe48d07150da8778ec57c9fac05b8fc02aea58dac",
+    "tmp/heart-learning/shared-best-checkpoint-v1/qa/checks.json": "072147f8b42f60289511889864a43adc3a769888aeaeef4ce988874194be5a4f"
+  },
+  "releaseState": {
+    "status": "complete",
+    "seconds": 1936.845003334,
+    "sourceFilesVerified": 1025,
+    "applicationPassed": 874,
+    "applicationSkipped": 1,
+    "inversePassed": 1008
+  },
+  "testSummary": {
+    "applicationPassed": 874,
+    "applicationSkipped": 1,
+    "inversePassed": 1008
   }
 }
