@@ -12,13 +12,15 @@ import { gridClearanceScale } from '$lib/geometry/clearance';
 import { generatePanelFigure } from './panels';
 import { generateComponentFigure } from './components';
 import { rerouteSharedCuts } from './sharedCuts';
-import { curveSharedCuts } from './curvedCuts';
+import { curveSharedCuts, curveSharpSharedTips } from './curvedCuts';
 import {
 	convertValidatedCutGeometry,
 	CutGeometryError,
 	type CutGeometry
 } from '$lib/inverse/toHeartDesign';
 import type { HeartColors, HeartDesign } from '$lib/types/heart';
+import { inferOverlapRect } from '$lib/utils/overlapRect';
+import { findFingersWithIssues, intersectionMarginPx } from '$lib/editor/curveIssues';
 import { rasterizeDesign } from '$lib/paint/rasterize';
 import {
 	ConstructionError,
@@ -317,13 +319,35 @@ function finishConstruction(request: GeneratorRequest, r: Construction, recipe: 
 	return { design, recipe };
 }
 
+/** Improve only the selected checkerboard, once. Shared curves meet the letter
+ * across its outline rather than forming a narrow point along it. Keep the
+ * original whenever bending fails full-sheet checks or does not improve the
+ * actual exported cuts. Letter outlines, strip count and connections stay fixed. */
+function improveCheckerConnections(result: GeneratorResult): GeneratorResult {
+	const design = curveSharpSharedTips(result.design);
+	if (!design || !fewerCutTips(cutTipCounts(design), cutTipCounts(result.design))) return result;
+	const rect = inferOverlapRect(design.fingers, design.gridSize);
+	for (const finger of design.fingers) for (const segment of finger.segments)
+		for (const p of [segment.p0, segment.p1, segment.p2, segment.p3])
+			if (!Number.isFinite(p.x) || !Number.isFinite(p.y) || p.x < rect.left || p.x > rect.right ||
+				p.y < rect.top || p.y > rect.bottom) return result;
+	const margin = intersectionMarginPx(rect, gridClearanceScale(design.gridSize.x, design.gridSize.y));
+	if (findFingersWithIssues(design.fingers, margin).size) return result;
+	// Endpoints, visible curves and strip connections are unchanged. Each moved
+	// curve is still exactly coincident on both sheets, preserving the weave.
+	return { ...result, design };
+}
+
 /** Retry completed constructions after all established recipes fail.
  * Moving coincident cuts preserves the artwork and graph endpoints; the entire
  * result must pass the same topology, spacing and fidelity checks again. */
 export function generate(request: GeneratorRequest): GeneratorResult {
 	const rejected: { construction: Construction; recipe: GeneratorResult['recipe'] }[] = [];
 	try {
-		return generateUsingRecipes(request, (construction, recipe) => rejected.push({ construction, recipe }));
+		const result = generateUsingRecipes(request,
+			(construction, recipe) => rejected.push({ construction, recipe }));
+		return request.mode === 'text' && request.textFrame === 'repeat-check'
+			? improveCheckerConnections(result) : result;
 	} catch (error) {
 		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 		const curvedCandidates = [...rejected];

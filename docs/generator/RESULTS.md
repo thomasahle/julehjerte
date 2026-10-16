@@ -1,5 +1,61 @@
 # Generator robustness results
 
+## Current quality: round only sharp shared joints in the finished cuts
+
+The checkerboard quality pass now works on the already fitted paper paths.
+It identifies a cubic shared by the two sheets, including reversed references,
+and curves only an end that currently forms a tip below 45°. Both sheets receive
+the same handle. All endpoints, visible curves, other handles, strip counts and
+segment counts remain unchanged. There is no second outline fit or additional
+layout search. The result must reduce the exported tip counts, remain inside the
+overlap and pass the editor's full crossing/spacing check; otherwise the original
+design is retained. This optional pass runs once on a selected checkerboard.
+
+For Nunito `amy`, tips below 30° / below 45° improve from **3/12 to 3/3** on
+the same 6×6 strips. For lowercase `anna`, they improve from **2/3 to 2/2**
+on the same 4×4 strips. The pass moves nine and one shared connection ends,
+respectively, on both sheets. Uppercase `ANNA` stays exactly unchanged at 0/8:
+those remaining tips belong to visible letter outlines. The three comparisons
+have zero weave differences at 600 pixels (`curve-export-paired.json`). Their
+production heart and both cutting sheets were rendered and inspected in
+`curve-export-final-gallery-{0,1,2}.png`, with matching SVGs, and both JSON/SVG
+handoffs pass (`curve-export-final-metrics.json`).
+
+All **134 previously accepted checkerboards** pass the production audit again,
+with **zero refusals, invalid output or regressions** (`curve-export-accepted.json`).
+No new input is claimed as supported by this quality pass. Combined coverage
+remains **2,808 accepted / 342 refused / zero invalid** from
+`symmetric-frame-current.json`; the broader goal is still unfinished.
+
+The production `amy` and unchanged `ANNA` pass the separate guarded rolling-disk
+audit at resolution 1,400. For lowercase `anna`, the exact original and final
+production output both remain uncertain at 1,400 (the same four conservative
+core islands and zero possible-core islands on one sheet). **Both pass at
+2,100 and 2,800**, with no detached core islands on either sheet. The reports
+are `curve-export-final-material.json` and
+`curve-export-lower-material-{1400,2100,2800}.json`. This discrete connectivity
+model does not certify physical strength or tear resistance.
+
+An earlier version curved all shared connections and refitted the whole
+construction. Lowercase `anna` remained uncertain even at 2,800, whereas its
+original passed, so that broader version was discarded. Early probes also used
+case-only filenames (`anna` and `ANNA`) on a case-insensitive filesystem; the
+uppercase files overwrote the lowercase witnesses. Those early lowercase
+material-pass claims are invalid. The authoritative comparisons above use
+distinct numeric or `lower` filenames, and the same resolution for both sides.
+
+The nine focused geometry tests and the two end-to-end `amy`/`anna` regressions
+pass. Type checking, lint and the production build pass, with seven existing
+type-check warnings (`curve-export-{unit,focused,check,lint,build}.log`). The full
+single-worker `npm test` run reports **1,099 passed / two timed out** in 865
+seconds (`curve-export-tests.log`). The failures are the existing Kalam A/ANNA
+ordinary-repeat tests, at 20.63 and 26.36 seconds against their unchanged
+20-second limit. Both pass in the focused rerun (15.09 seconds combined;
+`curve-export-kalam-focused.log`), and all **177 inverse-engine tests pass**
+separately (`curve-export-inverse.log`). The full run is not green, and its
+timing problem remains unresolved. No timeout was raised. The new checkerboard
+regressions pass.
+
 ## Current coverage: separate cuts around every flat frame side
 
 The diamond's outer routing now separates cuts on all four sides when several

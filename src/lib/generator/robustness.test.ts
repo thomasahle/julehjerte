@@ -74,6 +74,9 @@ describe('generator robustness regressions', () => {
 	it('connects the separate strokes of lowercase m in a checkerboard', () => {
 		const { design } = generate({ mode: 'text', name: 'amy', text: 'amy', font: fonts.nunito, textFrame: 'repeat-check', colors });
 		expect(design.gridSize).toEqual({ x: 6, y: 6 });
+		// Curved coincident connections remove nine extra tips without changing
+		// the letters or putting the whole pattern on a single paper strip.
+		expect(cutTipCounts(design)).toEqual([3, 3]);
 		validateHandoffs(design);
 	}, 30000);
 	it('uses stroke-tip attachments for Bree Serif jul in the repeating letter field', () => {
@@ -188,6 +191,7 @@ describe('generator robustness regressions', () => {
 	for (const textFrame of TEXT_TEMPLATES)
 		it(`weaves lowercase shoulders in the ${textFrame} frame`, () => {
 			const { design } = generate({ mode: 'text', name: 'anna', text: 'anna', font: fonts.nunito, textFrame, colors });
+			if (textFrame === 'repeat-check') expect(cutTipCounts(design)).toEqual([2, 2]);
 			validateHandoffs(design);
 		}, 20000);
 	for (const [text, textFrame] of [

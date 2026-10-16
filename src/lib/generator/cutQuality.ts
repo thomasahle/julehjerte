@@ -2,10 +2,9 @@ import type { CutGeometry } from '$lib/inverse/toHeartDesign';
 import type { HeartDesign, Vec } from '$lib/types/heart';
 import type { Edge, Point } from './geometry';
 
-/** Count narrow paper tips at joins of the actual cutting paths. A turn of
- * more than 150° leaves a tip below 30°; more than 135° leaves one below 45°.
- * Prefer removing the narrowest tips first. Spacing is checked separately. */
-export function cutTipCounts(cuts: CutGeometry | Pick<HeartDesign, 'fingers'>): [number, number] {
+type Cuts = CutGeometry | Pick<HeartDesign, 'fingers'>;
+
+function visitCutTips(cuts: Cuts, visit: (point: Vec, turn: number) => void) {
 	const paths = 'fingers' in cuts ? cuts.fingers.map(f => f.segments)
 		: [...cuts.A_overlap_paths, ...cuts.B_overlap_paths].map(path => path.map(ref => {
 			const points = cuts.curves[ref.curve].control_points.map(([x, y]) => ({ x, y }));
@@ -19,7 +18,6 @@ export function cutTipCounts(cuts: CutGeometry | Pick<HeartDesign, 'fingers'>): 
 		}
 		return { x: 0, y: 0 };
 	};
-	let needles = 0, sharp = 0;
 	for (const path of paths) for (let i = 1; i < path.length; i++) {
 		const a = path[i - 1], b = path[i];
 		const incoming = tangent(a.p3, [a.p2, a.p1, a.p0]);
@@ -27,10 +25,28 @@ export function cutTipCounts(cuts: CutGeometry | Pick<HeartDesign, 'fingers'>): 
 		if (!(incoming.x || incoming.y) || !(outgoing.x || outgoing.y)) continue;
 		const turn = Math.atan2(Math.abs(incoming.x * outgoing.y - incoming.y * outgoing.x),
 			-incoming.x * outgoing.x - incoming.y * outgoing.y);
-		if (turn > 5 * Math.PI / 6) needles++;
-		if (turn > 3 * Math.PI / 4) sharp++;
+		if (turn > 3 * Math.PI / 4) visit(b.p0, turn);
 	}
+}
+
+/** Count narrow paper tips at joins of the actual cutting paths. A turn of
+ * more than 150° leaves a tip below 30°; more than 135° leaves one below 45°.
+ * Prefer removing the narrowest tips first. Spacing is checked separately. */
+export function cutTipCounts(cuts: Cuts): [number, number] {
+	let needles = 0, sharp = 0;
+	visitCutTips(cuts, (_point, turn) => {
+		if (turn > 5 * Math.PI / 6) needles++;
+		sharp++;
+	});
 	return [needles, sharp];
+}
+
+/** Joints below 45°, in the input's coordinate system. The same joint can be
+ * present on both sheets; moving a coincident cut must affect both together. */
+export function cutTipPoints(cuts: Cuts): Vec[] {
+	const points: Vec[] = [];
+	visitCutTips(cuts, point => points.push(point));
+	return points;
 }
 
 export function fewerCutTips(a: [number, number], b: [number, number]): boolean {

@@ -1,6 +1,6 @@
 import { expect, it } from 'vitest';
 import type { Vec, BezierSegment, Finger } from '$lib/types/heart';
-import { cutTipCounts, cellTipCounts, fewerCutTips } from './cutQuality';
+import { cutTipCounts, cutTipPoints, cellTipCounts, fewerCutTips } from './cutQuality';
 import type { Edge, Point } from './geometry';
 
 function line(p0: Vec, p3: Vec): BezierSegment {
@@ -14,6 +14,7 @@ it('counts narrow paper tips, including joins with collapsed handles', () => {
 		const segments = [line({ x: 0, y: 0 }, { x: 10, y: 0 }),
 			line({ x: 10, y: 0 }, { x: 10 + 10 * Math.cos(degrees * Math.PI / 180), y: 10 * Math.sin(degrees * Math.PI / 180) })];
 		expect(cutTipCounts({ fingers: [finger(segments)] })).toEqual(expected);
+		expect(cutTipPoints({ fingers: [finger(segments)] })).toEqual(expected[1] ? [{ x: 10, y: 0 }] : []);
 		segments[0].p2 = segments[0].p3;
 		segments[1].p1 = segments[1].p0;
 		expect(cutTipCounts({ fingers: [finger(segments)] })).toEqual(expected);
