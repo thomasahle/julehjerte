@@ -114,3 +114,15 @@ it('permits a shared cut only at the gate belonging to its internal seam', () =>
 	gates[2] = uprightToSheet([10, 4]);
 	expect(allowed(gates[2])).toBe(false);
 });
+
+it('limits an irregular piece’s seam guard to its actual clipped edge', () => {
+	const contours = [square(5).map(uprightToSheet)],
+		gates = [[0, -5], [8, -5], [0, 5], [-5, 0]].map(p => uprightToSheet(p as Point)),
+		allowed = panelSeamGuard(gates, [-5, 5, 5, -5], [true, false, false, false], contours);
+	expect(allowed(gates[0])).toBe(true);
+	expect(allowed(gates[1])).toBe(true);
+	// A different gate still cannot attach to the clipped edge itself.
+	for (const x of [-5, -2, 2, 5]) expect(allowed(uprightToSheet([x, -5]))).toBe(false);
+	gates[1] = uprightToSheet([2, -5]);
+	expect(allowed(gates[1])).toBe(false);
+});

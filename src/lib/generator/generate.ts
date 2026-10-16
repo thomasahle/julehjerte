@@ -858,6 +858,32 @@ function retryBranchedText(request: GeneratorRequest, curveFitter: ReturnType<ty
 	} catch (error) {
 		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 	}
+	if (best || !hasOverlappingTextBranches(text, font)) return best;
+	// A neighbouring V-shaped stroke needs aligned columns and higher row
+	// junctions. Retain the separate serif branches, give the unchanged letters
+	// more of the frame, and require room around the complete joined cuts.
+	for (const frameFill of [.9, .84]) for (const rows of [[.2, .4], [.25, .45]] as const) {
+		let construction: Construction;
+		try {
+			construction = generateBranchedText(text, font, frame, .55, true, rows, frameFill);
+		} catch (error) {
+			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			continue;
+		}
+		for (const fraction of [0, .2, .4]) try {
+			const geometry = fraction ? curveSharedCuts(construction.geometry, undefined, fraction) : construction.geometry;
+			if (!geometry) continue;
+			const result = improveSharedConnections(finishConstruction(request, construction, 'letters', geometry, curveFitter)),
+				design = result.design, margin = intersectionMarginPx(inferOverlapRect(design.fingers, design.gridSize),
+					gridClearanceScale(design.gridSize.x, design.gridSize.y));
+			if (findFingersWithIssues(design.fingers, margin * 1.1).size) continue;
+			const tips = cutTipCounts(design);
+			if (!best || fewerCutTips(tips, cutTipCounts(best.design))) best = result;
+			if (!tips[1]) return best;
+		} catch (error) {
+			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+		}
+	}
 	return best;
 }
 

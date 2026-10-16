@@ -1,5 +1,5 @@
 import {
-	forest, centroid, sub, dot, inside, distance, mix, frameRing, ray,
+	forest, area, centroid, sub, dot, inside, distance, mix, frameRing, ray,
 	uprightToSheet, fourPortMotif, connectCellGrid, compile, ConstructionError,
 	type Ring, type Point, type Edge, type Contour, type Frame, type Font
 } from './geometry';
@@ -17,6 +17,20 @@ const slice = (parts: Ring[], axis: 0 | 1, value: number, left: boolean) => {
 	const swap = (ring: Ring): Ring => ring.map(([x, y]): Point => [y, x]);
 	return axis ? clipContours(parts.map(swap), value, left).map(swap) : clipContours(parts, value, left);
 };
+
+/** A clipped component owning fixed seam gates should carry those contacts.
+ * Choosing the largest component can force a different piece's gate through
+ * its outline before reaching the intended paper path. */
+function seamRoot(contours: Ring[], gates: Point[]): Ring | undefined {
+	const touches = (ring: Ring, p: Point) => ring.some((a, i) => {
+		const b = ring[(i + 1) % ring.length], d = sub(b, a), t = dot(sub(p, a), d) / dot(d, d);
+		return t >= -1e-7 && t <= 1 + 1e-7 && distance(p, mix(a, b, Math.max(0, Math.min(1, t)))) < 1e-5;
+	});
+	const ranked = forest(contours).map(node => ({
+		ring: node.ring, count: gates.filter(p => touches(node.ring, p)).length
+	})).sort((a, b) => b.count - a.count || Math.abs(area(b.ring)) - Math.abs(area(a.ring)));
+	return ranked[0]?.count ? ranked[0].ring : undefined;
+}
 
 const overlapCache = new WeakMap<Font, Map<string, boolean>>();
 /** Detect the topology before trying rectangular cuts that split the same
@@ -51,7 +65,8 @@ export function hasOverlappingTextBranches(text: string, font: Font): boolean {
  * Neighbouring glyphs use ordinary panels, with a column per disconnected part.
  * All original outlines are retained. */
 export function generateBranchedText(text: string, font: Font, frame: Frame,
-	splitFraction = .55, practical = false) {
+	splitFraction = .55, practical = false, junctionRows?: readonly [number, number],
+	frameFill = junctionRows ? .84 : .72) {
 	if (!text.trim() || /\s/.test(text)) throw new ConstructionError('topology', 'Branched text needs one filled line');
 	const glyphs = [...text.normalize('NFC')].map(char => {
 		const glyph = font.glyphs[char];
@@ -72,7 +87,7 @@ export function generateBranchedText(text: string, font: Font, frame: Frame,
 	if (!(span > 0)) throw new ConstructionError('empty', 'Empty text');
 	const uprightGlyphs = placed.map(g => normalizeContours(g.map(r => r.map(([x, y]): Point =>
 		[(x - cx) / span, (y - cy) / span]))).map(r => r.map(([x, y]): Point =>
-		[x * 80 * .72 * (frame === 'oval' ? .75 : 1), y * 80 * .72 * (frame === 'oval' ? .75 : 1)])));
+		[x * 80 * frameFill * (frame === 'oval' ? .75 : 1), y * 80 * frameFill * (frame === 'oval' ? .75 : 1)])));
 	const matrix: Ring[][][] = [[], [], []],
 		splits: { axis: 0 | 1; value: number; source: number }[] = [],
 		sources = new Map<Ring[], number>(),
@@ -92,7 +107,8 @@ export function generateBranchedText(text: string, font: Font, frame: Frame,
 			return centroid(points)[1];
 		}) : [];
 		const horizontal = useBranches ? seamCenters.slice(1).map((c, i) => (c + seamCenters[i]) / 2)
-			: panelDividers(whole.flat().map(p => p[1]), minY, maxY, 3);
+			: junctionRows ? junctionRows.map(t => minY + (maxY - minY) * t)
+				: panelDividers(whole.flat().map(p => p[1]), minY, maxY, 3);
 		if (useBranches) splits.push({ axis: 0, value: vertical, source });
 		splits.push(...horizontal.map(value => ({ axis: 1 as const, value, source })));
 		const horizontalParts = Array.from({ length: 3 }, (_, row) => {
@@ -101,8 +117,13 @@ export function generateBranchedText(text: string, font: Font, frame: Frame,
 			if (row < 2) part = slice(part, 1, horizontal[row], true);
 			return part;
 		});
-		const columns = useBranches ? 1 : Math.max(...horizontalParts.map(part => forest(part).length)),
-			verticals = columns > 1 ? panelDividers(whole.flat().map(p => p[0]), minX, maxX, columns) : [];
+		// Keep neighbouring row boundaries aligned. Two centred columns avoid
+		// grazing the bottom of a V-shaped stroke; higher row seams keep their
+		// junctions out of that filled tip. Every completed graph is still checked.
+		const columns = useBranches ? 1 : Math.min(junctionRows ? 2 : Infinity,
+			Math.max(...horizontalParts.map(part => forest(part).length))),
+			verticals = columns > 1 ? junctionRows ? [(minX + maxX) / 2]
+				: panelDividers(whole.flat().map(p => p[0]), minX, maxX, columns) : [];
 		splits.push(...verticals.map(value => ({ axis: 0 as const, value, source })));
 		for (let row = 0; row < 3; row++) {
 			for (let column = 0; column < columns; column++) {
@@ -195,7 +216,9 @@ export function generateBranchedText(text: string, font: Font, frame: Frame,
 			gates = cells[row][col], center = centroid(contours.flat()), clipping = guards.get(part)!;
 		fourPortMotif(edges, contours, gates, gates.map(p => Math.atan2(center[1] - p[1], center[0] - p[0])),
 			margin, undefined, undefined, { practical, compound: true, balanced: true, alternateIslandGates: true,
-				boundaryIslands: true, connectionAllowed: panelSeamGuard(gates, clipping.bounds, clipping.internal) });
+				root: junctionRows ? seamRoot(contours, gates) : undefined,
+				boundaryIslands: true, connectionAllowed: panelSeamGuard(gates, clipping.bounds, clipping.internal,
+					junctionRows ? contours : undefined) });
 	}
 	for (const axis of [0, 1] as const) {
 		const values = [...new Set(splits.filter(s => s.axis === axis).map(s => s.value))].sort((a, b) => a - b);

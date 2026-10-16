@@ -224,12 +224,31 @@ export function panelDividers(values: number[], low: number, high: number, count
 /** Shared cuts may meet an internal seam only at that seam's agreed gate.
  * Bounds and flags follow the gates: top, right, bottom, left, in upright space.
  * Outer sides are unrestricted. Use the same tolerance as divider stitching. */
-export function panelSeamGuard(gates: Point[], bounds: number[], internal: boolean[]) {
+export function panelSeamGuard(gates: Point[], bounds: number[], internal: boolean[], contours?: Ring[]) {
+	// Irregular pieces can have an external gate on a divider's extension.
+	// Constrain the actual clipped segments, including their endpoints, while
+	// allowing that external approach beyond the piece's boundary.
+	const upright = contours?.map(r => r.map(([x, y]): Point =>
+		[(x - y) * Math.SQRT1_2, (x + y - 100) * Math.SQRT1_2]));
+	const spans = upright && internal.map((enabled, side) => {
+		const ranges: [number, number][] = [];
+		if (!enabled) return ranges;
+		const axis = side % 2 ? 0 : 1, other = 1 - axis, bound = bounds[side];
+		for (const ring of upright) for (const [i, a] of ring.entries()) {
+			if (Math.abs(a[axis] - bound) >= 1e-5) continue;
+			const b = ring[(i + 1) % ring.length];
+			ranges.push([a[other], a[other]]);
+			if (Math.abs(b[axis] - bound) < 1e-5)
+				ranges.push([Math.min(a[other], b[other]), Math.max(a[other], b[other])]);
+		}
+		return ranges;
+	});
 	return (point: Point) => {
 		const u = (point[0] - point[1]) * Math.SQRT1_2,
 			v = (point[0] + point[1] - 100) * Math.SQRT1_2;
 		return internal.every((seam, side) => !seam ||
 			Math.abs((side % 2 ? u : v) - bounds[side]) >= 1e-5 ||
+			spans && !spans[side].some(([lo, hi]) => (side % 2 ? v : u) >= lo - 1e-5 && (side % 2 ? v : u) <= hi + 1e-5) ||
 			distance(point, gates[side]) < 1e-5);
 	};
 }

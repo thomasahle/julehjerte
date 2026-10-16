@@ -756,6 +756,20 @@ Other topologies try it only after earlier recipes fail. Empty panels and
 unsupported topologies continue through the established recipes; they must
 never be silently replaced with different lettering.
 
+If the original branch layouts fail, neighbouring strokes may use at most two
+centred columns with aligned boundaries across all three rows. Try row divisions
+at 20%/40%, then 25%/45% of each unbranched glyph's height, keeping junctions
+above a filled V-shaped tip where possible. The existing stem/branch split stays
+intact. Compare 90% and 84% of the frame width, preserving all glyph proportions
+and their relative positions; the full frame and artwork checks still apply. A component
+owning fixed seam gates takes priority as the main contour. In this recipe,
+constrain extra attachments to the actual clipped segments, allowing an external
+gate on a divider's extension beyond the piece. Keep agreed contacts on those
+segments and stitch every artificial seam. Try straight joins, then 20% and 40%
+shared-curve handles, requiring 10% clearance reserve after fitting. Prefer fewer
+sharp tips and stop at zero. Earlier successful branch layouts return first.
+Only the original overlapping-branch detector enables these four extra layouts;
+there are no font-name or word-specific exceptions.
 
 If a sunburst figure still fails after the existing recipes and shared-cut
 repairs, its four-port medallion may retry using the complete five-strip grid:

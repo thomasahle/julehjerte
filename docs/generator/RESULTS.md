@@ -1,5 +1,69 @@
 # Generator robustness results
 
+## Framed text: keep neighbouring branches connected
+
+Cinzel **EMMA** now works in the circle, diamond, hexagon, rounded and scalloped
+frames, using **11×11 strips**. The circle, diamond, rounded and scalloped
+versions have **two detected tips below 45 degrees**; the hexagon has four.
+None has a detected needle tip below 30 degrees. Cinzel **EM** and **ME** also
+work in the circle, diamond and oval at **8×8**. **EMA**, **EMME** and **EMIL**
+work in the circle at 9×9, 12×12 and 10×10 respectively. These retain the
+original glyph outlines and counters.
+
+The previous irregular row layout could place two neighbours against a piece
+where the assembly expected only one. A regular division could instead put an
+invisible-cut junction inside the filled bottom of an M, or leave a tiny fragment
+beside it. The new fallback keeps at most two centred columns aligned between
+rows and tries higher horizontal divisions, at 20%/40% and 25%/45% of each
+unbranched glyph's height. Existing stem-and-branch cells remain intact.
+Components owning fixed seam contacts take priority as the main contour. The
+seam guard applies to the actual clipped segment, allowing external approaches
+on its extension without admitting extra attachments on the segment itself.
+
+The fallback compares 90% and 84% frame widths and straight, 20% or 40% shared
+curve handles. It retains 10% spacing reserve, prefers fewer sharp tips and
+stops at zero. Only the existing contour-based overlapping-branch detector
+enables these four layouts; there are no font-name or word-specific exceptions.
+Established successful branch layouts return first. The 20-strip cap and all
+conversion, topology and artwork checks remain in force.
+
+The fourteen production designs above pass JSON/SVG handoffs and independent material
+connectivity checks. Final material resolutions range from **1,400 to 6,000**;
+some lower-resolution checks were uncertain. The final checks find zero certain
+or possible detached core islands on either sheet. Every complete heart and
+both cutting sheets were visually reviewed. A separate frame-containment check
+found no outside outline samples in all 20 tested size/layout variants. Physical
+cutting, weaving ease and tear strength remain untested.
+
+The audit covers **69 cases**: all 54 corpus cases selected by the existing
+overlapping-branch detector across every corpus font and decorative text frame,
+plus 15 supplementary cases. It gives **19 accepted / 50 refused / zero invalid**,
+including **14 recoveries**. Five established successes remain exactly unchanged;
+all 19 accepted designs pass both handoffs. Every newly accepted final design
+exactly matches its inspected and independently audited production preview.
+The initial paired audit covered 66 cases with the 84% layout. The final audit
+checks the complete 90%/84% recipe for all 69 cases, reruns complete generation
+for successes, and retains 50 paired refusals where the final early recipe still
+fails and the remaining constructions are unchanged.
+
+The merged corpus is **2,882 accepted / 268 refused / zero invalid**: text is
+**1,766 / 262**, and figures remain **1,116 / six**. The expected-ID fixture matches
+all 2,882 accepted IDs. This refreshes 54 records and retains 3,096 from
+`corner-lanes-current.json`; the 15 supplementary cases are excluded. It is not
+a fresh full-matrix run. The larger catalogue and nondefault sizes remain
+incompletely audited, and supporting all combinations remains unfinished.
+
+Final type checking, lint, build and 18 focused tests pass, with seven existing
+Svelte warnings. The full unit run reports **1,206 passes and one existing
+Oswald juleman timing failure**: 5.534 seconds against its unchanged five-second
+limit. The run took 655.35 seconds across 69 files. The same test passes alone
+on the final source in **3.95 seconds**. All 1,207 unit cases pass across those
+runs; this is not a single fully green full-suite run. No existing timeout was
+increased. The separate inverse suite passes all **177 tests** in 94.76 seconds.
+Evidence in ignored `tmp/generator/`: `joined-branches-preview-{selected,metrics,material}.json`,
+`joined-branches-preview-gallery-*.png`, `joined-branches-frame-containment.json`,
+`joined-branches-{audit,final-audit,current}.json`.
+
 ## Checked corners: divide a connected figure among the existing lanes
 
 The Phosphor **crown** now works with checked corners, using **6×6 strips** and
