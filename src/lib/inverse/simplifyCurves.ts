@@ -65,29 +65,54 @@ const b1 = (u: number) => 3 * u * (1 - u) ** 2;
 const b2 = (u: number) => 3 * u * u * (1 - u);
 const b3 = (u: number) => u ** 3;
 
-function evalCubic(c: BezierSegment, u: number): Pt {
+function pointFromBasis(c: BezierSegment, a: number, b: number, c2: number, d: number): Pt {
   return {
-    x: b0(u) * c.p0.x + b1(u) * c.p1.x + b2(u) * c.p2.x + b3(u) * c.p3.x,
-    y: b0(u) * c.p0.y + b1(u) * c.p1.y + b2(u) * c.p2.y + b3(u) * c.p3.y
+    x: a * c.p0.x + b * c.p1.x + c2 * c.p2.x + d * c.p3.x,
+    y: a * c.p0.y + b * c.p1.y + c2 * c.p2.y + d * c.p3.y
   };
 }
 
-/** First derivative of a cubic, evaluated as the quadratic through 3(pi+1 − pi). */
-function evalCubicD1(c: BezierSegment, u: number): Pt {
+function evalCubic(c: BezierSegment, u: number): Pt {
+  return pointFromBasis(c, b0(u), b1(u), b2(u), b3(u));
+}
+
+/** Fitting, measuring error and reparameterizing reuse the same parameters.
+ * Cache their bases without changing the order of any arithmetic operation. */
+function parameterBases(parameters: number[]): Float64Array {
+  const bases = new Float64Array(parameters.length * 4);
+  for (let i = 0; i < parameters.length; i++) {
+    const u = parameters[i]!;
+    bases[4 * i] = b0(u); bases[4 * i + 1] = b1(u);
+    bases[4 * i + 2] = b2(u); bases[4 * i + 3] = b3(u);
+  }
+  return bases;
+}
+
+function evalFromBases(c: BezierSegment, bases: Float64Array, i: number): Pt {
+  return pointFromBasis(c, bases[4 * i]!, bases[4 * i + 1]!, bases[4 * i + 2]!, bases[4 * i + 3]!);
+}
+
+type CubicDerivatives = { first: [Pt, Pt, Pt]; second: [Pt, Pt] };
+
+/** All samples in a reparameterization pass share the same curve. Keep its
+ * derivative controls once, preserving the original arithmetic exactly. */
+function derivativeControls(c: BezierSegment): CubicDerivatives {
   const q0 = mul(sub(c.p1, c.p0), 3);
   const q1 = mul(sub(c.p2, c.p1), 3);
   const q2 = mul(sub(c.p3, c.p2), 3);
+  return { first: [q0, q1, q2], second: [mul(sub(q1, q0), 2), mul(sub(q2, q1), 2)] };
+}
+
+/** First derivative of a cubic, evaluated as a quadratic. */
+function evalCubicD1(d: CubicDerivatives, u: number): Pt {
+  const [q0, q1, q2] = d.first;
   const mu = 1 - u;
   return add(add(mul(q0, mu * mu), mul(q1, 2 * mu * u)), mul(q2, u * u));
 }
 
 /** Second derivative of a cubic. */
-function evalCubicD2(c: BezierSegment, u: number): Pt {
-  const q0 = mul(sub(c.p1, c.p0), 3);
-  const q1 = mul(sub(c.p2, c.p1), 3);
-  const q2 = mul(sub(c.p3, c.p2), 3);
-  const r0 = mul(sub(q1, q0), 2);
-  const r1 = mul(sub(q2, q1), 2);
+function evalCubicD2(d: CubicDerivatives, u: number): Pt {
+  const [r0, r1] = d.second;
   return add(mul(r0, 1 - u), mul(r1, u));
 }
 
@@ -154,7 +179,7 @@ function chordLengthParameterize(points: Pt[], first: number, last: number): num
 }
 
 /** Least-squares cubic through the run, with both endpoints and tangents fixed. */
-function generateBezier(points: Pt[], first: number, last: number, u: number[], tHat1: Pt, tHat2: Pt): BezierSegment {
+function generateBezier(points: Pt[], first: number, last: number, bases: Float64Array, tHat1: Pt, tHat2: Pt): BezierSegment {
   const p0 = points[first]!;
   const p3 = points[last]!;
   const n = last - first + 1;
@@ -165,13 +190,13 @@ function generateBezier(points: Pt[], first: number, last: number, u: number[], 
   let x0 = 0;
   let x1 = 0;
   for (let i = 0; i < n; i++) {
-    const ui = u[i]!;
-    const a0 = mul(tHat1, b1(ui));
-    const a1 = mul(tHat2, b2(ui));
+    const v1 = bases[4 * i + 1]!, v2 = bases[4 * i + 2]!;
+    const a0 = mul(tHat1, v1);
+    const a1 = mul(tHat2, v2);
     c00 += dot(a0, a0);
     c01 += dot(a0, a1);
     c11 += dot(a1, a1);
-    const onLine = add(mul(p0, b0(ui) + b1(ui)), mul(p3, b2(ui) + b3(ui)));
+    const onLine = add(mul(p0, bases[4 * i]! + v1), mul(p3, v2 + bases[4 * i + 3]!));
     const tmp = sub(points[first + i]!, onLine);
     x0 += dot(a0, tmp);
     x1 += dot(a1, tmp);
@@ -196,10 +221,10 @@ function generateBezier(points: Pt[], first: number, last: number, u: number[], 
 }
 
 /** One Newton-Raphson step towards the parameter that puts `p` closest to the curve. */
-function newtonRaphsonRootFind(curve: BezierSegment, p: Pt, u: number): number {
-  const d = sub(evalCubic(curve, u), p);
-  const d1 = evalCubicD1(curve, u);
-  const d2 = evalCubicD2(curve, u);
+function newtonRaphsonRootFind(curve: BezierSegment, derivatives: CubicDerivatives, p: Pt, u: number, bases: Float64Array, i: number): number {
+  const d = sub(evalFromBases(curve, bases, i), p);
+  const d1 = evalCubicD1(derivatives, u);
+  const d2 = evalCubicD2(derivatives, u);
   const numerator = dot(d, d1);
   const denominator = dot(d1, d1) + dot(d, d2);
   if (Math.abs(denominator) < 1e-12) return u;
@@ -211,12 +236,12 @@ function computeMaxError(
   first: number,
   last: number,
   curve: BezierSegment,
-  u: number[]
+  bases: Float64Array
 ): { maxError: number; splitPoint: number } {
   let maxError = 0;
   let splitPoint = Math.floor((last - first + 1) / 2) + first;
   for (let i = first + 1; i < last; i++) {
-    const dist = len(sub(evalCubic(curve, u[i - first]!), points[i]!));
+    const dist = len(sub(evalFromBases(curve, bases, i - first), points[i]!));
     if (dist >= maxError) {
       maxError = dist;
       splitPoint = i;
@@ -260,8 +285,9 @@ function fitRun(
   }
 
   let u = chordLengthParameterize(points, first, last);
-  let curve = generateBezier(points, first, last, u, tHat1, tHat2);
-  let best = { curve, first, last, ...computeMaxError(points, first, last, curve, u) };
+  let bases = parameterBases(u);
+  let curve = generateBezier(points, first, last, bases, tHat1, tHat2);
+  let best = { curve, first, last, ...computeMaxError(points, first, last, curve, bases) };
   if (best.maxError < tolerance) return best;
 
   // A better parameterisation may still bring the fit inside the tolerance.
@@ -270,9 +296,11 @@ function fitRun(
   // than its own square — so the gate would never open. The passes run every
   // time instead; see REPARAMETERIZE_PASSES.
   for (let pass = 0; pass < REPARAMETERIZE_PASSES; pass++) {
-    const uPrime = u.map((ui, i) => newtonRaphsonRootFind(curve, points[first + i]!, ui));
-    curve = generateBezier(points, first, last, uPrime, tHat1, tHat2);
-    const measured = { curve, first, last, ...computeMaxError(points, first, last, curve, uPrime) };
+    const derivatives = derivativeControls(curve);
+    const uPrime = u.map((ui, i) => newtonRaphsonRootFind(curve, derivatives, points[first + i]!, ui, bases, i));
+    bases = parameterBases(uPrime);
+    curve = generateBezier(points, first, last, bases, tHat1, tHat2);
+    const measured = { curve, first, last, ...computeMaxError(points, first, last, curve, bases) };
     // Keep the best fit seen: a diverging reparameterisation must not lose the
     // split point the plain least-squares fit already found.
     if (measured.maxError < best.maxError) best = measured;

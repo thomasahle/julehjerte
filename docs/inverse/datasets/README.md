@@ -33,6 +33,14 @@ The inventory, with material annotations updated on 2026-10-16, contains:
 
 ## Current results and limits
 
+[Cached curve evaluation](curve-evaluation-cache-results.json) reduces the
+editable-conversion stage by **33%** across 110 saved inputs (65 distinct fitted
+geometries), preserving every converted coordinate, validation result and SVG
+byte. The dense Hunodan conversion falls from roughly **0.86 s to 0.55 s**.
+This reuses the same arithmetic instead of changing tolerances or fitting
+iterations. It is integrated locally alongside the count-search bound; combined
+browser timing and repository QA are pending.
+
 The [supported-count search bound](supported-count-bound-results.json) is now
 integrated locally. It skips other counts only when they cannot displace an
 already valid boundary-supported fit under the existing one-percentage-point
