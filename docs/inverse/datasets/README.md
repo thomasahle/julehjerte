@@ -57,15 +57,23 @@ benchmark retains 27/31 with identical crops and classified inputs. Quality
 changes are mixed: Viking improves, while fine-checker, orb and floral-checker
 worsen. Those photo runs already enter sharing with different refined candidates,
 so the timed-run differences cannot all be attributed to this scoring change.
-Hunodan hjsta-03 gains three disagreement pixels at 383×383. The application
-tests pass; the full inverse suite is still running. The slower area-recovery
+Hunodan hjsta-03 gains three disagreement pixels at 383×383. Full QA passes
+865 application tests (one skipped), all 968 inverse tests, type checking,
+lint, build and private Chromium checks, with all 801 pinned files unchanged.
+All 29 photographic exports convert to editable SVG; 27 pass the complete
+checks, with no editor geometry issues. The slower area-recovery
 proposal remains offline and no uniform photographic improvement is claimed.
 
-A [partial-body intervention](known-body-crop-intervention-plan.json) is queued
-after the live QA run. It corrects only annotated background, only annotated
-paper, or both, keeping material probabilities and unknown pixels unchanged.
-This diagnostic separates background leakage from omitted paper and remaining
-locator assumptions; it is not a trained-model or reconstruction success score.
+The [partial-body intervention](known-body-crop-intervention-results.json) is
+complete: unchanged predictions produce 3/22 crop proposals, correcting only
+known background produces 13, only known paper produces 7, and both produces
+16. Material probabilities and unknown pixels remain unchanged. All six panels
+were inspected, the unchanged controls reproduce exactly, and all 99 pinned
+files match. This identifies background leakage as the strongest tested cause,
+but the paper corrections lose the candle and six cases still fail with both
+corrections. These are annotation-assisted crop counts, not model or template
+success rates. A fixed foreground-probability offset is now being tested
+without annotations in the detector; it remains an offline development probe.
 
 [Initial narrow-neck recovery](initial-paper-separation-results.json) reuses the
 existing local separation retry after a complete paper-failed refinement block,

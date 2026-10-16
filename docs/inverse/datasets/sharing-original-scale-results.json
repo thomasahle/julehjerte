@@ -1,6 +1,6 @@
 {
   "schema": "sharing-original-scale-results-1",
-  "status": "integrated-fresh-browser-hunodan-photo-checks-pass-full-suite-running",
+  "status": "integrated-full-QA-complete",
   "change": "Fine-scale shared-cut image checks area-resample the original classified mask and its observation weights directly. Source-free callers keep their existing objective. No new alignment pass, extra rounds or acceptance-threshold relaxation.",
   "scope": "Local additional alignment on 49 fixed accepted exports. All source probability fields in this probe equal their binary masks, making its probability-or-mask prototype equivalent to the integrated classified-mask reference. This does not establish fresh solve success or runtime.",
   "fixedMatrix": {
@@ -361,7 +361,61 @@
       "screenshotsInspected": true,
       "visualFindings": "Both shared-boundary silhouettes remain intact; small contour notches remain in the free-border hat."
     },
-    "verification": "Type check, lint, production build, browser, Hunodan, photographic and editable replay commands exited 0. App tests passed 865 with 1 skipped. Full inverse suite is still running; no full-QA claim yet.",
+    "verification": {
+      "sourceFilesVerified": 801,
+      "allCommandsPassed": true,
+      "applicationTestsPassed": 865,
+      "applicationTestsSkipped": 1,
+      "inverseTestsPassed": 968,
+      "inverseTestsFailed": 0,
+      "checks": [
+        {
+          "stage": "check",
+          "exitCode": 0,
+          "seconds": 10.51380925
+        },
+        {
+          "stage": "lint",
+          "exitCode": 0,
+          "seconds": 7.077233750000001
+        },
+        {
+          "stage": "build",
+          "exitCode": 0,
+          "seconds": 15.389112125
+        },
+        {
+          "stage": "preview",
+          "exitCode": 0,
+          "seconds": 1.123723292000001
+        },
+        {
+          "stage": "browser",
+          "exitCode": 0,
+          "seconds": 17.677238709
+        },
+        {
+          "stage": "hunodan",
+          "exitCode": 0,
+          "seconds": 122.18008220800002
+        },
+        {
+          "stage": "photos",
+          "exitCode": 0,
+          "seconds": 334.54281199999997
+        },
+        {
+          "stage": "editable",
+          "exitCode": 0,
+          "seconds": 34.52681104100003
+        },
+        {
+          "stage": "test",
+          "exitCode": 0,
+          "seconds": 1107.522229417
+        }
+      ]
+    },
     "limitations": [
       "Comparison is against a previous timed run, not an interleaved repeated timing study.",
       "Fine-checker, orb, floral-checker and Viking already enter shared-cut processing with different refined candidates. Their initial fixed-count fitting attempts match; later wall-clock-bounded refinement differs. Changes cannot all be attributed to the shared-cut sampling patch.",
@@ -371,10 +425,22 @@
     "artifactsSha256": {
       "tmp/heart-learning/sharing-original-scale-v1/production-qa/hunodan/results.json": "cd404dd1f28380a14cf14f094cc08ec3e9b6b266de734420dbc40be7e1363d75",
       "tmp/heart-learning/sharing-original-scale-v1/production-qa/photos/results.json": "c64584648211f55685238aa9f7f62f11f2bcd066ffe77d0d079fed8db434b1df",
-      "tmp/heart-learning/sharing-original-scale-v1/production-qa/comparison.json": "b345ffb5b79dffd1bff1f1ea888cbe69da9195fd504369c27753036fcf7f249d",
+      "tmp/heart-learning/sharing-original-scale-v1/production-qa/comparison.json": "e8ea37f1d1e268a9dcc3e5e80d4feef81495e34a4bbfd33ce0dae9ec2854c94d",
       "tmp/heart-learning/sharing-original-scale-v1/production-qa/compare.py": "d82d0a1c7d0d6d4f0fa6006ff924964efa32e435c808e1604fb154edde00b4c7",
       "tmp/heart-learning/sharing-original-scale-v1/production-qa/browser/results.json": "3b8529cfec0d9ee7064b62a7e5d3e9445939f84efd8a8a178bb5cc53efd0a29e",
-      "tmp/heart-learning/sharing-original-scale-v1/production-qa/editable/results.json": "b4ef1d5e72bb2fdb1562cea6db607088504560c87f69f5b03034a082423c2794"
+      "tmp/heart-learning/sharing-original-scale-v1/production-qa/editable/results.json": "b4ef1d5e72bb2fdb1562cea6db607088504560c87f69f5b03034a082423c2794",
+      "tmp/heart-learning/sharing-original-scale-v1/production-qa/state.json": "9ba3ffab295bcb55010fe7055ee70b5b19e2708acc8e29f8c64245f8d500ea3c",
+      "tmp/heart-learning/sharing-original-scale-v1/production-qa/source.json": "948262eaa2534e84dcbef1de89626bc080ca57a6157eec1799e7e0d805255525",
+      "tmp/heart-learning/sharing-original-scale-v1/production-qa/test.log": "c37101d1323cd0d993bf69ba51f797aa7ea6ef7566ded43ba543acd8f85aff25",
+      "tmp/heart-learning/sharing-original-scale-v1/production-qa/checks.json": "8b20b12a406d0bc702a117963d40e20aa6415596ba52cee40082472fa58046f6",
+      "tmp/heart-learning/sharing-original-scale-v1/production-qa/served-assets.json": "23db4e2af6e966bdbd0b426ad129f2368138e260c8cf2a8aa5d1fafea16c5b33",
+      "tmp/heart-learning/sharing-original-scale-v1/production-qa/preview.json": "141bb5eec3d23cccb10b3460467ae09297c5de146eb15a76a53dc4448feb80ef"
+    },
+    "editable": {
+      "exportedCandidates": 29,
+      "conversionPassed": 29,
+      "completeCandidatePassed": 27,
+      "editorIssues": 0
     }
   }
 }
