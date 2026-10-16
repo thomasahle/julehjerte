@@ -69,11 +69,21 @@ for(const clockScale of [1,1.5])for(const translation of [null,'horizontal','ver
   const {prepared,cfg}=await nearMiss(translation),source=prepared.target.sourceImage,mask=source.mask.slice(),probability=source.probability.slice();
   const answer=await design(prepared.target,cfg);
   const initialization=answer.report.solver.earlyFeatureInitialization;
+  const samplingFirst=initialization?.strategy==='same-count-sampling';
   if(translation!=='negative-diagonal'){
     assert.ok(initialization,JSON.stringify({message:'Feature initialization was skipped',selectedInitialization:answer.report.solver.selectedInitialization,seconds:answer.report.solver.seconds,stages:answer.report.solver.stages,fine:answer.report.solver.attempts.filter(a=>a.stage==='fine'),finalistPreference:answer.report.solver.finalistPreference}));
-    assert.equal((translation==='horizontal'?initialization.alternativeRefinement:initialization.coarseRefinement).accepted,true);
+    if(!samplingFirst)assert.equal((translation==='horizontal'?initialization.alternativeRefinement:initialization.coarseRefinement).accepted,true);
   }
-  if(['vertical','negative-diagonal'].includes(translation)){
+  if(samplingFirst){
+    // Limited time can skip the larger feature search and start directly
+    // from its cheaper alternate. Final fidelity and legality stay mandatory.
+    assert.equal(initialization.scheduled,1);
+    assert.equal(answer.report.solver.samplingRecovery.reason,'limited-initialization-time');
+    assert.equal(answer.report.solver.samplingRecovery.scheduled,1);
+    assert.equal(initialization.initializationResolution,98);
+    assert.deepEqual(answer.report.solver.selectedCounts,initialization.counts);
+    assert.equal(answer.report.solver.selectedInitialization,'feature-sampling-grid');
+  }else if(['vertical','negative-diagonal'].includes(translation)){
     assert.equal(answer.report.solver.samplingRecovery.scheduled,1);
     assert.equal(answer.report.solver.selectedInitialization,'feature-sampling-grid');
     const preflight=answer.report.solver.samplingRecovery.preflight;

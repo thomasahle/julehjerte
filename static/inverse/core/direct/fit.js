@@ -249,8 +249,14 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     featureSamplingContext={missed,counts:fine[0].model.counts};
     const interiorOnly=weakRegion!==null&&interiorRetry,seedFeatures=interiorOnly?routingFeatures:sourceFeatures,seedMissed=interiorOnly?missed.map(j=>routingIndices.indexOf(j)):missed;
     const beforeMask=interiorOnly?gridMask(fine[0].model,source.resolution,fine[0].phase,fine[0].floor):null;
-    const extra=stage('directInitializing',()=>initializeFeatureSeeds({source,features:seedFeatures,missed:seedMissed,counts:fine[0].model.counts,cfg,evidence,maximumCount}));
-    earlyFeatureInitialization={...extra.report,stage:when,scheduled:0,...(interiorOnly?{interiorOnly}:{}),...(weakRegion!==null?{trigger:'weak-region',retention:features.regions[weakRegion].retainedFraction,previousError:fine[0].error}:{})};
+    // When the full count/shape search no longer fits, its same-count sampling
+    // alternative can still leave enough time for useful curve refinement.
+    // Merely allowing the full initializer later can exhaust that time and
+    // return a worse fit. Keep the established search when its reserve fits.
+    const limitedTime=refinementTimeLeft(deadline)<=2500;
+    const extra=stage('directInitializing',()=>(limitedTime?initializeFeatureSampling:initializeFeatureSeeds)({source,features:seedFeatures,missed:seedMissed,counts:fine[0].model.counts,cfg,evidence,maximumCount}));
+    if(limitedTime)samplingRecovery={...extra.report,reason:'limited-initialization-time',scheduled:Math.min(1,extra.seeds.length)};
+    earlyFeatureInitialization={...extra.report,...(limitedTime?{strategy:'same-count-sampling'}:{}),stage:when,scheduled:0,...(interiorOnly?{interiorOnly}:{}),...(weakRegion!==null?{trigger:'weak-region',retention:features.regions[weakRegion].retainedFraction,previousError:fine[0].error}:{})};
     if(extra.seeds.length){
       const seed=stage('directFitting',()=>fitSeed(extra.seeds[0]));
       const proposalMask=gridMask(seed.model,source.resolution,seed.phase,seed.floor),audit=auditFeatureFidelity(source,proposalMask,cfg,sourceFeatures);
@@ -271,12 +277,13 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       }
     }
   };
-  // This is time remaining AFTER clearance and polishing reserves. Requiring
-  // another 3.5 seconds here skipped useful starts after modest initialization
-  // delays and spent the remaining budget on unsuccessful traced recovery.
+  // Reserve enough TOTAL time for a bounded feature proposal and refinement.
+  // The full initializer keeps its stricter post-reserve threshold above;
+  // below it, try only the cheaper same-count alternative. A lost region
+  // cannot be created by spending all remaining time on an ordinary grid.
   // Feature objectives retain source coverage and importance. Missing pixels
   // do not disable observed-feature proposals; traced recovery keeps its guard.
-  const featureTimeAvailable=()=>!symmetryRequested&&refinementTimeLeft(deadline)>2500;
+  const featureTimeAvailable=()=>!symmetryRequested&&deadline-performance.now()>3500;
   if(missingFeature&&featureTimeAvailable())initializeEarlyFeature(features.regions.flatMap((r,j)=>(r.retainedFraction<features.minimumRetention||r.enclosureLost)?[j]:[]));
   if(interiorRetry&&weakRegion!==null&&featureTimeAvailable())initializeEarlyFeature([weakRegion],weakRegion,'before-recovery');
   // Retaining a large region does not mean a coarse grid keeps its branches.
