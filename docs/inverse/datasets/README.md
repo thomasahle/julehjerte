@@ -33,6 +33,17 @@ The inventory, with material annotations updated on 2026-10-16, contains:
 
 ## Current results and limits
 
+A [selective boundary-cleanup candidate](primitive-boundary-groups-results.json)
+keeps useful straightening edits when an unrelated subpixel-supported bend makes
+the whole batch fail its objective. Fourteen focused tests pass. An untimed
+64-fit replay isolates additional reductions on the faceted star and Hunodan
+hjfig-04, with unchanged or lower independently rendered error; all 64 retain
+geometry, paper and source-feature checks. Eight paired editable exports pass.
+The prior passes run first, and no acceptance gate is relaxed. Fresh full-pipeline,
+repository and browser QA is pending; this is not an additional reconstruction
+pass or a fix for the flower photograph's hidden centre.
+
+
 A [fixed-mask ribbon diagnosis](flower-occlusion-results.json) separates input
 agreement from recovering the underlying weave. The synthetic ribbon-corrupted
 grid fits within **0.37%** but differs from its known clean design by **5.25%**.

@@ -24,10 +24,14 @@ export function finalizePrimitives(solution,cfg,options={}){
   // eligibility can connect edit groups, so replacing the first pass outright
   // can lose useful independent changes. Both passes share one deadline.
   const first=finalizePrimitivePass(solution,cfg,options);
-  return finalizePrimitivePass(first,cfg,{...options,measureCurve:true});
+  const second=finalizePrimitivePass(first,cfg,{...options,measureCurve:true});
+  if(![second.report.finalPrimitiveSelection,second.report.finalCurvePrimitiveSelection].some(r=>r?.rejection==='boundary_objective'))return second;
+  // Keep both established passes before retrying a rejected batch: early
+  // reductions can change the groups available to the curve-distance pass.
+  return finalizePrimitivePass(second,cfg,{...options,measureCurve:true,filterBoundary:true});
 }
 
-function finalizePrimitivePass(solution,cfg,{deadline=Infinity,onProgress=()=>{},measureCurve=false}={}){
+function finalizePrimitivePass(solution,cfg,{deadline=Infinity,onProgress=()=>{},measureCurve=false,filterBoundary=false}={}){
   const source=solution.graph.target.sourceImage;
   if(!source?.mask||solution.graph.target.metadata?.originalCubicsPreserved||performance.now()>=deadline)return solution;
   const start=performance.now(),n=source.resolution,weights=sourceWeights(source),input=solution.graph.target;
@@ -37,18 +41,29 @@ function finalizePrimitivePass(solution,cfg,{deadline=Infinity,onProgress=()=>{}
   if(ties)applyTies(ties,straight,straight,{fixed:graph.fixed,original:points});
   if(groups)projectMatching(straight,groups,graph.fixed,points);
   const phase=input.phase?-1:1,mask=measureCurve?sampleWeave(solution,n):renderCurves(graph,points,phase,n,32);
-  const selected=selectStraightProposal(graph,points,straight,source.mask,n,{mask,weights,ties,groups,adaptiveTolerance:measureCurve?.01:null});
+  const selectionOptions={mask,weights,ties,groups,adaptiveTolerance:measureCurve?.01:null};
+  let selected=selectStraightProposal(graph,points,straight,source.mask,n,selectionOptions);
   if(!selected||performance.now()>=deadline)return solution;
+  const value=createBoundaryEvaluator(graph,source.mask,n,{weights}),transposed=createBoundaryEvaluator(graph,source.mask,n,{weights,transpose:true,rows:193});
+  const score=p=>(value(p,phase)+transposed(p,phase))/2+primitiveCost(graph,p,n),beforeScore=score(points);
+  let selectedScore=score(selected.points),boundarySelection;
+  if(filterBoundary&&selectedScore>beforeScore){
+    // Pixel-equivalent edits can differ in subpixel boundary error. Keep the
+    // original batch when it earns its place; otherwise let independent edits
+    // earn theirs without a harmful bend vetoing every useful reduction.
+    const at=performance.now(),filtered=selectStraightProposal(graph,points,straight,source.mask,n,{...selectionOptions,score,deadline});
+    boundarySelection={selectedGroups:filtered?.accepted||0,seconds:(performance.now()-at)/1000};
+    if(filtered){selected=filtered;selectedScore=score(selected.points);}
+  }
+  if(performance.now()>=deadline)return solution;
   const p=selected.points,originalPrimitives=primitiveComplexity(graph,points),primitives=primitiveComplexity(graph,p);
   const report={groups:selected.groups,selectedGroups:selected.accepted,curvedBefore:originalPrimitives.curved,curvedAfter:primitives.curved,
-    sampledErrorBefore:mismatch(mask,source.mask,weights),sampledErrorAfter:mismatch(measureCurve?selected.mask:renderCurves(graph,p,phase,n,32),source.mask,weights),applied:false};
+    sampledErrorBefore:mismatch(mask,source.mask,weights),sampledErrorAfter:mismatch(measureCurve?selected.mask:renderCurves(graph,p,phase,n,32),source.mask,weights),...(boundarySelection?{boundarySelection}:{}),applied:false};
   let result=solution,afterMatching=beforeMatching;
   const accept=()=>{
     if(primitives.curved>=originalPrimitives.curved)return 'no_degree_reduction';
     if(report.sampledErrorAfter>report.sampledErrorBefore)return 'sampled_image_error';
-    const value=createBoundaryEvaluator(graph,source.mask,n,{weights}),transposed=createBoundaryEvaluator(graph,source.mask,n,{weights,transpose:true,rows:193});
-    const score=points=>(value(points,phase)+transposed(points,phase))/2+primitiveCost(graph,points,n);
-    if(score(p)>score(points))return 'boundary_objective';
+    if(selectedScore>beforeScore)return 'boundary_objective';
     const proposal=graph.solution(p,phase,input),woven=sampleWeave(proposal,n);
     const before=sampleWeave(solution,n);
     report.sourceErrorBefore=referenceError(source,before).mismatchFraction;
@@ -65,14 +80,14 @@ function finalizePrimitivePass(solution,cfg,{deadline=Infinity,onProgress=()=>{}
   };
   onProgress({stage:'directPolishing'});report.rejection=accept();report.seconds=(performance.now()-start)/1000;
   const matching=solution.report.matchingPreference;
-  result.report={...solution.report,[measureCurve?'finalCurvePrimitiveSelection':'finalPrimitiveSelection']:report,stages:[...(solution.report.stages||[]),{stage:'directPolishing',detail:measureCurve?'curve-degree-reduction':'selective-degree-reduction',seconds:report.seconds}],
+  result.report={...solution.report,[filterBoundary?'finalBoundaryPrimitiveSelection':measureCurve?'finalCurvePrimitiveSelection':'finalPrimitiveSelection']:report,stages:[...(solution.report.stages||[]),{stage:'directPolishing',detail:filterBoundary?'boundary-degree-reduction':measureCurve?'curve-degree-reduction':'selective-degree-reduction',seconds:report.seconds}],
     ...(report.applied?{estimatedMaskMismatch:report.sourceErrorAfter}:{}),
     ...(report.applied&&matching?{matchingPreference:{...matching,...afterMatching,selectedImageError:report.sourceErrorAfter,
       ...(Number.isFinite(matching.baselineImageError)?{additionalImageError:report.sourceErrorAfter-matching.baselineImageError}:{})}}:{})};
   return result;
 }
 
-export function selectStraightProposal(graph,points,proposal,prob,n,{mask,weights=null,ns=32,ties=null,groups=null,adaptiveTolerance=null}={}){
+export function selectStraightProposal(graph,points,proposal,prob,n,{mask,weights=null,ns=32,ties=null,groups=null,adaptiveTolerance=null,score=null,deadline=Infinity}={}){
   const changed=Uint8Array.from(points,(v,i)=>Number(v!==proposal[i]));
   if(!changed.some(Boolean))return null;
   const parent=Int32Array.from(points,(_,i)=>i);
@@ -127,7 +142,7 @@ export function selectStraightProposal(graph,points,proposal,prob,n,{mask,weight
       for(const values of [points,proposal])add(component,values[2*id],values[2*id+1],x,y);
     }
   });
-  const working=mask.slice(),selected=points.slice();let accepted=0;
+  const working=mask.slice(),selected=points.slice();let accepted=0,currentScore=score?.(selected);
   // The renderer changes parity only after a crossing, including exact ties
   // with a pixel centre. Correct the arithmetic estimate using that same test.
   const firstAfter=x=>{
@@ -137,6 +152,7 @@ export function selectStraightProposal(graph,points,proposal,prob,n,{mask,weight
     return at;
   };
   for(const component of components.values()){
+    if(performance.now()>=deadline)break;
     const {segments}=component,touched=[];
     let bottom=Infinity,top=-Infinity;
     for(const s of segments){bottom=Math.min(bottom,s[1]);top=Math.max(top,s[3]);}
@@ -157,6 +173,14 @@ export function selectStraightProposal(graph,points,proposal,prob,n,{mask,weight
     }
     if(delta>0)continue;
     for(const i of component.indices)selected[i]=proposal[i];
+    if(score){
+      const nextScore=score(selected);
+      if(nextScore>currentScore){
+        for(const i of component.indices)selected[i]=points[i];
+        continue;
+      }
+      currentScore=nextScore;
+    }
     for(const i of touched)working[i]^=1;
     accepted++;
   }

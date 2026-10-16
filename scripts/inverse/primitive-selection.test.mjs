@@ -2,7 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {Cubic} from '../../static/inverse/core/bezier.js';
 import {CurveGraph,renderCurves} from '../../static/inverse/core/direct/curves.js';
-import {straightProposal,primitiveComplexity} from '../../static/inverse/core/direct/primitives.js';
+import {straightProposal,primitiveComplexity,primitiveCost} from '../../static/inverse/core/direct/primitives.js';
+import {createBoundaryEvaluator} from '../../static/inverse/core/direct/boundary.js';
 import {selectStraightProposal,finalizePrimitives} from '../../static/inverse/core/direct/primitive-selection.js';
 import {symmetryTies,applyTies,symmetryReport} from '../../static/inverse/core/direct/symmetry.js';
 import {matchingGroups,projectMatching} from '../../static/inverse/core/direct/matching.js';
@@ -170,5 +171,36 @@ test('curve-based proposals preserve genuine bows, longitudinal overshoot and co
     const p=[[25,0],[25.4,100/3],[24.6,200/3],[25,100]].map(p=>transpose?p.toReversed():p),g=make(p);
     const result=straightProposal(g,g.points,400,{measureCurve:true});assert.ok(result);
     assert.deepEqual(g.edges[0].map(i=>[result[2*i],result[2*i+1]]),Cubic.line(p[0],p[3]).p);
+  }
+});
+
+test('subpixel boundary evidence preserves a useful bend without vetoing unrelated straightening',async()=>{
+  const n=400,cfg=settings({...DIRECT_PRESET,trials:0});
+  // Both edits leave every pixel centre unchanged. The second span bends
+  // toward the target transition within that pixel, earning its extra degree
+  // of freedom. Its continuous cost used to veto the useful first edit too.
+  const noise=[[25,0],[25.1,100/3],[24.9,200/3],[25,100]],
+    supported=[[65.1,0],[65.02,100/3],[65.02,200/3],[65.1,100]];
+  for(const phase of [1,-1])for(const weighted of [false,true]){
+    const graph=new CurveGraph([[[noise],[supported]],[[horizontal]]]),original=graph.points.slice();
+    const mask=renderCurves(graph,original,phase,n,128),saved=mask.slice(),
+      weights=weighted?Float64Array.from(mask,(_,i)=>Math.floor(i/n)>=180&&Math.floor(i/n)<220?0:1):null,
+      source={mask,resolution:n,...(weights?{weights}:{})};
+    const value=createBoundaryEvaluator(graph,mask,n,{weights}),transpose=createBoundaryEvaluator(graph,mask,n,{weights,transpose:true,rows:193});
+    const score=p=>(value(p,phase)+transpose(p,phase))/2+primitiveCost(graph,p,n);
+    const all=straightProposal(graph,original,n);
+    assert.deepEqual(renderCurves(graph,all,phase,n,128),mask);
+    assert.ok(score(all)>score(original),'The full straightening batch must genuinely fail the existing objective');
+    const selected=selectStraightProposal(graph,original,all,mask,n,{mask,weights,score});
+    assert.equal(selected.accepted,1);assert.ok(score(selected.points)<score(original));
+    const before=graph.solution(original,phase,{sourceImage:source}),after=finalizePrimitives(before,cfg);
+    assert.equal(after.report.finalCurvePrimitiveSelection.rejection,'boundary_objective');
+    assert.equal(after.report.finalBoundaryPrimitiveSelection.applied,true);
+    assert.equal(after.report.finalBoundaryPrimitiveSelection.curvedAfter,1);
+    assert.deepEqual(curvesOf(after,0,0)[0].p,Cubic.line(noise[0],noise[3]).p);
+    assert.deepEqual(curvesOf(after,0,1)[0].p,supported,'Keep the subpixel-supported bend exactly');
+    const actual=await renderExportedWeave(solutionJSON(after),n),previous=await renderExportedWeave(solutionJSON(before),n);
+    assert.deepEqual(actual.mask,previous.mask);
+    assert.deepEqual(graph.points,original);assert.deepEqual(mask,saved);
   }
 });

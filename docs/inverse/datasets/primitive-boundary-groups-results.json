@@ -1,0 +1,116 @@
+{
+  "schema": "primitive-boundary-groups-results-1",
+  "status": "candidate-full-qa-pending",
+  "plan": "docs/inverse/datasets/primitive-boundary-groups-plan.json",
+  "implementation": "Keep both existing final primitive passes. Only after a boundary-objective rejection, retry candidate groups with sequential non-increasing pixel and boundary-plus-complexity costs. The existing source-error, feature, geometry, symmetry and material checks still gate the result. All passes share the existing deadline.",
+  "focusedTests": {
+    "passed": 14,
+    "newAnalyticRegression": "Both color phases, weighted and unweighted. All candidate pixel-centre masks are equal, but the complete straightening batch has strictly worse continuous cost. The new policy retains the supported bend and straightens the unrelated noise without changing the independent exported mask or inputs."
+  },
+  "timedReplay": {
+    "cases": 64,
+    "geometryAndPaperPassed": 64,
+    "sourceFeaturesRetained": true,
+    "changes": [
+      {
+        "cohort": "photos",
+        "id": "floral-checker",
+        "curvedBefore": 182,
+        "curvedAfter": 180,
+        "sourceErrorBefore": 0.01309375,
+        "sourceErrorAfter": 0.01309375,
+        "independentErrorDelta": 1.2500000000000358e-05,
+        "boundaryFallbackApplied": false
+      },
+      {
+        "cohort": "photos",
+        "id": "crown",
+        "curvedBefore": 126,
+        "curvedAfter": 124,
+        "sourceErrorBefore": 0.02225,
+        "sourceErrorAfter": 0.02225,
+        "independentErrorDelta": 0,
+        "boundaryFallbackApplied": false
+      },
+      {
+        "cohort": "photos",
+        "id": "faceted-star",
+        "curvedBefore": 126,
+        "curvedAfter": 124,
+        "sourceErrorBefore": 0.00625,
+        "sourceErrorAfter": 0.0062375,
+        "independentErrorDelta": -6.249999999999312e-06,
+        "boundaryFallbackApplied": true
+      },
+      {
+        "cohort": "hunodan",
+        "id": "hjfig-04",
+        "curvedBefore": 40,
+        "curvedAfter": 38,
+        "sourceErrorBefore": 0.014001777777777778,
+        "sourceErrorAfter": 0.014001777777777778,
+        "independentErrorDelta": 0,
+        "boundaryFallbackApplied": true
+      }
+    ]
+  },
+  "untimedIsolation": {
+    "cases": 64,
+    "geometryAndPaperPassed": 64,
+    "sourceFeaturesRetained": true,
+    "changes": [
+      {
+        "cohort": "photos",
+        "id": "faceted-star",
+        "curvedBefore": 126,
+        "curvedAfter": 124,
+        "sourceErrorBefore": 0.00625,
+        "sourceErrorAfter": 0.0062375,
+        "independentErrorDelta": -6.249999999999312e-06,
+        "boundaryFallbackApplied": true
+      },
+      {
+        "cohort": "hunodan",
+        "id": "hjfig-04",
+        "curvedBefore": 40,
+        "curvedAfter": 38,
+        "sourceErrorBefore": 0.014001777777777778,
+        "sourceErrorAfter": 0.014001777777777778,
+        "independentErrorDelta": 0,
+        "boundaryFallbackApplied": true
+      }
+    ]
+  },
+  "timingQualification": "Timed floral-checker and crown changes disappear with the deadline removed; they are scheduling differences, not evidence of the new filter. Both original and candidate cleanup can finish final material checks beyond the 500ms request. Whole-pipeline speed is being checked separately.",
+  "editableReplay": {
+    "pairs": 8,
+    "converted": 8,
+    "complete": 8,
+    "editorIssues": 0,
+    "scope": "Baseline and candidate for all four timed changed cases, including both genuinely policy-dependent cases.",
+    "warnings": "Both hjfig-04 policies emit the same legacy outside-control-box warning; both pass independent curve, paper, source fidelity and editor intersection checks."
+  },
+  "visualReview": {
+    "allFourTimedChangesReviewed": true,
+    "finding": "Only small edge differences; no visible lost features or opened shared seams. The untimed policy-dependent outputs equal their inspected timed counterparts.",
+    "path": "tmp/heart-learning/primitive-boundary-groups-v1/corpus-review.png",
+    "sha256": "8ee673e93be663e3620e762d6e02fb35fff5137f62e24a1491c7bf700d1d23a1"
+  },
+  "limitations": [
+    "No new complete photographic reconstruction pass is claimed.",
+    "This only removes near-straight cubic handle freedom; it does not repair the flower photo's hidden centre or infer paper identity behind ribbons.",
+    "The eight-row ribbon probe predates the final cached-score refactor; the full-QA controller reruns it on the exact committed source.",
+    "Fresh Hunodan/photo benchmarks, full repository checks, and browser workflows remain pending."
+  ],
+  "artifactsSha256": {
+    "tmp/heart-learning/primitive-boundary-groups-v1/corpus.json": "f3c67d226a8a3927bd5bf30b3e9c7edc3b314e9e067c9053f8f6d99f72f861ce",
+    "tmp/heart-learning/primitive-boundary-groups-v1/unbounded/corpus.json": "cf9e238be784bc5bb23e7501066ed16f3e74bc06dd2aeb783f3888706722034d",
+    "tmp/heart-learning/primitive-boundary-groups-v1/editable/results.json": "ae0e72db386a638e0db10d815fd58618ca2dd13df5763c3cdc86afe6b1e64972",
+    "tmp/heart-learning/primitive-boundary-groups-v1/early-filter-results.json": "60df9057c3483c40ecab9fec650f805147aadfb93dc5182c57be644210ee4837",
+    "tmp/heart-learning/primitive-boundary-groups-v1/baseline-original.js": "1ac68a6785704d5eef04576615bea0439c79a80fcd02132d21535b35d7f31bd7",
+    "tmp/heart-learning/primitive-boundary-groups-v1/corpus.mjs": "3a347930181bd861ec3fcaef0263b5ee1b02b80764273fbe60a536090c585ce0",
+    "tmp/heart-learning/primitive-boundary-groups-v1/corpus-unbounded.mjs": "11780eefde29aeee306ffb4b3f8b08a4b93d96b680456a42f06cca1676d38b66",
+    "tmp/heart-learning/primitive-boundary-groups-v1/analytic.log": "63cbb19a29934b93b3292ee69df01b5671e0019db45a2c2d47c405d229dee916"
+  },
+  "deployment": "Local branch only; not pushed or deployed."
+}
