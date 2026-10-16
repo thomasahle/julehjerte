@@ -52,6 +52,17 @@ is not an additional reconstruction pass or a fix for the flower photograph's
 hidden centre.
 
 
+A [controlled import-resolution replay](browser-hunodan-resolution-results.json)
+finds a concrete browser/native discrepancy on Hunodan hjfig-05. The crop corners
+are identical, but the import helper enlarges a **337px** classified mask to
+**400px** before solving. With otherwise identical browser settings in fresh
+Node processes, the original grid takes **6.08 s** and yields four cuts per
+sheet; the enlargement takes **10.70 s** at a 10-second allowance or **19.05 s**
+at 180 seconds, yielding four and six cuts with a visible extra seam. The native
+grid also has lower error against the same 400px target (**1.09% versus 1.59%
+and 1.47%**). All four editable exports pass existing checks. This is one
+controlled diagnostic, not a deployed fix or a general browser-speed claim.
+
 A [fixed-mask ribbon diagnosis](flower-occlusion-results.json) separates input
 agreement from recovering the underlying weave. The synthetic ribbon-corrupted
 grid fits within **0.37%** but differs from its known clean design by **5.25%**.
