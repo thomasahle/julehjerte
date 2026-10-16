@@ -109,7 +109,8 @@ selection branch. These are not uniform quality gains or new photo successes.
 Full QA passes: type checking, lint, build, **874 application tests** (one
 skipped), and **1,008 inverse tests**. All 1,025 pinned source files verify.
 
-A [coverage perturbation study](coverage-perturbation-plan.json) is prepared:
+A [coverage perturbation study](coverage-perturbation-plan.json) now has
+[48 completed native fits](coverage-perturbation-results.json):
 mark just one corner pixel as unobserved while keeping all mask colours fixed.
 Two implementation discontinuities are confirmed before fitting. Feature
 emphasis restores a positive weight at ignored pixels, so its existing
@@ -118,8 +119,15 @@ resize native → 256 → 96 while unweighted grids resize native → 96; the
 one-pixel intervention changes 533–1,013 coarse pixels away from the corner
 on the three selected masks. Isolated candidates preserve observed feature
 weights, preserve direct native resampling, or combine both. Small objective
-and grid probes pass, but the 18 baseline and 18 candidate fits have not run.
-No full-pipeline gain or production integration is claimed.
+and grid probes pass. The original 36 fits plus a separate twelve-fit bird-eye
+regression confirm larger changes: puppy 3+5 → 5+5 cuts; Hunodan hjfig-05
+4+4 → 6+6 and roughly 6 → 23 seconds; the bird loses its eye in both repeats.
+All-valid controls retain identical geometry. Feature recovery restores puppy
+counts and the bird eye, while native grid resampling alone does not. The
+combined correction still fails to restore the Hunodan route and slightly
+increases total bird error despite improving its eye shape. A separate weighted
+traced-recovery experiment is running. No candidate is integrated; remaining
+partial-crop and free-border checks are still required.
 
 The [completed paired corpus and editable audits](refinement-checkpoint-corpus-results.json)
 retain **53/55 passing masks** in both arms, including all 22 Hunodan and four

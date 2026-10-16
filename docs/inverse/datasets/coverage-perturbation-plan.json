@@ -1,6 +1,6 @@
 {
   "schema": "coverage-perturbation-study-1",
-  "status": "prepared-not-fit",
+  "status": "original-matrix-and-bird-extension-complete",
   "runtimeCommit": "1561381",
   "question": "Can one unobserved corner pixel cause a discontinuous mask-to-template result, and are feature scheduling or coarse image resampling responsible?",
   "scope": "Three fixed native masks, two counterbalanced repeats. No crop, classifier, target-mask, budget, geometry or paper acceptance changes.",
@@ -224,5 +224,6 @@
     "tmp/heart-learning/coverage-candidate-comparison-v1/plan.json": "28d1d7ce14c8079834e15add48306388f7b61e1f8c9730ca4017c5e4b27a5dd1",
     "tmp/heart-learning/coverage-candidate-comparison-v1/replay.mjs": "52a056904b2a60035e96fe1f3d3b8fda6835715dcc6d9900ea1c14957bd07e4d",
     "tmp/heart-learning/coverage-candidate-comparison-v1/run.py": "02ca0c764b52f86cd808810b2f914be20c524209c2524347781910d023185bce"
-  }
+  },
+  "results": "docs/inverse/datasets/coverage-perturbation-results.json"
 }

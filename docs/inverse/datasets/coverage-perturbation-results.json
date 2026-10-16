@@ -1,0 +1,2402 @@
+{
+  "schema": "coverage-perturbation-results-1",
+  "status": "three-arm-and-bird-extension-complete-no-runtime-promotion",
+  "runtimeCommit": "1561381",
+  "fits": 48,
+  "suites": [
+    {
+      "root": "tmp/heart-learning/coverage-perturbation-v1",
+      "state": {
+        "status": "complete",
+        "seconds": 248.677707,
+        "sourceFilesVerified": 1028
+      },
+      "rows": [
+        {
+          "id": "photo-white-birds",
+          "variant": "baseline",
+          "repeat": 0,
+          "passed": true,
+          "solveSeconds": 5.400609082999999,
+          "selectedCounts": [
+            3,
+            3
+          ],
+          "selectedInitialization": "grid",
+          "geometrySha256": "6c8c0ef9ecf16ffde3f8b46b9424f2c8f7d169e8b2e0de6f278547cd700fb1ce",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 607,
+            "observedPixels": 160000,
+            "observedFraction": 1,
+            "mismatchFraction": 0.00379375
+          },
+          "observedError": {
+            "mismatchPixels": 607,
+            "observedPixels": 160000,
+            "observedFraction": 1,
+            "mismatchFraction": 0.00379375
+          },
+          "featuresPassed": true,
+          "missingFeatures": [],
+          "enclosures": null,
+          "sourceMaskSha256": "4c2f7e027c7efd6daad57573ee636a271679fa82f4170304628322ce87112c90"
+        },
+        {
+          "id": "photo-white-birds",
+          "variant": "all-valid",
+          "repeat": 0,
+          "passed": true,
+          "solveSeconds": 5.264964334,
+          "selectedCounts": [
+            3,
+            3
+          ],
+          "selectedInitialization": "grid",
+          "geometrySha256": "6c8c0ef9ecf16ffde3f8b46b9424f2c8f7d169e8b2e0de6f278547cd700fb1ce",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 607,
+            "observedPixels": 160000,
+            "observedFraction": 1,
+            "mismatchFraction": 0.00379375
+          },
+          "observedError": {
+            "mismatchPixels": 607,
+            "observedPixels": 160000,
+            "observedFraction": 1,
+            "mismatchFraction": 0.00379375
+          },
+          "featuresPassed": true,
+          "missingFeatures": [],
+          "enclosures": null,
+          "sourceMaskSha256": "4c2f7e027c7efd6daad57573ee636a271679fa82f4170304628322ce87112c90"
+        },
+        {
+          "id": "photo-white-birds",
+          "variant": "missing-corner",
+          "repeat": 0,
+          "passed": true,
+          "solveSeconds": 6.744933,
+          "selectedCounts": [
+            3,
+            3
+          ],
+          "selectedInitialization": "grid",
+          "geometrySha256": "9eb8827804f69887ea59476466d94236524bbe15513e61878fd1194466345219",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 606,
+            "observedPixels": 160000,
+            "observedFraction": 1,
+            "mismatchFraction": 0.0037875
+          },
+          "observedError": {
+            "mismatchPixels": 606,
+            "observedPixels": 159999,
+            "observedFraction": 0.99999375,
+            "mismatchFraction": 0.00378752367202295,
+            "weightMass": 159999,
+            "mismatchWeight": 606,
+            "wholeMismatchFraction": 0.00378752367202295,
+            "protectedPixels": 159999,
+            "protectedMismatchFraction": 0.00378752367202295,
+            "editablePixels": 0,
+            "editableChangeFraction": null
+          },
+          "featuresPassed": true,
+          "missingFeatures": [],
+          "enclosures": null,
+          "sourceMaskSha256": "4c2f7e027c7efd6daad57573ee636a271679fa82f4170304628322ce87112c90"
+        },
+        {
+          "id": "hard-flettede-puppy-half",
+          "variant": "baseline",
+          "repeat": 0,
+          "passed": true,
+          "solveSeconds": 20.327705,
+          "selectedCounts": [
+            3,
+            5
+          ],
+          "selectedInitialization": "feature-weighted-grid",
+          "geometrySha256": "35085c39869d34b0193c00be13c652cbbf2ccaef75c32457eb27c4510b0a7ad0",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 1798,
+            "observedPixels": 152100,
+            "observedFraction": 1,
+            "mismatchFraction": 0.011821170282708744
+          },
+          "observedError": {
+            "mismatchPixels": 1798,
+            "observedPixels": 152100,
+            "observedFraction": 1,
+            "mismatchFraction": 0.011821170282708744
+          },
+          "featuresPassed": true,
+          "missingFeatures": [],
+          "enclosures": {
+            "components": [
+              {
+                "centerMm": [
+                  60.98901098901099,
+                  75.64560439560441
+                ],
+                "sourceAreaMm2": 7.363576594345823,
+                "intersectionPixels": 109,
+                "retention": 0.9732142857142857,
+                "predictedComponentAreaMm2": 7.232084155161076,
+                "touchesBorder": false,
+                "componentIoU": 0.9646017699115044
+              }
+            ],
+            "opened": 0
+          },
+          "sourceMaskSha256": "2abddb3cba34978548c5a575c6a01d05afcbfc85631e95bdf21b863ab6c22971"
+        },
+        {
+          "id": "hard-flettede-puppy-half",
+          "variant": "all-valid",
+          "repeat": 0,
+          "passed": true,
+          "solveSeconds": 20.129188542000005,
+          "selectedCounts": [
+            3,
+            5
+          ],
+          "selectedInitialization": "feature-weighted-grid",
+          "geometrySha256": "35085c39869d34b0193c00be13c652cbbf2ccaef75c32457eb27c4510b0a7ad0",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 1798,
+            "observedPixels": 152100,
+            "observedFraction": 1,
+            "mismatchFraction": 0.011821170282708744
+          },
+          "observedError": {
+            "mismatchPixels": 1798,
+            "observedPixels": 152100,
+            "observedFraction": 1,
+            "mismatchFraction": 0.011821170282708744
+          },
+          "featuresPassed": true,
+          "missingFeatures": [],
+          "enclosures": {
+            "components": [
+              {
+                "centerMm": [
+                  60.98901098901099,
+                  75.64560439560441
+                ],
+                "sourceAreaMm2": 7.363576594345823,
+                "intersectionPixels": 109,
+                "retention": 0.9732142857142857,
+                "predictedComponentAreaMm2": 7.232084155161076,
+                "touchesBorder": false,
+                "componentIoU": 0.9646017699115044
+              }
+            ],
+            "opened": 0
+          },
+          "sourceMaskSha256": "2abddb3cba34978548c5a575c6a01d05afcbfc85631e95bdf21b863ab6c22971"
+        },
+        {
+          "id": "hard-flettede-puppy-half",
+          "variant": "missing-corner",
+          "repeat": 0,
+          "passed": true,
+          "solveSeconds": 25.161451125,
+          "selectedCounts": [
+            5,
+            5
+          ],
+          "selectedInitialization": "grid",
+          "geometrySha256": "e3c0e574e14397f09b3fb918b9e235927605bfd7731d3979226965212162da7c",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 2068,
+            "observedPixels": 152100,
+            "observedFraction": 1,
+            "mismatchFraction": 0.013596318211702827
+          },
+          "observedError": {
+            "mismatchPixels": 2067,
+            "observedPixels": 152099,
+            "observedFraction": 0.9999934253780408,
+            "mismatchFraction": 0.013589832937757645,
+            "weightMass": 152099,
+            "mismatchWeight": 2067,
+            "wholeMismatchFraction": 0.013589832937757645,
+            "protectedPixels": 152099,
+            "protectedMismatchFraction": 0.013589832937757645,
+            "editablePixels": 0,
+            "editableChangeFraction": null
+          },
+          "featuresPassed": true,
+          "missingFeatures": [],
+          "enclosures": {
+            "components": [
+              {
+                "centerMm": [
+                  60.98901098901099,
+                  75.64560439560441
+                ],
+                "sourceAreaMm2": 7.363576594345823,
+                "intersectionPixels": 105,
+                "retention": 0.9375,
+                "predictedComponentAreaMm2": 7.560815253122944,
+                "touchesBorder": false,
+                "componentIoU": 0.860655737704918
+              }
+            ],
+            "opened": 0
+          },
+          "sourceMaskSha256": "2abddb3cba34978548c5a575c6a01d05afcbfc85631e95bdf21b863ab6c22971"
+        },
+        {
+          "id": "hunodan-hjfig-05",
+          "variant": "baseline",
+          "repeat": 0,
+          "passed": true,
+          "solveSeconds": 5.831629875,
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "selectedInitialization": null,
+          "geometrySha256": "25dcfdbc8aaa913f1c8e40f8c5eb0c9c81e3835b2dfdc8f5f4a3ead431114219",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 911,
+            "observedPixels": 113569,
+            "observedFraction": 1,
+            "mismatchFraction": 0.008021555177909465
+          },
+          "observedError": {
+            "mismatchPixels": 911,
+            "observedPixels": 113569,
+            "observedFraction": 1,
+            "mismatchFraction": 0.008021555177909465
+          },
+          "featuresPassed": true,
+          "missingFeatures": [],
+          "enclosures": null,
+          "sourceMaskSha256": "21b2a95a5c08ee3be0cdf509e2fc23116e4dfcede03fd3d49cce724906e8ae9e"
+        },
+        {
+          "id": "hunodan-hjfig-05",
+          "variant": "all-valid",
+          "repeat": 0,
+          "passed": true,
+          "solveSeconds": 5.846821041999999,
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "selectedInitialization": null,
+          "geometrySha256": "25dcfdbc8aaa913f1c8e40f8c5eb0c9c81e3835b2dfdc8f5f4a3ead431114219",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 911,
+            "observedPixels": 113569,
+            "observedFraction": 1,
+            "mismatchFraction": 0.008021555177909465
+          },
+          "observedError": {
+            "mismatchPixels": 911,
+            "observedPixels": 113569,
+            "observedFraction": 1,
+            "mismatchFraction": 0.008021555177909465
+          },
+          "featuresPassed": true,
+          "missingFeatures": [],
+          "enclosures": null,
+          "sourceMaskSha256": "21b2a95a5c08ee3be0cdf509e2fc23116e4dfcede03fd3d49cce724906e8ae9e"
+        },
+        {
+          "id": "hunodan-hjfig-05",
+          "variant": "missing-corner",
+          "repeat": 0,
+          "passed": true,
+          "solveSeconds": 23.559681875000003,
+          "selectedCounts": [
+            6,
+            6
+          ],
+          "selectedInitialization": "grid",
+          "geometrySha256": "d9a21e4eaeb0d1ccb272706f1710fc234b5b940a0b11c44f3ac2bddf2c383123",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 1377,
+            "observedPixels": 113569,
+            "observedFraction": 1,
+            "mismatchFraction": 0.012124787574073911
+          },
+          "observedError": {
+            "mismatchPixels": 1376,
+            "observedPixels": 113568,
+            "observedFraction": 0.9999911947802658,
+            "mismatchFraction": 0.012116089039165962,
+            "weightMass": 113568,
+            "mismatchWeight": 1376,
+            "wholeMismatchFraction": 0.012116089039165962,
+            "protectedPixels": 113568,
+            "protectedMismatchFraction": 0.012116089039165962,
+            "editablePixels": 0,
+            "editableChangeFraction": null
+          },
+          "featuresPassed": true,
+          "missingFeatures": [],
+          "enclosures": null,
+          "sourceMaskSha256": "21b2a95a5c08ee3be0cdf509e2fc23116e4dfcede03fd3d49cce724906e8ae9e"
+        },
+        {
+          "id": "photo-white-birds",
+          "variant": "missing-corner",
+          "repeat": 1,
+          "passed": true,
+          "solveSeconds": 6.913206209,
+          "selectedCounts": [
+            3,
+            3
+          ],
+          "selectedInitialization": "grid",
+          "geometrySha256": "9eb8827804f69887ea59476466d94236524bbe15513e61878fd1194466345219",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 606,
+            "observedPixels": 160000,
+            "observedFraction": 1,
+            "mismatchFraction": 0.0037875
+          },
+          "observedError": {
+            "mismatchPixels": 606,
+            "observedPixels": 159999,
+            "observedFraction": 0.99999375,
+            "mismatchFraction": 0.00378752367202295,
+            "weightMass": 159999,
+            "mismatchWeight": 606,
+            "wholeMismatchFraction": 0.00378752367202295,
+            "protectedPixels": 159999,
+            "protectedMismatchFraction": 0.00378752367202295,
+            "editablePixels": 0,
+            "editableChangeFraction": null
+          },
+          "featuresPassed": true,
+          "missingFeatures": [],
+          "enclosures": null,
+          "sourceMaskSha256": "4c2f7e027c7efd6daad57573ee636a271679fa82f4170304628322ce87112c90"
+        },
+        {
+          "id": "photo-white-birds",
+          "variant": "all-valid",
+          "repeat": 1,
+          "passed": true,
+          "solveSeconds": 5.440397417,
+          "selectedCounts": [
+            3,
+            3
+          ],
+          "selectedInitialization": "grid",
+          "geometrySha256": "6c8c0ef9ecf16ffde3f8b46b9424f2c8f7d169e8b2e0de6f278547cd700fb1ce",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 607,
+            "observedPixels": 160000,
+            "observedFraction": 1,
+            "mismatchFraction": 0.00379375
+          },
+          "observedError": {
+            "mismatchPixels": 607,
+            "observedPixels": 160000,
+            "observedFraction": 1,
+            "mismatchFraction": 0.00379375
+          },
+          "featuresPassed": true,
+          "missingFeatures": [],
+          "enclosures": null,
+          "sourceMaskSha256": "4c2f7e027c7efd6daad57573ee636a271679fa82f4170304628322ce87112c90"
+        },
+        {
+          "id": "photo-white-birds",
+          "variant": "baseline",
+          "repeat": 1,
+          "passed": true,
+          "solveSeconds": 5.412401167,
+          "selectedCounts": [
+            3,
+            3
+          ],
+          "selectedInitialization": "grid",
+          "geometrySha256": "6c8c0ef9ecf16ffde3f8b46b9424f2c8f7d169e8b2e0de6f278547cd700fb1ce",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 607,
+            "observedPixels": 160000,
+            "observedFraction": 1,
+            "mismatchFraction": 0.00379375
+          },
+          "observedError": {
+            "mismatchPixels": 607,
+            "observedPixels": 160000,
+            "observedFraction": 1,
+            "mismatchFraction": 0.00379375
+          },
+          "featuresPassed": true,
+          "missingFeatures": [],
+          "enclosures": null,
+          "sourceMaskSha256": "4c2f7e027c7efd6daad57573ee636a271679fa82f4170304628322ce87112c90"
+        },
+        {
+          "id": "hard-flettede-puppy-half",
+          "variant": "missing-corner",
+          "repeat": 1,
+          "passed": true,
+          "solveSeconds": 24.772548875000002,
+          "selectedCounts": [
+            5,
+            5
+          ],
+          "selectedInitialization": "grid",
+          "geometrySha256": "e3c0e574e14397f09b3fb918b9e235927605bfd7731d3979226965212162da7c",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 2068,
+            "observedPixels": 152100,
+            "observedFraction": 1,
+            "mismatchFraction": 0.013596318211702827
+          },
+          "observedError": {
+            "mismatchPixels": 2067,
+            "observedPixels": 152099,
+            "observedFraction": 0.9999934253780408,
+            "mismatchFraction": 0.013589832937757645,
+            "weightMass": 152099,
+            "mismatchWeight": 2067,
+            "wholeMismatchFraction": 0.013589832937757645,
+            "protectedPixels": 152099,
+            "protectedMismatchFraction": 0.013589832937757645,
+            "editablePixels": 0,
+            "editableChangeFraction": null
+          },
+          "featuresPassed": true,
+          "missingFeatures": [],
+          "enclosures": {
+            "components": [
+              {
+                "centerMm": [
+                  60.98901098901099,
+                  75.64560439560441
+                ],
+                "sourceAreaMm2": 7.363576594345823,
+                "intersectionPixels": 105,
+                "retention": 0.9375,
+                "predictedComponentAreaMm2": 7.560815253122944,
+                "touchesBorder": false,
+                "componentIoU": 0.860655737704918
+              }
+            ],
+            "opened": 0
+          },
+          "sourceMaskSha256": "2abddb3cba34978548c5a575c6a01d05afcbfc85631e95bdf21b863ab6c22971"
+        },
+        {
+          "id": "hard-flettede-puppy-half",
+          "variant": "all-valid",
+          "repeat": 1,
+          "passed": true,
+          "solveSeconds": 20.146480584000003,
+          "selectedCounts": [
+            3,
+            5
+          ],
+          "selectedInitialization": "feature-weighted-grid",
+          "geometrySha256": "35085c39869d34b0193c00be13c652cbbf2ccaef75c32457eb27c4510b0a7ad0",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 1798,
+            "observedPixels": 152100,
+            "observedFraction": 1,
+            "mismatchFraction": 0.011821170282708744
+          },
+          "observedError": {
+            "mismatchPixels": 1798,
+            "observedPixels": 152100,
+            "observedFraction": 1,
+            "mismatchFraction": 0.011821170282708744
+          },
+          "featuresPassed": true,
+          "missingFeatures": [],
+          "enclosures": {
+            "components": [
+              {
+                "centerMm": [
+                  60.98901098901099,
+                  75.64560439560441
+                ],
+                "sourceAreaMm2": 7.363576594345823,
+                "intersectionPixels": 109,
+                "retention": 0.9732142857142857,
+                "predictedComponentAreaMm2": 7.232084155161076,
+                "touchesBorder": false,
+                "componentIoU": 0.9646017699115044
+              }
+            ],
+            "opened": 0
+          },
+          "sourceMaskSha256": "2abddb3cba34978548c5a575c6a01d05afcbfc85631e95bdf21b863ab6c22971"
+        },
+        {
+          "id": "hard-flettede-puppy-half",
+          "variant": "baseline",
+          "repeat": 1,
+          "passed": true,
+          "solveSeconds": 20.477323666999997,
+          "selectedCounts": [
+            3,
+            5
+          ],
+          "selectedInitialization": "feature-weighted-grid",
+          "geometrySha256": "35085c39869d34b0193c00be13c652cbbf2ccaef75c32457eb27c4510b0a7ad0",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 1798,
+            "observedPixels": 152100,
+            "observedFraction": 1,
+            "mismatchFraction": 0.011821170282708744
+          },
+          "observedError": {
+            "mismatchPixels": 1798,
+            "observedPixels": 152100,
+            "observedFraction": 1,
+            "mismatchFraction": 0.011821170282708744
+          },
+          "featuresPassed": true,
+          "missingFeatures": [],
+          "enclosures": {
+            "components": [
+              {
+                "centerMm": [
+                  60.98901098901099,
+                  75.64560439560441
+                ],
+                "sourceAreaMm2": 7.363576594345823,
+                "intersectionPixels": 109,
+                "retention": 0.9732142857142857,
+                "predictedComponentAreaMm2": 7.232084155161076,
+                "touchesBorder": false,
+                "componentIoU": 0.9646017699115044
+              }
+            ],
+            "opened": 0
+          },
+          "sourceMaskSha256": "2abddb3cba34978548c5a575c6a01d05afcbfc85631e95bdf21b863ab6c22971"
+        },
+        {
+          "id": "hunodan-hjfig-05",
+          "variant": "missing-corner",
+          "repeat": 1,
+          "passed": true,
+          "solveSeconds": 23.107407833,
+          "selectedCounts": [
+            6,
+            6
+          ],
+          "selectedInitialization": "grid",
+          "geometrySha256": "3d6446a3ae35b85cc7fab4a7c3460c05047424dab1e483328e327d6f38882733",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 1354,
+            "observedPixels": 113569,
+            "observedFraction": 1,
+            "mismatchFraction": 0.011922267520185966
+          },
+          "observedError": {
+            "mismatchPixels": 1353,
+            "observedPixels": 113568,
+            "observedFraction": 0.9999911947802658,
+            "mismatchFraction": 0.01191356720202874,
+            "weightMass": 113568,
+            "mismatchWeight": 1353,
+            "wholeMismatchFraction": 0.01191356720202874,
+            "protectedPixels": 113568,
+            "protectedMismatchFraction": 0.01191356720202874,
+            "editablePixels": 0,
+            "editableChangeFraction": null
+          },
+          "featuresPassed": true,
+          "missingFeatures": [],
+          "enclosures": null,
+          "sourceMaskSha256": "21b2a95a5c08ee3be0cdf509e2fc23116e4dfcede03fd3d49cce724906e8ae9e"
+        },
+        {
+          "id": "hunodan-hjfig-05",
+          "variant": "all-valid",
+          "repeat": 1,
+          "passed": true,
+          "solveSeconds": 5.691639417,
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "selectedInitialization": null,
+          "geometrySha256": "25dcfdbc8aaa913f1c8e40f8c5eb0c9c81e3835b2dfdc8f5f4a3ead431114219",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 911,
+            "observedPixels": 113569,
+            "observedFraction": 1,
+            "mismatchFraction": 0.008021555177909465
+          },
+          "observedError": {
+            "mismatchPixels": 911,
+            "observedPixels": 113569,
+            "observedFraction": 1,
+            "mismatchFraction": 0.008021555177909465
+          },
+          "featuresPassed": true,
+          "missingFeatures": [],
+          "enclosures": null,
+          "sourceMaskSha256": "21b2a95a5c08ee3be0cdf509e2fc23116e4dfcede03fd3d49cce724906e8ae9e"
+        },
+        {
+          "id": "hunodan-hjfig-05",
+          "variant": "baseline",
+          "repeat": 1,
+          "passed": true,
+          "solveSeconds": 5.905762917,
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "selectedInitialization": null,
+          "geometrySha256": "25dcfdbc8aaa913f1c8e40f8c5eb0c9c81e3835b2dfdc8f5f4a3ead431114219",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 911,
+            "observedPixels": 113569,
+            "observedFraction": 1,
+            "mismatchFraction": 0.008021555177909465
+          },
+          "observedError": {
+            "mismatchPixels": 911,
+            "observedPixels": 113569,
+            "observedFraction": 1,
+            "mismatchFraction": 0.008021555177909465
+          },
+          "featuresPassed": true,
+          "missingFeatures": [],
+          "enclosures": null,
+          "sourceMaskSha256": "21b2a95a5c08ee3be0cdf509e2fc23116e4dfcede03fd3d49cce724906e8ae9e"
+        }
+      ],
+      "sourceFilesVerified": 1028,
+      "sourceManifestSha256": "cceb6861eec5a8ee51eaff997f19384b8658bf89d7f2ce3574f3d6b1507e1f67",
+      "resultsSha256": "4960bad0c4b5afd157871673d0ff2ac998a04b8ac5281446a20cb0e064ea1389"
+    },
+    {
+      "root": "tmp/heart-learning/coverage-candidate-comparison-v1",
+      "state": {
+        "status": "complete",
+        "secondsSinceResume": 120.948280583,
+        "sourceFilesVerified": 1382,
+        "resumedAfterSpaceInterruption": true
+      },
+      "rows": [
+        {
+          "id": "photo-white-birds",
+          "variant": "weighted-features",
+          "repeat": 0,
+          "passed": true,
+          "solveSeconds": 7.275024791999999,
+          "selectedCounts": [
+            3,
+            3
+          ],
+          "selectedInitialization": "grid",
+          "geometrySha256": "9eb8827804f69887ea59476466d94236524bbe15513e61878fd1194466345219",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 606,
+            "observedPixels": 160000,
+            "observedFraction": 1,
+            "mismatchFraction": 0.0037875
+          },
+          "observedError": {
+            "mismatchPixels": 606,
+            "observedPixels": 159999,
+            "observedFraction": 0.99999375,
+            "mismatchFraction": 0.00378752367202295,
+            "weightMass": 159999,
+            "mismatchWeight": 606,
+            "wholeMismatchFraction": 0.00378752367202295,
+            "protectedPixels": 159999,
+            "protectedMismatchFraction": 0.00378752367202295,
+            "editablePixels": 0,
+            "editableChangeFraction": null
+          },
+          "featuresPassed": true,
+          "missingFeatures": [],
+          "enclosures": null,
+          "sourceMaskSha256": "4c2f7e027c7efd6daad57573ee636a271679fa82f4170304628322ce87112c90"
+        },
+        {
+          "id": "photo-white-birds",
+          "variant": "native-grid",
+          "repeat": 0,
+          "passed": true,
+          "solveSeconds": 7.243958791,
+          "selectedCounts": [
+            3,
+            3
+          ],
+          "selectedInitialization": "grid",
+          "geometrySha256": "f9293812ec7340b112e10a031aa81955d5319acb7bfd09e9c428655ef63a6761",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 603,
+            "observedPixels": 160000,
+            "observedFraction": 1,
+            "mismatchFraction": 0.00376875
+          },
+          "observedError": {
+            "mismatchPixels": 603,
+            "observedPixels": 159999,
+            "observedFraction": 0.99999375,
+            "mismatchFraction": 0.0037687735548347177,
+            "weightMass": 159999,
+            "mismatchWeight": 603,
+            "wholeMismatchFraction": 0.0037687735548347177,
+            "protectedPixels": 159999,
+            "protectedMismatchFraction": 0.0037687735548347177,
+            "editablePixels": 0,
+            "editableChangeFraction": null
+          },
+          "featuresPassed": true,
+          "missingFeatures": [],
+          "enclosures": null,
+          "sourceMaskSha256": "4c2f7e027c7efd6daad57573ee636a271679fa82f4170304628322ce87112c90"
+        },
+        {
+          "id": "photo-white-birds",
+          "variant": "combined",
+          "repeat": 0,
+          "passed": true,
+          "solveSeconds": 7.230874209,
+          "selectedCounts": [
+            3,
+            3
+          ],
+          "selectedInitialization": "grid",
+          "geometrySha256": "f9293812ec7340b112e10a031aa81955d5319acb7bfd09e9c428655ef63a6761",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 603,
+            "observedPixels": 160000,
+            "observedFraction": 1,
+            "mismatchFraction": 0.00376875
+          },
+          "observedError": {
+            "mismatchPixels": 603,
+            "observedPixels": 159999,
+            "observedFraction": 0.99999375,
+            "mismatchFraction": 0.0037687735548347177,
+            "weightMass": 159999,
+            "mismatchWeight": 603,
+            "wholeMismatchFraction": 0.0037687735548347177,
+            "protectedPixels": 159999,
+            "protectedMismatchFraction": 0.0037687735548347177,
+            "editablePixels": 0,
+            "editableChangeFraction": null
+          },
+          "featuresPassed": true,
+          "missingFeatures": [],
+          "enclosures": null,
+          "sourceMaskSha256": "4c2f7e027c7efd6daad57573ee636a271679fa82f4170304628322ce87112c90"
+        },
+        {
+          "id": "hard-flettede-puppy-half",
+          "variant": "weighted-features",
+          "repeat": 0,
+          "passed": true,
+          "solveSeconds": 11.555481499999999,
+          "selectedCounts": [
+            3,
+            5
+          ],
+          "selectedInitialization": "feature-weighted-grid",
+          "geometrySha256": "d7507535fbdc2a4e3c99983f2abb2066e1baf23e7bd9ccf01a2530b2cb2529ff",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 1811,
+            "observedPixels": 152100,
+            "observedFraction": 1,
+            "mismatchFraction": 0.011906640368178829
+          },
+          "observedError": {
+            "mismatchPixels": 1810,
+            "observedPixels": 152099,
+            "observedFraction": 0.9999934253780408,
+            "mismatchFraction": 0.011900143985167555,
+            "weightMass": 152099,
+            "mismatchWeight": 1810,
+            "wholeMismatchFraction": 0.011900143985167555,
+            "protectedPixels": 152099,
+            "protectedMismatchFraction": 0.011900143985167555,
+            "editablePixels": 0,
+            "editableChangeFraction": null
+          },
+          "featuresPassed": true,
+          "missingFeatures": [],
+          "enclosures": {
+            "components": [
+              {
+                "centerMm": [
+                  60.98901098901099,
+                  75.64560439560441
+                ],
+                "sourceAreaMm2": 7.363576594345823,
+                "intersectionPixels": 112,
+                "retention": 1,
+                "predictedComponentAreaMm2": 7.429322813938197,
+                "touchesBorder": false,
+                "componentIoU": 0.9911504424778761
+              }
+            ],
+            "opened": 0
+          },
+          "sourceMaskSha256": "2abddb3cba34978548c5a575c6a01d05afcbfc85631e95bdf21b863ab6c22971"
+        },
+        {
+          "id": "hard-flettede-puppy-half",
+          "variant": "native-grid",
+          "repeat": 0,
+          "passed": true,
+          "solveSeconds": 24.154969917,
+          "selectedCounts": [
+            5,
+            5
+          ],
+          "selectedInitialization": "grid",
+          "geometrySha256": "e812ecd5594fa380e166193e2a9f60eb97d0b33bedfdaf51f91a8adb01033d89",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 1994,
+            "observedPixels": 152100,
+            "observedFraction": 1,
+            "mismatchFraction": 0.013109796186719263
+          },
+          "observedError": {
+            "mismatchPixels": 1993,
+            "observedPixels": 152099,
+            "observedFraction": 0.9999934253780408,
+            "mismatchFraction": 0.013103307714054662,
+            "weightMass": 152099,
+            "mismatchWeight": 1993,
+            "wholeMismatchFraction": 0.013103307714054662,
+            "protectedPixels": 152099,
+            "protectedMismatchFraction": 0.013103307714054662,
+            "editablePixels": 0,
+            "editableChangeFraction": null
+          },
+          "featuresPassed": true,
+          "missingFeatures": [],
+          "enclosures": {
+            "components": [
+              {
+                "centerMm": [
+                  60.98901098901099,
+                  75.64560439560441
+                ],
+                "sourceAreaMm2": 7.363576594345823,
+                "intersectionPixels": 107,
+                "retention": 0.9553571428571429,
+                "predictedComponentAreaMm2": 7.560815253122944,
+                "touchesBorder": false,
+                "componentIoU": 0.8916666666666667
+              }
+            ],
+            "opened": 0
+          },
+          "sourceMaskSha256": "2abddb3cba34978548c5a575c6a01d05afcbfc85631e95bdf21b863ab6c22971"
+        },
+        {
+          "id": "hard-flettede-puppy-half",
+          "variant": "combined",
+          "repeat": 0,
+          "passed": true,
+          "solveSeconds": 11.8596155,
+          "selectedCounts": [
+            3,
+            5
+          ],
+          "selectedInitialization": "feature-weighted-grid",
+          "geometrySha256": "602b7d76237ca180fa4f6cc804213440dc9f338140decd12c58d83fecdccc719",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 1791,
+            "observedPixels": 152100,
+            "observedFraction": 1,
+            "mismatchFraction": 0.011775147928994083
+          },
+          "observedError": {
+            "mismatchPixels": 1790,
+            "observedPixels": 152099,
+            "observedFraction": 0.9999934253780408,
+            "mismatchFraction": 0.011768650681464047,
+            "weightMass": 152099,
+            "mismatchWeight": 1790,
+            "wholeMismatchFraction": 0.011768650681464047,
+            "protectedPixels": 152099,
+            "protectedMismatchFraction": 0.011768650681464047,
+            "editablePixels": 0,
+            "editableChangeFraction": null
+          },
+          "featuresPassed": true,
+          "missingFeatures": [],
+          "enclosures": {
+            "components": [
+              {
+                "centerMm": [
+                  60.98901098901099,
+                  75.64560439560441
+                ],
+                "sourceAreaMm2": 7.363576594345823,
+                "intersectionPixels": 112,
+                "retention": 1,
+                "predictedComponentAreaMm2": 7.429322813938197,
+                "touchesBorder": false,
+                "componentIoU": 0.9911504424778761
+              }
+            ],
+            "opened": 0
+          },
+          "sourceMaskSha256": "2abddb3cba34978548c5a575c6a01d05afcbfc85631e95bdf21b863ab6c22971"
+        },
+        {
+          "id": "hunodan-hjfig-05",
+          "variant": "weighted-features",
+          "repeat": 0,
+          "passed": true,
+          "solveSeconds": 22.239716042,
+          "selectedCounts": [
+            6,
+            4
+          ],
+          "selectedInitialization": "feature-weighted-grid",
+          "geometrySha256": "f3cc63c290e4b2a73dc49d0839119675da02cd530e875019e44b119ce7849d11",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 1542,
+            "observedPixels": 113569,
+            "observedFraction": 1,
+            "mismatchFraction": 0.013577648830226559
+          },
+          "observedError": {
+            "mismatchPixels": 1542,
+            "observedPixels": 113568,
+            "observedFraction": 0.9999911947802658,
+            "mismatchFraction": 0.013577768385460693,
+            "weightMass": 113568,
+            "mismatchWeight": 1542,
+            "wholeMismatchFraction": 0.013577768385460693,
+            "protectedPixels": 113568,
+            "protectedMismatchFraction": 0.013577768385460693,
+            "editablePixels": 0,
+            "editableChangeFraction": null
+          },
+          "featuresPassed": true,
+          "missingFeatures": [],
+          "enclosures": null,
+          "sourceMaskSha256": "21b2a95a5c08ee3be0cdf509e2fc23116e4dfcede03fd3d49cce724906e8ae9e"
+        },
+        {
+          "id": "hunodan-hjfig-05",
+          "variant": "native-grid",
+          "repeat": 0,
+          "passed": true,
+          "solveSeconds": 23.435081792000002,
+          "selectedCounts": [
+            6,
+            6
+          ],
+          "selectedInitialization": "grid",
+          "geometrySha256": "d618669a2a3a19095db6857f14ad2ca8fe1b71126333390d52ea07429dc19c55",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 1390,
+            "observedPixels": 113569,
+            "observedFraction": 1,
+            "mismatchFraction": 0.01223925543061927
+          },
+          "observedError": {
+            "mismatchPixels": 1389,
+            "observedPixels": 113568,
+            "observedFraction": 0.9999911947802658,
+            "mismatchFraction": 0.012230557903634826,
+            "weightMass": 113568,
+            "mismatchWeight": 1389,
+            "wholeMismatchFraction": 0.012230557903634826,
+            "protectedPixels": 113568,
+            "protectedMismatchFraction": 0.012230557903634826,
+            "editablePixels": 0,
+            "editableChangeFraction": null
+          },
+          "featuresPassed": true,
+          "missingFeatures": [],
+          "enclosures": null,
+          "sourceMaskSha256": "21b2a95a5c08ee3be0cdf509e2fc23116e4dfcede03fd3d49cce724906e8ae9e"
+        },
+        {
+          "id": "hunodan-hjfig-05",
+          "variant": "combined",
+          "repeat": 0,
+          "passed": true,
+          "solveSeconds": 21.966318334,
+          "selectedCounts": [
+            6,
+            4
+          ],
+          "selectedInitialization": "feature-weighted-grid",
+          "geometrySha256": "95883c3ab227b0a833835ac5ce4b744bd5fb3736746c228783cadf1f9c566f6d",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 1524,
+            "observedPixels": 113569,
+            "observedFraction": 1,
+            "mismatchFraction": 0.013419154875009906
+          },
+          "observedError": {
+            "mismatchPixels": 1524,
+            "observedPixels": 113568,
+            "observedFraction": 0.9999911947802658,
+            "mismatchFraction": 0.01341927303465765,
+            "weightMass": 113568,
+            "mismatchWeight": 1524,
+            "wholeMismatchFraction": 0.01341927303465765,
+            "protectedPixels": 113568,
+            "protectedMismatchFraction": 0.01341927303465765,
+            "editablePixels": 0,
+            "editableChangeFraction": null
+          },
+          "featuresPassed": true,
+          "missingFeatures": [],
+          "enclosures": null,
+          "sourceMaskSha256": "21b2a95a5c08ee3be0cdf509e2fc23116e4dfcede03fd3d49cce724906e8ae9e"
+        },
+        {
+          "id": "photo-white-birds",
+          "variant": "combined",
+          "repeat": 1,
+          "passed": true,
+          "solveSeconds": 6.875532249999999,
+          "selectedCounts": [
+            3,
+            3
+          ],
+          "selectedInitialization": "grid",
+          "geometrySha256": "f9293812ec7340b112e10a031aa81955d5319acb7bfd09e9c428655ef63a6761",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 603,
+            "observedPixels": 160000,
+            "observedFraction": 1,
+            "mismatchFraction": 0.00376875
+          },
+          "observedError": {
+            "mismatchPixels": 603,
+            "observedPixels": 159999,
+            "observedFraction": 0.99999375,
+            "mismatchFraction": 0.0037687735548347177,
+            "weightMass": 159999,
+            "mismatchWeight": 603,
+            "wholeMismatchFraction": 0.0037687735548347177,
+            "protectedPixels": 159999,
+            "protectedMismatchFraction": 0.0037687735548347177,
+            "editablePixels": 0,
+            "editableChangeFraction": null
+          },
+          "featuresPassed": true,
+          "missingFeatures": [],
+          "enclosures": null,
+          "sourceMaskSha256": "4c2f7e027c7efd6daad57573ee636a271679fa82f4170304628322ce87112c90"
+        },
+        {
+          "id": "photo-white-birds",
+          "variant": "native-grid",
+          "repeat": 1,
+          "passed": true,
+          "solveSeconds": 6.653446667,
+          "selectedCounts": [
+            3,
+            3
+          ],
+          "selectedInitialization": "grid",
+          "geometrySha256": "f9293812ec7340b112e10a031aa81955d5319acb7bfd09e9c428655ef63a6761",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 603,
+            "observedPixels": 160000,
+            "observedFraction": 1,
+            "mismatchFraction": 0.00376875
+          },
+          "observedError": {
+            "mismatchPixels": 603,
+            "observedPixels": 159999,
+            "observedFraction": 0.99999375,
+            "mismatchFraction": 0.0037687735548347177,
+            "weightMass": 159999,
+            "mismatchWeight": 603,
+            "wholeMismatchFraction": 0.0037687735548347177,
+            "protectedPixels": 159999,
+            "protectedMismatchFraction": 0.0037687735548347177,
+            "editablePixels": 0,
+            "editableChangeFraction": null
+          },
+          "featuresPassed": true,
+          "missingFeatures": [],
+          "enclosures": null,
+          "sourceMaskSha256": "4c2f7e027c7efd6daad57573ee636a271679fa82f4170304628322ce87112c90"
+        },
+        {
+          "id": "photo-white-birds",
+          "variant": "weighted-features",
+          "repeat": 1,
+          "passed": true,
+          "solveSeconds": 7.268132834,
+          "selectedCounts": [
+            3,
+            3
+          ],
+          "selectedInitialization": "grid",
+          "geometrySha256": "9eb8827804f69887ea59476466d94236524bbe15513e61878fd1194466345219",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 606,
+            "observedPixels": 160000,
+            "observedFraction": 1,
+            "mismatchFraction": 0.0037875
+          },
+          "observedError": {
+            "mismatchPixels": 606,
+            "observedPixels": 159999,
+            "observedFraction": 0.99999375,
+            "mismatchFraction": 0.00378752367202295,
+            "weightMass": 159999,
+            "mismatchWeight": 606,
+            "wholeMismatchFraction": 0.00378752367202295,
+            "protectedPixels": 159999,
+            "protectedMismatchFraction": 0.00378752367202295,
+            "editablePixels": 0,
+            "editableChangeFraction": null
+          },
+          "featuresPassed": true,
+          "missingFeatures": [],
+          "enclosures": null,
+          "sourceMaskSha256": "4c2f7e027c7efd6daad57573ee636a271679fa82f4170304628322ce87112c90"
+        },
+        {
+          "id": "hard-flettede-puppy-half",
+          "variant": "combined",
+          "repeat": 1,
+          "passed": true,
+          "solveSeconds": 12.237263500000001,
+          "selectedCounts": [
+            3,
+            5
+          ],
+          "selectedInitialization": "feature-weighted-grid",
+          "geometrySha256": "01cf262fcb5cbae5c6237b13a1b1bef82b9f45c230a4e298e0c55694146b0299",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 1848,
+            "observedPixels": 152100,
+            "observedFraction": 1,
+            "mismatchFraction": 0.01214990138067061
+          },
+          "observedError": {
+            "mismatchPixels": 1847,
+            "observedPixels": 152099,
+            "observedFraction": 0.9999934253780408,
+            "mismatchFraction": 0.012143406597019046,
+            "weightMass": 152099,
+            "mismatchWeight": 1847,
+            "wholeMismatchFraction": 0.012143406597019046,
+            "protectedPixels": 152099,
+            "protectedMismatchFraction": 0.012143406597019046,
+            "editablePixels": 0,
+            "editableChangeFraction": null
+          },
+          "featuresPassed": true,
+          "missingFeatures": [],
+          "enclosures": {
+            "components": [
+              {
+                "centerMm": [
+                  60.98901098901099,
+                  75.64560439560441
+                ],
+                "sourceAreaMm2": 7.363576594345823,
+                "intersectionPixels": 112,
+                "retention": 1,
+                "predictedComponentAreaMm2": 7.429322813938197,
+                "touchesBorder": false,
+                "componentIoU": 0.9911504424778761
+              }
+            ],
+            "opened": 0
+          },
+          "sourceMaskSha256": "2abddb3cba34978548c5a575c6a01d05afcbfc85631e95bdf21b863ab6c22971"
+        },
+        {
+          "id": "hard-flettede-puppy-half",
+          "variant": "native-grid",
+          "repeat": 1,
+          "passed": true,
+          "solveSeconds": 23.753618417000002,
+          "selectedCounts": [
+            5,
+            5
+          ],
+          "selectedInitialization": "grid",
+          "geometrySha256": "e812ecd5594fa380e166193e2a9f60eb97d0b33bedfdaf51f91a8adb01033d89",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 1994,
+            "observedPixels": 152100,
+            "observedFraction": 1,
+            "mismatchFraction": 0.013109796186719263
+          },
+          "observedError": {
+            "mismatchPixels": 1993,
+            "observedPixels": 152099,
+            "observedFraction": 0.9999934253780408,
+            "mismatchFraction": 0.013103307714054662,
+            "weightMass": 152099,
+            "mismatchWeight": 1993,
+            "wholeMismatchFraction": 0.013103307714054662,
+            "protectedPixels": 152099,
+            "protectedMismatchFraction": 0.013103307714054662,
+            "editablePixels": 0,
+            "editableChangeFraction": null
+          },
+          "featuresPassed": true,
+          "missingFeatures": [],
+          "enclosures": {
+            "components": [
+              {
+                "centerMm": [
+                  60.98901098901099,
+                  75.64560439560441
+                ],
+                "sourceAreaMm2": 7.363576594345823,
+                "intersectionPixels": 107,
+                "retention": 0.9553571428571429,
+                "predictedComponentAreaMm2": 7.560815253122944,
+                "touchesBorder": false,
+                "componentIoU": 0.8916666666666667
+              }
+            ],
+            "opened": 0
+          },
+          "sourceMaskSha256": "2abddb3cba34978548c5a575c6a01d05afcbfc85631e95bdf21b863ab6c22971"
+        },
+        {
+          "id": "hard-flettede-puppy-half",
+          "variant": "weighted-features",
+          "repeat": 1,
+          "passed": true,
+          "solveSeconds": 11.734602542000001,
+          "selectedCounts": [
+            3,
+            5
+          ],
+          "selectedInitialization": "feature-weighted-grid",
+          "geometrySha256": "d7507535fbdc2a4e3c99983f2abb2066e1baf23e7bd9ccf01a2530b2cb2529ff",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 1811,
+            "observedPixels": 152100,
+            "observedFraction": 1,
+            "mismatchFraction": 0.011906640368178829
+          },
+          "observedError": {
+            "mismatchPixels": 1810,
+            "observedPixels": 152099,
+            "observedFraction": 0.9999934253780408,
+            "mismatchFraction": 0.011900143985167555,
+            "weightMass": 152099,
+            "mismatchWeight": 1810,
+            "wholeMismatchFraction": 0.011900143985167555,
+            "protectedPixels": 152099,
+            "protectedMismatchFraction": 0.011900143985167555,
+            "editablePixels": 0,
+            "editableChangeFraction": null
+          },
+          "featuresPassed": true,
+          "missingFeatures": [],
+          "enclosures": {
+            "components": [
+              {
+                "centerMm": [
+                  60.98901098901099,
+                  75.64560439560441
+                ],
+                "sourceAreaMm2": 7.363576594345823,
+                "intersectionPixels": 112,
+                "retention": 1,
+                "predictedComponentAreaMm2": 7.429322813938197,
+                "touchesBorder": false,
+                "componentIoU": 0.9911504424778761
+              }
+            ],
+            "opened": 0
+          },
+          "sourceMaskSha256": "2abddb3cba34978548c5a575c6a01d05afcbfc85631e95bdf21b863ab6c22971"
+        },
+        {
+          "id": "hunodan-hjfig-05",
+          "variant": "combined",
+          "repeat": 1,
+          "passed": true,
+          "solveSeconds": 21.832474666000003,
+          "selectedCounts": [
+            6,
+            4
+          ],
+          "selectedInitialization": "feature-weighted-grid",
+          "geometrySha256": "95883c3ab227b0a833835ac5ce4b744bd5fb3736746c228783cadf1f9c566f6d",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 1524,
+            "observedPixels": 113569,
+            "observedFraction": 1,
+            "mismatchFraction": 0.013419154875009906
+          },
+          "observedError": {
+            "mismatchPixels": 1524,
+            "observedPixels": 113568,
+            "observedFraction": 0.9999911947802658,
+            "mismatchFraction": 0.01341927303465765,
+            "weightMass": 113568,
+            "mismatchWeight": 1524,
+            "wholeMismatchFraction": 0.01341927303465765,
+            "protectedPixels": 113568,
+            "protectedMismatchFraction": 0.01341927303465765,
+            "editablePixels": 0,
+            "editableChangeFraction": null
+          },
+          "featuresPassed": true,
+          "missingFeatures": [],
+          "enclosures": null,
+          "sourceMaskSha256": "21b2a95a5c08ee3be0cdf509e2fc23116e4dfcede03fd3d49cce724906e8ae9e"
+        },
+        {
+          "id": "hunodan-hjfig-05",
+          "variant": "native-grid",
+          "repeat": 1,
+          "passed": true,
+          "solveSeconds": 23.094847708999996,
+          "selectedCounts": [
+            6,
+            6
+          ],
+          "selectedInitialization": "grid",
+          "geometrySha256": "9512d1cf325ea4ea1d1e5e01aaf72e7df7a254203b38b7d4bedf757c9ef94af4",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 1373,
+            "observedPixels": 113569,
+            "observedFraction": 1,
+            "mismatchFraction": 0.012089566695136876
+          },
+          "observedError": {
+            "mismatchPixels": 1372,
+            "observedPixels": 113568,
+            "observedFraction": 0.9999911947802658,
+            "mismatchFraction": 0.012080867850098619,
+            "weightMass": 113568,
+            "mismatchWeight": 1372,
+            "wholeMismatchFraction": 0.012080867850098619,
+            "protectedPixels": 113568,
+            "protectedMismatchFraction": 0.012080867850098619,
+            "editablePixels": 0,
+            "editableChangeFraction": null
+          },
+          "featuresPassed": true,
+          "missingFeatures": [],
+          "enclosures": null,
+          "sourceMaskSha256": "21b2a95a5c08ee3be0cdf509e2fc23116e4dfcede03fd3d49cce724906e8ae9e"
+        },
+        {
+          "id": "hunodan-hjfig-05",
+          "variant": "weighted-features",
+          "repeat": 1,
+          "passed": true,
+          "solveSeconds": 22.457379291000002,
+          "selectedCounts": [
+            6,
+            4
+          ],
+          "selectedInitialization": "feature-weighted-grid",
+          "geometrySha256": "f3cc63c290e4b2a73dc49d0839119675da02cd530e875019e44b119ce7849d11",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 1542,
+            "observedPixels": 113569,
+            "observedFraction": 1,
+            "mismatchFraction": 0.013577648830226559
+          },
+          "observedError": {
+            "mismatchPixels": 1542,
+            "observedPixels": 113568,
+            "observedFraction": 0.9999911947802658,
+            "mismatchFraction": 0.013577768385460693,
+            "weightMass": 113568,
+            "mismatchWeight": 1542,
+            "wholeMismatchFraction": 0.013577768385460693,
+            "protectedPixels": 113568,
+            "protectedMismatchFraction": 0.013577768385460693,
+            "editablePixels": 0,
+            "editableChangeFraction": null
+          },
+          "featuresPassed": true,
+          "missingFeatures": [],
+          "enclosures": null,
+          "sourceMaskSha256": "21b2a95a5c08ee3be0cdf509e2fc23116e4dfcede03fd3d49cce724906e8ae9e"
+        }
+      ],
+      "sourceFilesVerified": 1382,
+      "sourceManifestSha256": "ce2879310843b53b16745d911a1f5ac7195bbd7508a459a6fe6e33649a7ad472",
+      "resultsSha256": "c250c25a6e5cb836a9d7c0c9f4d8da65fac412f7910ca04e7fe25c748996424b"
+    },
+    {
+      "root": "tmp/heart-learning/coverage-bird-eye-v1",
+      "state": {
+        "status": "complete",
+        "seconds": 130.046350042,
+        "sourceFilesVerified": 1498
+      },
+      "rows": [
+        {
+          "id": "photo-bird",
+          "variant": "baseline",
+          "repeat": 0,
+          "passed": true,
+          "solveSeconds": 9.921944541999999,
+          "selectedCounts": [
+            5,
+            5
+          ],
+          "selectedInitialization": "feature-preserving-grid",
+          "geometrySha256": "6c06b246da6cd863ad086ebe9c7b30e7e57e88c7c6649b3d033c81224cd62116",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 3141,
+            "observedPixels": 160000,
+            "observedFraction": 1,
+            "mismatchFraction": 0.01963125
+          },
+          "observedError": {
+            "mismatchPixels": 3141,
+            "observedPixels": 160000,
+            "observedFraction": 1,
+            "mismatchFraction": 0.01963125
+          },
+          "featuresPassed": true,
+          "missingFeatures": [],
+          "enclosures": {
+            "components": [
+              {
+                "centerMm": [
+                  23.56590909090909,
+                  45.58863636363636
+                ],
+                "sourceAreaMm2": 3.4375,
+                "intersectionPixels": 52,
+                "retention": 0.9454545454545454,
+                "predictedComponentAreaMm2": 3.5,
+                "touchesBorder": false,
+                "componentIoU": 0.8813559322033898
+              }
+            ],
+            "opened": 0
+          },
+          "sourceMaskSha256": "7137173fa17abe3f8f7788ddb7d321fe48258a4a3f4c2f8b3171b9ff9f15a16f"
+        },
+        {
+          "id": "photo-bird",
+          "variant": "all-valid",
+          "repeat": 0,
+          "passed": true,
+          "solveSeconds": 9.918709708999998,
+          "selectedCounts": [
+            5,
+            5
+          ],
+          "selectedInitialization": "feature-preserving-grid",
+          "geometrySha256": "6c06b246da6cd863ad086ebe9c7b30e7e57e88c7c6649b3d033c81224cd62116",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 3141,
+            "observedPixels": 160000,
+            "observedFraction": 1,
+            "mismatchFraction": 0.01963125
+          },
+          "observedError": {
+            "mismatchPixels": 3141,
+            "observedPixels": 160000,
+            "observedFraction": 1,
+            "mismatchFraction": 0.01963125
+          },
+          "featuresPassed": true,
+          "missingFeatures": [],
+          "enclosures": {
+            "components": [
+              {
+                "centerMm": [
+                  23.56590909090909,
+                  45.58863636363636
+                ],
+                "sourceAreaMm2": 3.4375,
+                "intersectionPixels": 52,
+                "retention": 0.9454545454545454,
+                "predictedComponentAreaMm2": 3.5,
+                "touchesBorder": false,
+                "componentIoU": 0.8813559322033898
+              }
+            ],
+            "opened": 0
+          },
+          "sourceMaskSha256": "7137173fa17abe3f8f7788ddb7d321fe48258a4a3f4c2f8b3171b9ff9f15a16f"
+        },
+        {
+          "id": "photo-bird",
+          "variant": "missing-corner",
+          "repeat": 0,
+          "passed": false,
+          "solveSeconds": 9.932557166,
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "selectedInitialization": "grid",
+          "geometrySha256": "4a645c5a7d7bda158992d75f1ab1644c3ab8dcf05ef1374b712f757beeab5da2",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 2152,
+            "observedPixels": 160000,
+            "observedFraction": 1,
+            "mismatchFraction": 0.01345
+          },
+          "observedError": {
+            "mismatchPixels": 2152,
+            "observedPixels": 159999,
+            "observedFraction": 0.99999375,
+            "mismatchFraction": 0.013450084063025393,
+            "weightMass": 159999,
+            "mismatchWeight": 2152,
+            "wholeMismatchFraction": 0.013450084063025393,
+            "protectedPixels": 159999,
+            "protectedMismatchFraction": 0.013450084063025393,
+            "editablePixels": 0,
+            "editableChangeFraction": null
+          },
+          "featuresPassed": false,
+          "missingFeatures": [
+            {
+              "value": 0,
+              "areaMm2": 3.4375,
+              "centerMm": [
+                23.56590909090909,
+                45.58863636363636
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 6.0625,
+              "centerMm": [
+                71.08376288659794,
+                97.48840206185567
+              ],
+              "retainedFraction": 0
+            }
+          ],
+          "enclosures": {
+            "components": [
+              {
+                "centerMm": [
+                  23.56590909090909,
+                  45.58863636363636
+                ],
+                "sourceAreaMm2": 3.4375,
+                "intersectionPixels": 0,
+                "retention": 0,
+                "predictedComponentAreaMm2": 0,
+                "touchesBorder": null,
+                "componentIoU": 0
+              }
+            ],
+            "opened": 0
+          },
+          "sourceMaskSha256": "7137173fa17abe3f8f7788ddb7d321fe48258a4a3f4c2f8b3171b9ff9f15a16f"
+        },
+        {
+          "id": "photo-bird",
+          "variant": "weighted-features",
+          "repeat": 0,
+          "passed": true,
+          "solveSeconds": 9.976155417,
+          "selectedCounts": [
+            5,
+            5
+          ],
+          "selectedInitialization": "feature-preserving-grid",
+          "geometrySha256": "625d07c4da50baa0abae1466092c41b12f26473e2622d5e53be8c7b143d4cb3d",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 3357,
+            "observedPixels": 160000,
+            "observedFraction": 1,
+            "mismatchFraction": 0.02098125
+          },
+          "observedError": {
+            "mismatchPixels": 3356,
+            "observedPixels": 159999,
+            "observedFraction": 0.99999375,
+            "mismatchFraction": 0.02097513109456934,
+            "weightMass": 159999,
+            "mismatchWeight": 3356,
+            "wholeMismatchFraction": 0.02097513109456934,
+            "protectedPixels": 159999,
+            "protectedMismatchFraction": 0.02097513109456934,
+            "editablePixels": 0,
+            "editableChangeFraction": null
+          },
+          "featuresPassed": true,
+          "missingFeatures": [],
+          "enclosures": {
+            "components": [
+              {
+                "centerMm": [
+                  23.56590909090909,
+                  45.58863636363636
+                ],
+                "sourceAreaMm2": 3.4375,
+                "intersectionPixels": 52,
+                "retention": 0.9454545454545454,
+                "predictedComponentAreaMm2": 3.25,
+                "touchesBorder": false,
+                "componentIoU": 0.9454545454545454
+              }
+            ],
+            "opened": 0
+          },
+          "sourceMaskSha256": "7137173fa17abe3f8f7788ddb7d321fe48258a4a3f4c2f8b3171b9ff9f15a16f"
+        },
+        {
+          "id": "photo-bird",
+          "variant": "native-grid",
+          "repeat": 0,
+          "passed": false,
+          "solveSeconds": 9.738309625,
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "selectedInitialization": "grid",
+          "geometrySha256": "b162a07fb2cea102a1dfecb568f86dd8403f0b9dd00a0a81f78c8adc36926adf",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 2100,
+            "observedPixels": 160000,
+            "observedFraction": 1,
+            "mismatchFraction": 0.013125
+          },
+          "observedError": {
+            "mismatchPixels": 2100,
+            "observedPixels": 159999,
+            "observedFraction": 0.99999375,
+            "mismatchFraction": 0.013125082031762698,
+            "weightMass": 159999,
+            "mismatchWeight": 2100,
+            "wholeMismatchFraction": 0.013125082031762698,
+            "protectedPixels": 159999,
+            "protectedMismatchFraction": 0.013125082031762698,
+            "editablePixels": 0,
+            "editableChangeFraction": null
+          },
+          "featuresPassed": false,
+          "missingFeatures": [
+            {
+              "value": 0,
+              "areaMm2": 3.4375,
+              "centerMm": [
+                23.56590909090909,
+                45.58863636363636
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 6.0625,
+              "centerMm": [
+                71.08376288659794,
+                97.48840206185567
+              ],
+              "retainedFraction": 0
+            }
+          ],
+          "enclosures": {
+            "components": [
+              {
+                "centerMm": [
+                  23.56590909090909,
+                  45.58863636363636
+                ],
+                "sourceAreaMm2": 3.4375,
+                "intersectionPixels": 0,
+                "retention": 0,
+                "predictedComponentAreaMm2": 0,
+                "touchesBorder": null,
+                "componentIoU": 0
+              }
+            ],
+            "opened": 0
+          },
+          "sourceMaskSha256": "7137173fa17abe3f8f7788ddb7d321fe48258a4a3f4c2f8b3171b9ff9f15a16f"
+        },
+        {
+          "id": "photo-bird",
+          "variant": "combined",
+          "repeat": 0,
+          "passed": true,
+          "solveSeconds": 9.993499208,
+          "selectedCounts": [
+            5,
+            5
+          ],
+          "selectedInitialization": "feature-preserving-grid",
+          "geometrySha256": "625d07c4da50baa0abae1466092c41b12f26473e2622d5e53be8c7b143d4cb3d",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 3357,
+            "observedPixels": 160000,
+            "observedFraction": 1,
+            "mismatchFraction": 0.02098125
+          },
+          "observedError": {
+            "mismatchPixels": 3356,
+            "observedPixels": 159999,
+            "observedFraction": 0.99999375,
+            "mismatchFraction": 0.02097513109456934,
+            "weightMass": 159999,
+            "mismatchWeight": 3356,
+            "wholeMismatchFraction": 0.02097513109456934,
+            "protectedPixels": 159999,
+            "protectedMismatchFraction": 0.02097513109456934,
+            "editablePixels": 0,
+            "editableChangeFraction": null
+          },
+          "featuresPassed": true,
+          "missingFeatures": [],
+          "enclosures": {
+            "components": [
+              {
+                "centerMm": [
+                  23.56590909090909,
+                  45.58863636363636
+                ],
+                "sourceAreaMm2": 3.4375,
+                "intersectionPixels": 52,
+                "retention": 0.9454545454545454,
+                "predictedComponentAreaMm2": 3.25,
+                "touchesBorder": false,
+                "componentIoU": 0.9454545454545454
+              }
+            ],
+            "opened": 0
+          },
+          "sourceMaskSha256": "7137173fa17abe3f8f7788ddb7d321fe48258a4a3f4c2f8b3171b9ff9f15a16f"
+        },
+        {
+          "id": "photo-bird",
+          "variant": "combined",
+          "repeat": 1,
+          "passed": true,
+          "solveSeconds": 10.095486166999999,
+          "selectedCounts": [
+            5,
+            5
+          ],
+          "selectedInitialization": "feature-preserving-grid",
+          "geometrySha256": "625d07c4da50baa0abae1466092c41b12f26473e2622d5e53be8c7b143d4cb3d",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 3357,
+            "observedPixels": 160000,
+            "observedFraction": 1,
+            "mismatchFraction": 0.02098125
+          },
+          "observedError": {
+            "mismatchPixels": 3356,
+            "observedPixels": 159999,
+            "observedFraction": 0.99999375,
+            "mismatchFraction": 0.02097513109456934,
+            "weightMass": 159999,
+            "mismatchWeight": 3356,
+            "wholeMismatchFraction": 0.02097513109456934,
+            "protectedPixels": 159999,
+            "protectedMismatchFraction": 0.02097513109456934,
+            "editablePixels": 0,
+            "editableChangeFraction": null
+          },
+          "featuresPassed": true,
+          "missingFeatures": [],
+          "enclosures": {
+            "components": [
+              {
+                "centerMm": [
+                  23.56590909090909,
+                  45.58863636363636
+                ],
+                "sourceAreaMm2": 3.4375,
+                "intersectionPixels": 52,
+                "retention": 0.9454545454545454,
+                "predictedComponentAreaMm2": 3.25,
+                "touchesBorder": false,
+                "componentIoU": 0.9454545454545454
+              }
+            ],
+            "opened": 0
+          },
+          "sourceMaskSha256": "7137173fa17abe3f8f7788ddb7d321fe48258a4a3f4c2f8b3171b9ff9f15a16f"
+        },
+        {
+          "id": "photo-bird",
+          "variant": "native-grid",
+          "repeat": 1,
+          "passed": false,
+          "solveSeconds": 10.005974292000001,
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "selectedInitialization": "grid",
+          "geometrySha256": "b162a07fb2cea102a1dfecb568f86dd8403f0b9dd00a0a81f78c8adc36926adf",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 2100,
+            "observedPixels": 160000,
+            "observedFraction": 1,
+            "mismatchFraction": 0.013125
+          },
+          "observedError": {
+            "mismatchPixels": 2100,
+            "observedPixels": 159999,
+            "observedFraction": 0.99999375,
+            "mismatchFraction": 0.013125082031762698,
+            "weightMass": 159999,
+            "mismatchWeight": 2100,
+            "wholeMismatchFraction": 0.013125082031762698,
+            "protectedPixels": 159999,
+            "protectedMismatchFraction": 0.013125082031762698,
+            "editablePixels": 0,
+            "editableChangeFraction": null
+          },
+          "featuresPassed": false,
+          "missingFeatures": [
+            {
+              "value": 0,
+              "areaMm2": 3.4375,
+              "centerMm": [
+                23.56590909090909,
+                45.58863636363636
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 6.0625,
+              "centerMm": [
+                71.08376288659794,
+                97.48840206185567
+              ],
+              "retainedFraction": 0
+            }
+          ],
+          "enclosures": {
+            "components": [
+              {
+                "centerMm": [
+                  23.56590909090909,
+                  45.58863636363636
+                ],
+                "sourceAreaMm2": 3.4375,
+                "intersectionPixels": 0,
+                "retention": 0,
+                "predictedComponentAreaMm2": 0,
+                "touchesBorder": null,
+                "componentIoU": 0
+              }
+            ],
+            "opened": 0
+          },
+          "sourceMaskSha256": "7137173fa17abe3f8f7788ddb7d321fe48258a4a3f4c2f8b3171b9ff9f15a16f"
+        },
+        {
+          "id": "photo-bird",
+          "variant": "weighted-features",
+          "repeat": 1,
+          "passed": true,
+          "solveSeconds": 10.08743925,
+          "selectedCounts": [
+            5,
+            5
+          ],
+          "selectedInitialization": "feature-preserving-grid",
+          "geometrySha256": "625d07c4da50baa0abae1466092c41b12f26473e2622d5e53be8c7b143d4cb3d",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 3357,
+            "observedPixels": 160000,
+            "observedFraction": 1,
+            "mismatchFraction": 0.02098125
+          },
+          "observedError": {
+            "mismatchPixels": 3356,
+            "observedPixels": 159999,
+            "observedFraction": 0.99999375,
+            "mismatchFraction": 0.02097513109456934,
+            "weightMass": 159999,
+            "mismatchWeight": 3356,
+            "wholeMismatchFraction": 0.02097513109456934,
+            "protectedPixels": 159999,
+            "protectedMismatchFraction": 0.02097513109456934,
+            "editablePixels": 0,
+            "editableChangeFraction": null
+          },
+          "featuresPassed": true,
+          "missingFeatures": [],
+          "enclosures": {
+            "components": [
+              {
+                "centerMm": [
+                  23.56590909090909,
+                  45.58863636363636
+                ],
+                "sourceAreaMm2": 3.4375,
+                "intersectionPixels": 52,
+                "retention": 0.9454545454545454,
+                "predictedComponentAreaMm2": 3.25,
+                "touchesBorder": false,
+                "componentIoU": 0.9454545454545454
+              }
+            ],
+            "opened": 0
+          },
+          "sourceMaskSha256": "7137173fa17abe3f8f7788ddb7d321fe48258a4a3f4c2f8b3171b9ff9f15a16f"
+        },
+        {
+          "id": "photo-bird",
+          "variant": "missing-corner",
+          "repeat": 1,
+          "passed": false,
+          "solveSeconds": 9.992971833,
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "selectedInitialization": "grid",
+          "geometrySha256": "4a645c5a7d7bda158992d75f1ab1644c3ab8dcf05ef1374b712f757beeab5da2",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 2152,
+            "observedPixels": 160000,
+            "observedFraction": 1,
+            "mismatchFraction": 0.01345
+          },
+          "observedError": {
+            "mismatchPixels": 2152,
+            "observedPixels": 159999,
+            "observedFraction": 0.99999375,
+            "mismatchFraction": 0.013450084063025393,
+            "weightMass": 159999,
+            "mismatchWeight": 2152,
+            "wholeMismatchFraction": 0.013450084063025393,
+            "protectedPixels": 159999,
+            "protectedMismatchFraction": 0.013450084063025393,
+            "editablePixels": 0,
+            "editableChangeFraction": null
+          },
+          "featuresPassed": false,
+          "missingFeatures": [
+            {
+              "value": 0,
+              "areaMm2": 3.4375,
+              "centerMm": [
+                23.56590909090909,
+                45.58863636363636
+              ],
+              "retainedFraction": 0
+            },
+            {
+              "value": 0,
+              "areaMm2": 6.0625,
+              "centerMm": [
+                71.08376288659794,
+                97.48840206185567
+              ],
+              "retainedFraction": 0
+            }
+          ],
+          "enclosures": {
+            "components": [
+              {
+                "centerMm": [
+                  23.56590909090909,
+                  45.58863636363636
+                ],
+                "sourceAreaMm2": 3.4375,
+                "intersectionPixels": 0,
+                "retention": 0,
+                "predictedComponentAreaMm2": 0,
+                "touchesBorder": null,
+                "componentIoU": 0
+              }
+            ],
+            "opened": 0
+          },
+          "sourceMaskSha256": "7137173fa17abe3f8f7788ddb7d321fe48258a4a3f4c2f8b3171b9ff9f15a16f"
+        },
+        {
+          "id": "photo-bird",
+          "variant": "all-valid",
+          "repeat": 1,
+          "passed": true,
+          "solveSeconds": 9.834702625,
+          "selectedCounts": [
+            5,
+            5
+          ],
+          "selectedInitialization": "feature-preserving-grid",
+          "geometrySha256": "6c06b246da6cd863ad086ebe9c7b30e7e57e88c7c6649b3d033c81224cd62116",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 3141,
+            "observedPixels": 160000,
+            "observedFraction": 1,
+            "mismatchFraction": 0.01963125
+          },
+          "observedError": {
+            "mismatchPixels": 3141,
+            "observedPixels": 160000,
+            "observedFraction": 1,
+            "mismatchFraction": 0.01963125
+          },
+          "featuresPassed": true,
+          "missingFeatures": [],
+          "enclosures": {
+            "components": [
+              {
+                "centerMm": [
+                  23.56590909090909,
+                  45.58863636363636
+                ],
+                "sourceAreaMm2": 3.4375,
+                "intersectionPixels": 52,
+                "retention": 0.9454545454545454,
+                "predictedComponentAreaMm2": 3.5,
+                "touchesBorder": false,
+                "componentIoU": 0.8813559322033898
+              }
+            ],
+            "opened": 0
+          },
+          "sourceMaskSha256": "7137173fa17abe3f8f7788ddb7d321fe48258a4a3f4c2f8b3171b9ff9f15a16f"
+        },
+        {
+          "id": "photo-bird",
+          "variant": "baseline",
+          "repeat": 1,
+          "passed": true,
+          "solveSeconds": 9.819882582999998,
+          "selectedCounts": [
+            5,
+            5
+          ],
+          "selectedInitialization": "feature-preserving-grid",
+          "geometrySha256": "6c06b246da6cd863ad086ebe9c7b30e7e57e88c7c6649b3d033c81224cd62116",
+          "geometryPassed": true,
+          "paper": "pass",
+          "fullError": {
+            "mismatchPixels": 3141,
+            "observedPixels": 160000,
+            "observedFraction": 1,
+            "mismatchFraction": 0.01963125
+          },
+          "observedError": {
+            "mismatchPixels": 3141,
+            "observedPixels": 160000,
+            "observedFraction": 1,
+            "mismatchFraction": 0.01963125
+          },
+          "featuresPassed": true,
+          "missingFeatures": [],
+          "enclosures": {
+            "components": [
+              {
+                "centerMm": [
+                  23.56590909090909,
+                  45.58863636363636
+                ],
+                "sourceAreaMm2": 3.4375,
+                "intersectionPixels": 52,
+                "retention": 0.9454545454545454,
+                "predictedComponentAreaMm2": 3.5,
+                "touchesBorder": false,
+                "componentIoU": 0.8813559322033898
+              }
+            ],
+            "opened": 0
+          },
+          "sourceMaskSha256": "7137173fa17abe3f8f7788ddb7d321fe48258a4a3f4c2f8b3171b9ff9f15a16f"
+        }
+      ],
+      "sourceFilesVerified": 1498,
+      "sourceManifestSha256": "90c5ebae452e897abe65ef416263beb5e9c617cab1a07d8afecd8187165afdd6",
+      "resultsSha256": "59ed93096ec82840abdaec7bdad62bb9167feb3bbfcc93201de42b766c6a2f2e"
+    }
+  ],
+  "baselineSummary": {
+    "status": "complete",
+    "rows": [
+      {
+        "id": "photo-white-birds",
+        "allValidGeometryIdentical": true,
+        "baseline": {
+          "counts": [
+            [
+              3,
+              3
+            ],
+            [
+              3,
+              3
+            ]
+          ],
+          "error": [
+            0.00379375,
+            0.00379375
+          ],
+          "seconds": [
+            5.400609082999999,
+            5.412401167
+          ]
+        },
+        "missingCorner": {
+          "counts": [
+            [
+              3,
+              3
+            ],
+            [
+              3,
+              3
+            ]
+          ],
+          "error": [
+            0.0037875,
+            0.0037875
+          ],
+          "seconds": [
+            6.744933,
+            6.913206209
+          ]
+        },
+        "allPassed": true
+      },
+      {
+        "id": "hard-flettede-puppy-half",
+        "allValidGeometryIdentical": true,
+        "baseline": {
+          "counts": [
+            [
+              3,
+              5
+            ],
+            [
+              3,
+              5
+            ]
+          ],
+          "error": [
+            0.011821170282708744,
+            0.011821170282708744
+          ],
+          "seconds": [
+            20.327705,
+            20.477323666999997
+          ]
+        },
+        "missingCorner": {
+          "counts": [
+            [
+              5,
+              5
+            ],
+            [
+              5,
+              5
+            ]
+          ],
+          "error": [
+            0.013596318211702827,
+            0.013596318211702827
+          ],
+          "seconds": [
+            25.161451125,
+            24.772548875000002
+          ]
+        },
+        "allPassed": true
+      },
+      {
+        "id": "hunodan-hjfig-05",
+        "allValidGeometryIdentical": true,
+        "baseline": {
+          "counts": [
+            [
+              4,
+              4
+            ],
+            [
+              4,
+              4
+            ]
+          ],
+          "error": [
+            0.008021555177909465,
+            0.008021555177909465
+          ],
+          "seconds": [
+            5.831629875,
+            5.905762917
+          ]
+        },
+        "missingCorner": {
+          "counts": [
+            [
+              6,
+              6
+            ],
+            [
+              6,
+              6
+            ]
+          ],
+          "error": [
+            0.012124787574073911,
+            0.011922267520185966
+          ],
+          "seconds": [
+            23.559681875000003,
+            23.107407833
+          ]
+        },
+        "allPassed": true
+      }
+    ],
+    "qualification": "All cases remain within existing gates; the perturbation still changes routing, complexity, fidelity and time. Candidate comparisons are separate."
+  },
+  "findings": [
+    "All-valid controls reproduce the baseline geometry in both repeats for all four masks.",
+    "One ignored corner pixel changes puppy from 3+5 to 5+5 cuts and Hunodan hjfig-05 from 4+4 to 6+6; both still pass existing gates with worse full-mask error and longer solve time.",
+    "The separate existing bird-eye fixture loses its eye and another small region in both missing-pixel runs. Lower whole-mask error does not establish feature preservation.",
+    "Observed feature weighting/scheduling restores puppy 3+5 counts and bird-eye retention. Direct native grid resampling alone does not restore those routings.",
+    "Both individual corrections and their combination still fail to restore the simpler, faster Hunodan result. Its unperturbed fit uses traced MILP recovery, which the weighted-input guard disables.",
+    "No candidate is integrated. Combined puppy error varies between repeats, and the restored bird has higher total error than the baseline although its eye component IoU improves."
+  ],
+  "visualReview": [
+    "Puppy baseline versus missing-corner exports inspected: extra border irregularities and changed outline/routing remain visible.",
+    "Bird baseline, missing-corner and combined exports inspected: eye disappears in the weighted-input baseline and returns with the candidate. Remaining frame and seam defects are not resolved."
+  ],
+  "interruption": {
+    "reason": "Free-space preflight below 2 GiB before next fit; no failed fit or partial result.",
+    "completed": 12,
+    "originalState": {
+      "status": "running",
+      "id": "photo-white-birds",
+      "variant": "weighted-features",
+      "repeat": 1,
+      "completed": 11,
+      "pid": 73995,
+      "controllerPid": 64249
+    },
+    "supervisorState": {
+      "status": "failed",
+      "stage": "candidates",
+      "exitCode": 1
+    },
+    "supervisorLogSha256": "22f1934148f351ab3ee0969944b8048e25e345f964acfcba64710e724dca598c",
+    "verifiedSourceFiles": 1381,
+    "availableGiBAtReview": 2.866443634033203
+  },
+  "resumption": "Free space recovered to 2.87 GiB. Verified all 12 complete records and 1,381 original source pins; resumed only the six unfinished fits. No source, artifact or result was deleted.",
+  "next": {
+    "status": "running-separate-experiment",
+    "root": "tmp/heart-learning/coverage-routing-comparison-v1",
+    "fits": 16,
+    "purpose": "Canonical proposals outside observed pixels, weighted source scoring through traced recovery and its refinement, plus ignored-colour flips."
+  },
+  "qualification": "Native fixed-mask experiments, not cropper or browser timing benchmarks. Partial real crops and free-border cases still need checks before integration; no new 31-photo success-rate claim."
+}
