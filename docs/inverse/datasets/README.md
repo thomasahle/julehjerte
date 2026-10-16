@@ -33,6 +33,25 @@ The inventory, with material annotations updated on 2026-10-16, contains:
 
 ## Current results and limits
 
+A [separate shape/visibility experiment](shape-visibility-results.json) rejects
+the known false small-checker notch, but **adds no accepted real-photo crops**.
+All 22 original supported crops, masks, coverage and pass/fail results remain
+unchanged: **15/22** earlier-development and **4/20** additional-photo fits pass;
+all 22 exports convert to editable geometry, with the same 19 complete passes.
+The coarse network is too unreliable to serve as a hard local corner gate.
+
+Exact-label tests also expose the affine construction's perspective bias: even
+with the true notch, tip and lower-edge directions, its median maximum corner
+offset is **8.88% of a side length** over sixteen synthetic geometries. With
+actual model fields, the separate-evidence variant proposes only two of the
+sixteen occluded crops, at **5.52% and 14.00%** maximum corner error. Neither
+meets the declared 5% threshold. All 32 synthetic images, 20 real fallback
+rejections and three changed exports were inspected. This variant remains
+offline and is not adopted. Sixteen focused Node tests, type checking, lint
+and build pass; the full repository test suite is still running. The next
+comparison needs a projective model and uncertain visibility evidence.
+
+
 A [foreground-occlusion pilot](foreground-occlusion-results.json) adds sixteen
 ribbon-covered views from sixteen existing training geometries. It supplies
 separate complete-paper, visible-paper, hidden-paper and foreground-object
