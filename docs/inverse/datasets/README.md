@@ -49,6 +49,17 @@ errors change slightly; all changed previews were inspected. The orb uses two
 additional cuts and has more border protrusions despite lower disagreement.
 All 876 pinned sources remain unchanged.
 
+The [fixed-input material replay](border-feature-material-replay-results.json)
+then repeats all 44 fits with the guarded retry. Rabbit improves from 6.36% to
+**1.34%**, and now converts into editable geometry. The counts remain **13/22
+coarse and 12/22 crop-RGB** because its original border-feature warning remains.
+All previous checked results are retained. Of 32 exports, 31 convert and the
+same 25 pass complete checks; only the already rejected bicycle fails
+conversion. The retry also runs on the sharper candle without fixing its border
+features, while a worse coarse-candle proposal is correctly rejected. All five
+changed weave images were inspected; the other 27 PNGs are byte-identical.
+All 878 pinned sources and all frozen input masks remain unchanged.
+
 The [completed material-resolution comparison](material-resolution-results.json)
 runs 44 fresh fits on the same 22 fixed crops, with identical frozen paper
 colours. Classifying the actual crop RGB instead of interpolating the coarse
@@ -58,7 +69,7 @@ paint flecks, and does not solve printed decoration being mistaken for a paper
 boundary. All 32 exports were visually inspected; all 25 accepted outputs pass
 editable checks. Two already rejected candidates fail editor conversion. The
 global classification change is rejected. These results precede the guarded
-fitter retry above; a fixed-input replay will measure that change separately.
+fitter retry above; the subsequent fixed-input replay measures it separately.
 
 A [conditional crop fallback](locator-contrast-fallback-results.json) improves
 the SAM-assisted development pipeline from **12/22 to 13/22 checked
