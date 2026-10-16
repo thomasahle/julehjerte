@@ -1,0 +1,175 @@
+{
+  "schema": "selection-failure-source-review-summary-1",
+  "status": "source-review-verified-no-runtime-change",
+  "scope": "Original RGB and fixed rough-ROI review only. No inference, new ROI, mask, exact-corner label, hidden-cut path or template ground truth. Visibility assessments are qualitative.",
+  "reviewExposure": "Reviewer previously selected these ROIs and drafted labels for two photos. This review re-inspected original RGB rather than algorithm masks or crop overlays; not a blinded independent review.",
+  "summary": "All four have substantial exposed lower edges and tips. The pale printed checker is the clearest visible-evidence crop failure. Red/green has a hidden notch; tree has clipped/occluded lobes despite visible lower runs/notch; painted basket has visible but stepped/warped edges and a shallow notch. None establishes a cutting/solver failure because these rows stop at crop resolution.",
+  "verification": {
+    "reviewArtifacts": 10,
+    "originalImages": 4,
+    "sourceAndSelectionHashesUnchanged": true,
+    "rootVisualReview": "All four frozen-ROI RGB previews inspected; source observations agree with the review. No exact corners, material masks or hidden cutting paths inferred."
+  },
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/selection-failure-source-review-v1/handoff.json",
+      "sha256": "71298b8857fd5fadde6c3d38d6774dc968c361ad86e7edfb20f6fa2de59dfa28"
+    },
+    {
+      "path": "tmp/heart-learning/selection-failure-source-review-v1/review.json",
+      "sha256": "f8103f47b95ddf207492ed0904c2117784403faa9f867a92d4dbb2b50031ebb0"
+    },
+    {
+      "path": "tmp/heart-learning/selection-failure-source-review-v1/report.md",
+      "sha256": "a006bc16a6dde65c00d5d5b3d89a63ee42523a187cb48b341d0ba4ea75863e6a"
+    }
+  ],
+  "pipelineReport": {
+    "path": "tmp/heart-learning/selection-bounds-pipeline-v1/results/report.json",
+    "sha256": "fc3b3375144372b6d157986662ecec1b1eaec7944edfc032938141319fd8acd1"
+  },
+  "frozenSelectionProposal": {
+    "path": "tmp/heart-learning/instance-roi-proposals-v1/proposals.json",
+    "sha256": "fe426bdf8fccf0dcdc96233a90e9a5af90aa5038ba3d8f917246d6e48045bf84"
+  },
+  "findings": [
+    {
+      "assetId": "real-80c07aedd993f117",
+      "sourceImagePath": "tmp/heart-training-real/assets/80c07aedd993f11748e7a1141b922f91c9f4b8f4583e8a6ed63a56062bae6ec0.jpg",
+      "sourceImageSha256": "80c07aedd993f11748e7a1141b922f91c9f4b8f4583e8a6ed63a56062bae6ec0",
+      "frozenRoiXYXY": [
+        1240,
+        900,
+        2600,
+        2137
+      ],
+      "pipelineFailure": {
+        "status": "crop-unresolved",
+        "detectionStatus": "needs_review",
+        "reason": "No nondegenerate heart-shape fit"
+      },
+      "lowerLeftEdge": {
+        "visibility": "visible-mostly-continuous",
+        "observation": "Red lower strip edge is exposed against blue cloth. A short fold/step and pale backing near the bottom split the apparent contour; the long edge run is available."
+      },
+      "lowerRightEdge": {
+        "visibility": "visible-with-layered-outline",
+        "observation": "Green lower side and the bottom tip are exposed. Narrow backing/second-layer edges run beside the main face; gold contents do not cover these lower edges."
+      },
+      "notch": {
+        "visibility": "obscured",
+        "observation": "Ribbon crosses the cleft/upper meeting area. The exact body notch underneath is not directly observable; an eyelet and gold contents add nearby non-body edges."
+      },
+      "flatOverlapSquare": {
+        "assessment": "plausible-approximation",
+        "observation": "Visible low-count woven front has approximately straight crossing boundaries and two lower edge runs. Mild paper curvature/backing misalignment make an exact common plane uncertain; obscured notch prevents direct four-corner confirmation."
+      },
+      "diagnosis": "Failure is not explained by absent lower edges or a missing selection. It combines useful visible edge evidence with a genuinely hidden notch and a non-ideal outline. A precise full-lobe/square fit cannot be claimed from the source alone."
+    },
+    {
+      "assetId": "real-3f24113792188631",
+      "sourceImagePath": "tmp/heart-training-real/assets/3f24113792188631683078b47c05b7f68373e8660888e09f48565cc793bda9d1.jpg",
+      "sourceImageSha256": "3f24113792188631683078b47c05b7f68373e8660888e09f48565cc793bda9d1",
+      "frozenRoiXYXY": [
+        70,
+        430,
+        736,
+        1060
+      ],
+      "pipelineFailure": {
+        "status": "crop-unresolved",
+        "detectionStatus": "needs_review",
+        "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart."
+      },
+      "lowerLeftEdge": {
+        "visibility": "largely-visible",
+        "observation": "A long gold/pale lower edge runs diagonally to the bottom tip against the darker cloth. Ribbon covers the upper-left lobe/shoulder, while most of this lower straight run is exposed; needles are nearby."
+      },
+      "lowerRightEdge": {
+        "visibility": "largely-visible",
+        "observation": "The long lower-right gold/pale edge approaching the tip is exposed against cloth. The original frame clips the upper/right lobe, not the bottom tip or most of this lower run."
+      },
+      "notch": {
+        "visibility": "visible-with-similar-color-handle-context",
+        "observation": "The meeting of the pale upper lobe edge and gold lobe is visible. A gold handle rises immediately behind it and merges in color, but the center is not covered by the wide ribbon."
+      },
+      "flatOverlapSquare": {
+        "assessment": "plausible-approximate-front-face-incomplete-lobe-evidence",
+        "observation": "A projective overlap quadrilateral is plausible for the woven front. Raised branch tips, paper bowing and strong oblique shading make exact coplanarity uncertain. A complete flat-heart lobe outline is not observable because of source clipping and ribbon occlusion."
+      },
+      "diagnosis": "There is real missing/occluded lobe evidence, but the reported inability to find both exposed lower edges is not a literal absence of both edge runs. The source supports an uncertain lower-edge-driven proposal, not certification of an exact complete heart model."
+    },
+    {
+      "assetId": "real-3a89de4eae04a025",
+      "sourceImagePath": "tmp/heart-training-real/assets/3a89de4eae04a0256f3dfc47bf76a098386077e5cdb2c93a3382937541c8a79c.jpg",
+      "sourceImageSha256": "3a89de4eae04a0256f3dfc47bf76a098386077e5cdb2c93a3382937541c8a79c",
+      "frozenRoiXYXY": [
+        85,
+        180,
+        575,
+        614
+      ],
+      "pipelineFailure": {
+        "status": "crop-unresolved",
+        "detectionStatus": "needs_review",
+        "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart."
+      },
+      "lowerLeftEdge": {
+        "visibility": "visible",
+        "observation": "Long diagonal lower-left edge is visible against the pale background, aided by a narrow dark edge/cast shadow. A thin pink backing/strip-end line makes the precise contour locally ambiguous."
+      },
+      "lowerRightEdge": {
+        "visibility": "visible-low-contrast",
+        "observation": "Long diagonal lower-right edge and tip are visible. Pale blue/white paper approaches the background brightness, so the boundary is weaker than internal printed checks."
+      },
+      "notch": {
+        "visibility": "discernible-with-handle-junction-uncertainty",
+        "observation": "Both lobe contours converge at a shallow visible cleft. The pink patterned handle meets that area and makes an exact pixel coordinate uncertain; it does not erase all notch evidence."
+      },
+      "flatOverlapSquare": {
+        "assessment": "plausible-strongest-of-these-four",
+        "observation": "A near-frontal regular checker front and two long lower sides are visible. Mild paper curvature and strip offsets remain, but no large perspective/occlusion conflict prevents an approximate square model."
+      },
+      "diagnosis": "Clearest failure on available visible evidence, rather than unavoidable ambiguity or an inadequate ROI. Exact corner/contact ground truth remains unannotated; source-only review cannot identify the failing internal code stage."
+    },
+    {
+      "assetId": "real-e1b1492e32f6cdf5",
+      "sourceImagePath": "tmp/heart-training-real/assets/e1b1492e32f6cdf5667e9fd0eec4650bbc0c6ec352e508aa10a80a81a6d170d6.jpg",
+      "sourceImageSha256": "e1b1492e32f6cdf5667e9fd0eec4650bbc0c6ec352e508aa10a80a81a6d170d6",
+      "frozenRoiXYXY": [
+        95,
+        420,
+        425,
+        740
+      ],
+      "pipelineFailure": {
+        "status": "crop-unresolved",
+        "detectionStatus": "needs_review",
+        "reason": "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart."
+      },
+      "lowerLeftEdge": {
+        "visibility": "visible-stepped",
+        "observation": "Lower-left paper edge is exposed against dark/pink clothing. Individual protruding strip ends form small steps instead of one perfectly straight silhouette line."
+      },
+      "lowerRightEdge": {
+        "visibility": "visible-with-backing-and-curl",
+        "observation": "Lower-right edge and bottom tip are visible against clothing; a narrow pale backing edge and curvature produce adjacent edge candidates. The caption starts below the tip and does not hide it."
+      },
+      "notch": {
+        "visibility": "shallow-discernible",
+        "observation": "Yellow/orange left lobe meets the magenta right lobe in a shallow upper cleft. Painted colors and a front/back paper offset make it less like a clean V, but it is not covered by the cord or a hand."
+      },
+      "flatOverlapSquare": {
+        "assessment": "plausible-coarse-approximation-with-visible-warp",
+        "observation": "A low-count checker overlap is recognizable. Hanging pose, bowed paper, stepped strip ends and layer offsets make a strict single flat outline less credible than for the pale checker. They do not establish an irregular interior-cutout design."
+      },
+      "diagnosis": "Useful lower-edge and shallow-notch evidence exists. Failure is plausibly sensitivity to painted texture, similar-colored background and departures from perfectly straight edges, not lack of a selected complete body. This is an observation-based hypothesis, not a verified implementation root cause."
+    }
+  ],
+  "nextDiagnostic": "Separate physical-paper segmentation from lower-edge sampling and shape-model rejection using fixed originals and ROIs. The pale printed checker is the clearest available-evidence case. It must still pass full template reconstruction after any crop improvement.",
+  "unchanged": [
+    "No admitted annotations, source groups or dataset splits",
+    "No changes to the 31-photo, 55-mask or 19-photo benchmark counts",
+    "No loosened crop, image, geometry or paper acceptance rules"
+  ]
+}

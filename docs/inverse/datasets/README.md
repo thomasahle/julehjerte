@@ -8,6 +8,8 @@ has been added to the website.
 
 A [rough-selection bounds correction](selection-bounds-reconstruction.json) now recovers the full red/green star instead of a narrow interior strip. In nine development workflows on seven photos, the star passes native and editable checks (2.27% editable disagreement); a newly located dense checker still fails image quality (5.13%). Four other selected photos remain unresolved, and the cross still has a small false central diamond. All 76 focused crop tests passed; browser and full release QA are pending. These are separate development cases, not changes to the existing 31-photo or 55-mask benchmark.
 
+A [source-only review of the four remaining selected-photo crop failures](selection-failure-source-review.json) confirms substantial visible lower edges in all four. The pale printed checker is the clearest failure on usable evidence; the other photos add notch occlusion, a clipped lobe, or warped/stepped paper edges. This rules out absent lower edges as a blanket explanation, but does not yet establish the failing implementation stage. All ten review artifacts, four originals and the fixed selections verify unchanged; no annotations or benchmark successes are added.
+
 The inventory, with material annotations updated on 2026-10-16, contains:
 
 | Asset | Verified count | Meaning |
