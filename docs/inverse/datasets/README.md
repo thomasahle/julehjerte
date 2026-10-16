@@ -31,6 +31,16 @@ The inventory, with material annotations updated on 2026-10-15, contains:
 
 ## Current results and limits
 
+[A muted teal/pale candle photograph](real-candle-annotation-review.json) now has
+reviewed candidate body/material polygons and six four-sector contact
+neighbourhoods, three ordinary-edge controls and one separately recorded narrow
+neck. Native source and local edge/contact views were inspected. The right-hand
+cast shadow is excluded, and the uncertain flame tip and handle attachment are
+not assigned a paper identity. These are staged development annotations:
+raster compilation, dataset admission and cross-corpus motif-family review are
+pending. They do not increase the admitted counts above and have not been used
+for training.
+
 [A bounded finer finalist check](finalist-paper-resolution-results.json) restores
 the round-checker candidate without changing its cuts, classified image or
 physical tolerances. The candidate is still uncertain at resolution 700, but

@@ -1,0 +1,93 @@
+{
+  "status": "reviewed_candidate; not_admitted_or_trained",
+  "source": {
+    "assetId": "real-c4a9ee6e2d0a4185",
+    "file": "tmp/heart-training-real/assets/c4a9ee6e2d0a418519f0ea2d1ce4a63be83c3883b2bc75bc54e0e69375435edf.jpg",
+    "sha256": "c4a9ee6e2d0a418519f0ea2d1ce4a63be83c3883b2bc75bc54e0e69375435edf",
+    "size": [
+      1000,
+      1334
+    ],
+    "splitGroupId": "real-split-a47f6e30728781b2",
+    "splitStatus": "unassigned",
+    "sourcePages": [
+      "https://dk.pinterest.com/pin/72057662775817668/"
+    ],
+    "existingBodyInstance": "real-c4a9ee6e2d0a4185-body-1"
+  },
+  "body": "body-reviewed.json",
+  "materials": "materials-reviewed.json",
+  "contacts": "contacts-reviewed.json",
+  "review": {
+    "nativeImage": true,
+    "nativeBodyOutline": true,
+    "nativeMaterialRegions": true,
+    "rightEdgeAndTip": true,
+    "flameAndNeck": true,
+    "contactPatches": 10,
+    "recenteredOrdinaryEdgeControls": [
+      "edge-01",
+      "edge-02"
+    ],
+    "positiveFourSectorObservations": 6,
+    "ordinaryEdgeControls": 3,
+    "separateNarrowNeckObservations": 1,
+    "exactJunctionOrCutTruth": false
+  },
+  "verification": {
+    "sourceFileHash": true,
+    "sourceDimensionsAndManifestIdentity": true,
+    "polygonGeometry": true,
+    "materialParentHash": true,
+    "allocation": "unassigned",
+    "rasterCompilation": "pending until heavy solver work completes",
+    "modelTraining": "none"
+  },
+  "integration": "Keep source and related candle motif families grouped in any later evaluation. Do not change existing study denominators. Add to the existing pending printed-paper annotation only after raster review.",
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/candle-annotation-review-v1/body-reviewed.json",
+      "sha256": "d3da2be48b9672b255b0bc3d3c36733dd35e271ee752eac1ae52b6a074b97e2c"
+    },
+    {
+      "path": "tmp/heart-learning/candle-annotation-review-v1/materials-reviewed.json",
+      "sha256": "4de418732680c65d588aebfb14bf3e34beae5fe9ac4ab4f31aa15ac53121dde4"
+    },
+    {
+      "path": "tmp/heart-learning/candle-annotation-review-v1/contacts-reviewed.json",
+      "sha256": "6ceccf5bffd6d879ea58d8fe1278798b361b4fff9ed65ae58f75f0a8970b2a13"
+    },
+    {
+      "path": "tmp/heart-learning/candle-annotation-review-v1/polygons-reviewed.jpg",
+      "sha256": "7b9df42eb1844af983417b08d0039b48e21bab5c1b4ff5bddbb273c8f29341cf"
+    },
+    {
+      "path": "tmp/heart-learning/candle-annotation-review-v1/contacts-reviewed.jpg",
+      "sha256": "06e281f35c0ac687d23571d567901fbc7f53378ab8ed0478ea95c7d09a78fd30"
+    },
+    {
+      "path": "tmp/heart-learning/candle-annotation-review-v1/right-edge.png",
+      "sha256": "66e2eb67685586c78287ce944dc2ac4c399948e381deb422c8c3a99c39ab29eb"
+    },
+    {
+      "path": "tmp/heart-learning/candle-annotation-review-v1/tip.png",
+      "sha256": "5a76f3b70bdaa63525473d4aad53b83c0d87e278f162a8f8741232aab107ed0d"
+    },
+    {
+      "path": "tmp/heart-learning/candle-annotation-review-v1/flame-contact.png",
+      "sha256": "8f37dd0335574df2770d02ec6d8fd562c4d86dc58403164c8b9bf498b4c58fc8"
+    },
+    {
+      "path": "tmp/heart-learning/candle-annotation-review-v1/edge-controls-reviewed.png",
+      "sha256": "6344be86b29627cb3b77faad804eae35f2b7054d40944fe0693307be4684bc8d"
+    }
+  ],
+  "crossCorpusQualification": "The photograph is outside reserved near-duplicate groups, but a framed candle may share its motif with existing public-photo benchmarks. No independent-family or holdout claim; cross-corpus motif review is required before allocation.",
+  "root": "tmp/heart-learning/candle-annotation-review-v1",
+  "repositoryCountsChanged": false,
+  "next": [
+    "Compile and independently verify body/material labels at 256 and 768 pixels after the current serial solver jobs.",
+    "Inspect compiled overlays before moving the reviewed coordinates into the dataset.",
+    "Integrate together with the previously reviewed printed-paper candidate and pending non-paper-source correction; preserve source groups and prior study inputs."
+  ]
+}
