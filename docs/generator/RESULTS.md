@@ -1,6 +1,66 @@
 # Generator robustness results
 
-## Current coverage: paw with a fitted grid
+## Current coverage: detached dots in repeated text
+
+A detached dot or accent previously kept a fixed assignment of its outline arcs
+to the two paper sheets. Reversing that assignment can separate the dot from a
+nearby stem on the same sheet. A final repeat-only fallback now tries that
+alternative, choosing the active gate separately for each cell. It first
+reuses completed cells, then compares a fresh alternative layout if needed to
+avoid retaining narrow tips. Earlier successful whole hearts return first.
+The exact glyph outlines and cyclic letter field stay intact; there are no
+cutouts or additional visible squares.
+
+Five previously refused ordinary-repeat combinations now pass:
+
+| Font | Text | Physical strips | Tips below 30° / 45° |
+| --- | --- | --- | --- |
+| Bree Serif | Hej! | 8×4 | 0 / 0 |
+| Righteous | Hej! | 8×4 | 0 / 0 |
+| Righteous | juleman | 14×7 | 0 / 0 |
+| Oswald | Hej! | 8×4 | 0 / 2 |
+| Oswald | juleman | 14×7 | 1 / 5 |
+
+All five production captures pass the 10% extra clearance check, JSON/SVG
+handoffs, and the independent material audit with zero certain or possible
+detached core islands. Righteous Hej! passes at resolution 1,400; Bree Serif
+Hej! and Oswald Hej! at 2,800; both juleman designs at 6,000. Lower-resolution
+uncertain results were retained and were not counted as passes. The finished
+heart and both full cutting sheets were visually reviewed for all five. These
+are digital checks, not physical weaving or tear-strength tests. Evidence:
+`dotted-phase-final-production.json`, `dotted-phase-{metrics,material}.json`,
+and `dotted-phase-gallery-0..4.png`.
+
+The final implementation freshly reran all **51 previously refused ordinary
+repeat cases**: **five accepted / 46 refused / zero invalid**. It regenerated
+and compared 15 selected earlier successes exactly, including the ANNA
+checkerboard and previous dotted-letter recoveries. A broader comparison of an
+earlier draft left all 147 existing ordinary-repeat successes and six ANNA
+checkerboards exactly unchanged; the final per-cell refinement was added after
+that broader run. The draft comparison resumed from seven saved comparisons
+after a temporary disk-space error; all 153 comparisons were completed.
+
+The merged corpus is **2,867 accepted / 283 refused / zero invalid**: text is
+1,755 / 273; figures remain 1,112 / 10. `dotted-phase-current.json` refreshes
+those 51 records and retains 3,099 from `offset-fitted-current.json`. This is not
+a fresh full-matrix run. Other sizes and the broader catalogue remain
+incompletely verified. The new successful cases took 0.23–3.73 seconds during
+the audit; this is not an isolated latency benchmark or a general speed fix.
+
+The first phase prototype inadvertently reversed the island arcs in both of
+its nominal modes because it compared an undefined flag directly with a
+boolean. Its outputs are exploratory only. The production code uses explicit
+booleans, has separate preservation comparisons, and received the material and
+export audits above. The final per-cell routing reduced Oswald Hej! from seven
+narrow tips in the first production candidate to two, and Oswald juleman from
+six to five.
+
+All **1,171 unit tests across 67 files** pass in one full run with unchanged time
+limits (630.56 seconds), followed by **177 passing inverse tests** (97.09
+seconds). This includes all five new generator regressions. Check, lint and the production build pass with the seven existing Svelte
+warnings. Final logs: `dotted-phase-{tests,check,lint,build}.log`.
+
+## Previous coverage: paw with a fitted grid
 
 The fitted paw's convex-envelope attachment lay too close to a neighbouring toe.
 Moving the invisible attachment outward clears that collision. A final fallback

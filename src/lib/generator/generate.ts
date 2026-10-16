@@ -454,11 +454,23 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		const textPanels = retryTextPanelIslands(request, curveFitter);
 		if (textPanels) return textPanels;
 		let bestRepeated: GeneratorResult | undefined;
-		if (repetitionCache && request.font) for (const islandRank of [0, 1, 2, 3]) try {
+		const islandRoutes = [[false, false], [true, false], [true, true]].flatMap(([islandFlip, fresh]) =>
+			(islandFlip ? [0] : [0, 1, 2, 3]).map(islandRank => ({ islandRank, islandFlip, fresh })));
+		if (repetitionCache && request.font) for (const { islandRank, islandFlip, fresh } of islandRoutes) try {
+			// Preserve every successful original phase before reversing the
+			// sheet assignments of detached dots or accents in failed cells.
+			if (islandFlip && !fresh && !islandRank && bestRepeated) return bestRepeated;
+			// A locally usable old cell may still leave a narrow tip in a new
+			// whole heart. If the mixed phases do not reach zero tips, compare
+			// a fresh alternative phase before selecting the final construction.
+			if (fresh && !islandRank) {
+				repetitionCache.cells.clear();
+				repetitionCache.failed.clear();
+			}
 			// Multiple concave corners can require two invisible connections.
 			// Retain successful letter cells and try this only after all earlier
 			// whole-heart repairs, so established designs stay unchanged.
-			if (islandRank) {
+			if (islandRank || islandFlip) {
 				const missing = [...repetitionCache.failed].filter(key => !repetitionCache.cells.has(key));
 				const chars = missing.length ? missing.map(key => [...key][0])
 					: [...(request.text ?? '').normalize('NFC').replace(/\s/g, '')];
@@ -469,14 +481,14 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 			} else if (!repetitionCache.failed.size) repetitionCache.cells.clear();
 			repetitionCache.crowded.clear();
 			const construction = generateRepeatedGrid(request.text ?? '', request.font,
-				true, repetitionCache, true, false, false, true, islandRank);
+				true, repetitionCache, true, false, false, true, islandRank, islandFlip);
 			const result = improveSharedConnections(finishConstruction(request, construction, 'letters', undefined, curveFitter));
 			// Keep a reserve around these extra connections after curve fitting.
 			// A barely clear neck can still be uncertain on the unfolded paper.
 			const rect = inferOverlapRect(result.design.fingers, result.design.gridSize),
 				margin = intersectionMarginPx(rect, gridClearanceScale(result.design.gridSize.x, result.design.gridSize.y));
 			if (findFingersWithIssues(result.design.fingers, margin * 1.1).size) continue;
-			if (!islandRank) return result;
+			if (!islandRank && !islandFlip) return result;
 			const tips = cutTipCounts(result.design);
 			if (!bestRepeated || fewerCutTips(tips, cutTipCounts(bestRepeated.design))) bestRepeated = result;
 			if (!tips[0] && !tips[1]) return bestRepeated;

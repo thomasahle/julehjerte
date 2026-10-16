@@ -761,8 +761,23 @@ function contourMotif(
 	margin = 1.5,
 	bridgePorts: readonly number[] = [0, 1, 2, 3],
 	acceptRoutes?: (routes: Ring[]) => boolean,
-	options: { root?: Ring; islandRank?: number; visibleIslands?: boolean; boundaryIslands?: boolean; strict?: boolean; practical?: boolean; originalOnly?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; touching?: boolean; bentSpokes?: boolean; strokeTips?: boolean; nested?: boolean; connectionAllowed?: (point: Point) => boolean } = {}
+	options: { root?: Ring; islandRank?: number; islandFlip?: boolean; alternateIslandGates?: boolean; visibleIslands?: boolean; boundaryIslands?: boolean; strict?: boolean; practical?: boolean; originalOnly?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; touching?: boolean; bentSpokes?: boolean; strokeTips?: boolean; nested?: boolean; connectionAllowed?: (point: Point) => boolean } = {}
 ) {
+	if (options.alternateIslandGates) {
+		// Different letters can need different gates. Finish each cell locally
+		// instead of stopping a whole pattern at its first unsupported dot.
+		const ranks = forest(contours).length > 1 ? bridgePorts.map((_, i) => i) : [0];
+		let last: unknown;
+		for (const islandRank of ranks) try {
+			contourMotif(edges, contours, gates, angles, margin, bridgePorts, acceptRoutes,
+				{ ...options, alternateIslandGates: false, islandRank });
+			return;
+		} catch (error) {
+			if (!(error instanceof ConstructionError)) throw error;
+			last = error;
+		}
+		throw last;
+	}
 	const count = gates.length;
 	// A clipped outline belongs to two neighbouring cells. Attaching an extra
 	// shared cut at its seam crossing can branch the joined paper path, even
@@ -878,7 +893,10 @@ function contourMotif(
 					// At an island's seam gate, the outline arcs must follow the
 					// panel's alternating A/B phase. A fixed phase can close a
 					// cutting loop when the neighbouring half is stitched on.
-					const first = options.boundaryIslands && j % 2 === 0 ? 'B' : 'A';
+					// Either sheet can carry each arc of a detached dot or accent.
+					// Reversing that choice keeps both terminal paths open but can
+					// separate an arc from the nearby stem on the same sheet.
+					const first = !!(options.boundaryIslands && j % 2 === 0) !== !!options.islandFlip ? 'B' : 'A';
 					contourChain(exterior, extras[j], angle, gates[j], ports[j].point, first,
 						options.visibleIslands, options.nested, options.boundaryIslands);
 				}

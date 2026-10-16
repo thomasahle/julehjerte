@@ -689,6 +689,15 @@ their requested frame; do not map corner checks or layered frames to another
 style. Compare new valid alternatives after rounding by sharp-tip counts, and
 retain the 10% full-sheet clearance reserve. Stop at zero sharp tips.
 
+If repeated text still fails, detached dots and accents may reverse which paper
+sheet carries each of their outline arcs. Their two coincident connections and
+the complete visible outline remain intact. Choose each cell's active gate
+locally, so one failed letter cannot prevent later letters from trying their
+own nearest gate. First reuse completed cells; when necessary, compare a fresh
+alternate-phase layout to avoid retaining narrow tips from the old cells.
+Keep earlier successful whole hearts unchanged and require the same clearance,
+open-path, artwork and export checks. This fallback does not add cutouts.
+
 
 If a sunburst figure still fails after the existing recipes and shared-cut
 repairs, its four-port medallion may retry using the complete five-strip grid:
