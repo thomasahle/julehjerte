@@ -33,6 +33,17 @@ The inventory, with material annotations updated on 2026-10-16, contains:
 
 ## Current results and limits
 
+A [checkpoint repair allowance](refinement-checkpoint-completion.json) is now
+integrated after **35 focused tests**. Provisional recovered routings retain
+their gradient-step cutoff but may finish a short-return repair for up to
+400 ms more, capped by the existing enclosing search deadline. Fourteen fresh
+paired fits all pass their independent image, feature, geometry and paper
+checks. The three half-star pairs improve from **1.747–1.781%** disagreement to
+**1.577–1.584%**; the compressed star improves from **1.6825% to 1.56625%**.
+Full-star and dense Hunodan geometry remain byte-identical. Both changed star
+renders have been visually inspected; rounded joins remain. New full release,
+browser, corpus and editable-conversion verification is pending.
+
 A [saved-field junction diagnostic](material-junction-diagnostic.json) separates
 three possible causes of the learned checkers' gaps. Both 400px masks reproduce
 exactly before fitting from the saved 256px predictions; the experiment then

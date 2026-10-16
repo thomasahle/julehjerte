@@ -100,7 +100,7 @@ export function curvePenalty(graph,points,cfg,{separationWeight=12,paperRecovery
   return{loss,gradient,minRadius};
 }
 
-export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=40,deadline=Infinity,onProgress=()=>{},input={},rate=.035,identicalSheets=false,stopWhen=null,selection='boundary',weights=null,preferCheckpoint=null,skipRepeatedRollbacks=false,finalGeometry=true,resolvePaperBeforeRollback=false,paperVerificationResolution=700,paperVerificationReserve=250,retryPaperSeparation=false,paperSeparationErrorThreshold=null,paperRecovery=null,paperAudit=materialAudit}={}){
+export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=40,deadline=Infinity,repairDeadline=deadline,onProgress=()=>{},input={},rate=.035,identicalSheets=false,stopWhen=null,selection='boundary',weights=null,preferCheckpoint=null,skipRepeatedRollbacks=false,finalGeometry=true,resolvePaperBeforeRollback=false,paperVerificationResolution=700,paperVerificationReserve=250,retryPaperSeparation=false,paperSeparationErrorThreshold=null,paperRecovery=null,paperAudit=materialAudit}={}){
   if(!Number.isInteger(checkpointEvery)||checkpointEvery<1)throw new RangeError('Checkpoint interval must be a positive integer.');
   // Compile the weighted force field once, not on every optimization step.
   let penaltySettings=cfg,paperSeparationRetry=null;
@@ -184,12 +184,15 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=4
     }
     // Repair a failed checkpoint before rollback, using the same complete
     // geometry rule as accepted candidates and final export. Reuse its audit.
+    // A caller may reserve time to finish this projection after the gradient
+    // phase ends. That separate deadline never authorizes more gradient steps;
+    // ordinary callers keep both deadlines identical.
     // Under a tight deadline, avoid spending another projection allowance
     // after just one gradient step failed to change a troublesome initial
     // shape. With a second left, or after a successful initial repair, retain
     // the ordinary retry: even a small step can then unlock a useful repair.
     const retryProjection=step!==0||!initialReturnProjectionFailed||deadline-performance.now()>=1000;
-    if(finalGeometry&&!accepted&&retryProjection&&performance.now()<deadline-50){
+    if(finalGeometry&&!accepted&&retryProjection&&performance.now()<repairDeadline-50){
       const base=proposals.find(v=>!v.straightened&&v.validation?.issues.length&&v.validation.issues.every(i=>i.type==='short_self_clearance'));
       if(base){
         // Preserve the visible artwork when a shared hidden connector alone
@@ -197,9 +200,9 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=4
         // Untimed refinement is bounded by its requested steps. Keep its
         // checkpoint repairs bounded by iterations too, so CPU load cannot
         // silently change the result of the same fixed-work operation. Timed
-        // fitting retains the shared 400 ms allowance and caller deadline.
-        const maxMilliseconds=Number.isFinite(deadline)?400:Infinity;
-        const projectionDeadline=Math.min(deadline,performance.now()+maxMilliseconds);
+        // fitting retains the shared 400 ms allowance and caller repair deadline.
+        const maxMilliseconds=Number.isFinite(repairDeadline)?400:Infinity;
+        const projectionDeadline=Math.min(repairDeadline,performance.now()+maxMilliseconds);
         let repair=projectShortReturns(graph,base.points,phase,input,cfg,{deadline:projectionDeadline,initialAudit:base.validation,hiddenOnly:true,maxIterations:64,maxMilliseconds});
         if(!repair.points&&performance.now()<projectionDeadline){
           const hiddenAttempt=repair.report;

@@ -1,0 +1,170 @@
+{
+  "schema": "refinement-checkpoint-completion-1",
+  "status": "integrated-focused-tests-passed-release-qa-pending",
+  "change": "Separate a checkpoint repair deadline from the gradient-step deadline. Recovered provisional routings can complete up to 400 ms of short-return projection beyond their 700 ms phase, capped by the existing enclosing search deadline. Other callers retain the original shared deadline; no extra gradient steps or changed validity rules.",
+  "experiment": "Fourteen fresh fits: three half-star pairs and one pair each for full star, compressed star, gift and dense Hunodan hjstr03. Alternating arm order. The candidate loads only patched fit.js/refine.js; exact saved masks, settings and independent export checks are shared. Source frozen through all runs.",
+  "sourceFilesVerified": 1017,
+  "all14Passed": true,
+  "results": [
+    {
+      "id": "hard-bibel-star-outline-half",
+      "repeat": 0,
+      "baselineSeconds": 5.792995540999999,
+      "candidateSeconds": 5.859195583,
+      "baselineError": 0.017807431476529058,
+      "candidateError": 0.015835927017825685,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "geometryExact": false,
+      "baselineCounts": [
+        4,
+        4
+      ],
+      "candidateCounts": [
+        4,
+        4
+      ]
+    },
+    {
+      "id": "hard-bibel-star-outline-half",
+      "repeat": 1,
+      "baselineSeconds": 5.835353790999999,
+      "candidateSeconds": 5.925213625,
+      "baselineError": 0.017469720064621535,
+      "candidateError": 0.015772035669626965,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "geometryExact": false,
+      "baselineCounts": [
+        4,
+        4
+      ],
+      "candidateCounts": [
+        4,
+        4
+      ]
+    },
+    {
+      "id": "hard-bibel-star-outline-half",
+      "repeat": 2,
+      "baselineSeconds": 5.841472375,
+      "candidateSeconds": 5.77643075,
+      "baselineError": 0.017469720064621535,
+      "candidateError": 0.015772035669626965,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "geometryExact": false,
+      "baselineCounts": [
+        4,
+        4
+      ],
+      "candidateCounts": [
+        4,
+        4
+      ]
+    },
+    {
+      "id": "hard-bibel-star-outline",
+      "repeat": 0,
+      "baselineSeconds": 7.753370709,
+      "candidateSeconds": 7.601520875,
+      "baselineError": 0.0116,
+      "candidateError": 0.0116,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "geometryExact": true,
+      "baselineCounts": [
+        4,
+        4
+      ],
+      "candidateCounts": [
+        4,
+        4
+      ]
+    },
+    {
+      "id": "hard-bibel-star-outline-jpeg75",
+      "repeat": 0,
+      "baselineSeconds": 3.877894875,
+      "candidateSeconds": 3.77761375,
+      "baselineError": 0.016825,
+      "candidateError": 0.0156625,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "geometryExact": false,
+      "baselineCounts": [
+        4,
+        4
+      ],
+      "candidateCounts": [
+        4,
+        4
+      ]
+    },
+    {
+      "id": "photo-gift",
+      "repeat": 0,
+      "baselineSeconds": 9.726964625,
+      "candidateSeconds": 9.72906325,
+      "baselineError": 0.01659375,
+      "candidateError": 0.016575,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "geometryExact": false,
+      "baselineCounts": [
+        4,
+        4
+      ],
+      "candidateCounts": [
+        4,
+        4
+      ]
+    },
+    {
+      "id": "hunodan-hjstr-03",
+      "repeat": 0,
+      "baselineSeconds": 7.843832209,
+      "candidateSeconds": 7.844832041,
+      "baselineError": 0.0056129769369752365,
+      "candidateError": 0.0056129769369752365,
+      "baselinePassed": true,
+      "candidatePassed": true,
+      "geometryExact": true,
+      "baselineCounts": [
+        7,
+        7
+      ],
+      "candidateCounts": [
+        7,
+        7
+      ]
+    }
+  ],
+  "visualReview": {
+    "hard-bibel-star-outline-half": "Baseline and candidate independently rendered images inspected side by side. Star and corner contacts retained, with slightly fuller outline. Rounded joins and photograph-induced asymmetry remain; no exact ground-truth geometry claim.",
+    "hard-bibel-star-outline-jpeg75": "Both independent renders inspected. Star outline and corner regions retained; small contour differences accompany lower mask disagreement.",
+    "photo-gift": "Small time-dependent change is not an isolated causal improvement: this case does not use the modified recovery repair allowance."
+  },
+  "focusedTests": {
+    "command": "node --test scripts/inverse/final-return-repair.test.mjs scripts/inverse/refinement-budget.test.mjs scripts/inverse/short-returns.test.mjs",
+    "passed": 35,
+    "failed": 0,
+    "newCases": "Default/available/expired repair allowance after gradient cutoff: no new steps, no input mutation, complete geometry checks, exact independently rendered mask for hidden repair."
+  },
+  "limitations": [
+    "This experiment covers five distinct masks, not the full corpus or all 22 Hunodan browser workflows.",
+    "Timing changes can still alter other cleanup stages. A slightly lower independent mask error does not establish exact recovery of the original cutting paths.",
+    "New full repository, browser, corpus and editable conversion QA is required after integration."
+  ],
+  "artifactsSha256": {
+    "tmp/heart-learning/refinement-completion-v1/state.json": "78de338508b552969cf0ecce8e796b4ff9238369ed041ef79f5fb7e426a7fa3e",
+    "tmp/heart-learning/refinement-completion-v1/results.json": "ea5622c940c6a36046f10abf4269a20a0c4301da21bfc3cfbbc96b492adee43c",
+    "tmp/heart-learning/refinement-completion-v1/source.json": "ff4869dde910c93d207d23c1732d581cce7181e530cc4be78bd16769e3bbcb51",
+    "tmp/heart-learning/refinement-completion-v1/replay.mjs": "be354e145008e028e2f4e2575bdf48136ac536b9c0ec95ffde3629c69b6c66fc",
+    "tmp/heart-learning/refinement-completion-v1/run.py": "098b4b172441963a3422255c231e745455c360642a0355dfc546a8509da677ad",
+    "tmp/heart-learning/refinement-completion-v1/fit.js": "ab34a84834f9ca417c6934263f391af9f308e647758f6fc1db4bcfd581fdd902",
+    "tmp/heart-learning/refinement-completion-v1/refine.js": "424f728908f670752873c16fc267dd9fb3f1cbb8a70eb083c32f762796cd556f",
+    "tmp/heart-learning/refinement-completion-v1/focused.log": "3d4a36ab81499d7094378cf2ee5e176aff200aa17887c3205d356411491a066c",
+    "tmp/heart-learning/refinement-completion-v1/comparison.png": "6187efb0160fa46e2f1f7a18c9b596de0814a005ea52fa40aa247ddd30c42f99"
+  }
+}

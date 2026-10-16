@@ -344,7 +344,10 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       // optimizing that new proposal within the existing overall deadline.
       const topologyRetry=recovery.report.selectedTrace?.smoothRadius>=.75;
       const polishDeadline=topologyRetry?Math.min(until,performance.now()+4000):recovery.solution?until:Math.min(until,performance.now()+700);
-      const candidate=stage('directRefining',()=>refineCurves(graph,fullProb,source.resolution,phase,recoveryCfg,{input,steps:topologyRetry?800:320,rate:.008,selection:'mask',deadline:polishDeadline,onProgress:cfg.progressGeometry||hasCandidateObserver(onProgress)?(r,solution)=>{
+      // A checkpoint can finish just beyond the provisional routing's short
+      // phase. Let its bounded clearance repair complete before rollback,
+      // without extending gradient work or the enclosing search deadline.
+      const candidate=stage('directRefining',()=>refineCurves(graph,fullProb,source.resolution,phase,recoveryCfg,{input,steps:topologyRetry?800:320,rate:.008,selection:'mask',deadline:polishDeadline,repairDeadline:Math.min(until,polishDeadline+400),onProgress:cfg.progressGeometry||hasCandidateObserver(onProgress)?(r,solution)=>{
         if(verification)solution.report={...solution.report,paperVerification:{...verification,status:r.paper}};
         onProgress({stage:'directRefining',counts,...r},solution);
       }:undefined}));

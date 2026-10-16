@@ -128,3 +128,24 @@ test('an ordinary refinement checkpoint repairs hidden connectors without changi
   assert.deepEqual(exported.mask,woven.mask);
   assert.deepEqual(graph.points,before);
 });
+
+for(const allowance of ['default','available','expired'])test(`a refinement checkpoint respects its ${allowance} repair allowance after gradient time expires`,async t=>{
+  const fixture=JSON.parse(await fs.readFile('scripts/inverse/fixtures/final-hidden-return.json'));
+  const graph=new CurveGraph(fixture.paths,fixture.settings.width),before=graph.points.slice();
+  const input=graph.solution(before,fixture.phase),woven=await renderExportedWeave(solutionJSON(input),400);
+  t.mock.method(performance,'now',()=>1000);
+  const result=refineCurves(graph,Float64Array.from(woven.mask),400,fixture.phase,fixture.settings,{
+    steps:40,deadline:900,...(allowance==='default'?{}:{repairDeadline:allowance==='available'?1400:950}),
+    input:{sourceImage:{mask:woven.mask,resolution:400}}
+  });
+  assert.equal(result.steps,0,'A repair allowance must not start more gradient work.');
+  assert.equal(result.geometryPassed,allowance==='available');
+  assert.equal(result.paperPassed,allowance==='available');
+  assert.equal(result.history.some(row=>row.returnProjection?.accepted),allowance==='available');
+  if(allowance==='available'){
+    const solution=graph.solution(result.points,fixture.phase);
+    assert.ok(validate(solution,fixture.settings,{checkImage:false,finalGeometry:true}).passed);
+    assert.deepEqual((await renderExportedWeave(solutionJSON(solution),400)).mask,woven.mask);
+  }else assert.deepEqual(result.points,before,'An expired repair must not modify the candidate.');
+  assert.deepEqual(graph.points,before,'Repair must not mutate the input.');
+});
