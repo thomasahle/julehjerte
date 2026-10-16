@@ -636,7 +636,16 @@ The generator keeps its last valid preview visible while calculating a new choic
 wait for the latest result. A bounded per-visit cache makes revisiting recent choices immediate;
 colours and print size are excluded from geometry dependencies. Reuse idle workers, cancel obsolete
 work, and share letter routing within repeated glyphs. Do not add a fading or blocking loading
-animation for routine edits. These digital checks do not replace testing actual paper assembly.
+animation for routine edits. Local contour construction reuses integer point identities and
+adjacency slots across its routing candidates, with the existing coordinate precision and exact
+output points. Reset adjacency between candidates and sheets; still reject branches, wrong endpoint
+pairings and detached cycles. These digital checks do not replace testing actual paper assembly.
+
+A final close-fitting figure fallback may vary the four support directions by ±0.15 and ±0.3
+radians within their original quadrants. Attach to actual silhouette vertices, preserving the
+motif and outer bands. Try the bounded rotation/reflection patterns, skip identical completed
+constructions, and select by sharp-tip counts after full validation and shared-join rounding.
+Do not add a substitute enclosing shape or change existing successful layouts.
 
 
 If a sunburst figure still fails after the existing recipes and shared-cut

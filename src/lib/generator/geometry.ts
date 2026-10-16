@@ -1,3 +1,4 @@
+import { createLocalRouter } from './localRoutes';
 import { gridClearance } from '$lib/geometry/clearance';
 /** Direct contour constructions. No image fitting, search solver, or raster mask.
  * A visible outline belongs to one sheet. A connecting cut belongs to both;
@@ -263,10 +264,10 @@ function nestedBlock(...args: Parameters<typeof block>) {
 		if (!(error instanceof ConstructionError)) throw error;
 	}
 	const contours = (node: Contour): Ring[] => [node.ring, ...node.children.flatMap(contours)];
-	const rings = contours(node), pointKeys = new WeakMap<Point, string>();
+	const rings = contours(node), routeLocal = createLocalRouter();
 	let best: Edge[] | undefined, cost = Infinity;
 	for (const candidate of perforatedOutline(node, [entry, exit], [0, 1], false, false, true)) {
-		const routes = localRoutes(candidate, [entry.point, exit.point], pointKeys);
+		const routes = routeLocal(candidate, [entry.point, exit.point]);
 		if (!routes || !clearSharedCuts(candidate, rings)) continue;
 		const score = cuttingCost(routes, 1.5);
 		if (score < cost) { cost = score; best = candidate; }
@@ -758,9 +759,9 @@ function contourMotif(
 	const connectionAllowed = options.connectionAllowed;
 	const allowedConnections = (edges: Edge[]) => !connectionAllowed ||
 		edges.every(e => e.family !== 'AB' || connectionAllowed(e.from) && connectionAllowed(e.to));
-	// Candidate routes reuse the same immutable outline points. Keep their
-	// rounded graph keys for this cell instead of formatting them at every walk.
-	const pointKeys = new WeakMap<Point, string>();
+	// Candidate routes reuse the same immutable outline points. Keep point
+	// identities and graph storage for this cell across its routing attempts.
+	const routeLocal = createLocalRouter();
 	const nodes = forest(contours).sort(
 		(a, b) => {
 			const selected = (r: Ring) => Number(!!options.root && r.includes(options.root[0]));
@@ -869,7 +870,7 @@ function contourMotif(
 		for (const interior of perforatedOutline(base, ports, bridgePorts, options.practical, options.touching, options.nested)) {
 			const local = [...interior, ...exterior];
 			try {
-				const routes = localRoutes(local, gates, pointKeys);
+				const routes = routeLocal(local, gates);
 				if (!routes || !allowedConnections(local) || !clearSharedCuts(local, contours)) continue;
 				fallback ??= local;
 				if (!alternatives.has(portKey) && alternatives.size < (options.practical ? 64 : 8))
@@ -909,7 +910,7 @@ function contourMotif(
 		for (const relieved of relieveNotches(local.edges, base.ring, local.ports, bridgePorts, options.practical)) {
 			if (options.practical && ++portAttempts > 8) break;
 			if (++reliefAttempts > 256) break relief;
-			const routes = localRoutes(relieved, gates, pointKeys);
+			const routes = routeLocal(relieved, gates);
 			if (!routes || !allowedConnections(relieved) || !clearSharedCuts(relieved, contours)) continue;
 			if (options.practical) {
 				ranked.push({ edges: relieved, routes, score: cuttingCost(routes, margin) });
@@ -937,7 +938,7 @@ function contourMotif(
 				let secondCount = 0;
 				for (const second of relieveNotches(first, base.ring, local.ports, bridgePorts, true)) {
 					if (++secondCount > 4) break;
-					const routes = localRoutes(second, gates, pointKeys);
+					const routes = routeLocal(second, gates);
 					if (!routes || !allowedConnections(second) || !clearSharedCuts(second, contours)) continue;
 					if (acceptRoutes ? acceptRoutes(routes) : usableRoutes(routes, margin)) {
 						edges.push(...second);
@@ -1328,66 +1329,6 @@ function* perforatedOutline(node: Contour, ports: Port[], bridgePorts: readonly 
 	}
 }
 
-/** Trace the two noncrossing paths of each sheet, rejecting branches and loops. */
-function localRoutes(edges: Edge[], gates: Point[], pointKeys: WeakMap<Point, string>): Ring[] | null {
-	const key = (p: Point) => {
-		let value = pointKeys.get(p);
-		if (value === undefined) {
-			value = p.map(x => x.toFixed(6)).join(',');
-			pointKeys.set(p, value);
-		}
-		return value;
-	};
-	// Both sheets use the same endpoint keys. Build adjacency in place and
-	// track visited edges by index rather than allocating sets for every walk.
-	const fromKeys = edges.map(e => key(e.from)), toKeys = edges.map(e => key(e.to));
-	const gateKeys = gates.map(key), gateSet = new Set(gateKeys);
-	const routes: Ring[] = [];
-	for (const [family, pairs] of [
-		['A', [[0, 3], [1, 2]]],
-		['B', [[0, 1], [2, 3]]]
-	] as const) {
-		const adj = new Map<string, number[]>();
-		const attach = (k: string, i: number) => {
-			const ids = adj.get(k);
-			if (ids) ids.push(i);
-			else adj.set(k, [i]);
-		};
-		let selected = 0;
-		for (let i = 0; i < edges.length; i++) {
-			if (edges[i].family !== family && edges[i].family !== 'AB') continue;
-			selected++;
-			attach(fromKeys[i], i);
-			attach(toKeys[i], i);
-		}
-		for (const [k, ids] of adj)
-			if (ids.length !== (gateSet.has(k) ? 1 : 2)) return null;
-		const used = new Uint8Array(edges.length);
-		let usedCount = 0;
-		for (const [start, end] of gates.length === 2 ? [[0, 1]] : pairs) {
-			let p = gates[start], at = gateKeys[start];
-			const route = [p];
-			for (;;) {
-				const ids = adj.get(at);
-				// Degree validation above leaves at most two choices at each point.
-				const i = ids && !used[ids[0]] ? ids[0]
-					: ids?.length === 2 && !used[ids[1]] ? ids[1] : undefined;
-				if (i === undefined) break;
-				used[i] = 1;
-				usedCount++;
-				const e = edges[i], forward = near(p, e.from);
-				p = forward ? e.to : e.from;
-				at = forward ? toKeys[i] : fromKeys[i];
-				route.push(p);
-			}
-			if (!near(p, gates[end])) return null;
-			routes.push(route);
-		}
-		if (usedCount !== selected) return null;
-	}
-	return routes;
-}
-
 function clearSharedCuts(edges: Edge[], contours: Ring[]): boolean {
 	const shared = edges.filter((e) => e.family === 'AB');
 	const crosses = (a: Point, b: Point, c: Point, d: Point) => {
@@ -1473,7 +1414,7 @@ function usableRoutes(routes: Ring[], margin: number): boolean {
  * open paths before reusing it in a repair pass, with the same port extensions
  * and physical clearance used when choosing the original construction. */
 export function usableMotif(edges: Edge[], gates: Point[], margin: number): boolean {
-	const routes = localRoutes(edges, gates, new WeakMap());
+	const routes = createLocalRouter()(edges, gates);
 	return !!routes && usableRoutes(routes, margin);
 }
 

@@ -411,6 +411,8 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		}
 		const panels = retryPanelLayouts(request, curveFitter);
 		if (panels) return panels;
+		const fitted = retryFittedSupports(request, curveFitter);
+		if (fitted) return fitted;
 		if (request.mode === 'figure' && request.style === 'layers') {
 			// A level seam can graze a toe or arm and leave a tiny fragment.
 			// Tilt the internal partition, keeping both outer bands and the
@@ -428,6 +430,31 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		if (lanes) return lanes;
 		throw error;
 	}
+}
+
+/** A fixed diagonal can land on a narrow shoulder or give two components the
+ * same attachment. Try nearby support directions on the unchanged silhouette;
+ * keep the valid construction with the fewest sharp paper tips. */
+function retryFittedSupports(request: GeneratorRequest, curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult | undefined {
+	if (request.mode !== 'figure' || request.style !== 'fitted') return;
+	const rings = normalizeContours(request.contours ?? []), seen = new Set<string>();
+	let best: GeneratorResult | undefined;
+	for (const offset of [.15, -.15, .3, -.3])
+	for (const signs of [[1, 1, 1, 1], [1, -1, 1, -1], [1, -1, -1, 1], [1, 1, -1, -1]]) try {
+		const angles = signs.map(sign => sign * offset) as [number, number, number, number];
+		const construction = generateFittedFigure(rings, request.frameSize, request.scale, fourPortMotif, angles);
+		// Several directions may select the same vertices and complete cuts.
+		const key = JSON.stringify(construction.geometry);
+		if (seen.has(key)) continue;
+		seen.add(key);
+		const result = improveSharedConnections(finishConstruction(request, construction, 'silhouette', undefined, curveFitter));
+		const tips = cutTipCounts(result.design);
+		if (!best || fewerCutTips(tips, cutTipCounts(best.design))) best = result;
+		if (tips[0] === 0 && tips[1] === 0) return best;
+	} catch (error) {
+		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+	}
+	return best;
 }
 
 /** Keep islands in parallel lanes when a rectangular cell grid cannot connect

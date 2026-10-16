@@ -6,13 +6,17 @@ import {
 } from './geometry';
 import { gridClearance } from '$lib/geometry/clearance';
 
-export function generateFittedFigure(rings: Ring[], size = 70, scale = .7, route = fourPortMotif) {
+export function generateFittedFigure(rings: Ring[], size = 70, scale = .7, route = fourPortMotif,
+	angleOffsets: readonly [number, number, number, number] = [0, 0, 0, 0]) {
 	const artwork = rings.filter(r => r.length).map(r =>
 		r.map(p => uprightToSheet([p[0] * size * scale, p[1] * size * scale]))
 	);
 	const points = artwork.flat();
 	if (!points.length) throw new ConstructionError('empty', 'No contour');
-	const angles = [-3 * Math.PI / 4, -Math.PI / 4, Math.PI / 4, 3 * Math.PI / 4];
+	// Moving a support direction within its quadrant chooses another actual
+	// silhouette point with clear outward projections. The motif never moves.
+	const angles = [-3 * Math.PI / 4, -Math.PI / 4, Math.PI / 4, 3 * Math.PI / 4]
+		.map((angle, i) => angle + angleOffsets[i]);
 	const gates = angles.map(angle => artwork.map(r => support(r, angle).point)
 		.reduce((a, b) => dot(a, direction(angle)) > dot(b, direction(angle)) ? a : b));
 	// Each support point has clear outward horizontal and vertical projections.

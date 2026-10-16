@@ -1,5 +1,76 @@
 # Generator robustness results
 
+## Current coverage: adapt fitted supports and reuse local route graphs
+
+The final close-fitting fallback moves the four support directions by ±0.15 or
+±0.3 radians, trying four rotation/reflection patterns. Every attachment remains
+on an actual silhouette vertex with clear outward projections in its original
+quadrant. The motif, counters and outer strips stay fixed; no extra enclosing
+shape or cutout is introduced. Completed duplicate constructions are skipped
+before fitting. The selected valid result has the fewest sharp tips after the
+existing shared-join rounding pass. Earlier successful recipes still return first.
+
+Three previously refused fitted motifs now work on **5×5 strips**:
+
+| Motif | Tips below 30° / below 45° |
+|---|---|
+| Phosphor moon and stars | 0 / 1 |
+| Phosphor rabbit | 0 / 3 |
+| Tabler butterfly | 3 / 6 |
+
+Selecting among the nearby directions improves the rabbit from 0/4 to 0/3 and
+the butterfly from 5/6 to 3/6 compared with their first working candidates.
+The remaining narrow tips are not claimed fixed. A wider butterfly support fan,
+up to ±0.65 radians, found no improvement (`fitted-support-wide-results.json`).
+The practical, guarded panel experiment recovered none of ten fitted/layered
+refusals, so it was not enabled (`practical-guard-results.json`).
+
+All three selected designs pass both JSON/SVG handoffs and the independent guarded
+paper-connectivity audit at resolution **1,400**, with zero detached certain or
+possible core islands on either sheet. Their finished hearts and both paper
+sheets were inspected in `fitted-support-quality-gallery-{0,1,2}.png`. Production
+captures are exactly identical to those audited designs:
+`fitted-support-production-{17,29,48}.json`. The material model does not certify
+physical tear strength or every sub-threshold tip.
+
+A fresh full-pipeline audit of **all 51 fitted motifs** gives **45 accepted / six
+refused / zero invalid**, with no regressions (`fitted-support-production.json`).
+Merged coverage is **2,835 accepted / 315 refused / zero invalid**: text **1,735 /
+293**, figures **1,100 / 22** (`fitted-support-current.json`). The other 3,099
+records retain their previous results; this is not a fresh audit of all 3,150
+cases. All three new successes are added to the expected corpus. Other sizes,
+the full icon catalogue, the remaining refusals and ANNA's eight N-corner tips
+remain unfinished.
+
+Local contour routing also reuses integer point identities and adjacency slots
+within one motif's construction. The same six-decimal graph keys, exact output
+points, degree checks, endpoint pairings and closed-cycle rejection remain in
+force. Storage resets between candidates and sheet families using a generation
+stamp, and is released after that motif. This replaces repeated string-keyed
+adjacency allocation; it changes neither route order nor validation thresholds.
+
+In the alternating before/after comparison, all **16 runs across eight inputs**
+produce exactly identical designs or refusal messages (`numeric-routes-paired.json`).
+Mean Kalam ordinary-repeat times improve from **6,720 to 6,148 ms** for A and
+**7,616 to 6,983 ms** for ANNA, about 8%. Other sampled fonts and figures range
+from about 4% faster to 4% slower, so this is not a general latency improvement.
+Cinzel LOVE also varies substantially between trials, on both implementations.
+A separate duplicate-attachment pruning experiment offered little benefit and
+was not retained. Earlier prototype comparisons are not the authoritative timing
+or equivalence evidence.
+
+The 56 local-route/geometry tests and four fitted-frame regressions pass. Type
+checking, lint and production build pass, with seven existing warnings
+(`numeric-routes-focused.log`, `fitted-support-{focused,check,lint,build}.log`).
+The single-worker full unit run reports **1,131 passed / one timed out** in
+754.11 seconds (`fitted-support-tests.log`). All new tests pass, and Kalam A
+ordinary-repeat now passes within its existing limit. Kalam ANNA ordinary-repeat
+still takes 20.85 seconds against its unchanged 20-second limit in the full run;
+it passes alone in 7.28 seconds (`fitted-support-kalam.log`). The full suite is
+still not green, and difficult-text latency remains unfinished. All **177
+inverse-engine tests pass** separately in 87.77 seconds
+(`fitted-support-inverse.log`).
+
 ## Current coverage: separate component lanes with a clearance reserve
 
 A final figure fallback now groups disconnected components into three vertical
