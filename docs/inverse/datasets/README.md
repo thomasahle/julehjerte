@@ -44,8 +44,9 @@ replay passes **22/22** with exactly unchanged errors, median **5.29 s**, maximu
 **8.83 s**. The fresh photo benchmark remains **27/31**, with unchanged masks
 and statuses; all 29 pairs convert without editor issues. All ten changed-error
 outputs were reviewed, including Viking's increase from **2.08% to 2.23%**.
-Check, lint, build and three browser workflows pass. Full repository tests are
-still running; this is not an additional reconstruction pass or a fix for the
+Check, lint, build and three browser workflows pass. The full-test attempt
+exited without a summary during a [disk-space incident](storage-recovery.json);
+a verified retry is running after reclaiming about 4 GiB of duplicate storage; this is not an additional reconstruction pass or a fix for the
 flower photograph's hidden centre.
 
 
@@ -60,6 +61,13 @@ editable SVG without editor issues; no real-photograph pass is added. These are
 manual uncertainty interventions, not automatic segmentation or deployed changes. A [later annotation review](ribbon-coverage-plan.json)
 shows the vertical polygon clips the ribbon edge; correcting that coverage is
 the next diagnostic before attributing the remaining hook to the optimizer.
+
+A [one-photo color-residual probe](ribbon-color-residual.json) does not support
+using a global residual threshold to exclude the ribbon automatically. With
+automatically estimated palettes, the sampled gold and white-paper residuals
+nearly coincide. Manual paper-patch calibration separates these samples, but
+this is not an automatic or held-out detection result; no masks were changed.
+
 
 
 An [existing-finalist comparison](finalist-retention-fit-results.json) improves

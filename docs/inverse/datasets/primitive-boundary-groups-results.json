@@ -1,6 +1,6 @@
 {
   "schema": "primitive-boundary-groups-results-1",
-  "status": "candidate-full-tests-running",
+  "status": "candidate-full-tests-retrying-after-inconclusive-run",
   "plan": "docs/inverse/datasets/primitive-boundary-groups-plan.json",
   "implementation": "Keep both existing final primitive passes. Only after a boundary-objective rejection, retry candidate groups with sequential non-increasing pixel and boundary-plus-complexity costs. The existing source-error, feature, geometry, symmetry and material checks still gate the result. All passes share the existing deadline.",
   "focusedTests": {
@@ -440,7 +440,8 @@
       ],
       "builtAssetsVerified": 173
     },
-    "repositoryTests": "running; do not infer completion from the passing earlier runtime",
-    "qaState": "tmp/heart-learning/primitive-boundary-groups-v1/qa/state.json"
+    "repositoryTests": "Original attempt exited 1 during a disk-space incident and lacks a complete inverse-test summary; retry is running. No full-suite pass claimed.",
+    "qaState": "tmp/heart-learning/primitive-boundary-groups-v1/qa/state.json",
+    "interruptedRun": "docs/inverse/datasets/storage-recovery.json"
   }
 }

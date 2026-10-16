@@ -1,0 +1,51 @@
+{
+  "schema": "generated-artifact-storage-recovery-1",
+  "trigger": "A shell here-document failed with No space left on device while full QA was running. The full-test process later exited 1; its log ends without a test summary, so the attempt is inconclusive.",
+  "scope": "Only files under the assigned worktree tmp directory. Current primitive/ribbon/flower/finalist/projective experiments were excluded. No source-image or experiment file was deleted.",
+  "method": "Independent APFS copy-on-write clones replace byte-identical generated artifacts atomically after checksum verification. Self-checks confirmed writes to either copy remain independent. Every replaced file retained bytes, mode and modification time.",
+  "files": 1726,
+  "logicalDuplicateBytesShared": 4296302032,
+  "observedAvailableBefore": 3227533312,
+  "observedAvailableAfter": 7519698944,
+  "qualification": "Available-space changes also include concurrent system activity. A ditto compression test did not reduce allocated blocks and was discarded without altering its original file.",
+  "runs": [
+    {
+      "method": "APFS independent copy-on-write clones of byte-identical generated artifacts; all file paths, bytes, modes and modification times preserved. No hard links or source-image deletion.",
+      "files": 656,
+      "logicalDuplicateBytes": 2148239778,
+      "bytesHashed": 3808072637,
+      "availableBefore": 3227533312,
+      "availableAfter": 5376729088,
+      "seconds": 8.057082416999998,
+      "limitation": "Available-space difference also includes unrelated concurrent system activity."
+    },
+    {
+      "method": "APFS independent copy-on-write clones of byte-identical generated artifacts; all file paths, bytes, modes and modification times preserved. No hard links or source-image deletion.",
+      "files": 1070,
+      "logicalDuplicateBytes": 2148062254,
+      "bytesHashed": 4367378673,
+      "availableBefore": 5369004032,
+      "availableAfter": 7519698944,
+      "seconds": 8.55802125,
+      "limitation": "Available-space difference also includes unrelated concurrent system activity."
+    }
+  ],
+  "auditFiles": {
+    "tmp/storage-reuse/reuse.py": "369217e36dd2e73c7a67a1e308081198bfe2fb27fc736d63e1c3d02dee53aebf",
+    "tmp/storage-reuse/reused.jsonl": "fcea9373c1871ac930d7df2a2eef5d8773b6ef4b87fcabfe07430e53eb647918",
+    "tmp/storage-reuse/summary.json": "bf5d97867dd3a151d9b363042e1bfbb3585d39a3e006704e0c3c21da4ce2986d",
+    "tmp/storage-reuse/reuse-more.py": "e6cf53ba2a9ace8e7e6659652fa2f53cce3130448af683965f5b327a1f12e7d5",
+    "tmp/storage-reuse-2/reused.jsonl": "e6126074e895a208d055cb5e36595f342523b1e5feae806a3be655d216385598",
+    "tmp/storage-reuse-2/summary.json": "a5e99050cd02222359dce04650e5030ae31c137f3de2dbc73a87b6be66d19755"
+  },
+  "qa": {
+    "originalExitCode": 1,
+    "originalLogSha256": "762209db471744077a7fc6d317ed15c0739ed5342a5f3b36bd0b7a70eb0e563a",
+    "originalStateSha256": "5611321d52a0a9c7d55cf394376b0f8d3af49a04f3a86137696e7acb84ccfe90",
+    "sourcePinsVerifiedBeforeRetry": 930,
+    "retry": "tmp/heart-learning/primitive-boundary-groups-v1/qa/retry-tests.py",
+    "retryStatus": "running",
+    "logPolicy": "Retry captures the child output through a pipe, keeping a complete in-memory copy as well as the disk log; successful completion requires the complete test summary.",
+    "downstream": "The first queued ribbon experiment aborted before fitting. A new attempt waits for the verified QA retry."
+  }
+}
