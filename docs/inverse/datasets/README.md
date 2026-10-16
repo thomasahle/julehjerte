@@ -52,6 +52,16 @@ geometry conversion, so the controller's nonzero exit is retained in the
 report. Twelve focused Node checks and six analytic corner-metric tests pass.
 No learned model or locator-objective change is integrated into the website.
 
+A [single-star resolution diagnostic](material-resolution-diagnostic.json)
+identifies a separate preprocessing effect. Interpolating the 256-pixel
+full-photo material map leaves the dark edge strip as an isolated 151-pixel
+component. Applying the same frozen paper colours to the actual 400-pixel crop
+RGB joins it to the large dark region touching the border. The existing weave
+then passes the unchanged feature check, but its error against this sharper
+target rises from 0.75% to 1.25%. Six diagnostic artifacts reproduce exactly.
+This is a fixed-output re-score on one inspected photo; a full-dataset fitting
+comparison is still required before adopting higher-resolution classification.
+
 A [locator-objective isolation](locator-diameter-isolation-results.json) confirms
 that the strong colour-step term at the two lobe diameters can pull an accurate
 silhouette into a poor crop fit. With identical SAM fields, removing only that

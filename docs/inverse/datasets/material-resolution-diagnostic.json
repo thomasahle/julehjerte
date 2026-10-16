@@ -1,0 +1,93 @@
+{
+  "schema": "material-resolution-diagnostic-1",
+  "status": "single-source-post-hoc-diagnostic",
+  "deployment": false,
+  "sourceId": "real-3f7b76e1a98e808f-body-1",
+  "scope": "Classify original 400-pixel crop RGB using exactly the saved RGB palette; compare to interpolation of the existing 256-pixel full-photo material probabilities. No new crop, palette fit, curve fit or acceptance rule.",
+  "maskDifferenceOnObservedPixels": 0.008727422876483506,
+  "connectedRegionAtPixel347395": {
+    "old": {
+      "value": 0,
+      "areaPixels": 151,
+      "borderClearancePixels": 2
+    },
+    "new": {
+      "value": 0,
+      "areaPixels": 79853,
+      "borderClearancePixels": 0
+    }
+  },
+  "existingWeaveReScore": {
+    "scope": "Re-score existing weave only, no new fit or geometry check; target differs from original experiment.",
+    "error": {
+      "mismatchPixels": 1997,
+      "observedPixels": 159841,
+      "observedFraction": 0.99900625,
+      "mismatchFraction": 0.012493665580170295,
+      "weightMass": 159841,
+      "mismatchWeight": 1997,
+      "wholeMismatchFraction": 0.012493665580170295,
+      "protectedPixels": 159841,
+      "protectedMismatchFraction": 0.012493665580170295,
+      "editablePixels": 0,
+      "editableChangeFraction": null
+    },
+    "features": {
+      "passed": true,
+      "referenceAvailable": true,
+      "minimumRetention": 0.6,
+      "minimumAreaFraction": 0.0003,
+      "minimumCoreRadiusFraction": 0.005,
+      "borderClearancePixels": 1,
+      "regions": [
+        {
+          "value": 0,
+          "areaMm2": 496.0625,
+          "centerMm": [
+            7.1208422577800174,
+            49.62515749023561
+          ],
+          "weightMass": 7937,
+          "retainedFraction": 0.9889126874133803
+        },
+        {
+          "value": 1,
+          "areaMm2": 791.6875,
+          "centerMm": [
+            50.33998776347991,
+            22.462945054077526
+          ],
+          "weightMass": 12667,
+          "retainedFraction": 0.988868713981211
+        },
+        {
+          "value": 1,
+          "areaMm2": 797.6875,
+          "centerMm": [
+            50.76975436809527,
+            75.4355069341064
+          ],
+          "weightMass": 12763,
+          "retainedFraction": 0.9921648515239364
+        }
+      ],
+      "missing": [],
+      "method": "Both colours in the observed region; free pixels split components and do not enter their area or retention. At least 60% of each substantial weighted region with a solid core must remain its original colour. Regions touching the square border or its one-pixel neighbourhood are excluded."
+    }
+  },
+  "interpretation": "Coarse full-photo probability interpolation makes a 151-pixel dark outer strip into an isolated interior component, two pixels from the mask boundary. Applying the same palette to actual crop RGB connects it to the 79853-pixel dark component touching the border. The unchanged feature rule then passes, but total observed disagreement increases from 0.7495% to 1.2494%. This identifies a preprocessing-resolution effect on feature topology; it is not a new successful full-pipeline benchmark or proof that every high-resolution classification is better.",
+  "visualInspection": "Comparison of source RGB, previous mask and sharper RGB-classified mask inspected. The source zoom shows the dark strip physically visible at the paper edge.",
+  "reproducibility": "All six rendered/binary/connectivity/re-score artifacts reproduced byte-for-byte in a fresh output folder.",
+  "nextStep": "After the fixed crop-fallback replay, compare coarse-probability versus full-crop RGB classification on every case using frozen colours, fixed crops, unchanged budgets and independent source-paper observations.",
+  "artifactsSha256": {
+    "tmp/heart-learning/locator-diameter-components-v1/diagnose-material-resolution.py": "4c908fead2a6ecf769a4553fedc4b8d0b9a8d532fd75bb592383ebf728c69bc5",
+    "tmp/heart-learning/locator-diameter-components-v1/rescore-material-resolution.mjs": "7b51fb9eed64c13b6d9a78c881c35f4d3ecfecc3c0364a8248d6e451b1aa236c",
+    "tmp/heart-learning/locator-diameter-components-v1/star-resolution-replay/report.json": "5cc780fc566755203e984ee62eded1a17e88abb1399626d5790508f0086695ec",
+    "tmp/heart-learning/locator-diameter-components-v1/star-resolution-replay/full-rgb-mask.png": "8d3dacf29ddbf5af64bbb2c48f6acc6d496d380bce0282bde5f91c19de96f6e6",
+    "tmp/heart-learning/locator-diameter-components-v1/star-resolution-replay/mask.bin": "b2fe8e78da1c8a63b8060b2f372df156f41d00ce2f7adfb6480a915a77ec98e1",
+    "tmp/heart-learning/locator-diameter-components-v1/star-resolution-replay/valid.bin": "f5af4c541a010e4af6a1b7311b42e0cf73673093b4684cdf68aa03000cbd9845",
+    "tmp/heart-learning/locator-diameter-components-v1/star-resolution-replay/comparison.png": "aa2aff5f1e4fb013c423f4b4a6d9fd056a30757756b614072dfce6eb776a97e2",
+    "tmp/heart-learning/locator-diameter-components-v1/star-resolution-replay/connectivity.json": "634297b99475f333a304b0211f2db691d6cfb23654725bd000b9f7827190cc8a",
+    "tmp/heart-learning/locator-diameter-components-v1/star-resolution-replay/rescore.json": "5ac69b6cca45652d67909c7ecb615268be89f2cc1ed63f311381b7a77d3d488d"
+  }
+}
