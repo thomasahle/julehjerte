@@ -41,9 +41,17 @@ paired fits all pass their independent image, feature, geometry and paper
 checks. The three half-star pairs improve from **1.747–1.781%** disagreement to
 **1.577–1.584%**; the compressed star improves from **1.6825% to 1.56625%**.
 Full-star and dense Hunodan geometry remain byte-identical. Both changed star
-renders have been visually inspected; rounded joins remain. New full release,
-browser, corpus and editable-conversion verification is running; check and lint
-already pass.
+renders have been visually inspected; rounded joins remain.
+
+The rebuilt repair fix passes all **29 browser workflows**. All **22 Hunodan**
+cases remain below ten seconds (**5.73 s median, 8.70 s maximum**) with identical
+masks, template coordinates and editable SVGs. Half-star painting disagreement
+falls from **1.99875% to 1.839375%** and compressed-star disagreement from
+**1.680625% to 1.56375%**. The puppy takes **20.72 s** and has 0.00875 percentage
+points more painting error. It does not enter the changed feature-recovery
+branch: its polishing history is identical, followed by fewer accepted shared
+cuts. Its visible thin seams and frame defects remain. Check, lint and build
+pass; the paired corpus, editable audits and full tests are still running.
 
 A [saved-field junction diagnostic](material-junction-diagnostic.json) separates
 three possible causes of the learned checkers' gaps. Both 400px masks reproduce
