@@ -31,6 +31,17 @@ The inventory, with material annotations updated on 2026-10-15, contains:
 
 ## Current results and limits
 
+[Keeping the best valid rollback point](best-safe-rollback-results.json) restores
+the shifted bird's small eye while preserving exploration through worse valid
+checkpoints. Fresh isolated fits pass in 9.79 seconds with a ten-second allowance
+and 13.98 seconds with a longer allowance, versus roughly 87 seconds and an open
+eye in the regressed long runs. Independent 400/800-pixel renders retain eye IoU
+above 0.90 and total disagreement below 2.7%; actual geometry and paper checks
+pass. Both outputs were visually reviewed. The minimal fitter change and two
+analytic regression tests are integrated, with all ten focused tests passing,
+including the unchanged photographic, finer-paper and rollback-cycle checks.
+Broad QA is pending; this is one photographic case, not a general speed claim.
+
 [Source-crop review](accepted-crop-review.json) qualifies the photographic solve
 rate: 18 of the 26 accepted outputs in the preceding corpus run have weak
 crop-outline support. Source views show clear corner misplacement in gift,
@@ -63,8 +74,14 @@ returns 1.20875% independently rendered disagreement in 9.73 seconds, versus
 The exported result and comparison were visually reviewed. The main fitter now
 tries 1000 only for an otherwise acceptable unresolved candidate, retaining the
 existing half-second reserve and the actual verified resolution through export.
-All 17 focused tests, type checking, lint and build pass. Broad QA for this
-change is running against frozen source hashes.
+All 17 focused tests, type checking, lint and build pass. Broad QA is complete
+with 789 source files verified: application tests pass 857 with one skip, and
+inverse tests pass 947/954. All 22 Hunodan designs finish below ten seconds
+(maximum 8.797 seconds); photographs remain 26/31 and editable exports 48/48.
+The quality gate still fails: one Hunodan and four accepted photo errors exceed
+the pre-diagonal baseline. All fifteen changed photographic outputs were
+visually reviewed; round-checker is restored, while fine-checker, jigsaw,
+maple-leaf and Viking remain worse by the measured mask error.
 
 [Bird routing alternatives](bird-reroute-candidate-results.json) expose a deeper
 optimization issue. A newly certified early checkpoint changes the subsequent
@@ -75,10 +92,13 @@ checkpoints also fail. Neither experiment is integrated. Fixed-work gift and
 Viking replays show changed exploration and inferior retained alternatives too;
 these failures must not be fixed by merely updating historical hashes or
 loosening image/feature bounds.
-A [fixed-work rollback comparison](refinement-rollback-study.json) is prepared
-and queued behind the live QA run. It separates latest-safe, best-safe,
-improving-checkpoint and continued-exploration policies on four source motifs;
-the two floral step counts are related trials, not extra independent examples.
+The [twenty-fit rollback comparison](refinement-rollback-study.json) is complete.
+Keeping the best valid fallback recovers the useful bird boundary at a later
+checkpoint, without forbidding uphill exploration. Selected and retained gift,
+floral and Viking results are unchanged in this arm. Continuing without rollback
+finds useful finer-verifiable alternatives in gift and Viking, but worsens the
+ordinary Viking incumbent; that diagnostic is not integrated. The study covers
+four source motifs; two floral step counts are related trials, not extra photos.
 
 [A guarded diagonal-connectivity correction](diagonal-paper-core-results.json)
 addresses valid paper checkpoints discarded by four-neighbour lattice labelling.
@@ -114,9 +134,8 @@ Round-checker capture confirms that identical 4+4 candidate controls change from
 paper-pass to uncertain at resolution 700. Diagonal labelling merges previously
 sub-threshold floating core fragments into two 0.2653 mm² components, exceeding
 the unchanged 0.25 mm² threshold. The same controls pass the current lattice at
-1000 and the independent polygon-offset check. A bounded finer verification is
-being tested; neither the threshold nor the photographed mask should be changed
-to recover this candidate.
+1000 and the independent polygon-offset check. The bounded finer verification
+described above restores this candidate without changing the threshold or mask.
 
 
 [Thirty-six fresh graph-order comparisons](topology-graph-budget-results.json)

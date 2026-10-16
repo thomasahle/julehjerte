@@ -1,6 +1,6 @@
 {
   "schema": "refinement-rollback-study-1",
-  "status": "prepared_and_queued_after_live_QA",
+  "status": "complete_20_fixed_work_fits",
   "root": "tmp/heart-learning/refinement-rollback-study-v1",
   "question": "Does a newly valid checkpoint truncate useful refinement through its effect on rollback, independently of image preparation, gradients and physical acceptance rules?",
   "arms": {
@@ -45,9 +45,8 @@
   ],
   "acceptance": "Do not integrate an arm merely because it restores a historical hash or closes an inflated eye. Require the original geometry/paper gates and feature quality, then fresh timed end-to-end corpus comparisons.",
   "queue": {
-    "status": "waiting-for-live-QA",
-    "qaControllerPid": 26752,
-    "queuePid": 38278
+    "status": "complete",
+    "checks": 20
   },
   "artifacts": [
     {
@@ -71,5 +70,473 @@
       "sha256": "246c7192d1c2cd8e5f348802e9408b871e5024f5bd878a08c5c905278308bc84"
     }
   ],
-  "protocolReview": "An improving checkpoint remains accepted if another same-step preferred-proposal comparison follows; a later non-improving proposal cannot clear that accepted state. The queued cases do not use preferCheckpoint, but the experimental implementation preserves that invariant."
+  "protocolReview": "An improving checkpoint remains accepted if another same-step preferred-proposal comparison follows; a later non-improving proposal cannot clear that accepted state. The queued cases do not use preferCheckpoint, but the experimental implementation preserves that invariant.",
+  "results": [
+    {
+      "case": "bird",
+      "arm": "current",
+      "seconds": 1.534553833,
+      "requestedSteps": 160,
+      "computedSteps": 160,
+      "variants": {
+        "selected": {
+          "independentError": 0.02930625,
+          "geometryPassed": true,
+          "initialPaper": "pass",
+          "finalPaper": "pass"
+        },
+        "uncertain": {
+          "independentError": 0.03116875,
+          "geometryPassed": true,
+          "initialPaper": "uncertain",
+          "finalPaper": "uncertain"
+        }
+      },
+      "artifact": "tmp/heart-learning/refinement-rollback-study-v1/bird-current.json",
+      "sha256": "5eb3953f285a0ed79f36a30a938c36a3361932641861561c862571b3a617bb75"
+    },
+    {
+      "case": "bird",
+      "arm": "best-safe",
+      "seconds": 1.6164015409999997,
+      "requestedSteps": 160,
+      "computedSteps": 160,
+      "variants": {
+        "selected": {
+          "independentError": 0.02930625,
+          "geometryPassed": true,
+          "initialPaper": "pass",
+          "finalPaper": "pass"
+        },
+        "uncertain": {
+          "independentError": 0.03116875,
+          "geometryPassed": true,
+          "initialPaper": "uncertain",
+          "finalPaper": "uncertain"
+        }
+      },
+      "artifact": "tmp/heart-learning/refinement-rollback-study-v1/bird-best-safe.json",
+      "sha256": "cd60ab21572b53e95e1927197616bc2416832174048aafbb9290fe1140c35840"
+    },
+    {
+      "case": "bird",
+      "arm": "improving",
+      "seconds": 1.5828240409999998,
+      "requestedSteps": 160,
+      "computedSteps": 160,
+      "variants": {
+        "selected": {
+          "independentError": 0.02930625,
+          "geometryPassed": true,
+          "initialPaper": "pass",
+          "finalPaper": "pass"
+        },
+        "uncertain": {
+          "independentError": 0.03116875,
+          "geometryPassed": true,
+          "initialPaper": "uncertain",
+          "finalPaper": "uncertain"
+        }
+      },
+      "artifact": "tmp/heart-learning/refinement-rollback-study-v1/bird-improving.json",
+      "sha256": "e026da48be01e9427a9ae583b0500eacb98c3fa1b3ac494b03b59830e2d67c82"
+    },
+    {
+      "case": "bird",
+      "arm": "no-rollback",
+      "seconds": 1.561682208,
+      "requestedSteps": 160,
+      "computedSteps": 160,
+      "variants": {
+        "selected": {
+          "independentError": 0.02930625,
+          "geometryPassed": true,
+          "initialPaper": "pass",
+          "finalPaper": "pass"
+        },
+        "uncertain": {
+          "independentError": 0.03116875,
+          "geometryPassed": true,
+          "initialPaper": "uncertain",
+          "finalPaper": "uncertain"
+        }
+      },
+      "artifact": "tmp/heart-learning/refinement-rollback-study-v1/bird-no-rollback.json",
+      "sha256": "24702b947ced67c4a109f09f886756a31f54ef3b8f559d2db0abf402c08d5373"
+    },
+    {
+      "case": "gift",
+      "arm": "current",
+      "seconds": 3.3056147080000002,
+      "requestedSteps": 750,
+      "computedSteps": 750,
+      "variants": {
+        "selected": {
+          "independentError": 0.04268125,
+          "geometryPassed": true,
+          "initialPaper": "pass",
+          "finalPaper": "pass"
+        },
+        "uncertain": {
+          "independentError": 0.0332375,
+          "geometryPassed": true,
+          "initialPaper": "uncertain",
+          "finalPaper": "pass"
+        }
+      },
+      "artifact": "tmp/heart-learning/refinement-rollback-study-v1/gift-current.json",
+      "sha256": "23748b774f2d9835242dca2738e3b7feddf57358be7b52fbb7a6907422e61cf2"
+    },
+    {
+      "case": "gift",
+      "arm": "best-safe",
+      "seconds": 3.915390416,
+      "requestedSteps": 750,
+      "computedSteps": 750,
+      "variants": {
+        "selected": {
+          "independentError": 0.04268125,
+          "geometryPassed": true,
+          "initialPaper": "pass",
+          "finalPaper": "pass"
+        },
+        "uncertain": {
+          "independentError": 0.0332375,
+          "geometryPassed": true,
+          "initialPaper": "uncertain",
+          "finalPaper": "pass"
+        }
+      },
+      "artifact": "tmp/heart-learning/refinement-rollback-study-v1/gift-best-safe.json",
+      "sha256": "050579a3963bd35ea355842e82ad6a14e3eead956bb581a8fc95d465263782cd"
+    },
+    {
+      "case": "gift",
+      "arm": "improving",
+      "seconds": 3.43631075,
+      "requestedSteps": 750,
+      "computedSteps": 750,
+      "variants": {
+        "selected": {
+          "independentError": 0.04268125,
+          "geometryPassed": true,
+          "initialPaper": "pass",
+          "finalPaper": "pass"
+        },
+        "uncertain": {
+          "independentError": 0.0332375,
+          "geometryPassed": true,
+          "initialPaper": "uncertain",
+          "finalPaper": "pass"
+        }
+      },
+      "artifact": "tmp/heart-learning/refinement-rollback-study-v1/gift-improving.json",
+      "sha256": "91569020ae208b592c611f7362be77a7756f7d49051e578be60d2a8ca8fe2eb2"
+    },
+    {
+      "case": "gift",
+      "arm": "no-rollback",
+      "seconds": 3.3779880839999996,
+      "requestedSteps": 750,
+      "computedSteps": 750,
+      "variants": {
+        "selected": {
+          "independentError": 0.04268125,
+          "geometryPassed": true,
+          "initialPaper": "pass",
+          "finalPaper": "pass"
+        },
+        "uncertain": {
+          "independentError": 0.02308125,
+          "geometryPassed": true,
+          "initialPaper": "uncertain",
+          "finalPaper": "pass"
+        }
+      },
+      "artifact": "tmp/heart-learning/refinement-rollback-study-v1/gift-no-rollback.json",
+      "sha256": "5102785eefe1e7c8f05f7bf59ef352f55a3c56827222e92113584c615dfa7fcc"
+    },
+    {
+      "case": "floral-81",
+      "arm": "current",
+      "seconds": 0.936269,
+      "requestedSteps": 81,
+      "computedSteps": 81,
+      "variants": {
+        "selected": {
+          "independentError": 0.019275,
+          "geometryPassed": true,
+          "initialPaper": "pass",
+          "finalPaper": "pass"
+        }
+      },
+      "artifact": "tmp/heart-learning/refinement-rollback-study-v1/floral-81-current.json",
+      "sha256": "9e1edca457936900d570275c8318eb5ee6c55782c089ccc43b365696f06dbe73"
+    },
+    {
+      "case": "floral-81",
+      "arm": "best-safe",
+      "seconds": 0.964371666,
+      "requestedSteps": 81,
+      "computedSteps": 81,
+      "variants": {
+        "selected": {
+          "independentError": 0.019275,
+          "geometryPassed": true,
+          "initialPaper": "pass",
+          "finalPaper": "pass"
+        }
+      },
+      "artifact": "tmp/heart-learning/refinement-rollback-study-v1/floral-81-best-safe.json",
+      "sha256": "e1a899c088dcee00bd20485f243447a2c7df19ecb8c17605c3cece562a16df0d"
+    },
+    {
+      "case": "floral-81",
+      "arm": "improving",
+      "seconds": 0.9077599999999999,
+      "requestedSteps": 81,
+      "computedSteps": 81,
+      "variants": {
+        "selected": {
+          "independentError": 0.019275,
+          "geometryPassed": true,
+          "initialPaper": "pass",
+          "finalPaper": "pass"
+        }
+      },
+      "artifact": "tmp/heart-learning/refinement-rollback-study-v1/floral-81-improving.json",
+      "sha256": "a19a96adb56ce7c554148324f22cb5488261d6721706b025e0b8864089d77135"
+    },
+    {
+      "case": "floral-81",
+      "arm": "no-rollback",
+      "seconds": 0.919729625,
+      "requestedSteps": 81,
+      "computedSteps": 81,
+      "variants": {
+        "selected": {
+          "independentError": 0.019275,
+          "geometryPassed": true,
+          "initialPaper": "pass",
+          "finalPaper": "pass"
+        }
+      },
+      "artifact": "tmp/heart-learning/refinement-rollback-study-v1/floral-81-no-rollback.json",
+      "sha256": "2dbf0ea1179f657914f198e3e1f230e5003e846d7fcdad1710a011be51046be1"
+    },
+    {
+      "case": "floral-201",
+      "arm": "current",
+      "seconds": 1.8042113750000002,
+      "requestedSteps": 201,
+      "computedSteps": 201,
+      "variants": {
+        "selected": {
+          "independentError": 0.01805625,
+          "geometryPassed": true,
+          "initialPaper": "pass",
+          "finalPaper": "pass"
+        },
+        "uncertain": {
+          "independentError": 0.01738125,
+          "geometryPassed": true,
+          "initialPaper": "uncertain",
+          "finalPaper": "pass"
+        }
+      },
+      "artifact": "tmp/heart-learning/refinement-rollback-study-v1/floral-201-current.json",
+      "sha256": "4d15487b337d898b0b24a4c782f3c7c4796f35d5d84bc855484625905d110919"
+    },
+    {
+      "case": "floral-201",
+      "arm": "best-safe",
+      "seconds": 1.739413041,
+      "requestedSteps": 201,
+      "computedSteps": 201,
+      "variants": {
+        "selected": {
+          "independentError": 0.01805625,
+          "geometryPassed": true,
+          "initialPaper": "pass",
+          "finalPaper": "pass"
+        },
+        "uncertain": {
+          "independentError": 0.01738125,
+          "geometryPassed": true,
+          "initialPaper": "uncertain",
+          "finalPaper": "pass"
+        }
+      },
+      "artifact": "tmp/heart-learning/refinement-rollback-study-v1/floral-201-best-safe.json",
+      "sha256": "fe23ef35d2f3f987c2da6c612eb2a1e9c57e7a9da0a4e5977ed6b0341481db3d"
+    },
+    {
+      "case": "floral-201",
+      "arm": "improving",
+      "seconds": 1.6542180000000004,
+      "requestedSteps": 201,
+      "computedSteps": 201,
+      "variants": {
+        "selected": {
+          "independentError": 0.01805625,
+          "geometryPassed": true,
+          "initialPaper": "pass",
+          "finalPaper": "pass"
+        },
+        "uncertain": {
+          "independentError": 0.01738125,
+          "geometryPassed": true,
+          "initialPaper": "uncertain",
+          "finalPaper": "pass"
+        }
+      },
+      "artifact": "tmp/heart-learning/refinement-rollback-study-v1/floral-201-improving.json",
+      "sha256": "231b5847ab5a148b55a74d9b753fa8b78aae8df081fe0a84e8d482e676590432"
+    },
+    {
+      "case": "floral-201",
+      "arm": "no-rollback",
+      "seconds": 1.698349875,
+      "requestedSteps": 201,
+      "computedSteps": 201,
+      "variants": {
+        "selected": {
+          "independentError": 0.019275,
+          "geometryPassed": true,
+          "initialPaper": "pass",
+          "finalPaper": "pass"
+        },
+        "uncertain": {
+          "independentError": 0.01580625,
+          "geometryPassed": true,
+          "initialPaper": "uncertain",
+          "finalPaper": "pass"
+        }
+      },
+      "artifact": "tmp/heart-learning/refinement-rollback-study-v1/floral-201-no-rollback.json",
+      "sha256": "0851755b89ad88b41aaa5ca2e30fc6bafbbe881c8322abd110d95ea379763ce8"
+    },
+    {
+      "case": "viking",
+      "arm": "current",
+      "seconds": 2.8435234579999995,
+      "requestedSteps": 395,
+      "computedSteps": 395,
+      "variants": {
+        "selected": {
+          "independentError": 0.0299625,
+          "geometryPassed": true,
+          "initialPaper": "pass",
+          "finalPaper": "pass"
+        },
+        "uncertain": {
+          "independentError": 0.02930625,
+          "geometryPassed": true,
+          "initialPaper": "uncertain",
+          "finalPaper": "fail"
+        },
+        "rejected": {
+          "independentError": 0.02851875,
+          "geometryPassed": true,
+          "initialPaper": "fail",
+          "finalPaper": "fail"
+        }
+      },
+      "artifact": "tmp/heart-learning/refinement-rollback-study-v1/viking-current.json",
+      "sha256": "02f9942460c50e0d7379fb960af08193f8b746b8c5952c5255193fc9d40b5bb5"
+    },
+    {
+      "case": "viking",
+      "arm": "best-safe",
+      "seconds": 2.9416568749999996,
+      "requestedSteps": 395,
+      "computedSteps": 395,
+      "variants": {
+        "selected": {
+          "independentError": 0.0299625,
+          "geometryPassed": true,
+          "initialPaper": "pass",
+          "finalPaper": "pass"
+        },
+        "uncertain": {
+          "independentError": 0.02930625,
+          "geometryPassed": true,
+          "initialPaper": "uncertain",
+          "finalPaper": "fail"
+        },
+        "rejected": {
+          "independentError": 0.02851875,
+          "geometryPassed": true,
+          "initialPaper": "fail",
+          "finalPaper": "fail"
+        }
+      },
+      "artifact": "tmp/heart-learning/refinement-rollback-study-v1/viking-best-safe.json",
+      "sha256": "41ceae3aeba07d03a40eeaa2df23e690a8b5afb57f12fb2b4b8bef0f6afc5dc2"
+    },
+    {
+      "case": "viking",
+      "arm": "improving",
+      "seconds": 2.90956475,
+      "requestedSteps": 395,
+      "computedSteps": 395,
+      "variants": {
+        "selected": {
+          "independentError": 0.0299625,
+          "geometryPassed": true,
+          "initialPaper": "pass",
+          "finalPaper": "pass"
+        },
+        "uncertain": {
+          "independentError": 0.02930625,
+          "geometryPassed": true,
+          "initialPaper": "uncertain",
+          "finalPaper": "fail"
+        },
+        "rejected": {
+          "independentError": 0.02851875,
+          "geometryPassed": true,
+          "initialPaper": "fail",
+          "finalPaper": "fail"
+        }
+      },
+      "artifact": "tmp/heart-learning/refinement-rollback-study-v1/viking-improving.json",
+      "sha256": "55b8a55ab1008b4210ba68e40ee0de560d0cfdb6a75745b39479eb37276443cf"
+    },
+    {
+      "case": "viking",
+      "arm": "no-rollback",
+      "seconds": 2.371363583,
+      "requestedSteps": 395,
+      "computedSteps": 395,
+      "variants": {
+        "selected": {
+          "independentError": 0.03209375,
+          "geometryPassed": true,
+          "initialPaper": "pass",
+          "finalPaper": "pass"
+        },
+        "uncertain": {
+          "independentError": 0.0350875,
+          "geometryPassed": true,
+          "initialPaper": "uncertain",
+          "finalPaper": "pass"
+        },
+        "rejected": {
+          "independentError": 0.02678125,
+          "geometryPassed": true,
+          "initialPaper": "fail",
+          "finalPaper": "pass"
+        }
+      },
+      "artifact": "tmp/heart-learning/refinement-rollback-study-v1/viking-no-rollback.json",
+      "sha256": "0e4323df9d04b1aa17fbd92f292e36faf76c7b11ba0f86a0692ee4e45bee72b8"
+    }
+  ],
+  "findings": [
+    "Best-safe and improving recover the old useful bird boundary at steps 80 and 40 respectively; ordinary selected fixed-plan image error stays unchanged. Fresh rerouting is needed to assess downstream recovery.",
+    "Best-safe does not change selected or retained gift, floral or Viking results in these fixed-work runs.",
+    "Continuing without rollback gives the gift a better uncertain alternative that passes independent finer verification, but worsens the Viking ordinary incumbent. It is not integrated.",
+    "The no-rollback Viking rejected alternative passes final finer verification. This is a candidate for bounded exploration, not fresh end-to-end evidence."
+  ]
 }

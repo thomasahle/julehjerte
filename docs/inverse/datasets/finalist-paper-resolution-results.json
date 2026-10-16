@@ -1,6 +1,6 @@
 {
   "schema": "finalist-paper-resolution-study-1",
-  "status": "implemented; full_tests_947_of_954; corpus_export_checks_running",
+  "status": "implemented; full_QA_complete; quality_regressions_remain",
   "problem": "The same accurate 4+4 candidate was discarded when certified diagonal labelling made its unresolved floating fragments exceed the unchanged area threshold at resolution 700.",
   "fixedGeometry": {
     "controlsIdenticalBeforeAfter": true,
@@ -68,7 +68,7 @@
     "interruptedAttempt": "An initial focused run overlapped a live diagnostic briefly and was terminated. Only the subsequent serial 17-test run is used."
   },
   "fullQA": {
-    "status": "tests_complete; corpus_export_checks_running",
+    "status": "complete",
     "root": "tmp/heart-learning/round-paper-capture-v1/qa",
     "runtimeCommit": "0d40b97",
     "controllerPid": 26752,
@@ -113,7 +113,79 @@
       "floral uncertain alternative",
       "blue-star finer-verification route",
       "Viking retained failed alternative"
-    ]
+    ],
+    "sourceFilesVerified": 789,
+    "allCommandsPassed": false,
+    "nativeGates": {
+      "hunodanPassed": 22,
+      "hunodanTotal": 22,
+      "hunodanErrorRegressions": [
+        {
+          "id": "hjfla-01",
+          "passed": true,
+          "qualityPassed": true,
+          "seconds": 5.646928541000001,
+          "previousSeconds": 9.515122125000001,
+          "error": 0.007181803385416667,
+          "previousError": 0.007107204861111111,
+          "errorDelta": 7.459852430555594e-05
+        }
+      ],
+      "photoPassed": 26,
+      "photoPassRegressions": [],
+      "photoErrorRegressions": [
+        {
+          "id": "fine-checker",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.01800625,
+          "error": 0.01941875,
+          "errorDelta": 0.001412499999999997
+        },
+        {
+          "id": "jigsaw",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.00974375,
+          "error": 0.0101125,
+          "errorDelta": 0.0003687499999999993
+        },
+        {
+          "id": "maple-leaf",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.00869375,
+          "error": 0.0087625,
+          "errorDelta": 6.874999999999937e-05
+        },
+        {
+          "id": "flettede-viking",
+          "previousStatus": "validated",
+          "status": "validated",
+          "previousPassed": true,
+          "passed": true,
+          "previousError": 0.02091875,
+          "error": 0.02525,
+          "errorDelta": 0.004331250000000002
+        }
+      ],
+      "editablePassed": 48,
+      "editableTotal": 48,
+      "passed": false
+    },
+    "maximumHunodanSeconds": 8.796859957999997,
+    "visualReview": {
+      "path": "tmp/heart-learning/round-paper-capture-v1/qa/native/visual-review.json",
+      "sha256": "3c9c964804ff8d0ba2f480a58c71783df70c78f4bfde4f13d54bd95461bd8441",
+      "changedOutputsReviewed": 15,
+      "conclusion": "Round-checker restored; four accepted photo errors and one Hunodan error remain above the pre-diagonal baseline. No source/crop/mask changes."
+    }
   },
   "artifacts": [
     {

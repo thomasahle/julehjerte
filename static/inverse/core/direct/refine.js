@@ -169,8 +169,11 @@ export function refineCurves(graph,prob,n,phase,cfg,{steps=750,checkpointEvery=4
       // or rollback point; the caller must independently verify its paper.
       if(check.passed&&paper?.status==='fail'&&better(value,bestRejectedPaper))bestRejectedPaper=value;
       if(check.passed&&(!cfg.requireMaterialCore||paper?.passed)){
-        safe=value.points.slice();accepted=true;
-        if(better(value,best))best=value;
+        accepted=true;
+        // Keep exploring through worse valid checkpoints, but recover from
+        // the best valid fit when a later block fails. Replacing this fallback
+        // with every valid excursion can lose an already accurate boundary.
+        if(better(value,best)){best=value;safe=value.points.slice();}
         if(stopWhen&&step>=80&&stopWhen(best))stoppedEarly=true;
         return true;
       }

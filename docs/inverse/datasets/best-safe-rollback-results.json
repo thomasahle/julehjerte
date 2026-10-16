@@ -1,0 +1,117 @@
+{
+  "schema": "best-safe-rollback-results-1",
+  "status": "implemented; focused_checks_10_of_10; broad_QA_pending",
+  "problem": "A worse valid checkpoint replaced the rollback coordinates even when it did not replace the selected best candidate. A later invalid block therefore restarted from a poorer fit and lost the useful bird-eye boundary.",
+  "change": "Keep the rollback coordinates with the best physically valid candidate under the existing selection/preference comparator. Worse valid checkpoints still continue exploration. Invalid states still trigger rollback and the same rate reduction.",
+  "controls": "No changes to probabilities, crop, original-image or feature thresholds, gradients, paper tolerances, routing budget, or count portfolio.",
+  "fixedWorkStudy": "docs/inverse/datasets/refinement-rollback-study.json",
+  "freshRuns": [
+    {
+      "allowanceSeconds": 10,
+      "fitSeconds": 9.785318541,
+      "templateChecksPassed": true,
+      "independentGeometryPassed": true,
+      "independentPaperStatus": "pass",
+      "maskSha256": "bc122e4659773ece5abab69eae4934c528c8eba8feda8c0aa92d5e6ba86afe91",
+      "selectedInitialization": "fitted-boundary-rerouting",
+      "renders": [
+        {
+          "resolution": 400,
+          "error": 0.025225,
+          "eye": {
+            "centerMm": [
+              23.10141509433962,
+              46.09198113207547
+            ],
+            "sourceAreaMm2": 3.3125,
+            "intersectionPixels": 52,
+            "retention": 0.9811320754716981,
+            "predictedComponentAreaMm2": 3.25,
+            "touchesBorder": false,
+            "componentIoU": 0.9811320754716981
+          }
+        },
+        {
+          "resolution": 800,
+          "error": 0.0262171875,
+          "eye": {
+            "centerMm": [
+              23.10141509433962,
+              46.09198113207547
+            ],
+            "sourceAreaMm2": 3.3125,
+            "intersectionPixels": 200,
+            "retention": 0.9433962264150944,
+            "predictedComponentAreaMm2": 3.234375,
+            "touchesBorder": false,
+            "componentIoU": 0.91324200913242
+          }
+        }
+      ],
+      "artifact": "tmp/heart-learning/best-safe-replay-v1/short.json",
+      "sha256": "6f87f04642d2090faa856d1ef260af2c3f43d7457193f5f1bd1bedd20158a13c"
+    },
+    {
+      "allowanceSeconds": 180,
+      "fitSeconds": 13.97921475,
+      "templateChecksPassed": true,
+      "independentGeometryPassed": true,
+      "independentPaperStatus": "pass",
+      "maskSha256": "bc122e4659773ece5abab69eae4934c528c8eba8feda8c0aa92d5e6ba86afe91",
+      "selectedInitialization": "fitted-boundary-rerouting",
+      "renders": [
+        {
+          "resolution": 400,
+          "error": 0.0248625,
+          "eye": {
+            "centerMm": [
+              23.10141509433962,
+              46.09198113207547
+            ],
+            "sourceAreaMm2": 3.3125,
+            "intersectionPixels": 52,
+            "retention": 0.9811320754716981,
+            "predictedComponentAreaMm2": 3.25,
+            "touchesBorder": false,
+            "componentIoU": 0.9811320754716981
+          }
+        },
+        {
+          "resolution": 800,
+          "error": 0.0259796875,
+          "eye": {
+            "centerMm": [
+              23.10141509433962,
+              46.09198113207547
+            ],
+            "sourceAreaMm2": 3.3125,
+            "intersectionPixels": 200,
+            "retention": 0.9433962264150944,
+            "predictedComponentAreaMm2": 3.25,
+            "touchesBorder": false,
+            "componentIoU": 0.9090909090909091
+          }
+        }
+      ],
+      "artifact": "tmp/heart-learning/best-safe-replay-v1/long.json",
+      "sha256": "c3cc6c69eb362aff80eb5ec218d4a43aa44c0d01f2939f9d318f1f36863a7854"
+    }
+  ],
+  "visualReview": "Both exported bird renders inspected: small enclosed eye retained without enlargement; torso opening preserved. Existing thin contact seams and frame irregularities remain.",
+  "regressionCoverage": {
+    "analytic": "Both boundary and mask selection tests fail before the change at the resumed-coordinate assertion and pass after. They use actual gradients and an injected uncertain audit, compare against an independent restart, and require exploration through worse valid checkpoints.",
+    "photographic": "Existing x+1 bird tests enforce independent 400/800-pixel errors below 2.7%, eye retention at least 90%, eye IoU above 0.85, closed eye, geometry/paper, Stop and timing requirements."
+  },
+  "limitations": [
+    "The two timed replays are the same photograph, not independent motifs.",
+    "No general speed claim or corpus-wide quality guarantee follows from this result.",
+    "Gift/Viking and earlier crop/coverage issues remain separate."
+  ],
+  "focusedChecks": {
+    "passed": 10,
+    "total": 10,
+    "seconds": 49.052793292,
+    "log": "tmp/heart-learning/best-safe-integration-v1/focused.log",
+    "sha256": "9693aa837bc9170b482362b36e7bd165d0069af32f46b79b13d3a7692c82213b"
+  }
+}
