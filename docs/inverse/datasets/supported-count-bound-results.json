@@ -1,7 +1,7 @@
 {
   "schema": "supported-count-bound-results-1",
-  "status": "smoke-passed-corpus-running",
-  "runtimeChange": false,
+  "status": "runtime-integrated-focused-tests-passed-full-release-qa-pending",
+  "runtimeChange": true,
   "method": "Both arms fit the same captured binary mask from fresh grids in serial fresh Node processes. Actual initial worker-request settings are used. Time covers prepare/fit/finish and retained checkpoints, excluding independent rendering and editable conversion.",
   "rootCause": "A valid four-cut candidate on hjcur-02 needs a finer paper audit. The ordinary-finalists safeguard then also refines two five-cut candidates, although the existing final selection prefers the boundary-supported four-cut fit whenever it is within one percentage point of the best.",
   "bound": "For a fully valid boundary-supported count with nonnegative source error <=1%, every possible alternative error >=0 leaves it within the existing 1 percentage point preference. A queued same-count alternative may improve it, so that prevents the shortcut. Weighted fits and failed candidates retain the original search.",
@@ -120,7 +120,7 @@
     ],
     "totalFits": 110
   },
-  "nextAction": "Inspect all paired outcomes, independently replay editable exports and actual browser workflows before any runtime adoption.",
+  "nextAction": "Complete repository and actual-browser release QA. Separately test cached curve evaluation after the conversion profile identified repeated basis/derivative calculations.",
   "artifactsSha256": {
     "tmp/heart-learning/supported-count-bound-v2/state.json": "5bbe6a24ca39393ea7988744bba422163400d9f0774437d5762a3b823f765477",
     "tmp/heart-learning/supported-count-bound-v2/results.json": "24273ef8f609003069d9090535ca2f8ef145eb81f64d19e545b7ea817f881d27",
@@ -138,6 +138,1220 @@
     "tmp/heart-learning/supported-count-bound-corpus-v1/source.json": "3ad806b46472df605fadcc09e29cca75b7ec1b2ed46b9f62a9b2fc481f0f362a",
     "tmp/heart-learning/supported-count-bound-corpus-v1/external-source.json": "50edad0301e3e1162733c1f41dbff2d79455a2951a5aca64b6e33dea9e8a02bd",
     "tmp/heart-learning/supported-count-bound-corpus-v1/replay.mjs": "7c8fa3892bcd9b291cca0196bf4d364986ce941944bc4056093a0cbd0c91ff19",
-    "tmp/heart-learning/supported-count-bound-corpus-v1/run.py": "a7febf156515cbf816923a61c0092ec4fcf3396b98fae4e127b4272eb3a40f68"
+    "tmp/heart-learning/supported-count-bound-corpus-v1/run.py": "a7febf156515cbf816923a61c0092ec4fcf3396b98fae4e127b4272eb3a40f68",
+    "tmp/heart-learning/supported-count-bound-corpus-v1/state.json": "2fd2efb05cc24d9a2af9c9507d326590f101de2c428ebdf2047203510f54bc89",
+    "tmp/heart-learning/supported-count-bound-corpus-v1/results.json": "d930be8241f327536ab98ca9eeb2481c606cce81ccbf42f069ceefd63565babd",
+    "tmp/heart-learning/supported-count-bound-corpus-v1/changed-review.json": "3a8ad58d0f2655d6bf4556202f58fe5e81c46603c00645921ca161d40b696511",
+    "tmp/heart-learning/supported-count-bound-corpus-v1/changed-review-1.png": "cabe52f59022a1ea94c6c0099d22bebbfb7fa489c8f90a2b84640d977194eb2b",
+    "tmp/heart-learning/supported-count-bound-corpus-v1/changed-review-2.png": "f2d513fb7af1634a3670a0c4ea687d2b7837ff3659ab90c3beaedfc375c8fe0d",
+    "tmp/heart-learning/supported-count-bound-corpus-v1/changed-review-3.png": "07b111c29dd0a7dd4310046204e2eea6897dcb80f2aa24768491fe80ccacba79",
+    "tmp/heart-learning/supported-count-bound-corpus-v1/changed-review-4.png": "8c197bff667a893d799804b48c9acaf6b5cfb8c04d2e6d13bc265a8f5c54f6b9",
+    "tmp/heart-learning/supported-count-bound-editable-v1/state.json": "5bc15e58a647aa5c3d8c341f1b8f0d195dc4d96092715c7f5351d76432585458",
+    "tmp/heart-learning/supported-count-bound-editable-v1/source.json": "6783198c64b792cb02a308bb8818440c8d28f7b25d33b5db281e4f1e64bc40cd",
+    "tmp/heart-learning/supported-count-bound-editable-v1/output/results.json": "dc003ca2196456c9a485e2d9ae262287b38272aea129c21acbd5fe9fa71cee1f",
+    "tmp/heart-learning/supported-count-bound-editable-v1/replay.mjs": "8b5c89819e476d4f752a73afb32378e306b81e980b5e5945947182bc01574891",
+    "tmp/heart-learning/supported-count-bound-editable-v1/run.py": "351ffcf7bf785ddae6ad1968ad51734469d948e5ab7d3d35ab1b5e6f5f7ed826"
+  },
+  "corpus": {
+    "fits": 110,
+    "cases": 55,
+    "sourceFilesVerified": 1117,
+    "pairedSameGeometry": 45,
+    "statusChanges": 0,
+    "passedPairs": 53,
+    "hunodan": {
+      "passed": 22,
+      "sameGeometry": 22,
+      "candidateUnderTenSeconds": 22,
+      "candidateMedianSeconds": 5.818649313,
+      "candidateMaximumSeconds": 9.013142875000002
+    },
+    "photos": {
+      "maskPairs": 29,
+      "passed": 27,
+      "noCropFailures": [
+        "nested-squares",
+        "santa"
+      ],
+      "overallDenominator": 31
+    },
+    "results": [
+      {
+        "id": "hunodan-hjfig-01",
+        "cohort": "browser-hunodan",
+        "baselineSeconds": 3.849391208,
+        "candidateSeconds": 3.8924279170000005,
+        "baselineError": 0.009799111111111111,
+        "candidateError": 0.009799111111111111,
+        "baselineEditableError": 0.009891555555555556,
+        "candidateEditableError": 0.009891555555555556,
+        "sameGeometry": true,
+        "bothPassed": true,
+        "bound": {
+          "reason": "supported-count-error-bound",
+          "counts": [
+            2,
+            2
+          ],
+          "sourceImageError": 0.00991288888888889,
+          "allowance": 0.01,
+          "skippedFineCounts": [
+            [
+              3,
+              3
+            ],
+            [
+              3,
+              3
+            ]
+          ]
+        }
+      },
+      {
+        "id": "hunodan-hjfig-02",
+        "cohort": "browser-hunodan",
+        "baselineSeconds": 3.7013469580000002,
+        "candidateSeconds": 3.8652571250000003,
+        "baselineError": 0.0056125,
+        "candidateError": 0.0056125,
+        "baselineEditableError": 0.00548125,
+        "candidateEditableError": 0.00548125,
+        "sameGeometry": true,
+        "bothPassed": true,
+        "bound": {
+          "reason": "supported-count-error-bound",
+          "counts": [
+            2,
+            2
+          ],
+          "sourceImageError": 0.00576875,
+          "allowance": 0.01,
+          "skippedFineCounts": [
+            [
+              4,
+              4
+            ],
+            [
+              4,
+              4
+            ]
+          ]
+        }
+      },
+      {
+        "id": "hunodan-hjfig-03",
+        "cohort": "browser-hunodan",
+        "baselineSeconds": 4.168810541000001,
+        "candidateSeconds": 4.285198416,
+        "baselineError": 0.006634666666666666,
+        "candidateError": 0.006634666666666666,
+        "baselineEditableError": 0.006677333333333334,
+        "candidateEditableError": 0.006677333333333334,
+        "sameGeometry": true,
+        "bothPassed": true,
+        "bound": {
+          "reason": "supported-count-error-bound",
+          "counts": [
+            2,
+            2
+          ],
+          "sourceImageError": 0.0070613333333333335,
+          "allowance": 0.01,
+          "skippedFineCounts": [
+            [
+              3,
+              3
+            ],
+            [
+              4,
+              4
+            ]
+          ]
+        }
+      },
+      {
+        "id": "hunodan-hjfig-04",
+        "cohort": "browser-hunodan",
+        "baselineSeconds": 4.767802667,
+        "candidateSeconds": 4.669016000000001,
+        "baselineError": 0.013824,
+        "candidateError": 0.013824,
+        "baselineEditableError": 0.014016,
+        "candidateEditableError": 0.014016,
+        "sameGeometry": true,
+        "bothPassed": true,
+        "bound": {
+          "reason": "supported-count-error-bound",
+          "counts": [
+            2,
+            2
+          ],
+          "sourceImageError": 0.004686222222222222,
+          "allowance": 0.01,
+          "skippedFineCounts": [
+            [
+              3,
+              3
+            ],
+            [
+              3,
+              3
+            ]
+          ]
+        }
+      },
+      {
+        "id": "hunodan-hjfig-05",
+        "cohort": "browser-hunodan",
+        "baselineSeconds": 5.98777675,
+        "candidateSeconds": 5.781803042000001,
+        "baselineError": 0.008021555177909465,
+        "candidateError": 0.008021555177909465,
+        "baselineEditableError": 0.007678151608273384,
+        "candidateEditableError": 0.007678151608273384,
+        "sameGeometry": true,
+        "bothPassed": true,
+        "bound": null
+      },
+      {
+        "id": "hunodan-hjfla-01",
+        "cohort": "browser-hunodan",
+        "baselineSeconds": 6.380792375,
+        "candidateSeconds": 6.356472333000001,
+        "baselineError": 0.007181803385416667,
+        "candidateError": 0.007181803385416667,
+        "baselineEditableError": 0.007093641493055556,
+        "candidateEditableError": 0.007093641493055556,
+        "sameGeometry": true,
+        "bothPassed": true,
+        "bound": {
+          "reason": "supported-count-error-bound",
+          "counts": [
+            4,
+            4
+          ],
+          "sourceImageError": 0.007283528645833333,
+          "allowance": 0.01,
+          "skippedFineCounts": [
+            [
+              5,
+              5
+            ],
+            [
+              6,
+              6
+            ]
+          ]
+        }
+      },
+      {
+        "id": "hunodan-hjcur-01",
+        "cohort": "browser-hunodan",
+        "baselineSeconds": 5.698718125,
+        "candidateSeconds": 5.855495584,
+        "baselineError": 0.005148444444444444,
+        "candidateError": 0.005148444444444444,
+        "baselineEditableError": 0.0050702222222222225,
+        "candidateEditableError": 0.0050702222222222225,
+        "sameGeometry": true,
+        "bothPassed": true,
+        "bound": {
+          "reason": "supported-count-error-bound",
+          "counts": [
+            4,
+            4
+          ],
+          "sourceImageError": 0.0054755555555555556,
+          "allowance": 0.01,
+          "skippedFineCounts": [
+            [
+              5,
+              5
+            ],
+            [
+              5,
+              5
+            ]
+          ]
+        }
+      },
+      {
+        "id": "hunodan-hjcur-02",
+        "cohort": "browser-hunodan",
+        "baselineSeconds": 16.070150625,
+        "candidateSeconds": 6.8652278749999995,
+        "baselineError": 0.0050702222222222225,
+        "candidateError": 0.0050702222222222225,
+        "baselineEditableError": 0.004963555555555555,
+        "candidateEditableError": 0.004963555555555555,
+        "sameGeometry": true,
+        "bothPassed": true,
+        "bound": {
+          "reason": "supported-count-error-bound",
+          "counts": [
+            4,
+            4
+          ],
+          "sourceImageError": 0.005276444444444445,
+          "allowance": 0.01,
+          "skippedFineCounts": [
+            [
+              5,
+              5
+            ],
+            [
+              5,
+              5
+            ]
+          ]
+        }
+      },
+      {
+        "id": "hunodan-hjcur-03",
+        "cohort": "browser-hunodan",
+        "baselineSeconds": 5.686936417,
+        "candidateSeconds": 5.517214292,
+        "baselineError": 0.004522666666666667,
+        "candidateError": 0.004522666666666667,
+        "baselineEditableError": 0.004231111111111111,
+        "candidateEditableError": 0.004231111111111111,
+        "sameGeometry": true,
+        "bothPassed": true,
+        "bound": {
+          "reason": "supported-count-error-bound",
+          "counts": [
+            4,
+            4
+          ],
+          "sourceImageError": 0.004508444444444444,
+          "allowance": 0.01,
+          "skippedFineCounts": [
+            [
+              5,
+              5
+            ],
+            [
+              5,
+              5
+            ]
+          ]
+        }
+      },
+      {
+        "id": "hunodan-hjcur-04",
+        "cohort": "browser-hunodan",
+        "baselineSeconds": 7.573206417000001,
+        "candidateSeconds": 7.729158875,
+        "baselineError": 0.005639111111111111,
+        "candidateError": 0.005639111111111111,
+        "baselineEditableError": 0.005454222222222222,
+        "candidateEditableError": 0.005454222222222222,
+        "sameGeometry": true,
+        "bothPassed": true,
+        "bound": {
+          "reason": "supported-count-error-bound",
+          "counts": [
+            6,
+            6
+          ],
+          "sourceImageError": 0.0057102222222222224,
+          "allowance": 0.01,
+          "skippedFineCounts": [
+            [
+              7,
+              7
+            ],
+            [
+              7,
+              7
+            ]
+          ]
+        }
+      },
+      {
+        "id": "hunodan-hjcur-05",
+        "cohort": "browser-hunodan",
+        "baselineSeconds": 4.366702125,
+        "candidateSeconds": 4.3561742500000005,
+        "baselineError": 0.00933688888888889,
+        "candidateError": 0.00933688888888889,
+        "baselineEditableError": 0.009443555555555556,
+        "candidateEditableError": 0.009443555555555556,
+        "sameGeometry": true,
+        "bothPassed": true,
+        "bound": null
+      },
+      {
+        "id": "hunodan-hjhih-01",
+        "cohort": "browser-hunodan",
+        "baselineSeconds": 7.122123292,
+        "candidateSeconds": 6.871043042,
+        "baselineError": 0.006040430615586996,
+        "candidateError": 0.006040430615586996,
+        "baselineEditableError": 0.005993449488576875,
+        "candidateEditableError": 0.005993449488576875,
+        "sameGeometry": true,
+        "bothPassed": true,
+        "bound": {
+          "reason": "supported-count-error-bound",
+          "counts": [
+            4,
+            4
+          ],
+          "sourceImageError": 0.0064229912212408384,
+          "allowance": 0.01,
+          "skippedFineCounts": [
+            [
+              5,
+              5
+            ],
+            [
+              5,
+              5
+            ]
+          ]
+        }
+      },
+      {
+        "id": "hunodan-hjhih-02",
+        "cohort": "browser-hunodan",
+        "baselineSeconds": 5.139849334000001,
+        "candidateSeconds": 5.1780592919999995,
+        "baselineError": 0.003899406226779104,
+        "candidateError": 0.003899406226779104,
+        "baselineEditableError": 0.003899406226779104,
+        "candidateEditableError": 0.003899406226779104,
+        "sameGeometry": true,
+        "bothPassed": true,
+        "bound": {
+          "reason": "supported-count-error-bound",
+          "counts": [
+            3,
+            3
+          ],
+          "sourceImageError": 0.004117554826878634,
+          "allowance": 0.01,
+          "skippedFineCounts": [
+            [
+              4,
+              4
+            ],
+            [
+              4,
+              4
+            ]
+          ]
+        }
+      },
+      {
+        "id": "hunodan-hjhih-04",
+        "cohort": "browser-hunodan",
+        "baselineSeconds": 8.225554375,
+        "candidateSeconds": 8.154506458,
+        "baselineError": 0.007776029627903062,
+        "candidateError": 0.007776029627903062,
+        "baselineEditableError": 0.007691859448750073,
+        "candidateEditableError": 0.007691859448750073,
+        "sameGeometry": true,
+        "bothPassed": true,
+        "bound": {
+          "reason": "supported-count-error-bound",
+          "counts": [
+            5,
+            5
+          ],
+          "sourceImageError": 0.0083716955111396,
+          "allowance": 0.01,
+          "skippedFineCounts": [
+            [
+              6,
+              6
+            ],
+            [
+              6,
+              6
+            ]
+          ]
+        }
+      },
+      {
+        "id": "hunodan-hjstr-01",
+        "cohort": "browser-hunodan",
+        "baselineSeconds": 4.7104673749999995,
+        "candidateSeconds": 4.563222916000001,
+        "baselineError": 0.007550237322696868,
+        "candidateError": 0.007550237322696868,
+        "baselineEditableError": 0.007295347924029181,
+        "candidateEditableError": 0.007295347924029181,
+        "sameGeometry": true,
+        "bothPassed": true,
+        "bound": {
+          "reason": "supported-count-error-bound",
+          "counts": [
+            3,
+            3
+          ],
+          "sourceImageError": 0.007915349164031662,
+          "allowance": 0.01,
+          "skippedFineCounts": [
+            [
+              4,
+              4
+            ],
+            [
+              3,
+              4
+            ]
+          ]
+        }
+      },
+      {
+        "id": "hunodan-hjstr-02",
+        "cohort": "browser-hunodan",
+        "baselineSeconds": 6.891475292,
+        "candidateSeconds": 6.808997958,
+        "baselineError": 0.004365548980933596,
+        "candidateError": 0.004365548980933596,
+        "baselineEditableError": 0.004128862590401052,
+        "candidateEditableError": 0.004128862590401052,
+        "sameGeometry": true,
+        "bothPassed": true,
+        "bound": {
+          "reason": "supported-count-error-bound",
+          "counts": [
+            5,
+            5
+          ],
+          "sourceImageError": 0.004339250493096647,
+          "allowance": 0.01,
+          "skippedFineCounts": [
+            [
+              6,
+              6
+            ],
+            [
+              6,
+              6
+            ]
+          ]
+        }
+      },
+      {
+        "id": "hunodan-hjstr-03",
+        "cohort": "browser-hunodan",
+        "baselineSeconds": 9.295648250000001,
+        "candidateSeconds": 9.013142875000002,
+        "baselineError": 0.0056129769369752365,
+        "candidateError": 0.0056129769369752365,
+        "baselineEditableError": 0.005446912530555851,
+        "candidateEditableError": 0.005446912530555851,
+        "sameGeometry": true,
+        "bothPassed": true,
+        "bound": {
+          "reason": "supported-count-error-bound",
+          "counts": [
+            7,
+            7
+          ],
+          "sourceImageError": 0.0057923264959081735,
+          "allowance": 0.01,
+          "skippedFineCounts": [
+            [
+              8,
+              8
+            ],
+            [
+              8,
+              8
+            ]
+          ]
+        }
+      },
+      {
+        "id": "hunodan-hjsta-01",
+        "cohort": "browser-hunodan",
+        "baselineSeconds": 5.437465790999999,
+        "candidateSeconds": 5.4715365,
+        "baselineError": 0.007922437673130193,
+        "candidateError": 0.007922437673130193,
+        "baselineEditableError": 0.007901662049861495,
+        "candidateEditableError": 0.007901662049861495,
+        "sameGeometry": true,
+        "bothPassed": true,
+        "bound": {
+          "reason": "supported-count-error-bound",
+          "counts": [
+            2,
+            2
+          ],
+          "sourceImageError": 0.008157894736842105,
+          "allowance": 0.01,
+          "skippedFineCounts": [
+            [
+              3,
+              3
+            ],
+            [
+              4,
+              4
+            ]
+          ]
+        }
+      },
+      {
+        "id": "hunodan-hjsta-02",
+        "cohort": "browser-hunodan",
+        "baselineSeconds": 4.529818959,
+        "candidateSeconds": 4.4752360829999995,
+        "baselineError": 0.00221875,
+        "candidateError": 0.00221875,
+        "baselineEditableError": 0.00218125,
+        "candidateEditableError": 0.00218125,
+        "sameGeometry": true,
+        "bothPassed": true,
+        "bound": {
+          "reason": "supported-count-error-bound",
+          "counts": [
+            3,
+            3
+          ],
+          "sourceImageError": 0.00221875,
+          "allowance": 0.01,
+          "skippedFineCounts": [
+            [
+              4,
+              4
+            ],
+            [
+              5,
+              5
+            ]
+          ]
+        }
+      },
+      {
+        "id": "hunodan-hjsta-03",
+        "cohort": "browser-hunodan",
+        "baselineSeconds": 8.251676709000002,
+        "candidateSeconds": 8.178527041,
+        "baselineError": 0.012352664480635904,
+        "candidateError": 0.012352664480635904,
+        "baselineEditableError": 0.012229955893079918,
+        "candidateEditableError": 0.012229955893079918,
+        "sameGeometry": true,
+        "bothPassed": true,
+        "bound": null
+      },
+      {
+        "id": "hunodan-hjsta-04",
+        "cohort": "browser-hunodan",
+        "baselineSeconds": 7.036444625,
+        "candidateSeconds": 7.085376416,
+        "baselineError": 0.0050250552896055544,
+        "candidateError": 0.0050250552896055544,
+        "baselineEditableError": 0.004843089499174155,
+        "candidateEditableError": 0.004843089499174155,
+        "sameGeometry": true,
+        "bothPassed": true,
+        "bound": {
+          "reason": "supported-count-error-bound",
+          "counts": [
+            5,
+            5
+          ],
+          "sourceImageError": 0.0055149631869208585,
+          "allowance": 0.01,
+          "skippedFineCounts": [
+            [
+              6,
+              6
+            ],
+            [
+              6,
+              6
+            ]
+          ]
+        }
+      },
+      {
+        "id": "hunodan-hjsta-05",
+        "cohort": "browser-hunodan",
+        "baselineSeconds": 6.656189791999999,
+        "candidateSeconds": 6.5419255419999995,
+        "baselineError": 0.010624446293860237,
+        "candidateError": 0.010624446293860237,
+        "baselineEditableError": 0.010611023114714489,
+        "candidateEditableError": 0.010611023114714489,
+        "sameGeometry": true,
+        "bothPassed": true,
+        "bound": null
+      },
+      {
+        "id": "hard-bibel-star-outline",
+        "cohort": "browser-photos",
+        "baselineSeconds": 7.790717208,
+        "candidateSeconds": 7.724200334,
+        "baselineError": 0.0116,
+        "candidateError": 0.0116,
+        "baselineEditableError": 0.0115375,
+        "candidateEditableError": 0.0115375,
+        "sameGeometry": true,
+        "bothPassed": true,
+        "bound": null
+      },
+      {
+        "id": "hard-bibel-star-outline-half",
+        "cohort": "browser-photos",
+        "baselineSeconds": 5.8767315,
+        "candidateSeconds": 5.676957083,
+        "baselineError": 0.017469720064621535,
+        "candidateError": 0.017807431476529058,
+        "baselineEditableError": 0.017515356741906334,
+        "candidateEditableError": 0.017752667463787297,
+        "sameGeometry": false,
+        "bothPassed": true,
+        "bound": null
+      },
+      {
+        "id": "hard-bibel-star-outline-jpeg75",
+        "cohort": "browser-photos",
+        "baselineSeconds": 3.8490779580000005,
+        "candidateSeconds": 3.737209625,
+        "baselineError": 0.016825,
+        "candidateError": 0.016825,
+        "baselineEditableError": 0.01683125,
+        "candidateEditableError": 0.01683125,
+        "sameGeometry": true,
+        "bothPassed": true,
+        "bound": null
+      },
+      {
+        "id": "hard-flettede-puppy-half",
+        "cohort": "browser-photos",
+        "baselineSeconds": 21.073809292,
+        "candidateSeconds": 21.25692225,
+        "baselineError": 0.011821170282708744,
+        "candidateError": 0.011821170282708744,
+        "baselineEditableError": 0.011814595660749506,
+        "candidateEditableError": 0.011814595660749506,
+        "sameGeometry": true,
+        "bothPassed": true,
+        "bound": null
+      },
+      {
+        "id": "photo-outline-star",
+        "cohort": "photos",
+        "baselineSeconds": 9.207160625,
+        "candidateSeconds": 9.103403542,
+        "baselineError": 0.00743125,
+        "candidateError": 0.00743125,
+        "baselineEditableError": 0.0076,
+        "candidateEditableError": 0.0076,
+        "sameGeometry": true,
+        "bothPassed": false,
+        "bound": null
+      },
+      {
+        "id": "photo-floral-checker",
+        "cohort": "photos",
+        "baselineSeconds": 10.323093625,
+        "candidateSeconds": 10.363211999999999,
+        "baselineError": 0.01334375,
+        "candidateError": 0.01334375,
+        "baselineEditableError": 0.0132875,
+        "candidateEditableError": 0.0132875,
+        "sameGeometry": true,
+        "bothPassed": true,
+        "bound": null
+      },
+      {
+        "id": "photo-dense-checker",
+        "cohort": "photos",
+        "baselineSeconds": 9.645261249999999,
+        "candidateSeconds": 9.632092666999998,
+        "baselineError": 0.00700625,
+        "candidateError": 0.00699375,
+        "baselineEditableError": 0.0068125,
+        "candidateEditableError": 0.00676875,
+        "sameGeometry": false,
+        "bothPassed": true,
+        "bound": {
+          "reason": "supported-count-error-bound",
+          "counts": [
+            7,
+            7
+          ],
+          "sourceImageError": 0.00769375,
+          "allowance": 0.01,
+          "skippedFineCounts": [
+            [
+              8,
+              8
+            ],
+            [
+              8,
+              8
+            ]
+          ]
+        }
+      },
+      {
+        "id": "photo-bird",
+        "cohort": "photos",
+        "baselineSeconds": 9.995477375,
+        "candidateSeconds": 9.950075292000001,
+        "baselineError": 0.01963125,
+        "candidateError": 0.01963125,
+        "baselineEditableError": 0.0202875,
+        "candidateEditableError": 0.0202875,
+        "sameGeometry": true,
+        "bothPassed": true,
+        "bound": null
+      },
+      {
+        "id": "photo-leaf",
+        "cohort": "photos",
+        "baselineSeconds": 9.194693041999999,
+        "candidateSeconds": 9.664349125000001,
+        "baselineError": 0.00976875,
+        "candidateError": 0.00929375,
+        "baselineEditableError": 0.00968125,
+        "candidateEditableError": 0.0093,
+        "sameGeometry": false,
+        "bothPassed": true,
+        "bound": null
+      },
+      {
+        "id": "photo-gift",
+        "cohort": "photos",
+        "baselineSeconds": 9.585797915999999,
+        "candidateSeconds": 9.555341166,
+        "baselineError": 0.01709375,
+        "candidateError": 0.01659375,
+        "baselineEditableError": 0.017125,
+        "candidateEditableError": 0.01665625,
+        "sameGeometry": false,
+        "bothPassed": true,
+        "bound": null
+      },
+      {
+        "id": "photo-gingerbread",
+        "cohort": "photos",
+        "baselineSeconds": 6.682583125,
+        "candidateSeconds": 6.850380792,
+        "baselineError": 0.010925,
+        "candidateError": 0.010925,
+        "baselineEditableError": 0.01074375,
+        "candidateEditableError": 0.01074375,
+        "sameGeometry": true,
+        "bothPassed": true,
+        "bound": null
+      },
+      {
+        "id": "photo-white-birds",
+        "cohort": "photos",
+        "baselineSeconds": 5.4324984999999995,
+        "candidateSeconds": 5.512516,
+        "baselineError": 0.00379375,
+        "candidateError": 0.00379375,
+        "baselineEditableError": 0.00375,
+        "candidateEditableError": 0.00375,
+        "sameGeometry": true,
+        "bothPassed": true,
+        "bound": {
+          "reason": "supported-count-error-bound",
+          "counts": [
+            3,
+            3
+          ],
+          "sourceImageError": 0.00419375,
+          "allowance": 0.01,
+          "skippedFineCounts": [
+            [
+              4,
+              4
+            ],
+            [
+              4,
+              4
+            ]
+          ]
+        }
+      },
+      {
+        "id": "photo-flower",
+        "cohort": "photos",
+        "baselineSeconds": 5.985274125,
+        "candidateSeconds": 6.035117792,
+        "baselineError": 0.00350625,
+        "candidateError": 0.00350625,
+        "baselineEditableError": 0.00343125,
+        "candidateEditableError": 0.00343125,
+        "sameGeometry": true,
+        "bothPassed": true,
+        "bound": null
+      },
+      {
+        "id": "photo-warped-checker",
+        "cohort": "photos",
+        "baselineSeconds": 10.377868124999999,
+        "candidateSeconds": 10.422721459,
+        "baselineError": 0.01376875,
+        "candidateError": 0.01373125,
+        "baselineEditableError": 0.0139375,
+        "candidateEditableError": 0.01384375,
+        "sameGeometry": false,
+        "bothPassed": true,
+        "bound": null
+      },
+      {
+        "id": "photo-round-checker",
+        "cohort": "photos",
+        "baselineSeconds": 9.853054958,
+        "candidateSeconds": 9.885012833000001,
+        "baselineError": 0.0120875,
+        "candidateError": 0.0120875,
+        "baselineEditableError": 0.0119625,
+        "candidateEditableError": 0.0119625,
+        "sameGeometry": true,
+        "bothPassed": true,
+        "bound": null
+      },
+      {
+        "id": "photo-fine-checker",
+        "cohort": "photos",
+        "baselineSeconds": 10.665804832999997,
+        "candidateSeconds": 10.721479875000002,
+        "baselineError": 0.01954375,
+        "candidateError": 0.01954375,
+        "baselineEditableError": 0.01984375,
+        "candidateEditableError": 0.01984375,
+        "sameGeometry": true,
+        "bothPassed": true,
+        "bound": null
+      },
+      {
+        "id": "photo-orb",
+        "cohort": "photos",
+        "baselineSeconds": 9.910813541,
+        "candidateSeconds": 9.753202209,
+        "baselineError": 0.0136,
+        "candidateError": 0.01360625,
+        "baselineEditableError": 0.0135875,
+        "candidateEditableError": 0.0136,
+        "sameGeometry": false,
+        "bothPassed": true,
+        "bound": null
+      },
+      {
+        "id": "photo-stacked-hearts",
+        "cohort": "photos",
+        "baselineSeconds": 9.219070584,
+        "candidateSeconds": 9.109633,
+        "baselineError": 0.00584375,
+        "candidateError": 0.00584375,
+        "baselineEditableError": 0.00593125,
+        "candidateEditableError": 0.00593125,
+        "sameGeometry": true,
+        "bothPassed": true,
+        "bound": null
+      },
+      {
+        "id": "photo-jigsaw",
+        "cohort": "photos",
+        "baselineSeconds": 9.879028,
+        "candidateSeconds": 9.901602792,
+        "baselineError": 0.01034375,
+        "candidateError": 0.010375,
+        "baselineEditableError": 0.01068125,
+        "candidateEditableError": 0.010625,
+        "sameGeometry": false,
+        "bothPassed": true,
+        "bound": null
+      },
+      {
+        "id": "photo-candle",
+        "cohort": "photos",
+        "baselineSeconds": 3.3173835,
+        "candidateSeconds": 3.350011458,
+        "baselineError": 0.0048375,
+        "candidateError": 0.0048375,
+        "baselineEditableError": 0.0048,
+        "candidateEditableError": 0.0048,
+        "sameGeometry": true,
+        "bothPassed": true,
+        "bound": null
+      },
+      {
+        "id": "photo-maple-leaf",
+        "cohort": "photos",
+        "baselineSeconds": 9.753128583,
+        "candidateSeconds": 9.677693958000003,
+        "baselineError": 0.0086625,
+        "candidateError": 0.0086625,
+        "baselineEditableError": 0.00865625,
+        "candidateEditableError": 0.00865625,
+        "sameGeometry": true,
+        "bothPassed": true,
+        "bound": null
+      },
+      {
+        "id": "photo-crown",
+        "cohort": "photos",
+        "baselineSeconds": 10.160913708,
+        "candidateSeconds": 10.082366791999998,
+        "baselineError": 0.02241875,
+        "candidateError": 0.02411875,
+        "baselineEditableError": 0.022425,
+        "candidateEditableError": 0.0245125,
+        "sameGeometry": false,
+        "bothPassed": true,
+        "bound": null
+      },
+      {
+        "id": "photo-crossed-ribbons",
+        "cohort": "photos",
+        "baselineSeconds": 8.238417292,
+        "candidateSeconds": 8.171569083,
+        "baselineError": 0.0055283063279704305,
+        "candidateError": 0.0055283063279704305,
+        "baselineEditableError": 0.005490136203726677,
+        "candidateEditableError": 0.005490136203726677,
+        "sameGeometry": true,
+        "bothPassed": true,
+        "bound": null
+      },
+      {
+        "id": "photo-bauble",
+        "cohort": "photos",
+        "baselineSeconds": 9.868431208,
+        "candidateSeconds": 9.836740916,
+        "baselineError": 0.043805859226705615,
+        "candidateError": 0.043805859226705615,
+        "baselineEditableError": 0.04418549284808864,
+        "candidateEditableError": 0.04418549284808864,
+        "sameGeometry": true,
+        "bothPassed": false,
+        "bound": null
+      },
+      {
+        "id": "photo-bottom-flower",
+        "cohort": "photos",
+        "baselineSeconds": 9.699163291000001,
+        "candidateSeconds": 9.719645292,
+        "baselineError": 0.007314720875762472,
+        "candidateError": 0.007314720875762472,
+        "baselineEditableError": 0.0073773469106576985,
+        "candidateEditableError": 0.0073773469106576985,
+        "sameGeometry": true,
+        "bothPassed": true,
+        "bound": null
+      },
+      {
+        "id": "photo-faceted-star",
+        "cohort": "photos",
+        "baselineSeconds": 9.079414083,
+        "candidateSeconds": 8.989002833,
+        "baselineError": 0.0064125,
+        "candidateError": 0.0064125,
+        "baselineEditableError": 0.00643125,
+        "candidateEditableError": 0.00643125,
+        "sameGeometry": true,
+        "bothPassed": true,
+        "bound": null
+      },
+      {
+        "id": "photo-bibel-star-8",
+        "cohort": "photos",
+        "baselineSeconds": 4.131901125000001,
+        "candidateSeconds": 4.15416,
+        "baselineError": 0.003675,
+        "candidateError": 0.003675,
+        "baselineEditableError": 0.00365,
+        "candidateEditableError": 0.00365,
+        "sameGeometry": true,
+        "bothPassed": true,
+        "bound": {
+          "reason": "supported-count-error-bound",
+          "counts": [
+            2,
+            2
+          ],
+          "sourceImageError": 0.004225,
+          "allowance": 0.01,
+          "skippedFineCounts": [
+            [
+              3,
+              3
+            ],
+            [
+              3,
+              3
+            ]
+          ]
+        }
+      },
+      {
+        "id": "photo-bibel-star-curved",
+        "cohort": "photos",
+        "baselineSeconds": 9.410222542000001,
+        "candidateSeconds": 9.450455166,
+        "baselineError": 0.0064625,
+        "candidateError": 0.0064625,
+        "baselineEditableError": 0.00620625,
+        "candidateEditableError": 0.00620625,
+        "sameGeometry": true,
+        "bothPassed": true,
+        "bound": null
+      },
+      {
+        "id": "photo-bibel-star-outline",
+        "cohort": "photos",
+        "baselineSeconds": 7.367327625,
+        "candidateSeconds": 7.520398875000001,
+        "baselineError": 0.0116,
+        "candidateError": 0.0116,
+        "baselineEditableError": 0.0115375,
+        "candidateEditableError": 0.0115375,
+        "sameGeometry": true,
+        "bothPassed": true,
+        "bound": null
+      },
+      {
+        "id": "photo-bibel-cross",
+        "cohort": "photos",
+        "baselineSeconds": 3.8388069579999997,
+        "candidateSeconds": 3.7565759169999997,
+        "baselineError": 0.00243125,
+        "candidateError": 0.00243125,
+        "baselineEditableError": 0.002425,
+        "candidateEditableError": 0.002425,
+        "sameGeometry": true,
+        "bothPassed": true,
+        "bound": {
+          "reason": "supported-count-error-bound",
+          "counts": [
+            2,
+            2
+          ],
+          "sourceImageError": 0.00253125,
+          "allowance": 0.01,
+          "skippedFineCounts": [
+            [
+              3,
+              3
+            ],
+            [
+              3,
+              3
+            ]
+          ]
+        }
+      },
+      {
+        "id": "photo-flettede-puppy",
+        "cohort": "photos",
+        "baselineSeconds": 9.546671292000001,
+        "candidateSeconds": 9.607553375,
+        "baselineError": 0.01036875,
+        "candidateError": 0.01028125,
+        "baselineEditableError": 0.01024375,
+        "candidateEditableError": 0.01026875,
+        "sameGeometry": false,
+        "bothPassed": true,
+        "bound": null
+      },
+      {
+        "id": "photo-flettede-stonehenge",
+        "cohort": "photos",
+        "baselineSeconds": 8.894712000000002,
+        "candidateSeconds": 9.026296750000002,
+        "baselineError": 0.0143875,
+        "candidateError": 0.0143875,
+        "baselineEditableError": 0.014275,
+        "candidateEditableError": 0.014275,
+        "sameGeometry": true,
+        "bothPassed": true,
+        "bound": null
+      },
+      {
+        "id": "photo-flettede-viking",
+        "cohort": "photos",
+        "baselineSeconds": 10.023446416,
+        "candidateSeconds": 10.103912790999999,
+        "baselineError": 0.020925,
+        "candidateError": 0.0217125,
+        "baselineEditableError": 0.0212375,
+        "candidateEditableError": 0.021975,
+        "sameGeometry": false,
+        "bothPassed": true,
+        "bound": null
+      }
+    ]
+  },
+  "corpusEditable": {
+    "exports": 110,
+    "conversionPassed": 110,
+    "editorIssues": 0,
+    "sourceFilesVerified": 1348,
+    "scope": "Production conversion at each original native mask resolution, honoring captured browser symmetry, followed by SVG roundtrip, source features and independent paper/geometry. Actual 400px browser replay remains required."
+  },
+  "corpusVisualReview": {
+    "files": [
+      "changed-review-1.png",
+      "changed-review-2.png",
+      "changed-review-3.png",
+      "changed-review-4.png"
+    ],
+    "changedCases": [
+      "photo-crown",
+      "photo-flettede-viking",
+      "photo-gift",
+      "photo-leaf",
+      "hard-bibel-star-outline-half",
+      "photo-flettede-puppy",
+      "photo-warped-checker",
+      "photo-jigsaw",
+      "photo-dense-checker",
+      "photo-orb"
+    ],
+    "review": "All ten changed pairs inspected against the source and their difference images. Main motifs remain; changes concentrate on contour and narrow seam pixels. Crown and Viking remain imperfect. No claim of exact original template recovery."
+  },
+  "timingSensitivity": {
+    "errorIncreases": [
+      {
+        "id": "hard-bibel-star-outline-half",
+        "percentagePoints": 0.033771141190752293,
+        "boundActivated": false
+      },
+      {
+        "id": "photo-orb",
+        "percentagePoints": 0.0006250000000001046,
+        "boundActivated": false
+      },
+      {
+        "id": "photo-jigsaw",
+        "percentagePoints": 0.0031250000000000028,
+        "boundActivated": false
+      },
+      {
+        "id": "photo-crown",
+        "percentagePoints": 0.17,
+        "boundActivated": false
+      },
+      {
+        "id": "photo-flettede-viking",
+        "percentagePoints": 0.07875,
+        "boundActivated": false
+      }
+    ],
+    "explanation": "The bound did not activate in any increased-error case. The half-size star returned through an earlier branch before reaching it; its final timed refinement checkpoints stop at step 204 versus 209, selecting different valid geometry. Other timed cases also remain variable; they are retained, not reported as universally unchanged errors."
+  },
+  "focusedRuntimeTests": {
+    "passed": 2,
+    "cases": [
+      "Hunodan supported-count finer-verification regression",
+      "Candle beneficial simpler-finalist regression"
+    ]
   }
 }

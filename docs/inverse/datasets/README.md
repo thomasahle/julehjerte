@@ -33,18 +33,19 @@ The inventory, with material annotations updated on 2026-10-16, contains:
 
 ## Current results and limits
 
-An isolated [supported-count search bound](supported-count-bound-results.json)
-reduces the slow Hunodan hjcur-02 mask replay from **15.65 s to 7.27 s**, with
-**byte-identical exported cutting geometry**. The dense checker and candle
-controls also keep identical geometry; all six editable exports pass. The
-shortcut skips other slit counts only when they cannot displace the already
-valid boundary-supported layout under the existing one-percentage-point
-preference. It is **not yet a runtime change**: 110 fresh paired fits are running
-on 22 browser Hunodan masks, four browser hard-photo masks and 29 prepared masks
-from the 31-photo benchmark. The other two photos still have no crop and remain
-failures. The initial replay accidentally used the final report's finer paper
-resolution as the starting setting; that separate result is retained, and the
-corrected comparison uses the actual captured worker request.
+The [supported-count search bound](supported-count-bound-results.json) is now
+integrated locally. It skips other counts only when they cannot displace an
+already valid boundary-supported fit under the existing one-percentage-point
+preference. All **22 Hunodan mask pairs retain byte-identical cutting geometry**;
+the slow case falls from **16.07 s to 6.87 s**. Candidate solver replays have a
+**5.82 s median** and **9.01 s maximum**; actual-browser release QA is still pending.
+All **110 fits across 55 fixed masks** retain their pass/fail status, and all
+**110 editable SVG conversions** pass. The photo benchmark remains **27/31**,
+including its two unchanged no-crop failures. Ten timed fits have changed
+geometry; their reviewed differences and error increases are retained in the
+report. The pruning bound did not activate in any increased-error case. The new
+Hunodan regression and the existing candle regression both pass. Full repository
+QA is pending for this change.
 
 The [native import sampling fix](native-import-sampling-results.json) keeps the
 400px painting surface but reuses the original photographic raster only while

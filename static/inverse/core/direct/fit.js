@@ -36,6 +36,7 @@ import {featureImprovingFinalist} from './feature-finalists.js';
 export {borderEvidence,supportedBorderCounts,gridCountLimit,gridFinalists} from './counts.js';
 const featureSeed=c=>['feature-weighted-grid','feature-preserving-grid','feature-sampling-grid','fitted-boundary-rerouting'].includes(c.seed);
 const finerRefinement=c=>['retained-refinement-alternative','rollback-checkpoint'].includes(c.paperVerification?.source);
+const SUPPORTED_COUNT_ERROR_ALLOWANCE=.01;
 function refinementTimeLeft(deadline){
   const available=deadline-performance.now();
   return available-1700-Math.min(800,available*.15);
@@ -561,6 +562,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     preparations.set(selected,prepared);return prepared;
   };
   const extraGridComparisons=[];
+  let countSearchBound=null;
   let clearanceComparison=null;
   let stoppedEarly=false;
   for(let i=0;i<fine.length&&!stoppedEarly;i++){
@@ -731,6 +733,18 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       const retry=samplingSeed('unsuccessful-refinement');
       if(retry)fine.splice(i+1,0,retry);
     }
+    // The existing final preference always retains a supported-count fit
+    // within 1 percentage point of the best image error. Since error cannot
+    // be negative, a fully checked fit below 1% cannot lose to another count.
+    // Keep every already scheduled same-count alternative eligible.
+    const supportedWinner=candidate.imagePassed&&!weights&&supportedCounts&&
+      candidate.counts.every((count,j)=>count===supportedCounts[j])&&
+      Number.isFinite(candidate.originalImageError)&&candidate.originalImageError>=0&&candidate.originalImageError<=SUPPORTED_COUNT_ERROR_ALLOWANCE&&
+      !fine.slice(i+1).some(r=>r.model.counts.every((count,j)=>count===supportedCounts[j]));
+    if(supportedWinner){
+      countSearchBound={reason:'supported-count-error-bound',counts:candidate.counts.slice(),sourceImageError:candidate.originalImageError,allowance:SUPPORTED_COUNT_ERROR_ALLOWANCE,skippedFineCounts:fine.slice(i+1).map(r=>r.model.counts.slice())};
+      break;
+    }
     // Border disagreement must not stop a competitive simpler finalist from
     // receiving curve refinement. Its grid error can overestimate its eventual
     // fit: accepting the first valid dense grid would hide that improvement.
@@ -765,13 +779,13 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     }
   }
   candidates.sort((a,b)=>Number(b.paperPassed)-Number(a.paperPassed)||Number(b.geometryPassed)-Number(a.geometryPassed)||Number(b.imagePassed)-Number(a.imagePassed)||a.selectionScore-b.selectionScore);
-  // Prefer the simplest valid topology when its independently measured image
-  // disagreement is within one percentage point of the best valid candidate.
+  // Prefer the boundary-supported slit counts when their independently
+  // measured image error is within one percentage point of the best fit.
   // This is deliberately applied after geometry and feature gates, so a
   // simpler but physically invalid or feature-losing fit can never win.
   const validCandidates=candidates.filter(c=>c.imagePassed),bestError=validCandidates.reduce((best,c)=>Math.min(best,c.originalImageError),Infinity);
   if(validCandidates.length&&supportedCounts&&!weights){
-    const simple=validCandidates.filter(c=>c.counts.every((count,j)=>count===supportedCounts[j])&&c.originalImageError<=bestError+.01).sort((a,b)=>a.originalImageError-b.originalImageError)[0];
+    const simple=validCandidates.filter(c=>c.counts.every((count,j)=>count===supportedCounts[j])&&c.originalImageError<=bestError+SUPPORTED_COUNT_ERROR_ALLOWANCE).sort((a,b)=>a.originalImageError-b.originalImageError)[0];
     if(simple){
       const rest=candidates.filter(c=>c!==simple);
       candidates.splice(0,candidates.length,simple,...rest);
@@ -816,7 +830,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   const solution=candidate.graph.solution(candidate.points,candidate.phase,input);
   const paper={passed:candidate.paperPassed};
   solution.report={countSearch:countSearchReport,finalistPreference,deferredFeatureRecovery,...(recoveryHistory.length>1?{featureRecoveryAttempts:recoveryHistory}:{}),algorithm:'direct-bezier',numericalBackend,imported:false,termination:!candidate.geometryPassed?'geometry_failure':!paper.passed?'paper_failure':candidate.originalImageError>cfg.maxImageError?'image_mismatch':'candidate_found',seconds:(performance.now()-start)/1000,
-    stoppedEarly,clearanceComparison,extraGridComparisons,earlyClampedFeatureRecovery,clampedFeatureRecovery:candidate.clampedFeatureRecovery,refinementFeaturesPassed:candidate.originalFeatures?.passed,refinementBudget:{requestedSeconds:cfg.timeLimit,maximumSearchSeconds:searchSeconds(),verifiedAlternative},earlyFeatureInitialization,featureInitialization,samplingRecovery,featureDetail,featureDetailAttempts,outlineDetail,paperVerification:candidate.paperVerification,matchingPreference:{enabled:cfg.preferMatchingSheets,...matchingEvidence,...matchingSummary(solution),identicalCandidateBonus:0},optimizationResolution:n,sourceResolution:source.resolution,scaleSampling:'Each fitting scale is area-resampled directly from the original classified source; no chained downsampling',initialization:'Fresh ordered grids, soft border endpoint proposals and alternating row dynamic programming; independent shapes for both sheets',countsSearched:attempts.filter(a=>a.stage==='coarse').map(a=>({counts:a.counts,phase:a.phase})),attempts,selectedCounts:candidate.counts,candidates:candidates.map(c=>({counts:c.counts,error:c.error,sourceImageError:c.originalImageError,imagePassed:c.imagePassed,featuresPassed:c.originalFeatures?.passed,enclosuresOpened:c.originalFeatures?.enclosures?.opened,score:c.score,geometry:c.geometryPassed,paper:c.paperPassed,paperVerification:c.paperVerification})),
+    stoppedEarly,countSearchBound,clearanceComparison,extraGridComparisons,earlyClampedFeatureRecovery,clampedFeatureRecovery:candidate.clampedFeatureRecovery,refinementFeaturesPassed:candidate.originalFeatures?.passed,refinementBudget:{requestedSeconds:cfg.timeLimit,maximumSearchSeconds:searchSeconds(),verifiedAlternative},earlyFeatureInitialization,featureInitialization,samplingRecovery,featureDetail,featureDetailAttempts,outlineDetail,paperVerification:candidate.paperVerification,matchingPreference:{enabled:cfg.preferMatchingSheets,...matchingEvidence,...matchingSummary(solution),identicalCandidateBonus:0},optimizationResolution:n,sourceResolution:source.resolution,scaleSampling:'Each fitting scale is area-resampled directly from the original classified source; no chained downsampling',initialization:'Fresh ordered grids, soft border endpoint proposals and alternating row dynamic programming; independent shapes for both sheets',countsSearched:attempts.filter(a=>a.stage==='coarse').map(a=>({counts:a.counts,phase:a.phase})),attempts,selectedCounts:candidate.counts,candidates:candidates.map(c=>({counts:c.counts,error:c.error,sourceImageError:c.originalImageError,imagePassed:c.imagePassed,featuresPassed:c.originalFeatures?.passed,enclosuresOpened:c.originalFeatures?.enclosures?.opened,score:c.score,geometry:c.geometryPassed,paper:c.paperPassed,paperVerification:c.paperVerification})),
     borderEvidence:evidence,supportedBorderCounts:supportedBorderCounts(evidence),borderCountsAreHardConstraints:false,traceUsed:['coarse-boundary-topology','feature-recovery'].includes(candidate.seed),cornerTopologyInitialization:cornerTopology?.report,topologyInitialization:topology?.report,coarseTopologyInitialization:coarseTopology?.report,selectedInitialization:candidate.seed||'grid',featureRecovery:recovery?.report||null,freeCoordinates:'Both coordinates of anchors and handles; endpoints remain on assigned sides',stages:timings,checkpoints:candidate.history,localFeaturePolish:candidate.localFeaturePolish,sharing:candidate.sharing||{accepted:[],rejected:[]},estimatedMaskMismatch:candidate.error,minimumNominalWidth:cfg.nominalWidth,physicalAssemblyTested:false};
   return solution;
 }
