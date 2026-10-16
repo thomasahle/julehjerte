@@ -9,7 +9,7 @@ import { generateCheckeredGrid, checkeredGridCache } from './checkeredGrid';
 import { generateMixedCheckeredGrid, mixedCheckeredGridCache } from './mixedCheckeredGrid';
 import { cutTipCounts, fewerCutTips } from './cutQuality';
 import { normalizeContours } from './contours';
-import { gridClearanceScale } from '$lib/geometry/clearance';
+import { gridClearance, gridClearanceScale } from '$lib/geometry/clearance';
 import { generatePanelFigure } from './panels';
 import { generateComponentFigure } from './components';
 import { generateComponentLanes } from './componentLanes';
@@ -445,6 +445,8 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		} catch (retryError) {
 			if (!(retryError instanceof ConstructionError) && !(retryError instanceof CutGeometryError)) throw retryError;
 		}
+		const sunburstPanels = retrySunburstPanels(request, curveFitter);
+		if (sunburstPanels) return sunburstPanels;
 		const textPanels = retryTextPanelIslands(request, curveFitter);
 		if (textPanels) return textPanels;
 		let bestRepeated: GeneratorResult | undefined;
@@ -480,6 +482,37 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		if (bestRepeated) return bestRepeated;
 		throw error;
 	}
+}
+
+/** Slanted panel projections can graze the outer sunburst's diagonal corners.
+ * Axial projections clear those corners while retaining both circles and the
+ * motif. Keep this after existing layouts so working designs stay unchanged. */
+function retrySunburstPanels(request: GeneratorRequest, curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult | undefined {
+	if (request.mode !== 'figure' || request.style !== 'sunburst') return;
+	const rings = normalizeContours(request.contours ?? []), size = request.frameSize ?? 70;
+	let best: GeneratorResult | undefined;
+	for (const [columns, rows] of [[2, 1], [1, 2]]) try {
+		const route: typeof fourPortMotif = (...args) => {
+			// The outer band adds two actual strips to each panel grid.
+			args[4] = gridClearance(columns + rows + 3);
+			return fourPortMotif(...args);
+		};
+		// 'check' selects axial frame projections; sunburstBorder supplies
+		// the same outer circular rays, without changing either circle.
+		const inner = generatePanelFigure(rings, 'circle', size * .8, request.scale ?? .7,
+			columns, 'check', rows, false, route, 'components');
+		const result = improveSharedConnections(finishConstruction(request, sunburstBorder(inner, size),
+			'nested', undefined, curveFitter)), design = result.design;
+		const margin = intersectionMarginPx(inferOverlapRect(design.fingers, design.gridSize),
+			gridClearanceScale(design.gridSize.x, design.gridSize.y));
+		if (findFingersWithIssues(design.fingers, margin * 1.1).size) continue;
+		const tips = cutTipCounts(design);
+		if (!best || fewerCutTips(tips, cutTipCounts(best.design))) best = result;
+		if (!tips[1]) return best;
+	} catch (error) {
+		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+	}
+	return best;
 }
 
 /** Clipping an accent or serif can leave a separate piece owning a panel gate.

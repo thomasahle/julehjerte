@@ -420,6 +420,13 @@ with unique SVG IDs; a neutral outline appears while an uncached variant is bein
 main preview has priority over a cancellable sequential background worker. A circular sunburst
 adds four open outer strips around a smaller central field, creating eight rays without adding cuts
 through the figure. Templates that fail validation remain explicitly unavailable.
+If the sunburst's inner panel projections graze the outer circle's diagonal
+corners, a final fallback may use axial projections with two horizontal or
+vertical panels. Keep both circles and the motif fixed. Include the outer
+band's two extra strips per sheet in local routing clearance, and use the
+clipped component's phase at each shared seam. Require 10% extra clearance on
+the complete fitted sheets; prefer fewer sharp tips. Earlier successful
+sunburst layouts keep their cuts.
 
 Framed words keep independent four-port cells for each letter, with a common font baseline and
 widths fitted to the glyphs. Text entry accepts three lines of ten characters. Multiline layouts

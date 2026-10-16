@@ -1,6 +1,50 @@
 # Generator robustness results
 
-## Current verification: reuse relief-cut ordering
+## Current coverage: stars and snowflake in the sunburst frame
+
+The sunburst's slanted inner projections could pass about 0.2 units from a
+corner of its outer circle, even when the motif's own cuts were clear. A final
+fallback now tries two panels, horizontally or vertically, with axial frame
+projections. Both circles, the motif and its counters remain fixed. Local
+routing counts the outer band's two extra strips per sheet, and the complete
+fitted cuts must retain 10% extra clearance.
+
+This recovers Tabler stars and the authored snowflake, both with **6×6 grids**.
+Stars has no cutting tips below 45°. Snowflake has seven below 45° and none below
+30°, so it remains an intricate pattern. Their complete production designs
+exactly match the audited prototypes. Both pass JSON/SVG handoffs and the
+independent material audit at resolution 1,400 with zero certain or possible
+detached core islands. The finished hearts and both cutting sheets were visually
+reviewed (`sunburst-square-{audit,metrics,material}.json` and
+`sunburst-square-gallery-{0,1}.png`). This does not establish physical tear
+strength or ease of weaving in paper.
+
+All **51 default sunburst motifs** were freshly compared with the previous
+generator: **49 accepted / two refused / zero invalid**. Every one of the 47
+previously accepted complete results is exactly unchanged. Full production
+capturing of the two recoveries took 4.77 seconds for stars and 1.96 seconds for
+snowflake in that audit; these were not isolated latency benchmarks. The coffee
+and Tabler paw sunbursts still refuse.
+
+The merged corpus is **2,860 accepted / 290 refused / zero invalid**: text is
+unchanged at 1,750 / 278; figures are 1,110 / 12. `sunburst-square-current.json`
+refreshes 51 records and retains the other 3,099 from
+`text-envelope-current.json`. This is not a fresh full-matrix run. Non-default
+sizes and the broader searchable catalogue remain incompletely verified.
+
+Simply counting the extra strips, with the earlier slanted projections, recovered
+none of 672 panel trials. Axial projections recovered the two motifs in a further
+336 trials. A separate 54-trial component-layout experiment recovered neither
+remaining coffee nor paw case and is not included. The production fallback tries
+only the two useful panel layouts; previously working designs return first.
+
+All **1,162 unit tests across 67 files** pass in one full run with unchanged time
+limits (585.72 seconds), followed by **177 passing inverse tests** (88.33 seconds).
+The two focused regressions also pass. Check, lint and production build pass with
+the seven existing Svelte warnings. Logs are
+`sunburst-square-{focused,tests,check,lint,build}.log`.
+
+## Previous verification: reuse relief-cut ordering
 
 The relief-cut generator now ranks each chord once for a fixed set of attachment
 ports, then reuses that order during compound relief. Every attempt still filters
