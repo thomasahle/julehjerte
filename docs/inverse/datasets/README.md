@@ -32,6 +32,21 @@ The inventory, with material annotations updated on 2026-10-16, contains:
 
 ## Current results and limits
 
+A [locator-objective isolation](locator-diameter-isolation-results.json) confirms
+that the strong colour-step term at the two lobe diameters can pull an accurate
+silhouette into a poor crop fit. With identical SAM fields, removing only that
+term raises rabbit lobe support from 47%/83% to 97%/86%, recovers its crop and
+produces a checked template at 1.51% mask disagreement. Across all 22 photos,
+crop proposals rise from 14 to 16, also recovering floral/striped. However,
+complete fitting remains **12/22 in both arms**: candle loses a checked feature,
+the floral print becomes false weave detail, and several common outputs worsen.
+All six crop panels and eight reconstruction panels were inspected. The editable
+audit converts 29/30 outputs; the one rejection is a bicycle candidate already
+rejected by the engine. All 24 accepted outputs pass editable checks. The global
+objective change is not adopted, and no combined best-arm success rate is
+claimed. A separate production RGB-only crop replay tests whether this diagnosis
+also applies without a neural model.
+
 A [pretrained MobileSAM experiment](mobilesam-foreground-results.json) improves
 the difficult 22-photo development replay from 7 checked derived-mask fits with
 production and 3 with the earlier neural pipeline to **12 with automatically

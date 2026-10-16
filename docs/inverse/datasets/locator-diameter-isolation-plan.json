@@ -1,0 +1,29 @@
+{
+  "schema": "locator-diameter-isolation-plan-1",
+  "status": "declared-before-outcomes",
+  "scope": "Offline colour-boundary objective isolation on 22 frozen SAM box-plus-point body maps. Photographs, all probabilities, geometry constraints, acceptance gates and orientation time allowance are identical. Only the palette diameter-loss coefficient changes from 20 to zero. No retraining, labels, supplied corners or fitting.",
+  "methods": [
+    "baseline",
+    "no-diameter"
+  ],
+  "cases": 22,
+  "question": "Does the strong colour step objective at lobe diameters prevent accurate physical outline fits even when semantic silhouettes are accurate?",
+  "invariants": [
+    "No change to crop geometry parameterization, initialization, iteration count, source fields, support gates or cap-colour gates.",
+    "Same per-case automatic orientation allowance. No best-arm union and no relaxed acceptance criteria.",
+    "Rotate method order. Verify baseline crop coordinates against the preceding completed SAM replay."
+  ],
+  "evaluation": [
+    "Inspect all changed and retained crop proposals against source photos.",
+    "Compare physical outline with independent partial body labels; no annotations enter the locator.",
+    "Record any losses and colour/outline support. Whole templates require a later separate replay."
+  ],
+  "sourceCommit": "94792c5",
+  "artifactsSha256": {
+    "tmp/heart-learning/locator-diameter-isolation-v1/probe/manifest.json": "af89a5b0a07cd9a2de6f9e076a84270149bc0c7c5a0bb4b7f17aa11e71a186f8",
+    "tmp/heart-learning/locator-diameter-isolation-v1/no-diameter-crop.mjs": "d4bb6d55d167528b3f85535768d8e7a4dec85899bf2fd934e10bba1d26e056c8",
+    "tmp/heart-learning/locator-diameter-isolation-v1/replay.mjs": "7a5cb036f3104d590a454679a79011d55025e41c06e379c04795be45089b8308",
+    "tmp/heart-learning/locator-diameter-isolation-v1/run.py": "99b20120f5989a5d7ff375c4a1fbfa85c24cac1da21d1314c0bbcaf0bab3512e",
+    "static/inverse/locator/locator.js": "bb745954e2fa2b59abf8be98ded36b75b134295363f913dab04d3a4ad1c6a419"
+  }
+}

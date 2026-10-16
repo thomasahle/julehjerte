@@ -1,0 +1,22 @@
+{
+  "status": "declared-before-outcomes",
+  "scope": "Production cropper, original RGB photographs only. No neural fields or model inference. Only palette diameter-loss coefficient changes from 20 to zero; production palette search, geometry, support gates and budgets are unchanged.",
+  "cases": 22,
+  "methods": [
+    "baseline",
+    "no-diameter"
+  ],
+  "sourceCommit": "94792c5",
+  "invariants": [
+    "No neural inference, annotations, supplied ROI or corner coordinates enter detection.",
+    "Only one objective coefficient changes; acceptance thresholds remain fixed.",
+    "Compare baseline with the completed production replay; inspect every changed, gained and lost proposal.",
+    "No template success is inferred from crop counts."
+  ],
+  "artifactsSha256": {
+    "tmp/heart-learning/production-diameter-isolation-v1/probe/manifest.json": "2c7a751654c8e7bf11798a2b943b0b5f1f685eca7ff8e735f3730aabe690751b",
+    "tmp/heart-learning/production-diameter-isolation-v1/no-diameter-crop.mjs": "312deff72a3dfab5e3a6548a9bdbb7df5b8fc55c97e51f8b2e26f6b130c49883",
+    "tmp/heart-learning/production-diameter-isolation-v1/replay.mjs": "ab1e2c2598387195cfa1d4749fdd75fd67e2bac223031f0d2d1218a5ec5c5366",
+    "tmp/heart-learning/production-diameter-isolation-v1/run.py": "99b20120f5989a5d7ff375c4a1fbfa85c24cac1da21d1314c0bbcaf0bab3512e"
+  }
+}

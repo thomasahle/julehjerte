@@ -1,0 +1,533 @@
+{
+  "schema": "locator-diameter-isolation-results-1",
+  "status": "complete-experiment-global-change-not-adopted",
+  "deployed": false,
+  "training": false,
+  "scope": "Offline colour-boundary objective isolation on 22 frozen SAM box-plus-point body maps. Photographs, all probabilities, geometry constraints, acceptance gates and orientation time allowance are identical. Only the palette diameter-loss coefficient changes from 20 to zero. No retraining, labels, supplied corners or fitting.",
+  "plan": "docs/inverse/datasets/locator-diameter-isolation-plan.json",
+  "cropSummary": {
+    "baseline": {
+      "predictionMetricMeans": {
+        "knownRegionIoU": 0.9069512753087982,
+        "backgroundFalsePositive": 0.06562842511180068,
+        "paperFalseNegative": 0.02471341142926454
+      },
+      "count": 14,
+      "ids": [
+        "real-12ce3c9180f7f317-body-1",
+        "real-2044b1d98ed6f262-body-1",
+        "real-340f5e5b0f447889-body-1",
+        "real-39f3a1ba97852876-body-1",
+        "real-5330aa8b62176216-body-1",
+        "real-710703159f609111-body-1",
+        "real-80794af7903e5d29-body-1",
+        "real-8c875dd0f298b5a4-body-1",
+        "real-a414dfffbd2362ae-body-1",
+        "real-abf590088db891f9-body-1",
+        "real-b87b0b19f12724f3-body-1",
+        "real-c0cc1ce97cf5e6a6-body-1",
+        "real-c4a9ee6e2d0a4185-body-1",
+        "real-e936e08ac62db19b-body-1"
+      ],
+      "gainsAgainstBaseline": [],
+      "lossesAgainstBaseline": [],
+      "reasons": {
+        "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.": 2,
+        "The two-colour foreground does not clearly support both heart lobes and lower edges.": 5,
+        "Crowded frame: select one heart with a rough rectangle": 1
+      }
+    },
+    "no-diameter": {
+      "predictionMetricMeans": {
+        "knownRegionIoU": 0.9069512753087982,
+        "backgroundFalsePositive": 0.06562842511180068,
+        "paperFalseNegative": 0.02471341142926454
+      },
+      "count": 16,
+      "ids": [
+        "real-12ce3c9180f7f317-body-1",
+        "real-2044b1d98ed6f262-body-1",
+        "real-340f5e5b0f447889-body-1",
+        "real-39f3a1ba97852876-body-1",
+        "real-45744a03afddccb1-body-1",
+        "real-5330aa8b62176216-body-1",
+        "real-710703159f609111-body-1",
+        "real-80794af7903e5d29-body-1",
+        "real-8c875dd0f298b5a4-body-1",
+        "real-995899fe049540ed-body-1",
+        "real-a414dfffbd2362ae-body-1",
+        "real-abf590088db891f9-body-1",
+        "real-b87b0b19f12724f3-body-1",
+        "real-c0cc1ce97cf5e6a6-body-1",
+        "real-c4a9ee6e2d0a4185-body-1",
+        "real-e936e08ac62db19b-body-1"
+      ],
+      "gainsAgainstBaseline": [
+        "real-45744a03afddccb1-body-1",
+        "real-995899fe049540ed-body-1"
+      ],
+      "lossesAgainstBaseline": [],
+      "reasons": {
+        "Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.": 2,
+        "The two-colour foreground does not clearly support both heart lobes and lower edges.": 3,
+        "Crowded frame: select one heart with a rough rectangle": 1
+      }
+    }
+  },
+  "baselineCropCoordinatesReproducedExactly": true,
+  "pipeline": {
+    "status": "complete",
+    "rows": 44,
+    "summary": {
+      "baseline": {
+        "counts": {
+          "checked-derived-mask": 12,
+          "crop-unresolved": 8,
+          "review-required": 2
+        },
+        "passedIds": [
+          "real-12ce3c9180f7f317-body-1",
+          "real-2044b1d98ed6f262-body-1",
+          "real-340f5e5b0f447889-body-1",
+          "real-39f3a1ba97852876-body-1",
+          "real-710703159f609111-body-1",
+          "real-80794af7903e5d29-body-1",
+          "real-a414dfffbd2362ae-body-1",
+          "real-abf590088db891f9-body-1",
+          "real-b87b0b19f12724f3-body-1",
+          "real-c0cc1ce97cf5e6a6-body-1",
+          "real-c4a9ee6e2d0a4185-body-1",
+          "real-e936e08ac62db19b-body-1"
+        ],
+        "reviews": [
+          {
+            "id": "real-5330aa8b62176216-body-1",
+            "error": 0.046875,
+            "featureCheckPassed": false
+          },
+          {
+            "id": "real-8c875dd0f298b5a4-body-1",
+            "error": 0.0194,
+            "featureCheckPassed": false
+          }
+        ]
+      },
+      "no-diameter": {
+        "counts": {
+          "checked-derived-mask": 12,
+          "crop-unresolved": 6,
+          "review-required": 4
+        },
+        "passedIds": [
+          "real-12ce3c9180f7f317-body-1",
+          "real-2044b1d98ed6f262-body-1",
+          "real-340f5e5b0f447889-body-1",
+          "real-39f3a1ba97852876-body-1",
+          "real-45744a03afddccb1-body-1",
+          "real-710703159f609111-body-1",
+          "real-80794af7903e5d29-body-1",
+          "real-a414dfffbd2362ae-body-1",
+          "real-abf590088db891f9-body-1",
+          "real-b87b0b19f12724f3-body-1",
+          "real-c0cc1ce97cf5e6a6-body-1",
+          "real-e936e08ac62db19b-body-1"
+        ],
+        "reviews": [
+          {
+            "id": "real-5330aa8b62176216-body-1",
+            "error": 0.1056875,
+            "featureCheckPassed": false
+          },
+          {
+            "id": "real-8c875dd0f298b5a4-body-1",
+            "error": 0.02635625,
+            "featureCheckPassed": false
+          },
+          {
+            "id": "real-995899fe049540ed-body-1",
+            "error": 0.06298125,
+            "featureCheckPassed": false
+          },
+          {
+            "id": "real-c4a9ee6e2d0a4185-body-1",
+            "error": 0.008725,
+            "featureCheckPassed": false
+          }
+        ]
+      }
+    },
+    "gains": [
+      "real-45744a03afddccb1-body-1"
+    ],
+    "losses": [
+      "real-c4a9ee6e2d0a4185-body-1"
+    ],
+    "sourcePaperScores": {
+      "schema": "fixed-partial-source-paper-score-1",
+      "status": "complete",
+      "scope": "Post-hoc diagnostic on six photos with pre-existing approximate overlap references. Score the SAME known source-paper cell centres inside an inset [0.1,0.9] reference square in every arm; never choose evaluation positions from the predicted crop. One phase chosen from classified observations and retained for exported weave. No references enter reconstruction.",
+      "limitations": [
+        "Approximate reference corners, partial interior labels and nearest-neighbour sampling; neither full motif boundary accuracy nor cutting-path ground truth.",
+        "Sixteen of the twenty-two photos lack independently supplied overlap references in this diagnostic; they remain unscored.",
+        "Unknown paper pixels and the outer ten percent of the reference square are not evaluated.",
+        "No crop/output is reported as unavailable, not assigned a misleading low error."
+      ],
+      "referencePhotos": 6,
+      "excludedPhotos": [
+        "real-2044b1d98ed6f262-body-1",
+        "real-340f5e5b0f447889-body-1",
+        "real-39f3a1ba97852876-body-1",
+        "real-3f7b76e1a98e808f-body-1",
+        "real-45744a03afddccb1-body-1",
+        "real-68d8f25d8891df62-body-1",
+        "real-710703159f609111-body-1",
+        "real-80794af7903e5d29-body-1",
+        "real-990ac34431be87fe-body-1",
+        "real-a414dfffbd2362ae-body-1",
+        "real-b87b0b19f12724f3-body-1",
+        "real-c0cc1ce97cf5e6a6-body-1",
+        "real-c4a9ee6e2d0a4185-body-1",
+        "real-cdae5c890b6933cd-body-1",
+        "real-cf2d0fcff65d7386-body-1",
+        "real-e936e08ac62db19b-body-1"
+      ],
+      "rows": [
+        {
+          "id": "real-12ce3c9180f7f317-body-1",
+          "method": "baseline",
+          "status": "checked-derived-mask",
+          "observedSourcePixels": 1662,
+          "knownFractionOfReferenceInterior": 0.14728819567529244,
+          "referenceCornerUncertaintyPixels": 29.0273,
+          "coveredSourcePixels": 1662,
+          "coverage": 1.0,
+          "phaseExchanged": true,
+          "classification": {
+            "observedCoveredError": 0.0,
+            "errorIncludingMissingCoverage": 0.0,
+            "missingSourcePixels": 0
+          },
+          "exported": {
+            "observedCoveredError": 0.0,
+            "errorIncludingMissingCoverage": 0.0,
+            "missingSourcePixels": 0
+          }
+        },
+        {
+          "id": "real-12ce3c9180f7f317-body-1",
+          "method": "no-diameter",
+          "status": "checked-derived-mask",
+          "observedSourcePixels": 1662,
+          "knownFractionOfReferenceInterior": 0.14728819567529244,
+          "referenceCornerUncertaintyPixels": 29.0273,
+          "coveredSourcePixels": 1662,
+          "coverage": 1.0,
+          "phaseExchanged": true,
+          "classification": {
+            "observedCoveredError": 0.0,
+            "errorIncludingMissingCoverage": 0.0,
+            "missingSourcePixels": 0
+          },
+          "exported": {
+            "observedCoveredError": 0.0,
+            "errorIncludingMissingCoverage": 0.0,
+            "missingSourcePixels": 0
+          }
+        },
+        {
+          "id": "real-5330aa8b62176216-body-1",
+          "method": "baseline",
+          "status": "review-required",
+          "observedSourcePixels": 296,
+          "knownFractionOfReferenceInterior": 0.022984935548998293,
+          "referenceCornerUncertaintyPixels": 6.0,
+          "coveredSourcePixels": 296,
+          "coverage": 1.0,
+          "phaseExchanged": false,
+          "classification": {
+            "observedCoveredError": 0.0,
+            "errorIncludingMissingCoverage": 0.0,
+            "missingSourcePixels": 0
+          },
+          "exported": {
+            "observedCoveredError": 0.0,
+            "errorIncludingMissingCoverage": 0.0,
+            "missingSourcePixels": 0
+          }
+        },
+        {
+          "id": "real-5330aa8b62176216-body-1",
+          "method": "no-diameter",
+          "status": "review-required",
+          "observedSourcePixels": 296,
+          "knownFractionOfReferenceInterior": 0.022984935548998293,
+          "referenceCornerUncertaintyPixels": 6.0,
+          "coveredSourcePixels": 296,
+          "coverage": 1.0,
+          "phaseExchanged": false,
+          "classification": {
+            "observedCoveredError": 0.0,
+            "errorIncludingMissingCoverage": 0.0,
+            "missingSourcePixels": 0
+          },
+          "exported": {
+            "observedCoveredError": 0.06756756756756757,
+            "errorIncludingMissingCoverage": 0.06756756756756757,
+            "missingSourcePixels": 0
+          }
+        },
+        {
+          "id": "real-8c875dd0f298b5a4-body-1",
+          "method": "baseline",
+          "status": "review-required",
+          "observedSourcePixels": 4005,
+          "knownFractionOfReferenceInterior": 0.42255750158261235,
+          "referenceCornerUncertaintyPixels": 6,
+          "coveredSourcePixels": 4005,
+          "coverage": 1.0,
+          "phaseExchanged": false,
+          "classification": {
+            "observedCoveredError": 0.23470661672908863,
+            "errorIncludingMissingCoverage": 0.23470661672908863,
+            "missingSourcePixels": 0
+          },
+          "exported": {
+            "observedCoveredError": 0.23595505617977527,
+            "errorIncludingMissingCoverage": 0.23595505617977527,
+            "missingSourcePixels": 0
+          }
+        },
+        {
+          "id": "real-8c875dd0f298b5a4-body-1",
+          "method": "no-diameter",
+          "status": "review-required",
+          "observedSourcePixels": 4005,
+          "knownFractionOfReferenceInterior": 0.42255750158261235,
+          "referenceCornerUncertaintyPixels": 6,
+          "coveredSourcePixels": 4005,
+          "coverage": 1.0,
+          "phaseExchanged": false,
+          "classification": {
+            "observedCoveredError": 0.23545568039950063,
+            "errorIncludingMissingCoverage": 0.23545568039950063,
+            "missingSourcePixels": 0
+          },
+          "exported": {
+            "observedCoveredError": 0.23770287141073657,
+            "errorIncludingMissingCoverage": 0.23770287141073657,
+            "missingSourcePixels": 0
+          }
+        },
+        {
+          "id": "real-995899fe049540ed-body-1",
+          "method": "baseline",
+          "status": "crop-unresolved",
+          "observedSourcePixels": 5706,
+          "knownFractionOfReferenceInterior": 0.5710568454763811,
+          "referenceCornerUncertaintyPixels": 15.0,
+          "coveredSourcePixels": 0,
+          "coverage": 0.0,
+          "classification": null,
+          "exported": null
+        },
+        {
+          "id": "real-995899fe049540ed-body-1",
+          "method": "no-diameter",
+          "status": "review-required",
+          "observedSourcePixels": 5706,
+          "knownFractionOfReferenceInterior": 0.5710568454763811,
+          "referenceCornerUncertaintyPixels": 15.0,
+          "coveredSourcePixels": 5706,
+          "coverage": 1.0,
+          "phaseExchanged": false,
+          "classification": {
+            "observedCoveredError": 0.14826498422712933,
+            "errorIncludingMissingCoverage": 0.14826498422712933,
+            "missingSourcePixels": 0
+          },
+          "exported": {
+            "observedCoveredError": 0.0991938310550298,
+            "errorIncludingMissingCoverage": 0.0991938310550298,
+            "missingSourcePixels": 0
+          }
+        },
+        {
+          "id": "real-abf590088db891f9-body-1",
+          "method": "baseline",
+          "status": "checked-derived-mask",
+          "observedSourcePixels": 2034,
+          "knownFractionOfReferenceInterior": 0.15698078258856216,
+          "referenceCornerUncertaintyPixels": 6.0,
+          "coveredSourcePixels": 2034,
+          "coverage": 1.0,
+          "phaseExchanged": false,
+          "classification": {
+            "observedCoveredError": 0.0,
+            "errorIncludingMissingCoverage": 0.0,
+            "missingSourcePixels": 0
+          },
+          "exported": {
+            "observedCoveredError": 0.0,
+            "errorIncludingMissingCoverage": 0.0,
+            "missingSourcePixels": 0
+          }
+        },
+        {
+          "id": "real-abf590088db891f9-body-1",
+          "method": "no-diameter",
+          "status": "checked-derived-mask",
+          "observedSourcePixels": 2034,
+          "knownFractionOfReferenceInterior": 0.15698078258856216,
+          "referenceCornerUncertaintyPixels": 6.0,
+          "coveredSourcePixels": 2034,
+          "coverage": 1.0,
+          "phaseExchanged": false,
+          "classification": {
+            "observedCoveredError": 0.0,
+            "errorIncludingMissingCoverage": 0.0,
+            "missingSourcePixels": 0
+          },
+          "exported": {
+            "observedCoveredError": 0.0,
+            "errorIncludingMissingCoverage": 0.0,
+            "missingSourcePixels": 0
+          }
+        },
+        {
+          "id": "real-d5b0aa8d4d2465ee-body-1",
+          "method": "baseline",
+          "status": "crop-unresolved",
+          "observedSourcePixels": 299,
+          "knownFractionOfReferenceInterior": 0.06235662148070907,
+          "referenceCornerUncertaintyPixels": 6.75,
+          "coveredSourcePixels": 0,
+          "coverage": 0.0,
+          "classification": null,
+          "exported": null
+        },
+        {
+          "id": "real-d5b0aa8d4d2465ee-body-1",
+          "method": "no-diameter",
+          "status": "crop-unresolved",
+          "observedSourcePixels": 299,
+          "knownFractionOfReferenceInterior": 0.06235662148070907,
+          "referenceCornerUncertaintyPixels": 6.75,
+          "coveredSourcePixels": 0,
+          "coverage": 0.0,
+          "classification": null,
+          "exported": null
+        }
+      ],
+      "sourceHashes": {
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/locator-diameter-isolation-v1/pipeline/report.json": "4e730d6e9ee192c2e407e8ab077e76a95130cf4396a84867a53bb9cca967ec22",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/report.json": "47b1b5e1f8a50d53152a744d00b3750b7c1e96ca0d88511662fb4e1778122a29",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/locator-diameter-isolation-v1/score-source.py": "71f43b39309dd047e767b40a2b74a5dd6451877311ceaeb44f74848fa447459d",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-motifs/manifest.json": "9caa71574f688a27777fb35d16f8c47125bb0dccfd3681070147047e4f8bb887",
+        "scripts/inverse/datasets/real-materials-motifs.json": "5e439770d03347a528746a325ce995fb8f917d096fb480113fb45e4af97ec100",
+        "scripts/inverse/datasets/real-annotations-motifs.json": "753cd9c44d1b24077024ba3f9a2f40408a5d13624416c1f8e9402a80b3b6580e",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-pinterest/manifest.json": "43ad3b146fb44a73afdc9c5f5662adeec18c4819b9bd7d606ab7d8dacb5b7e00",
+        "scripts/inverse/datasets/real-materials-pinterest.json": "1909f24e8868be1d74458944655009b4e4fdce15fa64e1703a3f2f44bab751ae",
+        "scripts/inverse/datasets/real-annotations-pinterest.json": "a972cf961544f85565b2f8edc3df872dd27c2ca3333ea5c01d04e1867b19aaa9",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-pinterest/real-8c875dd0f298b5a4-body-1-materials.png": "84d85b1c76e02d2622a2260e9a81535dd73a34e22c29774257231c52430f03a9",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-printed/manifest.json": "0494aec7d9bce630f1101d422a192a2689e2d42513ffc834bd0650f78b4bfef5",
+        "scripts/inverse/datasets/real-materials-printed.json": "96368a150b75fc0aa04aa03eda43293b094235cd2741abaa7a55bc4fab0feee2",
+        "scripts/inverse/datasets/real-annotations.json": "79d9d619f66c589c66b511c909ef2d3775d32d038690e5c7172cf834750d2fe5",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-printed/real-995899fe049540ed-body-1-materials.png": "b474a8c859fa61bc6509f236d41009e79fe732a9de556bac68ac187a539a2bb4",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials/manifest.json": "1be905bd82bf5f18793ef2d31fa573f7dd976b5218991437d3c8d4902ccc95f6",
+        "scripts/inverse/datasets/real-materials.json": "fae5ef1cf8f1fbf4661776e05454da849be1dcada9f778d88e522d5d29773709",
+        "scripts/inverse/datasets/real-annotations-supplement.json": "db3a35a1bb2b50477d8a203e137a123e996193c5e8bf922a929e5b0ebedf0e25",
+        "scripts/inverse/datasets/real-annotations-scenes.json": "7a6a64262ab878f25c928c1ad4d07620e4ede8b6cd0d2ea79c3bd100c9c8e536",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-colors/manifest.json": "0736a30bd8ed05538b74bd3cb9727a540834c6258d1327ae0a61c92cb3f06244",
+        "scripts/inverse/datasets/real-materials-colors.json": "a7567a3a9452d038bb8dcbacbab6117f376b60de268e39c7c636ee2e75c67fe9",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-colors/real-5330aa8b62176216-body-1-materials.png": "b9978bd484c7e7c4736b7131f422f761ae83453c301808a93a3eacef80b2eeeb",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-colors/real-abf590088db891f9-body-1-materials.png": "ab70bc97da69eb33e82d369e952f1962f113413827a77138614467959e874e0b",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-colors/real-12ce3c9180f7f317-body-1-materials.png": "0c23a384c33a0dcd37da0fa8cb50afaada2793da27b8300a1bf2ceef754c6b56",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-curved/manifest.json": "42780e542336415ca00b72e707a697295f3a4e69720e3538d7685f2c281c1af1",
+        "scripts/inverse/datasets/real-materials-curved.json": "2b2dea584e023ac296d603aedb17efd802a7082e54e4fd7f936182461abfad12",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-curved/real-d5b0aa8d4d2465ee-body-1-materials.png": "c9c252b6bec2510b5851714b3f9aa3a4c8d872ee0bdff6066526f0a0f398d850",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-hanging/manifest.json": "89ba906f2e8a3c546ab3e7cf77ac49b479ff7411667a68dcb2178ba454f84cc3",
+        "scripts/inverse/datasets/real-materials-hanging.json": "9376385a12d03d5e5e31356f61201912dc40bf037631273cd4a109189cea2727",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-palettes/manifest.json": "578a0eb0f03fe083903640ee2ffe586686c316c2faaaf56b3a792a82ca790ba3",
+        "scripts/inverse/datasets/real-materials-palettes.json": "0269eaf9a4ef159b41b4b7e2717afe5254e8fac3b9eeeb5e434cbc81745accba",
+        "scripts/inverse/datasets/real-annotations-palettes.json": "2b8c2f11b6390608cee50c5adfb42280a2f72ca3d6309f4aad6ffc7ae081fd4f",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-protruding/manifest.json": "d853f81d3f226465e4cbf7e88ad876430b870678c3abbecb07aa5cc8ef65cbb7",
+        "scripts/inverse/datasets/real-materials-protruding.json": "beea1b34e342ee7152d1933e04182c81f1e0fd2d6c110ccdbae2e2c5eac71676",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/material-corrected-scenes-v1/candidate/labels/real-materials-paper-scenes/manifest.json": "29070754513d7c11fb03bb8088867cb9454b3f06910a32ef5accd451d1d22e0c",
+        "scripts/inverse/datasets/real-materials-paper-scenes.json": "c4857fc3cceec4c2150353515dfb679ea8055bf65a30c10a4bd724d0bb118741",
+        "scripts/inverse/datasets/real-annotations-paper-scenes.json": "2f153ec1b274adac461bf384c06f72303f3b50914e4a3faa9716962a13fb3ee0",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/locator-diameter-isolation-v1/pipeline/real-12ce3c9180f7f317-body-1-baseline/mask.png": "3b8cf42b3be50878bcaade4aa18a581f4280bc652e4fe416e653441203303525",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/locator-diameter-isolation-v1/pipeline/real-12ce3c9180f7f317-body-1-baseline/woven.png": "208bd32153bb9f208d1b5fcd4cbaeaf8434e393befbfdd405cbfa48ce9a3bb68",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/locator-diameter-isolation-v1/pipeline/real-12ce3c9180f7f317-body-1-no-diameter/mask.png": "e83e3ba3f1745dc1f6e9db165eaeb4a94034f60b80e624ca45fcf813233729b4",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/locator-diameter-isolation-v1/pipeline/real-12ce3c9180f7f317-body-1-no-diameter/woven.png": "97d569a75c715631e5a2062776faf9efbefcad5e92ab359252b094ca402e9b5a",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/locator-diameter-isolation-v1/pipeline/real-5330aa8b62176216-body-1-baseline/mask.png": "94e45872224027b5370347fbdbbd6024980ec1829c62ff6fda1fa39355cfb1bb",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/locator-diameter-isolation-v1/pipeline/real-5330aa8b62176216-body-1-baseline/woven.png": "6335be826778767a521b690c78e60eca18e9f7415160d893bab74dd2068eb002",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/locator-diameter-isolation-v1/pipeline/real-5330aa8b62176216-body-1-no-diameter/mask.png": "d4d991690c800b24e70acdbf5facc982220dad1d6532c4aeb5aaf9b0ff625d1c",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/locator-diameter-isolation-v1/pipeline/real-5330aa8b62176216-body-1-no-diameter/woven.png": "48b691c9ff6f3aaeb35e369670bf3d7ef34c9d428b7be16c66e307425583f4a2",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/locator-diameter-isolation-v1/pipeline/real-8c875dd0f298b5a4-body-1-baseline/mask.png": "6c868e7904727e773a76f9ba0833f238e15b0ffca5954b76a8a89fe71023ef89",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/locator-diameter-isolation-v1/pipeline/real-8c875dd0f298b5a4-body-1-baseline/woven.png": "d84ce7576205ee697ca1238a19ad35ca0ab312ed1484c314f74a5818f0db518a",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/locator-diameter-isolation-v1/pipeline/real-8c875dd0f298b5a4-body-1-no-diameter/mask.png": "1ae1f7d2c2a9c25ed35c9d2c201590ff5ffdfcac4f871064f08be608e6874c75",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/locator-diameter-isolation-v1/pipeline/real-8c875dd0f298b5a4-body-1-no-diameter/woven.png": "b9fe2775479bbcd9c917f1077ec967a1e67c0271f329766932ac9370fa8d18d1",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/locator-diameter-isolation-v1/pipeline/real-995899fe049540ed-body-1-no-diameter/mask.png": "7195ab0c373bcc78a5b9c83d9b3c6d68e14eb3c7ac66f4734774604bfbde91fc",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/locator-diameter-isolation-v1/pipeline/real-995899fe049540ed-body-1-no-diameter/woven.png": "963e73676087718840d4536ec44def177edf751872f224c3dc834b4fe3a00a30",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/locator-diameter-isolation-v1/pipeline/real-abf590088db891f9-body-1-baseline/mask.png": "6cb77126cb0e36c97e10e182c03d5b7b1ed52b8a070a8e21d9345aaae7767c2b",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/locator-diameter-isolation-v1/pipeline/real-abf590088db891f9-body-1-baseline/woven.png": "467cb3c6879526179da6541967b3e7f0aaef4eb1ac80e3ed2de10f2381b37fc9",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/locator-diameter-isolation-v1/pipeline/real-abf590088db891f9-body-1-no-diameter/mask.png": "059485e2a21014c27ad705787fefac3f11f87d0ab2c8a34b78b7135630fbdb5b",
+        "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/locator-diameter-isolation-v1/pipeline/real-abf590088db891f9-body-1-no-diameter/woven.png": "e843cd125619060256c5c37136386934dca3bb0ccec329795ba8c890a78a4d52"
+      },
+      "pipeline": "docs/inverse/datasets/locator-diameter-isolation-results.json",
+      "visualReviewRequired": true
+    },
+    "editableAudit": {
+      "sourceFilesVerified": 807,
+      "allThirtyExportsAudited": true,
+      "controllerExitCode": 1,
+      "controllerFailureStage": "editable",
+      "failure": "The already engine-rejected bicycle candidate fails editable geometry conversion. All 24 accepted candidates convert and pass complete checks."
+    }
+  },
+  "visualReview": {
+    "cropPanels": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "reconstructionPanels": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "allThirtyReconstructionOutputsInspected": true
+  },
+  "findings": [
+    "Removing the strong diameter colour-step objective recovers rabbit and floral/striped crops: 14/22 to 16/22, with no lost crop proposals.",
+    "Rabbit lobe support improves from [.472,.833] to [.972,.861] on identical source and probability fields, establishing an objective-induced outline-fit failure in this example. Its resulting template passes at 1.51% derived-mask disagreement.",
+    "The new floral/striped crop is plausible, but the RGB material estimate treats printed stripes and flowers as weave structure. The output fails at 6.30% mask error and ten lost features.",
+    "Global removal does not improve complete recovery: 12/22 remains 12/22. Rabbit is gained and candle loses one checked feature. Several other motifs change visibly, including a worse ship silhouette.",
+    "One bicycle candidate fails editable conversion; it was already rejected by engine, feature and image checks and is not counted as a successful output.",
+    "The rotated green/gold star remains rejected at .639 lobe support. Simply dropping the diameter objective does not solve all high-quality-silhouette failures."
+  ],
+  "nextStep": "Evaluate the same intervention on production RGB-only cropping, then consider a fallback restricted to unsupported crops rather than replacing accepted crops. Neither a fallback nor a best-arm union is validated by this experiment.",
+  "artifactsSha256": {
+    "tmp/heart-learning/locator-diameter-isolation-v1/plan.json": "fdc0d93c083dd0fd007b31da525b6121df6f52caa39b5f92a524ac1346bbb673",
+    "tmp/heart-learning/locator-diameter-isolation-v1/source.json": "472fa94e84b10344cd7e33bd2febfa66ca6d17be5f25d9f50cf59000ed6b7cad",
+    "tmp/heart-learning/locator-diameter-isolation-v1/results/report.json": "1185feed44d21ed5c5522d2d6cf818e78a494f54ae277206baf94cb19e31838e",
+    "tmp/heart-learning/locator-diameter-isolation-v1/review.json": "ca307296bf49292036c4336a187b1943bd50a8e3524f838295e61d391947cb42",
+    "tmp/heart-learning/locator-diameter-isolation-v1/pipeline-plan.json": "4f7ec524217499de550af82aff9a03f744f25988a1d9b0fb17139f82fedd16a3",
+    "tmp/heart-learning/locator-diameter-isolation-v1/pipeline/report.json": "4e730d6e9ee192c2e407e8ab077e76a95130cf4396a84867a53bb9cca967ec22",
+    "tmp/heart-learning/locator-diameter-isolation-v1/pipeline-state.json": "78aee66b39122a45136f06e391473cb1a8ddfdb634892a164d91385b12cbfc85",
+    "tmp/heart-learning/locator-diameter-isolation-v1/pipeline-checks.json": "2448c4651569d9b764569e95041d3054e0baa1b1e89fd54c69995d250074e327",
+    "tmp/heart-learning/locator-diameter-isolation-v1/pipeline-source.json": "01543e710d249e6734a703312d32735a6c4a77387f0197df728c99e8570e3859",
+    "tmp/heart-learning/locator-diameter-isolation-v1/post-audit-verification.json": "e227dbce5a09c49feae1ae6f85dedc17971b4668ce9d87d6f27e8e298354fdbc",
+    "tmp/heart-learning/locator-diameter-isolation-v1/editable/results.json": "e497cc5f1ff5f034c20b6bcc9f4a8da2a3ce68ce352c7367925f97c9158c4557",
+    "tmp/heart-learning/locator-diameter-isolation-v1/source-paper-scores.json": "94a06dfc22506a3bce226db7bc3ebf4266db1bca899f51ac0c5450d0aef42e08",
+    "tmp/heart-learning/locator-diameter-isolation-v1/reconstruction-figures.json": "153fd157e4d995d3cf9e5be8617d9b0b390f0b40d11d1f1994f8b0dc6c784734"
+  }
+}
