@@ -1,7 +1,7 @@
 {
   "schema": "bird-reroute-candidate-study-1",
   "status": "rejected_experiments; no portfolio or checkpoint-frequency change integrated",
-  "finding": "The newly certified step-zero projection changes subsequent rollback/exploration. Starting plan controls are identical; old projected checkpoint is paper-uncertain, current is pass. Later rejected boundary graphs differ.",
+  "finding": "The newly certified step-zero checkpoint changes subsequent rollback/exploration. Starting plan controls are identical; old ordinary checkpoint is paper-uncertain, current is pass. Later rejected boundary graphs differ. The two step-zero records are a straightened proposal followed by the ordinary gradient state; neither is a short-return projection.",
   "proposalReplays": [
     {
       "arm": "before",

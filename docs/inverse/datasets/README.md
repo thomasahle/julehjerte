@@ -40,10 +40,11 @@ returns 1.20875% independently rendered disagreement in 9.73 seconds, versus
 The exported result and comparison were visually reviewed. The main fitter now
 tries 1000 only for an otherwise acceptable unresolved candidate, retaining the
 existing half-second reserve and the actual verified resolution through export.
-All 17 focused tests pass; broad QA for this change is pending.
+All 17 focused tests, type checking, lint and build pass. Broad QA for this
+change is running against frozen source hashes.
 
 [Bird routing alternatives](bird-reroute-candidate-results.json) expose a deeper
-optimization issue. A newly certified early projection changes the subsequent
+optimization issue. A newly certified early checkpoint changes the subsequent
 rollback trajectory. Trying a second rejected checkpoint within the original
 1.5-second routing allowance closes the eye, but enlarges it: independent eye
 IoU remains around 0.60–0.69 instead of the required 0.85. More frequent detail
