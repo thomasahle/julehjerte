@@ -1104,15 +1104,19 @@ function ringPort(ring: Ring, point: Point): Port | null {
 	}
 	return null;
 }
-/** Scoped to one immutable outline and routing mode. Attachment eligibility
- * is checked separately for each candidate's current shared cuts. */
-type ReliefCache = { sources?: { a: Port; targets: Port[] }[]; notches?: Port[]; middles?: WeakMap<Edge, Port | null> };
+/** Scoped to one immutable outline, routing mode and allowed external ports.
+ * Attachment eligibility is checked against each candidate's current cuts. */
+type ReliefCache = {
+	sources?: { a: Port; targets: Port[] }[];
+	notches?: Port[];
+	chords?: WeakMap<Port[], [Port, Port][]>;
+	middles?: WeakMap<Edge, Port | null>;
+};
 
 /** A chord brackets one active external port. Flipping that interval preserves
  * the four path pairings; both sheets share the new internal cut. Boundary
  * ports are excluded so an opened letter cap cannot swallow this bridge. */
 function* relieveNotches(edges: Edge[], ring: Ring, ports: Port[], allowed: readonly number[], practical = false, cache: ReliefCache = {}): Generator<Edge[]> {
-	const chords: [Port, Port][] = [];
 	const shared = edges.filter(e => e.family === 'AB').flatMap(e => [e.from, e.to]);
 	const blockedPorts = new Map<Point, boolean>();
 	const blocked = (point: Point) => {
@@ -1142,18 +1146,29 @@ function* relieveNotches(edges: Edge[], ring: Ring, ports: Port[], allowed: read
 			cache.sources.push(source);
 		}
 	}
-	for (const { a, targets } of cache.sources) {
-		if (blocked(a.point)) continue;
-		for (const b of targets) {
-			if (blocked(b.point)) continue;
+	const choices = cache.chords ??= new WeakMap<Port[], [Port, Port][]>();
+	let chords = choices.get(ports);
+	if (!chords) {
+		chords = [];
+		for (const { a, targets } of cache.sources) for (const b of targets) {
 			for (const [from, to] of [[a, b], [b, a]]) {
 				const enclosed = ports.flatMap((port, j) => (port.index - from.index + ring.length) % ring.length < (to.index - from.index + ring.length) % ring.length ? [j] : []);
 				if (enclosed.length === 1 && allowed.includes(enclosed[0])) chords.push([from, to]);
 			}
 		}
+		const ranked = chords.map(([a, b]) => ({
+			a, b,
+			ends: notches.filter(p => near(p.point, a.point) || near(p.point, b.point)).length,
+			length: distance(a.point, b.point)
+		}));
+		ranked.sort((a, b) => b.ends - a.ends || a.length - b.length);
+		chords = ranked.map(({ a, b }) => [a, b]);
+		choices.set(ports, chords);
 	}
-	const notchEnds = (a: Port, b: Port) => notches.filter(p => near(p.point, a.point) || near(p.point, b.point)).length;
-	chords.sort(([a, b], [c, d]) => notchEnds(c, d) - notchEnds(a, b) || distance(a.point, b.point) - distance(c.point, d.point));
+	// Compound relief revisits these ports with additional shared endpoints.
+	// Filtering the stable order retains exactly the original candidate order,
+	// while eligibility still reflects every newly added cut.
+	chords = chords.filter(([a, b]) => !blocked(a.point) && !blocked(b.point));
 	if (!chords.length) return;
 	// Every relief chord uses the same outline edges. Locate them once on the
 	// original ring; only an edge split by a new chord needs another lookup.

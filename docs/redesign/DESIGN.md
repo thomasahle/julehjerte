@@ -728,8 +728,10 @@ and require the same extra clearance for the outside connections as for the
 letters. Stop at the original fit whenever it works; unframed text has no such
 retry.
 
-Relief-cut construction may cache geometric queries for one unchanged outline
-and routing mode: notch ray targets and outline-edge positions. Each candidate
+Relief-cut construction may cache geometric queries for one unchanged outline,
+routing mode and allowed external ports: notch ray targets, outline-edge positions,
+and the ordered chord choices for the same attachment ports. Compute the chord
+ranking once, then filter it against the current shared endpoints. Each candidate
 must still check its current shared endpoints and external port pairings.
 Keep this cache local to the contour construction, with a fresh endpoint lookup
 for each edge set. Candidate order, exact cut coordinates and validation rules

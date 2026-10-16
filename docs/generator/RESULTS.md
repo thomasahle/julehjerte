@@ -1,6 +1,42 @@
 # Generator robustness results
 
-## Current coverage: more room inside text frames
+## Current verification: reuse relief-cut ordering
+
+The relief-cut generator now ranks each chord once for a fixed set of attachment
+ports, then reuses that order during compound relief. Every attempt still filters
+out endpoints occupied by its current shared cuts. This cache belongs to one
+unchanged contour construction and does not survive a design edit. It changes
+neither the candidate order nor the acceptance checks.
+
+Four paired complete generations of Oswald `ÆØÅ` in oval/scalloped frames took
+**56.74 seconds before / 53.80 seconds after** in total, about 5.2% less time.
+The second round reversed the old/new execution order. All four complete outputs
+were exactly identical (`relief-order-benchmark.json`). This is a small measured
+improvement on two difficult designs, not a general latency guarantee.
+
+A broader replay compared **520,983 yielded candidates in 52,022 relief calls**
+across 13 complete requests, including difficult Kalam repeats, Nunito ANNA
+checkerboard, coffee and paw figure frames. Every candidate and complete design
+remained exactly identical (`relief-order-broad.json`). Time in that stage was
+46.13 seconds before / 43.79 seconds after; that excludes the rest of generation.
+
+No additional combinations were recovered. The authoritative merged corpus is
+still **2,858 accepted / 292 refused / zero invalid**, from
+`text-envelope-current.json`; this is not a fresh full-matrix run. Neither the
+empty-panel experiment (229 trials), deeper text partitions (833 trials across
+163 remaining framed/unframed text cases), nor component-based whole words
+(80 trials) produced a valid new design. Those alternatives are not in production.
+Caching complete letter routes was also omitted: only two of 161 calls repeated
+exact inputs in each of the measured difficult requests.
+
+All **1,160 unit tests across 67 files** pass in one full run with unchanged time
+limits (607.07 seconds), followed by **177 passing inverse tests** (86.23 seconds).
+Check, lint and production build pass with the seven existing Svelte warnings.
+Logs are `relief-order-{tests,check,lint,build}.log`. The complete test-suite time
+is not a paired performance comparison; the speed measurement above applies
+only to the four explicitly paired generations.
+
+## Previous coverage: more room inside text frames
 
 Oswald `ÆØÅ` now also works in the oval and scalloped frames. After all existing
 layouts fail, the panel fallback may use 94% of the frame's available envelope
