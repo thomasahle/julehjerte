@@ -61,7 +61,8 @@ falls from **1.99875% to 1.839375%** and compressed-star disagreement from
 points more painting error. It does not enter the changed feature-recovery
 branch: its polishing history is identical, followed by fewer accepted shared
 cuts. Its visible thin seams and frame defects remain. Check, lint and build
-pass; the full repository tests are still running.
+pass. Full release verification is now complete: **874 application tests plus one
+skip and 1,007 inverse tests pass**, with all **1,018 pinned sources unchanged**.
 
 The [completed paired corpus and editable audits](refinement-checkpoint-corpus-results.json)
 retain **53/55 passing masks** in both arms, including all 22 Hunodan and four
@@ -115,13 +116,13 @@ and explicit contact supervision remain untested alternatives; no runtime model,
 new reconstruction success, or exact photographed junction label is claimed.
 
 A [binary-versus-soft objective replay](material-soft-objective-plan.json) is
-prepared and queued after the serial release QA. Eight frozen inputs contain
+now running after the completed serial release QA. Eight frozen inputs contain
 the two saved learned predictions and six ideal-checker sampling controls, with
 sixteen fresh fits scheduled. All target masks prepare unchanged, and the real
 soft fields exactly match the original JavaScript sampler. The comparison
 changes only the fitting probabilities; original binary targets and validation
 remain fixed. Synthetic outputs will also be scored against their known straight
-geometry at 1,600px. This is an unrun development ablation, not a neural gain or
+geometry at 1,600px. This is a development ablation in progress, not a neural gain or
 an increase in independently labelled photographs.
 
 A [bounded gradient index](gradient-row-bins-runtime.json) is now integrated

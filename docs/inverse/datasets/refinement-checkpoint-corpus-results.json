@@ -1,6 +1,6 @@
 {
   "schema": "refinement-checkpoint-completion-corpus-1",
-  "status": "fits-and-editable-audit-complete",
+  "status": "fits-editable-audit-and-release-qa-complete",
   "method": "Fresh prepare/design on 55 fixed native masks, alternating arm order. Baseline replaces fit.js and refine.js with their preceding 53d6bf6 versions; all other current code and inputs are identical. One pair per mask. Solve timings include preparation but exclude independent rendering, editable conversion and file writes.",
   "sourceFilesVerified": 1018,
   "overall": {
@@ -3052,6 +3052,14 @@
     "completeCandidatePassed": 106,
     "sourceFilesVerified": 1018
   },
+  "releaseQA": {
+    "status": "complete",
+    "seconds": 2399.0073465829996,
+    "sourceFilesVerified": 1018,
+    "applicationPassed": 874,
+    "applicationSkipped": 1,
+    "inversePassed": 1007
+  },
   "artifactsSha256": {
     "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/refinement-completion-v1/corpus/results.json": "0bfbfdaba672853ad55a74e49da12f4b6cd2c265d3b884cbc3d32336be5fc2c0",
     "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/refinement-completion-v1/corpus/state.json": "8c17de19f163c73dddab966d60b6c591f0189e1f0c4f9098039b39f578535108",
@@ -3066,6 +3074,10 @@
     "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/refinement-completion-v1/visual-review/page-3.png": "22f4aef865ddf3854c7ec3d969ced61667c93e02cb4c1dc6598467f0142aaa84",
     "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/refinement-completion-v1/visual-review/page-4.png": "2dceb03badcccd7a53f8ca3f9114adbf2ad3f98b75fbfc01c7b2a45607e1d5c2",
     "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/refinement-completion-v1/corpus/audit-results.json": "711a5cf6e1467d4ee7d078b725519797dc1a4bcfd0e26817d760a71bfa498b2c",
-    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/refinement-completion-v1/corpus/audit-source.json": "577e458d337ecd15949e6d4f91b9c2ff5d0bdc5050be1ab812d15d60386ec306"
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/refinement-completion-v1/corpus/audit-source.json": "577e458d337ecd15949e6d4f91b9c2ff5d0bdc5050be1ab812d15d60386ec306",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/refinement-completion-v1/qa/state.json": "07b108e83f133d6ec8d0ea858b0443d0fbcd5d1c728ea18806797f7f6e9f7c57",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/refinement-completion-v1/qa/checks.json": "ef3e775f87fa0a9dc95f116883e5208082f6bd5cf3ee76d1692b646a730b8e44",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/refinement-completion-v1/qa/source.json": "577e458d337ecd15949e6d4f91b9c2ff5d0bdc5050be1ab812d15d60386ec306",
+    "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/refinement-completion-v1/qa/test.log": "12c93e1760cc0b96fb18da45d99f99bef59f2298b595ad76ac2fd60b7d21d66f"
   }
 }

@@ -1,6 +1,6 @@
 {
   "schema": "refinement-checkpoint-completion-1",
-  "status": "integrated-browser-qa-passed-corpus-and-full-suite-running",
+  "status": "integrated-full-release-qa-passed",
   "change": "Separate a checkpoint repair deadline from the gradient-step deadline. Recovered provisional routings can complete up to 400 ms of short-return projection beyond their 700 ms phase, capped by the existing enclosing search deadline. Other callers retain the original shared deadline; no extra gradient steps or changed validity rules.",
   "experiment": "Fourteen fresh fits: three half-star pairs and one pair each for full star, compressed star, gift and dense Hunodan hjstr03. Alternating arm order. The candidate loads only patched fit.js/refine.js; exact saved masks, settings and independent export checks are shared. Source frozen through all runs.",
   "sourceFilesVerified": 1017,
@@ -290,10 +290,15 @@
     "tmp/heart-learning/refinement-completion-v1/qa/browser-hunodan/chromium-hunodan-hjsta-05/cut_geometry.json": "6ce3d273612fc520ca2bad8b6af99facd0df9e95896549cfe3ed92204602797f",
     "tmp/heart-learning/gradient-bins-runtime-v1/qa/browser-hunodan/chromium-hunodan-hjsta-05/cut_geometry.json": "6ce3d273612fc520ca2bad8b6af99facd0df9e95896549cfe3ed92204602797f",
     "tmp/heart-learning/refinement-completion-v1/qa/browser-hunodan/chromium-hunodan-hjsta-05/editable.svg": "7c1dfa68febc83b260464a9497ff9acdae52427986359768f537ff49cc484a54",
-    "tmp/heart-learning/gradient-bins-runtime-v1/qa/browser-hunodan/chromium-hunodan-hjsta-05/editable.svg": "7c1dfa68febc83b260464a9497ff9acdae52427986359768f537ff49cc484a54"
+    "tmp/heart-learning/gradient-bins-runtime-v1/qa/browser-hunodan/chromium-hunodan-hjsta-05/editable.svg": "7c1dfa68febc83b260464a9497ff9acdae52427986359768f537ff49cc484a54",
+    "tmp/heart-learning/refinement-completion-v1/qa/state.json": "07b108e83f133d6ec8d0ea858b0443d0fbcd5d1c728ea18806797f7f6e9f7c57",
+    "tmp/heart-learning/refinement-completion-v1/qa/checks.json": "ef3e775f87fa0a9dc95f116883e5208082f6bd5cf3ee76d1692b646a730b8e44",
+    "tmp/heart-learning/refinement-completion-v1/qa/test.log": "12c93e1760cc0b96fb18da45d99f99bef59f2298b595ad76ac2fd60b7d21d66f",
+    "tmp/heart-learning/refinement-completion-v1/corpus/results.json": "0bfbfdaba672853ad55a74e49da12f4b6cd2c265d3b884cbc3d32336be5fc2c0",
+    "tmp/heart-learning/refinement-completion-v1/corpus/audit-results.json": "711a5cf6e1467d4ee7d078b725519797dc1a4bcfd0e26817d760a71bfa498b2c"
   },
   "qaRoot": "tmp/heart-learning/refinement-completion-v1/qa",
-  "releaseVerification": "Serial check, lint, build, preview byte verification, 29 browser workflows, 55 paired masks / 110 editable audits, and full repository tests. Expected 874 application tests plus one skip and 1007 inverse tests. Completion is not yet established.",
+  "releaseVerification": "Completed serial check, lint, build, preview byte verification, all 29 browser workflows, 110 paired fits and 110 editable audits, and full repository tests: 874 application tests plus one skip, 1007 inverse tests. Source snapshots verified unchanged.",
   "browserQA": {
     "groups": {
       "browser-smoke": {
@@ -758,5 +763,70 @@
       },
       "qualification": "The puppy does not use feature-recovery refinement, so the new extended repair allowance is not entered. Its identical polishing history is followed by a shorter accepted prefix of shared-cut cleanup. Both remain valid; the 0.00875-percentage-point painting-error increase is retained."
     }
+  },
+  "releaseQA": {
+    "status": "complete",
+    "seconds": 2399.0073465829996,
+    "sourceFilesVerified": 1018,
+    "applicationPassed": 874,
+    "applicationSkipped": 1,
+    "inversePassed": 1007,
+    "checks": [
+      {
+        "stage": "check",
+        "exitCode": 0,
+        "seconds": 11.263556834000001
+      },
+      {
+        "stage": "lint",
+        "exitCode": 0,
+        "seconds": 7.251110166
+      },
+      {
+        "stage": "build",
+        "exitCode": 0,
+        "seconds": 17.327142792
+      },
+      {
+        "stage": "preview",
+        "exitCode": 0,
+        "seconds": 1.1361640000000008
+      },
+      {
+        "stage": "browser-smoke",
+        "exitCode": 0,
+        "seconds": 25.844771583000004
+      },
+      {
+        "stage": "browser-photos",
+        "exitCode": 0,
+        "seconds": 55.465058625000005
+      },
+      {
+        "stage": "browser-hunodan",
+        "exitCode": 0,
+        "seconds": 191.85170749999997
+      },
+      {
+        "stage": "corpus",
+        "exitCode": 0,
+        "seconds": 884.2236359999999
+      },
+      {
+        "stage": "corpus-audit",
+        "exitCode": 0,
+        "seconds": 85.37124270799995
+      },
+      {
+        "stage": "test",
+        "exitCode": 0,
+        "seconds": 1118.817652125,
+        "completeSummary": true,
+        "applicationPassed": 874,
+        "applicationSkipped": 1,
+        "inversePassed": 1007
+      }
+    ],
+    "corpusReport": "docs/inverse/datasets/refinement-checkpoint-corpus-results.json"
   }
 }
