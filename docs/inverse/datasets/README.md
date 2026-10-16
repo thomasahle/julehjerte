@@ -39,9 +39,14 @@ the whole batch fail its objective. Fourteen focused tests pass. An untimed
 64-fit replay isolates additional reductions on the faceted star and Hunodan
 hjfig-04, with unchanged or lower independently rendered error; all 64 retain
 geometry, paper and source-feature checks. Eight paired editable exports pass.
-The prior passes run first, and no acceptance gate is relaxed. Fresh full-pipeline,
-repository and browser QA is pending; this is not an additional reconstruction
-pass or a fix for the flower photograph's hidden centre.
+The prior passes run first, and no acceptance gate is relaxed. Fresh Hunodan
+replay passes **22/22** with exactly unchanged errors, median **5.29 s**, maximum
+**8.83 s**. The fresh photo benchmark remains **27/31**, with unchanged masks
+and statuses; all 29 pairs convert without editor issues. All ten changed-error
+outputs were reviewed, including Viking's increase from **2.08% to 2.23%**.
+Check, lint, build and three browser workflows pass. Full repository tests are
+still running; this is not an additional reconstruction pass or a fix for the
+flower photograph's hidden centre.
 
 
 A [fixed-mask ribbon diagnosis](flower-occlusion-results.json) separates input

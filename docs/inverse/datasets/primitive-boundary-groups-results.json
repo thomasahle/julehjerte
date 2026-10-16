@@ -1,6 +1,6 @@
 {
   "schema": "primitive-boundary-groups-results-1",
-  "status": "candidate-full-qa-pending",
+  "status": "candidate-full-tests-running",
   "plan": "docs/inverse/datasets/primitive-boundary-groups-plan.json",
   "implementation": "Keep both existing final primitive passes. Only after a boundary-objective rejection, retry candidate groups with sequential non-increasing pixel and boundary-plus-complexity costs. The existing source-error, feature, geometry, symmetry and material checks still gate the result. All passes share the existing deadline.",
   "focusedTests": {
@@ -121,10 +121,7 @@
     "changedErrors": []
   },
   "remainingVerification": [
-    "Fresh automatic-photo benchmark and editable export",
-    "check/lint/build",
-    "three browser workflows",
-    "full application and inverse tests"
+    "Full application and inverse tests controller completion and source-pin verification"
   ],
   "ribbonReplay": {
     "status": "complete-on-committed-runtime",
@@ -294,5 +291,156 @@
     "finding": "The weighted real case has 13 fewer curved spans, but the central hooks remain. Independent observed error increases by two weighted pixels despite a one-pixel source-sampler improvement; this is a sampling difference, not a new reconstruction success. The exact correctly masked synthetic controls retain zero clean-mask error.",
     "reportSha256": "dd582d077d2628a481e14cb3cc7cfe75581f17c80518785b3d78a530c4ea2a7c",
     "reviewImageSha256": "7357ad4bd3ba01cd73c4f9ac7dcdad63bd8456e0ccb9478a8d58b08a9a04cd29"
+  },
+  "freshPhotos": {
+    "eligible": 31,
+    "checked": 27,
+    "statusChanges": [],
+    "maskHashesAndRecordedQuadsUnchanged": true,
+    "changedErrors": [
+      {
+        "id": "floral-checker",
+        "before": 0.01334375,
+        "after": 0.01320625
+      },
+      {
+        "id": "leaf",
+        "before": 0.0095125,
+        "after": 0.00929375
+      },
+      {
+        "id": "gift",
+        "before": 0.01655,
+        "after": 0.016575
+      },
+      {
+        "id": "warped-checker",
+        "before": 0.013625,
+        "after": 0.01373125
+      },
+      {
+        "id": "fine-checker",
+        "before": 0.01941875,
+        "after": 0.01663125
+      },
+      {
+        "id": "jigsaw",
+        "before": 0.01026875,
+        "after": 0.0101125
+      },
+      {
+        "id": "maple-leaf",
+        "before": 0.00869375,
+        "after": 0.00876875
+      },
+      {
+        "id": "crown",
+        "before": 0.02241875,
+        "after": 0.022725
+      },
+      {
+        "id": "faceted-star",
+        "before": 0.00641875,
+        "after": 0.0064125
+      },
+      {
+        "id": "flettede-viking",
+        "before": 0.0207875,
+        "after": 0.02230625
+      }
+    ],
+    "visualReview": {
+      "reviewedChangedOutputs": 10,
+      "images": {
+        "tmp/heart-learning/primitive-boundary-groups-v1/qa/photos-review-1.png": "d1d4e3360b2431593ac1613318aa7e2c9045718878aceadaabc6f90250c6c2af",
+        "tmp/heart-learning/primitive-boundary-groups-v1/qa/photos-review-2.png": "0fd1d134ee7d669d65d547e115038d936754b4a732ee66d42c8e669505927036",
+        "tmp/heart-learning/primitive-boundary-groups-v1/qa/photos-review-3.png": "d07001ed830e7d16fd4d1702c044813dbc8b6b7f051f8aceb220fca848c87ffc"
+      },
+      "finding": "Fine checker improves; all ten changes preserve recognizable motifs and existing connections. Viking mask disagreement rises from 2.08% to 2.23%; it remains checked, and is retained in the comparison rather than hidden."
+    },
+    "editable": {
+      "converted": 29,
+      "complete": 27,
+      "editorIssues": 0
+    }
+  },
+  "verification": {
+    "checks": [
+      {
+        "stage": "focused",
+        "exitCode": 0,
+        "seconds": 4.267077958
+      },
+      {
+        "stage": "ribbon",
+        "exitCode": 0,
+        "seconds": 9.591926292
+      },
+      {
+        "stage": "hunodan",
+        "exitCode": 0,
+        "seconds": 123.76814083299999
+      },
+      {
+        "stage": "photos",
+        "exitCode": 0,
+        "seconds": 332.04429541700006
+      },
+      {
+        "stage": "photos-editable",
+        "exitCode": 0,
+        "seconds": 34.702083207999976
+      },
+      {
+        "stage": "check",
+        "exitCode": 0,
+        "seconds": 11.122671249999996
+      },
+      {
+        "stage": "lint",
+        "exitCode": 0,
+        "seconds": 7.151830541999971
+      },
+      {
+        "stage": "build",
+        "exitCode": 0,
+        "seconds": 16.994211250000035
+      },
+      {
+        "stage": "preview",
+        "exitCode": 0,
+        "seconds": 1.1073171250000087
+      },
+      {
+        "stage": "browser",
+        "exitCode": 0,
+        "seconds": 40.10736854100003
+      }
+    ],
+    "browser": {
+      "cases": [
+        {
+          "name": "star",
+          "passed": true,
+          "pageErrors": [],
+          "clickToReadySeconds": 2.1455
+        },
+        {
+          "name": "top-hat-preferred",
+          "passed": true,
+          "pageErrors": [],
+          "clickToReadySeconds": 7.373
+        },
+        {
+          "name": "hunodan-hjfig-05",
+          "passed": true,
+          "pageErrors": [],
+          "clickToReadySeconds": 19.720400000095367
+        }
+      ],
+      "builtAssetsVerified": 173
+    },
+    "repositoryTests": "running; do not infer completion from the passing earlier runtime",
+    "qaState": "tmp/heart-learning/primitive-boundary-groups-v1/qa/state.json"
   }
 }
