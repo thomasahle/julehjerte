@@ -5,11 +5,13 @@ import {
 	ConstructionError, type Contour, type Ring, type Edge, type Point
 } from './geometry';
 import { gridClearance } from '$lib/geometry/clearance';
+import { contactChains, type ContourChain } from './chainContacts';
 
 const contoursOf = (node: Contour): Ring[] => [node.ring, ...node.children.flatMap(contoursOf)];
 
 export function generateCornerChecks(rings: Ring[], size = 70, scale = .7,
-	routing: 'chain' | 'practical' | 'separated' = 'chain', fitBorder = false, bentSpokes = false) {
+	routing: 'chain' | 'practical' | 'separated' = 'chain', fitBorder = false, bentSpokes = false,
+	contacts?: { tilt: number; invert: boolean }) {
 	const points = rings.flat();
 	if (!points.length) throw new ConstructionError('empty', 'No contour');
 	const artwork = rings.map(r => r.map(([x, y]) => uprightToSheet([x * size * scale, y * size * scale])));
@@ -32,6 +34,7 @@ export function generateCornerChecks(rings: Ring[], size = 70, scale = .7,
 		return clamped;
 	};
 	const edges: Edge[] = [];
+	const chains: ContourChain[] = [];
 	const lanes = Array.from({ length: 3 }, () => [] as ReturnType<typeof forest>);
 	const separate = routing === 'separated';
 	let changed = false;
@@ -48,7 +51,8 @@ export function generateCornerChecks(rings: Ring[], size = 70, scale = .7,
 		add(edges, [[start[0], 0], start], 'A', 'frame');
 		add(edges, [[0, start[1]], start], 'B', 'frame');
 		const route = (entry: Point, exit: Point) => {
-			if (routing === 'chain') contourChain(edges, lanes[col], Math.PI / 4, entry, exit, 'B');
+			if (contacts) chains.push({ nodes: lanes[col], start: entry, end: exit });
+			else if (routing === 'chain') contourChain(edges, lanes[col], Math.PI / 4, entry, exit, 'B');
 			else if (lanes[col].length) {
 				// Each lane keeps one open path in each sheet. Counters and sharp
 				// shoulders can use the same coincident bridges as repeated letters.
@@ -80,6 +84,7 @@ export function generateCornerChecks(rings: Ring[], size = 70, scale = .7,
 		add(edges, [end, [end[0], 100]], 'A', 'frame');
 		add(edges, [end, [100, end[1]]], 'B', 'frame');
 	}
+	if (contacts) edges.push(...contactChains(chains, Math.PI / 4 + contacts.tilt, margin, contacts.invert));
 	for (const t of [inset, 100 - inset]) {
 		add(edges, [[t, 0], [t, 100]], 'A', 'frame');
 		add(edges, [[0, t], [100, t]], 'B', 'frame');

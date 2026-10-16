@@ -520,6 +520,16 @@ spacing and artwork checks.
 Checked-tip lanes may also use short bent approaches to the motif outline after
 the straight connections fail. General framed figures use the same option on
 their initial panel and four-port layouts, after their established recipes fail.
+For two to eight separate components, a final checked-tip fallback can join
+each lane's contours at their nearest boundary points. This avoids leaving a
+thin return beside a bridge that misses a near contact. Compare nearby facing
+outline segments across all lanes and assign them to opposite sheets, retaining
+the closest preferences in a contact forest. Reversing a two-terminal contour's
+A/B arcs preserves both open paths and the visible motif. Try two small ordering
+tilts and the two complementary assignments; keep the three lanes, six strips,
+counter bridges and frame. Require full-sheet validation and a 10% clearance
+reserve after curve fitting and tip improvement. Earlier successful layouts
+return before this fallback.
 
 “Gentag som mønster” is a text frame, not a separate mode or control. It makes one n×n square
 of cyclic letter shifts: ANNA / NNAA / NAAN / AANN, with no surrounding checkerboard cells.

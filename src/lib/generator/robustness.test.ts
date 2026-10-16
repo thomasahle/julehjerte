@@ -53,6 +53,15 @@ function validateHandoffs(design: HeartDesign) {
 // These are expected successes, never a test that passes by accepting a refusal.
 // The larger offline corpus covers 2,028 text and 1,122 figure configurations.
 describe('generator robustness regressions', () => {
+	it('separates nearly touching paw outlines between the checked corners', () => {
+		const { design } = generate({ mode: 'figure', name: 'Paw', contours: tablerPaw.contours as Ring[],
+			frame: 'circle', style: 'corners', colors });
+		expect(design.gridSize).toEqual({ x: 6, y: 6 });
+		expect(cutTipCounts(design)).toEqual([0, 0]);
+		const margin = intersectionMarginPx(inferOverlapRect(design.fingers, design.gridSize), gridClearanceScale(6));
+		expect(findFingersWithIssues(design.fingers, margin * 1.1).size).toBe(0);
+		validateHandoffs(design);
+	});
 	for (const textFrame of ['circle', 'diamond', 'hexagon', 'oval', 'rounded', 'scalloped'] as const)
 		it(`keeps overlapping Cinzel E serifs on separate strips in ${textFrame}`, () => {
 			const { design } = generate({ mode: 'text', name: 'E', text: 'E', font: fonts.cinzel, textFrame, colors });

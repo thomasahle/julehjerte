@@ -462,6 +462,8 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		if (sunburstComponents) return sunburstComponents;
 		const fittedComponents = retryFittedComponentEnvelope(request, curveFitter);
 		if (fittedComponents) return fittedComponents;
+		const chainContacts = retryChainContacts(request, curveFitter);
+		if (chainContacts) return chainContacts;
 		const textPanels = retryTextPanelIslands(request, curveFitter);
 		if (textPanels) return textPanels;
 		const branches = overlappingBranches ? undefined : retryBranchedText(request, curveFitter);
@@ -511,6 +513,39 @@ export function generate(request: GeneratorRequest): GeneratorResult {
 		if (bestRepeated) return bestRepeated;
 		throw error;
 	}
+}
+
+/** A near contact can pinch even when both component outlines are individually
+ * smooth. Join at the closest points and assign their facing arcs to different
+ * sheets. Existing successful corner layouts return before this fallback. */
+function retryChainContacts(request: GeneratorRequest, curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult | undefined {
+	if (request.mode !== 'figure' || request.style !== 'corners') return;
+	const rings = normalizeContours(request.contours ?? []), count = forest(rings).length;
+	if (count < 2 || count > 8) return;
+	let best: GeneratorResult | undefined;
+	for (const tilt of [-.08, .08]) for (const invert of [false, true]) try {
+		const construction = generateCornerChecks(rings, request.frameSize, request.scale,
+			'chain', true, false, { tilt, invert });
+		let candidate: GeneratorResult;
+		try {
+			candidate = finishConstruction(request, construction, 'silhouette', undefined, curveFitter);
+		} catch (error) {
+			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			const geometry = curveSharedCuts(construction.geometry);
+			if (!geometry) continue;
+			candidate = finishConstruction(request, construction, 'silhouette', geometry, curveFitter);
+		}
+		const result = improveSharedConnections(candidate), design = result.design,
+			margin = intersectionMarginPx(inferOverlapRect(design.fingers, design.gridSize),
+				gridClearanceScale(design.gridSize.x, design.gridSize.y));
+		if (findFingersWithIssues(design.fingers, margin * 1.1).size) continue;
+		const tips = cutTipCounts(design);
+		if (!best || fewerCutTips(tips, cutTipCounts(best.design))) best = result;
+		if (!tips[1]) return best;
+	} catch (error) {
+		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+	}
+	return best;
 }
 
 /** A convex-envelope gate can itself sit too close to an adjacent island.

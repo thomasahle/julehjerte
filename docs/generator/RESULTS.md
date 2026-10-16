@@ -1,6 +1,47 @@
 # Generator robustness results
 
-## Current coverage: overlapping serif branches
+## Current coverage: nearly touching components in the checked-tip frame
+
+The Tabler paw now works with the checked-tip frame, using **6×6 strips and no
+tips below 45 degrees**. Its original vertical connections grazed the upper
+toes, leaving a narrow return. A final fallback joins whole components at their
+nearest boundary points and assigns nearby facing outlines to opposite paper
+sheets. The assignment follows a contact forest, prioritizing the closest
+pairs. All motif outlines, counters, frame geometry and strip counts remain
+intact; the construction uses coincident bridges and no cutouts.
+
+The final production output is exactly equal to the audited prototype. It
+passes the 10% extra clearance check, JSON/SVG handoffs and the independent
+material audit at resolution **1,400**, with zero certain or possible detached
+core islands. The finished heart and both full cutting sheets were visually
+reviewed. These are digital connectivity checks, not physical weaving or tear
+tests. Evidence: `chain-contacts-production-tb-paw.json`,
+`chain-contacts-{material,metrics}.json`, and `chain-contacts-gallery-0.png` under
+the ignored `tmp/generator/` directory.
+
+A fresh paired run of all **51 default checked-tip motifs** gives **50 accepted /
+one refused / zero invalid**. All **49 previously accepted complete outputs are
+exactly unchanged**. The crown still refuses. Paw generation took 1.85 seconds
+in this audit, not an isolated latency benchmark. `chain-contacts-audit.json`
+records both versions and the exact prototype comparison.
+
+The merged corpus is **2,873 accepted / 277 refused / zero invalid**: text is
+unchanged at 1,760 / 268; figures are 1,113 / 9. `chain-contacts-current.json`
+refreshes those 51 records and retains 3,099 from `branched-current.json`.
+This is not a fresh full-matrix run. The broader catalogue and nondefault sizes
+remain incompletely verified.
+
+The four new focused tests pass with unchanged time limits. Check, lint and build
+pass with seven existing Svelte warnings. The full unit run completed **1,185
+passing / one timing failure** across 68 files in 648.58 seconds. The existing
+Oswald juleman repeat regression took 5.99 seconds against its unchanged
+five-second limit; it passed alone in 4.47 seconds without source or timeout
+changes. All 1,186 unit cases have a passing result across these runs, but this
+was not one entirely green full run. All **177 inverse-engine tests pass** in
+88.62 seconds.
+Logs: `chain-contacts-{focused,check,lint,build,tests,oswald-isolated,inverse}.log`.
+
+## Previous coverage: overlapping serif branches
 
 An E's middle and lower serif ends can overlap vertically. Rectangular panels
 clip those ends into tiny fragments, even when the main strokes have room.
