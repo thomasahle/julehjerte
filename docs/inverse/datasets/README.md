@@ -32,6 +32,26 @@ The inventory, with material annotations updated on 2026-10-16, contains:
 
 ## Current results and limits
 
+An [affine notch/edge prototype](notch-overlap-results.json) produces no new
+accepted crops. A subsequent [local-support variant](notch-local-support-results.json)
+adds five crop proposals across the two cohorts. Previous development remains
+**15/22** checked masks; the new-source cohort rises from **4/20 to 7/20** derived-mask
+checks, but **one new pass has a visibly wrong crop**. This is not a verified
+reconstruction gain or a released change. All 22 supported prior crops, masks,
+coverage and pass/fail results are retained exactly. All new/changed exports
+were inspected; 27 candidates convert to editable geometry.
+
+The follow-up isolates two limitations: notch plus lower edges do not determine
+a projective quadrilateral (the floral reference has **15.02%** maximum corner
+offset), and removing an occluding handle from visible-paper segmentation can
+create a false notch. An independent synthetic occluder reproduces the latter
+with a **30px** notch error while passing the prototype's local checks. The
+current synthetic scenes explicitly forbid foreground occlusion of the selected
+heart. Further work needs visibility/occlusion supervision and independent
+perspective evidence; lower target-mask error does not resolve either issue.
+Both prototypes remain offline. Eleven focused checks pass; full repository QA
+is running separately and is not yet claimed complete.
+
 The [frozen new-photo comparison](new-photo-generalization-results.json) completes
 on twenty additional source photographs: **4/20** checked reconstructions with
 the learned policy versus **3/20** with production. The learned pipeline adds the
