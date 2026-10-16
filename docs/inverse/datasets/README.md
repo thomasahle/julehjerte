@@ -154,8 +154,14 @@ repeats still fail fidelity at **4.38–4.40%**, near the old baseline. A shorte
 fallback pass was rejected because it lost more image accuracy. The puppy also
 spends more time on the ordinary candidate (13.5–14.0 s in this targeted replay),
 so this is not a uniform speed improvement. All 55 isolated focused tests and
-eight new tests on the integrated sources pass. The coverage changes are
-committed locally; full release QA is pending under `coverage-release-v1`.
+eight new tests on the integrated sources pass. The [completed release audit](coverage-recovery-release-qa.json)
+adds 874 application tests (one skipped), 1,016 inverse tests, check/lint/build,
+32 browser workflows and all 55 native/editable replays. Geometry and paper
+checks pass for all 55; the same two quality failures remain (53/55). All 22
+Hunodan browser outputs are unchanged and finish in at most 9.221 seconds.
+Nineteen native outputs differ slightly: seven errors improve and twelve worsen,
+by at most 0.080625 percentage points. All changed outputs were visually reviewed;
+this is not a uniform quality or speed gain, nor a new raw-photo success count.
 
 The [completed paired corpus and editable audits](refinement-checkpoint-corpus-results.json)
 retain **53/55 passing masks** in both arms, including all 22 Hunodan and four

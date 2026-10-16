@@ -1,6 +1,6 @@
 {
   "schema": "coverage-recovery-integration-1",
-  "status": "integrated-locally-full-qa-pending",
+  "status": "integrated-locally-full-qa-complete",
   "implementation": [
     "Feature emphasis and its halo multiply original coverage/importance instead of reintroducing ignored pixels.",
     "Weighted fine and clearance grids receive native-resolution probabilities and weights resampled together; near-miss feature-grid refinement uses the same native pair.",
@@ -495,8 +495,17 @@
     "tmp/heart-learning/coverage-valid-checks-v1/tests.log": "3004f3c45a4662c3ae0efe132fa8ab968b4fc79c759590e29a3341cd8b734425"
   },
   "releaseQA": {
-    "status": "pending",
+    "status": "complete",
     "directory": "tmp/heart-learning/coverage-release-v1",
-    "scope": "Check, lint, build, full test suite, 31 ordinary browser workflows plus real clipped-photo edit/undo/solve/export, all 55 fixed native masks and editable SVG/paper audits. Hunodan browser times must remain below 10 seconds."
+    "scope": "Check, lint, build, full test suite, 31 ordinary browser workflows plus real clipped-photo edit/undo/solve/export, all 55 fixed native masks and editable SVG/paper audits. Hunodan browser times must remain below 10 seconds.",
+    "record": "docs/inverse/datasets/coverage-recovery-release-qa.json",
+    "runtimeCommit": "2841a0e455696fa182aef7d480f70c03212ef763",
+    "applicationPassed": 874,
+    "applicationSkipped": 1,
+    "inversePassed": 1016,
+    "browserPassed": 32,
+    "nativePassed": 53,
+    "nativeTotal": 55,
+    "editablePassed": 55
   }
 }

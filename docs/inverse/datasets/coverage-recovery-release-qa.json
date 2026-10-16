@@ -1,0 +1,604 @@
+{
+  "schema": "coverage-recovery-release-qa-1",
+  "status": "complete",
+  "runtimeCommit": "2841a0e455696fa182aef7d480f70c03212ef763",
+  "completedChecks": [
+    {
+      "stage": "check",
+      "exitCode": 0,
+      "seconds": 11.385928542,
+      "availableBytesBefore": 1386430464,
+      "availableBytesAfter": 1386201088
+    },
+    {
+      "stage": "lint",
+      "exitCode": 0,
+      "seconds": 7.066605583000001,
+      "availableBytesBefore": 1386192896,
+      "availableBytesAfter": 1385861120
+    },
+    {
+      "stage": "build",
+      "exitCode": 0,
+      "seconds": 18.764851750000002,
+      "availableBytesBefore": 1385844736,
+      "availableBytesAfter": 1381834752
+    },
+    {
+      "stage": "preview",
+      "exitCode": 0,
+      "seconds": 1.2928350000000037,
+      "availableBytesBefore": 1381830656,
+      "availableBytesAfter": 1381691392
+    },
+    {
+      "stage": "browser-smoke",
+      "exitCode": 0,
+      "seconds": 36.494850832999994,
+      "availableBytesBefore": 1381687296,
+      "availableBytesAfter": 1377841152
+    },
+    {
+      "stage": "browser-coverage",
+      "exitCode": 0,
+      "seconds": 24.433696666999992,
+      "availableBytesBefore": 1377837056,
+      "availableBytesAfter": 1367482368
+    },
+    {
+      "stage": "browser-photos",
+      "exitCode": 0,
+      "seconds": 48.392232084,
+      "availableBytesBefore": 1367465984,
+      "availableBytesAfter": 1959190528
+    },
+    {
+      "stage": "browser-hunodan",
+      "exitCode": 0,
+      "seconds": 210.590267083,
+      "availableBytesBefore": 1959178240,
+      "availableBytesAfter": 2173857792,
+      "cases": 22,
+      "maximumClickToReadySeconds": 9.221
+    },
+    {
+      "stage": "corpus",
+      "exitCode": 0,
+      "seconds": 447.34612899999996,
+      "availableBytesBefore": 2173853696,
+      "availableBytesAfter": 3169722368
+    },
+    {
+      "stage": "corpus-audit",
+      "exitCode": 0,
+      "seconds": 45.79912999999999,
+      "availableBytesBefore": 3169710080,
+      "availableBytesAfter": 3165433856
+    },
+    {
+      "stage": "test",
+      "exitCode": 0,
+      "seconds": 1161.9489947920001,
+      "availableBytesBefore": 3165429760,
+      "availableBytesAfter": 4031291392,
+      "completeSummary": true,
+      "applicationPassed": 874,
+      "applicationSkipped": 1,
+      "inversePassed": 1016
+    }
+  ],
+  "tests": {
+    "applicationPassed": 874,
+    "applicationSkipped": 1,
+    "inversePassed": 1016
+  },
+  "sourceFilesVerified": 1033,
+  "browser": {
+    "passed": 32,
+    "paired": 29,
+    "samePrepared": 29,
+    "sameGeometry": 27,
+    "sameEditable": 27,
+    "hunodanCompleted": 22,
+    "hunodanMedianSeconds": 6.3585,
+    "hunodanMaximumSeconds": 9.221,
+    "changedPairedCases": [
+      {
+        "cohort": "browser-photos",
+        "id": "hard-bibel-star-outline-half",
+        "passed": true,
+        "clickToReadySeconds": 6.3845,
+        "paired": true,
+        "sourceEditableError": 0.01460373673113608,
+        "paintingEditableError": 0.0175375,
+        "selectedCounts": [
+          4,
+          4
+        ],
+        "same": {
+          "prepared.json": true,
+          "cut_geometry.json": false,
+          "editable.svg": false
+        },
+        "beforeClickToReadySeconds": 6.285200000047683,
+        "beforeSourceEditableError": 0.015580361625030804,
+        "beforePaintingEditableError": 0.01839375,
+        "beforeSelectedCounts": [
+          4,
+          4
+        ],
+        "hashComparisons": {
+          "paintingMaskSha256": true
+        }
+      },
+      {
+        "cohort": "browser-photos",
+        "id": "hard-flettede-puppy-half",
+        "passed": true,
+        "clickToReadySeconds": 13.2065,
+        "paired": true,
+        "sourceEditableError": 0.011939513477975016,
+        "paintingEditableError": 0.01316875,
+        "selectedCounts": [
+          3,
+          5
+        ],
+        "same": {
+          "prepared.json": true,
+          "cut_geometry.json": false,
+          "editable.svg": false
+        },
+        "beforeClickToReadySeconds": 20.499,
+        "beforeSourceEditableError": 0.011906640368178829,
+        "beforePaintingEditableError": 0.01308125,
+        "beforeSelectedCounts": [
+          3,
+          5
+        ],
+        "hashComparisons": {
+          "classifiedMaskSha256": true,
+          "paintingMaskSha256": true
+        }
+      }
+    ],
+    "clippedPhoto": {
+      "status": "passed",
+      "case": "crossed-ribbons",
+      "editableObservedError": 0.005375625830995413,
+      "nativeEngineError": 0.00526111545826415,
+      "observedFraction": 0.98244375,
+      "clickToReadySeconds": 8.0695,
+      "geometryPassed": true,
+      "paper": "pass"
+    }
+  },
+  "native": {
+    "status": "complete",
+    "passed": 53,
+    "total": 55,
+    "sameGeometry": 36,
+    "sameCounts": 55,
+    "errorsLower": 7,
+    "errorsEqual": 36,
+    "errorsHigher": 12,
+    "geometryPassed": 55,
+    "paperPassed": 55,
+    "changedCases": [
+      {
+        "id": "hard-bibel-star-outline-jpeg75",
+        "passed": true,
+        "beforePassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "beforeError": 0.016825,
+        "error": 0.01669375,
+        "beforeSeconds": 4.042708375,
+        "seconds": 3.8081237499999996,
+        "sameGeometry": false,
+        "sameCounts": true,
+        "selectedCounts": [
+          4,
+          4
+        ]
+      },
+      {
+        "id": "hard-flettede-puppy-half",
+        "passed": true,
+        "beforePassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "beforeError": 0.011821170282708744,
+        "error": 0.01180802103879027,
+        "beforeSeconds": 20.240667541000004,
+        "seconds": 12.67435425,
+        "sameGeometry": false,
+        "sameCounts": true,
+        "selectedCounts": [
+          3,
+          5
+        ]
+      },
+      {
+        "id": "photo-outline-star",
+        "passed": false,
+        "beforePassed": false,
+        "geometryPassed": true,
+        "paper": "pass",
+        "beforeError": 0.00743125,
+        "error": 0.0074875,
+        "beforeSeconds": 9.103071708000002,
+        "seconds": 9.456464250000002,
+        "sameGeometry": false,
+        "sameCounts": true,
+        "selectedCounts": [
+          3,
+          3
+        ]
+      },
+      {
+        "id": "photo-floral-checker",
+        "passed": true,
+        "beforePassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "beforeError": 0.01334375,
+        "error": 0.01415,
+        "beforeSeconds": 10.318245667,
+        "seconds": 10.180791583,
+        "sameGeometry": false,
+        "sameCounts": true,
+        "selectedCounts": [
+          7,
+          7
+        ]
+      },
+      {
+        "id": "photo-bird",
+        "passed": true,
+        "beforePassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "beforeError": 0.01963125,
+        "error": 0.01975,
+        "beforeSeconds": 9.955001082999999,
+        "seconds": 10.094255083,
+        "sameGeometry": false,
+        "sameCounts": true,
+        "selectedCounts": [
+          5,
+          5
+        ]
+      },
+      {
+        "id": "photo-leaf",
+        "passed": true,
+        "beforePassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "beforeError": 0.00929375,
+        "error": 0.009775,
+        "beforeSeconds": 9.652881916999998,
+        "seconds": 9.450579333,
+        "sameGeometry": false,
+        "sameCounts": true,
+        "selectedCounts": [
+          3,
+          3
+        ]
+      },
+      {
+        "id": "photo-gift",
+        "passed": true,
+        "beforePassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "beforeError": 0.01666875,
+        "error": 0.01694375,
+        "beforeSeconds": 9.590353333,
+        "seconds": 9.633467083,
+        "sameGeometry": false,
+        "sameCounts": true,
+        "selectedCounts": [
+          4,
+          4
+        ]
+      },
+      {
+        "id": "photo-warped-checker",
+        "passed": true,
+        "beforePassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "beforeError": 0.0136125,
+        "error": 0.0141625,
+        "beforeSeconds": 10.52140675,
+        "seconds": 10.5241615,
+        "sameGeometry": false,
+        "sameCounts": true,
+        "selectedCounts": [
+          9,
+          9
+        ]
+      },
+      {
+        "id": "photo-fine-checker",
+        "passed": true,
+        "beforePassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "beforeError": 0.017075,
+        "error": 0.0162875,
+        "beforeSeconds": 10.701191541999998,
+        "seconds": 11.000279584,
+        "sameGeometry": false,
+        "sameCounts": true,
+        "selectedCounts": [
+          9,
+          10
+        ]
+      },
+      {
+        "id": "photo-orb",
+        "passed": true,
+        "beforePassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "beforeError": 0.01189375,
+        "error": 0.0118875,
+        "beforeSeconds": 9.812315125000001,
+        "seconds": 10.006322541000001,
+        "sameGeometry": false,
+        "sameCounts": true,
+        "selectedCounts": [
+          5,
+          5
+        ]
+      },
+      {
+        "id": "photo-stacked-hearts",
+        "passed": true,
+        "beforePassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "beforeError": 0.00578125,
+        "error": 0.005925,
+        "beforeSeconds": 8.94122325,
+        "seconds": 9.320216958,
+        "sameGeometry": false,
+        "sameCounts": true,
+        "selectedCounts": [
+          4,
+          3
+        ]
+      },
+      {
+        "id": "photo-jigsaw",
+        "passed": true,
+        "beforePassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "beforeError": 0.01031875,
+        "error": 0.010325,
+        "beforeSeconds": 9.885500209,
+        "seconds": 9.972014291999999,
+        "sameGeometry": false,
+        "sameCounts": true,
+        "selectedCounts": [
+          4,
+          4
+        ]
+      },
+      {
+        "id": "photo-maple-leaf",
+        "passed": true,
+        "beforePassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "beforeError": 0.008675,
+        "error": 0.0086625,
+        "beforeSeconds": 9.652035834,
+        "seconds": 9.839281290999999,
+        "sameGeometry": false,
+        "sameCounts": true,
+        "selectedCounts": [
+          4,
+          4
+        ]
+      },
+      {
+        "id": "photo-crossed-ribbons",
+        "passed": true,
+        "beforePassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "beforeError": 0.0055283063279704305,
+        "error": 0.005445604392108963,
+        "beforeSeconds": 8.395548833000001,
+        "seconds": 8.65030025,
+        "sameGeometry": false,
+        "sameCounts": true,
+        "selectedCounts": [
+          2,
+          2
+        ]
+      },
+      {
+        "id": "photo-bauble",
+        "passed": false,
+        "beforePassed": false,
+        "geometryPassed": true,
+        "paper": "pass",
+        "beforeError": 0.043805859226705615,
+        "error": 0.04403750008043085,
+        "beforeSeconds": 9.817235542,
+        "seconds": 10.136073917,
+        "sameGeometry": false,
+        "sameCounts": true,
+        "selectedCounts": [
+          4,
+          4
+        ]
+      },
+      {
+        "id": "photo-bottom-flower",
+        "passed": true,
+        "beforePassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "beforeError": 0.007314720875762472,
+        "error": 0.007289670461804381,
+        "beforeSeconds": 9.725217832999999,
+        "seconds": 9.935823375,
+        "sameGeometry": false,
+        "sameCounts": true,
+        "selectedCounts": [
+          4,
+          4
+        ]
+      },
+      {
+        "id": "photo-faceted-star",
+        "passed": true,
+        "beforePassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "beforeError": 0.0064125,
+        "error": 0.0065625,
+        "beforeSeconds": 8.636986666999999,
+        "seconds": 9.789663458,
+        "sameGeometry": false,
+        "sameCounts": true,
+        "selectedCounts": [
+          5,
+          5
+        ]
+      },
+      {
+        "id": "photo-bibel-star-curved",
+        "passed": true,
+        "beforePassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "beforeError": 0.0064625,
+        "error": 0.00649375,
+        "beforeSeconds": 9.410593,
+        "seconds": 9.590687209000002,
+        "sameGeometry": false,
+        "sameCounts": true,
+        "selectedCounts": [
+          5,
+          5
+        ]
+      },
+      {
+        "id": "photo-flettede-puppy",
+        "passed": true,
+        "beforePassed": true,
+        "geometryPassed": true,
+        "paper": "pass",
+        "beforeError": 0.01036875,
+        "error": 0.0108,
+        "beforeSeconds": 9.562607917000001,
+        "seconds": 9.688478167000001,
+        "sameGeometry": false,
+        "sameCounts": true,
+        "selectedCounts": [
+          5,
+          3
+        ]
+      }
+    ]
+  },
+  "editable": {
+    "status": "complete",
+    "passed": 55,
+    "completeCandidatePassed": 53,
+    "total": 55
+  },
+  "visualReview": {
+    "schema": "coverage-release-visual-review-1",
+    "status": "reviewed",
+    "cases": 19,
+    "panels": 5,
+    "display": "Original mask palette matched to independent rendered black/white output. Magenta highlights thresholded binary output changes; blue in the source marks unobserved pixels. No inference from antialias-only changes.",
+    "observations": [
+      "All nineteen changed native outputs inspected beside fixed source masks and prior release outputs. Changes are localized boundary shifts; no new loss of a large motif was apparent at the inspected resolution.",
+      "The bird eye and the small enclosed puppy opening survive. Extra frame bends, contacts and short visible seams remain; this review does not certify original design recovery or physical assembly.",
+      "The outlined star still omits a small bottom-edge source fragment. It remains a feature-fidelity failure despite less than one percent total disagreement.",
+      "The bauble retains a legal four-plus-four routing but about 4.40% observed disagreement and substantial source/crop defects. It remains a quality failure.",
+      "Dense/floral checker outputs remain rounded and uneven. The largest observed-error increase is on the floral checker; no universal quality gain is claimed.",
+      "Nineteen results differ in timed refinement. Only three cases record the new initial-geometry preference; other differences cannot be attributed to it from this single run."
+    ],
+    "largestIncreasePercentagePoints": 0.08062499999999997,
+    "largestDecreasePercentagePoints": -0.07875,
+    "initialGeometryPreferences": [
+      {
+        "id": "hard-flettede-puppy-half",
+        "initialCounts": [
+          3,
+          5
+        ],
+        "ordinaryCounts": [
+          3,
+          3
+        ],
+        "preferred": true,
+        "ordinaryPaper": "pass"
+      },
+      {
+        "id": "photo-bauble",
+        "initialCounts": [
+          4,
+          6
+        ],
+        "ordinaryCounts": [
+          4,
+          4
+        ],
+        "preferred": true,
+        "ordinaryPaper": "uncertain"
+      },
+      {
+        "id": "photo-flettede-puppy",
+        "initialCounts": [
+          5,
+          3
+        ],
+        "ordinaryCounts": [
+          3,
+          3
+        ],
+        "preferred": true,
+        "ordinaryPaper": "pass"
+      }
+    ],
+    "artifactsSha256": {
+      "tmp/heart-learning/coverage-release-v1/make-contact.py": "a82a89b182484536e6872c10090a4bed99fe9e5dd17a0c53d1fcec7290f28462",
+      "tmp/heart-learning/coverage-release-v1/visual-review/changes-00.png": "ecf692f968ed38526315e010a357dc18ba7380797e900b6c237ab34652ecb70a",
+      "tmp/heart-learning/coverage-release-v1/visual-review/changes-01.png": "48284d99b7d1acc86697ff87ba5481a31f9b1010296c332ab34b754976c3476e",
+      "tmp/heart-learning/coverage-release-v1/visual-review/changes-02.png": "763b704b09e7ba5f3c98b7dd74b6f39d7e66e343631d41718dfce0fdf91725a2",
+      "tmp/heart-learning/coverage-release-v1/visual-review/changes-03.png": "c8b644112f1859202b7692989022cf9320263df0396ad5e78da53eac7ec67125",
+      "tmp/heart-learning/coverage-release-v1/visual-review/changes-04.png": "b2342f2cddb2e96abf5efb11f8817674b4ff976826682824a6b5aa63590abbf3"
+    }
+  },
+  "interpretation": [
+    "All 22 regular Hunodan browser workflows remain below ten seconds on this machine, with byte-identical exported geometry and editable SVGs. Median 6.3585 seconds, maximum 9.221 seconds; prior release was 5.7611 and 8.8593. This is not a universal speedup.",
+    "All 55 native replays retain their counts and candidate pass/fail decisions. Seven observed-image errors decrease, twelve increase and thirty-six remain equal. The largest increase is 0.080625 percentage points, not hidden by aggregate pass counts.",
+    "The half-resolution puppy browser solve falls from 20.499 to 13.2065 seconds; its editable source disagreement rises slightly from 1.190664 to 1.193951 percent. The native replay instead improves slightly. Time-limited refinement prevents an exact invariance or universal quality claim.",
+    "The new initial-geometry preference is recorded for the two puppy cases and the bauble. No Hunodan case uses it. Other changed photo outputs are not causally attributed from this single timed comparison.",
+    "The clipped-photo browser workflow preserves the original observed region through upload, rough selection, edit/undo/redo, solving and editable SVG export. Its observed editable disagreement is 0.5375626 percent.",
+    "This cycle validates fixed masks and selected real browser workflows. It does not add raw-photo successes to the separate 31-photo benchmark, admit neural labels, or establish original template recovery/physical assembly. The outlined-star feature and bauble fidelity failures remain."
+  ],
+  "artifactsSha256": {
+    "tmp/heart-learning/coverage-release-v1/qa/source.json": "bcaa38ebf6017a281cac0e210afb464f2dda1cd3717c89bc7533ff399fae233a",
+    "tmp/heart-learning/coverage-release-v1/qa/state.json": "7cd687c02bb9f56bda0018306f6c439f1aacd7bbec996286c4ad10386fffb493",
+    "tmp/heart-learning/coverage-release-v1/qa/checks.json": "a373120ad7b17934d0224151ac74b46d72cd2ee927da65107d0e30c667ad4db2",
+    "tmp/heart-learning/coverage-release-v1/qa/test.log": "f126af56191f474b1272d94932acdc786ae17cc297f0213bbf998d7aede8b336",
+    "tmp/heart-learning/coverage-release-v1/qa/served-assets.json": "cd76b33adf47703bc2fd8d04e92805aacf71c754d40e56aa100fe9d46e4d4ac9",
+    "tmp/heart-learning/coverage-release-v1/corpus/results.json": "c268b8356967fdd43fd7e0f922125b757f7005cb673617c60d1f1ad7c12dfeab",
+    "tmp/heart-learning/coverage-release-v1/corpus/audit-results.json": "acbe3b489c093d70cf650ff1921e3b07daef1c51f8a2fef3ca884104dd31eee8",
+    "tmp/heart-learning/coverage-release-v1/compare.py": "485a586c2241b3684d287e455e23cd65cf9bc02b510336d40f990c0f3adc6d90",
+    "tmp/heart-learning/coverage-release-v1/comparison.json": "9efdd6deb3615bbafbe33a1cb951aaccdfa6fc9615cb8489974bd0bb312d92b9",
+    "tmp/heart-learning/coverage-release-v1/visual-review.json": "85bc6a6a8cdad381c3d5264abed62207014dfc243b6ad6d8fe8093573465ee9d"
+  }
+}
