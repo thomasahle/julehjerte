@@ -51,7 +51,28 @@ falls from **1.99875% to 1.839375%** and compressed-star disagreement from
 points more painting error. It does not enter the changed feature-recovery
 branch: its polishing history is identical, followed by fewer accepted shared
 cuts. Its visible thin seams and frame defects remain. Check, lint and build
-pass; the paired corpus, editable audits and full tests are still running.
+pass; the full repository tests are still running.
+
+The [completed paired corpus and editable audits](refinement-checkpoint-corpus-results.json)
+retain **53/55 passing masks** in both arms, including all 22 Hunodan and four
+hard-photo variants. All 55 slit-count pairs are unchanged; 41 cutting geometries
+are byte-identical. Six errors decrease, 42 are unchanged and seven increase
+(largest increase **0.07875 percentage points**, floral checker). All fourteen
+changed render pairs were visually reviewed. The seven increases do not enter
+the recovered-route refinement that receives the new repair allowance; their
+wall-clock-bounded refinement and sharing histories differ. This is not a claim
+that every changed output improved. All **110 editable conversions** preserve
+the required fidelity and pass geometry/paper checks; **106** also pass complete
+candidate checks, reflecting the same two failed inputs in each arm.
+
+[Inspection of the two remaining mask failures](refinement-remaining-failures.json)
+separates their causes. The outline star preserves its main motif but loses a
+4.25 mm² classified region near the noisy bottom crop edge; its physical identity
+is not established. The bauble's automatic crop visibly includes background and
+puts its bottom corner outside the photograph. Its partial observation coverage
+also disables the current feature-initialization/recovery branches. No corrected
+crop or changed recovery policy has been tested here. The two historical missing
+crops remain outside this fixed-mask replay, so the photo result stays **27/31**.
 
 A [saved-field junction diagnostic](material-junction-diagnostic.json) separates
 three possible causes of the learned checkers' gaps. Both 400px masks reproduce
