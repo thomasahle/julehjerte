@@ -33,6 +33,23 @@ The inventory, with material annotations updated on 2026-10-16, contains:
 
 ## Current results and limits
 
+An [existing-finalist comparison](finalist-retention-fit-results.json) improves
+the fixed brown checker from **9.59% to 2.48%** mask disagreement and the bicycle
+from **4.69% to 3.29%**, with geometry and nominal-paper checks passing. It prefers
+an already available, lower-error grid only when it recovers missing features
+without eroding represented ones. All five checked controls remain checked;
+both improved cases still lose details, so this adds **zero complete passes**.
+All thirteen exports convert and all eight changed outputs were inspected.
+
+A cold regression exposed another scheduling defect: the clearance stage could
+promote the old simpler grid again using its cut-count bonus. The follow-up
+checks feature retention on the actual clearance masks before changing priority.
+Three focused regressions pass in three fresh Node processes with unchanged
+photographic error bounds. Broader benchmark and repository QA remain pending;
+the runtime change is not yet adopted. The [plan](finalist-retention-fit-plan.json)
+records the cold failure and the separate synthetic-fixture correction.
+
+
 A [thirteen-mask solver experiment](feature-finalist-fit-results.json) rejects
 alternate-base feature seeding as a runtime change. Although the initial
 [seed diagnostic](feature-finalist-results.json) retained missing regions for
@@ -40,8 +57,7 @@ two cases, full fitting adds **zero checked templates**. The bicycle worsens
 from **4.69% to 7.25%** mask error and its paper core becomes uncertain; the
 flower improves only from **3.40% to 3.26%**, still failing. All seven changed
 exports were inspected. The patch was reversed; the app's solver is unchanged.
-A next diagnostic will test existing finalists that improve image error and
-partial feature retention without regressing already retained regions.
+The existing-finalist comparison above follows that rejection.
 
 The [fixed real-photo projective comparison](projective-real-results.json)
 adds ten crop proposals and five checked derived masks: the additional-photo
@@ -58,8 +74,8 @@ pixels** before fitting. Printed text is similarly mistaken for a weave. On
 the brown checker, the crop includes decoration, then a low-count finalist
 loses the center grid: feature initialization stays near (1,2) despite an
 existing lower-error (5,5) finalist, before roughly six seconds of unsuccessful
-MILP recovery. The next solver diagnostic will test those already available
-alternate count bases on the fixed failed masks. Check, lint, build and twenty
+MILP recovery. The fixed-mask comparisons above test those already available
+alternate count bases independently of cropping. Check, lint, build and twenty
 focused tests pass. Full repository QA also passes: **865 application tests**
 (one skipped) and **998 inverse tests**; all 896 pinned sources verify unchanged.
 
