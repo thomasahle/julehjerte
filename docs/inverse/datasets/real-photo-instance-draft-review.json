@@ -1,0 +1,1741 @@
+{
+  "schema": "real-photo-instance-draft-parent-review-1",
+  "status": "reviewed-outside-current-corpus",
+  "newBodyDrafts": 2,
+  "newMaterialDrafts": 2,
+  "newVisibleLandmarkObservations": 6,
+  "trainingPerformed": false,
+  "corpusCountsChanged": false,
+  "scope": "Two selected-instance annotation drafts with uncertain boundaries. No new split allocation, neural improvement or hidden-cut ground truth. Current 24 body/22 partial-material inventory remains unchanged.",
+  "inputTaskFinding": "Both sources show more than one heart. The current full-photo RGB-only material model has no selection input. Instance masks label the selected body as foreground and other hearts as background; the red/green source probes demonstrate that behavior. These are valid selected-instance labels, but cannot be silently treated as generic all-heart foreground supervision. A subsequent training protocol needs an explicit rough-ROI/prompt task or annotations for all hearts; this is not an established cause of the previous nineteen-photo study results.",
+  "splitFinding": "Keep existing source/near-duplicate groups intact and unassigned. Cross/checker/flag and six-point-star family relationships remain unresolved; do not count them as new held-out motif families.",
+  "results": [
+    {
+      "assetId": "real-7e2c5568d27c2860",
+      "status": "parent-reviewed-draft-not-admitted",
+      "handoff": "tmp/heart-learning/cross-annotation-draft-v1/handoff.json",
+      "handoffSha256": "a5b5cf69e1079cced2bf3961b43cff605a13725bd808184b2f19e83a19466edf",
+      "checks": {
+        "256": {
+          "knownBody": 2370,
+          "knownBackground": 46408,
+          "paperA": 1037,
+          "paperB": 555,
+          "unknownMaterial": 63944
+        },
+        "768": {
+          "knownBody": 21284,
+          "knownBackground": 417645,
+          "paperA": 9324,
+          "paperB": 4995,
+          "unknownMaterial": 575505
+        }
+      },
+      "body": {
+        "schema": "woven-heart-real-annotations-1",
+        "coordinateConvention": "source-image pixel edges; x right, y down; no EXIF transform",
+        "target": "Visible selected woven basket body including both paper stocks; exclude handle, cast shadow and neighboring hearts.",
+        "scope": "Temporary single-instance annotation draft pending root review, outside the current dataset. No train/test allocation, exact contact/corner labels or cut-path ground truth.",
+        "instances": [
+          {
+            "id": "real-7e2c5568d27c2860-body-1",
+            "assetId": "real-7e2c5568d27c2860",
+            "imageSha256": "7e2c5568d27c286022311d0b1c0bfd3628eb301518c004a78fd129a32c6bdece",
+            "sourceSize": [
+              3648,
+              2736
+            ],
+            "review": {
+              "method": "assistant-visual-polygon",
+              "status": "initial-reviewed",
+              "viewSize": [
+                1010,
+                910
+              ],
+              "note": "Temporary draft pending parent review. The original photograph, an unresized source-pixel ROI and attachment/contact/tip patches were visually inspected. Only the top-right red/white Danish-cross basket body is selected. The handle is excluded and its attachment is uncertain; a 12-source-pixel band excludes hand-trace and cast-shadow ambiguity around the entire outline. Neighboring flag hearts are visible background and do not occlude the selected body. Native body/material overlays and polygon outlines plus a full-scene 768-pixel material overlay were visually reviewed. No hidden contour, cut geometry or exact overlap corners are inferred."
+            },
+            "motif": {
+              "candidateFamily": "Nordic-cross-two-paper",
+              "crossCorpusReview": "Pending. Keep all flag-heart views/crops from this scene, its two recorded near-duplicate source assets and any established same-design relatives together; no allocation or independent-family claim."
+            },
+            "allocation": "unassigned",
+            "pose": "flat",
+            "foregroundPolygons": [
+              [
+                [
+                  2590,
+                  945
+                ],
+                [
+                  2638,
+                  909
+                ],
+                [
+                  2682,
+                  886
+                ],
+                [
+                  2732,
+                  868
+                ],
+                [
+                  2774,
+                  860
+                ],
+                [
+                  2810,
+                  861
+                ],
+                [
+                  2854,
+                  871
+                ],
+                [
+                  2893,
+                  888
+                ],
+                [
+                  2932,
+                  911
+                ],
+                [
+                  2969,
+                  941
+                ],
+                [
+                  3000,
+                  978
+                ],
+                [
+                  3025,
+                  1017
+                ],
+                [
+                  3043,
+                  1061
+                ],
+                [
+                  3055,
+                  1108
+                ],
+                [
+                  3058,
+                  1151
+                ],
+                [
+                  3049,
+                  1194
+                ],
+                [
+                  3035,
+                  1235
+                ],
+                [
+                  3014,
+                  1275
+                ],
+                [
+                  2985,
+                  1314
+                ],
+                [
+                  2951,
+                  1353
+                ],
+                [
+                  2910,
+                  1396
+                ],
+                [
+                  2870,
+                  1436
+                ],
+                [
+                  2836,
+                  1473
+                ],
+                [
+                  2770,
+                  1542
+                ],
+                [
+                  2690,
+                  1624
+                ],
+                [
+                  2616,
+                  1702
+                ],
+                [
+                  2605,
+                  1705
+                ],
+                [
+                  2568,
+                  1671
+                ],
+                [
+                  2497,
+                  1601
+                ],
+                [
+                  2453,
+                  1557
+                ],
+                [
+                  2387,
+                  1493
+                ],
+                [
+                  2309,
+                  1418
+                ],
+                [
+                  2237,
+                  1350
+                ],
+                [
+                  2220,
+                  1331
+                ],
+                [
+                  2200,
+                  1306
+                ],
+                [
+                  2178,
+                  1273
+                ],
+                [
+                  2158,
+                  1235
+                ],
+                [
+                  2142,
+                  1194
+                ],
+                [
+                  2132,
+                  1151
+                ],
+                [
+                  2130,
+                  1112
+                ],
+                [
+                  2136,
+                  1072
+                ],
+                [
+                  2150,
+                  1033
+                ],
+                [
+                  2171,
+                  994
+                ],
+                [
+                  2198,
+                  958
+                ],
+                [
+                  2233,
+                  926
+                ],
+                [
+                  2270,
+                  900
+                ],
+                [
+                  2308,
+                  879
+                ],
+                [
+                  2347,
+                  866
+                ],
+                [
+                  2385,
+                  860
+                ],
+                [
+                  2421,
+                  864
+                ],
+                [
+                  2463,
+                  874
+                ],
+                [
+                  2504,
+                  888
+                ],
+                [
+                  2539,
+                  908
+                ],
+                [
+                  2568,
+                  929
+                ]
+              ]
+            ],
+            "unknownPolygons": [
+              [
+                [
+                  2526,
+                  888
+                ],
+                [
+                  2656,
+                  888
+                ],
+                [
+                  2656,
+                  936
+                ],
+                [
+                  2617,
+                  977
+                ],
+                [
+                  2567,
+                  978
+                ],
+                [
+                  2528,
+                  942
+                ]
+              ]
+            ],
+            "boundaryUncertaintyPixels": 12,
+            "overlapCorners": null
+          }
+        ]
+      },
+      "materials": {
+        "schema": "woven-heart-real-material-annotations-1",
+        "coordinateConvention": "source-image pixel edges; x right, y down; no EXIF transform",
+        "scope": "Temporary partial red/white material draft, not added to corpus or training. Unannotated body pixels remain unknown material.",
+        "bodyAnnotations": [
+          {
+            "path": "tmp/heart-learning/cross-annotation-draft-v1/body-annotations.json",
+            "sha256": "b0dcc3dbd218682f0bbe69c7e73ffa5ec43e7b4886ccc2b3bddf9a780e071d5f"
+          }
+        ],
+        "instances": [
+          {
+            "id": "real-7e2c5568d27c2860-body-1",
+            "boundaryUncertaintyPixels": 6,
+            "papers": {
+              "paperA": {
+                "description": "Red paper, including the broad right lobe and the two lower red fields. Surface shading remains the same material.",
+                "polygons": [
+                  [
+                    [
+                      2610,
+                      954
+                    ],
+                    [
+                      2659,
+                      921
+                    ],
+                    [
+                      2705,
+                      899
+                    ],
+                    [
+                      2748,
+                      886
+                    ],
+                    [
+                      2794,
+                      882
+                    ],
+                    [
+                      2840,
+                      890
+                    ],
+                    [
+                      2887,
+                      907
+                    ],
+                    [
+                      2927,
+                      934
+                    ],
+                    [
+                      2965,
+                      970
+                    ],
+                    [
+                      2993,
+                      1011
+                    ],
+                    [
+                      3017,
+                      1059
+                    ],
+                    [
+                      3032,
+                      1110
+                    ],
+                    [
+                      3034,
+                      1152
+                    ],
+                    [
+                      3026,
+                      1195
+                    ],
+                    [
+                      3009,
+                      1235
+                    ],
+                    [
+                      2985,
+                      1276
+                    ],
+                    [
+                      2956,
+                      1312
+                    ],
+                    [
+                      2907,
+                      1364
+                    ],
+                    [
+                      2845,
+                      1429
+                    ],
+                    [
+                      2835,
+                      1444
+                    ],
+                    [
+                      2700,
+                      1318
+                    ],
+                    [
+                      2837,
+                      1162
+                    ],
+                    [
+                      2752,
+                      1079
+                    ],
+                    [
+                      2605,
+                      1230
+                    ],
+                    [
+                      2469,
+                      1102
+                    ],
+                    [
+                      2603,
+                      966
+                    ]
+                  ],
+                  [
+                    [
+                      2375,
+                      1197
+                    ],
+                    [
+                      2516,
+                      1329
+                    ],
+                    [
+                      2385,
+                      1464
+                    ],
+                    [
+                      2253,
+                      1333
+                    ]
+                  ],
+                  [
+                    [
+                      2609,
+                      1418
+                    ],
+                    [
+                      2740,
+                      1546
+                    ],
+                    [
+                      2611,
+                      1675
+                    ],
+                    [
+                      2484,
+                      1551
+                    ]
+                  ]
+                ]
+              },
+              "paperB": {
+                "description": "White paper, including the left lobe and visible cross arms. The seam between two visible white portions is not a third material.",
+                "polygons": [
+                  [
+                    [
+                      2571,
+                      946
+                    ],
+                    [
+                      2421,
+                      1091
+                    ],
+                    [
+                      2346,
+                      1152
+                    ],
+                    [
+                      2218,
+                      1299
+                    ],
+                    [
+                      2192,
+                      1260
+                    ],
+                    [
+                      2167,
+                      1211
+                    ],
+                    [
+                      2153,
+                      1165
+                    ],
+                    [
+                      2152,
+                      1115
+                    ],
+                    [
+                      2160,
+                      1070
+                    ],
+                    [
+                      2177,
+                      1029
+                    ],
+                    [
+                      2202,
+                      989
+                    ],
+                    [
+                      2233,
+                      953
+                    ],
+                    [
+                      2273,
+                      924
+                    ],
+                    [
+                      2314,
+                      901
+                    ],
+                    [
+                      2356,
+                      884
+                    ],
+                    [
+                      2392,
+                      882
+                    ],
+                    [
+                      2436,
+                      891
+                    ],
+                    [
+                      2478,
+                      906
+                    ],
+                    [
+                      2518,
+                      925
+                    ],
+                    [
+                      2551,
+                      946
+                    ]
+                  ],
+                  [
+                    [
+                      2394,
+                      1161
+                    ],
+                    [
+                      2430,
+                      1126
+                    ],
+                    [
+                      2808,
+                      1476
+                    ],
+                    [
+                      2769,
+                      1515
+                    ]
+                  ],
+                  [
+                    [
+                      2630,
+                      1262
+                    ],
+                    [
+                      2752,
+                      1130
+                    ],
+                    [
+                      2789,
+                      1163
+                    ],
+                    [
+                      2664,
+                      1299
+                    ]
+                  ],
+                  [
+                    [
+                      2415,
+                      1488
+                    ],
+                    [
+                      2541,
+                      1357
+                    ],
+                    [
+                      2581,
+                      1395
+                    ],
+                    [
+                      2454,
+                      1526
+                    ]
+                  ]
+                ]
+              }
+            },
+            "review": {
+              "method": "assistant-visual-conservative-interiors",
+              "status": "initial-reviewed",
+              "note": "Temporary draft pending parent review. Conservative red and white interiors were drawn from the native source photo; the contact line, arm tips, uncertain attachment and outer edge stay unlabelled. A six-source-pixel inset additionally removes each drawn material boundary. Paper identities are local to this image, not globally ordered left/right sheets. Native material overlay and the exact 768-pixel full-scene material preview were visually reviewed. No exact contacts, hidden connections, cut paths or printed-color classes are inferred."
+            }
+          }
+        ]
+      },
+      "separateLandmarkObservations": {
+        "schema": "woven-heart-visible-interface-proposals-draft-1",
+        "status": "pending-parent-review",
+        "assetId": "real-7e2c5568d27c2860",
+        "imageSha256": "7e2c5568d27c286022311d0b1c0bfd3628eb301518c004a78fd129a32c6bdece",
+        "coordinateConvention": "original source-image pixels, x right/y down, no EXIF transform",
+        "paperIdentityReference": {
+          "paperA": "red paper",
+          "paperB": "white paper"
+        },
+        "scope": "Separate native-pixel observations for future uncertainty-aware landmark review. No exact four-sector junction, shared-cut, over/under, graph connectivity, slit count or hidden cut geometry is annotated. This photo shows broad cross corners, not an unambiguous alternating checker junction.",
+        "excludedAmbiguities": "The lower-left white-white overlap seam and its endpoints are not promoted to junction landmarks: shadows and same-paper overlap do not establish hidden cuts. The handle attachment is excluded.",
+        "landmarks": [
+          {
+            "id": "cross-upper-cap",
+            "sourcePointProposal": [
+              2753,
+              1102
+            ],
+            "uncertaintyBoxXYXY": [
+              2743,
+              1092,
+              2763,
+              1112
+            ],
+            "type": "visible-two-material-boundary-corner",
+            "confidence": "high for local paper identities; approximate corner location",
+            "observation": "Convex white cap corner; the visible white wedge is south of the corner, with red on the other three sampled sides.",
+            "observedSectorProbes": [
+              {
+                "directionInImage": "N",
+                "center": [
+                  2753,
+                  1066
+                ],
+                "radiusSourcePixels": 5,
+                "visibleMaterial": "paperA",
+                "interpretation": "Small visible region away from the proposed corner; not an exact angular-sector or junction label."
+              },
+              {
+                "directionInImage": "E",
+                "center": [
+                  2790,
+                  1102
+                ],
+                "radiusSourcePixels": 5,
+                "visibleMaterial": "paperA",
+                "interpretation": "Small visible region away from the proposed corner; not an exact angular-sector or junction label."
+              },
+              {
+                "directionInImage": "S",
+                "center": [
+                  2753,
+                  1139
+                ],
+                "radiusSourcePixels": 5,
+                "visibleMaterial": "paperB",
+                "interpretation": "Small visible region away from the proposed corner; not an exact angular-sector or junction label."
+              },
+              {
+                "directionInImage": "W",
+                "center": [
+                  2716,
+                  1102
+                ],
+                "radiusSourcePixels": 5,
+                "visibleMaterial": "paperA",
+                "interpretation": "Small visible region away from the proposed corner; not an exact angular-sector or junction label."
+              }
+            ],
+            "topologyClaim": null,
+            "cutPathClaim": null,
+            "supervisionStatus": "proposal-only; excluded from segmentation labels and all training/test data"
+          },
+          {
+            "id": "cross-right-cap",
+            "sourcePointProposal": [
+              2818,
+              1161
+            ],
+            "uncertaintyBoxXYXY": [
+              2808,
+              1151,
+              2828,
+              1171
+            ],
+            "type": "visible-two-material-boundary-corner",
+            "confidence": "high for local paper identities; approximate corner location",
+            "observation": "Convex white cap corner; the visible white wedge is west of the corner, with red on the other three sampled sides.",
+            "observedSectorProbes": [
+              {
+                "directionInImage": "N",
+                "center": [
+                  2818,
+                  1125
+                ],
+                "radiusSourcePixels": 5,
+                "visibleMaterial": "paperA",
+                "interpretation": "Small visible region away from the proposed corner; not an exact angular-sector or junction label."
+              },
+              {
+                "directionInImage": "E",
+                "center": [
+                  2855,
+                  1161
+                ],
+                "radiusSourcePixels": 5,
+                "visibleMaterial": "paperA",
+                "interpretation": "Small visible region away from the proposed corner; not an exact angular-sector or junction label."
+              },
+              {
+                "directionInImage": "S",
+                "center": [
+                  2818,
+                  1197
+                ],
+                "radiusSourcePixels": 5,
+                "visibleMaterial": "paperA",
+                "interpretation": "Small visible region away from the proposed corner; not an exact angular-sector or junction label."
+              },
+              {
+                "directionInImage": "W",
+                "center": [
+                  2781,
+                  1161
+                ],
+                "radiusSourcePixels": 5,
+                "visibleMaterial": "paperB",
+                "interpretation": "Small visible region away from the proposed corner; not an exact angular-sector or junction label."
+              }
+            ],
+            "topologyClaim": null,
+            "cutPathClaim": null,
+            "supervisionStatus": "proposal-only; excluded from segmentation labels and all training/test data"
+          },
+          {
+            "id": "cross-upper-reentrant",
+            "sourcePointProposal": [
+              2605,
+              1255
+            ],
+            "uncertaintyBoxXYXY": [
+              2593,
+              1243,
+              2617,
+              1267
+            ],
+            "type": "visible-two-material-boundary-corner",
+            "confidence": "high for local paper identities; approximate corner location",
+            "observation": "Concave white cross corner around a red tip; red is visible north and white on the other three sampled sides.",
+            "observedSectorProbes": [
+              {
+                "directionInImage": "N",
+                "center": [
+                  2605,
+                  1219
+                ],
+                "radiusSourcePixels": 5,
+                "visibleMaterial": "paperA",
+                "interpretation": "Small visible region away from the proposed corner; not an exact angular-sector or junction label."
+              },
+              {
+                "directionInImage": "E",
+                "center": [
+                  2641,
+                  1255
+                ],
+                "radiusSourcePixels": 5,
+                "visibleMaterial": "paperB",
+                "interpretation": "Small visible region away from the proposed corner; not an exact angular-sector or junction label."
+              },
+              {
+                "directionInImage": "S",
+                "center": [
+                  2605,
+                  1291
+                ],
+                "radiusSourcePixels": 5,
+                "visibleMaterial": "paperB",
+                "interpretation": "Small visible region away from the proposed corner; not an exact angular-sector or junction label."
+              },
+              {
+                "directionInImage": "W",
+                "center": [
+                  2569,
+                  1255
+                ],
+                "radiusSourcePixels": 5,
+                "visibleMaterial": "paperB",
+                "interpretation": "Small visible region away from the proposed corner; not an exact angular-sector or junction label."
+              }
+            ],
+            "topologyClaim": null,
+            "cutPathClaim": null,
+            "supervisionStatus": "proposal-only; excluded from segmentation labels and all training/test data"
+          },
+          {
+            "id": "cross-right-reentrant",
+            "sourcePointProposal": [
+              2674,
+              1321
+            ],
+            "uncertaintyBoxXYXY": [
+              2662,
+              1309,
+              2686,
+              1333
+            ],
+            "type": "visible-two-material-boundary-corner",
+            "confidence": "high for local paper identities; approximate corner location",
+            "observation": "Concave white cross corner around a red tip; red is visible east and white on the other three sampled sides.",
+            "observedSectorProbes": [
+              {
+                "directionInImage": "N",
+                "center": [
+                  2674,
+                  1285
+                ],
+                "radiusSourcePixels": 5,
+                "visibleMaterial": "paperB",
+                "interpretation": "Small visible region away from the proposed corner; not an exact angular-sector or junction label."
+              },
+              {
+                "directionInImage": "E",
+                "center": [
+                  2710,
+                  1321
+                ],
+                "radiusSourcePixels": 5,
+                "visibleMaterial": "paperA",
+                "interpretation": "Small visible region away from the proposed corner; not an exact angular-sector or junction label."
+              },
+              {
+                "directionInImage": "S",
+                "center": [
+                  2674,
+                  1357
+                ],
+                "radiusSourcePixels": 5,
+                "visibleMaterial": "paperB",
+                "interpretation": "Small visible region away from the proposed corner; not an exact angular-sector or junction label."
+              },
+              {
+                "directionInImage": "W",
+                "center": [
+                  2638,
+                  1321
+                ],
+                "radiusSourcePixels": 5,
+                "visibleMaterial": "paperB",
+                "interpretation": "Small visible region away from the proposed corner; not an exact angular-sector or junction label."
+              }
+            ],
+            "topologyClaim": null,
+            "cutPathClaim": null,
+            "supervisionStatus": "proposal-only; excluded from segmentation labels and all training/test data"
+          }
+        ]
+      },
+      "visualReview": "Original native selected body and body/material overlays inspected by parent. Selected silhouette and conservative material interiors agree with visible paper. Separate visible landmarks retain location uncertainty; no hidden geometry or exact contact incidence is labelled.",
+      "sourceGroupUnassigned": true
+    },
+    {
+      "assetId": "real-ca2f9adc67ee4cea",
+      "status": "parent-reviewed-draft-not-admitted",
+      "handoff": "tmp/heart-learning/red-green-star-annotation-draft-v1/handoff.json",
+      "handoffSha256": "bd89a58a995546b94b1288337144369321967ed0fd1d484e54bbe69f64aa4be7",
+      "checks": {
+        "256": {
+          "knownBody": 6551,
+          "knownBackground": 30496,
+          "paperA": 1671,
+          "paperB": 1516,
+          "unknownMaterial": 62349
+        },
+        "768": {
+          "knownBody": 58949,
+          "knownBackground": 276011,
+          "paperA": 15064,
+          "paperB": 13640,
+          "unknownMaterial": 561120
+        }
+      },
+      "body": {
+        "schema": "woven-heart-real-annotations-1",
+        "coordinateConvention": "source-image pixel edges; x right, y down; no EXIF transform",
+        "target": "Visible left red/green basket body including both paper stocks; exclude quilt, cast shadows and the other heart.",
+        "scope": "Temporary draft outside the dataset; no split assignment, exact contacts, hidden cuts or topology ground truth.",
+        "instances": [
+          {
+            "id": "real-ca2f9adc67ee4cea-body-1",
+            "assetId": "real-ca2f9adc67ee4cea",
+            "imageSha256": "ca2f9adc67ee4ceaa2c4c8c9fa9dad183a536ebfd950d90ec17c1ab40e21dcf5",
+            "sourceSize": [
+              1024,
+              595
+            ],
+            "review": {
+              "method": "assistant-visual-polygon",
+              "status": "initial-reviewed",
+              "viewSize": [
+                470,
+                440
+              ],
+              "note": "Temporary draft pending root review. The complete original photograph and native 470x440 source-pixel ROI were inspected. Select the left red/green six-point-star basket only; the right heart, quilt and cast shadows are background. No handle is visible. A five-source-pixel band covers the outer paper edge; the soft upper cleft has a separate uncertain polygon. Native body/material overlays, polygon outlines and the full-scene 768-pixel material preview were visually reviewed. No occluded body, exact overlap corners, contacts or cutting paths are inferred."
+            },
+            "motif": {
+              "candidateFamily": "six-point-star-in-rectangular-frame",
+              "crossCorpusReview": "Pending. Six-point-star designs occur in existing solver QA; do not infer motif-family independence from this different photograph. The right-hand heart and all crops of this scene share the source group."
+            },
+            "allocation": "unassigned",
+            "pose": "flat",
+            "foregroundPolygons": [
+              [
+                [
+                  239,
+                  159
+                ],
+                [
+                  254,
+                  135
+                ],
+                [
+                  274,
+                  115
+                ],
+                [
+                  298,
+                  99
+                ],
+                [
+                  327,
+                  90
+                ],
+                [
+                  356,
+                  90
+                ],
+                [
+                  383,
+                  96
+                ],
+                [
+                  407,
+                  111
+                ],
+                [
+                  429,
+                  131
+                ],
+                [
+                  447,
+                  156
+                ],
+                [
+                  460,
+                  184
+                ],
+                [
+                  467,
+                  212
+                ],
+                [
+                  469,
+                  241
+                ],
+                [
+                  464,
+                  264
+                ],
+                [
+                  454,
+                  287
+                ],
+                [
+                  442,
+                  305
+                ],
+                [
+                  425,
+                  328
+                ],
+                [
+                  396,
+                  373
+                ],
+                [
+                  365,
+                  418
+                ],
+                [
+                  331,
+                  466
+                ],
+                [
+                  307,
+                  495
+                ],
+                [
+                  296,
+                  493
+                ],
+                [
+                  265,
+                  474
+                ],
+                [
+                  233,
+                  454
+                ],
+                [
+                  192,
+                  427
+                ],
+                [
+                  153,
+                  401
+                ],
+                [
+                  125,
+                  381
+                ],
+                [
+                  105,
+                  361
+                ],
+                [
+                  86,
+                  346
+                ],
+                [
+                  70,
+                  326
+                ],
+                [
+                  59,
+                  302
+                ],
+                [
+                  53,
+                  275
+                ],
+                [
+                  53,
+                  243
+                ],
+                [
+                  59,
+                  213
+                ],
+                [
+                  69,
+                  186
+                ],
+                [
+                  84,
+                  163
+                ],
+                [
+                  107,
+                  149
+                ],
+                [
+                  133,
+                  139
+                ],
+                [
+                  161,
+                  136
+                ],
+                [
+                  189,
+                  140
+                ],
+                [
+                  215,
+                  148
+                ]
+              ]
+            ],
+            "unknownPolygons": [
+              [
+                [
+                  229,
+                  150
+                ],
+                [
+                  248,
+                  152
+                ],
+                [
+                  251,
+                  166
+                ],
+                [
+                  239,
+                  177
+                ],
+                [
+                  228,
+                  167
+                ]
+              ]
+            ],
+            "boundaryUncertaintyPixels": 5,
+            "overlapCorners": null
+          }
+        ]
+      },
+      "materials": {
+        "schema": "woven-heart-real-material-annotations-1",
+        "coordinateConvention": "source-image pixel edges; x right, y down; no EXIF transform",
+        "scope": "Temporary partial-material draft. Unannotated visible body remains unknown material; no labels admitted to a corpus or training run.",
+        "bodyAnnotations": [
+          {
+            "path": "tmp/heart-learning/red-green-star-annotation-draft-v1/body-annotations.json",
+            "sha256": "87fc0c7d7028b1888371cf67048acd4f801a401e7e0372267cb199e2ee00cc25"
+          }
+        ],
+        "instances": [
+          {
+            "id": "real-ca2f9adc67ee4cea-body-1",
+            "boundaryUncertaintyPixels": 2,
+            "papers": {
+              "paperA": {
+                "description": "Red paper including the right lobe, central six-point star, frame strips and border checks. Dark edge shadows are not another paper.",
+                "polygons": [
+                  [
+                    [
+                      262,
+                      157
+                    ],
+                    [
+                      280,
+                      134
+                    ],
+                    [
+                      304,
+                      117
+                    ],
+                    [
+                      331,
+                      107
+                    ],
+                    [
+                      358,
+                      108
+                    ],
+                    [
+                      384,
+                      118
+                    ],
+                    [
+                      408,
+                      135
+                    ],
+                    [
+                      428,
+                      158
+                    ],
+                    [
+                      443,
+                      187
+                    ],
+                    [
+                      451,
+                      218
+                    ],
+                    [
+                      451,
+                      244
+                    ],
+                    [
+                      445,
+                      266
+                    ],
+                    [
+                      433,
+                      282
+                    ],
+                    [
+                      304,
+                      205
+                    ],
+                    [
+                      304,
+                      186
+                    ],
+                    [
+                      266,
+                      164
+                    ]
+                  ],
+                  [
+                    [
+                      244,
+                      198
+                    ],
+                    [
+                      271,
+                      214
+                    ],
+                    [
+                      258,
+                      236
+                    ],
+                    [
+                      233,
+                      222
+                    ]
+                  ],
+                  [
+                    [
+                      263,
+                      267
+                    ],
+                    [
+                      285,
+                      287
+                    ],
+                    [
+                      323,
+                      280
+                    ],
+                    [
+                      311,
+                      319
+                    ],
+                    [
+                      332,
+                      344
+                    ],
+                    [
+                      297,
+                      348
+                    ],
+                    [
+                      282,
+                      389
+                    ],
+                    [
+                      266,
+                      363
+                    ],
+                    [
+                      229,
+                      371
+                    ],
+                    [
+                      236,
+                      334
+                    ],
+                    [
+                      213,
+                      308
+                    ],
+                    [
+                      251,
+                      303
+                    ]
+                  ],
+                  [
+                    [
+                      133,
+                      338
+                    ],
+                    [
+                      138,
+                      343
+                    ],
+                    [
+                      217,
+                      229
+                    ],
+                    [
+                      211,
+                      226
+                    ]
+                  ],
+                  [
+                    [
+                      408,
+                      302
+                    ],
+                    [
+                      416,
+                      308
+                    ],
+                    [
+                      336,
+                      428
+                    ],
+                    [
+                      329,
+                      424
+                    ]
+                  ],
+                  [
+                    [
+                      139,
+                      366
+                    ],
+                    [
+                      257,
+                      441
+                    ],
+                    [
+                      249,
+                      451
+                    ],
+                    [
+                      136,
+                      375
+                    ]
+                  ],
+                  [
+                    [
+                      287,
+                      420
+                    ],
+                    [
+                      310,
+                      433
+                    ],
+                    [
+                      297,
+                      454
+                    ],
+                    [
+                      277,
+                      441
+                    ]
+                  ]
+                ]
+              },
+              "paperB": {
+                "description": "Green paper including the left lobe, regions surrounding the star and one conservative upper check.",
+                "polygons": [
+                  [
+                    [
+                      227,
+                      163
+                    ],
+                    [
+                      213,
+                      186
+                    ],
+                    [
+                      204,
+                      205
+                    ],
+                    [
+                      119,
+                      338
+                    ],
+                    [
+                      108,
+                      349
+                    ],
+                    [
+                      91,
+                      334
+                    ],
+                    [
+                      76,
+                      315
+                    ],
+                    [
+                      66,
+                      292
+                    ],
+                    [
+                      62,
+                      265
+                    ],
+                    [
+                      64,
+                      234
+                    ],
+                    [
+                      73,
+                      206
+                    ],
+                    [
+                      88,
+                      183
+                    ],
+                    [
+                      108,
+                      166
+                    ],
+                    [
+                      134,
+                      153
+                    ],
+                    [
+                      164,
+                      149
+                    ],
+                    [
+                      190,
+                      152
+                    ],
+                    [
+                      212,
+                      158
+                    ]
+                  ],
+                  [
+                    [
+                      223,
+                      245
+                    ],
+                    [
+                      240,
+                      257
+                    ],
+                    [
+                      232,
+                      286
+                    ],
+                    [
+                      189,
+                      299
+                    ],
+                    [
+                      214,
+                      336
+                    ],
+                    [
+                      205,
+                      369
+                    ],
+                    [
+                      151,
+                      352
+                    ]
+                  ],
+                  [
+                    [
+                      232,
+                      388
+                    ],
+                    [
+                      258,
+                      384
+                    ],
+                    [
+                      273,
+                      409
+                    ],
+                    [
+                      260,
+                      424
+                    ]
+                  ],
+                  [
+                    [
+                      358,
+                      286
+                    ],
+                    [
+                      395,
+                      299
+                    ],
+                    [
+                      325,
+                      412
+                    ],
+                    [
+                      304,
+                      399
+                    ],
+                    [
+                      314,
+                      367
+                    ],
+                    [
+                      355,
+                      351
+                    ],
+                    [
+                      334,
+                      315
+                    ]
+                  ],
+                  [
+                    [
+                      257,
+                      183
+                    ],
+                    [
+                      280,
+                      196
+                    ],
+                    [
+                      276,
+                      201
+                    ],
+                    [
+                      254,
+                      189
+                    ]
+                  ]
+                ]
+              }
+            },
+            "review": {
+              "method": "assistant-visual-conservative-interiors",
+              "status": "initial-reviewed",
+              "note": "Temporary draft pending root review. Conservative visible red and green interiors are labelled, including the narrow frame interiors where resolvable. Polygons stop inside observed boundaries and receive a further two-source-pixel inset. Star/frame tip contacts, tiny checks, seams, upper cleft and outer shadowed edges stay unknown material. Native material overlay and exact 768-pixel full-scene preview were visually inspected; the narrow green regions were kept as separate conservative polygons rather than bridged across a tip. Same-color regions are not connected by invented hidden cuts; paper A/B may swap only globally."
+            }
+          }
+        ]
+      },
+      "separateLandmarkObservations": {
+        "schema": "woven-heart-visible-interface-proposals-draft-1",
+        "status": "pending-parent-review",
+        "assetId": "real-ca2f9adc67ee4cea",
+        "imageSha256": "ca2f9adc67ee4ceaa2c4c8c9fa9dad183a536ebfd950d90ec17c1ab40e21dcf5",
+        "coordinateConvention": "Original source-image pixel edges; x right, y down; no EXIF transform.",
+        "paperIdentityReference": {
+          "paperA": "red paper",
+          "paperB": "green paper"
+        },
+        "scope": "Two visible star/frame contact-neighborhood proposals with separated material observations. No exact checker junction, shared cut, connectivity, over/under order, slit count or hidden topology is asserted. Not part of partial segmentation or an admitted label set.",
+        "excludedAmbiguities": "Tiny outer-frame checker contacts, blurred strip endpoints and the upper body cleft are not promoted to landmarks.",
+        "landmarks": [
+          {
+            "id": "upper-star-frame-neighborhood",
+            "type": "visible-alternating-material-neighborhood",
+            "sourcePointProposal": [
+              261,
+              248
+            ],
+            "uncertaintyBoxXYXY": [
+              253,
+              240,
+              269,
+              256
+            ],
+            "confidence": "High for the four separated visible paper probes; uncertain for central incidence/contact.",
+            "visibleObservation": "Red is visible north and south, green east and west at the listed probe locations. The red star tip approaches a red border check inside the uncertainty box. Blur, edge shadows and small physical misalignment do not establish whether or exactly where the visible regions touch.",
+            "observedSectorProbes": [
+              {
+                "directionInImage": "N",
+                "center": [
+                  261,
+                  225
+                ],
+                "radiusSourcePixels": 3,
+                "visibleMaterial": "paperA",
+                "interpretation": "Separated visible source-pixel region only; not an exact angular-sector extent."
+              },
+              {
+                "directionInImage": "E",
+                "center": [
+                  284,
+                  248
+                ],
+                "radiusSourcePixels": 3,
+                "visibleMaterial": "paperB",
+                "interpretation": "Separated visible source-pixel region only; not an exact angular-sector extent."
+              },
+              {
+                "directionInImage": "S",
+                "center": [
+                  261,
+                  271
+                ],
+                "radiusSourcePixels": 3,
+                "visibleMaterial": "paperA",
+                "interpretation": "Separated visible source-pixel region only; not an exact angular-sector extent."
+              },
+              {
+                "directionInImage": "W",
+                "center": [
+                  238,
+                  248
+                ],
+                "radiusSourcePixels": 3,
+                "visibleMaterial": "paperB",
+                "interpretation": "Separated visible source-pixel region only; not an exact angular-sector extent."
+              }
+            ],
+            "centerTopologyClaim": null,
+            "cutPathClaim": null,
+            "supervisionStatus": "Separate review proposal; excluded from segmentation labels and all training/test data"
+          },
+          {
+            "id": "lower-star-frame-neighborhood",
+            "type": "visible-alternating-material-neighborhood",
+            "sourcePointProposal": [
+              285,
+              409
+            ],
+            "uncertaintyBoxXYXY": [
+              277,
+              401,
+              293,
+              417
+            ],
+            "confidence": "High for the four separated visible paper probes; uncertain for central incidence/contact.",
+            "visibleObservation": "Red is visible north and south, green east and west at the listed probe locations. The red star tip approaches a red border check inside the uncertainty box. Blur, edge shadows and small physical misalignment do not establish whether or exactly where the visible regions touch.",
+            "observedSectorProbes": [
+              {
+                "directionInImage": "N",
+                "center": [
+                  285,
+                  386
+                ],
+                "radiusSourcePixels": 3,
+                "visibleMaterial": "paperA",
+                "interpretation": "Separated visible source-pixel region only; not an exact angular-sector extent."
+              },
+              {
+                "directionInImage": "E",
+                "center": [
+                  308,
+                  409
+                ],
+                "radiusSourcePixels": 3,
+                "visibleMaterial": "paperB",
+                "interpretation": "Separated visible source-pixel region only; not an exact angular-sector extent."
+              },
+              {
+                "directionInImage": "S",
+                "center": [
+                  285,
+                  432
+                ],
+                "radiusSourcePixels": 3,
+                "visibleMaterial": "paperA",
+                "interpretation": "Separated visible source-pixel region only; not an exact angular-sector extent."
+              },
+              {
+                "directionInImage": "W",
+                "center": [
+                  262,
+                  409
+                ],
+                "radiusSourcePixels": 3,
+                "visibleMaterial": "paperB",
+                "interpretation": "Separated visible source-pixel region only; not an exact angular-sector extent."
+              }
+            ],
+            "centerTopologyClaim": null,
+            "cutPathClaim": null,
+            "supervisionStatus": "Separate review proposal; excluded from segmentation labels and all training/test data"
+          }
+        ]
+      },
+      "visualReview": "Original native selected body and body/material overlays inspected by parent. Selected silhouette and conservative material interiors agree with visible paper. Separate visible landmarks retain location uncertainty; no hidden geometry or exact contact incidence is labelled. Full two-heart source and both magnified alternating-material patches also inspected; red/green sectors agree with observations, but center contact is blurred/shadowed.",
+      "sourceGroupUnassigned": true,
+      "instanceSelectionProbe": [
+        {
+          "description": "selected star interior",
+          "sourcePoint": [
+            270,
+            310
+          ],
+          "compiledPixel": [
+            67,
+            131
+          ],
+          "bodyLabel": 1
+        },
+        {
+          "description": "other heart upper red paper",
+          "sourcePoint": [
+            700,
+            180
+          ],
+          "compiledPixel": [
+            175,
+            98
+          ],
+          "bodyLabel": 0
+        },
+        {
+          "description": "other heart upper green paper",
+          "sourcePoint": [
+            840,
+            220
+          ],
+          "compiledPixel": [
+            210,
+            108
+          ],
+          "bodyLabel": 0
+        },
+        {
+          "description": "other heart lower paper",
+          "sourcePoint": [
+            750,
+            330
+          ],
+          "compiledPixel": [
+            187,
+            136
+          ],
+          "bodyLabel": 0
+        }
+      ]
+    }
+  ],
+  "sourceHashes": {
+    "docs/inverse/datasets/real-manifest.json": "0f3086fca422238235cbd8d9a46d154f42d1f00b8bd1e336892b3f69331a52d1",
+    "scripts/inverse/datasets/real_annotations.py": "b505fb723dc45b644cb95a058ddf45317f6afb700c61fb88cb3d93571fb9e33c",
+    "scripts/inverse/datasets/real_materials.py": "86ec6dd4d4d8af2289eda79925cd7c68d9df87719a49adf9fb2d0078858a175e",
+    "scripts/inverse/learning/real_materials_learning.py": "cc3fa5448f9804c5f4e2ae3c407dbb9281a1cfbf3c332ab7d7a9e3d753907a16",
+    "scripts/inverse/learning/train-material-pilot.py": "e564802fbd007fd66b6609954cdd5f59800f5c3c5370f4b27732f4ea0b9a7c65"
+  }
+}

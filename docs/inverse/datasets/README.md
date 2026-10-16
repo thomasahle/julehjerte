@@ -31,6 +31,16 @@ The inventory, with material annotations updated on 2026-10-16, contains:
 | Real visible-body annotations | 24 | Includes newly admitted printed-checker/candle/fish instances and one reserved gold-angel instance. Uncertain pixels are excluded; the completed corrected-family study retains its original nineteen instances. |
 | Real partial paper-material annotations | 22 heart instances | Nineteen enter the completed corrected-family study; three new instances remain unassigned and unused in training. Separate body and material uncertainty; all are reviewed development examples. |
 
+Two additional [reviewed annotation drafts](real-photo-instance-draft-review.json)
+cover a red/white Danish cross and a red/green six-point star, with six separate
+uncertain corner/contact observations. Their polygons and material masks verify
+at 256 and 768 pixels; they remain outside the inventory above and all training.
+Both source photographs contain multiple hearts. The existing RGB-only model
+receives no selection cue, while these labels describe one selected instance and
+mark other hearts as background. A subsequent training protocol must specify a
+rough-ROI/prompt task or label all hearts rather than silently mixing those tasks.
+Source groups remain intact and motif-family relationships remain unresolved.
+
 ## Current results and limits
 
 A [checkpoint repair allowance](refinement-checkpoint-completion.json) is now
