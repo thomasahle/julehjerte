@@ -6,6 +6,8 @@ and verified pretrained encoder checkpoints. Offline studies cover synthetic
 proposal learning and a small real-photo adaptation pilot. No learned model
 has been added to the website.
 
+A [rough-selection bounds correction](selection-bounds-reconstruction.json) now recovers the full red/green star instead of a narrow interior strip. In nine development workflows on seven photos, the star passes native and editable checks (2.27% editable disagreement); a newly located dense checker still fails image quality (5.13%). Four other selected photos remain unresolved, and the cross still has a small false central diamond. All 76 focused crop tests passed; browser and full release QA are pending. These are separate development cases, not changes to the existing 31-photo or 55-mask benchmark.
+
 The inventory, with material annotations updated on 2026-10-16, contains:
 
 | Asset | Verified count | Meaning |

@@ -1,0 +1,568 @@
+{
+  "schema": "selection-bounds-reconstruction-1",
+  "status": "focused-validation-complete-release-qa-pending",
+  "method": "Same seven source photos and nine workflows, including two unselected multi-heart controls. Only selected-instance foreground bounds are retried; all masks and curves are fitted afresh. No annotation enters cropping or fitting.",
+  "runtimeFiles": {
+    "static/inverse/core/crop.js": "1ffeb4fe4f93019bb463d5b7d1db222409d27dd5f9d3b2ecf46ec899ea82debb",
+    "static/inverse/locator/locator.js": "ad8afc1bce23757c4b3474af944a23424f8b714b2a909e7ae826f0650dbd33b2",
+    "scripts/inverse/selection-crop.test.mjs": "7815a8220e085b05c985712c0fb5ade4911fdfafe0470e781d1ab49ae8063efd"
+  },
+  "rootCause": [
+    "With an explicit rough selection, the upright detector treated that rectangle as exact heart bounds. Scan rows and shape initialization could miss the paper silhouette even when segmentation was usable.",
+    "The star fell back to an unsupported red/white fit with a narrow skewed crop. The same two-colour fields recover its full outline when initialization uses foreground bounds inside the selection.",
+    "The correction keeps expanded colour context, excludes neighbouring components outside the selection from bound estimation, retains already-supported original fits, and requires the existing complete-outline support before adopting a retry."
+  ],
+  "rows": [
+    {
+      "id": "real-7e2c5568d27c2860-full",
+      "sourceSha256": "7e2c5568d27c286022311d0b1c0bfd3628eb301518c004a78fd129a32c6bdece",
+      "roi": null,
+      "before": {
+        "status": "crop-unresolved",
+        "detectionSeconds": 3.514007667,
+        "totalSeconds": 3.8705736250000005,
+        "quad": null,
+        "counts": null,
+        "nativeError": null,
+        "editableError": null,
+        "geometryPassed": null,
+        "paper": null,
+        "editablePassed": null,
+        "completePassed": null,
+        "geometrySha256": null
+      },
+      "after": {
+        "status": "crop-unresolved",
+        "detectionSeconds": 3.5103481250000006,
+        "totalSeconds": 3.8549769580000004,
+        "quad": null,
+        "counts": null,
+        "nativeError": null,
+        "editableError": null,
+        "geometryPassed": null,
+        "paper": null,
+        "editablePassed": null,
+        "completePassed": null,
+        "geometrySha256": null
+      }
+    },
+    {
+      "id": "real-7e2c5568d27c2860-roi",
+      "sourceSha256": "7e2c5568d27c286022311d0b1c0bfd3628eb301518c004a78fd129a32c6bdece",
+      "roi": [
+        2040,
+        760,
+        3140,
+        1800
+      ],
+      "before": {
+        "status": "checked-derived-mask",
+        "detectionSeconds": 3.84769975,
+        "totalSeconds": 9.470429833,
+        "quad": [
+          [
+            2589.755896870836,
+            942.0183009288228
+          ],
+          [
+            2981.427646288968,
+            1317.2575401944714
+          ],
+          [
+            2615.223351861899,
+            1715.2362933146187
+          ],
+          [
+            2218.736432613904,
+            1328.9911282652497
+          ]
+        ],
+        "counts": [
+          2,
+          2
+        ],
+        "nativeError": 0.00536875,
+        "editableError": 0.00525,
+        "geometryPassed": true,
+        "paper": "pass",
+        "editablePassed": true,
+        "completePassed": true,
+        "geometrySha256": "06a13a101ed6e5bc5d6fd0d60add04252666461e4808957c31ceea743dd0257f"
+      },
+      "after": {
+        "status": "checked-derived-mask",
+        "detectionSeconds": 3.6867797920000003,
+        "totalSeconds": 8.820659791999999,
+        "quad": [
+          [
+            2589.755896870836,
+            942.0183009288228
+          ],
+          [
+            2981.427646288968,
+            1317.2575401944714
+          ],
+          [
+            2615.223351861899,
+            1715.2362933146187
+          ],
+          [
+            2218.736432613904,
+            1328.9911282652497
+          ]
+        ],
+        "counts": [
+          2,
+          2
+        ],
+        "nativeError": 0.00536875,
+        "editableError": 0.00525,
+        "geometryPassed": true,
+        "paper": "pass",
+        "editablePassed": true,
+        "completePassed": true,
+        "geometrySha256": "06a13a101ed6e5bc5d6fd0d60add04252666461e4808957c31ceea743dd0257f"
+      }
+    },
+    {
+      "id": "real-ca2f9adc67ee4cea-full",
+      "sourceSha256": "ca2f9adc67ee4ceaa2c4c8c9fa9dad183a536ebfd950d90ec17c1ab40e21dcf5",
+      "roi": null,
+      "before": {
+        "status": "crop-unresolved",
+        "detectionSeconds": 3.7948388749999977,
+        "totalSeconds": 3.903217084,
+        "quad": null,
+        "counts": null,
+        "nativeError": null,
+        "editableError": null,
+        "geometryPassed": null,
+        "paper": null,
+        "editablePassed": null,
+        "completePassed": null,
+        "geometrySha256": null
+      },
+      "after": {
+        "status": "crop-unresolved",
+        "detectionSeconds": 3.8485244170000006,
+        "totalSeconds": 3.9434813749999993,
+        "quad": null,
+        "counts": null,
+        "nativeError": null,
+        "editableError": null,
+        "geometryPassed": null,
+        "paper": null,
+        "editablePassed": null,
+        "completePassed": null,
+        "geometrySha256": null
+      }
+    },
+    {
+      "id": "real-ca2f9adc67ee4cea-roi",
+      "sourceSha256": "ca2f9adc67ee4ceaa2c4c8c9fa9dad183a536ebfd950d90ec17c1ab40e21dcf5",
+      "roi": [
+        10,
+        50,
+        500,
+        530
+      ],
+      "before": {
+        "status": "review-required",
+        "detectionSeconds": 5.2696862919999985,
+        "totalSeconds": 12.417534041999996,
+        "quad": [
+          [
+            257.03468792789073,
+            97.00863293215902
+          ],
+          [
+            367.6636902549182,
+            170.11796508498045
+          ],
+          [
+            291.3555814937648,
+            419.0987118452939
+          ],
+          [
+            200.08404047456474,
+            304.40940206575357
+          ]
+        ],
+        "counts": [
+          2,
+          4
+        ],
+        "nativeError": 0.00910625,
+        "editableError": 0.0090125,
+        "geometryPassed": true,
+        "paper": "fail",
+        "editablePassed": false,
+        "completePassed": false,
+        "geometrySha256": "5a52ac1bdc62627ee561e12d87b1f32a50dd422a6dabcecaa07655f91065891d"
+      },
+      "after": {
+        "status": "checked-derived-mask",
+        "detectionSeconds": 1.443047917,
+        "totalSeconds": 6.2683505,
+        "quad": [
+          [
+            240.38198765460524,
+            161.85756858543706
+          ],
+          [
+            440.4995524580898,
+            289.67559867764624
+          ],
+          [
+            302.17635052781816,
+            504.88452716112624
+          ],
+          [
+            112.03077493126085,
+            364.00088574421835
+          ]
+        ],
+        "counts": [
+          3,
+          3
+        ],
+        "nativeError": 0.0227875,
+        "editableError": 0.0227125,
+        "geometryPassed": true,
+        "paper": "pass",
+        "editablePassed": true,
+        "completePassed": true,
+        "geometrySha256": "d13f655378a2cf8bae9f3c83edf6206fd6cbc9bcbf3ecfec84b42f8dbb9ed103"
+      }
+    },
+    {
+      "id": "real-f1af2fbb127278e4-roi",
+      "sourceSha256": "f1af2fbb127278e468a4dc45a4270c0193c64bfac19b8cecb25bbbeff2232cba",
+      "roi": [
+        40,
+        1540,
+        2540,
+        3980
+      ],
+      "before": {
+        "status": "crop-unresolved",
+        "detectionSeconds": 4.757049082999998,
+        "totalSeconds": 5.0430923750000005,
+        "quad": null,
+        "counts": null,
+        "nativeError": null,
+        "editableError": null,
+        "geometryPassed": null,
+        "paper": null,
+        "editablePassed": null,
+        "completePassed": null,
+        "geometrySha256": null
+      },
+      "after": {
+        "status": "review-required",
+        "detectionSeconds": 2.167499875000001,
+        "totalSeconds": 16.44605425,
+        "quad": [
+          [
+            1321.6841708118334,
+            1945.6038997216353
+          ],
+          [
+            2267.9889581619436,
+            2851.3080418992613
+          ],
+          [
+            1383.7871642602315,
+            3975.9286135439547
+          ],
+          [
+            324.9013775574744,
+            2984.3622440367976
+          ]
+        ],
+        "counts": [
+          8,
+          8
+        ],
+        "nativeError": 0.0512,
+        "editableError": 0.051275,
+        "geometryPassed": true,
+        "paper": "pass",
+        "editablePassed": true,
+        "completePassed": false,
+        "geometrySha256": "1e98a741cdf5985479dee10bcbe697487f3056c6c1c74ffb146442f387faba5f"
+      }
+    },
+    {
+      "id": "real-80c07aedd993f117-roi",
+      "sourceSha256": "80c07aedd993f11748e7a1141b922f91c9f4b8f4583e8a6ed63a56062bae6ec0",
+      "roi": [
+        1240,
+        900,
+        2600,
+        2137
+      ],
+      "before": {
+        "status": "crop-unresolved",
+        "detectionSeconds": 4.219729875000005,
+        "totalSeconds": 4.444328167,
+        "quad": null,
+        "counts": null,
+        "nativeError": null,
+        "editableError": null,
+        "geometryPassed": null,
+        "paper": null,
+        "editablePassed": null,
+        "completePassed": null,
+        "geometrySha256": null
+      },
+      "after": {
+        "status": "crop-unresolved",
+        "detectionSeconds": 4.333759250000003,
+        "totalSeconds": 4.529294667000002,
+        "quad": null,
+        "counts": null,
+        "nativeError": null,
+        "editableError": null,
+        "geometryPassed": null,
+        "paper": null,
+        "editablePassed": null,
+        "completePassed": null,
+        "geometrySha256": null
+      }
+    },
+    {
+      "id": "real-3f24113792188631-roi",
+      "sourceSha256": "3f24113792188631683078b47c05b7f68373e8660888e09f48565cc793bda9d1",
+      "roi": [
+        70,
+        430,
+        736,
+        1060
+      ],
+      "before": {
+        "status": "crop-unresolved",
+        "detectionSeconds": 3.6236854160000003,
+        "totalSeconds": 3.7730269590000027,
+        "quad": null,
+        "counts": null,
+        "nativeError": null,
+        "editableError": null,
+        "geometryPassed": null,
+        "paper": null,
+        "editablePassed": null,
+        "completePassed": null,
+        "geometrySha256": null
+      },
+      "after": {
+        "status": "crop-unresolved",
+        "detectionSeconds": 3.7529242500000035,
+        "totalSeconds": 3.895698959000001,
+        "quad": null,
+        "counts": null,
+        "nativeError": null,
+        "editableError": null,
+        "geometryPassed": null,
+        "paper": null,
+        "editablePassed": null,
+        "completePassed": null,
+        "geometrySha256": null
+      }
+    },
+    {
+      "id": "real-3a89de4eae04a025-roi",
+      "sourceSha256": "3a89de4eae04a0256f3dfc47bf76a098386077e5cdb2c93a3382937541c8a79c",
+      "roi": [
+        85,
+        180,
+        575,
+        614
+      ],
+      "before": {
+        "status": "crop-unresolved",
+        "detectionSeconds": 3.431203083,
+        "totalSeconds": 3.5231800000000004,
+        "quad": null,
+        "counts": null,
+        "nativeError": null,
+        "editableError": null,
+        "geometryPassed": null,
+        "paper": null,
+        "editablePassed": null,
+        "completePassed": null,
+        "geometrySha256": null
+      },
+      "after": {
+        "status": "crop-unresolved",
+        "detectionSeconds": 3.4047692920000046,
+        "totalSeconds": 3.493834916,
+        "quad": null,
+        "counts": null,
+        "nativeError": null,
+        "editableError": null,
+        "geometryPassed": null,
+        "paper": null,
+        "editablePassed": null,
+        "completePassed": null,
+        "geometrySha256": null
+      }
+    },
+    {
+      "id": "real-e1b1492e32f6cdf5-roi",
+      "sourceSha256": "e1b1492e32f6cdf5667e9fd0eec4650bbc0c6ec352e508aa10a80a81a6d170d6",
+      "roi": [
+        95,
+        420,
+        425,
+        740
+      ],
+      "before": {
+        "status": "crop-unresolved",
+        "detectionSeconds": 3.671090250000001,
+        "totalSeconds": 3.823662749999996,
+        "quad": null,
+        "counts": null,
+        "nativeError": null,
+        "editableError": null,
+        "geometryPassed": null,
+        "paper": null,
+        "editablePassed": null,
+        "completePassed": null,
+        "geometrySha256": null
+      },
+      "after": {
+        "status": "crop-unresolved",
+        "detectionSeconds": 3.887971083999997,
+        "totalSeconds": 4.039597584000003,
+        "quad": null,
+        "counts": null,
+        "nativeError": null,
+        "editableError": null,
+        "geometryPassed": null,
+        "paper": null,
+        "editablePassed": null,
+        "completePassed": null,
+        "geometrySha256": null
+      }
+    }
+  ],
+  "focusedTests": {
+    "passed": 76,
+    "failed": 0,
+    "seconds": 126.468656084
+  },
+  "visualReview": {
+    "star": "Full star and frame now included. Small shadow/background intrusion remains along the lower edge; crop still requires review. Woven motif is recognizable and all numerical geometry/paper checks pass. The new 2.27875% full-crop error is not comparable to the old 0.910625% error on the incorrect narrow crop.",
+    "museum-checker": "The full woven grid is now visible, but the crop follows uneven projecting strip ends. The selected 8+8 fit visibly bends/distorts checks and has 5.1275% editable disagreement; not a reconstruction success.",
+    "cross": "Original crop, classification, geometry and editable SVG remain identical. A false central diamond remains despite low average error; not perfect motif recovery.",
+    "other-four-selected-photos": "Still unresolved before preparation. No improvement claimed.",
+    "unselected-controls": "Both remain selection requests, as expected in ambiguous multi-heart scenes."
+  },
+  "paperDiagnosis": {
+    "scope": "Saved old star crop, separate from corrected-crop success",
+    "initial": "Coarse lattice passed; final polygon offsets found one significant detached core.",
+    "repair": "The bounded repair ran all 160 steps and passed polygon offsets, geometry, feature and image gates, but its final lattice audit was uncertain in family 0 (one detached certain-core island, none in the possible core). It was correctly rejected; neither a timeout nor a relaxed final pass.",
+    "status": "No paper-check rule changed in this fix."
+  },
+  "partialMaterialReview": [
+    {
+      "id": "real-7e2c5568d27c2860-full",
+      "pipelineStatus": "crop-unresolved",
+      "sourceId": "real-7e2c5568d27c2860",
+      "annotatedSourceSha256": "7e2c5568d27c286022311d0b1c0bfd3628eb301518c004a78fd129a32c6bdece",
+      "status": "no-classified-crop"
+    },
+    {
+      "id": "real-7e2c5568d27c2860-roi",
+      "pipelineStatus": "checked-derived-mask",
+      "sourceId": "real-7e2c5568d27c2860",
+      "annotatedSourceSha256": "7e2c5568d27c286022311d0b1c0bfd3628eb301518c004a78fd129a32c6bdece",
+      "status": "scored-partial-interiors",
+      "knownMaterialPixels": 86485,
+      "knownBackgroundPixelsInCrop": 0,
+      "unknownBodyPixelsInCrop": 8744,
+      "classifierPhase": 1,
+      "classifiedError": 0.0,
+      "renderedErrorSamePhase": 0.00203503497716367,
+      "perPaper": {
+        "0": {
+          "pixels": 67962,
+          "classifiedError": 0.0
+        },
+        "1": {
+          "pixels": 18523,
+          "classifiedError": 0.0
+        }
+      },
+      "overlaySha256": "abce0f97cabf1a0896429dc2774fc239cbdd7199fe372e3172f62109602409e5"
+    },
+    {
+      "id": "real-ca2f9adc67ee4cea-full",
+      "pipelineStatus": "crop-unresolved",
+      "sourceId": "real-ca2f9adc67ee4cea",
+      "annotatedSourceSha256": "ca2f9adc67ee4ceaa2c4c8c9fa9dad183a536ebfd950d90ec17c1ab40e21dcf5",
+      "status": "no-classified-crop"
+    },
+    {
+      "id": "real-ca2f9adc67ee4cea-roi",
+      "pipelineStatus": "checked-derived-mask",
+      "sourceId": "real-ca2f9adc67ee4cea",
+      "annotatedSourceSha256": "ca2f9adc67ee4ceaa2c4c8c9fa9dad183a536ebfd950d90ec17c1ab40e21dcf5",
+      "status": "scored-partial-interiors",
+      "knownMaterialPixels": 43095,
+      "knownBackgroundPixelsInCrop": 106,
+      "unknownBodyPixelsInCrop": 3495,
+      "classifierPhase": 1,
+      "classifiedError": 0.0,
+      "renderedErrorSamePhase": 0.0,
+      "perPaper": {
+        "0": {
+          "pixels": 24693,
+          "classifiedError": 0.0
+        },
+        "1": {
+          "pixels": 18402,
+          "classifiedError": 0.0
+        }
+      },
+      "overlaySha256": "927f3c3ba9e8528c5bdfa2962139047181f87ec42e5c1019ac8af7027802b942"
+    },
+    {
+      "id": "real-80c07aedd993f117-roi",
+      "pipelineStatus": "crop-unresolved",
+      "sourceId": "real-80c07aedd993f117",
+      "annotatedSourceSha256": "80c07aedd993f11748e7a1141b922f91c9f4b8f4583e8a6ed63a56062bae6ec0",
+      "status": "no-classified-crop"
+    },
+    {
+      "id": "real-3a89de4eae04a025-roi",
+      "pipelineStatus": "crop-unresolved",
+      "sourceId": "real-3a89de4eae04a025",
+      "annotatedSourceSha256": "3a89de4eae04a0256f3dfc47bf76a098386077e5cdb2c93a3382937541c8a79c",
+      "status": "no-classified-crop"
+    }
+  ],
+  "limitations": [
+    "This is a development study with seven sources and fixed rough rectangles, not a new 31-photo or 55-mask benchmark.",
+    "Conservative material polygons exclude edges and contacts, so zero annotated-interior error does not certify complete shape recovery.",
+    "No trained model, annotation admission or deployment.",
+    "Browser and full release checks are pending."
+  ],
+  "artifactsSha256": {
+    "tmp/heart-learning/instance-selection-baseline-v1/plan.json": "3a955db1a5e1b9a5569d8a2b5620bbe79c399c459ddbb9fec11d98f93bc96eab",
+    "tmp/heart-learning/instance-selection-baseline-v1/results/report.json": "d04de732e931d00062a8e49161df338b537d26f01e55190c4292088b4133d0a8",
+    "tmp/heart-learning/selection-bounds-pipeline-v1/plan.json": "f248bad818c712500a8bd4e6a466832bde70aac00eab08835ada0ac161ec2614",
+    "tmp/heart-learning/selection-bounds-pipeline-v1/run.mjs": "67994347fe3e49f19c28e7ed83caec8e1d7667c89c9f351b08fb8af79e130fd4",
+    "tmp/heart-learning/selection-bounds-pipeline-v1/results/source.json": "1c2e8e3ab187a6eb8b1b073e1475d063e0aecc290d56658d06deeaea73cffe9c",
+    "tmp/heart-learning/selection-bounds-pipeline-v1/results/runtime.patch": "abf91d2d4903e4496d29cecc145f3889f647a3a158d67b2c456ad2d7e96cfa39",
+    "tmp/heart-learning/selection-bounds-pipeline-v1/results/report.json": "fc3b3375144372b6d157986662ecec1b1eaec7944edfc032938141319fd8acd1",
+    "tmp/heart-learning/selection-bounds-pipeline-v1/score-materials.py": "08c9e9caf63d0cd454e4add875865d6cb1b554d5a1434e0efe483470732ed308",
+    "tmp/heart-learning/selection-bounds-pipeline-v1/source-material-review.json": "7683bd7145ad1910c3e037ba7ac2a91fc9dddad17cb82103307e59c3e0be2fae",
+    "tmp/heart-learning/selection-crop-diagnosis-v1/run.mjs": "18142f9181b5c12db5bb5effd862e1787166c40ffce3c3c6f3ac27cd6d85282e",
+    "tmp/heart-learning/selection-crop-diagnosis-v1/run.log": "10afc12cbe1aab6c1097c970a6bb989e7d593c297c13ea245c404b0f3cfc814a",
+    "tmp/heart-learning/selection-crop-diagnosis-v1/prototype.patch": "291347d728b5b27e27ec4259c2acbdcc7a2bbf4f5800d8dcad7375dbbed85c6e",
+    "tmp/heart-learning/selection-crop-diagnosis-v1/refined.mjs": "399f58c94dacb7deeeb02e41a8bb6539ded7b9bda68b3c000afce038131bf64b",
+    "tmp/heart-learning/selection-crop-diagnosis-v1/refined.log": "3706608fe15605fb3de28a3be9636f2c937e390ca2c546a82ac0f4961ca37b6b",
+    "tmp/heart-learning/selection-crop-diagnosis-v1/focused-tests.log": "60dbfaf53d27d9a4aa475c9bcbeb6111b18ef55d4b8ac8ff011bde14052d359d"
+  }
+}

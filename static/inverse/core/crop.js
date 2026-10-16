@@ -35,21 +35,40 @@ export function detectHeartCrops(input, { roi = input.roi, onProgress = () => {}
     if (!detectors.has(palette)) detectors.set(palette, createMotifDetector(image, { roi, maxSize: 650, palette }));
     return detectors.get(palette);
   };
-  let proposal = detector(undefined)();
+  const upright = palette => {
+    const detect = detector(palette), original = detect();
+    if (roi && !supportedCropOutline(original)) {
+      // The rectangle identifies a heart; its margins need not coincide with
+      // paper edges. Retry using the observed component inside the selection.
+      // Keep the original fields/context and require both lobes and lower edges.
+      const selected = detect(0, { refineSelection: true });
+      if (supportedCropOutline(selected)) {
+        selected.selectionRefinement = {
+          method: 'foreground-within-rough-selection',
+          originalStatus: original.status,
+          originalQuad: original.quad,
+          originalReason: original.reason,
+        };
+        return selected;
+      }
+    }
+    return original;
+  };
+  let proposal = upright(undefined);
   if (!supportedCropOutline(proposal)) {
     const original = proposal;
-    const adaptive = detector('adaptive')();
+    const adaptive = upright('adaptive');
     if (adaptive.quad || adaptive.status === 'needs_selection') proposal = adaptive;
     if (!supportedCropOutline(proposal)) {
       // Cream paper on white can be lost by the saturated-paper mask. Retry
       // with a lower chroma threshold, retaining the same outline checks.
-      const pale = detector('pale')();
+      const pale = upright('pale');
       if (pale.quad || pale.status === 'needs_selection') proposal = pale;
     }
     if (!supportedCropOutline(proposal)) {
       // A dim pale sheet can merge with a textured background. Anchor its
       // colour estimate inside the main saturated paper component instead.
-      const anchored = detector('anchored')();
+      const anchored = upright('anchored');
       if (anchored.quad) proposal = anchored;
     }
     if (!proposal.quad && original.quad) proposal = original;
@@ -58,7 +77,7 @@ export function detectHeartCrops(input, { roi = input.roi, onProgress = () => {}
     // Weak pale-paper tint can leave holes in the foreground and make those
     // holes look like external edges. Learn that tint inside the coloured
     // motif; retain the same complete-outline checks before using its crop.
-    const interior = detector('interior')();
+    const interior = upright('interior');
     if (supportedCropOutline(interior)) proposal = interior;
   }
   if (!supportedCropOutline(proposal)) {

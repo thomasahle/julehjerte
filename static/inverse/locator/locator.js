@@ -8,6 +8,18 @@ import {colorDifferenceMetric} from './background.js';
 import {mean,quantile,trimMean,clamp,bilinear,nelderMead,project,homography,convexQuad} from './math.js';
 export const CORNER_ORDER=['notch','right','tip','left'];
 const SQUARE=[[0,0],[1,0],[1,1],[0,1]];
+/** A rough selection identifies an instance, not its exact silhouette bounds.
+ * Restrict component discovery to that selection while retaining the original
+ * colour fields and context for fitting. Rotations still use source coordinates.
+ */
+function selectedForegroundBox(f,box,rotation){
+ const mask=f.mask.slice();
+ for(let y=0;y<f.h;y++)for(let x=0;x<f.w;x++){
+  const p=rotation?rotation.toSource([x,y]):[x,y];
+  if(p[0]<box[0]||p[1]<box[1]||p[0]>=box[2]||p[1]>=box[3])mask[y*f.w+x]=0;
+ }
+ return foregroundBox({...f,mask});
+}
 function checkImage(image){if(!image||!Number.isInteger(image.width)||!Number.isInteger(image.height)||image.width<24||image.height<24||!image.data||image.data.length!==image.width*image.height*4)throw new TypeError('Expected RGBA ImageData-like input, at least 24 by 24 pixels');}
 function resizeROI(im,box,maxSize){const [x0,y0,x1,y1]=box,s=Math.min(1,maxSize/Math.max(x1-x0,y1-y0)),w=Math.max(24,Math.round((x1-x0)*s)),h=Math.max(24,Math.round((y1-y0)*s)),data=new Uint8ClampedArray(w*h*4);for(let y=0;y<h;y++)for(let x=0;x<w;x++){const sx=clamp(Math.round(x0+(x+.5)/s-.5),0,im.width-1),sy=clamp(Math.round(y0+(y+.5)/s-.5),0,im.height-1);for(let c=0;c<4;c++)data[(y*w+x)*4+c]=im.data[(sy*im.width+sx)*4+c];}return{width:w,height:h,data,scale:s,offset:[x0,y0]};}
 function linearFit(points){let sy=0,sx=0,syy=0,sxy=0;for(const[x,y]of points){sy+=y;sx+=x;syy+=y*y;sxy+=x*y;}const n=points.length,a=(sxy-sx*sy/n)/(syy-sy*sy/n),b=(sx-a*sy)/n;return[a,b];}
@@ -128,12 +140,12 @@ function fitModel(f,box,lines,{iterations=550,flexibleCaps=false}={}){const[x0,y
 export function createMotifDetector(image,options={}){checkImage(image);const preparationStart=performance.now();if(options.maxSize!==undefined&&(!Number.isFinite(options.maxSize)||options.maxSize<100||options.maxSize>800))throw new RangeError('maxSize must be from 100 to 800');const maxSize=options.maxSize??400;let inputROI=options.roi??[0,0,image.width,image.height];
  if(inputROI.length!==4||inputROI.some(x=>!Number.isFinite(x))||inputROI[2]-inputROI[0]<24||inputROI[3]-inputROI[1]<24)throw new TypeError('Invalid ROI');
  inputROI=[clamp(inputROI[0],0,image.width-1),clamp(inputROI[1],0,image.height-1),clamp(inputROI[2],1,image.width),clamp(inputROI[3],1,image.height)];if(inputROI[2]-inputROI[0]<24||inputROI[3]-inputROI[1]<24)throw new RangeError('ROI is outside the image or too small after clipping');const pad=options.roi?.length?Math.max(inputROI[2]-inputROI[0],inputROI[3]-inputROI[1])*.18:0;const workROI=[Math.max(0,inputROI[0]-pad),Math.max(0,inputROI[1]-pad),Math.min(image.width,inputROI[2]+pad),Math.min(image.height,inputROI[3]+pad)];const work=resizeROI(image,workROI,maxSize),baseFields=options.palette==='interior'?makeInteriorPaletteFields(work):options.palette==='anchored'?makeAnchoredFields(work):['adaptive','pale'].includes(options.palette)?makePaletteFields(work,{pale:options.palette==='pale'}):makeFields(work);
- const detector=(degrees=0)=>{
+ const detector=(degrees=0,{refineSelection=false}={})=>{
  const started=performance.now();if(!Number.isFinite(degrees))throw new TypeError('Expected a finite orientation angle.');
  const rotation=baseFields&&degrees%360!==0?orientFields(baseFields,degrees):null,f=rotation?.fields||baseFields;
  if(!f)return{status:'not_found',quad:null,reason:'No two distinct paper colours on a sufficiently plain background',elapsedMs:performance.now()-started};
  let box=inputROI.map((v,i)=>(v-workROI[i%2]+.5)*work.scale-.5),fg=null;
- if(!options.roi||f.anchored||rotation){fg=foregroundBox(f);if(fg.status!=='ok')return{...fg,quad:null,elapsedMs:performance.now()-started};box=fg.box;if(f.anchored)box=box.map((v,i)=>clamp(v+(i<2?-1:1)*.12*Math.max(fg.box[2]-fg.box[0],fg.box[3]-fg.box[1]),0,i%2?f.h:f.w));}
+ if(!options.roi||f.anchored||rotation||refineSelection){fg=options.roi&&refineSelection?selectedForegroundBox(f,box,rotation):foregroundBox(f);if(fg.status!=='ok')return{...fg,quad:null,elapsedMs:performance.now()-started};box=fg.box;if(f.anchored)box=box.map((v,i)=>clamp(v+(i<2?-1:1)*.12*Math.max(fg.box[2]-fg.box[0],fg.box[3]-fg.box[1]),0,i%2?f.h:f.w));}
  const back=p=>{if(rotation)p=rotation.toSource(p);return[(p[0]+.5)/work.scale-.5+workROI[0],(p[1]+.5)/work.scale-.5+workROI[1]];};
  const lines=lowerEdgeLines(f,box);if(!lines)return{status:'needs_review',quad:null,reason:'Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.',elapsedMs:performance.now()-started};
  let fit=fitModel(f,box,lines,options);if(!fit)return{status:'needs_review',quad:null,reason:'No nondegenerate heart-shape fit',elapsedMs:performance.now()-started};
