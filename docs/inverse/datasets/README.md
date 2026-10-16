@@ -31,6 +31,25 @@ The inventory, with material annotations updated on 2026-10-16, contains:
 
 ## Current results and limits
 
+A [pretrained MobileSAM experiment](mobilesam-foreground-results.json) improves
+the difficult 22-photo development replay from 7 checked derived-mask fits with
+production and 3 with the earlier neural pipeline to **12 with automatically
+prompted segmentation**. The existing neural silhouette supplies a padded box
+and one interior point; no annotations or supplied corners enter inference.
+Frozen RGB paper estimates, crop support gates and the ten-second fitting
+allowance remain unchanged. All 66 crop attempts and 66 full-pipeline attempts
+complete; all 26 exported reconstructions were visually inspected. The
+box-plus-point arm proposes 14 crops, versus 9 with box-only prompts and 3 with
+the original neural body. It still loses two earlier neural crops, sometimes
+selects only one paper colour, and retains some handles or decorations. The
+mean partial-label body IoU increases from 79.85% to 90.70%; this does not verify
+hidden overlap corners. Printed-paper classification and small reconstruction
+artifacts remain, and the bicycle's published construction is outside the
+regular model. SAM image encoding takes a median 0.52 seconds on this CPU;
+proposal-network inference, startup and browser execution are not included.
+No model is integrated. A follow-up with one automatically selected point on
+each predicted paper is being evaluated; it has no template result yet.
+
 A [published-template review](bicycle-template-review.json) qualifies the
 bicycle failure: the designer's matching PDF requires additional enclosed
 cutouts in the green sheet, outside the regular slit-chain model. This does
