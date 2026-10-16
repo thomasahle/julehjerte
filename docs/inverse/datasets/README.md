@@ -32,6 +32,21 @@ The inventory, with material annotations updated on 2026-10-16, contains:
 
 ## Current results and limits
 
+A [conditional two-paper segmentation fallback](locator-paper-fallback-results.json)
+raises the offline development result from **13/22 to 15/22 checked
+reconstructions**. It retains all sixteen existing crop geometries, classified
+masks and source observations, and calls the alternative segmentation only for
+the six inputs without a supported crop. Fresh detection recovers the hand-held
+printed checker and the checker among leaves. All eighteen exports convert to
+editable templates; the same fifteen pass complete checks. All five preview
+panels and the four unresolved source photographs were inspected, and all 884
+pinned sources are unchanged. The new foliage crop has a maximum offset of
+3.45% of side length against an approximate visible reference; the hand-held
+crop has no comparable reference. These are checked derived-mask fits on a
+development set, not held-out artwork accuracy. Model fields are cached and no
+learned model is integrated into the website. Additional independent photographs
+are the next validation step.
+
 A [controlled border-fragment experiment](border-feature-routing-results.json)
 isolates a fitter scheduling failure. On the rabbit, changing only 61 of 160,000
 mask pixels recovers the main motif; that diagnostic does not count as a fit to
