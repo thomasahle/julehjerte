@@ -1,0 +1,258 @@
+{
+  "schema": "bauble-coverage-diagnosis-1",
+  "status": "source_review_and_saved_export_diagnostics_complete; controlled_fitting_ablation_queued",
+  "sourceReview": {
+    "id": "bauble",
+    "source": {
+      "file": "scripts/inverse/fixtures/hard-photos/collage.png",
+      "sha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+      "width": 1482,
+      "height": 1112,
+      "paperNames": [
+        "white paper",
+        "red paper"
+      ]
+    },
+    "groups": [
+      {
+        "id": "red-disc",
+        "paper": 1,
+        "points": [
+          [
+            570,
+            1001
+          ],
+          [
+            570,
+            1024
+          ],
+          [
+            550,
+            1011
+          ],
+          [
+            590,
+            1038
+          ]
+        ]
+      },
+      {
+        "id": "red-frame-upper-right",
+        "paper": 1,
+        "points": [
+          [
+            604,
+            952
+          ],
+          [
+            624,
+            973
+          ]
+        ]
+      },
+      {
+        "id": "red-checker-corners",
+        "paper": 1,
+        "points": [
+          [
+            512,
+            1014
+          ],
+          [
+            574,
+            945
+          ]
+        ]
+      },
+      {
+        "id": "white-inner-paper",
+        "paper": 0,
+        "points": [
+          [
+            550,
+            975
+          ],
+          [
+            528,
+            1033
+          ],
+          [
+            550,
+            1064
+          ],
+          [
+            609,
+            1052
+          ],
+          [
+            609,
+            979
+          ]
+        ]
+      }
+    ],
+    "status": "native_photo_and_neighbourhoods_visually_reviewed; diagnostic_only",
+    "scope": "Sparse development diagnostic on the original collage. No points supplied to the classifier or fitter; not dense colour or cutting ground truth.",
+    "review": {
+      "sourceOnly": true,
+      "sourcePixelCount": 13,
+      "excludedCandidatePoints": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        18
+      ],
+      "exclusionReason": "Blurred frame ends, possible paper/background mixtures on the lower outline, and the narrow right-hand connection do not support confident paper identity. No classifier scores used in this exclusion.",
+      "limitation": "Two selected upper-right frame pixels do not certify the entire frame or its physical routing."
+    }
+  },
+  "sparseScores": [
+    {
+      "name": "old",
+      "classifiedCorrect": 13,
+      "exportedCorrect": 13,
+      "total": 13,
+      "phase": 0,
+      "outsideCrop": 0
+    },
+    {
+      "name": "coverage",
+      "classifiedCorrect": 13,
+      "exportedCorrect": 13,
+      "total": 13,
+      "phase": 0,
+      "outsideCrop": 0
+    }
+  ],
+  "crop": {
+    "corners": [
+      [
+        585.124945734859,
+        905.2805093237887
+      ],
+      [
+        680.4272015903496,
+        1020.2331968915895
+      ],
+      [
+        619.5033182277817,
+        1139.311696191154
+      ],
+      [
+        466.440010833398,
+        1022.8877039896092
+      ]
+    ],
+    "assessment": {
+      "outlineSupported": false,
+      "withinPhotograph": false,
+      "outOfFrameCorners": [
+        2
+      ],
+      "lowerEdgeSupport": [
+        1,
+        0.625
+      ],
+      "lobeOutlineSupport": [
+        0.4722222222222222,
+        0.19444444444444445
+      ],
+      "capColourLoss": [
+        0.08657327621293223,
+        0.43616477850802343
+      ],
+      "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+    },
+    "visualObservation": "The automatic top corner is above the visible cleft, and the proposed lower-right side extends beyond the visible paper edge into background. The tip is 27.3 pixels below the photograph. This is an unsupported proposal, not a verified overlap square.",
+    "qualification": "No exact replacement corners or physical cutting paths have been established."
+  },
+  "lostMaskRegions": [
+    {
+      "value": 1,
+      "areaMm2": 8.4375,
+      "centerMm": [
+        83.9675925925926,
+        44.995370370370374
+      ],
+      "weightMass": 135,
+      "retainedFraction": 0,
+      "sourceCenter": [
+        641.7861573527159,
+        1051.5226667766278
+      ]
+    },
+    {
+      "value": 1,
+      "areaMm2": 44.75,
+      "centerMm": [
+        79.14629888268156,
+        56.90398044692738
+      ],
+      "weightMass": 716,
+      "retainedFraction": 0,
+      "sourceCenter": [
+        628.9247722668514,
+        1060.875880582351
+      ]
+    },
+    {
+      "value": 1,
+      "areaMm2": 14.875,
+      "centerMm": [
+        75.87289915966386,
+        77.88235294117646
+      ],
+      "weightMass": 238,
+      "retainedFraction": 0,
+      "sourceCenter": [
+        609.4741519716766,
+        1084.7873834906263
+      ]
+    }
+  ],
+  "findings": [
+    "All thirteen confidently reviewed source-paper points are correct in both saved classifications and both exported fits. These samples therefore do not support attributing the regression to colour classification at those locations.",
+    "Three classified regions have zero retention in the new export; they map to the ambiguous lower-right paper/background boundary. This proves a mismatch with the classified target, not that every lost fragment is a genuine design feature.",
+    "The old fit selected 5+4 cuts; the observed-only fit selected 4+4. Both considered 22 count/phase hypotheses and failed the source-feature checks.",
+    "Removing outside-image padding does not remove photographed background accidentally included by an inaccurate crop.",
+    "The colour changes and altered fitting weights remain confounded until the queued four-arm experiment finishes."
+  ],
+  "queuedExperiment": {
+    "root": "tmp/heart-learning/bauble-coverage-ablation-v1",
+    "arms": [
+      "old classification / whole square",
+      "new classification / whole square",
+      "old classification / observed pixels",
+      "new classification / observed pixels"
+    ],
+    "controls": "Same source and automatic crop; ten-second allowance; fresh grids without saved templates; all exports scored against both observed classifications. Runs only after frozen full QA and Hunodan timing finish."
+  },
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/bauble-colour-review-v1/reviewed.json",
+      "sha256": "0a05e41ed06a427569c9e447392d7d3bad1e856065194475a5f3f2f1fbbb9038"
+    },
+    {
+      "path": "tmp/heart-learning/bauble-colour-review-v1/reviewed-points.png",
+      "sha256": "ee28a41e471a5c232022e9e1a8166a36adb00643127a6f3dd7da930c74143138"
+    },
+    {
+      "path": "tmp/heart-learning/bauble-colour-review-v1/saved-scores.json",
+      "sha256": "db38f7e797457c9897bb36a94241cafd765477f61e9fc1e486c9278dd51ff954"
+    },
+    {
+      "path": "tmp/heart-learning/bauble-colour-review-v1/missing-features.json",
+      "sha256": "9cd1e847bfd264c95b8f497704d056d02c28b9b65209b61dc73b74173413999e"
+    },
+    {
+      "path": "tmp/heart-learning/bauble-colour-review-v1/missing-feature-source.png",
+      "sha256": "e5bc83d3099c80c629d36b9170ef15051fd0e8ccceea8a24044266b5d6e31ab3"
+    },
+    {
+      "path": "tmp/heart-learning/bauble-colour-review-v1/candidate-patches.png",
+      "sha256": "2d67101dce96ec8f17eb8dd16fa77f650e9d8cf02753ae5a70fba26835af5475"
+    }
+  ]
+}
