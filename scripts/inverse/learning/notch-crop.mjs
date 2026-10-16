@@ -64,10 +64,11 @@ export function overlapEvidence(f, quad, component) {
     capSampleCounts: mass, capForeignProbability: losses[phase], phase};
 }
 
-export function notchOverlapProposal(fields) {
+export function notchOverlapProposal(fields, {shapePaper = fields.paper} = {}) {
   const {w, h} = fields, n = w*h;
   if (!Number.isInteger(w) || !Number.isInteger(h) || w < 24 || h < 24 ||
-      ['paper', 'chroma', 'r', 'g', 'b'].some(k => fields[k]?.length !== n || !fields[k].every(v => Number.isFinite(v) && v >= 0 && v <= 1))) {
+      ['paper', 'chroma', 'r', 'g', 'b'].some(k => fields[k]?.length !== n || !fields[k].every(v => Number.isFinite(v) && v >= 0 && v <= 1)) ||
+      shapePaper?.length !== n || !shapePaper.every(v => Number.isFinite(v) && v >= 0 && v <= 1)) {
     throw new TypeError('Expected finite physical-paper, colour and RGB fields in [0,1]');
   }
   const initial = close(fields.paper, w, h, 1), component = largestComponent(initial, w, h);
@@ -81,10 +82,24 @@ export function notchOverlapProposal(fields) {
   if (!lines) return {status: 'unresolved', reason: 'No exposed lower edge pair', box};
   const trimmed = [];
   for (let y = y0; y < y1; y++) for (let x = x0; x < x1; x++) if (mask[y*w+x]) trimmed.push(y*w+x);
-  const hullDistance = signedDistance(hullMask(trimmed, w, h), w, h);
+  // Complete-shape evidence may retain paper behind a foreground object. Use
+  // it only for the notch hypothesis: visible paper still determines exposed
+  // lower edges and supplies the body/material evidence below. No union edits
+  // the visible-paper field or the target artwork.
+  let notchMask = mask, notchComponent = trimmed;
+  if (shapePaper !== fields.paper) {
+    const shapeMask = close(shapePaper, w, h, 1), shapeComponent = largestComponent(shapeMask, w, h);
+    if (!shapeComponent) return {status: 'unresolved', reason: 'No dominant complete-shape component', box, lines};
+    notchMask = new Uint8Array(n); for (const i of shapeComponent) notchMask[i] = 1;
+    const supported = trimmed.reduce((sum, i) => sum+notchMask[i], 0)/trimmed.length;
+    if (supported < .8) return {status: 'unresolved', reason: 'Visible and complete shapes select different objects', box, lines};
+    notchMask = fillSmallMaskHoles(notchMask, w, h, {maxArea: n}).mask;
+    notchComponent = shapeComponent;
+  }
+  const hullDistance = signedDistance(hullMask(notchComponent, w, h), w, h);
   let notch = null, depth = -Infinity;
   for (let y = Math.ceil(y0+2); y < y0+.55*height; y++) for (let x = Math.ceil(x0+.15*width); x < x0+.85*width; x++) {
-    if (!mask[y*w+x] || mask[(y-1)*w+x]) continue;
+    if (!notchMask[y*w+x] || notchMask[(y-1)*w+x]) continue;
     const p = [x, y-.5], d = bilinear(hullDistance, w, h, ...p);
     if (d > depth) { depth = d; notch = p; }
   }
@@ -100,7 +115,7 @@ export function notchOverlapProposal(fields) {
     evidence.capForeignProbability.every(v => v <= .15) &&
     quad.every(([x,y]) => x >= 0 && y >= 0 && x < w && y < h);
   return {status: supported ? 'proposal' : 'unresolved', reason: supported ? undefined : 'Notch/edge/paper evidence incomplete',
-    quad, box, lines, notch, evidence,
+    quad, box, lines, notch, evidence, notchSource: shapePaper === fields.paper ? 'visible-paper' : 'complete-shape-hypothesis',
     score: evidence.bodyOutsideEnvelope + 1-evidence.overlapBodyCoverage + evidence.capForeignProbability.reduce((a,b) => a+b)/2,
     limitations: ['Affine overlap assumption; perspective and nonplanar folding can move the true corners.',
       'Predicted body and paper identities are evidence, not independent ground truth.', 'No semicircular cap fit or downstream mask-fit score is used.']};

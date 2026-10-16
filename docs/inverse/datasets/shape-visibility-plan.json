@@ -1,0 +1,30 @@
+{
+  "schema": "separate-shape-visibility-plan-1",
+  "status": "declared-before-crop-replay",
+  "scope": "Offline proposal experiment. No training, deployment or source-artwork edits. Thirty-two controlled synthetic images and forty-two real photographs in two development cohorts.",
+  "method": "Visible paper determines the lower edges and visible-body coverage. An independent coarse complete-shape estimate proposes and checks the notch. Compare both visible-notch and complete-notch proposals using the same complete-shape support. Never union shape and visible-paper masks.",
+  "policy": "Retain all 22 supported original baseline real crops exactly. Apply fallback only to 20 rejected inputs; test one-point and two-paper SAM fields, upright plus four covariance orientations. Rank supported proposals using source-only support, never fit error.",
+  "support": {
+    "completeNotchInsideMinimum": 0.8,
+    "completeNotchOutsideMaximum": 0.2,
+    "visibleEdgeInsideMinimum": 0.85,
+    "visibleEdgeOutsideMaximum": 0.15,
+    "visibleOverlapCoverageMinimum": 0.94,
+    "visibleOutsideEnvelopeMaximum": 0.03,
+    "visibleBodyInsideCompleteShapeMinimum": 0.8
+  },
+  "syntheticEvaluation": "Compare visible-only and separate-shape policies on every original/occluded pair. Exact camera corners enter scoring only. Report normalized corner errors and counts below 1%, 3%, and 5% side length; this uses training geometries and is a perturbation diagnosis, not held-out accuracy.",
+  "realEvaluation": "Full photo -> frozen crop -> unchanged material mask -> ten-second fitting -> independent export/editor checks. Keep original observation coverage. Occlusion-aware material weighting is deliberately deferred to isolate crop changes. Inspect every new crop and changed export.",
+  "limitations": [
+    "The complete-shape network can be inaccurate or include other objects.",
+    "Affine corner construction still cannot generally resolve perspective.",
+    "Newly proposed crops require review; a low derived-mask error is not independent crop truth."
+  ],
+  "inputManifestsSha256": {
+    "tmp/heart-learning/shape-visibility-v1/probe/manifest.json": "3cd179931df6bf309c26ff873da3e34e5a366fdb499218992f2ca4f0d4b1807f",
+    "tmp/heart-learning/shape-visibility-v1/synthetic-input/manifest.json": "3ce85e3f6a5396a21849ef2a712404138f7210a78058a71543897794c2517339",
+    "tmp/heart-learning/foreground-occlusion-pilot-v1/dataset/manifest.json": "2a4b3df18a96d60f7d80bfe67f37433bda5356a5cd8a7bc2bcda4e8609f80670",
+    "tmp/heart-learning/foreground-occlusion-pilot-v1/frozen-probe-predictions.npz": "b4a2412b4ca1b12d28ff0ceff92d33df8ccaff9b15d28ca9af9acb26f0a400f0",
+    "tmp/heart-learning/foreground-occlusion-pilot-v1/sam-probe-predictions.npz": "9b38fc6f3191d9028fa550ad63fcadb4058e58a28d85839bbeeecef1890a7c71"
+  }
+}
