@@ -530,6 +530,14 @@ tilts and the two complementary assignments; keep the three lanes, six strips,
 counter bridges and frame. Require full-sheet validation and a 10% clearance
 reserve after curve fitting and tip improvement. Earlier successful layouts
 return before this fallback.
+For a plain oval containing separate solid marks above one wider, counter-bearing
+body, try horizontal nearest-contact lanes first. Detect this arrangement from
+the contour forest and bounds, never an icon ID. Change only the partition axis:
+restore the original motif coordinates before constructing cuts, and retain the
+oval boundary and four actual strips. Compare two ordering tilts with direct or
+aligned approaches, keeping the result with fewer narrow tips and a 10% clearance
+reserve. If all four fail, continue the established constructions. This avoids
+exhausting unsuitable vertical layouts during interactive editing.
 
 “Gentag som mønster” is a text frame, not a separate mode or control. It makes one n×n square
 of cyclic letter shifts: ANNA / NNAA / NAAN / AANN, with no surrounding checkerboard cells.

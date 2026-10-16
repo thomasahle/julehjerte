@@ -1,6 +1,48 @@
 # Generator robustness results
 
-## Current coverage: nearly touching components in the checked-tip frame
+## Current coverage: stacked parts in a plain oval
+
+The coffee motif now works in the plain oval with **4×4 strips**, no tips below
+30 degrees and two below 45 degrees. Horizontal lanes keep the separate steam
+marks above the wider cup instead of forcing both into vertical cells. The
+nearest-contact construction assigns nearby facing arcs to opposite sheets;
+the handle opens through coincident cuts. All original contours and the oval
+boundary remain intact, with no cutouts.
+
+The generator recognizes this arrangement from contour nesting and bounds,
+without testing an icon ID, and tries it before the unsuitable vertical layouts.
+A fresh paired run of all **51 default plain-oval motifs** accepts all 51; all
+**50 previously accepted complete results are exactly unchanged**. Coffee took
+407 ms, versus 2,580 ms before refusing, in this paired run. These figures are
+observations from that run, not an isolated latency benchmark.
+
+The production output is exactly equal to prototype 40 in
+`contact-lanes-design-40.json`. It passes the 10% extra clearance check,
+JSON/SVG handoffs and the independent material audit at resolution **1,400**,
+with zero certain or possible detached core islands. The finished heart and
+both complete cutting sheets were visually reviewed. These digital checks do
+not establish physical weaving ease or tear strength. Evidence under ignored
+`tmp/generator/`: `horizontal-contact-audit.json`,
+`horizontal-contact-production-ph-coffee.json`, `contact-lanes-material.json`,
+`contact-lanes-metrics.json`, and `contact-lanes-gallery-0.png`.
+
+The merged corpus is **2,874 accepted / 276 refused / zero invalid**: text remains
+1,760 / 268; figures are 1,114 / 8. `horizontal-contact-current.json` refreshes
+51 plain-oval records and retains 3,099 from `chain-contacts-current.json`.
+This is not a fresh full-matrix run. The broader catalogue and nondefault sizes
+remain incompletely verified. The expected-ID fixture exactly matches these
+2,874 accepted cases.
+
+The three focused tests pass under unchanged time limits. Check, lint and build
+pass, with seven existing Svelte warnings. The full unit run completed **1,188
+passing / one timing failure** across 68 files in 641.97 seconds. The existing
+Oswald juleman repeat case took 6.20 seconds against its unchanged five-second
+limit; it passed alone in 4.33 seconds. All 1,189 unit cases have a passing result
+across these runs, but this was not one entirely green full run. All **177
+inverse-engine tests pass**, in 101.66 seconds.
+Logs: `horizontal-contact-{focused,check,lint,build,tests,oswald-isolated,inverse}.log`.
+
+## Previous coverage: nearly touching components in the checked-tip frame
 
 The Tabler paw now works with the checked-tip frame, using **6×6 strips and no
 tips below 45 degrees**. Its original vertical connections grazed the upper

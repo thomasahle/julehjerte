@@ -13,7 +13,7 @@ import { normalizeContours } from './contours';
 import { gridClearance, gridClearanceScale } from '$lib/geometry/clearance';
 import { generatePanelFigure } from './panels';
 import { generateComponentFigure } from './components';
-import { generateComponentLanes } from './componentLanes';
+import { generateComponentLanes, hasStackedComponents } from './componentLanes';
 import { rerouteSharedCuts, rerouteFrameCuts } from './sharedCuts';
 import { curveSharedCuts, curveSharpSharedTips } from './curvedCuts';
 import {
@@ -349,6 +349,8 @@ function improveSharedConnections(result: GeneratorResult): GeneratorResult {
  * result must pass the same topology, spacing and fidelity checks again. */
 export function generate(request: GeneratorRequest): GeneratorResult {
 	const curveFitter = createExactCurveFitter();
+	const stacked = tryStackedComponentLanes(request, curveFitter);
+	if (stacked) return stacked;
 	const frame = request.textFrame ?? 'woven';
 	const overlappingBranches = request.mode === 'text' && request.font &&
 		frame !== 'woven' && frame !== 'air' && frame !== 'repeat' && frame !== 'repeat-check' &&
@@ -534,6 +536,39 @@ function retryChainContacts(request: GeneratorRequest, curveFitter: ReturnType<t
 			const geometry = curveSharedCuts(construction.geometry);
 			if (!geometry) continue;
 			candidate = finishConstruction(request, construction, 'silhouette', geometry, curveFitter);
+		}
+		const result = improveSharedConnections(candidate), design = result.design,
+			margin = intersectionMarginPx(inferOverlapRect(design.fingers, design.gridSize),
+				gridClearanceScale(design.gridSize.x, design.gridSize.y));
+		if (findFingersWithIssues(design.fingers, margin * 1.1).size) continue;
+		const tips = cutTipCounts(design);
+		if (!best || fewerCutTips(tips, cutTipCounts(best.design))) best = result;
+		if (!tips[1]) return best;
+	} catch (error) {
+		if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+	}
+	return best;
+}
+
+/** Stacked parts in a flat oval are poorly served by vertical cell clipping.
+ * Recognize this topology before exhausting those constructions. Nearby arcs
+ * use opposite sheets; counters remain open through coincident connections. */
+function tryStackedComponentLanes(request: GeneratorRequest, curveFitter: ReturnType<typeof createExactCurveFitter>): GeneratorResult | undefined {
+	if (request.mode !== 'figure' || request.frame !== 'oval' || request.style !== 'plain') return;
+	const rings = normalizeContours(request.contours ?? []);
+	if (!hasStackedComponents(rings)) return;
+	let best: GeneratorResult | undefined;
+	for (const aligned of [false, true]) for (const tilt of [-.08, .08]) try {
+		const construction = generateComponentLanes(rings, 'oval', request.frameSize, request.scale,
+			'plain', aligned, 0, { tilt });
+		let candidate: GeneratorResult;
+		try {
+			candidate = finishConstruction(request, construction, 'nested', undefined, curveFitter);
+		} catch (error) {
+			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+			const geometry = curveSharedCuts(construction.geometry);
+			if (!geometry) continue;
+			candidate = finishConstruction(request, construction, 'nested', geometry, curveFitter);
 		}
 		const result = improveSharedConnections(candidate), design = result.design,
 			margin = intersectionMarginPx(inferOverlapRect(design.fingers, design.gridSize),
