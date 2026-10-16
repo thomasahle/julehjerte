@@ -1,0 +1,167 @@
+{
+  "schema": "feature-finalist-fit-results-1",
+  "status": "rejected-and-runtime-change-reverted",
+  "plan": "docs/inverse/datasets/feature-finalist-fit-plan.json",
+  "deployed": false,
+  "summary": {
+    "status": "complete",
+    "maskCropCoverageUnchanged": true,
+    "checkedBefore": 5,
+    "checkedAfter": 5,
+    "editableConverted": 13,
+    "editableComplete": 5,
+    "editorIssues": 0,
+    "changed": [
+      "real-5330aa8b62176216-body-1",
+      "real-8c875dd0f298b5a4-body-1",
+      "real-995899fe049540ed-body-1",
+      "real-202b8421f50252f2",
+      "real-c7bc99827b382da7",
+      "real-d6d0462384722949",
+      "real-e9131a2d52b78220"
+    ],
+    "rows": [
+      {
+        "id": "real-3f7b76e1a98e808f-body-1",
+        "baselineStatus": "review-required",
+        "status": "review-required",
+        "baselineError": 0.0074949481046790245,
+        "error": 0.0074949481046790245,
+        "wovenUnchanged": true,
+        "paper": "pass"
+      },
+      {
+        "id": "real-5330aa8b62176216-body-1",
+        "baselineStatus": "review-required",
+        "status": "review-required",
+        "baselineError": 0.04688125,
+        "error": 0.07253125,
+        "wovenUnchanged": false,
+        "paper": "uncertain"
+      },
+      {
+        "id": "real-8c875dd0f298b5a4-body-1",
+        "baselineStatus": "review-required",
+        "status": "review-required",
+        "baselineError": 0.0194,
+        "error": 0.01940625,
+        "wovenUnchanged": false,
+        "paper": "pass"
+      },
+      {
+        "id": "real-995899fe049540ed-body-1",
+        "baselineStatus": "review-required",
+        "status": "review-required",
+        "baselineError": 0.036575,
+        "error": 0.03656875,
+        "wovenUnchanged": false,
+        "paper": "pass"
+      },
+      {
+        "id": "real-1fa372c6288da69f",
+        "baselineStatus": "review-required",
+        "status": "review-required",
+        "baselineError": 0.0959,
+        "error": 0.0959,
+        "wovenUnchanged": true,
+        "paper": "pass"
+      },
+      {
+        "id": "real-202b8421f50252f2",
+        "baselineStatus": "review-required",
+        "status": "review-required",
+        "baselineError": 0.034,
+        "error": 0.03260625,
+        "wovenUnchanged": false,
+        "paper": "pass"
+      },
+      {
+        "id": "real-931ac5ea86dbe082",
+        "baselineStatus": "review-required",
+        "status": "review-required",
+        "baselineError": 0.0208375,
+        "error": 0.0208375,
+        "wovenUnchanged": true,
+        "paper": "pass"
+      },
+      {
+        "id": "real-962159dea653810f",
+        "baselineStatus": "checked-derived-mask",
+        "status": "checked-derived-mask",
+        "baselineError": 0.01086875,
+        "error": 0.01086875,
+        "wovenUnchanged": true,
+        "paper": "pass"
+      },
+      {
+        "id": "real-9b47cfbdf0004f4d",
+        "baselineStatus": "checked-derived-mask",
+        "status": "checked-derived-mask",
+        "baselineError": 0.00589375,
+        "error": 0.00589375,
+        "wovenUnchanged": true,
+        "paper": "pass"
+      },
+      {
+        "id": "real-c7bc99827b382da7",
+        "baselineStatus": "checked-derived-mask",
+        "status": "checked-derived-mask",
+        "baselineError": 0.005772754848676269,
+        "error": 0.005653922408671016,
+        "wovenUnchanged": false,
+        "paper": "pass"
+      },
+      {
+        "id": "real-d6d0462384722949",
+        "baselineStatus": "review-required",
+        "status": "review-required",
+        "baselineError": 0.0348,
+        "error": 0.03463125,
+        "wovenUnchanged": false,
+        "paper": "pass"
+      },
+      {
+        "id": "real-e4baad0c914577c8",
+        "baselineStatus": "checked-derived-mask",
+        "status": "checked-derived-mask",
+        "baselineError": 0.0111375,
+        "error": 0.0111375,
+        "wovenUnchanged": true,
+        "paper": "pass"
+      },
+      {
+        "id": "real-e9131a2d52b78220",
+        "baselineStatus": "checked-derived-mask",
+        "status": "checked-derived-mask",
+        "baselineError": 0.00721875,
+        "error": 0.00708125,
+        "wovenUnchanged": false,
+        "paper": "pass"
+      }
+    ]
+  },
+  "findings": [
+    "No additional checked templates: five before and five after across thirteen fixed masks. All thirteen exports convert, with the same five complete passes.",
+    "Bicycle worsens from 4.69% to 7.25% independent mask disagreement and its paper core becomes uncertain. Keeping the coarse source regions is insufficient to justify spending the remaining budget on a denser candidate.",
+    "Flower improves from 3.40% to 3.26% but still fails. Brown checker remains at 9.59%.",
+    "All seven changed exports were visually inspected. Other small differences occur without triggering the changed policy, reflecting time-limited fitting variation.",
+    "Runtime patch was saved as rejected.patch and reversed. Current runtime is the previously tested production code."
+  ],
+  "verification": {
+    "sourceFilesVerifiedDuringExperiment": 890,
+    "lintPassed": true,
+    "visualReviewComplete": true,
+    "panelsSha256": {
+      "tmp/heart-learning/feature-finalist-fit-v1/review-1.png": "0cd3fa231bcbd11c62b358638af478ed5574a3a1557524a69f96f8ef65fbf50a",
+      "tmp/heart-learning/feature-finalist-fit-v1/review-2.png": "272395375102e76ab2ed57d9a9294d16679bcd48c2bf0abdbe3b83dd38776744"
+    }
+  },
+  "artifactsSha256": {
+    "tmp/heart-learning/feature-finalist-fit-v1/source.json": "194c02f202185a1cd15fd64369f694408b785d081bdad170a7dcfb1300d0a489",
+    "tmp/heart-learning/feature-finalist-fit-v1/pipeline/report.json": "e4591c9955b6576deaac7618bbcfb6660c634b5c9e28561d4a0d176b2271d9c8",
+    "tmp/heart-learning/feature-finalist-fit-v1/editable/results.json": "26c0e841b46578c90fcbe4e176c5e603aa1ba32daba73596fc5673a99884b86b",
+    "tmp/heart-learning/feature-finalist-fit-v1/audit.json": "a4f0d16264357dc4822f7ef4247b3f280d2b730c0672768c6a99a8fd29c3e13b",
+    "tmp/heart-learning/feature-finalist-fit-v1/rejected.patch": "2ec01fc8a25e122aec71b0c425a3ded44bd372d99a156cdb780eca76b6e92e2a"
+  },
+  "nextStep": "Measure whether an already generated lower-error finalist improves partial feature retention without regressing any currently retained region. Avoid promoting a new dense weighted seed based on a binary feature pass alone."
+}

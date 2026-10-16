@@ -33,6 +33,16 @@ The inventory, with material annotations updated on 2026-10-16, contains:
 
 ## Current results and limits
 
+A [thirteen-mask solver experiment](feature-finalist-fit-results.json) rejects
+alternate-base feature seeding as a runtime change. Although the initial
+[seed diagnostic](feature-finalist-results.json) retained missing regions for
+two cases, full fitting adds **zero checked templates**. The bicycle worsens
+from **4.69% to 7.25%** mask error and its paper core becomes uncertain; the
+flower improves only from **3.40% to 3.26%**, still failing. All seven changed
+exports were inspected. The patch was reversed; the app's solver is unchanged.
+A next diagnostic will test existing finalists that improve image error and
+partial feature retention without regressing already retained regions.
+
 The [fixed real-photo projective comparison](projective-real-results.json)
 adds ten crop proposals and five checked derived masks: the additional-photo
 cohort moves from **4/20 to 9/20**, while the earlier group remains **15/22**.
