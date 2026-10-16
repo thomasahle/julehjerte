@@ -76,8 +76,30 @@
       "check",
       "lint",
       "build",
-      "served asset verification"
-    ]
+      "served asset verification",
+      "private Chromium star/hat"
+    ],
+    "browserReview": {
+      "status": "reviewed",
+      "results": [
+        {
+          "case": "chromium-star",
+          "templateChecksPassed": true,
+          "reportedImageError": 0.0016,
+          "reportedFitSeconds": 1.5977000000476838,
+          "geometryIdenticalToPreviousQA": true,
+          "visualReview": "Main star and frame remain crisp and aligned."
+        },
+        {
+          "case": "chromium-top-hat-preferred",
+          "templateChecksPassed": true,
+          "reportedImageError": 0.003941680839002267,
+          "reportedFitSeconds": 6.566599999904633,
+          "geometryIdenticalToPreviousQA": true,
+          "visualReview": "Hat shape retained; small bumps along crown/brim and curved free-border ornaments remain."
+        }
+      ]
+    }
   },
   "artifacts": [
     {

@@ -1,0 +1,74 @@
+{
+  "schema": "refinement-rollback-study-1",
+  "status": "prepared_and_queued_after_live_QA",
+  "root": "tmp/heart-learning/refinement-rollback-study-v1",
+  "question": "Does a newly valid checkpoint truncate useful refinement through its effect on rollback, independently of image preparation, gradients and physical acceptance rules?",
+  "arms": {
+    "current": "Existing fallback tracks the latest valid checkpoint; failed blocks roll back.",
+    "best-safe": "Fallback tracks the best valid checkpoint, while acceptance and continuing exploration are otherwise unchanged.",
+    "improving": "Only a checkpoint preferred by the existing objective becomes the next accepted trajectory checkpoint. Worse valid checkpoints cause fallback to the best valid state. All original geometry and paper gates remain.",
+    "no-rollback": "Diagnostic only: continue gradient exploration through failed checkpoints, while still returning the best validated incumbent and retaining unresolved alternatives. Never accepts an invalid state as a valid export."
+  },
+  "cases": [
+    {
+      "name": "bird",
+      "input": "Captured first feature-detail plan from the x+1 photograph: identical initial controls, weights and probability, 160 steps."
+    },
+    {
+      "name": "gift",
+      "input": "Frozen photographed crop and initial curves; 750 fixed refinement steps."
+    },
+    {
+      "name": "floral-81",
+      "input": "Frozen photographed crop and initial curves; 81 steps."
+    },
+    {
+      "name": "floral-201",
+      "input": "Same floral input; 201 steps, not an independent photograph."
+    },
+    {
+      "name": "viking",
+      "input": "Frozen initialization fixture, 395 requested steps with the existing repeated-rollback optimization."
+    }
+  ],
+  "controls": [
+    "No crop, classified-mask, probability, weight, tolerance, count, gradient or initial-curve changes.",
+    "Current production copied to an isolated runtime, with a separate refine implementation per arm. Runtime, harness, shared helpers and fixture hashes checked before and after each run.",
+    "Twenty fits run serially only after QA reaches a terminal state. Missing QA handle without terminal state stops the queue; it never restarts the QA job.",
+    "Each returned candidate is saved before independent validation. Record actual computed steps as well as requested work because cycle skipping can differ."
+  ],
+  "measurements": [
+    "Independent exported mask disagreement and enclosed-feature component shape.",
+    "Original and finer actual paper lattices at 700 and 1000, plus independent polygon-offset final verification.",
+    "Geometry validity, retained uncertain/failed alternatives, checkpoint history, and repeated-rollback behavior.",
+    "Bird rejected checkpoints saved for subsequent routing comparisons; this fixed-plan study alone cannot establish fresh end-to-end success."
+  ],
+  "acceptance": "Do not integrate an arm merely because it restores a historical hash or closes an inflated eye. Require the original geometry/paper gates and feature quality, then fresh timed end-to-end corpus comparisons.",
+  "queue": {
+    "status": "waiting-for-live-QA",
+    "qaControllerPid": 26752,
+    "queuePid": 38278
+  },
+  "artifacts": [
+    {
+      "path": "tmp/heart-learning/refinement-rollback-study-v1/prepare.py",
+      "sha256": "04e8da4e73dffc1ab383da996eb3260830d20c52b6ef42322586cdf2dcad661b"
+    },
+    {
+      "path": "tmp/heart-learning/refinement-rollback-study-v1/replay.mjs",
+      "sha256": "cbc085afd477c635759e1f425d0465676fd46e446163807f471d76d97cecd599"
+    },
+    {
+      "path": "tmp/heart-learning/refinement-rollback-study-v1/run.py",
+      "sha256": "a8dd0c0904d3509d01ef10a739625284758ce3bf448a7bd5cc3fc9c43d5b8b3e"
+    },
+    {
+      "path": "tmp/heart-learning/refinement-rollback-study-v1/after-qa.py",
+      "sha256": "6d67d9f4873d69aceb91c4ee3caa55c8d76a66ab7392c80d3db6c367f9601290"
+    },
+    {
+      "path": "tmp/heart-learning/refinement-rollback-study-v1/source.json",
+      "sha256": "bc81aff0a54312c2784ae79964e63e0ffaa181f23a963d019d0a21706d77cf32"
+    }
+  ]
+}

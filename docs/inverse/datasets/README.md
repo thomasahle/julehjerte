@@ -52,6 +52,10 @@ checkpoints also fail. Neither experiment is integrated. Fixed-work gift and
 Viking replays show changed exploration and inferior retained alternatives too;
 these failures must not be fixed by merely updating historical hashes or
 loosening image/feature bounds.
+A [fixed-work rollback comparison](refinement-rollback-study.json) is prepared
+and queued behind the live QA run. It separates latest-safe, best-safe,
+improving-checkpoint and continued-exploration policies on four source motifs;
+the two floral step counts are related trials, not extra independent examples.
 
 [A guarded diagonal-connectivity correction](diagonal-paper-core-results.json)
 addresses valid paper checkpoints discarded by four-neighbour lattice labelling.
