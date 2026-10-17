@@ -86,6 +86,18 @@ The remaining problem is finding a suitable assignment of visible arcs and
 shared hidden cuts while preserving the circular contacts. No motif-specific
 initialization or relaxed physical acceptance rule was added to production.
 
+Inspecting the exported paths gives a concrete explanation for the five
+vertical gaps: at each nominal contact centre, the two nearest **distinct cut
+paths belong to the same sheet**. Their distances from the centre are about
+1.40–1.76 mm, and the pair must retain the 2.505 mm nominal paper width. Moving
+those two paths together cannot close the contact while preserving the current
+routing and physical constraints. This supports rerouting as the next problem
+to solve, rather than merely increasing curve resolution. The
+[path-distance measurements](curved-triangles-contacts.json) pin the exported
+geometry hash; their nine nominal cell centres are diagnostic annotations,
+never inputs to fitting. They do not prove that another routing can reproduce
+the artwork exactly.
+
 ## Rejected experiments
 
 All changes below were injected into isolated modules under `tmp`; none is a
