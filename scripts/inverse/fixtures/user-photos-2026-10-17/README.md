@@ -1,4 +1,4 @@
-# User photographs received 2026-10-17
+# User images received 2026-10-17
 
 Four heart instances in two unmodified files (about 477 KiB total). These are
 development QA fixtures, excluded from neural training. They are not four
@@ -33,3 +33,32 @@ allowance; crop detection, import preparation and final checks add time.
 Inspect both the original photograph and exported weave, and replay exports
 through `scripts/inverse/hard-photo-editor-replay.mjs` before calling them
 complete application successes.
+
+## Curved-triangle Paint screenshot
+
+`curved-triangles.png` is an additional unmodified 257,900-byte screenshot of an
+already classified Paint mask. It is not a photograph of a woven heart. The
+alternating semicircles and narrow contacts expose a fitting failure: a low
+whole-image error can still leave visible gaps or flatten the arcs.
+
+`curved-triangles.json` records its provenance. The separate
+`curved-triangles-corners.json` recovers the visible UI diamond, chosen before
+fitting. Its bottom vertex extends 19.5 source pixels below the screenshot;
+55 of the resulting 160,000 mask pixels are unobserved. They must stay excluded
+from fitting and reported image error. These coordinates do not establish the
+performance of automatic photographic cropping. No source cutting paths are
+available, and this fixture remains reserved for development QA.
+
+```sh
+OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 \
+  nice -n 15 node scripts/inverse/hard-photo-benchmark.mjs \
+  --catalog=scripts/inverse/fixtures/user-photos-2026-10-17/curved-triangles.json \
+  --crop=fixed \
+  --crop-overrides=scripts/inverse/fixtures/user-photos-2026-10-17/curved-triangles-corners.json \
+  --target=mask --seconds=30 --presets=automatic \
+  --output=tmp/curved-triangles-new-run
+```
+
+See [the investigation](../../../../docs/inverse/datasets/curved-triangles.md)
+for measured errors and remaining visual defects. A formal validation pass is
+not a claim that this motif has been faithfully reconstructed.

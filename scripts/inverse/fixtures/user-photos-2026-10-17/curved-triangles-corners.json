@@ -1,0 +1,25 @@
+[
+  {
+    "id": "curved-triangles",
+    "quad": [
+      [
+        1031.5,
+        218.5
+      ],
+      [
+        1827,
+        1014
+      ],
+      [
+        1031.5,
+        1809.5
+      ],
+      [
+        236,
+        1014
+      ]
+    ],
+    "cropStatus": "needs_review",
+    "cropNote": "Manual recovery of the visible UI overlap square, before fitting. Bottom tip is 19.5 px outside the screenshot and remains unobserved; not a photographic crop benchmark."
+  }
+]
