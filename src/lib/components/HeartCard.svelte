@@ -5,15 +5,19 @@
   of cards hangs at staggered heights while the names stay aligned at the bottom
   of the fixed-height card.
 
-  Interaction, in the redesign's shape:
-    - the WHOLE card is one button that toggles PDF selection (absolute inset 0,
-      transparent, under the details link);
+  Interaction (docs/redesign/FRONT-SIMPLIFY.md): opening a heart is what most
+  visitors came for, a PDF of several is for the few, so
+    - the WHOLE card is one link to the heart's page (absolute inset 0,
+      transparent, named after the heart);
+    - a small checkbox in the top-left corner, above the link, ticks the heart
+      for the multi-heart PDF. It stays out of sight until the card is hovered
+      or focused, or is ticked — and is always shown on touch screens, which
+      have no hover to reveal it;
     - selection shows as a red ring around the heart plus a check badge, and the
       name turns red;
-    - "Detaljer" is a real link to the heart's page, revealed on hover / focus
-      within the card, and always visible on touch devices;
-    - a user-created heart also gets a delete button.
-  Nothing is nested inside anything else interactive, so the card stays keyboard
+    - a user-created heart also gets a delete button, top right.
+  The controls are siblings over the link rather than inside it — nothing
+  interactive is nested in anything else interactive, so the card stays keyboard
   and screen-reader friendly.
 
   The card has no entrance animation and nothing to wait for: a gallery heart is
@@ -69,9 +73,10 @@
 
 	let ribbon = $derived(RIBBONS[index % RIBBONS.length]);
 	let swayDelay = $derived((index * 0.7) % 5);
-	let detailsHref = $derived(heartHref(heart.id, lang));
+	let href = $derived(heartHref(heart.id, lang));
+	let pickId = $derived(`pick-${heart.id}`);
 
-	function handleDetails() {
+	function handleOpen() {
 		onClick?.(heart);
 	}
 
@@ -93,13 +98,21 @@
 	data-user={heart.isUserCreated ? '' : undefined}
 	style="height: {SIZE + 120}px;"
 >
-	<button
-		class="card-select"
-		type="button"
-		onclick={handleSelect}
-		aria-pressed={selected}
-		aria-label="{t('selectForPdf', lang)}: {heart.name}"
-	></button>
+	<a class="card-link" {href} onclick={handleOpen} aria-label={heart.name}></a>
+
+	<!-- The ✓ is a text glyph, not an icon: the hero clones the first <svg> in
+	     the card, which has to stay the heart's own. -->
+	<span class="pick">
+		<input
+			id={pickId}
+			class="pick-box"
+			type="checkbox"
+			checked={selected}
+			onchange={handleSelect}
+		/>
+		<span class="pick-mark" aria-hidden="true">✓</span>
+		<label class="sr-only" for={pickId}>{t('selectForPdf', lang)}: {heart.name}</label>
+	</span>
 
 	<div class="card-heart">
 		<HangingHeart
@@ -112,16 +125,6 @@
 			idPrefix="card-{heart.id}"
 		/>
 	</div>
-
-	<a
-		class="details"
-		href={detailsHref}
-		onclick={handleDetails}
-		aria-label="{t('details', lang)}: {heart.name}"
-		style="top: {ribbon + SIZE - 30}px;"
-	>
-		{t('details', lang)}
-	</a>
 
 	<div class="card-meta">
 		<span class="name">{heart.name}</span>
@@ -155,16 +158,86 @@
 		transform: scale(1.02);
 	}
 
-	/* The whole card toggles PDF selection. */
-	.card-select {
+	/* The whole card opens the heart's page. */
+	.card-link {
 		position: absolute;
 		inset: 0;
 		z-index: 1;
-		padding: 0;
-		border: none;
 		border-radius: 14px;
 		background: transparent;
+	}
+
+	/* The PDF checkbox: a real input, restyled, with the tick laid over it. */
+	.pick {
+		position: absolute;
+		top: 10px;
+		left: 10px;
+		z-index: 2;
+		display: inline-flex;
+		width: 24px;
+		height: 24px;
+		opacity: 0;
+		transition: opacity 0.2s;
+	}
+
+	.card:hover .pick,
+	.card:focus-within .pick,
+	.card.is-selected .pick {
+		opacity: 1;
+	}
+
+	.pick-box {
+		appearance: none;
+		width: 100%;
+		height: 100%;
+		margin: 0;
+		border: 1.5px solid var(--line);
+		border-radius: 50%;
+		background: var(--white);
 		cursor: pointer;
+		transition:
+			background 0.2s,
+			border-color 0.2s;
+	}
+
+	.pick-box:hover {
+		border-color: var(--red);
+	}
+
+	.pick-box:checked {
+		border-color: var(--red);
+		background: var(--red);
+	}
+
+	.pick-mark {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: var(--white);
+		font-size: 13px;
+		font-weight: 700;
+		pointer-events: none;
+		opacity: 0;
+	}
+
+	.pick-box:checked + .pick-mark {
+		opacity: 1;
+	}
+
+	/* No hover to reveal it on a touch screen, so it is always there — a little
+	   smaller and slightly see-through, to stay quiet over the ribbon. */
+	@media (hover: none) {
+		.pick {
+			opacity: 1;
+			width: 22px;
+			height: 22px;
+		}
+
+		.pick-box:not(:checked) {
+			background: rgb(255 255 255 / 0.9);
+		}
 	}
 
 	.card-heart {
@@ -203,43 +276,6 @@
 		pointer-events: none;
 	}
 
-	.details {
-		position: absolute;
-		left: 50%;
-		transform: translateX(-50%);
-		z-index: 2;
-		display: inline-flex;
-		align-items: center;
-		padding: 7px 13px;
-		border-radius: 8px;
-		background: rgb(var(--deep-rgb) / 0.84);
-		color: var(--white);
-		font-size: 13px;
-		font-weight: 600;
-		text-decoration: none;
-		white-space: nowrap;
-		opacity: 0;
-		transition:
-			opacity 0.2s,
-			background 0.2s;
-	}
-
-	.details:hover {
-		background: rgb(var(--deep-rgb) / 0.96);
-		color: var(--white);
-	}
-
-	.card:hover .details,
-	.card:focus-within .details {
-		opacity: 1;
-	}
-
-	@media (hover: none) {
-		.details {
-			opacity: 1;
-		}
-	}
-
 	.card-meta {
 		margin-top: auto;
 		display: flex;
@@ -263,8 +299,8 @@
 	.delete-btn {
 		position: absolute;
 		top: 0;
-		left: 4px;
-		z-index: 3;
+		right: 4px;
+		z-index: 2;
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
@@ -300,11 +336,6 @@
 	}
 
 	@media (max-width: 599px) {
-		.details {
-			font-size: 12px;
-			padding: 5px 10px;
-		}
-
 		/* Two columns on phones: leave the heart room to breathe in its cell. */
 		.card-heart :global(.hang) {
 			max-width: 88%;

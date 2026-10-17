@@ -86,7 +86,7 @@
     trackHeartSelect(heart.id, heart.name, !wasSelected);
   }
 
-  // The card's details link navigates; this only records the view.
+  // The card is a link to the heart's page; this only records the view.
   function handleClick(heart: GalleryHeart) {
     trackHeartView(heart.id, heart.name);
   }
