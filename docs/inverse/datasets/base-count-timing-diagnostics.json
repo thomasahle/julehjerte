@@ -1,0 +1,412 @@
+{
+  "schema": "same-count-release-timing-diagnostic-1",
+  "status": "four-case-work-comparison-complete-full-browser-results-recorded",
+  "scope": "Four completed Hunodan browser cases compared with the previous release. Their recorded work and output comparisons are preserved without timing adjustment. The full22-case batch has now completed; its functional passes,17 timing misses and four geometry changes are recorded in base-count-release-qa.json.",
+  "runtimeBefore": "fd85519",
+  "runtimeAfter": "ff4827e",
+  "findings": [
+    "All four have exactly identical coarse-initializer records and fine-grid candidate counts, iteration counts and errors. They retain the same reported numerical backend and do not enter the new early-feature fallback.",
+    "The first three retain six refinement checkpoints each; hjfig-05 retains fifteen rather than eighteen. More initializer search is not the explanation for these four slower results.",
+    "Several unchanged stages take longer. Snapshot shows roughly23GB of swap in use, and read-only process inspection found simultaneous solver jobs in another worktree. Those jobs were not modified or stopped.",
+    "Resource contention is a plausible contributor, not a controlled causal attribution. No correction is applied to measured latency and ten-second misses remain failures."
+  ],
+  "resourceSnapshot": {
+    "path": "tmp/heart-learning/base-count-timing-v1/resource.json",
+    "sha256": "f8bf9181e8cd9baf295e23f6cf00d415d7061a07142a063e1ea9aaa936e7a734"
+  },
+  "rows": [
+    {
+      "id": "hunodan-hjfig-01",
+      "coarseRecordsIdentical": true,
+      "fineCountsStepsErrorsIdentical": true,
+      "countSearchIdentical": true,
+      "numericalBackendIdentical": true,
+      "selectedCountsBefore": [
+        2,
+        2
+      ],
+      "selectedCountsAfter": [
+        2,
+        2
+      ],
+      "checkpointsBefore": 6,
+      "checkpointsAfter": 6,
+      "newFallbackEntered": false,
+      "exportedGeometryIdentical": true,
+      "stagesBefore": [
+        {
+          "stage": "directInitializing",
+          "detail": null,
+          "seconds": 0.385
+        },
+        {
+          "stage": "directFitting",
+          "detail": null,
+          "seconds": 0.5074000000953675
+        },
+        {
+          "stage": "directClearance",
+          "detail": null,
+          "seconds": 0.21219999980926513
+        },
+        {
+          "stage": "directRefining",
+          "detail": null,
+          "seconds": 1.4815
+        },
+        {
+          "stage": "directSharing",
+          "detail": null,
+          "seconds": 0.1365
+        },
+        {
+          "stage": "directPolishing",
+          "detail": null,
+          "seconds": 0.42860000014305116
+        },
+        {
+          "stage": "directPolishing",
+          "detail": "selective-degree-reduction",
+          "seconds": 0.06429999995231628
+        },
+        {
+          "stage": "directPolishing",
+          "detail": "shared-run-simplification",
+          "seconds": 0.0555
+        }
+      ],
+      "stagesAfter": [
+        {
+          "stage": "directInitializing",
+          "detail": null,
+          "seconds": 0.6383000001907349
+        },
+        {
+          "stage": "directFitting",
+          "detail": null,
+          "seconds": 0.8186999998092651
+        },
+        {
+          "stage": "directClearance",
+          "detail": null,
+          "seconds": 0.30590000009536744
+        },
+        {
+          "stage": "directRefining",
+          "detail": null,
+          "seconds": 2.1034000000953674
+        },
+        {
+          "stage": "directSharing",
+          "detail": null,
+          "seconds": 0.23519999980926515
+        },
+        {
+          "stage": "directPolishing",
+          "detail": null,
+          "seconds": 0.6586999998092652
+        },
+        {
+          "stage": "directPolishing",
+          "detail": "selective-degree-reduction",
+          "seconds": 0.07790000009536743
+        },
+        {
+          "stage": "directPolishing",
+          "detail": "shared-run-simplification",
+          "seconds": 0.07320000004768372
+        }
+      ],
+      "imageErrorBefore": 0.009806222222222221,
+      "imageErrorAfter": 0.009806222222222221
+    },
+    {
+      "id": "hunodan-hjfig-03",
+      "coarseRecordsIdentical": true,
+      "fineCountsStepsErrorsIdentical": true,
+      "countSearchIdentical": true,
+      "numericalBackendIdentical": true,
+      "selectedCountsBefore": [
+        2,
+        2
+      ],
+      "selectedCountsAfter": [
+        2,
+        2
+      ],
+      "checkpointsBefore": 6,
+      "checkpointsAfter": 6,
+      "newFallbackEntered": false,
+      "exportedGeometryIdentical": true,
+      "stagesBefore": [
+        {
+          "stage": "directInitializing",
+          "detail": null,
+          "seconds": 0.38640000009536746
+        },
+        {
+          "stage": "directFitting",
+          "detail": null,
+          "seconds": 0.535
+        },
+        {
+          "stage": "directClearance",
+          "detail": null,
+          "seconds": 0.20390000009536743
+        },
+        {
+          "stage": "directRefining",
+          "detail": null,
+          "seconds": 1.517
+        },
+        {
+          "stage": "directSharing",
+          "detail": null,
+          "seconds": 0.08729999995231628
+        },
+        {
+          "stage": "directPolishing",
+          "detail": null,
+          "seconds": 0.4037000000476837
+        },
+        {
+          "stage": "directPolishing",
+          "detail": "selective-degree-reduction",
+          "seconds": 0.061200000047683716
+        }
+      ],
+      "stagesAfter": [
+        {
+          "stage": "directInitializing",
+          "detail": null,
+          "seconds": 0.5607000000476837
+        },
+        {
+          "stage": "directFitting",
+          "detail": null,
+          "seconds": 0.9416999998092651
+        },
+        {
+          "stage": "directClearance",
+          "detail": null,
+          "seconds": 0.34780000019073487
+        },
+        {
+          "stage": "directRefining",
+          "detail": null,
+          "seconds": 2.6708999998569487
+        },
+        {
+          "stage": "directSharing",
+          "detail": null,
+          "seconds": 0.17589999985694885
+        },
+        {
+          "stage": "directPolishing",
+          "detail": null,
+          "seconds": 0.8877000000476837
+        },
+        {
+          "stage": "directPolishing",
+          "detail": "selective-degree-reduction",
+          "seconds": 0.13990000009536743
+        }
+      ],
+      "imageErrorBefore": 0.006535111111111111,
+      "imageErrorAfter": 0.006535111111111111
+    },
+    {
+      "id": "hunodan-hjfig-04",
+      "coarseRecordsIdentical": true,
+      "fineCountsStepsErrorsIdentical": true,
+      "countSearchIdentical": true,
+      "numericalBackendIdentical": true,
+      "selectedCountsBefore": [
+        2,
+        2
+      ],
+      "selectedCountsAfter": [
+        2,
+        2
+      ],
+      "checkpointsBefore": 6,
+      "checkpointsAfter": 6,
+      "newFallbackEntered": false,
+      "exportedGeometryIdentical": true,
+      "stagesBefore": [
+        {
+          "stage": "directInitializing",
+          "detail": null,
+          "seconds": 0.38490000009536746
+        },
+        {
+          "stage": "directFitting",
+          "detail": null,
+          "seconds": 0.5095999999046326
+        },
+        {
+          "stage": "directClearance",
+          "detail": null,
+          "seconds": 0.21620000004768372
+        },
+        {
+          "stage": "directRefining",
+          "detail": null,
+          "seconds": 1.6937000000476836
+        },
+        {
+          "stage": "directSharing",
+          "detail": null,
+          "seconds": 0.076
+        },
+        {
+          "stage": "directPolishing",
+          "detail": null,
+          "seconds": 0.38639999985694884
+        },
+        {
+          "stage": "directSharing",
+          "detail": null,
+          "seconds": 0.08309999990463257
+        },
+        {
+          "stage": "directPolishing",
+          "detail": "selective-degree-reduction",
+          "seconds": 0.04660000014305115
+        },
+        {
+          "stage": "directPolishing",
+          "detail": "curve-degree-reduction",
+          "seconds": 0.016199999809265137
+        },
+        {
+          "stage": "directPolishing",
+          "detail": "boundary-degree-reduction",
+          "seconds": 0.05129999995231629
+        },
+        {
+          "stage": "directPolishing",
+          "detail": "shared-run-simplification",
+          "seconds": 0.03909999990463257
+        }
+      ],
+      "stagesAfter": [
+        {
+          "stage": "directInitializing",
+          "detail": null,
+          "seconds": 0.6775
+        },
+        {
+          "stage": "directFitting",
+          "detail": null,
+          "seconds": 0.8226000001430511
+        },
+        {
+          "stage": "directClearance",
+          "detail": null,
+          "seconds": 0.32920000004768374
+        },
+        {
+          "stage": "directRefining",
+          "detail": null,
+          "seconds": 2.5849000000953675
+        },
+        {
+          "stage": "directSharing",
+          "detail": null,
+          "seconds": 0.17809999990463257
+        },
+        {
+          "stage": "directPolishing",
+          "detail": null,
+          "seconds": 0.969
+        },
+        {
+          "stage": "directSharing",
+          "detail": null,
+          "seconds": 0.15279999995231627
+        },
+        {
+          "stage": "directPolishing",
+          "detail": "selective-degree-reduction",
+          "seconds": 0.08940000009536743
+        },
+        {
+          "stage": "directPolishing",
+          "detail": "curve-degree-reduction",
+          "seconds": 0.03729999995231628
+        },
+        {
+          "stage": "directPolishing",
+          "detail": "boundary-degree-reduction",
+          "seconds": 0.08729999995231628
+        },
+        {
+          "stage": "directPolishing",
+          "detail": "shared-run-simplification",
+          "seconds": 0.053099999904632565
+        }
+      ],
+      "imageErrorBefore": 0.014001777777777778,
+      "imageErrorAfter": 0.014001777777777778
+    },
+    {
+      "id": "hunodan-hjfig-05",
+      "coarseRecordsIdentical": true,
+      "fineCountsStepsErrorsIdentical": true,
+      "countSearchIdentical": true,
+      "numericalBackendIdentical": true,
+      "selectedCountsBefore": [
+        4,
+        4
+      ],
+      "selectedCountsAfter": [
+        4,
+        4
+      ],
+      "checkpointsBefore": 18,
+      "checkpointsAfter": 15,
+      "newFallbackEntered": false,
+      "exportedGeometryIdentical": false,
+      "stagesBefore": [
+        {
+          "stage": "directPolishing",
+          "detail": "selective-degree-reduction",
+          "seconds": 0.0845
+        }
+      ],
+      "stagesAfter": [
+        {
+          "stage": "directPolishing",
+          "detail": "selective-degree-reduction",
+          "seconds": 0.16059999990463256
+        },
+        {
+          "stage": "directPolishing",
+          "detail": "curve-degree-reduction",
+          "seconds": 0.1065
+        }
+      ],
+      "imageErrorBefore": 0.0075900994109308,
+      "imageErrorAfter": 0.008347348308077028
+    }
+  ],
+  "pins": {
+    "tmp/heart-learning/late-feature-release-v1/qa/browser-hunodan/chromium-hunodan-hjfig-01/engine-report.json": "58ef4b6bffa8dec22bb2b2f061b684923df746662973b9fe06d4bc92435868a3",
+    "tmp/heart-learning/base-count-release-v1/qa-resume-3/browser-hunodan/chromium-hunodan-hjfig-01/engine-report.json": "37cd0c9f546d8635cc86da8302180ea4ca457c9ac50808f4f4180869b280aafb",
+    "tmp/heart-learning/late-feature-release-v1/qa/browser-hunodan/chromium-hunodan-hjfig-01/cut_geometry.json": "93e2bd151444bfb5109c65d91c416496d5bae8f499a8fd8da14a4b4593e4706f",
+    "tmp/heart-learning/base-count-release-v1/qa-resume-3/browser-hunodan/chromium-hunodan-hjfig-01/cut_geometry.json": "93e2bd151444bfb5109c65d91c416496d5bae8f499a8fd8da14a4b4593e4706f",
+    "tmp/heart-learning/late-feature-release-v1/qa/browser-hunodan/chromium-hunodan-hjfig-03/engine-report.json": "458a293f257b1b8d107d4a82ee6114b6e3c5db65b3019e50509f8120323190d8",
+    "tmp/heart-learning/base-count-release-v1/qa-resume-3/browser-hunodan/chromium-hunodan-hjfig-03/engine-report.json": "84a9c982c4eb2ddcf2c2c347421a4a98d780f9b818f10a1205cd951b07f77c44",
+    "tmp/heart-learning/late-feature-release-v1/qa/browser-hunodan/chromium-hunodan-hjfig-03/cut_geometry.json": "466fc175765127b9a54e8a1c6ced972770b3e57f213125d59e89e6532b44338e",
+    "tmp/heart-learning/base-count-release-v1/qa-resume-3/browser-hunodan/chromium-hunodan-hjfig-03/cut_geometry.json": "466fc175765127b9a54e8a1c6ced972770b3e57f213125d59e89e6532b44338e",
+    "tmp/heart-learning/late-feature-release-v1/qa/browser-hunodan/chromium-hunodan-hjfig-04/engine-report.json": "765c09ab2afd7d3aab05de492a1d2622b4f584591854ff0d7509d615badfb2b3",
+    "tmp/heart-learning/base-count-release-v1/qa-resume-3/browser-hunodan/chromium-hunodan-hjfig-04/engine-report.json": "beaa7c9ead1b9c02edd05af5be37cc1d5ed25048ee1bba6f56e37ef46d3c7dc2",
+    "tmp/heart-learning/late-feature-release-v1/qa/browser-hunodan/chromium-hunodan-hjfig-04/cut_geometry.json": "61273daaad2f7fc2556ff6bfb331af0709866efc0f32279b7894ee0fa5af394f",
+    "tmp/heart-learning/base-count-release-v1/qa-resume-3/browser-hunodan/chromium-hunodan-hjfig-04/cut_geometry.json": "61273daaad2f7fc2556ff6bfb331af0709866efc0f32279b7894ee0fa5af394f",
+    "tmp/heart-learning/late-feature-release-v1/qa/browser-hunodan/chromium-hunodan-hjfig-05/engine-report.json": "82ca87d557bb10b18b8a2b95de6a8bc06da6f15fee327248cb0780a253b1bf0f",
+    "tmp/heart-learning/base-count-release-v1/qa-resume-3/browser-hunodan/chromium-hunodan-hjfig-05/engine-report.json": "2f43b7e4adecba881f59cfaad9d5d41830ff3679e10ddb776ba08b67bcd502d8",
+    "tmp/heart-learning/late-feature-release-v1/qa/browser-hunodan/chromium-hunodan-hjfig-05/cut_geometry.json": "25dcfdbc8aaa913f1c8e40f8c5eb0c9c81e3835b2dfdc8f5f4a3ead431114219",
+    "tmp/heart-learning/base-count-release-v1/qa-resume-3/browser-hunodan/chromium-hunodan-hjfig-05/cut_geometry.json": "6346378ad7801b020ee83c2ae82d6c727e6d7ea98f9fa91702e3f149850d5b3d"
+  }
+}
