@@ -55,7 +55,11 @@ export const translations = {
 
     // Heart detail page, its share/save actions and its meta tags
     loadingTemplate: 'Indlæser skabelon...',
-    heartNotFound: 'Hjertedesign ikke fundet',
+    heartNotFound: 'Hjertet blev ikke fundet',
+    // /hjerte/<id>/ for an id that is no gallery heart and none of the visitor's
+    heartNotFoundHint: 'Det hjerte findes ikke – linket kan være forkert, eller hjertet er gemt i en anden browser.',
+    heartNotFoundGallery: 'Se alle skabeloner',
+    heartNotFoundEditor: 'Tegn dit eget hjerte',
     by: 'af',
     publisher: 'Udgiver',
     source: 'Kilde',
@@ -706,7 +710,10 @@ export const translations = {
 
     // Heart detail page, its share/save actions and its meta tags
     loadingTemplate: 'Loading template...',
-    heartNotFound: 'Heart design not found',
+    heartNotFound: 'Heart not found',
+    heartNotFoundHint: 'That heart does not exist — the link may be wrong, or the heart was saved in another browser.',
+    heartNotFoundGallery: 'See all templates',
+    heartNotFoundEditor: 'Draw your own heart',
     by: 'by',
     publisher: 'Publisher',
     source: 'Source',

@@ -28,7 +28,7 @@
 </script>
 
 <script lang="ts">
-	import { untrack } from 'svelte';
+	import { tick, untrack } from 'svelte';
 	import Modal from '$lib/components/Modal.svelte';
 	import { ToggleGroup, ToggleGroupItem } from '$lib/components/ui/toggle-group';
 	import { DownloadIcon } from '$lib/components/icons';
@@ -399,7 +399,22 @@
 			failure = 'printer';
 		} finally {
 			generating = false;
+			await restoreFocus();
 		}
+	}
+
+	let downloadButton = $state.raw<HTMLButtonElement | null>(null);
+
+	// The button disables itself while the PDF is generated, and a disabled
+	// button cannot keep focus: Chromium drops it to <body>, outside the dialog.
+	// Once it is enabled again it takes focus back, so the next Tab, Enter or
+	// Escape lands inside the dialog — but only if focus really went astray, not
+	// if the visitor has moved on to another control meanwhile.
+	async function restoreFocus(): Promise<void> {
+		await tick();
+		const active = document.activeElement;
+		if (!open || !downloadButton) return;
+		if (active === null || active === document.body) downloadButton.focus();
 	}
 
 	function downloadLaser(): void {
@@ -628,7 +643,13 @@
 
 		<div class="buttons">
 			<button type="button" class="btn btn-ghost" onclick={onClose}>{t('cancel', lang)}</button>
-			<button type="button" class="btn btn-primary" onclick={download} disabled={!canDownload}>
+			<button
+				bind:this={downloadButton}
+				type="button"
+				class="btn btn-primary"
+				onclick={download}
+				disabled={!canDownload}
+			>
 				<DownloadIcon size={18} />
 				{generating ? t('generating', lang) : t('downloadFile', lang, { format: fileFormat })}
 			</button>
@@ -779,6 +800,17 @@
 	.segmented :global([data-slot='toggle-group-item'][data-state='on']) {
 		background: var(--green);
 		color: var(--white);
+	}
+
+	/* The group's overflow: hidden would clip an outline, and box-shadow: none
+	   above cancels the shadcn ring, so the keyboard ring is drawn inset: 3px of
+	   --blue (3.5:1 on the white segment) with a 2px white halo inside it, which
+	   is what carries the 3:1 against the green "on" segment (SC 1.4.11). */
+	.segmented :global([data-slot='toggle-group-item']:focus-visible) {
+		outline: none;
+		box-shadow:
+			inset 0 0 0 3px var(--blue),
+			inset 0 0 0 5px var(--white);
 	}
 
 	.preview {

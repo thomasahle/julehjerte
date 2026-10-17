@@ -94,6 +94,13 @@ describe('HeartCard', () => {
 		}
 	);
 
+	it('names the card <article> after the heart', async () => {
+		const { target } = await render();
+		const card = target.querySelector('article')!;
+		const id = card.getAttribute('aria-labelledby')!;
+		expect(target.querySelector(`[id="${id}"]`)?.textContent).toBe(heart.name);
+	});
+
 	it('records the view when the link is clicked', async () => {
 		const onClick = vi.fn();
 		const { links } = await render({ onClick });
@@ -155,6 +162,8 @@ describe('HeartCard', () => {
 		expect((await render({ onDelete })).deleteButton()).toBeNull();
 		const own = await render({ heart: mine, onDelete });
 		expect(own.target.querySelector('article')!.hasAttribute('data-user')).toBe(true);
+		// Named after the heart, so several delete buttons do not all sound alike.
+		expect(own.deleteButton()!.getAttribute('aria-label')).toBe('Slet Mit hjerte');
 		own.deleteButton()!.click();
 		expect(onDelete).toHaveBeenCalledWith(mine);
 	});

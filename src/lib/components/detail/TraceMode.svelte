@@ -447,6 +447,24 @@
 		else cancelHold();
 	}
 
+	// A two-second hold of Enter or Space on "Lås op" unlocks and moves focus to
+	// "Lås skærmen" while the key is still down. Enter's auto-repeat would then
+	// click it at once, and Space's release would, locking the screen again. So
+	// the lock button acts only on a key that went down on it: repeats are
+	// dropped, and a Space released here that was pressed elsewhere is ignored.
+	let lockKeyDown: string | null = null;
+
+	function handleLockKey(event: KeyboardEvent): void {
+		if (event.key !== 'Enter' && event.key !== ' ') return;
+		if (event.type === 'keydown') {
+			if (event.repeat) event.preventDefault();
+			else lockKeyDown = event.key;
+			return;
+		}
+		if (lockKeyDown !== event.key) event.preventDefault();
+		lockKeyDown = null;
+	}
+
 	// ---- Keyboard ------------------------------------------------------------
 
 	function handleKeydown(event: KeyboardEvent): void {
@@ -606,9 +624,12 @@
 							</div>
 						{/if}
 
+						<!-- Named by aria-label, not by the <label>: the label wraps the
+						     <output> too, which made the name "Bredde Bredde ca. 127 mm". The
+						     readout reaches screen readers as the value text. -->
 						<label class="slider">
-							<span class="sr-only">{t('traceSize', lang)}</span>
 							<input
+								aria-label={t('traceSize', lang)}
 								type="range"
 								min={MIN_WIDTH_MM}
 								max={MAX_WIDTH_MM}
@@ -630,7 +651,15 @@
 						{#if calibrated}
 							<span class="calibrated">{t('traceCalibrated', lang)}</span>
 						{/if}
-						<button bind:this={lockButton} class="btn btn-primary btn-sm lock" type="button" onclick={lock}>
+						<button
+							bind:this={lockButton}
+							class="btn btn-primary btn-sm lock"
+							type="button"
+							onclick={lock}
+							onkeydown={handleLockKey}
+							onkeyup={handleLockKey}
+							onblur={() => (lockKeyDown = null)}
+						>
 							<LockIcon size={18} />
 							{t('traceLock', lang)}
 						</button>

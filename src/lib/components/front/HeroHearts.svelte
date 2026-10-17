@@ -114,8 +114,12 @@
 		border-radius: 12px;
 	}
 
+	/* Off the heart a little more than the base ring, but the same idea: --blue
+	   is only 2.60:1 on the sky, so a --page ring fills the whole offset gap and
+	   the blue's inner edge clears 3:1 against it (SC 1.4.11). */
 	.slot-link:focus-visible {
 		outline: 3px solid var(--blue);
-		outline-offset: 6px;
+		outline-offset: 4px;
+		box-shadow: 0 0 0 4px var(--page);
 	}
 </style>

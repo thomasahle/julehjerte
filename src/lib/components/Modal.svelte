@@ -11,7 +11,9 @@
   What it owns:
     * the scrim and the card, at one radius, padding and shadow (`width` and
       `maxHeight` are the only per-dialog geometry);
-    * Escape and a click on the scrim, both closing;
+    * Escape and a click on the scrim, both closing — Escape also when focus
+      has fallen out of the dialog onto the page (a button that disables
+      itself while it works drops focus to <body>);
     * Tab kept inside the dialog while it is open;
     * the page behind the scrim held still while it is open;
     * focus moved in on open — to `initialFocus` if the caller gives one,
@@ -24,7 +26,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import { tick } from 'svelte';
-	import { trapTab } from '$lib/utils/focusTrap';
+	import { focusableIn, trapTab } from '$lib/utils/focusTrap';
 
 	interface Props {
 		open: boolean;
@@ -64,6 +66,29 @@
 		tick().then(() => (initialFocus ?? dialogEl)?.focus());
 	});
 
+	let overlayEl = $state.raw<HTMLDivElement | null>(null);
+
+	// Keys that reach the window from outside the dialog. Focus can land on
+	// <body> while the dialog is open — Chromium drops it there when the focused
+	// button becomes disabled — and the dialog's own handler then hears nothing:
+	// Escape would not close it and Tab would walk the page behind the scrim.
+	// Keys from inside the dialog are its own handler's (it stops them), so this
+	// only ever sees the stray ones.
+	function onWindowKeydown(e: KeyboardEvent): void {
+		if (!open || !dialogEl) return;
+		const target = e.target;
+		if (target instanceof Node && overlayEl?.contains(target)) return;
+		if (e.key === 'Escape') {
+			e.preventDefault();
+			onClose();
+		} else if (e.key === 'Tab') {
+			e.preventDefault();
+			const items = focusableIn(dialogEl);
+			const next = e.shiftKey ? items[items.length - 1] : items[0];
+			(next ?? dialogEl).focus();
+		}
+	}
+
 	// A dialog that declares aria-modal has to *be* modal: without this the page
 	// behind the scrim still scrolls on a wheel or trackpad gesture and slides
 	// away under a dialog that stays put. The scrollbar's width is handed back as
@@ -83,8 +108,11 @@
 	});
 </script>
 
+<svelte:window onkeydown={onWindowKeydown} />
+
 {#if open}
 	<div
+		bind:this={overlayEl}
 		class="modal-overlay"
 		onclick={onClose}
 		onkeydown={(e) => e.key === 'Escape' && onClose()}

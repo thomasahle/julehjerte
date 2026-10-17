@@ -28,23 +28,24 @@
   import Fir from "$lib/components/Fir.svelte";
   import Scene from "$lib/components/Scene.svelte";
   import PageHeader from "$lib/components/PageHeader.svelte";
+  import StatusPage from "$lib/components/StatusPage.svelte";
   import { FIR_FILLS } from "$lib/landscape";
   import { getUserCollection, loadStaticHeartById, saveUserDesign } from "$lib/stores/collection";
   import {
     SITE_DESCRIPTION,
     SITE_DESCRIPTION_EN,
     SITE_DOMAIN,
+    SITE_NAME,
     SITE_URL,
   } from "$lib/config";
-  import { heartPageTitle, socialImage } from "$lib/seo";
+  import { heartMetaDescription, heartPageTitle, socialImage } from "$lib/seo";
   import { stripsLabel as formatStrips, t, type Language } from "$lib/i18n";
-  import { editorHref, heartPath, homeAnchorHref } from "$lib/i18n/routes";
+  import { editorHref, heartPath, homeAnchorHref, href as routeHref } from "$lib/i18n/routes";
   import { lobesShareTemplate } from "$lib/utils/symmetry";
   import { calculateDifficulty } from "$lib/utils/difficulty";
   import { normalizeHeartDesign, serializeHeartDesign } from "$lib/utils/heartDesign";
   import { decodeSharedDesign, encodeSharedDesign, sharedDesignUrl } from "$lib/utils/shareDesign";
   import { makeHeartAnchorId } from "$lib/utils/heartAnchors";
-  import { firstSentence } from "$lib/utils/text";
   import type { HeartDesign, HeartInfo } from "$lib/types/heart";
   import { trackHeartShare, trackHeartEdit } from "$lib/analytics";
 
@@ -63,6 +64,10 @@
   let clientLoading = $state(true);
   let loading = $derived(!data.design && clientLoading);
   let error = $state<string | null>(null);
+  // The id names no gallery heart, none of this browser's and no SVG under
+  // /hearts/. GitHub Pages already answered 404 (the page is its fallback); the
+  // visitor gets a page that says so and leads on, not a box on the scene.
+  let notFound = $state(false);
   let shareStatus = $state<"idle" | "copied" | "error">("idle");
 
   // The "Kopieret" / "Kunne ikke kopiere" note clears itself after two seconds.
@@ -125,7 +130,7 @@
 
     // Not in the gallery index or the user's collection: an old link to an unlisted SVG.
     clientDesign = await loadStaticHeartById(id);
-    if (!clientDesign) error = t("heartNotFound", lang);
+    if (!clientDesign) notFound = true;
     clientLoading = false;
   });
 
@@ -168,18 +173,20 @@
   let description = $derived(data.description ?? (meta ? null : (design?.description ?? null)));
 
   // SEO
-  let pageTitle = $derived(heartPageTitle(heartId, info?.name ?? t("template", lang), lang));
+  let pageTitle = $derived(
+    notFound
+      ? `${t("heartNotFound", lang)} | ${SITE_NAME}`
+      : heartPageTitle(heartId, info?.name ?? t("template", lang), lang),
+  );
   let metaDescription = $derived.by(() => {
     if (!info) return lang === "en" ? SITE_DESCRIPTION_EN : SITE_DESCRIPTION;
-    const intro = t("heartMetaDescription", lang, {
-      name: info.name,
-      x: info.gridSize.x,
-      y: info.gridSize.y,
-    });
-    // Only the opening sentence: the panel's paragraph runs to four of them, and a
-    // search result shows about 160 characters.
-    const details = description ? firstSentence(description).replace(/[.!?]?$/, ".") : null;
-    return [intro, details, t("heartMetaDownload", lang)].filter(Boolean).join(" ");
+    // As many whole sentences of the panel's paragraph as fit in a search
+    // result; the paragraph on the page keeps all of them.
+    return heartMetaDescription(
+      { name: info.name, x: info.gridSize.x, y: info.gridSize.y },
+      description,
+      lang,
+    );
   });
   let canonicalDa = $derived(`${SITE_URL}${heartPath(heartId, "da")}`);
   let canonicalEn = $derived(`${SITE_URL}${heartPath(heartId, "en")}`);
@@ -348,6 +355,9 @@
 
 <svelte:head>
   <title>{pageTitle}</title>
+  {#if notFound}
+    <meta name="robots" content="noindex" />
+  {/if}
   <meta name="description" content={metaDescription} />
   <link rel="canonical" href={canonicalUrl} />
   <link rel="alternate" hreflang="da" href={canonicalDa} />
@@ -375,6 +385,17 @@
 <div class="detail-page">
   <PageHeader {lang} active="templates" />
 
+  {#if notFound}
+  <StatusPage
+    status={404}
+    title={t("heartNotFound", lang)}
+    text={t("heartNotFoundHint", lang)}
+    links={[
+      { href: routeHref("home", lang), label: t("heartNotFoundGallery", lang) },
+      { href: editorHref(lang), label: t("heartNotFoundEditor", lang) },
+    ]}
+  />
+  {:else}
   <main id="main-content" tabindex="-1">
   <Scene>
     <!-- The firs the heart hangs on, drawn over the landscape and anchored to the
@@ -456,6 +477,7 @@
     />
   {/if}
   </main>
+  {/if}
 
   {#if design && info}
     <TraceMode

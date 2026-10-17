@@ -19,3 +19,41 @@ export function firstSentence(text: string): string {
 	const match = /^[\s\S]*?[.!?](?=\s+[^\p{Ll}\s]|\s*$)/u.exec(trimmed);
 	return match ? match[0] : trimmed;
 }
+
+/** A sentence end, by the same rule as firstSentence(). */
+const SENTENCE_END = /[.!?](?=\s+[^\p{Ll}\s]|\s*$)/gu;
+
+/**
+ * `text` cut to at most `max` characters, for a meta description.
+ *
+ * It ends at the last sentence end that fits, so what is left reads as whole
+ * sentences. When not even the first sentence fits it is cut at the last word
+ * boundary that leaves room for an ellipsis, with any dangling comma, colon or
+ * dash dropped first. Text that already fits comes back trimmed and otherwise
+ * unchanged.
+ */
+export function truncateAtSentence(text: string, max: number): string {
+	const trimmed = text.trim();
+	if (trimmed.length <= max) return trimmed;
+
+	let end = 0;
+	for (const match of trimmed.matchAll(SENTENCE_END)) {
+		const after = match.index + 1;
+		if (after > max) break;
+		end = after;
+	}
+	if (end > 0) return trimmed.slice(0, end);
+
+	return truncateAtWord(trimmed, max);
+}
+
+/** `text` cut at a word boundary to at most `max` characters, "…" included. */
+export function truncateAtWord(text: string, max: number): string {
+	const trimmed = text.trim();
+	if (trimmed.length <= max) return trimmed;
+	if (max < 1) return '';
+	const room = trimmed.slice(0, max); // max - 1 characters of text, plus "…"
+	const space = room.search(/\s\S*$/);
+	const cut = space > 0 ? room.slice(0, space) : room.slice(0, max - 1);
+	return `${cut.replace(/[\s,;:–—-]+$/u, '')}…`;
+}

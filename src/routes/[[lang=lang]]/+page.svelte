@@ -25,6 +25,9 @@
   import { toGalleryHeart, type GalleryHeart, type HeroHeart } from "$lib/front/galleryHearts";
   import { SITE_TITLE, SITE_TITLE_EN } from "$lib/config";
   import { t, type Language } from "$lib/i18n";
+  import { heartAnchorFromHash } from "$lib/utils/heartAnchors";
+  import { focusSectionHeading } from "$lib/front/deleteFocus";
+  import { MY_HEARTS_CATEGORY_ID } from "$lib/data/categories";
   import { keepKnown, parseSelected, selectionSearch, toggleSelected } from "$lib/front/selection";
   import type { HeartDesign } from "$lib/types/heart";
   import { trackHeartView, trackHeartSelect } from "$lib/analytics";
@@ -62,7 +65,8 @@
   onMount(() => {
     userHearts = getUserCollection();
     // Read before the pruning below, which rewrites the URL.
-    pendingAnchorId = window.location.hash.slice(1) || null;
+    // Only a card's `#heart-<id>`: a category hash is the browser's own jump.
+    pendingAnchorId = heartAnchorFromHash(window.location.hash);
     // `?selected=` is shareable, so it can name hearts this browser does not
     // have (the sender's own, or one since deleted). Drop them now that every
     // heart on the page is known, so the badge, the button and the PDF agree
@@ -97,18 +101,30 @@
     }
   }
 
+  // <Modal> leaves focus to its caller. Cancelled, it goes back to the delete
+  // button that opened the dialog; confirmed, that button is gone with its card,
+  // so it goes to the "Mine hjerter" heading rather than falling to <body>.
+  let deleteOpener: HTMLElement | null = null;
+
   function requestDelete(heart: GalleryHeart) {
+    deleteOpener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     deleteCandidate = heart;
   }
 
-  function cancelDelete() {
+  async function cancelDelete() {
     deleteCandidate = null;
+    await tick();
+    deleteOpener?.focus();
+    deleteOpener = null;
   }
 
-  function confirmDelete() {
+  async function confirmDelete() {
     if (!deleteCandidate) return;
     handleDelete(deleteCandidate);
     deleteCandidate = null;
+    deleteOpener = null;
+    await tick();
+    focusSectionHeading(document.getElementById(MY_HEARTS_CATEGORY_ID));
   }
 
   let galleryCategories = $derived(
