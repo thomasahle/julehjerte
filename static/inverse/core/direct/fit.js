@@ -862,7 +862,11 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     if(!polished.imagePassed&&polished.originalImageError<=candidate.originalImageError)polished=recoverClampedCandidate(polished,{reserve:500,phase:'polishing'})||polished;
     // Additional parameters must improve the source fit. An unchanged
     // subdivision is not a useful replacement for the simpler incumbent.
-    const polishAccepted=polished.imagePassed&&(polished.outlineDetail?polished.originalImageError<candidate.originalImageError:polished.originalImageError<=candidate.originalImageError);
+    // Keep a better legal approximation even when neither fit meets the
+    // image limit. That limit still controls the final mismatch warning;
+    // it must not discard useful work or weaken geometry/paper/feature gates.
+    const polishValid=polished.geometryPassed&&polished.paperPassed&&polished.originalFeatures?.passed;
+    const polishAccepted=polishValid&&(polished.outlineDetail?polished.originalImageError<candidate.originalImageError:polished.originalImageError<=candidate.originalImageError);
     if(polished.outlineDetail)outlineDetail={...polished.outlineDetail,applied:polishAccepted,errorBefore:candidate.originalImageError,errorAfter:polished.originalImageError,steps:polished.steps,geometryPassed:polished.geometryPassed,paperStatus:polished.paper?.status};
     if(polishAccepted)candidate=polished;
   }
