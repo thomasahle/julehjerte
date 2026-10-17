@@ -14,7 +14,7 @@ production path.
 | Synthetic geometry | 256 saved witnesses pass the current geometry/paper re-audit across 768 original/subdivided/reflected representations | Limited procedural diversity; recipe holdouts are not topology-disjoint splits |
 | Small learned model | TorchVision ImageNet-pretrained MobileNetV3-Small with task-specific heads; offline experiments exist | No demonstrated overall reconstruction advantage, ONNX/browser validation or deployment |
 | Larger segmentation baseline | Official pretrained MobileSAM evaluated offline | A useful body mask alone does not establish correct corners, material boundaries or legal templates |
-| Solver | Recent initialization, repair and polishing fixes are committed | Full QA and browser verification of the latest runtime are incomplete; see below |
+| Solver | Recent initialization, repair and polishing fixes are committed | Latest browser verification passes; full inverse verification of the deadline fix is running; see below |
 
 ### Latest solver and browser validation
 
@@ -33,19 +33,30 @@ exceeded the image acceptance limit. Its [deterministic regression](late-polishi
 improves independently rendered export error from **4.89% to 4.02%**, while
 keeping the mismatch warning and geometry, paper and feature checks.
 
-The current serial QA run has passed type checking, lint and **874 application
-tests** (one skipped). The inverse suite is still running and has reproduced
-at least one clearance-initializer handoff failure: a useful checkpoint misses
-its work cutoff before final verification starts. This is unresolved. State
-and logs are in `tmp/heart-learning/late-polishing-release-v1/qa/`; planned
-browser workflows have not started. The preview remains stopped, and nothing
-has been pushed or deployed.
+The [complete QA run for the polishing fix](late-polishing-release-qa.json)
+passes type checking, lint, build, **874 application tests** (one skipped) and
+**1,037/1,038 inverse tests**. The remaining failure discards a useful clearance
+initializer before its final checks can begin, despite time remaining before
+the caller deadline. Commit `b7daccc` permits that bounded verification without
+extending the optimization cutoff or caller deadline. Its deterministic
+regression fails before the change; all **17 affected tests** pass afterward.
+
+Post-fix type checking, lint, build and **874 application tests** (one skipped)
+pass. All **30 browser workflows** pass, including **22/22 regular Hunodan
+designs under ten seconds** (5.72 s median, 8.62 s maximum, click to editable
+result). Compared with the preceding complete browser run, all crops and masks
+are identical; 18 editable exports are byte-identical and four have lower mask
+error. None has higher mask error. Small edge irregularities remain visible.
+Full inverse verification of `b7daccc` is running separately under
+`tmp/heart-learning/late-polishing-release-v1/qa-handoff/`. Nothing has been
+pushed or deployed.
 
 Earlier [30-workflow browser validation](late-feature-browser-qa.json) and
 [later slower follow-up](base-count-release-qa.json) describe their respective
-revisions. They do not prove that the latest runtime solves all 22 regular
-Hunodan designs within ten seconds. Likewise, the historical 31-photo benchmark
-is not automatically updated by a small fixed-crop experiment.
+revisions. The faster current timings are observations from a separate run,
+not evidence that the deadline correction caused the speed difference. These
+are development workflows, not a fresh holdout. The historical 31-photo
+benchmark is not automatically updated by this validation.
 
 ### Neural experiments
 

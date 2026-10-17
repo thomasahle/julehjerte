@@ -51,8 +51,63 @@ These reruns do not establish a cause or clear the full suite. The separate
 polishing bug above was found by controlling the remaining refinement time;
 it is not claimed to explain all five failures.
 
-Broader QA for `8149da2` is running serially at nice 15, with one application
-test worker, numerical thread pools limited to one, source hashes pinned,
-and a 10 GiB free-space floor. Its state and logs are under
-`tmp/heart-learning/late-polishing-release-v1/qa/`. Browser verification remains
-pending. Nothing has been pushed or deployed.
+The [completed broader QA for `8149da2`](late-polishing-release-qa.json) passes
+type checking, lint, build, 874 application tests (one skipped) and 1,037/1,038
+inverse tests. All five earlier unresolved failures pass, without establishing
+their earlier causes. One repaired-initializer handoff fails instead: its
+report has no completed final checks after the work cutoff.
+
+## Verification handoff correction
+
+The earlier retention correction only allowed an audit already in progress
+to finish after the reserved work cutoff. A completed refinement could still
+lose its useful checkpoint **before** final source/geometry/paper checks began.
+Those checks are necessary to continue fitting, and the caller still had time.
+
+Commit `b7daccc` charges that bounded verification to the caller deadline.
+It does not permit additional gradient steps, new initializers or routing
+search. The entry-time guard still requires enough work budget to begin the
+repair, and the caller deadline remains checked before returning a candidate.
+
+The new deterministic case stops after 45 gradient steps and advances its
+clock beyond the work cutoff before verification. It fails on the old code
+because no paper audit runs. It passes after the correction, alongside the
+existing control that rejects an audit completed after the caller deadline.
+All 17 affected tests pass, including the fresh-photo full-suite failure,
+weighted/symmetry constraints, crossings and exhausted budgets. Evidence is
+in `verification-handoff-before.log`, `verification-handoff-after.log` and
+`verification-handoff-controls.log` beneath the same local experiment folder.
+
+Type checking, lint, build and 874 application tests (one skipped) pass on the
+corrected runtime. All **30 browser workflows pass**: two original-photo
+uploads with rough selections, five smoke workflows, one observed-coverage
+edit/undo/redo/export workflow and the 22 regular Hunodan designs. The latter
+finish in **5.72 seconds median, 8.62 seconds maximum**, measured from the click
+to an enabled Open in Draw action with the normal application search budget.
+All 22 finish within ten seconds; the budget was not artificially set to ten.
+
+Against the preceding complete browser run (`7904e6f`), all 22 crop records and
+classified painting masks are unchanged. Eighteen native geometries and
+editable SVGs are byte-identical. Four exports have lower mask disagreement;
+none has higher error:
+
+| Hunodan design | Previous error | Current error |
+| --- | ---: | ---: |
+| hjfig-05 | 1.111875% | 1.015625% |
+| hjcur-02 | 0.830625% | 0.829375% |
+| hjstr-02 | 0.440625% | 0.440000% |
+| hjstr-03 | 0.830000% | 0.808125% |
+
+Before/after screenshots of all four changed cases were inspected, along with
+the selected star and dense-checker uploads. There is no obvious visual
+regression, but small border protrusions, uneven endpoints and wavy cell edges
+remain. The tiny score differences are not claimed as visible improvements.
+Error is measured against unchanged classified masks, not unknown original
+cutting paths. These are previously inspected development cases, and the
+faster observed timings cannot be attributed to this deadline fix alone.
+
+The [release record](late-polishing-release-qa.json) includes the comparison,
+source/log hashes and stage results under `qa-handoff/`. Full inverse
+verification of this correction is running separately. All heavy jobs stay
+serial at nice 15 with one numerical thread and a 10 GiB free-space floor.
+Nothing has been pushed or deployed.

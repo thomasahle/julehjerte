@@ -1,0 +1,761 @@
+{
+  "schema": "late-polishing-release-qa-1",
+  "runtimeCommit": "8149da2",
+  "status": "one-inverse-failure",
+  "applicationPassed": 874,
+  "applicationSkipped": 1,
+  "inverse": {
+    "tests": 1038,
+    "pass": 1037,
+    "fail": 1,
+    "cancelled": 0,
+    "skipped": 0
+  },
+  "failures": [
+    "fresh fitting continues an unfinished verified initializer within the remaining search allowance"
+  ],
+  "sourceFilesVerified": 1018,
+  "stages": [
+    {
+      "name": "check",
+      "command": [
+        "npm",
+        "run",
+        "check"
+      ],
+      "status": "passed",
+      "log": "check.log",
+      "pid": 21351,
+      "exitCode": 0,
+      "seconds": 11.458759541
+    },
+    {
+      "name": "lint",
+      "command": [
+        "npm",
+        "run",
+        "lint"
+      ],
+      "status": "passed",
+      "log": "lint.log",
+      "pid": 21913,
+      "exitCode": 0,
+      "seconds": 7.803969208000002
+    },
+    {
+      "name": "application",
+      "command": [
+        "node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "--maxWorkers=1"
+      ],
+      "status": "passed",
+      "log": "application.log",
+      "pid": 22148,
+      "exitCode": 0,
+      "seconds": 51.26648341599999
+    },
+    {
+      "name": "inverse",
+      "command": [
+        "npm",
+        "run",
+        "test:inverse"
+      ],
+      "status": "failed",
+      "log": "inverse.log",
+      "pid": 23691,
+      "exitCode": 1,
+      "seconds": 1185.352246083
+    },
+    {
+      "name": "build",
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "status": "passed",
+      "log": "build.log",
+      "pid": 59069,
+      "exitCode": 0,
+      "seconds": 18.692638624999972
+    }
+  ],
+  "browserVerification": "Not started; the single repair handoff failure is being investigated before rebuilding.",
+  "qualification": "The five previously outstanding inverse failures pass in this full run, but this does not establish their earlier causes. The remaining failure is a repaired-initializer verification handoff; report.checkpoints is empty after the work cutoff. No production-ready neural model or deployment.",
+  "artifacts": {
+    "tmp/heart-learning/late-polishing-release-v1/qa/state.json": {
+      "sha256": "8587358ef3c66b30ff6dce7001d1d96e1f203ff54a29a1d5e59f910813a5cd26",
+      "bytes": 1576
+    },
+    "tmp/heart-learning/late-polishing-release-v1/qa/source.json": {
+      "sha256": "068ab22d6a996d9a9aa3a8ccc2b5bc89d322e71b32403f31fa80c24ac7a2cd4b",
+      "bytes": 118173
+    },
+    "tmp/heart-learning/late-polishing-release-v1/qa/check.log": {
+      "sha256": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092",
+      "bytes": 13474
+    },
+    "tmp/heart-learning/late-polishing-release-v1/qa/lint.log": {
+      "sha256": "2b7add329ca80a0f26dcb26c7eb139cd28b3768793c6b0797002f91a54119a34",
+      "bytes": 519
+    },
+    "tmp/heart-learning/late-polishing-release-v1/qa/application.log": {
+      "sha256": "5e6675b78faa8235017f82212ed9d8e2735e0e25ee624cab59b8751739c3865e",
+      "bytes": 258
+    },
+    "tmp/heart-learning/late-polishing-release-v1/qa/inverse.log": {
+      "sha256": "932d276b23b24588158d772493e094c697a893332b2caa1d9eb2c1df84c49626",
+      "bytes": 101387
+    },
+    "tmp/heart-learning/late-polishing-release-v1/qa/build.log": {
+      "sha256": "7243719e6131249808a95e02af20dad45537fe234c604bc1a5465d0ea13f6ae2",
+      "bytes": 26115
+    }
+  },
+  "verificationHandoffFollowup": {
+    "runtimeCommit": "b7daccc12eb56887cd1006e0c75f1edd2053391c",
+    "status": "application-build-browser-pass-full-inverse-running",
+    "tests": {
+      "verification-handoff-before.log": {
+        "tests": 1,
+        "pass": 0,
+        "fail": 1,
+        "sha256": "ca49efe3419810cae37a605e2eb5f91692800c41c3a46b59b6746389813ace5b",
+        "bytes": 1073
+      },
+      "verification-handoff-after.log": {
+        "tests": 9,
+        "pass": 9,
+        "fail": 0,
+        "sha256": "aa9cdd65774256a3cefcbcf110cf97136eff01f46bee5ec66ead5f318fcfef3a",
+        "bytes": 1017
+      },
+      "verification-handoff-controls.log": {
+        "tests": 8,
+        "pass": 8,
+        "fail": 0,
+        "sha256": "46d4263683c0dc14aeeb71f93b021cc13c9d05b30e0a8745ca2e1c4d16ca9685",
+        "bytes": 953
+      }
+    },
+    "artifactRoot": "tmp/heart-learning/late-polishing-release-v1",
+    "changes": "Keep the original optimization and entry-time cutoffs; allow the bounded source/geometry/paper verification before the caller deadline. No extra gradient steps or accepted physical/feature failures.",
+    "applicationAndBuildState": "tmp/heart-learning/late-polishing-release-v1/qa-handoff/state.json",
+    "browserPlan": "tmp/heart-learning/late-polishing-release-v1/qa-handoff/browser-plan.json",
+    "applicationAndBuild": {
+      "applicationPassed": 874,
+      "applicationSkipped": 1,
+      "status": "complete",
+      "pid": 65987,
+      "stages": [
+        {
+          "name": "check",
+          "command": [
+            "npm",
+            "run",
+            "check"
+          ],
+          "status": "passed",
+          "log": "check.log",
+          "pid": 66017,
+          "exitCode": 0,
+          "seconds": 9.018765042
+        },
+        {
+          "name": "lint",
+          "command": [
+            "npm",
+            "run",
+            "lint"
+          ],
+          "status": "passed",
+          "log": "lint.log",
+          "pid": 66298,
+          "exitCode": 0,
+          "seconds": 6.483484875
+        },
+        {
+          "name": "application",
+          "command": [
+            "node",
+            "node_modules/vitest/vitest.mjs",
+            "run",
+            "--maxWorkers=1"
+          ],
+          "status": "passed",
+          "log": "application.log",
+          "pid": 66480,
+          "exitCode": 0,
+          "seconds": 44.708276667
+        },
+        {
+          "name": "build",
+          "command": [
+            "npm",
+            "run",
+            "build"
+          ],
+          "status": "passed",
+          "log": "build.log",
+          "pid": 67814,
+          "exitCode": 0,
+          "seconds": 15.572016957999999
+        }
+      ],
+      "scope": "Post-handoff fix: check, lint, application tests with one worker, build. Seventeen focused inverse tests passed separately; complete inverse suite will run separately. No browser QA in this controller.",
+      "sourceFiles": 1018,
+      "priority": 15,
+      "minimumFreeGiB": 10
+    },
+    "browserVerification": {
+      "status": "complete",
+      "pid": 69435,
+      "stages": [
+        {
+          "name": "browser-selected",
+          "status": "passed",
+          "pid": 69490,
+          "exitCode": 0,
+          "seconds": 35.195369625
+        },
+        {
+          "name": "browser-smoke",
+          "status": "passed",
+          "pid": 70492,
+          "exitCode": 0,
+          "seconds": 34.053484624999996
+        },
+        {
+          "name": "browser-coverage",
+          "status": "passed",
+          "pid": 71474,
+          "exitCode": 0,
+          "seconds": 23.867707749999994
+        },
+        {
+          "name": "browser-hunodan",
+          "status": "passed",
+          "pid": 72203,
+          "exitCode": 0,
+          "seconds": 187.531088458,
+          "cases": 22,
+          "functionalPasses": 22,
+          "withinTenSeconds": 22,
+          "medianSeconds": 5.717499999999999,
+          "maximumSeconds": 8.6195
+        }
+      ],
+      "sourceFiles": 1024,
+      "origin": "http://127.0.0.1:5232",
+      "priority": 15,
+      "previewPid": 69463,
+      "previewStopped": true,
+      "workflows": 30,
+      "workflowPasses": 30,
+      "scope": "Two original-photo uploads with rough selections, five smoke workflows, one observed-coverage edit/undo/redo/export workflow, and 22 regular Hunodan designs. Actual UI, production worker and editable SVG checks.",
+      "timing": "Actual click to enabled Open in Draw, using normal application search allowance; no injected ten-second budget."
+    },
+    "browserComparison": {
+      "schema": "late-polishing-browser-comparison-1",
+      "before": "7904e6f77b883f02aa9293232a86fa3c063b313c",
+      "after": "b7daccc12eb56887cd1006e0c75f1edd2053391c",
+      "cases": 22,
+      "functionalPasses": 22,
+      "withinTenSeconds": 22,
+      "medianSeconds": 5.717499999999999,
+      "maximumSeconds": 8.6195,
+      "identicalMasks": 22,
+      "identicalCrops": 22,
+      "identicalGeometry": 18,
+      "identicalEditable": 18,
+      "errorIncreases": 0,
+      "errorDecreases": 4,
+      "maximumIncrease": 0.0,
+      "rows": [
+        {
+          "name": "hunodan-hjfig-01",
+          "passed": true,
+          "selectedCounts": [
+            2,
+            2
+          ],
+          "templateChecksPassed": true,
+          "beforeError": 0.0112625,
+          "afterError": 0.0112625,
+          "errorDelta": 0.0,
+          "beforeSeconds": 9.2285,
+          "afterSeconds": 4.076399999856949,
+          "samePaintingMask": true,
+          "sameCrop": true,
+          "sameGeometry": true,
+          "sameEditable": true
+        },
+        {
+          "name": "hunodan-hjfig-02",
+          "passed": true,
+          "selectedCounts": [
+            2,
+            2
+          ],
+          "templateChecksPassed": true,
+          "beforeError": 0.00548125,
+          "afterError": 0.00548125,
+          "errorDelta": 0.0,
+          "beforeSeconds": 7.6275,
+          "afterSeconds": 3.7285,
+          "samePaintingMask": true,
+          "sameCrop": true,
+          "sameGeometry": true,
+          "sameEditable": true
+        },
+        {
+          "name": "hunodan-hjfig-03",
+          "passed": true,
+          "selectedCounts": [
+            2,
+            2
+          ],
+          "templateChecksPassed": true,
+          "beforeError": 0.00825,
+          "afterError": 0.00825,
+          "errorDelta": 0.0,
+          "beforeSeconds": 10.240099999904633,
+          "afterSeconds": 4.310099999904633,
+          "samePaintingMask": true,
+          "sameCrop": true,
+          "sameGeometry": true,
+          "sameEditable": true
+        },
+        {
+          "name": "hunodan-hjfig-04",
+          "passed": true,
+          "selectedCounts": [
+            2,
+            2
+          ],
+          "templateChecksPassed": true,
+          "beforeError": 0.01473125,
+          "afterError": 0.01473125,
+          "errorDelta": 0.0,
+          "beforeSeconds": 12.443900000095367,
+          "afterSeconds": 4.441,
+          "samePaintingMask": true,
+          "sameCrop": true,
+          "sameGeometry": true,
+          "sameEditable": true
+        },
+        {
+          "name": "hunodan-hjfig-05",
+          "passed": true,
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "templateChecksPassed": true,
+          "beforeError": 0.01111875,
+          "afterError": 0.01015625,
+          "errorDelta": -0.0009624999999999998,
+          "beforeSeconds": 12.307400000095367,
+          "afterSeconds": 5.7475,
+          "samePaintingMask": true,
+          "sameCrop": true,
+          "sameGeometry": false,
+          "sameEditable": false
+        },
+        {
+          "name": "hunodan-hjfla-01",
+          "passed": true,
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "templateChecksPassed": true,
+          "beforeError": 0.0093375,
+          "afterError": 0.0093375,
+          "errorDelta": 0.0,
+          "beforeSeconds": 14.679400000095367,
+          "afterSeconds": 6.295099999904632,
+          "samePaintingMask": true,
+          "sameCrop": true,
+          "sameGeometry": true,
+          "sameEditable": true
+        },
+        {
+          "name": "hunodan-hjcur-01",
+          "passed": true,
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "templateChecksPassed": true,
+          "beforeError": 0.00723125,
+          "afterError": 0.00723125,
+          "errorDelta": 0.0,
+          "beforeSeconds": 14.803700000047684,
+          "afterSeconds": 5.623700000047684,
+          "samePaintingMask": true,
+          "sameCrop": true,
+          "sameGeometry": true,
+          "sameEditable": true
+        },
+        {
+          "name": "hunodan-hjcur-02",
+          "passed": true,
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "templateChecksPassed": true,
+          "beforeError": 0.00830625,
+          "afterError": 0.00829375,
+          "errorDelta": -1.2499999999998623e-05,
+          "beforeSeconds": 20.72559999990463,
+          "afterSeconds": 6.887799999952316,
+          "samePaintingMask": true,
+          "sameCrop": true,
+          "sameGeometry": false,
+          "sameEditable": false
+        },
+        {
+          "name": "hunodan-hjcur-03",
+          "passed": true,
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "templateChecksPassed": true,
+          "beforeError": 0.0086375,
+          "afterError": 0.0086375,
+          "errorDelta": 0.0,
+          "beforeSeconds": 13.633900000095368,
+          "afterSeconds": 5.440400000095368,
+          "samePaintingMask": true,
+          "sameCrop": true,
+          "sameGeometry": true,
+          "sameEditable": true
+        },
+        {
+          "name": "hunodan-hjcur-04",
+          "passed": true,
+          "selectedCounts": [
+            6,
+            6
+          ],
+          "templateChecksPassed": true,
+          "beforeError": 0.0104,
+          "afterError": 0.0104,
+          "errorDelta": 0.0,
+          "beforeSeconds": 15.404700000047685,
+          "afterSeconds": 7.656,
+          "samePaintingMask": true,
+          "sameCrop": true,
+          "sameGeometry": true,
+          "sameEditable": true
+        },
+        {
+          "name": "hunodan-hjcur-05",
+          "passed": true,
+          "selectedCounts": [
+            2,
+            2
+          ],
+          "templateChecksPassed": true,
+          "beforeError": 0.0110375,
+          "afterError": 0.0110375,
+          "errorDelta": 0.0,
+          "beforeSeconds": 9.143800000190735,
+          "afterSeconds": 4.191,
+          "samePaintingMask": true,
+          "sameCrop": true,
+          "sameGeometry": true,
+          "sameEditable": true
+        },
+        {
+          "name": "hunodan-hjhih-01",
+          "passed": true,
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "templateChecksPassed": true,
+          "beforeError": 0.00824375,
+          "afterError": 0.00824375,
+          "errorDelta": 0.0,
+          "beforeSeconds": 16.971799999952317,
+          "afterSeconds": 6.6835,
+          "samePaintingMask": true,
+          "sameCrop": true,
+          "sameGeometry": true,
+          "sameEditable": true
+        },
+        {
+          "name": "hunodan-hjhih-02",
+          "passed": true,
+          "selectedCounts": [
+            3,
+            3
+          ],
+          "templateChecksPassed": true,
+          "beforeError": 0.00619375,
+          "afterError": 0.00619375,
+          "errorDelta": 0.0,
+          "beforeSeconds": 14.116,
+          "afterSeconds": 5.433699999809265,
+          "samePaintingMask": true,
+          "sameCrop": true,
+          "sameGeometry": true,
+          "sameEditable": true
+        },
+        {
+          "name": "hunodan-hjhih-04",
+          "passed": true,
+          "selectedCounts": [
+            5,
+            5
+          ],
+          "templateChecksPassed": true,
+          "beforeError": 0.01061875,
+          "afterError": 0.01061875,
+          "errorDelta": 0.0,
+          "beforeSeconds": 16.153100000143052,
+          "afterSeconds": 7.692599999904632,
+          "samePaintingMask": true,
+          "sameCrop": true,
+          "sameGeometry": true,
+          "sameEditable": true
+        },
+        {
+          "name": "hunodan-hjstr-01",
+          "passed": true,
+          "selectedCounts": [
+            3,
+            3
+          ],
+          "templateChecksPassed": true,
+          "beforeError": 0.01006875,
+          "afterError": 0.01006875,
+          "errorDelta": 0.0,
+          "beforeSeconds": 9.14310000014305,
+          "afterSeconds": 4.933,
+          "samePaintingMask": true,
+          "sameCrop": true,
+          "sameGeometry": true,
+          "sameEditable": true
+        },
+        {
+          "name": "hunodan-hjstr-02",
+          "passed": true,
+          "selectedCounts": [
+            5,
+            5
+          ],
+          "templateChecksPassed": true,
+          "beforeError": 0.00440625,
+          "afterError": 0.0044,
+          "errorDelta": -6.249999999999312e-06,
+          "beforeSeconds": 12.575400000095367,
+          "afterSeconds": 6.4255,
+          "samePaintingMask": true,
+          "sameCrop": true,
+          "sameGeometry": false,
+          "sameEditable": false
+        },
+        {
+          "name": "hunodan-hjstr-03",
+          "passed": true,
+          "selectedCounts": [
+            7,
+            7
+          ],
+          "templateChecksPassed": true,
+          "beforeError": 0.0083,
+          "afterError": 0.00808125,
+          "errorDelta": -0.0002187500000000002,
+          "beforeSeconds": 15.873399999856948,
+          "afterSeconds": 8.6195,
+          "samePaintingMask": true,
+          "sameCrop": true,
+          "sameGeometry": false,
+          "sameEditable": false
+        },
+        {
+          "name": "hunodan-hjsta-01",
+          "passed": true,
+          "selectedCounts": [
+            2,
+            2
+          ],
+          "templateChecksPassed": true,
+          "beforeError": 0.009175,
+          "afterError": 0.009175,
+          "errorDelta": 0.0,
+          "beforeSeconds": 12.819099999904633,
+          "afterSeconds": 5.6875,
+          "samePaintingMask": true,
+          "sameCrop": true,
+          "sameGeometry": true,
+          "sameEditable": true
+        },
+        {
+          "name": "hunodan-hjsta-02",
+          "passed": true,
+          "selectedCounts": [
+            3,
+            3
+          ],
+          "templateChecksPassed": true,
+          "beforeError": 0.00216875,
+          "afterError": 0.00216875,
+          "errorDelta": 0.0,
+          "beforeSeconds": 8.619,
+          "afterSeconds": 4.332700000047684,
+          "samePaintingMask": true,
+          "sameCrop": true,
+          "sameGeometry": true,
+          "sameEditable": true
+        },
+        {
+          "name": "hunodan-hjsta-03",
+          "passed": true,
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "templateChecksPassed": true,
+          "beforeError": 0.01418125,
+          "afterError": 0.01418125,
+          "errorDelta": 0.0,
+          "beforeSeconds": 15.012599999904632,
+          "afterSeconds": 8.3655,
+          "samePaintingMask": true,
+          "sameCrop": true,
+          "sameGeometry": true,
+          "sameEditable": true
+        },
+        {
+          "name": "hunodan-hjsta-04",
+          "passed": true,
+          "selectedCounts": [
+            5,
+            5
+          ],
+          "templateChecksPassed": true,
+          "beforeError": 0.0063625,
+          "afterError": 0.0063625,
+          "errorDelta": 0.0,
+          "beforeSeconds": 14.888599999904633,
+          "afterSeconds": 7.093199999809265,
+          "samePaintingMask": true,
+          "sameCrop": true,
+          "sameGeometry": true,
+          "sameEditable": true
+        },
+        {
+          "name": "hunodan-hjsta-05",
+          "passed": true,
+          "selectedCounts": [
+            4,
+            4
+          ],
+          "templateChecksPassed": true,
+          "beforeError": 0.01328125,
+          "afterError": 0.01328125,
+          "errorDelta": 0.0,
+          "beforeSeconds": 11.676799999952316,
+          "afterSeconds": 6.556799999952316,
+          "samePaintingMask": true,
+          "sameCrop": true,
+          "sameGeometry": true,
+          "sameEditable": true
+        }
+      ],
+      "qualification": "Previously inspected development workflows. Timing differences are observed on different runs and are not attributed to the deadline/selection changes. Pixel disagreement is against each unchanged classified painting mask, not unavailable cutting-path ground truth."
+    },
+    "visualReview": {
+      "inspected": [
+        "real-ca2f9adc67ee4cea-roi",
+        "real-f1af2fbb127278e4-roi",
+        "hunodan-hjfig-05",
+        "hunodan-hjcur-02",
+        "hunodan-hjstr-02",
+        "hunodan-hjstr-03"
+      ],
+      "comparison": "All four changed Hunodan result screenshots compared against the previous complete browser run; no obvious visual deterioration. Tiny numerical error decreases are not claimed as perceptible improvements.",
+      "remainingDefects": "Selected star retains small border protrusions and curved joins; dense checker retains irregular boundary cells. Hunodan hjcur-02 has uneven strip endpoints near the top; hjstr-02 has small border nicks/protrusions; hjstr-03 has slightly uneven straight edges. No claim of exact ground-truth recovery."
+    },
+    "fullInverse": {
+      "status": "running",
+      "state": "tmp/heart-learning/late-polishing-release-v1/qa-handoff/inverse-state.json",
+      "log": "tmp/heart-learning/late-polishing-release-v1/qa-handoff/inverse.log"
+    },
+    "artifacts": {
+      "tmp/heart-learning/late-polishing-release-v1/qa-handoff/state.json": {
+        "sha256": "100838f10ff0aa7af0dca5da0222f013ab1e44b8ddba65a5be182519ede27352",
+        "bytes": 1339
+      },
+      "tmp/heart-learning/late-polishing-release-v1/qa-handoff/source.json": {
+        "sha256": "5a479b2012c922280b1dfbd5d10f0c4834b8ec942fcf56bd5f092c47189fde8c",
+        "bytes": 118173
+      },
+      "tmp/heart-learning/late-polishing-release-v1/qa-handoff/check.log": {
+        "sha256": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092",
+        "bytes": 13474
+      },
+      "tmp/heart-learning/late-polishing-release-v1/qa-handoff/lint.log": {
+        "sha256": "2b7add329ca80a0f26dcb26c7eb139cd28b3768793c6b0797002f91a54119a34",
+        "bytes": 519
+      },
+      "tmp/heart-learning/late-polishing-release-v1/qa-handoff/application.log": {
+        "sha256": "523a2bcc229c7b45034b7560fade6391cbc7679eaf9a8b0b88c68a56b4939e9b",
+        "bytes": 258
+      },
+      "tmp/heart-learning/late-polishing-release-v1/qa-handoff/build.log": {
+        "sha256": "9bd2cf7717f0629108e7d2154a7499f496accc3ccf2e5ab3e81a231a320d3b63",
+        "bytes": 26133
+      },
+      "tmp/heart-learning/late-polishing-release-v1/qa-handoff/browser-state.json": {
+        "sha256": "e7ac7c75db02320f25555f09fe01193556d8bf4cb6ed3e849716a73e1775fcec",
+        "bytes": 926
+      },
+      "tmp/heart-learning/late-polishing-release-v1/qa-handoff/browser-plan.json": {
+        "sha256": "4dd213bb7a6b4129aac4701449ce5000c9c67974340c36d03623c152bbadd8bc",
+        "bytes": 3312
+      },
+      "tmp/heart-learning/late-polishing-release-v1/qa-handoff/browser-run.py": {
+        "sha256": "adf866d15a955c3be6c49bc61c7a7057a137dc698f048bf9cc885c9a5dd0abd1",
+        "bytes": 6510
+      },
+      "tmp/heart-learning/late-polishing-release-v1/qa-handoff/browser-selected/results.json": {
+        "sha256": "ac8f25087096bfeb23a0ca753340ada32b090932cc690173185362f7242e65e2",
+        "bytes": 290230
+      },
+      "tmp/heart-learning/late-polishing-release-v1/qa-handoff/browser-smoke/results.json": {
+        "sha256": "ee7282724780e1fd10a50ab3b31414419ea3e2556c1d35e431e7fefe02d500fc",
+        "bytes": 219446
+      },
+      "tmp/heart-learning/late-polishing-release-v1/qa-handoff/browser-coverage/results.json": {
+        "sha256": "3a41a2737309a7d4c3aba124d9d05100ce31b65abb5c8d4a58859fbfb2865175",
+        "bytes": 76204
+      },
+      "tmp/heart-learning/late-polishing-release-v1/qa-handoff/browser-hunodan/results.json": {
+        "sha256": "22439a3c55a79af31259c03839aa803d3f31227538ddb59910105a67d7801233",
+        "bytes": 702017
+      },
+      "tmp/heart-learning/late-polishing-release-v1/qa-handoff/inverse-run.py": {
+        "sha256": "083fe6388b3b9dce85a6b6a146a1ff7507ba06eb458e0ed5b87048fe101c54b9",
+        "bytes": 3200
+      },
+      "tmp/heart-learning/late-polishing-release-v1/browser-comparison.json": {
+        "sha256": "16b86dde80bf1e3478869211b4501a610ec6f39d0bbc8c50c5855735dfd77f3c",
+        "bytes": 10459
+      },
+      "tmp/heart-learning/late-polishing-release-v1/compare-browser.py": {
+        "sha256": "54f017644b8cece2b169f890c3c6147634453bf7ae008903a598fb192b34ef34",
+        "bytes": 2661
+      }
+    }
+  }
+}
