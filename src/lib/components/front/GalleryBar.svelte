@@ -264,20 +264,24 @@
 		const chip = row.querySelectorAll('.chip')[index];
 		// jsdom has no layout and no Element.scrollTo.
 		if (!(chip instanceof HTMLElement) || typeof row.scrollTo !== 'function') return;
+		// In the row's own content coordinates (the row is the chips'
+		// offsetParent), not screen rects: during the row's smooth scroll
+		// WebKit's scrollLeft can already report where it is going while the
+		// chips are still drawn where they were, so a rect-based delta added
+		// to scrollLeft overshot. Offsets do not move with the scroll. The
+		// jump is instant, not the row's smooth scroll: WebKit cut that short
+		// when the row narrowed under it (the wordmark coming in as the bar
+		// sticks), and the row stopped part-way with the chip still cut off.
 		const reveal = () => {
-			const rowBox = row.getBoundingClientRect();
 			const style = getComputedStyle(row);
-			const chipBox = chip.getBoundingClientRect();
+			const view = row.scrollLeft;
 			const left = chipRowScroll(
-				chipBox.left,
-				chipBox.right,
-				rowBox.left + parseFloat(style.paddingLeft),
-				rowBox.right - parseFloat(style.paddingRight)
+				chip.offsetLeft,
+				chip.offsetLeft + chip.offsetWidth,
+				view + parseFloat(style.paddingLeft),
+				view + row.clientWidth - parseFloat(style.paddingRight)
 			);
-			// An absolute target (the delta plus where the row is now, read in
-			// the same frame), so calling this again in the middle of the
-			// row's smooth scroll aims at the same place instead of adding up.
-			if (Math.abs(left) >= 1) row.scrollTo({ left: row.scrollLeft + left });
+			if (Math.abs(left) >= 1) row.scrollTo({ left: view + left, behavior: 'instant' });
 		};
 		reveal();
 		// The wordmark takes its room over 150ms once the bar sticks.
@@ -344,7 +348,7 @@
 	{#snippet getButton()}
 		<button type="button" class="get" onclick={onDownload}>
 			<DownloadIcon size={16} />
-			{t('printSelected', lang)}
+			<span class="get-label">{t('printSelected', lang)}</span>
 			<span class="get-count">{selectedCount}</span>
 		</button>
 	{/snippet}
@@ -436,6 +440,8 @@
 	/* The row scrolls sideways when the chips do not fit (a phone), without a
 	   scrollbar: the cut-off chip at the edge already says there is more. */
 	.chips {
+		/* The chips' offsetParent, for keeping the current one in sight. */
+		position: relative;
 		flex: 1 1 auto;
 		min-width: 0;
 		display: flex;
@@ -614,6 +620,22 @@
 
 		.stuck .wordmark {
 			margin-right: 0;
+		}
+
+		/* Stuck, the wordmark and the full button would leave the chips less
+		   than one chip's width (89px on an iPhone 13), so no current chip
+		   could be shown whole. The button keeps its icon and count there;
+		   its name stays for screen readers, as with Tailwind's sr-only. */
+		.stuck .get-label {
+			position: absolute;
+			width: 1px;
+			height: 1px;
+			padding: 0;
+			margin: -1px;
+			overflow: hidden;
+			clip: rect(0, 0, 0, 0);
+			white-space: nowrap;
+			border: 0;
 		}
 	}
 </style>
