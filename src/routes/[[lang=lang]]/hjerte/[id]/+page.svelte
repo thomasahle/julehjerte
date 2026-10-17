@@ -38,7 +38,7 @@
     SITE_NAME,
     SITE_URL,
   } from "$lib/config";
-  import { heartPageTitle, socialImage } from "$lib/seo";
+  import { heartMetaDescription, heartPageTitle, socialImage } from "$lib/seo";
   import { stripsLabel as formatStrips, t, type Language } from "$lib/i18n";
   import { editorHref, heartPath, homeAnchorHref, href as routeHref } from "$lib/i18n/routes";
   import { lobesShareTemplate } from "$lib/utils/symmetry";
@@ -46,7 +46,6 @@
   import { normalizeHeartDesign, serializeHeartDesign } from "$lib/utils/heartDesign";
   import { decodeSharedDesign, encodeSharedDesign, sharedDesignUrl } from "$lib/utils/shareDesign";
   import { makeHeartAnchorId } from "$lib/utils/heartAnchors";
-  import { firstSentence } from "$lib/utils/text";
   import type { HeartDesign, HeartInfo } from "$lib/types/heart";
   import { trackHeartShare, trackHeartEdit } from "$lib/analytics";
 
@@ -181,15 +180,13 @@
   );
   let metaDescription = $derived.by(() => {
     if (!info) return lang === "en" ? SITE_DESCRIPTION_EN : SITE_DESCRIPTION;
-    const intro = t("heartMetaDescription", lang, {
-      name: info.name,
-      x: info.gridSize.x,
-      y: info.gridSize.y,
-    });
-    // Only the opening sentence: the panel's paragraph runs to four of them, and a
-    // search result shows about 160 characters.
-    const details = description ? firstSentence(description).replace(/[.!?]?$/, ".") : null;
-    return [intro, details, t("heartMetaDownload", lang)].filter(Boolean).join(" ");
+    // As many whole sentences of the panel's paragraph as fit in a search
+    // result; the paragraph on the page keeps all of them.
+    return heartMetaDescription(
+      { name: info.name, x: info.gridSize.x, y: info.gridSize.y },
+      description,
+      lang,
+    );
   });
   let canonicalDa = $derived(`${SITE_URL}${heartPath(heartId, "da")}`);
   let canonicalEn = $derived(`${SITE_URL}${heartPath(heartId, "en")}`);
