@@ -1256,7 +1256,16 @@
       "passed": 2,
       "failed": 0
     },
-    "fullQA": "pending",
+    "fullQA": {
+      "status": "passed",
+      "report": "docs/inverse/datasets/late-feature-browser-qa.json",
+      "runtimeCommit": "fd85519",
+      "applicationPassed": 874,
+      "applicationSkipped": 1,
+      "inversePassed": 1022,
+      "browserWorkflowsPassed": 30,
+      "sourceFilesVerified": 1041
+    },
     "focusedTests": {
       "passed": 25,
       "failed": 0,
