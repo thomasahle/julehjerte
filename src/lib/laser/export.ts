@@ -4,7 +4,7 @@
  * settings and hands them here, so everything it shows can be tested without it.
  */
 import type { HeartDesign } from '$lib/types/heart';
-import { lobesShareTemplate } from '$lib/utils/symmetry';
+import { lobesShareTemplate, SHARED_TEMPLATE_LOBE } from '$lib/utils/symmetry';
 import { serializeLaserDxf } from './dxf';
 import { layoutSheet, type LaserSheet, type SheetSize } from './sheet';
 import { serializeLaserSvg } from './svg';
@@ -40,7 +40,7 @@ export interface LaserRequest {
 	/**
 	 * The lobe to cut. A heart's two halves are cut from two colours of paper,
 	 * so one sheet (one colour) holds one lobe's pieces. Ignored for a heart
-	 * whose lobes share a template: its pieces are all the left one.
+	 * whose lobes share a template: its pieces are all `SHARED_TEMPLATE_LOBE`'s.
 	 */
 	lobe: TemplateLobe;
 }
@@ -52,7 +52,7 @@ export interface LaserHeart {
 	pair: [UnfoldedPiece, UnfoldedPiece];
 	/** Both lobes are one piece, so the sheet serves either colour. */
 	shared: boolean;
-	/** The lobe of this heart on the sheet: the request's, or the left when shared. */
+	/** The lobe of this heart on the sheet: the request's, or `SHARED_TEMPLATE_LOBE` when shared. */
 	lobe: TemplateLobe;
 }
 
@@ -63,7 +63,7 @@ export interface LaserPlan extends LaserSheet {
 	pair: [UnfoldedPiece, UnfoldedPiece];
 	/** Every heart's lobes are one piece, so the sheet serves either colour and needs no lobe choice. */
 	shared: boolean;
-	/** The lobe asked for, or the left when every heart is shared. */
+	/** The lobe asked for, or `SHARED_TEMPLATE_LOBE` when every heart is shared. */
 	lobe: TemplateLobe;
 	piecesRequested: number;
 	piecesFit: number;
@@ -75,16 +75,18 @@ export function clamp(n: number, min: number, max: number): number {
 
 function laserHeart(design: HeartDesign, widthMm: number, lobe: TemplateLobe): LaserHeart {
 	const shared = lobesShareTemplate(design.fingers, design.gridSize);
-	const left = unfoldPiece(design, 'left', widthMm);
-	const right = shared ? left : unfoldPiece(design, 'right', widthMm);
-	return { design, pair: [left, right], shared, lobe: shared ? 'left' : lobe };
+	if (shared) {
+		const one = unfoldPiece(design, SHARED_TEMPLATE_LOBE, widthMm);
+		return { design, pair: [one, one], shared, lobe: SHARED_TEMPLATE_LOBE };
+	}
+	return { design, pair: [unfoldPiece(design, 'left', widthMm), unfoldPiece(design, 'right', widthMm)], shared, lobe };
 }
 
 /**
  * `count` pieces of one lobe per heart, laid out on the sheet, heart by heart
  * in the order given. A heart whose lobes share a template (`lobesShareTemplate`)
- * is cut from the left piece whichever lobe is asked for, as the PDF prints one
- * template for both; the lobe asked for applies to every other heart.
+ * is cut from `SHARED_TEMPLATE_LOBE`'s piece whichever lobe is asked for, the
+ * one template the PDF prints for both; the lobe asked for applies to every other heart.
  */
 export function planLaserSheet(
 	designs: HeartDesign | readonly HeartDesign[],
@@ -106,7 +108,7 @@ export function planLaserSheet(
 		hearts,
 		pair: hearts[0]!.pair,
 		shared,
-		lobe: shared ? 'left' : request.lobe,
+		lobe: shared ? SHARED_TEMPLATE_LOBE : request.lobe,
 		piecesRequested: wanted.length,
 		piecesFit: layout.fitted
 	};

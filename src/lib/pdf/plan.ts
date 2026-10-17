@@ -13,7 +13,7 @@ import { ALL_HEART_IDS } from '$lib/data/categories';
 import { t, type Language } from '$lib/i18n';
 import { heartScale } from '$lib/laser/unfold';
 import { layoutSheet, type Placement, type SheetSize } from '$lib/laser/sheet';
-import { lobesShareTemplate } from '$lib/utils/symmetry';
+import { lobesShareTemplate, SHARED_TEMPLATE_LOBE } from '$lib/utils/symmetry';
 import { getTemplateData, type TemplateLobe } from '$lib/utils/templateSvg';
 import { layoutEar, picturePixels, type EarLayout, type MeasureText } from './earLayout';
 
@@ -80,7 +80,7 @@ export function templatePair(design: HeartDesign, widthMm: number): [TemplatePie
 		};
 	};
 	if (shared) {
-		const one = piece('right');
+		const one = piece(SHARED_TEMPLATE_LOBE);
 		return [one, one];
 	}
 	return [piece('left'), piece('right')];

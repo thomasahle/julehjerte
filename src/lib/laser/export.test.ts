@@ -10,15 +10,34 @@ import { coord, formatMm } from './format';
 import { SHEETS } from './sheet';
 import { loadHeart } from './testHearts';
 import { getGalleryDesign } from '$lib/data/heartDesigns';
+import { templatePair } from '$lib/pdf/plan';
+import { SHARED_TEMPLATE_LOBE } from '$lib/utils/symmetry';
 
 describe('planLaserSheet', () => {
-	it('cuts a shared-template heart from the left piece, whichever lobe is asked for', () => {
+	it('cuts a shared-template heart from the piece the PDF prints, whichever lobe is asked for', () => {
 		const heart = loadHeart('classic-3x3');
-		const plan = planLaserSheet(heart, { widthMm: 80, count: 2, sheet: SHEETS.A4, lobe: 'right' });
-		expect(plan.shared).toBe(true);
-		expect(plan.lobe).toBe('left');
-		expect(plan.pieces.map((p) => p.piece.lobe)).toEqual(['left', 'left']);
-		expect(plan.piecesFit).toBe(2);
+		for (const lobe of ['left', 'right'] as const) {
+			const plan = planLaserSheet(heart, { widthMm: 80, count: 2, sheet: SHEETS.A4, lobe });
+			expect(plan.shared).toBe(true);
+			expect(plan.lobe).toBe(SHARED_TEMPLATE_LOBE);
+			expect(plan.pieces.map((p) => p.piece.lobe)).toEqual([SHARED_TEMPLATE_LOBE, SHARED_TEMPLATE_LOBE]);
+			expect(plan.piecesFit).toBe(2);
+		}
+	});
+
+	it('gives a shared heart whose halves differ slightly the width and strips of the PDF template', () => {
+		// Stjerne-ramme's two halves share a template but its fingers span 675
+		// against 671.4 units, so which half is taken shows at 60 mm.
+		const design = getGalleryDesign('stjerne-ramme')!;
+		const [printed] = templatePair(design, 60);
+		for (const lobe of ['left', 'right'] as const) {
+			const plan = planLaserSheet(design, { widthMm: 60, count: 1, sheet: SHEETS.A4, lobe });
+			const cut = plan.pieces[0]!.piece;
+			expect(cut.lobe).toBe(printed.lobe);
+			expect(cut.widthMm).toBeCloseTo(printed.widthMm, 9);
+			expect(cut.widthMm).toBeCloseTo(60, 9);
+			expect(cut.stripWidthMm).toBeCloseTo(printed.stripWidthMm, 9);
+		}
 	});
 
 	it('puts one lobe of an asymmetric heart on a sheet: one paper colour', () => {
@@ -45,7 +64,7 @@ describe('planLaserSheet', () => {
 		const jul = loadHeart('jul');
 		const plan = planLaserSheet([classic, jul], { widthMm: 60, count: 2, sheet: SHEETS.A3, lobe: 'right' });
 		expect(plan.hearts.map((h) => [h.design.id, h.shared, h.lobe])).toEqual([
-			['classic-3x3', true, 'left'],
+			['classic-3x3', true, SHARED_TEMPLATE_LOBE],
 			['jul', false, 'right']
 		]);
 		expect(plan.shared).toBe(false);
@@ -67,7 +86,7 @@ describe('planLaserSheet', () => {
 			lobe: 'right'
 		});
 		expect(plan.shared).toBe(true);
-		expect(plan.lobe).toBe('left');
+		expect(plan.lobe).toBe(SHARED_TEMPLATE_LOBE);
 		expect(plan.pieces).toHaveLength(2);
 	});
 

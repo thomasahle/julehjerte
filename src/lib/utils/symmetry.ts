@@ -292,6 +292,16 @@ export function lobesShareTemplate(fingers: Finger[], gridSize: GridSize): boole
   return areLobesMirroredUnder(fingers, false) || areLobesRotated(fingers);
 }
 
+/**
+ * The piece printed and cut for a heart whose lobes share a template
+ * (`lobesShareTemplate`): the right lobe's. The PDF and the laser export both
+ * take it, so a printed and a laser-cut half of one heart match. The two
+ * lobes are the same piece only up to the hand-drawn design's slack (Stjerne-
+ * ramme's span 675 against 671.4 units), so taking different ones would
+ * show at the same width.
+ */
+export const SHARED_TEMPLATE_LOBE: Finger['lobe'] = 'right';
+
 // Check if it's a "classic" design (all straight lines, no curves)
 function isClassicDesign(fingers: Finger[]): boolean {
   for (const finger of fingers) {

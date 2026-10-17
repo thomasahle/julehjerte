@@ -4,7 +4,7 @@ import { prerenderHeartImages } from './heartRenderer';
 import { SITE_DOMAIN } from '$lib/config';
 import { segmentsToPathData } from '$lib/geometry/bezierSegments';
 import { inferOverlapRect as inferOverlapRectShared } from '$lib/utils/overlapRect';
-import { lobesShareTemplate } from '$lib/utils/symmetry';
+import { lobesShareTemplate, SHARED_TEMPLATE_LOBE } from '$lib/utils/symmetry';
 import { transformPathData } from '$lib/utils/templateSvg';
 import { slugify } from '$lib/utils/slug';
 import { t, type Language } from '$lib/i18n';
@@ -439,7 +439,7 @@ function addTemplatesPage(
     const templateCenterY = templateTop + templateHeight / 2;
 
     // Draw the template first
-    const lobeToUse = template.lobe === 'both' ? 'right' : template.lobe;
+    const lobeToUse = template.lobe === 'both' ? SHARED_TEMPLATE_LOBE : template.lobe;
     drawLobeTemplate(
       pdf,
       template.design,
