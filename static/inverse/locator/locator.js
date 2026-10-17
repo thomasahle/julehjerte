@@ -3,6 +3,8 @@ import {makeFields,foregroundBox} from './fields.js';
 import {makePaletteFields} from './palette.js';
 import {makeAnchoredFields} from './anchored.js';
 import {makeInteriorPaletteFields} from './interior-palette.js';
+import {makeChromaticPaletteFields} from './chromatic-palette.js';
+import {outlineContrast} from './outline-evidence.js';
 import {orientFields,orientationHypotheses} from './orientation.js';
 import {colorDifferenceMetric} from './background.js';
 import {mean,quantile,trimMean,clamp,bilinear,nelderMead,project,homography,convexQuad} from './math.js';
@@ -29,10 +31,23 @@ function lineEvidence(points,a,b,tolerancePx){
   rms:inliers.length?Math.sqrt(mean(inliers.map(([x,y])=>(x-a*y-b)**2/(1+a*a)))):null,
   span:inliers.length>1?Math.max(...inliers.map(p=>p[1]))-Math.min(...inliers.map(p=>p[1])):0};
 }
-export function lowerEdgeLines(f,box){const[x0,y0,x1,y1]=box,w=x1-x0,h=y1-y0,cx=(x0+x1)/2,sides=[[],[]];
+export function lowerEdgeLines(f,box,{outerRuns=false}={}){const[x0,y0,x1,y1]=box,w=x1-x0,h=y1-y0,cx=(x0+x1)/2,sides=[[],[]];
  const backgroundCovariance=f.palette?.backgroundModel?.covariance,edgeMetric=backgroundCovariance?colorDifferenceMetric(backgroundCovariance):null;
  for(let y=Math.round(y0+(f.anchored ? .62 : .48)*h);y<Math.round(y0+(f.anchored ? .95 : .83)*h);y++){
   let x=Math.round(f.anchored?x0:cx);if(y<0||y>=f.h)continue;
+  if(outerRuns){
+   // A reflection may interrupt the middle of a coloured-paper row. Use
+   // observed runs on either side only if the ordinary central scan failed;
+   // do not fill the gap or alter the fields used to validate the outline.
+   const runs=[];let start=null;
+   for(let xx=Math.max(0,Math.ceil(x0));xx<=Math.min(f.w-1,Math.floor(x1));xx++){
+    const inside=xx<x1&&f.mask[y*f.w+xx];
+    if(inside&&start===null)start=xx;
+    if(!inside&&start!==null){if(xx-start>=3)runs.push([start-.5,xx-.5]);start=null;}
+   }
+   if(runs.length&&runs[0][0]>x0+1&&runs.at(-1)[1]<x1-2&&runs.at(-1)[1]-runs[0][0]>.18*w){sides[0].push([runs[0][0],y]);sides[1].push([runs.at(-1)[1],y]);}
+   continue;
+  }
   // A tilted heart's narrow tip can lie far from the bounding-box centre.
   if(f.anchored)while(x<x1-1&&!f.mask[y*f.w+x])x++;
   if(!f.mask[y*f.w+x])continue;
@@ -75,7 +90,7 @@ export function lowerEdgeLines(f,box){const[x0,y0,x1,y1]=box,w=x1-x0,h=y1-y0,cx=
  points.push(fitPoints);}
  const[L,R]=result,y=(R.b-L.b)/(L.a-R.a),x=L.a*y+L.b;
  if(!Number.isFinite(x)||y<y0+.65*h||y>y1+.20*h||x<x0+.20*w||x>x1-.20*w)return null;
- return {left:L,right:R,tip:[x,y],points,segmentationPoints:sides,refinementMetric:edgeMetric?'background-covariance':'rgb'};
+ return {left:L,right:R,tip:[x,y],points,segmentationPoints:sides,refinementMetric:edgeMetric?'background-covariance':'rgb',...(outerRuns?{sampling:'outer-observed-runs-after-interrupted-centre-scan'}:{})};
 }
 function model(z,lines,scale){const N=[z[0]*scale,z[1]*scale],hr=z[2]*scale,hl=z[3]*scale,B=lines.tip,R=[B[0]-lines.right.a*hr,B[1]-hr],L=[B[0]-lines.left.a*hl,B[1]-hl],q=[N,R,B,L];if(!convexQuad(q))return null;try{const H=homography(SQUARE,q);return {q,H};}catch{return null;}}
 function contour(n=36){const a=[],b=[],c=[],d=[];for(let k=0;k<n;k++){const t=(k+.5)/n; a.push([.5-.5*Math.cos(Math.PI*t),-.5*Math.sin(Math.PI*t)]);b.push([1,t]);c.push([1-t,1]);d.push([-.5*Math.sin(Math.PI*t),.5+.5*Math.cos(Math.PI*t)]);}return[a,b,c,d];}
@@ -114,8 +129,8 @@ function fitModel(f,box,lines,{iterations=550,flexibleCaps=false}={}){const[x0,y
  }
  const starts=[seed,seed.map((v,i)=>v+(i===0?-.025:i===1?.025:0)),seed.map((v,i)=>v+(i===0?.025:i===1?-.025:0))];
  if(flexible)for(const dy of[.04,.08])starts.push(seed.map((v,i)=>v+(i===1?dy:0)));
- if(f.anchored){
-  // Weak pale outlines have several local minima. Rank coarse shape seeds
+ if(f.anchored||f.palette?.method==='two-chromatic-paper-colours'){
+  // Weak pale outlines and reflections have several local minima. Rank coarse shape seeds
   // before refinement so a small exposure/size change cannot pick a new basin.
   const coarse=[];
   for(const dx of[-.12,-.06,0,.06,.12])for(const dy of[-.12,-.06,0,.06,.12])for(const dr of[-.08,0,.08])for(const dl of[-.08,0,.08]){
@@ -133,13 +148,19 @@ function fitModel(f,box,lines,{iterations=550,flexibleCaps=false}={}){const[x0,y
  if(!best)return null;return{...best,evaluations:fits.reduce((s,x)=>s+x.evaluations,0),alternatives:fits.map(s=>({score:s.f,quad:evaluate(s.x,true)?.q??null}))};
 }
 /**
- * Locate the woven overlap of ONE upright red/white heart, not its axis-aligned box.
+ * Locate the woven overlap of ONE two-colour heart in the requested pose.
  * ROI is [x0,y0,x1,y1] in original pixel coordinates. It need only enclose the heart.
  * Returns review status and evidence. Does not infer concealed ground-truth corners.
  */
 export function createMotifDetector(image,options={}){checkImage(image);const preparationStart=performance.now();if(options.maxSize!==undefined&&(!Number.isFinite(options.maxSize)||options.maxSize<100||options.maxSize>800))throw new RangeError('maxSize must be from 100 to 800');const maxSize=options.maxSize??400;let inputROI=options.roi??[0,0,image.width,image.height];
  if(inputROI.length!==4||inputROI.some(x=>!Number.isFinite(x))||inputROI[2]-inputROI[0]<24||inputROI[3]-inputROI[1]<24)throw new TypeError('Invalid ROI');
- inputROI=[clamp(inputROI[0],0,image.width-1),clamp(inputROI[1],0,image.height-1),clamp(inputROI[2],1,image.width),clamp(inputROI[3],1,image.height)];if(inputROI[2]-inputROI[0]<24||inputROI[3]-inputROI[1]<24)throw new RangeError('ROI is outside the image or too small after clipping');const pad=options.roi?.length?Math.max(inputROI[2]-inputROI[0],inputROI[3]-inputROI[1])*.18:0;const workROI=[Math.max(0,inputROI[0]-pad),Math.max(0,inputROI[1]-pad),Math.min(image.width,inputROI[2]+pad),Math.min(image.height,inputROI[3]+pad)];const work=resizeROI(image,workROI,maxSize),baseFields=options.palette==='interior'?makeInteriorPaletteFields(work):options.palette==='anchored'?makeAnchoredFields(work):['adaptive','pale'].includes(options.palette)?makePaletteFields(work,{pale:options.palette==='pale'}):makeFields(work);
+ inputROI=[clamp(inputROI[0],0,image.width-1),clamp(inputROI[1],0,image.height-1),clamp(inputROI[2],1,image.width),clamp(inputROI[3],1,image.height)];if(inputROI[2]-inputROI[0]<24||inputROI[3]-inputROI[1]<24)throw new RangeError('ROI is outside the image or too small after clipping');const pad=options.roi?.length?Math.max(inputROI[2]-inputROI[0],inputROI[3]-inputROI[1])*.18:0;const workROI=[Math.max(0,inputROI[0]-pad),Math.max(0,inputROI[1]-pad),Math.min(image.width,inputROI[2]+pad),Math.min(image.height,inputROI[3]+pad)];const work=resizeROI(image,workROI,maxSize);
+ const sampleROI=inputROI.map((v,i)=>(v-workROI[i%2]+.5)*work.scale-.5);
+ const baseFields=options.palette==='chromatic'?makeChromaticPaletteFields(work,{roi:sampleROI})
+  :options.palette==='interior'?makeInteriorPaletteFields(work)
+  :options.palette==='anchored'?makeAnchoredFields(work)
+  :['adaptive','pale'].includes(options.palette)?makePaletteFields(work,{pale:options.palette==='pale'})
+  :makeFields(work);
  const detector=(degrees=0,{refineSelection=false}={})=>{
  const started=performance.now();if(!Number.isFinite(degrees))throw new TypeError('Expected a finite orientation angle.');
  const rotation=baseFields&&degrees%360!==0?orientFields(baseFields,degrees):null,f=rotation?.fields||baseFields;
@@ -147,7 +168,7 @@ export function createMotifDetector(image,options={}){checkImage(image);const pr
  let box=inputROI.map((v,i)=>(v-workROI[i%2]+.5)*work.scale-.5),fg=null;
  if(!options.roi||f.anchored||rotation||refineSelection){fg=options.roi&&refineSelection?selectedForegroundBox(f,box,rotation):foregroundBox(f);if(fg.status!=='ok')return{...fg,quad:null,elapsedMs:performance.now()-started};box=fg.box;if(f.anchored)box=box.map((v,i)=>clamp(v+(i<2?-1:1)*.12*Math.max(fg.box[2]-fg.box[0],fg.box[3]-fg.box[1]),0,i%2?f.h:f.w));}
  const back=p=>{if(rotation)p=rotation.toSource(p);return[(p[0]+.5)/work.scale-.5+workROI[0],(p[1]+.5)/work.scale-.5+workROI[1]];};
- const lines=lowerEdgeLines(f,box);if(!lines)return{status:'needs_review',quad:null,reason:'Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.',elapsedMs:performance.now()-started};
+ const lines=lowerEdgeLines(f,box)||(f.palette?.method==='two-chromatic-paper-colours'?lowerEdgeLines(f,box,{outerRuns:true}):null);if(!lines)return{status:'needs_review',quad:null,reason:'Could not identify both exposed lower paper edges. Try a rough selection around one complete heart.',elapsedMs:performance.now()-started};
  let fit=fitModel(f,box,lines,options);if(!fit)return{status:'needs_review',quad:null,reason:'No nondegenerate heart-shape fit',elapsedMs:performance.now()-started};
  // The red/white model historically forced both caps to be semicircles.
  // A deep or shallow cap then moves an overlap corner to explain its outline.
@@ -167,8 +188,12 @@ export function createMotifDetector(image,options={}){checkImage(image);const pr
  }
  if(f.anchored&&!supportedAnchoredFit(f,fit,lines))return{status:'needs_review',quad:null,reason:'The coloured region does not support two paper lobes and an overlap square.',evidence:{workingQuad:fit.q,capColourLoss:fit.colorLoss,diameterContrast:fit.diameterContrast,lobeOutlineSupport:fit.arcResiduals.map(a=>mean(a.map(d=>d<Math.max(2,f.w*.012)?1:0))),lowerEdgeSupport:[lines.left.support,lines.right.support]},elapsedMs:performance.now()-started};
  const quad=fit.q.map(back),outline=fit.polys.map(a=>a.map(back));
- const residuals=fit.arcResiduals.map(a=>quantile(a,.5)/work.scale),sideSupport=[lines.left.support,lines.right.support],arcSupport=fit.arcResiduals.map(a=>mean(a.map(d=>d<Math.max(2,work.width*.012)?1:0)));
- if(f.palette&&(arcSupport.some(x=>x<.65)||sideSupport.some(x=>x<.65)||fit.colorLoss.some(x=>x>.30)))return{status:'needs_review',quad:null,reason:'The two-colour foreground does not clearly support both heart lobes and lower edges.',evidence:{lobeOutlineSupport:arcSupport,lowerEdgeSupport:sideSupport,capColourLoss:fit.colorLoss,medianLobeResidualPx:residuals,rejectedQuad:quad},elapsedMs:performance.now()-started};
+ const residuals=fit.arcResiduals.map(a=>quantile(a,.5)/work.scale),segmentationSupport=[lines.left.support,lines.right.support];
+ const edgeContrast=f.palette?.method==='two-chromatic-paper-colours'?[outlineContrast(f,fit.polys[2]),outlineContrast(f,fit.polys[1])]:null;
+ const sideSupport=edgeContrast?edgeContrast.map(r=>r.support):segmentationSupport;
+ const edgeEvidence=edgeContrast?{lowerEdgeRegistrationSupport:segmentationSupport,lowerEdgePhotoContrast:edgeContrast,lowerEdgeSupportMethod:'photograph-contrast-along-fitted-outer-edges'}:{};
+ const arcSupport=fit.arcResiduals.map(a=>mean(a.map(d=>d<Math.max(2,work.width*.012)?1:0)));
+ if(f.palette&&(arcSupport.some(x=>x<.65)||sideSupport.some(x=>x<.65)||fit.colorLoss.some(x=>x>.30)))return{status:'needs_review',quad:null,reason:'The two-colour foreground does not clearly support both heart lobes and lower edges.',evidence:{lobeOutlineSupport:arcSupport,lowerEdgeSupport:sideSupport,...edgeEvidence,capColourLoss:fit.colorLoss,medianLobeResidualPx:residuals,rejectedQuad:quad},elapsedMs:performance.now()-started};
  const accepted=fit.alternatives.filter(a=>a.quad&&a.score<fit.loss+1.0);const spread=quad.map((p,j)=>Math.max(0,...accepted.map(a=>{const r=back(a.quad[j]);return Math.hypot(p[0]-r[0],p[1]-r[1]);})));
  const warnings=[];if(lobeRefinement?.accepted)warnings.push('Independent lobe shapes improved the outline fit. Review all four overlap corners.');if(f.anchored)warnings.push('The pale outline was inferred from colours inside the heart. Review all four overlap corners.');if(residuals.some(r=>r>3))warnings.push('Lobe outlines do not closely fit a single flat-heart model.');if(sideSupport.some(x=>x<.65))warnings.push('One or both lower edges have limited support, possibly due to a ribbon or overlapping paper.');if(arcSupport.some(x=>x<.6))warnings.push('Part of a lobe outline is obscured or ambiguous.');if(spread.some(x=>x>6))warnings.push('Several plausible fits disagree on the corner positions.');
  if(quad.some(p=>p[0]<1||p[1]<1||p[0]>image.width-2||p[1]>image.height-2))warnings.push('The heart may be clipped by the image boundary.');
@@ -177,7 +202,7 @@ export function createMotifDetector(image,options={}){checkImage(image);const pr
  const status=warnings.length?'needs_review':'candidate';
  const corners=[[box[0],box[1]],[box[2],box[1]],[box[2],box[3]],[box[0],box[3]]].map(back);
  const heartBox=rotation?[Math.min(...corners.map(p=>p[0])),Math.min(...corners.map(p=>p[1])),Math.max(...corners.map(p=>p[0])),Math.max(...corners.map(p=>p[1]))]:box.map((v,i)=>(v+.5)/work.scale-.5+workROI[i%2]);
- return{version:lobeRefinement?.accepted?'0.4.0':f.anchored?'0.3.0':f.palette?'0.2.0':'0.1.0',status,quad:finalQuad,shapeQuad:quad,gridRefinement,lobeRefinement,cornerOrder:CORNER_ORDER,outline:finalOutline,roi:inputROI,workingROI:workROI,heartBox,orientation:f.palette?(fit.mode===0?'first-colour-left':'second-colour-left'):fit.mode===0?'red-left-white-right':'white-left-red-right',score:fit.loss,elapsedMs:performance.now()-started,evaluations:fit.evaluations,evidence:{lowerEdgeSupport:sideSupport,lobeOutlineSupport:arcSupport,medianLobeResidualPx:residuals,alternativeSpreadPx:spread,lowerLines:lines,diameterContrast:fit.diameterContrast,workingScale:work.scale,...(rotation?{workingRotation:{degrees,originalSize:[baseFields.w,baseFields.h],rotatedSize:[f.w,f.h],coordinateConvention:'Lower-line coordinates are in the rotated working image; returned corners and outlines are in the original photograph.'}}:{}),lobeDepths:fit.lobeDepths,palette:f.palette||null,anchored:f.anchored||null,capColourLoss:fit.colorLoss},warnings,notes:['Coordinates estimate the physical overlap, not an arbitrary high-contrast interior frame.','Review is required for occlusion, non-planar paper, unusual caps or other paper palettes.']};
+ return{version:lobeRefinement?.accepted?'0.4.0':f.anchored?'0.3.0':f.palette?'0.2.0':'0.1.0',status,quad:finalQuad,shapeQuad:quad,gridRefinement,lobeRefinement,cornerOrder:CORNER_ORDER,outline:finalOutline,roi:inputROI,workingROI:workROI,heartBox,orientation:f.palette?(fit.mode===0?'first-colour-left':'second-colour-left'):fit.mode===0?'red-left-white-right':'white-left-red-right',score:fit.loss,elapsedMs:performance.now()-started,evaluations:fit.evaluations,evidence:{lowerEdgeSupport:sideSupport,...edgeEvidence,lobeOutlineSupport:arcSupport,medianLobeResidualPx:residuals,alternativeSpreadPx:spread,lowerLines:lines,diameterContrast:fit.diameterContrast,workingScale:work.scale,...(rotation?{workingRotation:{degrees,originalSize:[baseFields.w,baseFields.h],rotatedSize:[f.w,f.h],coordinateConvention:'Lower-line coordinates are in the rotated working image; returned corners and outlines are in the original photograph.'}}:{}),lobeDepths:fit.lobeDepths,palette:f.palette||null,anchored:f.anchored||null,capColourLoss:fit.colorLoss},warnings,notes:['Coordinates estimate the physical overlap, not an arbitrary high-contrast interior frame.','Review is required for occlusion, non-planar paper, unusual caps or other paper palettes.']};
  };
  detector.preparationMs=performance.now()-preparationStart;
  // A pose cannot supply a paper colour missing from the fixed segmentation.
