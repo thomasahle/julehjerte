@@ -54,6 +54,11 @@
 	// The editor is a full-screen tool: it carries its own colour controls in the
 	// right-hand panel and has no footer (docs/redesign/DESIGN.md §7).
 	let isEditorRoute = $derived($page.route.id?.includes("/editor") ?? false);
+	// An error page (+error.svelte, e.g. a 404) is not a page of the site: no
+	// canonical or language alternates pointing at the dead URL, and it writes
+	// its own noindex.
+	let isErrorPage = $derived($page.error != null);
+	let isIndexable = $derived(!isDetailRoute && !isErrorPage);
 
 	$effect(() => {
 		if (!browser) return;
@@ -155,6 +160,8 @@
 	<!-- Basic SEO -->
 	{#if !isDetailRoute}
 		<meta name="description" content={metaDescription} />
+	{/if}
+	{#if isIndexable}
 		<link rel="canonical" href={pageUrl} />
 		<link rel="alternate" hreflang="da" href={alternateDaUrl} />
 		<link rel="alternate" hreflang="en" href={alternateEnUrl} />
@@ -162,7 +169,7 @@
 	{/if}
 	<meta name="keywords" content={SITE_KEYWORDS} />
 	<meta name="author" content={SITE_NAME} />
-	{#if !isDetailRoute}
+	{#if isIndexable}
 		<meta name="robots" content="index, follow" />
 	{/if}
 
