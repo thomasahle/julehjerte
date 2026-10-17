@@ -1,6 +1,6 @@
 {
   "schema": "selected-sam-prompt-results-1",
-  "status": "paired-inference-crops-fits-editable-complete-with-one-numerical-rejection",
+  "status": "paired-inference-crops-fits-editable-and-roundoff-followup-complete",
   "runtimeCommit": "fd85519",
   "deployed": false,
   "trainingPerformed": false,
@@ -272,8 +272,19 @@
   "numericalFollowup": {
     "commit": "0216298",
     "focusedTestsPassed": 5,
-    "pipelineReplay": "pending",
-    "qualification": "Allow only dimension-scaled floating-point roundoff, including field-edge interpolation; genuine 1e-6-pixel truncations still reject on all four sides. Original failed record retained."
+    "pipelineReplay": "complete",
+    "qualification": "Allow only dimension-scaled floating-point roundoff, including field-edge interpolation; genuine 1e-6-pixel truncations still reject on all four sides. Original failed record retained.",
+    "currentRuntime": "ff4827e",
+    "previousTargetsByteIdentical": 8,
+    "previousCoverageCountsUnchanged": 8,
+    "formerlyRejectedTargetRectifies": true,
+    "status": "review-required",
+    "independentMaskError": 0.00723125,
+    "editableError": 0.00721875,
+    "editableConversion": true,
+    "completeCandidate": false,
+    "remainingFailure": "Frozen paper calibration, conditioned on the incorrect original CNN body, estimated blue/green colors instead of the photographed red/green. The rectified mask and export are nearly uniform. Existing feature checks reject the lost interior region despite <1% global mask disagreement. Corrected prompting did not recompute material calibration in this controlled test.",
+    "visualReview": "Inspected the failed target field, original photograph/crop, palette estimates and nearly uniform exported weave. No new successful reconstruction is claimed."
   },
   "artifacts": [
     {
@@ -335,6 +346,18 @@
     {
       "path": "tmp/heart-learning/selected-sam-prompt-v1/crop-review/real-ca2f9adc67ee4cea.png",
       "sha256": "37584b3498b7259a45627dbce66789fd0e4d38cb66a32ab78cb03a6349b6e959"
+    },
+    {
+      "path": "tmp/heart-learning/selected-sam-prompt-v1/roundoff-targets.json",
+      "sha256": "db9598fb590d937a8afb2beccb781fe52877efadd2e0078de7d3e959328d4d11"
+    },
+    {
+      "path": "tmp/heart-learning/selected-sam-prompt-v1/roundoff-pipeline/report.json",
+      "sha256": "8a2666bb44afcc731348e3cd6fd1e7801a951ad1a66475762b75b55f25c19019"
+    },
+    {
+      "path": "tmp/heart-learning/selected-sam-prompt-v1/roundoff-editable/results.json",
+      "sha256": "bb9c5d83066b4ff8c0d2cbc220865d235e30efc6cd10efed09744f0e9a4f0980"
     }
   ]
 }

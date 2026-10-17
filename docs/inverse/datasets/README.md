@@ -35,9 +35,12 @@ convert to editable geometry; five pass complete checks across both arms.
 The printed checker's two visible side corners fall inside approximate source
 ranges, but its tip overshoots and its notch remains ambiguous. The cross still
 has a false central diamond; dense checker, gold tree and painted paper remain
-failures. A fourth selected crop is stopped before fitting by inverse-letterbox
-roundoff. That numerical guard is repaired with five passing focused tests;
-the failed input's replay and full follow-up QA are pending. No model is deployed,
+failures. The red/green selected crop initially stopped before fitting because of inverse-letterbox
+roundoff. The repaired guard passes five focused tests and leaves all eight
+existing targets and coverage counts unchanged. The ninth now fits but correctly
+fails feature checks: its frozen calibration estimated blue/green paper from
+the incorrectly selected background, leaving a nearly uniform target. This is
+a material-stage failure despite less than 1% mask error. Full follow-up QA is pending. No model is deployed,
 and these seven source-assisted examples are not a new held-out benchmark.
 
 The established photo benchmark and the neural experiments have different
