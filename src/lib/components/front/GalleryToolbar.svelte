@@ -1,9 +1,13 @@
 <!--
   The gallery's sticky toolbar — docs/redesign/DESIGN.md §3 "Gallery".
 
-  "Hent skabeloner (n)" with its PDF-layout menu as one split button, select all
-  / select none, and the three-step strip on the right. It only reports what was
-  clicked; the selection itself and the PDF generation stay on the page.
+  The three-step strip on the right, always. Once a heart is ticked, the
+  selection controls join it on the left: "Hent skabeloner (n)" with its
+  PDF-layout menu as one split button, then select all / select none. Ticking
+  is the exception (docs/redesign/FRONT-SIMPLIFY.md — a card click opens the
+  heart's page), so a visitor who never ticks anything never sees a disabled
+  download button asking them to. It only reports what was clicked; the
+  selection itself and the PDF generation stay on the page.
 -->
 <script lang="ts">
 	import { onMount } from 'svelte';
@@ -12,7 +16,6 @@
 	import { DownloadIcon, GearIcon } from '$lib/components/icons';
 	import type { LayoutMode } from '$lib/pdf/template';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-	import * as Tooltip from '$lib/components/ui/tooltip';
 	import StepsStrip from './StepsStrip.svelte';
 
 	/** The three A4 layouts the PDF menu offers, in menu order. */
@@ -51,9 +54,7 @@
 		onSelectNone
 	}: Props = $props();
 
-	// aria-disabled rather than `disabled`: a disabled button is not focusable, so
-	// the tooltip explaining why ("Vælg hjerter først") was mouse-only.
-	let printDisabled = $derived(selectedCount === 0 || generating);
+	let hasSelection = $derived(selectedCount > 0);
 
 	// The toolbar starts up on the hero's snow (Gallery.svelte pulls the gallery
 	// over the drawing), where an opaque background would show as a paler
@@ -74,78 +75,56 @@
 </script>
 
 <div class="toolbar-sentinel" bind:this={sentinel} aria-hidden="true"></div>
-<div class="toolbar" class:stuck>
-	<span class="split">
-		<Tooltip.Root disabled={selectedCount > 0 || generating}>
-			<Tooltip.Trigger>
-				{#snippet child({ props })}
-					<button
-						{...props}
-						type="button"
-						class="btn btn-primary split-main"
-						onclick={() => {
-							if (!printDisabled) onPrint();
-						}}
-						aria-disabled={printDisabled}
-						aria-describedby={printDisabled ? 'print-selected-hint' : undefined}
-					>
-						<DownloadIcon size={18} />
-						{generating ? t('generating', lang) : t('printSelected', lang)}
-						{#if !generating}
-							<span class="split-count">{selectedCount}</span>
-						{/if}
-					</button>
-				{/snippet}
-			</Tooltip.Trigger>
-			<Tooltip.Content>
-				<p>{t('selectHeartsFirst', lang)}</p>
-			</Tooltip.Content>
-		</Tooltip.Root>
-		{#if printDisabled}
-			<span id="print-selected-hint" class="sr-only">{t('selectHeartsFirst', lang)}</span>
-		{/if}
-		<DropdownMenu.Root>
-			<DropdownMenu.Trigger>
-				{#snippet child({ props })}
-					<button
-						{...props}
-						type="button"
-						class="btn btn-primary btn-icon split-gear"
-						aria-label={t('pdfSettings', lang)}
-						title={t('pdfLayout', lang)}
-					>
-						<GearIcon size={18} />
-					</button>
-				{/snippet}
-			</DropdownMenu.Trigger>
-			<DropdownMenu.Content align="end" class="border-0">
-				<DropdownMenu.RadioGroup bind:value={pdfLayout}>
-					{#each LAYOUT_OPTIONS as option (option.value)}
-						<DropdownMenu.RadioItem value={option.value}>
-							{t(option.labelKey, lang)}
-						</DropdownMenu.RadioItem>
-					{/each}
-				</DropdownMenu.RadioGroup>
-			</DropdownMenu.Content>
-		</DropdownMenu.Root>
-	</span>
+<div class="toolbar" class:stuck class:idle={!hasSelection}>
+	{#if hasSelection}
+		<span class="split">
+			<button
+				type="button"
+				class="btn btn-primary split-main"
+				onclick={onPrint}
+				disabled={generating}
+			>
+				<DownloadIcon size={18} />
+				{generating ? t('generating', lang) : t('printSelected', lang)}
+				{#if !generating}
+					<span class="split-count">{selectedCount}</span>
+				{/if}
+			</button>
+			<DropdownMenu.Root>
+				<DropdownMenu.Trigger>
+					{#snippet child({ props })}
+						<button
+							{...props}
+							type="button"
+							class="btn btn-primary btn-icon split-gear"
+							aria-label={t('pdfSettings', lang)}
+							title={t('pdfLayout', lang)}
+						>
+							<GearIcon size={18} />
+						</button>
+					{/snippet}
+				</DropdownMenu.Trigger>
+				<DropdownMenu.Content align="end" class="border-0">
+					<DropdownMenu.RadioGroup bind:value={pdfLayout}>
+						{#each LAYOUT_OPTIONS as option (option.value)}
+							<DropdownMenu.RadioItem value={option.value}>
+								{t(option.labelKey, lang)}
+							</DropdownMenu.RadioItem>
+						{/each}
+					</DropdownMenu.RadioGroup>
+				</DropdownMenu.Content>
+			</DropdownMenu.Root>
+		</span>
 
-	<button
-		type="button"
-		class="btn btn-ghost"
-		onclick={onSelectAll}
-		disabled={allSelected || generating}
-	>
-		{t('selectAll', lang)}
-	</button>
-	<button
-		type="button"
-		class="btn btn-ghost"
-		onclick={onSelectNone}
-		disabled={selectedCount === 0 || generating}
-	>
-		{t('selectNone', lang)}
-	</button>
+		{#if !allSelected}
+			<button type="button" class="btn btn-ghost" onclick={onSelectAll} disabled={generating}>
+				{t('selectAll', lang)}
+			</button>
+		{/if}
+		<button type="button" class="btn btn-ghost" onclick={onSelectNone} disabled={generating}>
+			{t('selectNone', lang)}
+		</button>
+	{/if}
 
 	<StepsStrip {lang} />
 </div>
@@ -198,15 +177,10 @@
 		border-left: 1px solid rgb(255 255 255 / 0.35);
 	}
 
-	.split-main:hover[aria-disabled="true"] {
-		background: var(--red);
-	}
-
-	/* Dimmed, but the red still has to read as the toolbar's anchor — .btn's own
-	   0.5 would wash it out. */
-	.split-main[aria-disabled="true"] {
+	/* Dimmed while the PDF is being built, but the red still has to read as the
+	   toolbar's anchor — .btn's own 0.5 would wash it out. */
+	.split-main:disabled {
 		opacity: 0.75;
-		cursor: not-allowed;
 	}
 
 	.split-count {
@@ -220,6 +194,13 @@
 		.toolbar {
 			gap: 8px;
 			padding: 10px 0;
+		}
+
+		/* The steps are hidden at this width, so with nothing ticked there is
+		   nothing left to show — and an empty sticky bar would still be a
+		   strip of --page sliding over the hearts. */
+		.toolbar.idle {
+			display: none;
 		}
 	}
 </style>
