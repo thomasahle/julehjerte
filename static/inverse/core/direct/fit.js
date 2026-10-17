@@ -13,7 +13,7 @@ import {applyTies,orbitMean,orbitObjective,symmetryOrbit,symmetryTies} from './s
 import {requestedSymmetry} from '../settings.js';
 import {materialAudit,paperKernelChoices,verifiedPaperSettings} from '../material.js';
 import {resize} from './math.js';
-import {borderEvidence,supportedBorderCounts,gridCountLimit,gridFinalists,clearanceComparisonSeed,simplerComparisonSeed,countHypotheses,initializeCounts} from './counts.js';
+import {borderEvidence,supportedBorderCounts,gridCountLimit,gridFinalists,clearanceComparisonSeed,simplerComparisonSeed,countHypotheses,extendInteriorCountHypotheses,initializeCounts} from './counts.js';
 import {imageFeatures,auditImageFeatures} from '../image-features.js';
 import {auditFeatureFidelity,auditFeatureFidelityChange} from '../feature-shapes.js';
 import {recoverImageFeatures} from '../feature-recovery.js';
@@ -89,8 +89,9 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   const coarse=stage('directInitializing',()=>{
     // Finish the small, fixed-size initialization for every count and phase.
     // A shared deadline here starves late candidates on slower browser engines.
-    const search=countSearch({options,fullProb,resolution:source.resolution,prob,n,evidence,weights:fitWeights,fullWeights,guideProb});
-    const seeds=search.seeds;countSearchReport=search.report;
+    const context={options,fullProb,resolution:source.resolution,prob,n,evidence,weights:fitWeights,fullWeights,guideProb};
+    const expanded=extendInteriorCountHypotheses(context,cfg),search=countSearch({...context,options:expanded.options});
+    const seeds=search.seeds;countSearchReport={...search.report,interiorProposal:expanded.report};
     // A nearly exact, fully validated seed needs no gradient search. Still
     // finish and report every count/phase initialization before accepting it.
     if(seeds[0].error===0||cfg.earlyStop&&seeds[0].error<=Math.min(.005,cfg.maxImageError)){

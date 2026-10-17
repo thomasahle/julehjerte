@@ -8,6 +8,7 @@ import {requestedSymmetry} from '../settings.js';
 import {borderGrid,gridInitializer} from './initialize.js';
 import {resizeObjective} from './image-objective.js';
 import {initializationImage} from './initialization-image.js';
+import {interiorCountEvidence} from './interior-counts.js';
 
 export function borderEvidence(prob,n){
   const rows=[];
@@ -120,6 +121,25 @@ export function countHypotheses({prob,n,cfg,evidence,maximumCount=gridCountLimit
   options.sort((a,b)=>a.initialError-b.initialError||a.counts[0]+a.counts[1]-b.counts[0]-b.counts[1]);
   if(!options.length)throw new Error(requestedSymmetry(cfg.symmetry).length?'The requested symmetry allows no slit counts here: a mirrored family needs an even number of cuts, a transposition needs equal counts, and the strip width limits the rest.':'The requested strip width leaves no room for a woven grid.');
   return options;
+}
+
+/** Add only image-supported dense starts. Keep every ordinary count/phase,
+ * including simpler routings and any existing border-driven dense proposals.
+ * The eleven-cut expansion fits the editor's twelve-strip grid. This does not
+ * enlarge the later recovery search or its time allowance. */
+export function extendInteriorCountHypotheses(args,cfg){
+  const previousMaximum=gridCountLimit(args.evidence);
+  const bands=interiorCountEvidence(args.guideProb||args.fullProb,args.resolution,args.fullWeights);
+  const supported=bands.filter(b=>b.bands>=25&&b.fractionAboveEight>=.75);
+  const maximumCount=Math.max(previousMaximum,Math.min(11,Math.max(0,...supported.map(b=>b.median+1))));
+  if(maximumCount===previousMaximum)return{options:args.options,report:{previousMaximum,maximumCount,added:0,bands}};
+  const options=args.options.slice(),seen=new Set(options.map(o=>o.counts+':'+o.phase));
+  for(const o of countHypotheses({...args,cfg,maximumCount})){
+    const key=o.counts+':'+o.phase;
+    if(!seen.has(key)){seen.add(key);options.push(o);}
+  }
+  options.sort((a,b)=>a.initialError-b.initialError||a.counts[0]+a.counts[1]-b.counts[0]-b.counts[1]);
+  return{options,report:{previousMaximum,maximumCount,added:options.length-args.options.length,bands}};
 }
 
 // Reuse projection work without pruning any count or phase. The explicit false

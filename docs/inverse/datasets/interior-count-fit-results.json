@@ -1,0 +1,461 @@
+{
+  "schema": "interior-count-fit-results-1",
+  "status": "paired-native-and-editable-complete",
+  "runtimeCommit": "ff4827e",
+  "experimentGitHead": "496fdd8",
+  "deployed": false,
+  "scope": "Four fixed development inputs from two photographs: original photo-derived checker and star, plus automatic/selected SAM checker masks from the completed palette probe. No new sources, crops, or color calibration.",
+  "policy": "Add initial count/phase hypotheses only if at least 25 of 33 well-observed interior bands have at least 75% support for more than eight transitions. Propose median plus one, capped at eleven new cuts per family for editor compatibility. Retain all original initial hypotheses. Do not change downstream count limits, deadlines, geometry/image/feature/paper acceptance or matching preference.",
+  "counts": {
+    "pairs": 4,
+    "photos": 2,
+    "baselineNativePasses": 1,
+    "candidateNativePasses": 2,
+    "baselineEditablePasses": 1,
+    "candidateEditablePasses": 2,
+    "unchangedCorpusHypothesisSets": 55,
+    "proceduralSupportControls": 8
+  },
+  "rows": [
+    {
+      "id": "photo-checker-baseline",
+      "sourceId": "real-f1af2fbb127278e4-roi",
+      "arm": "baseline",
+      "inputKind": "photo",
+      "maskSha256": "9ac385b123d8f9783d50523b4c68f609ccb94287780ce2cdc8a4e8de7020fa9c",
+      "probabilitySha256": "102c0a6b1fd0fca3a344598198aaf91b056c491533321dd42d8cea0e8558169f",
+      "proposal": null,
+      "selectedCounts": {
+        "left": 8,
+        "right": 8
+      },
+      "seconds": 10.702686750000002,
+      "nativeError": 0.05201875,
+      "nativePassed": false,
+      "geometryPassed": true,
+      "paper": "pass",
+      "editableError": 0.05213125,
+      "editablePassed": false,
+      "editableConversionPassed": true,
+      "editableGeometryPassed": true,
+      "editablePaper": "pass"
+    },
+    {
+      "id": "photo-checker-interior-supported",
+      "sourceId": "real-f1af2fbb127278e4-roi",
+      "arm": "interior-supported",
+      "inputKind": "photo",
+      "maskSha256": "9ac385b123d8f9783d50523b4c68f609ccb94287780ce2cdc8a4e8de7020fa9c",
+      "probabilitySha256": "102c0a6b1fd0fca3a344598198aaf91b056c491533321dd42d8cea0e8558169f",
+      "proposal": {
+        "previousMaximum": 8,
+        "maximumCount": 11,
+        "added": 12,
+        "bands": [
+          {
+            "axis": 0,
+            "rows": 33,
+            "minimum": 8,
+            "q10": 9,
+            "q25": 10,
+            "median": 11,
+            "q75": 12,
+            "q90": 12,
+            "maximum": 12,
+            "fractionAbove8": 0.9696969696969697,
+            "histogram": {
+              "8": 1,
+              "9": 3,
+              "10": 5,
+              "11": 13,
+              "12": 11
+            }
+          },
+          {
+            "axis": 1,
+            "rows": 33,
+            "minimum": 8,
+            "q10": 8,
+            "q25": 9,
+            "median": 10,
+            "q75": 11,
+            "q90": 11,
+            "maximum": 12,
+            "fractionAbove8": 0.8787878787878788,
+            "histogram": {
+              "8": 4,
+              "9": 5,
+              "10": 11,
+              "11": 9,
+              "12": 4
+            }
+          }
+        ]
+      },
+      "selectedCounts": {
+        "left": 11,
+        "right": 10
+      },
+      "seconds": 10.263031875000001,
+      "nativeError": 0.0266625,
+      "nativePassed": true,
+      "geometryPassed": true,
+      "paper": "pass",
+      "editableError": 0.0259,
+      "editablePassed": true,
+      "editableConversionPassed": true,
+      "editableGeometryPassed": true,
+      "editablePaper": "pass"
+    },
+    {
+      "id": "photo-star-interior-supported",
+      "sourceId": "real-ca2f9adc67ee4cea-roi",
+      "arm": "interior-supported",
+      "inputKind": "photo",
+      "maskSha256": "9bc7deb8e8fb5df179865fa7e3227e5c494c2edea2bf7c5a3deade7ed1b17717",
+      "probabilitySha256": "4ad0e2ecc9c680142a6085ae8f89b9c358da1fcb5fb48301b7817ed659721663",
+      "proposal": {
+        "previousMaximum": 8,
+        "maximumCount": 8,
+        "added": 0,
+        "bands": [
+          {
+            "axis": 0,
+            "rows": 33,
+            "minimum": 3,
+            "q10": 3,
+            "q25": 4,
+            "median": 5,
+            "q75": 5,
+            "q90": 5,
+            "maximum": 7,
+            "fractionAbove8": 0,
+            "histogram": {
+              "3": 8,
+              "4": 3,
+              "5": 18,
+              "6": 3,
+              "7": 1
+            }
+          },
+          {
+            "axis": 1,
+            "rows": 33,
+            "minimum": 3,
+            "q10": 3,
+            "q25": 4,
+            "median": 4,
+            "q75": 5,
+            "q90": 6,
+            "maximum": 8,
+            "fractionAbove8": 0,
+            "histogram": {
+              "3": 6,
+              "4": 17,
+              "5": 4,
+              "6": 5,
+              "8": 1
+            }
+          }
+        ]
+      },
+      "selectedCounts": {
+        "left": 3,
+        "right": 3
+      },
+      "seconds": 3.8183602920000013,
+      "nativeError": 0.0227875,
+      "nativePassed": true,
+      "geometryPassed": true,
+      "paper": "pass",
+      "editableError": 0.0227125,
+      "editablePassed": true,
+      "editableConversionPassed": true,
+      "editableGeometryPassed": true,
+      "editablePaper": "pass"
+    },
+    {
+      "id": "photo-star-baseline",
+      "sourceId": "real-ca2f9adc67ee4cea-roi",
+      "arm": "baseline",
+      "inputKind": "photo",
+      "maskSha256": "9bc7deb8e8fb5df179865fa7e3227e5c494c2edea2bf7c5a3deade7ed1b17717",
+      "probabilitySha256": "4ad0e2ecc9c680142a6085ae8f89b9c358da1fcb5fb48301b7817ed659721663",
+      "proposal": null,
+      "selectedCounts": {
+        "left": 3,
+        "right": 3
+      },
+      "seconds": 3.631091375,
+      "nativeError": 0.0227875,
+      "nativePassed": true,
+      "geometryPassed": true,
+      "paper": "pass",
+      "editableError": 0.0227125,
+      "editablePassed": true,
+      "editableConversionPassed": true,
+      "editableGeometryPassed": true,
+      "editablePaper": "pass"
+    },
+    {
+      "id": "sam-checker-automatic-baseline",
+      "sourceId": "real-f1af2fbb127278e4-roi__automatic-box__frozen-old",
+      "arm": "baseline",
+      "inputKind": "mask",
+      "maskSha256": "23a51e082e323dba4f8f6b9f80167ea6254a20760547371ac4f06d20091042d3",
+      "probabilitySha256": "afce7a32d160ad2d5abbd7ec96796d0f86eacc68a78a0f609e03ca5f198d257b",
+      "proposal": null,
+      "selectedCounts": {
+        "left": 8,
+        "right": 8
+      },
+      "seconds": 11.054385917,
+      "nativeError": 0.0566125,
+      "nativePassed": false,
+      "geometryPassed": true,
+      "paper": "pass",
+      "editableError": 0.05726875,
+      "editablePassed": false,
+      "editableConversionPassed": true,
+      "editableGeometryPassed": true,
+      "editablePaper": "pass"
+    },
+    {
+      "id": "sam-checker-automatic-interior-supported",
+      "sourceId": "real-f1af2fbb127278e4-roi__automatic-box__frozen-old",
+      "arm": "interior-supported",
+      "inputKind": "mask",
+      "maskSha256": "23a51e082e323dba4f8f6b9f80167ea6254a20760547371ac4f06d20091042d3",
+      "probabilitySha256": "afce7a32d160ad2d5abbd7ec96796d0f86eacc68a78a0f609e03ca5f198d257b",
+      "proposal": {
+        "previousMaximum": 8,
+        "maximumCount": 11,
+        "added": 12,
+        "bands": [
+          {
+            "axis": 0,
+            "rows": 33,
+            "minimum": 9,
+            "q10": 10,
+            "q25": 10,
+            "median": 11,
+            "q75": 12,
+            "q90": 12,
+            "maximum": 14,
+            "fractionAbove8": 1,
+            "histogram": {
+              "9": 2,
+              "10": 12,
+              "11": 8,
+              "12": 9,
+              "13": 1,
+              "14": 1
+            }
+          },
+          {
+            "axis": 1,
+            "rows": 33,
+            "minimum": 9,
+            "q10": 10,
+            "q25": 10,
+            "median": 10,
+            "q75": 11,
+            "q90": 12,
+            "maximum": 13,
+            "fractionAbove8": 1,
+            "histogram": {
+              "9": 2,
+              "10": 15,
+              "11": 11,
+              "12": 4,
+              "13": 1
+            }
+          }
+        ]
+      },
+      "selectedCounts": {
+        "left": 10,
+        "right": 11
+      },
+      "seconds": 9.237146166999999,
+      "nativeError": 0.034225,
+      "nativePassed": false,
+      "geometryPassed": true,
+      "paper": "uncertain",
+      "editableError": 0.03365,
+      "editablePassed": false,
+      "editableConversionPassed": true,
+      "editableGeometryPassed": true,
+      "editablePaper": "uncertain"
+    },
+    {
+      "id": "sam-checker-selected-interior-supported",
+      "sourceId": "real-f1af2fbb127278e4-roi__selection-box__frozen-old",
+      "arm": "interior-supported",
+      "inputKind": "mask",
+      "maskSha256": "c7fcfb80f95d948a81c720f9e66a2b59a7949aa960435581daae73f9c3c7f998",
+      "probabilitySha256": "31406b382a475c24cec67a54897da24fb5851d353947526a0fe07f91463332a6",
+      "proposal": {
+        "previousMaximum": 8,
+        "maximumCount": 11,
+        "added": 14,
+        "bands": [
+          {
+            "axis": 0,
+            "rows": 33,
+            "minimum": 9,
+            "q10": 10,
+            "q25": 10,
+            "median": 11,
+            "q75": 12,
+            "q90": 13,
+            "maximum": 13,
+            "fractionAbove8": 1,
+            "histogram": {
+              "9": 1,
+              "10": 9,
+              "11": 8,
+              "12": 9,
+              "13": 6
+            }
+          },
+          {
+            "axis": 1,
+            "rows": 33,
+            "minimum": 6,
+            "q10": 9,
+            "q25": 10,
+            "median": 10,
+            "q75": 11,
+            "q90": 11,
+            "maximum": 12,
+            "fractionAbove8": 0.9090909090909091,
+            "histogram": {
+              "6": 1,
+              "8": 2,
+              "9": 2,
+              "10": 16,
+              "11": 11,
+              "12": 1
+            }
+          }
+        ]
+      },
+      "selectedCounts": {
+        "left": 11,
+        "right": 11
+      },
+      "seconds": 10.554065625000003,
+      "nativeError": 0.03204050379723099,
+      "nativePassed": false,
+      "geometryPassed": true,
+      "paper": "uncertain",
+      "editableError": 0.03191549207738226,
+      "editablePassed": false,
+      "editableConversionPassed": true,
+      "editableGeometryPassed": true,
+      "editablePaper": "uncertain"
+    },
+    {
+      "id": "sam-checker-selected-baseline",
+      "sourceId": "real-f1af2fbb127278e4-roi__selection-box__frozen-old",
+      "arm": "baseline",
+      "inputKind": "mask",
+      "maskSha256": "c7fcfb80f95d948a81c720f9e66a2b59a7949aa960435581daae73f9c3c7f998",
+      "probabilitySha256": "31406b382a475c24cec67a54897da24fb5851d353947526a0fe07f91463332a6",
+      "proposal": null,
+      "selectedCounts": {
+        "left": 8,
+        "right": 8
+      },
+      "seconds": 10.967470083,
+      "nativeError": 0.05032971841110104,
+      "nativePassed": false,
+      "geometryPassed": true,
+      "paper": "pass",
+      "editableError": 0.05069850298465481,
+      "editablePassed": false,
+      "editableConversionPassed": true,
+      "editableGeometryPassed": true,
+      "editablePaper": "pass"
+    }
+  ],
+  "visualReview": "Inspected the four fixed RGB crops and all eight editable weaves. Denser hypotheses reduce merged/wavy interior checker cells, but edge bends and thin seams remain. The two SAM-derived masks still miss the 3% threshold. The star preview is unchanged. Counts indicate native/edited mask checks, not physical assembly or original cutting-path recovery.",
+  "qualifications": [
+    "The proposal uses a previously development-selected 75% threshold and two already inspected photographs, not a held-out test.",
+    "All lower-count hypotheses remain available; interior transition counts are not a mathematical minimum slit count.",
+    "55 unchanged hypothesis sets do not replace full end-to-end regression testing. Subsequent integration is recorded below.",
+    "Timings are one low-priority serial replay; four runs exceed ten seconds. This does not establish a speed improvement.",
+    "The successful original-photo arm retains floating-point source probabilities. The subsequent binary-mask control below tests the representation used by Paint; it does not replace browser QA."
+  ],
+  "artifacts": {
+    "tmp/heart-learning/interior-count-fit-v1/plan.json": "78238ccd71c985ea075e1e16c64dd82764da77866b8c76372f57f9a0a59a8963",
+    "tmp/heart-learning/interior-count-fit-v1/pins.json": "c63df15401cd7d63a68578970d8697b69b97c0cc29ccaa2f4bedb1dcd5491e46",
+    "tmp/heart-learning/interior-count-fit-v1/policy.mjs": "8698a198d1caabaa4869d791f243c4dda4909ccf8afa2475347b97dacaea067e",
+    "tmp/heart-learning/interior-count-fit-v1/audit.mjs": "0bc8e39ab33322e10e05be1d5a943d231245fb3a8d556cc5ca8bc249cbd320ca",
+    "tmp/heart-learning/interior-count-fit-v1/results/report.json": "a40e1fca5b47629c275036005b53ab6f0cddf851d3360dc91196481b46ef0d96",
+    "tmp/heart-learning/interior-count-fit-v1/editable/results.json": "c94df35fed1eb32a7bcb5bcf8ab9c6e7d6007f58ece9c0d8f0573a75a7a2d848",
+    "tmp/heart-learning/interior-count-fit-v1/policy-audit.json": "c2863c28a65faa133e7df185eb67d0c38b6a3c14615ed954f769330c8ba949a5",
+    "tmp/heart-learning/interior-count-fit-v1/editable-review.png": "ccc048295c13b8bed793f382c3b76518ed4655ff2bfcefba64f3570e8c1bade2"
+  },
+  "binaryInputControl": {
+    "scope": "One additional paired test on the original photographic checker converted to the binary input used by Paint, keeping its native 400-pixel mask and original crop. Ten-second benchmark allowance, no trials; not a browser interaction or full default-180-second run.",
+    "rows": [
+      {
+        "id": "binary-checker-baseline",
+        "arm": "baseline",
+        "maskSha256": "9ac385b123d8f9783d50523b4c68f609ccb94287780ce2cdc8a4e8de7020fa9c",
+        "probabilitySha256": "102c0a6b1fd0fca3a344598198aaf91b056c491533321dd42d8cea0e8558169f",
+        "seconds": 10.823453125,
+        "counts": {
+          "left": 8,
+          "right": 8
+        },
+        "nativeError": 0.05199375,
+        "passed": false,
+        "geometry": true,
+        "paper": "pass"
+      },
+      {
+        "id": "binary-checker-interior-supported",
+        "arm": "interior-supported",
+        "maskSha256": "9ac385b123d8f9783d50523b4c68f609ccb94287780ce2cdc8a4e8de7020fa9c",
+        "probabilitySha256": "102c0a6b1fd0fca3a344598198aaf91b056c491533321dd42d8cea0e8558169f",
+        "seconds": 10.371483792,
+        "counts": {
+          "left": 11,
+          "right": 10
+        },
+        "nativeError": 0.02704375,
+        "passed": true,
+        "geometry": true,
+        "paper": "pass"
+      }
+    ],
+    "artifacts": {
+      "tmp/heart-learning/interior-count-binary-v1/plan.json": "4b37b6f857a583ce0096ed6ddabe22528f44d1b25752eb0cca4c3e60ed3ce6ed",
+      "tmp/heart-learning/interior-count-binary-v1/pins.json": "05de6dd106f693d055fd8fdbf0bcae4c7c73bd3969dc7587912d38b15fc2b9c1",
+      "tmp/heart-learning/interior-count-binary-v1/results/report.json": "91949aa10eade65a0c55684e55cef4c2b67decdee444745487462659cb568c1e"
+    },
+    "editableReplay": "pending"
+  },
+  "runtimeChangedDuringPairedExperiment": false,
+  "implementation": {
+    "status": "integrated-full-QA-running",
+    "policy": "Only initial count/phase hypotheses expand. All ordinary starts remain; later recovery count bounds and all deadlines/acceptance checks are unchanged.",
+    "sourceFiles": {
+      "static/inverse/core/direct/interior-counts.js": "ee8445b612247a180a15f04d0a695737fe6313817cf10a6c48d61686247e0746",
+      "static/inverse/core/direct/counts.js": "89b4b782bb1a135fb684d823462310c64e61a892d65a46e42147ccfa6d4266dc",
+      "static/inverse/core/direct/fit.js": "467e01c95d3e598dcef03dfd58272299bd84d1a94bfbb8f3a2effba2f5882242",
+      "scripts/inverse/interior-counts.test.mjs": "86f502975467c6ba2375bdecccc497d5902fe19a9bfb6ffdc6269b4f3a8e7d99",
+      "scripts/inverse/fixtures/dense-checker-interior.json": "dd152804a283e1f86f4636ea11475b16e18415de642d395e0351ef5065cdac68"
+    },
+    "focusedTestsPassed": 6,
+    "typeCheck": "passed",
+    "lint": "passed",
+    "fullQA": "tmp/heart-learning/interior-count-release-v1/qa/state.json",
+    "sourcePins": "tmp/heart-learning/interior-count-release-v1/qa/source.json",
+    "browserQA": "pending",
+    "productionCorpusProposalParity": "Offline policy tested on 55 fixed targets before integration; the integrated helper still needs the corresponding exact parity replay."
+  }
+}

@@ -52,8 +52,32 @@ rule would expand that case to twelve while leaving all 55 existing corpus
 limits and the selected star unchanged. Fourteen transformed/noisy-input
 checks preserve those proposed limits. The support threshold was chosen after
 inspecting these development profiles; no new fitting, editable validation or
-production policy change is claimed. Interior transitions can exceed the true
+production policy change was made in that diagnostic. Interior transitions can exceed the true
 cut count when curves turn back, so they are proposals, not constraints.
+
+The [saved expanded-count checker now passes editable validation](selected-checker-editable-results.json):
+5.59% disagreement falls to 2.66%, with ten/eleven cuts and passing geometry
+and paper checks. Its distorted interior cells improve, while border bends
+and thin seams remain. The star control's geometry and error stay unchanged.
+
+A [fresh interior-supported proposal](interior-count-fit-results.json) caps
+new starts at eleven cuts and retains every original count/phase. Across four
+paired development inputs from two photographs, it improves the three checker
+fits and leaves the star unchanged. Editable checker errors change from
+5.21% to 2.59%, 5.73% to 3.37%, and 5.07% to 3.19%; the latter two remain
+failures. All eight exports retain valid geometry and paper support. A further
+binary-input control, representing Paint's target type, improves native error
+from 5.20% to 2.70%. These are fixed-crop development comparisons, not new
+independent photographs or a speed claim; several fits exceed ten seconds.
+
+The proposal is now in the main fitter's initialization, with unchanged
+recovery limits, deadlines and acceptance rules. Six focused regressions pass,
+including the dense binary target, preservation of simpler starts and both
+phases, uncertain/noisy inputs, missing coverage, symmetry and strip width.
+Check and lint pass. Full serial QA, integrated corpus parity and browser
+verification remain outstanding. Nothing has been deployed. The pre-integration
+proposal leaves all 55 existing corpus hypothesis sets unchanged and passes
+eight procedural support controls; those checks do not replace full fitting.
 
 The [paired selected-box MobileSAM replay](selected-sam-prompt-results.json)
 now completes on seven fixed development photos. Automatic boxes produce four
