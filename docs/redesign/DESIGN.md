@@ -417,7 +417,7 @@ explain handle behaviour, and disabled editing tools say what to select first. T
 Keep every existing tool (undo/redo, insert/delete node, corner/smooth/symmetric, straighten line/curve, …) as
 44px icon buttons with tooltips — nothing removed, no labels under icons. Apply the palette: page background,
 panels white with 1px `--line` and radius 12, section titles 12px uppercase `--muted`, green accents, red
-primary. Top bar: back link + logo at the left; Help (icon), **Download PDF** (primary red) and **Gem** (dark
+primary. Top bar: back link + logo at the left; Help (icon), **Hent PDF** (primary red) and **Gem** (dark
 green) at the right. Right panel 340px: Symmetri (segmented Fra / Sym / Anti), Tegning, Farver, Hjertedetaljer,
 Handlinger. A **"Skjul panel"** control collapses the panel so the canvas fills the width; a slim tab at the
 right edge ("Vis panel") brings it back; remember the choice in localStorage. Add a "Snap til modsat side"

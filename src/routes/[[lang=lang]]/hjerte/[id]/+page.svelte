@@ -46,6 +46,8 @@
   import { normalizeHeartDesign, serializeHeartDesign } from "$lib/utils/heartDesign";
   import { decodeSharedDesign, encodeSharedDesign, sharedDesignUrl } from "$lib/utils/shareDesign";
   import { makeHeartAnchorId } from "$lib/utils/heartAnchors";
+  import { openerOf } from "$lib/utils/focusTrap";
+  import { formatHeartDate } from "$lib/utils/date";
   import type { HeartDesign, HeartInfo } from "$lib/types/heart";
   import { trackHeartShare, trackHeartEdit } from "$lib/analytics";
 
@@ -240,16 +242,18 @@
   let traceOpen = $state(false);
   let traceOpener: HTMLElement | null = null;
 
-  function handleTrace() {
+  function handleTrace(event?: MouseEvent) {
     if (!design) return;
-    traceOpener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    traceOpener = openerOf(event);
     traceOpen = true;
   }
 
+  // preventScroll: the page under the mode is back where it was; focusing
+  // must not scroll it again (it did on iPad when the opener was <main>).
   async function handleTraceClose() {
     traceOpen = false;
     await tick();
-    traceOpener?.focus();
+    traceOpener?.focus({ preventScroll: true });
   }
 
   // "Hent skabelon": the dialog for the printer PDF and the laser file, which
@@ -258,16 +262,16 @@
   let downloadOpen = $state(false);
   let downloadOpener: HTMLElement | null = null;
 
-  function handleDownload() {
+  function handleDownload(event?: MouseEvent) {
     if (!design) return;
-    downloadOpener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    downloadOpener = openerOf(event);
     downloadOpen = true;
   }
 
   async function handleDownloadClose() {
     downloadOpen = false;
     await tick();
-    downloadOpener?.focus();
+    downloadOpener?.focus({ preventScroll: true });
   }
 
   function handleEdit() {
@@ -333,7 +337,7 @@
     if (!info) return [] as { label: string; value: string; url: string | null }[];
     const rows: { label: string; value: string; url: string | null }[] = [];
     if (info.publisher) rows.push({ label: t("publisher", lang), value: info.publisher, url: info.publisherUrl });
-    if (info.date) rows.push({ label: t("date", lang), value: info.date, url: null });
+    if (info.date) rows.push({ label: t("date", lang), value: formatHeartDate(info.date, lang), url: null });
     if (info.source && normalizeSource(info.source) !== normalizeSource(SITE_DOMAIN)) {
       rows.push(sourceRow(info.source));
     }

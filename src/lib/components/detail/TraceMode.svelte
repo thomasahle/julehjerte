@@ -196,13 +196,17 @@
 	 */
 	function handleResize(): void {
 		if (!open || mode === 'locked') return;
+		remeasure();
+	}
+
+	/** Read the viewport again and place or clamp the template for it. */
+	async function remeasure(): Promise<void> {
 		vw = window.innerWidth;
 		vh = window.innerHeight;
-		tick().then(() => {
-			measureChrome();
-			if (adjusted) view = clampView(view, size, viewport, pxPerMm);
-			else place(remembered);
-		});
+		await tick();
+		measureChrome();
+		if (adjusted) view = clampView(view, size, viewport, pxPerMm);
+		else place(remembered);
 	}
 
 	function saveSettings(): void {
@@ -333,8 +337,14 @@
 		cancelHold();
 		mode = 'size';
 		announcement = t('traceUnlockedAnnouncement', lang);
-		await tick();
-		measureChrome();
+		// Resizes are ignored while locked, so a rotation then left the surface
+		// at the old size: catch up now that the template may move again.
+		if (vw !== window.innerWidth || vh !== window.innerHeight) {
+			await remeasure();
+		} else {
+			await tick();
+			measureChrome();
+		}
 		lockButton?.focus();
 	}
 
@@ -398,8 +408,12 @@
 	let holdTimer: ReturnType<typeof setTimeout> | null = null;
 	let holdFrame: number | null = null;
 
-	function beginHold(): void {
+	/** What started the hold under way: a finger or mouse, or Enter / Space. */
+	let holdBy: 'pointer' | 'key' | null = null;
+
+	function beginHold(by: 'pointer' | 'key'): void {
 		if (mode !== 'locked' || hold.phase === 'holding') return;
+		holdBy = by;
 		hold = holdStart(hold, Date.now());
 		holdTimer = setTimeout(checkHold, HOLD_MS);
 		drawProgress();
@@ -423,6 +437,7 @@
 	}
 
 	function cancelHold(): void {
+		holdBy = null;
 		hold = holdCancel(hold);
 		if (hold.phase === 'done') hold = HOLD_IDLE;
 		if (holdTimer !== null) clearTimeout(holdTimer);
@@ -433,17 +448,34 @@
 	}
 
 	function handleUnlockDown(event: PointerEvent): void {
-		// Touch pointers are captured to their target implicitly, and a captured
-		// pointer never "leaves": released, sliding off the button cancels the hold.
+		// A captured pointer never "leaves", so sliding off the button would not
+		// cancel the hold. WebKit captures a touch before pointerdown and lets go
+		// here; Chromium captures it after, in a way releasePointerCapture cannot
+		// undo (hasPointerCapture stays false and nothing is released, measured
+		// with CDP touch on a Pixel 7), so handleUnlockMove covers that case.
 		const button = event.currentTarget as Element;
 		if (button.hasPointerCapture?.(event.pointerId)) button.releasePointerCapture(event.pointerId);
-		beginHold();
+		beginHold('pointer');
+	}
+
+	// While the button still gets the moves of a finger that has left it, a
+	// move outside its box cancels the hold just as pointerleave would.
+	function handleUnlockMove(event: PointerEvent): void {
+		if (hold.phase !== 'holding') return;
+		const box = (event.currentTarget as Element).getBoundingClientRect();
+		if (box.width === 0 && box.height === 0) return;
+		const outside =
+			event.clientX < box.left ||
+			event.clientX > box.right ||
+			event.clientY < box.top ||
+			event.clientY > box.bottom;
+		if (outside) cancelHold();
 	}
 
 	function handleUnlockKey(event: KeyboardEvent): void {
 		if (event.key !== 'Enter' && event.key !== ' ') return;
 		event.preventDefault();
-		if (event.type === 'keydown') beginHold();
+		if (event.type === 'keydown') beginHold('key');
 		else cancelHold();
 	}
 
@@ -463,6 +495,14 @@
 		}
 		if (lockKeyDown !== event.key) event.preventDefault();
 		lockKeyDown = null;
+	}
+
+	// Focus leaving the button ends a key hold: the key is no longer on it. A
+	// finger's hold is ended by the finger, not by focus. Safari blurs a focused
+	// button when it is pressed, and "Lås op" is focused on locking, so the
+	// first press after locking used to be cancelled at once.
+	function handleUnlockBlur(): void {
+		if (holdBy === 'key') cancelHold();
 	}
 
 	// ---- Keyboard ------------------------------------------------------------
@@ -577,12 +617,13 @@
 						aria-label={t('traceUnlock', lang)}
 						aria-describedby="trace-hold-hint"
 						onpointerdown={handleUnlockDown}
+						onpointermove={handleUnlockMove}
 						onpointerup={cancelHold}
 						onpointercancel={cancelHold}
 						onpointerleave={cancelHold}
 						onkeydown={handleUnlockKey}
 						onkeyup={handleUnlockKey}
-						onblur={cancelHold}
+						onblur={handleUnlockBlur}
 					>
 						<LockOpenIcon size={24} />
 					</button>
@@ -591,7 +632,7 @@
 			</div>
 		{:else}
 			<div class="chrome" bind:this={chromeEl}>
-				<div class="toolbar">
+				<div class="toolbar" class:two-templates={twoTemplates && mode !== 'calibrate'}>
 					<button class="btn btn-ghost btn-sm btn-icon close" type="button" aria-label={t('close', lang)} onclick={close}>
 						<CloseIcon size={18} />
 					</button>
@@ -806,17 +847,26 @@
 		display: none;
 	}
 
-	/* Below 600 the toolbar wraps to two rows: the buttons, then the slider
-	   (with the Venstre / Højre switch in front of it when there is one). The
-	   buttons tighten and "Tilpas" keeps only its icon so the first row holds
-	   all four on a 375px phone. */
+	/* Below 600 the toolbar wraps: the buttons, then the Venstre / Højre switch
+	   when there is one, then the slider across the full width, so its 30–200 mm
+	   are not squeezed into a few px beside the switch. The buttons tighten and
+	   "Tilpas" keeps only its icon so the first row holds all four on a 375px
+	   phone; every target is 44px, the size of a fingertip. */
 	@media (max-width: 599px) {
 		.toolbar {
 			gap: 8px;
 		}
 
+		.toolbar .btn-sm {
+			height: 44px;
+		}
+
 		.toolbar .btn-sm:not(.btn-icon) {
 			padding: 0 12px;
+		}
+
+		.segmented button {
+			height: 41px;
 		}
 
 		.toolbar .fit {
@@ -839,19 +889,36 @@
 			order: 10;
 		}
 
-		.slider {
+		/* Beside the switch when there is one, else a short line of its own. */
+		.calibrated {
 			order: 11;
-			flex: 1 1 180px;
+			flex: 1 1 auto;
+		}
+
+		.slider {
+			order: 12;
+			flex: 1 1 100%;
 		}
 
 		.slider input {
-			min-width: 60px;
+			height: 44px;
+			margin: 0;
 		}
 
-		/* No room beside the buttons or the slider: a short line of its own. */
-		.calibrated {
-			order: 12;
-			flex-basis: 100%;
+		/* With the switch, the readout moves up beside it and the slider has
+		   the last row to itself. */
+		.two-templates .slider {
+			display: contents;
+		}
+
+		.two-templates .readout {
+			order: 11;
+			margin-left: auto;
+		}
+
+		.two-templates .slider input {
+			order: 13;
+			flex: 1 1 100%;
 		}
 	}
 

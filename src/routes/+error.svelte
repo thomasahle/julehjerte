@@ -20,6 +20,8 @@
 
 <svelte:head>
   <title>{message} | {SITE_NAME}</title>
+  <!-- The layout leaves out canonical and hreflang here (see isErrorPage). -->
+  <meta name="robots" content="noindex" />
 </svelte:head>
 
 <PageHeader {lang} />
