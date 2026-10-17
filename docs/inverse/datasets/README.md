@@ -90,6 +90,15 @@ their full-suite timing sensitivity. Five other full-suite failures and browser
 verification remain outstanding; the full suite has not been repeated after
 the repair correction. Nothing has been deployed.
 
+A [controlled polishing regression](late-polishing.md) exposes another
+selection bug: a better legal approximation was discarded because it still
+exceeded the image limit. Retaining it improves independent export error from
+4.89% to 4.02%, while preserving the mismatch warning and physical/feature
+checks. All nine focused late-feature/polishing tests pass. The five earlier
+full-suite failures also pass across 24 focused tests without a production
+change, but their causes remain unresolved. Broader serial QA is in progress;
+this is not a new full-suite pass or a speed benchmark.
+
 The [paired selected-box MobileSAM replay](selected-sam-prompt-results.json)
 now completes on seven fixed development photos. Automatic boxes produce four
 crops and two checked masks, but one is the wrong heart in the star scene.
