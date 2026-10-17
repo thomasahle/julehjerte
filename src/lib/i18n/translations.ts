@@ -457,6 +457,13 @@ export const translations = {
       '<strong>Træk i kontrolhåndtag</strong> (cirkler) for at justere kurvens form',
       '<strong>Brug værktøjslinjen</strong> til venstre for at tilføje/slette noder eller ændre nodetyper'
     ],
+    helpSectionShortcutsTitle: 'Genveje',
+    helpSectionShortcutsBullets: [
+      '<strong>Ctrl+Z</strong> (⌘Z på Mac) fortryder',
+      '<strong>Ctrl+Shift+Z</strong> eller <strong>Ctrl+Y</strong> (⇧⌘Z på Mac) gentager',
+      '<strong>Delete</strong> eller <strong>Backspace</strong> sletter det valgte punkt',
+      '<strong>Esc</strong> fravælger kurven'
+    ],
     helpSectionSymmetryTitle: 'Symmetrimuligheder',
     helpSectionSymmetryIntro: 'Brug symmetripanelet til højre for at håndhæve begrænsninger:',
     helpSectionSymmetryBullets: [
@@ -866,7 +873,7 @@ export const translations = {
     dismissMessage: 'Dismiss message',
     editorOutlines: 'Show outline',
     editorShowCurveOutlines: 'Show curve outlines',
-    editorFlipLobeColors: 'Flip lobe colors',
+    editorFlipLobeColors: 'Flip lobe colours',
     editorWithinCurve: 'Within curve',
     editorWithinLobe: 'Within lobe',
     editorBetweenLobes: 'Between lobes',
@@ -1111,6 +1118,13 @@ export const translations = {
       '<strong>Drag control handles</strong> (circles) to adjust curve shape',
       '<strong>Use the toolbar</strong> on the left to add/delete nodes or change node types'
     ],
+    helpSectionShortcutsTitle: 'Keyboard shortcuts',
+    helpSectionShortcutsBullets: [
+      '<strong>Ctrl+Z</strong> (⌘Z on a Mac) undoes',
+      '<strong>Ctrl+Shift+Z</strong> or <strong>Ctrl+Y</strong> (⇧⌘Z on a Mac) redoes',
+      '<strong>Delete</strong> or <strong>Backspace</strong> deletes the selected point',
+      '<strong>Esc</strong> deselects the curve'
+    ],
     helpSectionSymmetryTitle: 'Symmetry Options',
     helpSectionSymmetryIntro: 'Use the symmetry panel on the right to enforce constraints:',
     helpSectionSymmetryBullets: [
@@ -1303,8 +1317,8 @@ export const translations = {
     aboutMetaDescription: 'About Juleflet.dk: free templates for woven Christmas hearts, an editor for your own patterns, and links to other good sites about woven hearts.',
 
     // Footer
-    leftColor: 'Left color',
-    rightColor: 'Right color',
+    leftColor: 'Left colour',
+    rightColor: 'Right colour',
     suggestHeart: 'Suggest a heart',
     madeBy: '©',
     footerColors: 'Colours',

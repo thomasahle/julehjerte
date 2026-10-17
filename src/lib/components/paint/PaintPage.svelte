@@ -1329,13 +1329,17 @@
 		box-shadow: var(--shadow-panel);
 	}
 
+	/* The two buttons share the line while their words fit and wrap onto two
+	   full-width lines when they do not: at equal halves "Prøv stjernen" was
+	   wider than its half and stuck out of the card by 4px (18px on an iPhone). */
 	.empty-actions {
 		display: flex;
+		flex-wrap: wrap;
 		gap: 8px;
 	}
 
 	.empty-actions .btn {
-		flex: 1 1 0;
+		flex: 1 1 auto;
 		background: var(--white);
 	}
 

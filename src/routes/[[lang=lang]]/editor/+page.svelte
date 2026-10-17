@@ -963,6 +963,15 @@
       </section>
 
       <section>
+        <h3>{t('helpSectionShortcutsTitle', lang)}</h3>
+        <ul>
+          {#each tArray('helpSectionShortcutsBullets', lang) as item, i (i)}
+            <li>{@html item}</li>
+          {/each}
+        </ul>
+      </section>
+
+      <section>
         <h3>{t('helpSectionSymmetryTitle', lang)}</h3>
         <p>{t('helpSectionSymmetryIntro', lang)}</p>
         <ul>
@@ -1018,6 +1027,20 @@
   .editor-top :global(.paper-heart.fullPage) {
     flex: 1 1 auto;
     min-height: 0;
+  }
+
+  /* Below 900px the editor is a page that scrolls: tool row, canvas (which keeps
+     its own height inside PaperHeart) and the cards follow each other, so the box
+     takes the height of what it holds instead of squeezing the canvas. */
+  @media (max-width: 899px) {
+    .editor-top {
+      height: auto;
+      min-height: 0;
+    }
+
+    .editor-top :global(.paper-heart.fullPage) {
+      flex: none;
+    }
   }
 
   /* Desktop: the tool fills the viewport, so the page itself never scrolls. */
