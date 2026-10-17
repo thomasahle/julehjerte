@@ -8,6 +8,7 @@
 -->
 <script lang="ts">
 	import HangingHeart from '$lib/components/HangingHeart.svelte';
+	import PaperHeartSVG from '$lib/components/PaperHeartSVG.svelte';
 	import { ArrowRightIcon } from '$lib/components/icons';
 	import { categoryTitleLower } from '$lib/data/categories';
 	import { t, type Language } from '$lib/i18n';
@@ -49,6 +50,7 @@
 				<span class="related-hang">
 					<HangingHeart
 						design={heart.design}
+						paper={PaperHeartSVG}
 						size={120}
 						ribbon={RIBBONS[i % RIBBONS.length] * 0.6}
 						delay={i * 0.6}
