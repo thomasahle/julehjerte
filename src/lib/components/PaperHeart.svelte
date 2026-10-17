@@ -268,6 +268,15 @@
 	let heartColors = $derived(designColors ?? storeColors);
 	// The two <input type="color"> only speak #rrggbb; the store's red is rgb().
 	let colorInputs = $derived(toHexColors(heartColors, DEFAULT_COLORS_HEX));
+	// The inputs carry static default values, as PageFooter's do: a dynamic `value`
+	// attribute is stripped by Svelte during hydration, and Chrome warns about a
+	// colour input momentarily holding "". The heart's own pair is applied here.
+	let leftColorInput = $state<HTMLInputElement | null>(null);
+	let rightColorInput = $state<HTMLInputElement | null>(null);
+	$effect(() => {
+		if (leftColorInput) leftColorInput.value = colorInputs.left;
+		if (rightColorInput) rightColorInput.value = colorInputs.right;
+	});
 	let gridSize = $state<GridSize>({ x: 3, y: 3 });
 	let weaveParity = $state<0 | 1>(0);
 	let fingers = $state<Finger[]>([]);
@@ -3539,7 +3548,8 @@
 								<input
 									type="color"
 									name="heart-color-left"
-									value={colorInputs.left}
+									value="#ffffff"
+									bind:this={leftColorInput}
 									oninput={(e) => setLobeColor('left', e.currentTarget.value)}
 								/>
 							</label>
@@ -3548,7 +3558,8 @@
 								<input
 									type="color"
 									name="heart-color-right"
-									value={colorInputs.right}
+									value="#b91313"
+									bind:this={rightColorInput}
 									oninput={(e) => setLobeColor('right', e.currentTarget.value)}
 								/>
 							</label>
