@@ -127,7 +127,7 @@
 				<Tooltip>
 					<TooltipTrigger>
 						{#snippet child({ props })}
-							<!-- The tooltip's props go first, as they do in GalleryToolbar: they
+							<!-- The tooltip's props go first, as they do in GalleryBar: they
 							     carry an `onclick` of their own, and the last spread wins. Put
 							     them last and clicking a tool does nothing at all — only the
 							     keyboard shortcuts still change tools. What we drop by winning is

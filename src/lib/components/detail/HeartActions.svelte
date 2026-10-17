@@ -176,7 +176,7 @@
 	}
 
 	/* "Download PDF-skabelon" and its caret: two .btn-primary halves butted
-	   together, with the toolbar's radii and divider (GalleryToolbar.svelte). */
+	   together, with the gallery bar's radii and divider (GalleryBar.svelte). */
 	.split {
 		display: inline-flex;
 		border-radius: 10px;

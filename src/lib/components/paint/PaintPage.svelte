@@ -724,7 +724,7 @@
 		</button>
 		<!-- aria-disabled, not `disabled`: a disabled button takes no focus, so the
 		     "Find snit først" that explains it was mouse-only and unannounced. Both
-		     handlers already do nothing without a heart (GalleryToolbar.svelte and
+		     handlers already do nothing without a heart (GalleryBar.svelte and
 		     DESIGN.md §3 took the same decision for the same reason). -->
 		<button
 			type="button"

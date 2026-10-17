@@ -3,8 +3,9 @@
   "Mine hjerter" (docs/redesign/DESIGN.md §3 "Gallery").
 
   The section carries the category id, because the detail page links back to
-  `#<category>` and `#heart-<id>` anchors inside it; `scroll-margin-top` keeps an
-  anchored row clear of the sticky toolbar.
+  `#<category>` and `#heart-<id>` anchors inside it, and the gallery bar's chips
+  link to `#<category>` too; `scroll-margin-top` keeps an anchored row clear of
+  the sticky bar.
 -->
 <script lang="ts">
 	import type { Snippet } from 'svelte';
@@ -31,7 +32,7 @@
 		onClick: (heart: GalleryHeart) => void;
 		/** Only the visitor's own hearts can be deleted. */
 		onDelete?: (heart: GalleryHeart) => void;
-		/** The first row under the toolbar sits closer to it. */
+		/** The first row under the bar sits closer to it. */
 		first?: boolean;
 		/** "Mine hjerter": set apart from the gallery categories above it. */
 		apart?: boolean;
@@ -59,7 +60,6 @@
 <section class="cat" class:first class:apart {id}>
 	<div class="cat-head">
 		<h3>{title}</h3>
-		
 	</div>
 	{#if hearts.length === 0 && empty}
 		{@render empty()}
@@ -86,17 +86,26 @@
 	.cat {
 		display: flex;
 		flex-direction: column;
-		padding-top: 44px;
-		/* The toolbar is sticky, so a category anchor must not land underneath it. */
-		scroll-margin-top: calc(var(--nav-height) + 16px);
+		/* Margin, not padding, so the section's box starts at its heading. That
+		   box is what an anchor lands on and what the bar's scroll-spy measures:
+		   with padding, a chip would park the heading 44px further down than
+		   "just under the bar", and the spy would switch chips while the
+		   previous row's last hearts still filled the screen. The gallery is a
+		   flex column, so the margins do not collapse and nothing moves. */
+		margin-top: 44px;
+		/* The bar is sticky, so a category anchor must not land behind it. Its
+		   height is measured (Gallery.svelte); 49px is the one-row bar, for the
+		   prerendered page before it is. The 8px is ANCHOR_GAP in
+		   $lib/front/scrollSpy, which the spy uses as the same line. */
+		scroll-margin-top: calc(var(--gallery-bar-height, 49px) + 8px);
 	}
 
 	.cat.first {
-		padding-top: 8px;
+		margin-top: 8px;
 	}
 
 	.cat.apart {
-		padding-top: 48px;
+		margin-top: 48px;
 		gap: 12px;
 	}
 
@@ -118,11 +127,6 @@
 		color: var(--green);
 	}
 
-	.cat-head span {
-		font-size: 13px;
-		color: var(--muted);
-	}
-
 	.cat-grid {
 		display: grid;
 		/* Cells are just wider than the 200px heart, so the hearts nearly fill
@@ -130,12 +134,6 @@
 		grid-template-columns: repeat(auto-fill, minmax(204px, 1fr));
 		column-gap: 16px;
 		row-gap: 28px;
-	}
-
-	@media (max-width: 899px) {
-		.cat {
-			scroll-margin-top: calc(var(--nav-height-sm) + 12px);
-		}
 	}
 
 	@media (max-width: 599px) {

@@ -102,7 +102,7 @@
    a one-line reason next to any value that is not obviously in its band.
 
        0-5     page content — a card's ribbon and badge, the hero's corner firs,
-               the gallery's sticky toolbar (5)
+               the gallery's sticky bar (5)
        20-29   the editor's canvas chrome: notices, tool rail, panels
        30      the site nav, and the editor's floating panel over the canvas
                (different stacking contexts, so they never actually meet)
@@ -175,6 +175,17 @@
 
   h1 {
     line-height: 1.05;
+  }
+
+  /* A gallery chip's jump to its category glides instead of cutting. It is a
+     class the gallery bar sets for that one jump, not a site-wide rule: on
+     <html> itself it would also animate SvelteKit's scroll resets, sliding the
+     front page back down to where a visitor left off when they return from a
+     heart (GalleryBar.svelte). */
+  @media (prefers-reduced-motion: no-preference) {
+    html.smooth-anchors {
+      scroll-behavior: smooth;
+    }
   }
 
   :focus-visible {
