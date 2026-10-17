@@ -46,6 +46,7 @@
   import { normalizeHeartDesign, serializeHeartDesign } from "$lib/utils/heartDesign";
   import { decodeSharedDesign, encodeSharedDesign, sharedDesignUrl } from "$lib/utils/shareDesign";
   import { makeHeartAnchorId } from "$lib/utils/heartAnchors";
+  import { openerOf } from "$lib/utils/focusTrap";
   import type { HeartDesign, HeartInfo } from "$lib/types/heart";
   import { trackHeartShare, trackHeartEdit } from "$lib/analytics";
 
@@ -240,16 +241,18 @@
   let traceOpen = $state(false);
   let traceOpener: HTMLElement | null = null;
 
-  function handleTrace() {
+  function handleTrace(event?: MouseEvent) {
     if (!design) return;
-    traceOpener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    traceOpener = openerOf(event);
     traceOpen = true;
   }
 
+  // preventScroll: the page under the mode is back where it was; focusing
+  // must not scroll it again (it did on iPad when the opener was <main>).
   async function handleTraceClose() {
     traceOpen = false;
     await tick();
-    traceOpener?.focus();
+    traceOpener?.focus({ preventScroll: true });
   }
 
   // "Hent skabelon": the dialog for the printer PDF and the laser file, which
@@ -258,16 +261,16 @@
   let downloadOpen = $state(false);
   let downloadOpener: HTMLElement | null = null;
 
-  function handleDownload() {
+  function handleDownload(event?: MouseEvent) {
     if (!design) return;
-    downloadOpener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    downloadOpener = openerOf(event);
     downloadOpen = true;
   }
 
   async function handleDownloadClose() {
     downloadOpen = false;
     await tick();
-    downloadOpener?.focus();
+    downloadOpener?.focus({ preventScroll: true });
   }
 
   function handleEdit() {

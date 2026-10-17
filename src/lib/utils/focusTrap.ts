@@ -35,3 +35,15 @@ export function trapTab(event: KeyboardEvent, container: HTMLElement | null): vo
 		first.focus();
 	}
 }
+
+/**
+ * The control that opened a dialog, for focus to return to on close. Taken
+ * from the click itself: Safari does not focus a tapped button, so
+ * `document.activeElement` is then whatever had focus before (often <main>),
+ * and focusing that on close scrolls the page.
+ */
+export function openerOf(event?: Event): HTMLElement | null {
+	const target = event?.currentTarget;
+	if (target instanceof HTMLElement) return target;
+	return document.activeElement instanceof HTMLElement ? document.activeElement : null;
+}

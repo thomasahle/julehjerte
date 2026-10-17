@@ -26,11 +26,12 @@
 		galleryHref?: string;
 		shareStatus: 'idle' | 'copied' | 'error';
 		/** Opens the "Hent skabelon" dialog. */
-		onDownload: () => void;
+		onDownload: (event: MouseEvent) => void;
 		onEdit: () => void;
 		onShare: () => void;
 		onSaveShared: () => void;
-		onTrace: () => void;
+		/** Gets the click, so the page knows which button to return focus to. */
+		onTrace: (event: MouseEvent) => void;
 	}
 
 	let {
