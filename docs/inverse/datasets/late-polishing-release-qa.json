@@ -117,7 +117,7 @@
   },
   "verificationHandoffFollowup": {
     "runtimeCommit": "b7daccc12eb56887cd1006e0c75f1edd2053391c",
-    "status": "application-build-browser-pass-full-inverse-running",
+    "status": "application-build-inverse-browser-pass",
     "tests": {
       "verification-handoff-before.log": {
         "tests": 1,
@@ -687,7 +687,26 @@
       "remainingDefects": "Selected star retains small border protrusions and curved joins; dense checker retains irregular boundary cells. Hunodan hjcur-02 has uneven strip endpoints near the top; hjstr-02 has small border nicks/protrusions; hjstr-03 has slightly uneven straight edges. No claim of exact ground-truth recovery."
     },
     "fullInverse": {
-      "status": "running",
+      "status": "complete",
+      "pid": 83838,
+      "runtimeCommit": "b7daccc12eb56887cd1006e0c75f1edd2053391c",
+      "sourceFiles": 1018,
+      "priority": 15,
+      "minimumFreeGiB": 10,
+      "command": [
+        "npm",
+        "run",
+        "test:inverse"
+      ],
+      "childPid": 83844,
+      "exitCode": 0,
+      "seconds": 1168.684125875,
+      "tests": 1039,
+      "pass": 1039,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
       "state": "tmp/heart-learning/late-polishing-release-v1/qa-handoff/inverse-state.json",
       "log": "tmp/heart-learning/late-polishing-release-v1/qa-handoff/inverse.log"
     },
@@ -755,7 +774,23 @@
       "tmp/heart-learning/late-polishing-release-v1/compare-browser.py": {
         "sha256": "54f017644b8cece2b169f890c3c6147634453bf7ae008903a598fb192b34ef34",
         "bytes": 2661
+      },
+      "tmp/heart-learning/late-polishing-release-v1/qa-handoff/inverse-state.json": {
+        "sha256": "55c5ab2af67701c7c1ffa9dc246ba9087f841f87977b004fc396b76a555ef093",
+        "bytes": 299
+      },
+      "tmp/heart-learning/late-polishing-release-v1/qa-handoff/inverse.log": {
+        "sha256": "2561515d9642d3f9a6947ee881db43b3558ad18103f0a8c8faa1be615f85ac08",
+        "bytes": 98978
       }
+    },
+    "photoReplay": {
+      "status": "queued-or-running-separately",
+      "state": "tmp/heart-learning/late-polishing-release-v1/photo-state.json",
+      "baseline": "tmp/heart-learning/clearance-repair-release-v2/production-release/photos/results.json",
+      "scope": "Fresh automatic crop, binary Mal fitting and editable SVG replay of all 31 complete heart cases, retaining the 16 incomplete/obscured inventory entries. No result claimed yet.",
+      "runner": "tmp/heart-learning/late-polishing-release-v1/photo-run.py",
+      "runnerSha256": "e66b6f7c482ed7dc9d81a00577c1f4898d4bd660c5829df80dc29d0ae4fb24e1"
     }
   }
 }

@@ -108,6 +108,9 @@ faster observed timings cannot be attributed to this deadline fix alone.
 
 The [release record](late-polishing-release-qa.json) includes the comparison,
 source/log hashes and stage results under `qa-handoff/`. Full inverse
-verification of this correction is running separately. All heavy jobs stay
-serial at nice 15 with one numerical thread and a 10 GiB free-space floor.
-Nothing has been pushed or deployed.
+verification now passes **1,039/1,039 tests** with no failures, skips or
+cancellations. The controller verifies all 1,018 pinned source files unchanged.
+It completed in 1,168.7 seconds. A separate fresh replay of all 31 complete
+photographic heart cases follows; no updated corpus score is claimed yet.
+All heavy jobs stay serial at nice 15 with one numerical thread and a 10 GiB
+free-space floor. Nothing has been pushed or deployed.
