@@ -22,8 +22,9 @@ single inspected case does not justify raising every image's count limit.
 The preceding count experiment had a driver error and supplied no expanded-count
 quality result. Finally, smoothing at four scales with three palette models
 recovers **0/12** pale printed-checker crops. The unsmoothed mask loses much of
-the pale sheet, while smoothed candidates still fail outline support. None of
-these diagnostic policies is integrated yet.
+the pale sheet, while smoothed candidates still fail outline support. The same-count rescue is now integrated after six deterministic scheduling
+regressions and 23 existing photographic/budget tests pass; its full release
+QA is pending. Dense count expansion and smoothing remain offline.
 
 The [paired selected-box MobileSAM replay](selected-sam-prompt-results.json)
 now completes on seven fixed development photos. Automatic boxes produce four

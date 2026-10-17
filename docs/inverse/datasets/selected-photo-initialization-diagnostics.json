@@ -759,5 +759,27 @@
       "path": "tmp/heart-learning/printed-paper-registration-v1/run.log",
       "sha256": "74ca360001b12b76e5b2f33c00198f4e2f1e8aaad70bda05e719017f614df738"
     }
-  ]
+  ],
+  "runtimeFollowup": {
+    "status": "integrated-focused-verified-full-QA-pending",
+    "scope": "Same-count rescue only. Dense count expansion and smoothing remain offline diagnostics.",
+    "focusedTestsPassed": 29,
+    "logs": [
+      {
+        "path": "tmp/heart-learning/base-count-release-v1/scheduling.log",
+        "sha256": "d4f767eef2959b0ffcfc65bee7ae81803546599795c950f4be3292754909ca83"
+      },
+      {
+        "path": "tmp/heart-learning/base-count-release-v1/focused.log",
+        "sha256": "6acc6a49a0e4078e26d960758a1198de46b2b5eb59799fe7de6e91221914f6a9"
+      }
+    ],
+    "sourceHashes": {
+      "static/inverse/core/direct/fit.js": "1deb623e466c4d8f6dfb554d36e73a30e3a1859ad73efcbf33556c24929610da",
+      "static/inverse/core/direct/feature-seeds.js": "4bd20580fbab6c9608101833c34c32110978c80726e0d31758e2046e5ba3eb05",
+      "scripts/inverse/late-feature-initialization.test.mjs": "18b9b698218faf29f7cb0a4d7c4f84e1d2d1b105808ee9b67ca87000fc35ed81",
+      "scripts/inverse/feature-near-miss.test.mjs": "c5074d0d704510163fc3d7461d6b4add051a494b2530257ca139ebe0a3c3f0ce"
+    },
+    "fullQA": "pending"
+  }
 }

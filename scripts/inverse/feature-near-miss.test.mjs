@@ -70,6 +70,7 @@ for(const clockScale of [1,1.5])for(const translation of [null,'horizontal','ver
   const answer=await design(prepared.target,cfg);
   const initialization=answer.report.solver.earlyFeatureInitialization;
   const samplingFirst=initialization?.strategy==='same-count-sampling';
+  const sameCountRefinement=initialization?.strategy==='same-count-refinement';
   if(translation!=='negative-diagonal'){
     assert.ok(initialization,JSON.stringify({message:'Feature initialization was skipped',selectedInitialization:answer.report.solver.selectedInitialization,seconds:answer.report.solver.seconds,stages:answer.report.solver.stages,fine:answer.report.solver.attempts.filter(a=>a.stage==='fine'),finalistPreference:answer.report.solver.finalistPreference}));
     if(!samplingFirst)assert.equal((translation==='horizontal'?initialization.alternativeRefinement:initialization.coarseRefinement).accepted,true);
@@ -83,6 +84,14 @@ for(const clockScale of [1,1.5])for(const translation of [null,'horizontal','ver
     assert.equal(initialization.initializationResolution,98);
     assert.deepEqual(answer.report.solver.selectedCounts,initialization.counts);
     assert.equal(answer.report.solver.selectedInitialization,'feature-sampling-grid');
+  }else if(sameCountRefinement){
+    assert.equal(initialization.scheduled,1);
+    assert.equal(initialization.countExpansion,false);
+    assert.equal(initialization.samplingAttempt.retained,0);
+    assert.equal(answer.report.solver.samplingRecovery.reason,'limited-initialization-time');
+    assert.equal(answer.report.solver.samplingRecovery.scheduled,1);
+    assert.deepEqual(answer.report.solver.selectedCounts,initialization.baseCounts);
+    assert.equal(answer.report.solver.selectedInitialization,'feature-weighted-grid');
   }else if(['vertical','negative-diagonal'].includes(translation)){
     assert.equal(answer.report.solver.samplingRecovery.scheduled,1);
     assert.equal(answer.report.solver.selectedInitialization,'feature-sampling-grid');

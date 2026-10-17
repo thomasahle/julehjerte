@@ -251,12 +251,21 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     const beforeMask=interiorOnly?gridMask(fine[0].model,source.resolution,fine[0].phase,fine[0].floor):null;
     // When the full count/shape search no longer fits, its same-count sampling
     // alternative can still leave enough time for useful curve refinement.
+    // If it loses a region, the ordinary same-count near-miss/runner-up retry
+    // can recover that routing without spending time on additional cut counts.
     // Merely allowing the full initializer later can exhaust that time and
     // return a worse fit. Keep the established search when its reserve fits.
     const limitedTime=refinementTimeLeft(deadline)<=2500;
-    const extra=stage('directInitializing',()=>(limitedTime?initializeFeatureSampling:initializeFeatureSeeds)({source,features:seedFeatures,missed:seedMissed,counts:fine[0].model.counts,cfg,evidence,maximumCount}));
+    const extra=stage('directInitializing',()=>{
+      const args={source,features:seedFeatures,missed:seedMissed,counts:fine[0].model.counts,cfg,evidence,maximumCount};
+      if(!limitedTime)return initializeFeatureSeeds(args);
+      const sampling=initializeFeatureSampling(args);
+      if(sampling.seeds.length)return sampling;
+      const refined=initializeFeatureSeeds(args,{expandCounts:false});
+      return{...refined,report:{...refined.report,samplingAttempt:sampling.report,countExpansion:false}};
+    });
     if(limitedTime)samplingRecovery={...extra.report,reason:'limited-initialization-time',scheduled:Math.min(1,extra.seeds.length)};
-    earlyFeatureInitialization={...extra.report,...(limitedTime?{strategy:'same-count-sampling'}:{}),stage:when,scheduled:0,...(interiorOnly?{interiorOnly}:{}),...(weakRegion!==null?{trigger:'weak-region',retention:features.regions[weakRegion].retainedFraction,previousError:fine[0].error}:{})};
+    earlyFeatureInitialization={...extra.report,...(limitedTime?{strategy:extra.report.samplingAttempt?'same-count-refinement':'same-count-sampling'}:{}),stage:when,scheduled:0,...(interiorOnly?{interiorOnly}:{}),...(weakRegion!==null?{trigger:'weak-region',retention:features.regions[weakRegion].retainedFraction,previousError:fine[0].error}:{})};
     if(extra.seeds.length){
       const seed=stage('directFitting',()=>fitSeed(extra.seeds[0]));
       const proposalMask=gridMask(seed.model,source.resolution,seed.phase,seed.floor),audit=auditFeatureFidelity(source,proposalMask,cfg,sourceFeatures);

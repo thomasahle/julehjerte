@@ -19,7 +19,7 @@ export function interiorFeatureIndices(source,features,missed,cfg){
   }));
 }
 
-export function initializeFeatureSeeds({source,features,missed,counts,cfg,evidence,maximumCount}){
+export function initializeFeatureSeeds({source,features,missed,counts,cfg,evidence,maximumCount},{expandCounts=true}={}){
   // Do not create new routings solely to reproduce isolated crop-edge flecks.
   // They still count in the unchanged final image/feature checks. At least part
   // of an emphasized region must reach beyond the nominal paper side margin.
@@ -28,7 +28,7 @@ export function initializeFeatureSeeds({source,features,missed,counts,cfg,eviden
   const report={boost:16,baseCounts:counts,missedRegions:missed.length,emphasizedRegions:interior.length,skippedBorderRegions:missed.length-interior.length,boundaryBandMm};
   if(!interior.length)return{seeds:[],report:{...report,hypotheses:0,attempts:[],retained:0}};
   const options=[];
-  for(const family of [0,1])for(const extra of [0,1,2])for(const phase of [1,-1]){
+  for(const family of [0,1])for(const extra of expandCounts?[0,1,2]:[0])for(const phase of [1,-1]){
     const pair=counts.slice();pair[family]+=extra;
     if(pair.some(c=>c>maximumCount||(c+1)*(cfg.nominalWidth+.35)>=cfg.width))continue;
     if(!options.some(o=>o.phase===phase&&o.counts.every((c,i)=>c===pair[i])))options.push({counts:pair,phase});
@@ -89,7 +89,7 @@ export function initializeFeatureSeeds({source,features,missed,counts,cfg,eviden
     // Changing only one count cannot propose that routing. Try just this
     // adjacent pair, in both phases, after the existing starts have failed.
     const pair=counts.map(c=>c+1);
-    if(pair.every(c=>c<=maximumCount&&(c+1)*(cfg.nominalWidth+.35)<cfg.width)){
+    if(expandCounts&&pair.every(c=>c<=maximumCount&&(c+1)*(cfg.nominalWidth+.35)<cfg.width)){
       const joint=[1,-1].map(phase=>({counts:pair,phase}));jointHypotheses=joint.length;
       seeds=search(joint,true);
     }
