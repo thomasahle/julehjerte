@@ -88,6 +88,18 @@ function pointer(type: string, el: Element): void {
 	el.dispatchEvent(new PointerEvent(type, { bubbles: true, pointerId: 1, isPrimary: true }));
 }
 
+/**
+ * A key event on `el` as a browser plays it: Enter clicks on keydown (and on
+ * every auto-repeat), Space clicks on keyup, each unless the handler prevents
+ * the default. jsdom fires no clicks from keys by itself.
+ */
+function key(type: 'keydown' | 'keyup', name: 'Enter' | ' ', el: HTMLElement, repeat = false): void {
+	const event = new KeyboardEvent(type, { key: name, repeat, bubbles: true, cancelable: true });
+	el.dispatchEvent(event);
+	if (event.defaultPrevented) return;
+	if ((type === 'keydown' && name === 'Enter') || (type === 'keyup' && name === ' ')) el.click();
+}
+
 function escape(): void {
 	window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
 }
@@ -164,6 +176,40 @@ describe('TraceMode', () => {
 		expect(document.documentElement.classList.contains('tracing')).toBe(false);
 		expect(view.q('[aria-live="polite"]')!.textContent).toContain('låst op');
 	});
+
+	for (const [label, name] of [
+		['Enter', 'Enter'],
+		['Space', ' ']
+	] as const) {
+		it(`stays unlocked when ${label} is held past the unlock with auto-repeat`, async () => {
+			const view = await render();
+			await view.lock();
+			const unlockButton = view.unlock();
+			unlockButton.focus();
+			key('keydown', name, unlockButton);
+			// Auto-repeat every 50 ms, the keydowns landing on whatever has focus.
+			for (let ms = 0; ms < 3500; ms += 50) {
+				vi.advanceTimersByTime(50);
+				await settle();
+				const focused = document.activeElement as HTMLElement;
+				key('keydown', name, focused, true);
+				await settle();
+			}
+			expect(view.lockLayer()).toBeNull();
+			const focused = document.activeElement as HTMLElement;
+			expect(focused.textContent?.trim()).toBe('Lås skærmen');
+			key('keyup', name, focused);
+			await settle();
+			expect(view.lockLayer()).toBeNull();
+			expect(view.toolbar()).not.toBeNull();
+
+			// A fresh press on the lock button still locks.
+			key('keydown', name, focused);
+			key('keyup', name, focused);
+			await settle();
+			expect(view.lockLayer()).not.toBeNull();
+		});
+	}
 
 	it('unlocks on Escape, and a second Escape closes', async () => {
 		const view = await render();
