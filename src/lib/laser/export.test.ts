@@ -3,6 +3,7 @@ import {
 	DEFAULT_LASER_SETTINGS,
 	laserFileContent,
 	laserFileName,
+	laserFileUrl,
 	parseLaserSettings,
 	planLaserSheet
 } from './export';
@@ -125,5 +126,23 @@ describe('numbers', () => {
 		expect(formatMm(80 / 3, 'da')).toBe('26,7');
 		expect(formatMm(80 / 3, 'en')).toBe('26.7');
 		expect(formatMm(240, 'da')).toBe('240');
+	});
+});
+
+describe('laserFileUrl', () => {
+	const gallery = (id: string) => id === 'classic-3x3';
+
+	it("points a gallery heart's file at its own page", () => {
+		expect(laserFileUrl(['classic-3x3'], 'da', gallery)).toBe('https://juleflet.dk/hjerte/classic-3x3/');
+		expect(laserFileUrl(['classic-3x3'], 'en', gallery)).toBe('https://juleflet.dk/en/hjerte/classic-3x3/');
+	});
+
+	it('gives a heart that lives only in a browser the bare site', () => {
+		expect(laserFileUrl(['heart-1792272797949-6k19sf2'], 'da', gallery)).toBe('https://juleflet.dk/');
+		expect(laserFileUrl(['heart-1792272797949-6k19sf2'], 'en', gallery)).toBe('https://juleflet.dk/en/');
+	});
+
+	it('gives a sheet of several hearts the site, gallery or not', () => {
+		expect(laserFileUrl(['classic-3x3', 'classic-3x3'], 'da', gallery)).toBe('https://juleflet.dk/');
 	});
 });

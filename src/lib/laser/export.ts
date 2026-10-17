@@ -4,6 +4,9 @@
  * settings and hands them here, so everything it shows can be tested without it.
  */
 import type { HeartDesign } from '$lib/types/heart';
+import { SITE_URL } from '$lib/config';
+import type { Language } from '$lib/i18n';
+import { heartPath, path } from '$lib/i18n/routes';
 import { lobesShareTemplate } from '$lib/utils/symmetry';
 import { serializeLaserDxf } from './dxf';
 import { layoutSheet, type LaserSheet, type SheetSize } from './sheet';
@@ -118,6 +121,22 @@ export interface LaserFileInfo {
 	/** The heart's page, for the SVG's `<desc>`. */
 	url: string;
 	widthMm: number;
+}
+
+/**
+ * The address for the SVG's `<desc>`: a gallery heart's own page. A heart drawn
+ * in the editor exists only in its maker's browser, so its page would be a dead
+ * link for anyone the file reaches; it, like a sheet of several hearts, gets
+ * the site's front page instead.
+ */
+export function laserFileUrl(
+	heartIds: readonly string[],
+	lang: Language,
+	inGallery: (id: string) => boolean
+): string {
+	const [only] = heartIds;
+	if (heartIds.length === 1 && only && inGallery(only)) return `${SITE_URL}${heartPath(only, lang)}`;
+	return `${SITE_URL}${path('home', lang)}`;
 }
 
 /** The file's text, in the chosen format. */

@@ -33,8 +33,7 @@
 	import { ToggleGroup, ToggleGroupItem } from '$lib/components/ui/toggle-group';
 	import { DownloadIcon } from '$lib/components/icons';
 	import { t, type Language } from '$lib/i18n';
-	import { SITE_URL } from '$lib/config';
-	import { heartPath, path } from '$lib/i18n/routes';
+	import { getGalleryDesign } from '$lib/data/heartDesigns';
 	import type { HeartDesign } from '$lib/types/heart';
 	import {
 		trackHeartDownload,
@@ -54,6 +53,7 @@
 		clamp,
 		laserFileContent,
 		laserFileName,
+		laserFileUrl,
 		planLaserSheet,
 		type LaserFormat,
 		type LaserPlan
@@ -272,7 +272,11 @@
 	const fileInfo = $derived({
 		heartId,
 		heartName,
-		url: several ? `${SITE_URL}${path('home', lang)}` : `${SITE_URL}${heartPath(heartId, lang)}`,
+		url: laserFileUrl(
+			several ? designs.map((d) => d.id) : [heartId],
+			lang,
+			(id) => getGalleryDesign(id) !== null
+		),
 		widthMm
 	});
 
