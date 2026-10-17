@@ -18,6 +18,18 @@ import { getTemplateData, type TemplateLobe } from '$lib/utils/templateSvg';
 import { layoutEar, picturePixels, type EarLayout, type MeasureText } from './earLayout';
 
 /**
+ * Above each template, on the paper outside its outline: the heart's name
+ * (`templateLabel`, 8 pt, baseline 4 mm down), with room before the ear
+ * starts. The same band the printer PDF had before round 2 (when the address
+ * shared it, at 7 mm), so the label never touches the outline.
+ */
+export const TEMPLATE_HEADER_MM = 9;
+/** The label's baseline, below the top of the header. */
+export const TEMPLATE_LABEL_BASELINE_MM = 4;
+/** The label's size. */
+export const TEMPLATE_LABEL_PT = 8;
+
+/**
  * Kept clear at the foot of every page for the site's name, so a template
  * reaching the bottom margin does not run into it.
  */
@@ -29,7 +41,7 @@ export interface TemplatePiece {
 	/** The lobe whose template is drawn. */
 	lobe: TemplateLobe;
 	/**
-	 * Both lobes cut from this one template, so its address line carries no
+	 * Both lobes cut from this one template, so its label carries no
 	 * "Venstre"/"Højre". The right lobe's template is drawn then, as the
 	 * gallery's PDF has always done.
 	 */
@@ -90,7 +102,7 @@ export function templatePieces(designs: readonly HeartDesign[], widthMm: number,
 const GALLERY_IDS = new Set<string>(ALL_HEART_IDS);
 
 /**
- * A template's address. A gallery heart has its own page,
+ * A template's address, printed in its rounded end. A gallery heart has its own page,
  * which is the shortest way back to exactly this template; a heart the visitor
  * drew has none, so it gets the site.
  */
@@ -99,33 +111,30 @@ export function templateAddress(design: HeartDesign): string {
 }
 
 /**
- * The line printed in a template's rounded end: its address, and for a heart
- * whose two halves differ, which half this is ("juleflet.dk/hjerte/jul ·
- * Venstre"), since both are on the sheet. A template both lobes are cut from
- * gets the bare address.
+ * The template's label, printed above it on the paper: the heart's name, and
+ * for a heart whose two halves differ, which half this is ("Jul (Venstre)").
  */
-export function templateEarText(piece: Pick<TemplatePiece, 'design' | 'lobe' | 'shared'>, lang: Language): string {
-	const address = templateAddress(piece.design);
-	if (piece.shared) return address;
-	return `${address} · ${t(piece.lobe === 'left' ? 'lobeLeft' : 'lobeRight', lang)}`;
+export function templateLabel(piece: Pick<TemplatePiece, 'design' | 'lobe' | 'shared'>, lang: Language): string {
+	if (piece.shared) return piece.design.name;
+	return `${piece.design.name} (${t(piece.lobe === 'left' ? 'lobeLeft' : 'lobeRight', lang)})`;
 }
 
 /**
  * What goes inside this template's rounded end: the picture (when it is
- * printed) and the address line (`templateEarText`). The heart's name is not
- * printed. The PDF passes jsPDF's own text measure; the preview makes do with
+ * printed) and the address. The heart's name is printed above the template
+ * instead (`templateLabel`), not on the piece. The PDF passes jsPDF's own text measure; the preview makes do with
  * an estimate.
  */
 export function templateEar(
 	piece: TemplatePiece,
-	{ lang, picture, measure }: { lang: Language; picture: boolean; measure?: MeasureText }
+	{ picture, measure }: { picture: boolean; measure?: MeasureText }
 ): EarLayout {
 	return layoutEar({
 		widthMm: piece.widthMm,
 		heightMm: piece.heightMm,
 		earRadiusMm: piece.earRadiusMm,
 		picture,
-		address: templateEarText(piece, lang),
+		address: templateAddress(piece.design),
 		measure
 	});
 }
@@ -135,8 +144,8 @@ export function templateEar(
  * sharp enough for the largest template it is printed in. The dialog's preview
  * asks for the same rendering, so what it shows is the PDF's picture.
  */
-export function templatePicturePixels(pieces: readonly TemplatePiece[], lang: Language): number {
-	const sizes = pieces.map((p) => templateEar(p, { lang, picture: true }).picture?.size ?? 0);
+export function templatePicturePixels(pieces: readonly TemplatePiece[]): number {
+	const sizes = pieces.map((p) => templateEar(p, { picture: true }).picture?.size ?? 0);
 	return picturePixels(Math.max(0, ...sizes));
 }
 
@@ -144,16 +153,17 @@ export interface TemplatePageOptions {
 	sheet: SheetSize;
 	gapMm?: number;
 	marginMm?: number;
+	headerMm?: number;
 	footerMm?: number;
 }
 
 export interface TemplatePagePlan {
 	sheet: SheetSize;
 	/**
-	 * Per page, where each template goes: `index` into the pieces asked for,
-	 * `x`/`y` its top-left corner (the top of the ear) in mm. The box is the
-	 * template itself: its name and address are printed inside its rounded end,
-	 * not above it, so nothing else needs room.
+	 * Per page, where each piece's box goes: `index` into the pieces asked
+	 * for, `x`/`y` the box's top-left corner in mm. A box is the template's
+	 * width by its height plus the header its label is printed in; the
+	 * template itself starts `headerMm` below `y`.
 	 */
 	pages: Placement[][];
 	/** False when one template is too big for an empty page: then there are no pages at all. */
@@ -167,9 +177,9 @@ export interface TemplatePagePlan {
  */
 export function planTemplatePages(
 	pieces: ReadonlyArray<{ widthMm: number; heightMm: number }>,
-	{ sheet, gapMm = 5, marginMm = 5, footerMm = PAGE_FOOTER_MM }: TemplatePageOptions
+	{ sheet, gapMm = 5, marginMm = 5, headerMm = TEMPLATE_HEADER_MM, footerMm = PAGE_FOOTER_MM }: TemplatePageOptions
 ): TemplatePagePlan {
-	const boxes = pieces.map((p) => ({ widthMm: p.widthMm, heightMm: p.heightMm }));
+	const boxes = pieces.map((p) => ({ widthMm: p.widthMm, heightMm: p.heightMm + headerMm }));
 	const area: SheetSize = { widthMm: sheet.widthMm, heightMm: sheet.heightMm - footerMm };
 	const pages: Placement[][] = [];
 	let start = 0;

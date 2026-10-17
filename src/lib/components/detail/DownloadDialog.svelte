@@ -156,7 +156,7 @@
 	// where it goes. It takes a moment (an SVG drawn into a canvas), and until
 	// it is there the preview leaves the place empty. A picture of this design
 	// at another width is kept meanwhile: only its sharpness differs.
-	const picturePixels = $derived(printPieces.length ? templatePicturePixels(printPieces, lang) : 0);
+	const picturePixels = $derived(printPieces.length ? templatePicturePixels(printPieces) : 0);
 	let pictures = $state<{ designId: string; pixels: number; images: Map<string, string> } | null>(null);
 
 	$effect(() => {
@@ -767,8 +767,13 @@
 		stroke: #ff0000;
 	}
 
-	/* The printer page's address lines, in the PDF's Helvetica so a line that
-	   fits here fits there. */
+	/* The printer page's labels and address lines, in the PDF's Helvetica so a
+	   line that fits here fits there. */
+	.preview-sheet :global(.label) {
+		fill: var(--ink);
+		font-family: Helvetica, Arial, sans-serif;
+	}
+
 	.preview-sheet :global(.address) {
 		fill: var(--muted);
 		font-family: Helvetica, Arial, sans-serif;

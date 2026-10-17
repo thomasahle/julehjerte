@@ -9,7 +9,17 @@ import { transformPathData } from '$lib/utils/templateSvg';
 import { slugify } from '$lib/utils/slug';
 import { t, type Language } from '$lib/i18n';
 import { SHEETS, type SheetSize } from '$lib/laser/sheet';
-import { planTemplatePages, templateAddress, templateEar, templatePicturePixels, templatePieces } from './plan';
+import {
+  planTemplatePages,
+  templateAddress,
+  templateEar,
+  templateLabel,
+  templatePicturePixels,
+  templatePieces,
+  TEMPLATE_HEADER_MM,
+  TEMPLATE_LABEL_BASELINE_MM,
+  TEMPLATE_LABEL_PT
+} from './plan';
 
 // A4 dimensions in mm
 const PAGE_WIDTH = 210;
@@ -565,9 +575,9 @@ function pageFormat(sheet: SheetSize): { format: string | [number, number]; orie
 /**
  * The templates at true size: each heart's two folded templates at
  * `widthMm`, laid out by planTemplatePages on as many pages as they take.
- * Every template carries, inside its rounded end (`templateEar`), the heart's
- * picture (optionally) and its address — where the gallery's PDF prints the
- * name and address above the template instead — and every page the footer.
+ * Every template has the heart's name above it (`templateLabel`, on the paper
+ * around it) and, inside its rounded end (`templateEar`), the heart's picture
+ * (optionally) and its address; every page has the footer.
  */
 export async function generateTemplatesPDF(designs: HeartDesign[], options: TemplatesPDFOptions): Promise<jsPDF> {
   const lang = options.lang ?? 'da';
@@ -582,7 +592,7 @@ export async function generateTemplatesPDF(designs: HeartDesign[], options: Temp
   // the dialog's preview asks for the same rendering.
   const picture = options.previewImage ?? true;
   const heartImages = picture
-    ? await prerenderHeartImages(designs, templatePicturePixels(pieces, lang))
+    ? await prerenderHeartImages(designs, templatePicturePixels(pieces))
     : new Map<string, string>();
   // jsPDF's own widths for its Helvetica, in mm, so the address is shrunk
   // only if it really would not fit the ear.
@@ -594,21 +604,27 @@ export async function generateTemplatesPDF(designs: HeartDesign[], options: Temp
 
     for (const { index, x, y } of placements) {
       const piece = pieces[index]!;
-      drawLobeTemplateAt(pdf, piece.design, piece.lobe, x, y, piece.scale);
+      // The heart's name above the template, on the paper around it.
+      pdf.setFontSize(TEMPLATE_LABEL_PT);
+      pdf.setTextColor(0);
+      pdf.text(templateLabel(piece, lang), x + piece.widthMm / 2, y + TEMPLATE_LABEL_BASELINE_MM, { align: 'center' });
+
+      const top = y + TEMPLATE_HEADER_MM;
+      drawLobeTemplateAt(pdf, piece.design, piece.lobe, x, top, piece.scale);
 
       // Inside the rounded end, which no cut crosses and folding keeps whole:
       // a template cut out of the sheet still shows what it is and says where
       // it is from (a sheet often ends up far from the rest — a school, a workshop).
       const imageData = heartImages.get(piece.design.id);
-      const ear = templateEar(piece, { lang, picture: picture && imageData !== undefined, measure });
+      const ear = templateEar(piece, { picture: picture && imageData !== undefined, measure });
       if (ear.picture && imageData) {
         const { x: px, y: py, size } = ear.picture;
-        pdf.addImage(imageData, 'PNG', x + px, y + py, size, size);
+        pdf.addImage(imageData, 'PNG', x + px, top + py, size, size);
       }
       if (ear.address) {
         pdf.setFontSize(ear.address.sizePt);
         pdf.setTextColor(128);
-        pdf.text(ear.address.text, x + ear.address.x, y + ear.address.baseline, { align: 'center' });
+        pdf.text(ear.address.text, x + ear.address.x, top + ear.address.baseline, { align: 'center' });
       }
     }
 

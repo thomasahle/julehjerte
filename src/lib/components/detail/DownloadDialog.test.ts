@@ -146,9 +146,9 @@ describe('DownloadDialog', () => {
 		expect(sheet().querySelectorAll('image, use, rect.thumb')).toHaveLength(0);
 		expect(sheet().querySelectorAll('rect')).toHaveLength(1);
 		// The address is in the ear already, where it will be with the picture;
-		// the heart's name is not printed.
+		// the heart's name is above the template, on the paper.
 		expect(sheet().querySelector('text.address')!.textContent).toBe('juleflet.dk/hjerte/classic-3x3');
-		expect(sheet().querySelector('text.label')).toBeNull();
+		expect(sheet().querySelector('text.label')!.textContent).toBe(design.name);
 
 		finish(new Map([[design.id, PICTURE]]));
 		await settle();

@@ -287,16 +287,16 @@ every way of getting the template out of the site. "Til" chooses **Printer** or 
 width in mm, the number of hearts and the sheet (A4, A3 or a custom size) are shared by both, and the preview
 on the right shows the sheet as it will come out. Printer makes a PDF of the *folded* templates at true size —
 two per heart, laid out by `$lib/pdf/plan` on as many pages of the sheet as they need ("{n} sider", "Side 1 af
-{n}" under the preview). Each template carries everything inside its rounded end, the one part no cut crosses
-and folding keeps whole, so a template cut out of the sheet still shows what it is and where it is from:
+{n}" under the preview). Each template carries its picture and address inside its rounded end, the one part no
+cut crosses and folding keeps whole, so a template cut out of the sheet still shows what it is and where it is from:
 (optionally) the heart's picture as high as the curve allows, then directly under it the address (6 pt grey,
 e.g. juleflet.dk/hjerte/jul; juleflet.dk for a visitor's own heart), above the ear base where the cuts begin.
-The heart's name is not printed. The two halves of an asymmetric heart say which they are on that line
-("juleflet.dk/hjerte/jul · Venstre"). On a small template the address shrinks to the ear's width and the band
-left under the picture, never below 5 pt — the picture shrinks first; with the picture off the address takes
-its place (`$lib/pdf/earLayout`). Nothing is printed above a template, so the
-pieces pack edge to edge (nine 60 mm templates to an A4 page). The preview draws the same layout with the
-real picture — the very PNG the PDF embeds, rendered once per heart — and leaves its place empty while it
+On a small template the address shrinks to the ear's width and the band left under the picture, never below
+5 pt — the picture shrinks first; with the picture off the address takes its place (`$lib/pdf/earLayout`).
+The heart's name is not on the piece: it is printed above each template, on the paper around it (8 pt black,
+centred over the rounded end in a 9 mm header band, with "(Venstre)"/"(Højre)" for the two different halves of
+an asymmetric heart). With that band six 60 mm templates fit an A4 page, four 80 mm ones. The preview draws the
+same layout with the real picture — the very PNG the PDF embeds, rendered once per heart — and leaves its place empty while it
 renders.
 Laserskærer makes the whole *unfolded* piece (docs/redesign/LASER.md) — the template mirrored across the fold,
 every strip cut one continuous path through it — as an SVG in real millimetres or an R12 DXF (exact

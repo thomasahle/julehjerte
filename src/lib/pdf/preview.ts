@@ -5,7 +5,8 @@
  * It draws the same plan generateTemplatesPDF draws (./plan.ts), from the same
  * template geometry (`getTemplateData`), in the classes the laser preview
  * already styles: `sheet` for the paper, `cut` for outlines and cuts, and
- * `fold` for the dashed fold the PDF prints. Inside each template's rounded
+ * `fold` for the dashed fold the PDF prints. Above each template it puts the
+ * heart's name as the PDF prints it (`templateLabel`); inside its rounded
  * end it puts what the PDF puts there (`templateEar`): the heart's picture —
  * the very PNG the PDF embeds, once it has been rendered — and the address
  * line, so what the visitor sees is where things will be on paper.
@@ -16,7 +17,15 @@ import type { Language } from '$lib/i18n';
 import { getTemplateData } from '$lib/utils/templateSvg';
 import { coord } from '$lib/laser/format';
 import { PT_MM } from './earLayout';
-import { templateEar, type TemplatePagePlan, type TemplatePiece } from './plan';
+import {
+	TEMPLATE_HEADER_MM,
+	TEMPLATE_LABEL_BASELINE_MM,
+	TEMPLATE_LABEL_PT,
+	templateEar,
+	templateLabel,
+	type TemplatePagePlan,
+	type TemplatePiece
+} from './plan';
 
 export interface TemplatePreviewOptions {
 	page: number;
@@ -69,10 +78,14 @@ export function serializeTemplatePageSvg(
 	for (const { index, x, y } of page) {
 		const piece = pieces[index]!;
 		const data = getTemplateData(piece.design, piece.lobe);
+		lines.push(
+			`  <text class="label" x="${coord(x + piece.widthMm / 2)}" y="${coord(y + TEMPLATE_LABEL_BASELINE_MM)}" font-size="${coord(TEMPLATE_LABEL_PT * PT_MM)}" text-anchor="middle">${escapeXml(templateLabel(piece, options.lang))}</text>`
+		);
+		const top = y + TEMPLATE_HEADER_MM;
 		// The template's own units, scaled into place: the paths are the ones the
 		// PDF's drawing is made from.
 		const { templateWidth: tw, templateHeight: th, earRadius: r } = data;
-		lines.push(`  <g transform="translate(${coord(x)} ${coord(y)}) scale(${piece.scale})" fill="none">`);
+		lines.push(`  <g transform="translate(${coord(x)} ${coord(top)}) scale(${piece.scale})" fill="none">`);
 		lines.push('    <g class="cut">');
 		lines.push(`      <path d="${data.earPath}" ${stroke} />`);
 		lines.push(`      <path d="M 0 ${r} L 0 ${th} M ${tw} ${r} L ${tw} ${th}" ${stroke} />`);
@@ -81,18 +94,18 @@ export function serializeTemplatePageSvg(
 		lines.push(`    <g class="fold"><path d="M 0 ${th} L ${tw} ${th}" ${stroke} /></g>`);
 		lines.push('  </g>');
 
-		const ear = templateEar(piece, { lang: options.lang, picture: options.previewImage });
+		const ear = templateEar(piece, { picture: options.previewImage });
 		const symbol = symbols.get(piece.design.id);
 		if (ear.picture && symbol) {
 			const { x: px, y: py, size } = ear.picture;
 			lines.push(
-				`  <use class="picture" href="#${symbol}" x="${coord(x + px)}" y="${coord(y + py)}" width="${coord(size)}" height="${coord(size)}" />`
+				`  <use class="picture" href="#${symbol}" x="${coord(x + px)}" y="${coord(top + py)}" width="${coord(size)}" height="${coord(size)}" />`
 			);
 		}
 		if (ear.address) {
 			const a = ear.address;
 			lines.push(
-				`  <text class="address" x="${coord(x + a.x)}" y="${coord(y + a.baseline)}" font-size="${coord(a.sizePt * PT_MM)}" text-anchor="middle">${escapeXml(a.text)}</text>`
+				`  <text class="address" x="${coord(x + a.x)}" y="${coord(top + a.baseline)}" font-size="${coord(a.sizePt * PT_MM)}" text-anchor="middle">${escapeXml(a.text)}</text>`
 			);
 		}
 	}

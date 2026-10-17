@@ -120,13 +120,13 @@ describe('layoutEar', () => {
 		expect(measured(10)).toBe(MIN_TEXT_PT);
 	});
 
-	it("fits every gallery heart's address, with its lobe, at the smallest width, by jsPDF's widths", () => {
+	it("fits every gallery heart's address at the smallest width, by jsPDF's widths", () => {
 		const pdf = new jsPDF({ unit: 'mm' });
 		const measure = (text: string, pt: number) => (pdf.getStringUnitWidth(text) * pt) / pdf.internal.scaleFactor;
 		for (const id of ALL_HEART_IDS) {
 			for (const piece of templatePair(loadHeart(id), MIN_WIDTH_MM)) {
 				for (const picture of [true, false]) {
-					expectClean(templateEar(piece, { lang: 'da', picture, measure }), piece.earRadiusMm, measure);
+					expectClean(templateEar(piece, { picture, measure }), piece.earRadiusMm, measure);
 				}
 			}
 		}

@@ -1,14 +1,14 @@
 /**
  * The printer PDF's page planning — docs/redesign/DOWNLOAD.md. The classic
- * heart's folded template at 80 mm is 80 × 120 mm, and that is its whole box:
- * the address is printed inside its rounded end (round 2), not in a header
- * above it. Two across A4 (5 + 80 + 5 + 80 ≤ 205) and two down
- * (5 + 120 + 5 + 120 ≤ 287, the page less its 5 mm margin and footer).
+ * heart's folded template at 80 mm is 80 × 120 mm; its address is printed
+ * inside its rounded end, its name in a 9 mm header above it, so its box is
+ * 80 × 129: two across A4 (5 + 80 + 5 + 80 ≤ 205) and two down
+ * (5 + 129 + 5 + 129 ≤ 287, the page less its 5 mm margin and footer).
  */
 import { describe, expect, it } from 'vitest';
 import { SHEETS, type SheetSize } from '$lib/laser/sheet';
 import { loadHeart } from '$lib/laser/testHearts';
-import { planTemplatePages, templateEarText, templatePair, templatePieces, type TemplatePagePlan } from './plan';
+import { planTemplatePages, templateLabel, templatePair, templatePieces, type TemplatePagePlan } from './plan';
 import { serializeTemplatePageSvg } from './preview';
 
 const classic = loadHeart('classic-3x3');
@@ -25,7 +25,7 @@ function expectClean({ plan: p, pieces }: { plan: TemplatePagePlan; pieces: { wi
 		const boxes = page.map(({ index, x, y }) => {
 			expect(seen.has(index)).toBe(false);
 			seen.add(index);
-			return { x, y, w: pieces[index]!.widthMm, h: pieces[index]!.heightMm };
+			return { x, y, w: pieces[index]!.widthMm, h: pieces[index]!.heightMm + 9 };
 		});
 		for (const b of boxes) {
 			expect(b.x).toBeGreaterThanOrEqual(5);
@@ -53,7 +53,7 @@ describe('templatePair', () => {
 		expect(left.widthMm).toBeCloseTo(80);
 		expect(left.heightMm).toBeCloseTo(120);
 		expect(left.stripWidthMm).toBeCloseTo(80 / 3);
-		expect(templateEarText(left, 'da')).toBe('juleflet.dk/hjerte/classic-3x3');
+		expect(templateLabel(left, 'da')).toBe(classic.name);
 	});
 
 	it('gives an asymmetric heart its left and its right template, at one scale', () => {
@@ -62,8 +62,8 @@ describe('templatePair', () => {
 		expect([left.lobe, right.lobe]).toEqual(['left', 'right']);
 		expect(left.scale).toBe(right.scale);
 		expect(Math.max(left.widthMm, right.widthMm)).toBeCloseTo(60);
-		expect(templateEarText(left, 'da')).toBe('juleflet.dk/hjerte/jul · Venstre');
-		expect(templateEarText(right, 'en')).toBe('juleflet.dk/hjerte/jul · Right');
+		expect(templateLabel(left, 'da')).toBe(`${jul.name} (Venstre)`);
+		expect(templateLabel(right, 'en')).toBe(`${jul.name} (Right)`);
 	});
 });
 
@@ -106,12 +106,12 @@ describe('planTemplatePages', () => {
 		expectClean(p);
 	});
 
-	it('packs nine 60 mm templates on A4 now that there is no header above them', () => {
-		// 60 × 90 mm: three down is 5 + 90 + 5 + 90 + 5 + 90 = 285 ≤ 287. With the
-		// old 9 mm header (99 mm boxes) only two rows fitted, six to a page.
+	it('packs six 60 mm templates on A4, with the header above each', () => {
+		// 60 × 90 mm plus the 9 mm header: two rows of 99 mm (5 + 99 + 5 + 99 ≤ 287),
+		// a third would need 5 + 3 × 99 + 2 × 5 = 312.
 		const p = plan(5, SHEETS.A4, 60);
-		expect(p.plan.pages.map((page) => page.length)).toEqual([9, 1]);
-		expect(p.plan.pages[0]!.map(({ y }) => y)).toEqual([5, 5, 5, 100, 100, 100, 195, 195, 195]);
+		expect(p.plan.pages.map((page) => page.length)).toEqual([6, 4]);
+		expect(p.plan.pages[0]!.map(({ y }) => y)).toEqual([5, 5, 5, 109, 109, 109]);
 		expectClean(p);
 	});
 
@@ -159,12 +159,13 @@ describe('serializeTemplatePageSvg', () => {
 		expect(images[0]!.getAttribute('href')).toBe(picture);
 		const uses = [...doc.querySelectorAll('use.picture')];
 		expect(uses).toHaveLength(4);
-		// The first template at (5, 5): the picture is centred across it, inside the ear.
+		// The first box at (5, 5), its template 9 mm lower: the picture is centred
+		// across it, inside the ear.
 		const first = uses[0]!;
 		const size = Number(first.getAttribute('width'));
 		expect(Number(first.getAttribute('x')) + size / 2).toBeCloseTo(45);
-		expect(Number(first.getAttribute('y'))).toBeGreaterThan(5);
-		expect(Number(first.getAttribute('y')) + size).toBeLessThan(5 + 40);
+		expect(Number(first.getAttribute('y'))).toBeGreaterThan(14);
+		expect(Number(first.getAttribute('y')) + size).toBeLessThan(14 + 40);
 		// Not rendered yet, or turned off: nothing where it goes.
 		for (const doc of [svg(0), svg(0, { previewImage: false, images: new Map([[classic.id, picture]]) })]) {
 			expect(doc.querySelectorAll('image, use, rect.thumb')).toHaveLength(0);
@@ -172,34 +173,41 @@ describe('serializeTemplatePageSvg', () => {
 		}
 	});
 
-	it('prints only the address inside the ear, under the picture and above the first cut', () => {
+	it('prints the name above each template and only the address inside its ear', () => {
 		const doc = svg(0, { images: new Map([[classic.id, picture]]) });
 		const pictureFoot = Number(doc.querySelector('use')!.getAttribute('y')) + Number(doc.querySelector('use')!.getAttribute('width'));
-		const texts = [...doc.querySelectorAll('text')];
-		// The page's four templates' addresses and the footer; the heart's name nowhere.
-		expect(texts.map((t) => t.textContent)).toEqual([...Array(4).fill('juleflet.dk/hjerte/classic-3x3'), 'juleflet.dk']);
-		expect(doc.querySelector('text.label')).toBeNull();
-		const address = texts[0]!;
-		expect(address.getAttribute('class')).toBe('address');
-		const addressY = Number(address.getAttribute('y'));
+		const labels = [...doc.querySelectorAll('text.label')];
+		const addresses = [...doc.querySelectorAll('text.address')];
+		// The page's four templates: a name and an address each, and the footer.
+		expect(labels.map((t) => t.textContent)).toEqual(Array(4).fill(classic.name));
+		expect(addresses.map((t) => t.textContent)).toEqual([...Array(4).fill('juleflet.dk/hjerte/classic-3x3'), 'juleflet.dk']);
+		// The first box at (5, 5): the name 4 mm down, at 8 pt, centred over the
+		// ear and clear of its top at 5 + 9 = 14.
+		const name = labels[0]!;
+		expect(Number(name.getAttribute('x'))).toBeCloseTo(45);
+		expect(Number(name.getAttribute('y'))).toBeCloseTo(9);
+		expect(Number(name.getAttribute('font-size'))).toBeCloseTo((8 * 25.4) / 72, 2);
+		expect(Number(name.getAttribute('y')) + 0.23 * Number(name.getAttribute('font-size'))).toBeLessThan(14 - 2);
+		// The address under the picture, above the ear base 40 mm under the ear's top.
+		const addressY = Number(addresses[0]!.getAttribute('y'));
 		expect(addressY).toBeGreaterThan(pictureFoot);
-		// The ear base, where the cuts begin, is R = 40 mm under the template's top at y = 5.
-		expect(addressY).toBeLessThan(45);
-		// At 80 mm there is room for the full 6 pt.
-		expect(Number(address.getAttribute('font-size'))).toBeCloseTo((6 * 25.4) / 72, 2);
-		// Nothing above the template any more.
-		expect(Math.min(...texts.map((t) => Number(t.getAttribute('y'))))).toBeGreaterThan(5);
+		expect(addressY).toBeLessThan(14 + 40);
+		expect(Number(addresses[0]!.getAttribute('font-size'))).toBeCloseTo((6 * 25.4) / 72, 2);
 	});
 
-	it("marks each half of an asymmetric heart on its address line", () => {
+	it('names each half of an asymmetric heart above it, and gives both the bare address', () => {
 		const jul = loadHeart('jul');
 		const pieces = templatePieces([jul], 80, 1);
 		const p = planTemplatePages(pieces, { sheet: SHEETS.A4 });
 		const html = serializeTemplatePageSvg(p, pieces, { page: 0, lang: 'da', previewImage: true, title: 'jul' });
 		const doc = new DOMParser().parseFromString(html, 'image/svg+xml');
+		expect([...doc.querySelectorAll('text.label')].map((t) => t.textContent)).toEqual([
+			`${jul.name} (Venstre)`,
+			`${jul.name} (Højre)`
+		]);
 		expect([...doc.querySelectorAll('text.address')].map((t) => t.textContent)).toEqual([
-			'juleflet.dk/hjerte/jul · Venstre',
-			'juleflet.dk/hjerte/jul · Højre',
+			'juleflet.dk/hjerte/jul',
+			'juleflet.dk/hjerte/jul',
 			'juleflet.dk'
 		]);
 	});

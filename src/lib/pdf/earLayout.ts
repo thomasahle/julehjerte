@@ -1,8 +1,9 @@
 /**
  * What the printer PDF puts inside a folded template's rounded end — the
  * heart's picture and its address — docs/redesign/DOWNLOAD.md, round 2,
- * amendments 2 and 3, and the owner's note after it: the heart's name is not
- * printed, only the address.
+ * amendments 2 and 3, and the owner's notes after it: the heart's name is not
+ * on the piece but above it on the paper (`templateLabel` in ./plan.ts), and
+ * the ear has only the picture and the address.
  *
  * The address used to sit above the template, on paper that is cut away, so a
  * cut-out template had lost the way back to its heart. The ear is the one part
@@ -86,7 +87,7 @@ export interface EarLayoutInput {
 	earRadiusMm: number;
 	/** Whether the heart's picture is printed. */
 	picture: boolean;
-	/** The line under the picture: `templateEarText` in ./plan.ts. */
+	/** The line under the picture: `templateAddress` in ./plan.ts. */
 	address: string;
 	measure?: MeasureText;
 }

@@ -1,7 +1,7 @@
 /**
  * The dialog's PDF draws the plan and the ear layout it shares with the
- * preview: each template's address inside its rounded end, under the picture,
- * no name, and nothing above the template (DOWNLOAD.md, round 2). Read from
+ * preview: each template's name in the header above it, on the paper, and its
+ * address inside its rounded end, under the picture (DOWNLOAD.md). Read from
  * the uncompressed page stream jsPDF writes: text as `x y Td (…) Tj`, a
  * picture as `w 0 0 h x y cm /I… Do`, in points from the page's bottom left.
  */
@@ -24,7 +24,7 @@ const PT = 72 / 25.4;
 function readPage(pdf: jsPDF, sheetHeightMm: number) {
 	const stream = pdf.output();
 	const texts = [...stream.matchAll(/([\d.]+) ([\d.]+) Td\s*\((.*?)\) Tj/g)].map((m) => ({
-		text: m[3]!,
+		text: m[3]!.replace(/\\([()\\])/g, '$1'),
 		x: Number(m[1]) / PT,
 		y: sheetHeightMm - Number(m[2]) / PT
 	}));
@@ -41,42 +41,46 @@ describe('generateTemplatesPDF', () => {
 	const pieces = templatePieces([classic], 80, 1);
 	const [page] = planTemplatePages(pieces, { sheet: SHEETS.A4 }).pages;
 
-	it('prints each address inside its template, under the picture, and no name', async () => {
+	it('prints each name above its template and its address inside it, under the picture', async () => {
 		const pdf = await generateTemplatesPDF([classic], { widthMm: 80, hearts: 1, sheet: SHEETS.A4, lang: 'da' });
 		expect(pdf.getNumberOfPages()).toBe(1);
 		const { texts, images } = readPage(pdf, 297);
 		expect(images).toHaveLength(2);
 		for (const [i, { x, y }] of page!.entries()) {
 			const piece = pieces[i]!;
-			const inside = texts.filter((t) => t.y > y && t.y < y + piece.earRadiusMm && t.x >= x && t.x <= x + piece.widthMm);
+			// The ear's top is 9 mm under the box's.
+			const top = y + 9;
+			const within = (t: { x: number }) => t.x >= x && t.x <= x + piece.widthMm;
+			const above = texts.filter((t) => within(t) && t.y > y && t.y < top);
+			expect(above.map((t) => t.text)).toEqual([classic.name]);
+			expect(above[0]!.y).toBeCloseTo(y + 4);
+			const inside = texts.filter((t) => within(t) && t.y > top && t.y < top + piece.earRadiusMm);
 			expect(inside.map((t) => t.text)).toEqual(['juleflet.dk/hjerte/classic-3x3']);
 			const picture = images.find((im) => im.x >= x && im.x <= x + piece.widthMm)!;
-			expect(picture.y).toBeGreaterThan(y);
+			expect(picture.y).toBeGreaterThan(top);
 			expect(inside[0]!.y).toBeGreaterThan(picture.y + picture.size);
 		}
-		// Two templates' addresses, and the footer: nothing above a template.
-		expect(texts).toHaveLength(3);
-		expect(texts.some((t) => t.text.includes(classic.name))).toBe(false);
-		expect(texts.filter((t) => t.y < 5)).toHaveLength(0);
+		// Two names, two addresses and the footer.
+		expect(texts).toHaveLength(5);
 	});
 
 	it('moves the address up when the picture is off', async () => {
 		const pdf = await generateTemplatesPDF([classic], { widthMm: 80, hearts: 1, sheet: SHEETS.A4, previewImage: false });
 		const { texts, images } = readPage(pdf, 297);
 		expect(images).toHaveLength(0);
-		// The address about where the picture's middle was, 17 mm under the template's top at y = 5.
+		// The address about where the picture's middle was, 17 mm under the ear's top at y = 5 + 9.
 		const address = texts.find((t) => t.text === 'juleflet.dk/hjerte/classic-3x3')!;
-		expect(address.y).toBeGreaterThan(5 + 10);
-		expect(address.y).toBeLessThan(5 + 25);
+		expect(address.y).toBeGreaterThan(14 + 10);
+		expect(address.y).toBeLessThan(14 + 25);
 	});
 
-	it('says which half each template of an asymmetric heart is, on the address line', async () => {
+	it('names each half of an asymmetric heart above it, and prints the bare address in both', async () => {
 		const jul = loadHeart('jul');
 		const pdf = await generateTemplatesPDF([jul], { widthMm: 80, hearts: 1, sheet: SHEETS.A4, lang: 'da' });
 		const { texts } = readPage(pdf, 297);
-		expect(texts).toHaveLength(3);
-		expect(texts[0]!.text).toMatch(/^juleflet\.dk\/hjerte\/jul .+ Venstre$/);
-		expect(texts[1]!.text).toMatch(/^juleflet\.dk\/hjerte\/jul .+ H.+jre$/);
-		expect(texts.some((t) => t.text.includes(jul.name))).toBe(false);
+		expect(texts).toHaveLength(5);
+		const labels = texts.filter((t) => t.text.startsWith(jul.name));
+		expect(labels.map((t) => t.text)).toEqual([`${jul.name} (Venstre)`, expect.stringMatching(/\(H.+jre\)$/)]);
+		expect(texts.filter((t) => t.text === 'juleflet.dk/hjerte/jul')).toHaveLength(2);
 	});
 });
