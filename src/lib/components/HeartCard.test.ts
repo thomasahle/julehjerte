@@ -94,6 +94,13 @@ describe('HeartCard', () => {
 		}
 	);
 
+	it('names the card <article> after the heart', async () => {
+		const { target } = await render();
+		const card = target.querySelector('article')!;
+		const id = card.getAttribute('aria-labelledby')!;
+		expect(target.querySelector(`[id="${id}"]`)?.textContent).toBe(heart.name);
+	});
+
 	it('records the view when the link is clicked', async () => {
 		const onClick = vi.fn();
 		const { links } = await render({ onClick });

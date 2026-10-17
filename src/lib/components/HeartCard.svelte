@@ -83,6 +83,7 @@
 	let swayDelay = $derived((index * 0.7) % 5);
 	let href = $derived(heartHref(heart.id, lang));
 	let pickId = $derived(`pick-${heart.id}`);
+	let nameId = $derived(`${makeHeartAnchorId(heart.id)}-name`);
 
 	function handleOpen() {
 		onClick?.(heart);
@@ -104,6 +105,7 @@
 	data-heart-id={heart.id}
 	data-heart-name={heart.name}
 	data-user={heart.isUserCreated ? '' : undefined}
+	aria-labelledby={nameId}
 	style="height: {SIZE + 120}px;"
 	style:--strand={strand === undefined ? undefined : `var(--strand-${strand})`}
 >
@@ -140,7 +142,7 @@
 	</div>
 
 	<div class="card-meta">
-		<span class="name">{heart.name}</span>
+		<span class="name" id={nameId}>{heart.name}</span>
 		<DifficultyDots level={heart.difficulty} {lang} />
 	</div>
 

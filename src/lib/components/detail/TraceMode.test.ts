@@ -232,6 +232,14 @@ describe('TraceMode', () => {
 		expect(move.defaultPrevented).toBe(true);
 	});
 
+	it('names the width slider once, not twice', async () => {
+		const view = await render();
+		const slider = view.q<HTMLInputElement>('input[type="range"]')!;
+		expect(slider.getAttribute('aria-label')).toBe('Bredde');
+		// The wrapping <label> holds only the slider and its readout now.
+		expect(slider.closest('label')!.querySelector('.sr-only')).toBeNull();
+	});
+
 	it('remembers the width it was locked at', async () => {
 		const view = await render();
 		const slider = view.q<HTMLInputElement>('input[type="range"]')!;

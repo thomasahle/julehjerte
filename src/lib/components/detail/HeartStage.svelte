@@ -97,7 +97,8 @@
 			aria-pressed={shownView === v.id}
 			onclick={() => (view = v.id)}
 		>
-			<span class="thumb" class:thumb-heart={v.id === 'heart'}>
+			<!-- Decorative: the button is named by its label below. -->
+			<span class="thumb" class:thumb-heart={v.id === 'heart'} aria-hidden="true">
 				{#if v.id === 'heart' && design}
 					<PaperHeartSVG
 						readonly

@@ -624,9 +624,12 @@
 							</div>
 						{/if}
 
+						<!-- Named by aria-label, not by the <label>: the label wraps the
+						     <output> too, which made the name "Bredde Bredde ca. 127 mm". The
+						     readout reaches screen readers as the value text. -->
 						<label class="slider">
-							<span class="sr-only">{t('traceSize', lang)}</span>
 							<input
+								aria-label={t('traceSize', lang)}
 								type="range"
 								min={MIN_WIDTH_MM}
 								max={MAX_WIDTH_MM}

@@ -91,6 +91,15 @@
 		{ id: 'paint' as const, href: routeHref('paint', lang), label: t('paintModePaint', lang), icon: ImageIcon }
 	]);
 
+	// The active section's link is `page` only on the page it points at (the
+	// front page for "Skabeloner"); on a page inside the section, such as a
+	// heart's, it is `true`: the visitor is in that section, not on that page.
+	const trimSlash = (path: string) => path.replace(/\/+$/, '') || '/';
+	function ariaCurrent(link: { id: NavSection; href: string }): 'page' | 'true' | undefined {
+		if (active !== link.id) return undefined;
+		return trimSlash($page.url.pathname) === trimSlash(link.href) ? 'page' : 'true';
+	}
+
 	afterNavigate(() => {
 		menuOpen = false;
 	});
@@ -166,7 +175,7 @@
 					class="nav-link"
 					class:active={active === link.id}
 					href={link.href}
-					aria-current={active === link.id ? 'page' : undefined}
+					aria-current={ariaCurrent(link)}
 				>
 					{link.label}
 				</a>
@@ -212,7 +221,7 @@
 					class="menu-link"
 					class:active={active === link.id}
 					href={link.href}
-					aria-current={active === link.id ? 'page' : undefined}
+					aria-current={ariaCurrent(link)}
 				>
 					{link.label}
 				</a>
