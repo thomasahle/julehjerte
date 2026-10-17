@@ -53,3 +53,17 @@ test('fresh automatic fitting repairs a rejected circular routing before common 
   assert.deepEqual(source.mask,mask);assert.deepEqual(source.validMask,valid);assert.deepEqual(source.weights,weights);
  }catch(error){t.diagnostic(JSON.stringify({report,cutGeometry:answer.files['cut_geometry.json']}));throw error;}
 });
+
+test('a fully observed mask compares a stalled corner routing without opening its enclosed regions',async()=>{
+ const extracted=input().sourceImage,mask=extracted.mask.slice();
+ // This is the browser's whole-picture variant: its PNG supplies colours for
+ // all pixels, including the tiny tip excluded by the screenshot diagnostic.
+ const target=prepare({type:'mask',mask,resolution:extracted.resolution},raw).target;
+ const answer=await design(target,cfg),comparison=answer.report.solver.cornerTopologyComparison;
+ assert.equal(answer.report.templateChecksPassed,true);
+ assert.equal(comparison?.selected,true);assert.equal(comparison.featuresPreserved,true);
+ assert.ok(comparison.imageError<comparison.beforeImageError);
+ const rendered=await renderExportedWeave(answer.files['cut_geometry.json'],extracted.resolution);
+ assert.ok(referenceError(target.sourceImage,rendered.mask).mismatchFraction<.015);
+ assert.deepEqual(target.sourceImage.mask,mask);
+});

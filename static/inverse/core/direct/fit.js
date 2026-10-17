@@ -127,11 +127,30 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     const seconds=Math.min(16,(start+cfg.timeLimit*1000-performance.now()-2500)/1000);
     cornerTopology=await recoverCornerTopology(input,cfg,{seconds,onProgress,features:sourceFeatures});
     if(cornerTopology.solution){
-      const solution=cornerTopology.solution;
+      let solution=cornerTopology.solution,error=cornerTopology.report.imageError,comparison=null;
+      // A valid corner routing can repeatedly roll back image updates around
+      // narrow returns. Compare one coarser routing while time remains; retain
+      // the checked incumbent if it fails or opens an already enclosed motif.
+      const comparisonSeconds=Math.min(12,(start+cfg.timeLimit*1000-performance.now()-1800)/1000);
+      if(error>Math.min(.015,cfg.maxImageError*.5)&&comparisonSeconds>=10){
+        const alternative=await initializeCoarseTopology(input,cfg,{seconds:comparisonSeconds,onProgress,repairRejected:true});
+        comparison={...alternative.report,beforeImageError:error,selected:false};
+        if(alternative.graph){
+          const proposed=alternative.graph.solution(alternative.graph.points,alternative.phase,input),checkedCfg=verifiedPaperSettings(alternative,cfg);
+          const woven=sampleWeave(proposed,source.resolution),afterError=maskDisagreement(source,woven);
+          const featuresPreserved=auditFeatureFidelityChange(source,sampleWeave(solution,source.resolution),woven,cfg,sourceFeatures).passed;
+          const geometry=validate(proposed,checkedCfg),paper=materialAudit(proposed,checkedCfg);
+          Object.assign(comparison,{imageError:afterError,featuresPreserved,geometryPassed:geometry.passed,paperPassed:paper.passed});
+          if(afterError<error&&featuresPreserved&&geometry.passed&&paper.passed){
+            proposed.report={...(alternative.report.paperVerification?{paperVerification:alternative.report.paperVerification}:{})};
+            solution=proposed;error=afterError;comparison.selected=true;
+          }
+        }
+      }
       solution.report={...solution.report,countSearch:countSearchReport,algorithm:'direct-bezier',numericalBackend,imported:false,
-        termination:'validated_corner_topology',seconds:(performance.now()-start)/1000,traceUsed:true,
+        termination:comparison?.selected?'validated_corner_topology_comparison':'validated_corner_topology',seconds:(performance.now()-start)/1000,traceUsed:true,
         selectedCounts:solution.paths.map(p=>p.length),attempts,stages:timings,cornerTopologyInitialization:cornerTopology.report,
-        estimatedMaskMismatch:cornerTopology.report.imageError,borderCountsAreHardConstraints:false};
+        ...(comparison?{cornerTopologyComparison:comparison}:{}),estimatedMaskMismatch:error,borderCountsAreHardConstraints:false};
       return solution;
     }
   }
