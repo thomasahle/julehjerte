@@ -53,10 +53,12 @@
 		/** Position in its category grid — drives the ribbon length and the sway. */
 		index?: number;
 		/**
-		 * Extra `margin-top` in px: the front page's first row steps down along
-		 * the hero's hill line (docs/redesign/GALLERY-CURVE.md).
+		 * The front page's grid column ("strand") this card hangs in: the card
+		 * is moved down by the gallery's `--strand-<n>`, which follows the
+		 * hero's hill line and the scroll (docs/redesign/GALLERY-CURVE.md,
+		 * amendment 3). Unset: no strand.
 		 */
-		drop?: number;
+		strand?: number;
 	}
 
 	let {
@@ -69,7 +71,7 @@
 		onClick,
 		onDelete,
 		index = 0,
-		drop = 0
+		strand = undefined
 	}: Props = $props();
 
 	/** Heart width in px; the card is this plus 120px for the ribbon slack, name and difficulty. */
@@ -103,7 +105,7 @@
 	data-heart-name={heart.name}
 	data-user={heart.isUserCreated ? '' : undefined}
 	style="height: {SIZE + 120}px;"
-	style:margin-top={drop ? `${drop}px` : undefined}
+	style:--strand={strand === undefined ? undefined : `var(--strand-${strand})`}
 >
 	<a class="card-link" {href} onclick={handleOpen} aria-label={heart.name}></a>
 
@@ -159,6 +161,9 @@
 		align-items: center;
 		border-radius: 14px;
 		transition: transform 0.2s;
+		/* The strand's offset, when the gallery sets one (`translate`, so the
+		   hover's `transform` is not overridden); 0 when it does not. */
+		translate: 0 var(--strand, 0px);
 	}
 
 	.card:hover {

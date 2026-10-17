@@ -42,10 +42,11 @@
 		 */
 		first?: boolean;
 		/**
-		 * Extra `margin-top` in px for the grid's first cards, in order — the
-		 * first row following the hill line. Measured by the gallery.
+		 * The gallery's column count, measured on the desktop layout, where
+		 * each column is a strand hanging from the hill line (GALLERY-CURVE.md
+		 * amendment 3); 0: no strands.
 		 */
-		drops?: readonly number[];
+		columns?: number;
 		/** "Mine hjerter": set apart from the gallery categories above it. */
 		apart?: boolean;
 		/** Shown instead of the grid when `hearts` is empty. */
@@ -64,7 +65,7 @@
 		onClick,
 		onDelete,
 		first = false,
-		drops = [],
+		columns = 0,
 		apart = false,
 		empty
 	}: Props = $props();
@@ -89,7 +90,7 @@
 					design={designs?.[heart.id]}
 					{lang}
 					{index}
-					drop={drops[index] ?? 0}
+					strand={columns > 0 ? index % columns : undefined}
 					selected={selectedIds.has(heart.id)}
 					{onSelect}
 					{onClick}
@@ -138,6 +139,21 @@
 	.cat.apart {
 		margin-top: 48px;
 		gap: 12px;
+	}
+
+	/* The strands (Gallery.svelte, GALLERY-CURVE.md amendment 3) hang every
+	   gallery card up to --strand-room (D) below its layout, and all of them
+	   exactly D once level. So an anchored category lands D higher, which
+	   puts its level row just under the bar, and "Mine hjerter", which is not
+	   a strand, keeps D more room above it. */
+	@media (min-width: 900px) {
+		.cat:not(.apart) {
+			scroll-margin-top: calc(var(--gallery-bar-height, 49px) + 8px - var(--strand-room, 0px));
+		}
+
+		.cat.apart {
+			margin-top: calc(48px + var(--strand-room, 0px));
+		}
 	}
 
 	.cat-head {

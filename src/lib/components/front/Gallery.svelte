@@ -11,7 +11,7 @@
   On the desktop layout the gallery also follows the hero's hill line
   (docs/redesign/GALLERY-CURVE.md): this measures the landscape, the chips and
   the first row's cards, asks $lib/front/hillLine where the curve is, and hands
-  the bar its chip lifts and the first category its card drops.
+  the bar its chip lifts and every grid column its strand (amendment 3).
 -->
 <script lang="ts">
 	import { untrack } from 'svelte';
@@ -111,7 +111,10 @@
 	let galleryEl = $state.raw<HTMLElement | null>(null);
 	let wrapLift = $state<number | null>(null);
 	let chipLifts = $state.raw<number[]>([]);
-	let cardDrops = $state.raw<number[]>([]);
+	/** drop_k per grid column (GALLERY-CURVE.md amendment 3); empty: no strands. */
+	let strandDrops = $state.raw<number[]>([]);
+	/** D, the largest drop: how far below its layout every card hangs once level. */
+	let strandRoom = $derived(strandDrops.length > 0 ? Math.max(...strandDrops) : 0);
 
 	/** To a tenth of a pixel: precise enough, and stable from one measure to the next. */
 	const round = (px: number) => Math.round(px * 10) / 10;
@@ -137,7 +140,7 @@
 			if (narrow.matches || !land) {
 				wrapLift = null;
 				if (chipLifts.length) chipLifts = [];
-				if (cardDrops.length) cardDrops = [];
+				if (strandDrops.length) strandDrops = [];
 				schedulePush();
 				return;
 			}
@@ -183,18 +186,23 @@
 			}
 			if (!sameNumbers(lifts, chipLifts)) chipLifts = lifts;
 
-			// The first row: as many cards as the grid has columns.
+			// The strands: one per grid column, all category grids sharing the
+			// same columns. Their centres come from the first grid's track sizes,
+			// not from its cards — the first category can have fewer cards than
+			// there are columns.
 			const grid = gallery.querySelector<HTMLElement>('[data-hill-row]');
 			const drops: number[] = [];
 			if (grid) {
-				const columns = getComputedStyle(grid).gridTemplateColumns.split(' ').filter(Boolean);
-				for (const card of Array.from(grid.children).slice(0, columns.length)) {
-					const box = card.getBoundingClientRect();
-					const centre = box.left + box.width / 2 + scrollX;
-					drops.push(round(cardDrop(centre, landRect, hillTop, chipSpan)));
+				const gridStyle = getComputedStyle(grid);
+				const tracks = gridStyle.gridTemplateColumns.split(' ').map(parseFloat).filter(Number.isFinite);
+				const gap = parseFloat(gridStyle.columnGap) || 0;
+				let x = grid.getBoundingClientRect().left + scrollX;
+				for (const track of tracks) {
+					drops.push(round(cardDrop(x + track / 2, landRect, hillTop, chipSpan)));
+					x += track + gap;
 				}
 			}
-			if (!sameNumbers(drops, cardDrops)) cardDrops = drops;
+			if (!sameNumbers(drops, strandDrops)) strandDrops = drops;
 			schedulePush();
 		};
 		const schedule = () => {
@@ -204,40 +212,32 @@
 			if (!pushFrame) pushFrame = requestAnimationFrame(push);
 		};
 
-		// The push (GALLERY-CURVE.md amendment 1), scroll-linked: once the
-		// stuck bar's bottom edge — the push line, about 50px from the top of
-		// the screen — reaches a first-row card, the card is carried down the
-		// page with it until it is level with the lowest card of the row:
-		// translateY(clamp(s + bar − c_i, 0, D − drop_i)), c_i the card's laid
-		// out page top. The row's height is the lowest card's already, so
-		// nothing below moves. `translate`, so the card's hover scale stays.
+		// The strands (GALLERY-CURVE.md amendment 3), scroll-linked: every card
+		// in column k hangs at y_k = drop_k + clamp(s + bar − (rowTop + drop_k),
+		// 0, D − drop_k) — on the hill at rest, then carried down by the stuck
+		// bar's bottom edge (the push line) until every strand is level at D.
+		// One custom property per column on the gallery, read by the cards, so
+		// a frame writes a handful of variables rather than a style per card.
 		let pushFrame = 0;
+		let strandsSet = 0;
 		const push = () => {
 			pushFrame = 0;
+			const drops = strandDrops;
 			const grid = gallery.querySelector<HTMLElement>('[data-hill-row]');
-			if (!grid) return;
-			const drops = cardDrops;
-			const cards = Array.from(grid.children) as HTMLElement[];
-			if (drops.length === 0) {
-				for (const card of cards) card.style.removeProperty('translate');
-				return;
-			}
+			for (let k = drops.length; k < strandsSet; k++) gallery.style.removeProperty(`--strand-${k}`);
+			strandsSet = drops.length;
+			if (!grid || drops.length === 0) return;
 			const s = window.scrollY;
-			// The grid is never transformed, and a first-row card's laid-out top
-			// is the grid's top plus its own drop (its margin-top) — exact, where
-			// offsetTop rounds and the card's own rect includes its hover scale.
-			const gridTop = grid.getBoundingClientRect().top + s;
+			// The first row's laid-out top, H + 6: the grid itself is never moved.
+			const rowTop = grid.getBoundingClientRect().top + s;
 			const lowest = Math.max(...drops);
 			// The stuck bar's bottom edge: its box less the room on top.
 			const bar = gallery.querySelector('[data-gallery-bar]');
 			const room = chipLifts.length > 0 ? Math.max(...chipLifts) : 0;
 			const line = s + (bar ? bar.getBoundingClientRect().height - room : 50);
-			drops.forEach((drop, i) => {
-				const card = cards[i];
-				if (!card) return;
-				const t = Math.min(Math.max(line - (gridTop + drop), 0), lowest - drop);
-				if (t > 0) card.style.translate = `0 ${t}px`;
-				else card.style.removeProperty('translate');
+			drops.forEach((drop, k) => {
+				const y = drop + Math.min(Math.max(line - (rowTop + drop), 0), lowest - drop);
+				gallery.style.setProperty(`--strand-${k}`, `${y}px`);
 			});
 		};
 
@@ -279,6 +279,7 @@
 		bind:this={galleryEl}
 		style:--gallery-bar-height={barHeight > 0 ? `${barHeight}px` : undefined}
 		style:--bar-room={chipLifts.length > 0 ? `${Math.max(...chipLifts)}px` : undefined}
+		style:--strand-room={strandRoom > 0 ? `${strandRoom}px` : undefined}
 	>
 		<!-- The section keeps a heading for the nav's "Skabeloner" anchor and for
 		     screen readers; visually the gallery starts with the first category. -->
@@ -293,6 +294,7 @@
 			myHeartCount={myHearts.length}
 			bind:height={barHeight}
 			lifts={chipLifts}
+			{strandRoom}
 			{selectedCount}
 			{generating}
 			{allSelected}
@@ -314,7 +316,7 @@
 				{onSelect}
 				{onClick}
 				first={i === 0}
-				drops={i === 0 ? cardDrops : undefined}
+				columns={strandDrops.length}
 			/>
 		{/each}
 

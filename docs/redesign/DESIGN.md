@@ -151,18 +151,25 @@ follows the colour store as before.
 The gallery follows the hill line (docs/redesign/GALLERY-CURVE.md, owner's decision 2026-10-17, design
 variant "E"). From 900 up `.gallery-wrap` is pulled up so the gallery's top — the bar's top — sits on
 `hillTop`, the highest point of the drawing's `snow-field` top edge inside the content column; the first
-category's first row starts 6px under it (behind the transparent bar) and each of its cards steps down to the
-hill under its own centre, 54px more under the chips. At rest the chips are right-aligned, each on the
+category's first row starts 6px under it (behind the transparent bar). Every grid column is a strand
+(amendment 3): `drop_k` is the hill under the column's centre less `hillTop`, 54px more when that centre is
+under the chips, and every card in column k, in every category, hangs at `translate: 0 y_k` — so the hill
+shows in every row and rows in a column stay 28px apart. At rest the chips are right-aligned, each on the
 curve. Scrolling pushes them (amendment 1, all scroll-linked, no transitions): the bar's box is L — the
 largest chip lift — taller on top and sticks at `top: -L`; chip i sits at `translateY(clamp(s − H, lift_i, L)
 − L)`, so the top of the screen carries the chips straight down until they are flat, and only then does the
 bar stick; they stay right-aligned in the stuck bar too (the wordmark keeps its room from 900 up and only
-fades in). First-row card i gets `translateY(clamp(s + 50 − c_i, 0, D −
-drop_i))`: the stuck bar's bottom edge pushes it until the row is level. Both use the `translate` property,
-so the card's hover scale stays. The geometry is `$lib/front/hillLine`;
-`Gallery.svelte` measures (`[data-scene-land] > svg`, on mount and with a ResizeObserver) and hands the bar its
-chip lifts and the first section its card drops. Before hydration the wrap's margin is the 1440 estimate
-`-100vw * 226 / 2172` and the row is flat. `z-index: 1` stays so the gallery paints over the scene. Below 900
+fades in). The strands are pushed the same way: `y_k = drop_k + clamp(s + bar − (rowTop + drop_k), 0, D −
+drop_k)`, with `rowTop` the first row's laid-out top (H + 6), `bar` the stuck bar's visible height and `D =
+max drop_k`, so the stuck bar's bottom edge carries each strand down until all are level at D; from there
+the gallery scrolls as a flat grid, D below its layout. A frame writes one custom property per column on the
+gallery (`--strand-0` … `--strand-n`); each card carries `--strand: var(--strand-k)` and `translate: 0
+var(--strand, 0px)` (the `translate` property, so the card's hover scale stays; chips use it too). "Mine
+hjerter" is not a strand and gets D more top margin; gallery categories' `scroll-margin-top` is D less, and
+the scroll-spy adds D to their tops, so a chip lands the level row just under the bar. The geometry is
+`$lib/front/hillLine`; `Gallery.svelte` measures (`[data-scene-land] > svg`, on mount and with a
+ResizeObserver) and hands the bar its chip lifts and the categories the column count. Before hydration the
+wrap's margin is the 1440 estimate `-100vw * 226 / 2172` and the grid is flat. `z-index: 1` stays so the gallery paints over the scene. Below 900
 none of this applies: the landscape is an in-flow band, with the scroll hint on it.
 
 Gallery bar (`front/GalleryBar.svelte`, docs/redesign/GALLERY-BAR.md; it replaced the toolbar, 2026-10-17):
@@ -206,7 +213,7 @@ The three-step strip (print / cut / weave links to the guide) that used to sit a
 
 Category section: **no visible heading** (GALLERY-CURVE.md) — the title is an `sr-only` `<h3>`, the chips
 name the rows and carry the counts; sections are `margin-top: 28px` apart (32 below 600), the grid's own
-row-gap, and the grid is `align-items: start` so a stepped-down first-row card does not stretch its row.
+row-gap; the grid is `align-items: start`.
 "Mine hjerter" keeps its visible heading row (uppercase 15px/600 `--green`, letter-spacing .06em,
 padding-bottom 4, margin-bottom 10, no rule under it). Section ids `klassiske`, `stjerner`,
 `moenstre`, `figurer`, `hjerter` (anchors used by the detail page). Grid

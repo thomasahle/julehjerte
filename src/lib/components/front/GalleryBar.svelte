@@ -65,6 +65,12 @@
 		 * only; measured by the gallery). Empty: flat, and the bar as on a phone.
 		 */
 		lifts?: readonly number[];
+		/**
+		 * D: how far below its layout a gallery category's rows hang once the
+		 * strands are level (GALLERY-CURVE.md amendment 3), so the scroll-spy
+		 * sees where a category's hearts are rather than its box. 0: none.
+		 */
+		strandRoom?: number;
 		onPrint: () => void;
 		onSelectAll: () => void;
 		onSelectNone: () => void;
@@ -80,6 +86,7 @@
 		pdfLayout = $bindable(),
 		height = $bindable(0),
 		lifts = [],
+		strandRoom = 0,
 		onPrint,
 		onSelectAll,
 		onSelectNone
@@ -187,6 +194,7 @@
 		// Re-run when the chips change — "Mine hjerter" joins after mount, once
 		// the visitor's hearts have been read from localStorage.
 		const ids = sections.map((section) => section.id);
+		const shift = strandRoom;
 		let frame = 0;
 		const measure = () => {
 			frame = 0;
@@ -200,7 +208,9 @@
 			}
 			const line = box.bottom + ANCHOR_GAP;
 			const tops = ids.map(
-				(id) => document.getElementById(id)?.getBoundingClientRect().top ?? Infinity
+				(id) =>
+					(document.getElementById(id)?.getBoundingClientRect().top ?? Infinity) +
+					(id === MY_HEARTS_CATEGORY_ID ? 0 : shift)
 			);
 			const root = document.documentElement;
 			activeIndex = activeSection(
