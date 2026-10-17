@@ -162,23 +162,6 @@ describe('TraceMode', () => {
 		expect(view.lockLayer()).not.toBeNull();
 	});
 
-	it('lets go of the implicit touch capture that Chromium takes after pointerdown', async () => {
-		const view = await render();
-		await view.lock();
-		const button = view.unlock();
-		let captured = false;
-		button.hasPointerCapture = () => captured;
-		button.releasePointerCapture = vi.fn(() => {
-			captured = false;
-		});
-		pointer('pointerdown', button);
-		// Chromium: captured only now, after the pointerdown handler ran.
-		captured = true;
-		pointer('gotpointercapture', button);
-		expect(button.releasePointerCapture).toHaveBeenCalledWith(1);
-		expect(captured).toBe(false);
-	});
-
 	it('does not unlock when a captured finger moves off the button', async () => {
 		const view = await render();
 		await view.lock();
