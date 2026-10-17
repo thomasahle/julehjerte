@@ -1,27 +1,26 @@
 /**
  * A hero heart scrolls to its card and puts the card's anchor in the URL
- * through SvelteKit, so the page store (and with it the language toggle) sees
+ * through SvelteKit's router, so the page store (and with it the language toggle) sees
  * the hash. Plain history.replaceState left the toggle without it.
  */
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { flushSync, mount, unmount } from 'svelte';
-import { replaceState } from '$app/navigation';
+import { goto } from '$app/navigation';
 import HeroHearts from './HeroHearts.svelte';
 import { HERO_SLOTS_MOBILE } from './heroSlots';
 
-vi.mock('$app/navigation', () => ({ replaceState: vi.fn() }));
-vi.mock('$app/state', () => ({ page: { state: { kept: true } } }));
+vi.mock('$app/navigation', () => ({ goto: vi.fn(async () => {}) }));
 
 const cleanup: (() => void)[] = [];
 
 afterEach(() => {
 	for (const dispose of cleanup.splice(0)) dispose();
 	vi.unstubAllGlobals();
-	vi.mocked(replaceState).mockClear();
+	vi.mocked(goto).mockClear();
 });
 
 describe('HeroHearts', () => {
-	it('puts the card anchor in the URL through SvelteKit on a click', () => {
+	it('puts the card anchor in the URL through SvelteKit on a click', async () => {
 		vi.stubGlobal('matchMedia', () => ({ matches: true }));
 		const card = document.createElement('div');
 		card.id = 'heart-squares';
@@ -52,7 +51,11 @@ describe('HeroHearts', () => {
 		link.dispatchEvent(click);
 
 		expect(click.defaultPrevented).toBe(true);
+		expect(goto).toHaveBeenCalledWith('/#heart-squares', { replaceState: true, noScroll: true, keepFocus: true });
+		// The scroll starts once the navigation is done, which would stop it.
+		expect(card.scrollIntoView).not.toHaveBeenCalled();
+		await Promise.resolve();
+		await Promise.resolve();
 		expect(card.scrollIntoView).toHaveBeenCalledWith({ block: 'center', behavior: 'auto' });
-		expect(replaceState).toHaveBeenCalledWith('#heart-squares', { kept: true });
 	});
 });

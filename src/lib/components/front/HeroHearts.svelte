@@ -27,8 +27,7 @@
   bootstrap finds the layers and names the ids of the hearts it clones in.
 -->
 <script lang="ts">
-	import { replaceState } from '$app/navigation';
-	import { page } from '$app/state';
+	import { goto } from '$app/navigation';
 	import HangingHeart from '$lib/components/HangingHeart.svelte';
 	import type { HeroHeart } from '$lib/front/galleryHearts';
 	import { t, type Language } from '$lib/i18n';
@@ -53,11 +52,18 @@
 		if (!card) return; // let the plain anchor navigation handle it
 		event.preventDefault();
 		const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-		card.scrollIntoView({ block: 'center', behavior: reduce ? 'auto' : 'smooth' });
-		// SvelteKit's own replaceState, not history's: the page store has to see
-		// the new hash, or the language toggle links to the other language
-		// without it.
-		replaceState(`#${anchorId}`, page.state);
+		const scroll = () => card.scrollIntoView({ block: 'center', behavior: reduce ? 'auto' : 'smooth' });
+		// Through the router, not history.replaceState: the page store has to
+		// see the new hash, or the language toggle links to the other language
+		// without it. (SvelteKit's replaceState is shallow routing and leaves
+		// page.url alone too.) The load reads only params, so it does not rerun.
+		// The scroll waits for the navigation, which would stop a smooth scroll
+		// already under way.
+		const { pathname, search } = window.location;
+		goto(`${pathname}${search}#${anchorId}`, { replaceState: true, noScroll: true, keepFocus: true }).then(
+			scroll,
+			scroll
+		);
 	}
 </script>
 
