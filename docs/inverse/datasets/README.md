@@ -25,6 +25,20 @@ recovers **0/12** pale printed-checker crops. The unsmoothed mask loses much of
 the pale sheet, while smoothed candidates still fail outline support. None of
 these diagnostic policies is integrated yet.
 
+The [paired selected-box MobileSAM replay](selected-sam-prompt-results.json)
+now completes on seven fixed development photos. Automatic boxes produce four
+crops and two checked masks, but one is the wrong heart in the star scene.
+Supplied selection boxes produce five crops and three checked masks of the
+intended heart (cross, star and pale printed checker). All eight exported pairs
+convert to editable geometry; five pass complete checks across both arms.
+The printed checker's two visible side corners fall inside approximate source
+ranges, but its tip overshoots and its notch remains ambiguous. The cross still
+has a false central diamond; dense checker, gold tree and painted paper remain
+failures. A fourth selected crop is stopped before fitting by inverse-letterbox
+roundoff. That numerical guard is repaired with five passing focused tests;
+the failed input's replay and full follow-up QA are pending. No model is deployed,
+and these seven source-assisted examples are not a new held-out benchmark.
+
 The established photo benchmark and the neural experiments have different
 inputs and denominators. Their latest completed comparisons are:
 
