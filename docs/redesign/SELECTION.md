@@ -21,6 +21,18 @@ go (FRONT-SIMPLIFY.md). The bar's selection controls change as follows.
    behind a sign, and the chips' +54 clearance is NOT extended to it) and
    stays put when the bar sticks.
 
+   *As built (accepted, commit e910aca; QA 17 Oct 2026):* the paragraph
+   above is superseded. On the desktop layout the button is the chip row's
+   first item and behaves as a chip: it gets its own lift on the hill and is
+   pushed down with the chips (GALLERY-CURVE.md amendment 1). Its box counts
+   in the chips' span, so the grid column under it gets the +54 clearance
+   while a selection exists, and that strand drops 54px when the first heart
+   is ticked and rises again when the last is unticked (at 1440 column 3,
+   D 105.7 -> 122.8). The chips themselves never move. Below 900, where the
+   chip row scrolls sideways, the button sits outside the row, before it,
+   and does not scroll; below 700 the stuck bar shows only its icon and
+   count, the name staying for screen readers.
+
 2. **The button opens the download dialog** (`DownloadDialog`, DOWNLOAD.md)
    for the selected hearts, instead of generating the gallery PDF directly.
    The dialog gains a multi-heart form: `designs: HeartDesign[]` (one entry
