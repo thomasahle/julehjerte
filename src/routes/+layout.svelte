@@ -7,7 +7,6 @@
 	import { pageTitle, socialImage } from "$lib/seo";
 	import { langFromPathname, t } from "$lib/i18n";
 	import { alternatePaths, routeKeyFromPathname } from "$lib/i18n/routes";
-	import * as Tooltip from "$lib/components/ui/tooltip";
 	import PageFooter from "$lib/components/PageFooter.svelte";
 	import { markAppStarted } from "$lib/hydration";
 	import { getColors, subscribeColors, type HeartColors } from "$lib/stores/colors";
@@ -189,19 +188,20 @@
 	{/if}
 </svelte:head>
 
-<Tooltip.Provider>
-	<div class="page-container">
-		<!-- Not <main>: every route renders its own <header class="nav"> plus its own
-		     <main id="main-content">, and a <header> nested inside <main> does not map
-		     to the banner landmark. -->
-		<div class="page-content">
-			{@render children()}
-		</div>
-		{#if !isEditorRoute}
-			<PageFooter />
-		{/if}
+<!-- No tooltip provider here: the only tooltips are the editor's and the paint
+     page's, and each wraps itself in its own (PaperHeart, PaintPage), so one at
+     the root only put bits-ui's tooltip code (~24 KB gzipped) on every page. -->
+<div class="page-container">
+	<!-- Not <main>: every route renders its own <header class="nav"> plus its own
+	     <main id="main-content">, and a <header> nested inside <main> does not map
+	     to the banner landmark. -->
+	<div class="page-content">
+		{@render children()}
 	</div>
-</Tooltip.Provider>
+	{#if !isEditorRoute}
+		<PageFooter />
+	{/if}
+</div>
 
 <style>
 	/* The body font, colour and background come from src/app.css. */
