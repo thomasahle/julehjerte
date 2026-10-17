@@ -186,6 +186,30 @@ describe('TraceMode', () => {
 		expect(view.lockLayer()).toBeNull();
 	});
 
+	it('keeps a finger hold when Safari blurs the pressed button', async () => {
+		const view = await render();
+		await view.lock();
+		const button = view.unlock();
+		expect(document.activeElement).toBe(button);
+		pointer('pointerdown', button);
+		button.blur();
+		vi.advanceTimersByTime(2000);
+		await settle();
+		expect(view.lockLayer()).toBeNull();
+	});
+
+	it('ends a key hold when focus leaves the button', async () => {
+		const view = await render();
+		await view.lock();
+		const button = view.unlock();
+		key('keydown', 'Enter', button);
+		vi.advanceTimersByTime(1000);
+		button.blur();
+		vi.advanceTimersByTime(2000);
+		await settle();
+		expect(view.lockLayer()).not.toBeNull();
+	});
+
 	it('unlocks after a 2000 ms hold', async () => {
 		const view = await render();
 		await view.lock();

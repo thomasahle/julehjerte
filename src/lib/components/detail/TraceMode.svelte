@@ -408,8 +408,12 @@
 	let holdTimer: ReturnType<typeof setTimeout> | null = null;
 	let holdFrame: number | null = null;
 
-	function beginHold(): void {
+	/** What started the hold under way: a finger or mouse, or Enter / Space. */
+	let holdBy: 'pointer' | 'key' | null = null;
+
+	function beginHold(by: 'pointer' | 'key'): void {
 		if (mode !== 'locked' || hold.phase === 'holding') return;
+		holdBy = by;
 		hold = holdStart(hold, Date.now());
 		holdTimer = setTimeout(checkHold, HOLD_MS);
 		drawProgress();
@@ -433,6 +437,7 @@
 	}
 
 	function cancelHold(): void {
+		holdBy = null;
 		hold = holdCancel(hold);
 		if (hold.phase === 'done') hold = HOLD_IDLE;
 		if (holdTimer !== null) clearTimeout(holdTimer);
@@ -450,7 +455,7 @@
 		// with CDP touch on a Pixel 7), so handleUnlockMove covers that case.
 		const button = event.currentTarget as Element;
 		if (button.hasPointerCapture?.(event.pointerId)) button.releasePointerCapture(event.pointerId);
-		beginHold();
+		beginHold('pointer');
 	}
 
 	// While the button still gets the moves of a finger that has left it, a
@@ -470,7 +475,7 @@
 	function handleUnlockKey(event: KeyboardEvent): void {
 		if (event.key !== 'Enter' && event.key !== ' ') return;
 		event.preventDefault();
-		if (event.type === 'keydown') beginHold();
+		if (event.type === 'keydown') beginHold('key');
 		else cancelHold();
 	}
 
@@ -490,6 +495,14 @@
 		}
 		if (lockKeyDown !== event.key) event.preventDefault();
 		lockKeyDown = null;
+	}
+
+	// Focus leaving the button ends a key hold: the key is no longer on it. A
+	// finger's hold is ended by the finger, not by focus. Safari blurs a focused
+	// button when it is pressed, and "Lås op" is focused on locking, so the
+	// first press after locking used to be cancelled at once.
+	function handleUnlockBlur(): void {
+		if (holdBy === 'key') cancelHold();
 	}
 
 	// ---- Keyboard ------------------------------------------------------------
@@ -610,7 +623,7 @@
 						onpointerleave={cancelHold}
 						onkeydown={handleUnlockKey}
 						onkeyup={handleUnlockKey}
-						onblur={cancelHold}
+						onblur={handleUnlockBlur}
 					>
 						<LockOpenIcon size={24} />
 					</button>
