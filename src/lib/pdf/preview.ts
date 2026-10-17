@@ -5,39 +5,35 @@
  * It draws the same plan generateTemplatesPDF draws (./plan.ts), from the same
  * template geometry (`getTemplateData`), in the classes the laser preview
  * already styles: `sheet` for the paper, `cut` for outlines and cuts, and
- * `fold` for the dashed fold the PDF prints. The name and address lines are
- * drawn as the PDF prints them, and the heart's picture as a light square
- * where the PDF puts it, so
- * what the visitor sees is where things will be on paper. One user unit is one
- * millimetre; the strokes do not scale.
+ * `fold` for the dashed fold the PDF prints. Inside each template's rounded
+ * end it puts what the PDF puts there (`templateEar`): the heart's picture —
+ * the very PNG the PDF embeds, once it has been rendered — and the name and
+ * address lines, so what the visitor sees is where things will be on paper.
+ * One user unit is one millimetre; the strokes do not scale.
  */
 import { SITE_DOMAIN } from '$lib/config';
 import type { Language } from '$lib/i18n';
 import { getTemplateData } from '$lib/utils/templateSvg';
 import { coord } from '$lib/laser/format';
-import {
-	TEMPLATE_HEADER_MM,
-	templateAddress,
-	templateLabel,
-	type TemplatePagePlan,
-	type TemplatePiece
-} from './plan';
+import { PT_MM } from './earLayout';
+import { templateEar, type TemplatePagePlan, type TemplatePiece } from './plan';
 
 export interface TemplatePreviewOptions {
 	page: number;
 	lang: Language;
-	/** Draw the square the heart's picture takes in the ear. */
+	/** Print the heart's picture in the ear (the dialog's checkbox). */
 	previewImage: boolean;
+	/**
+	 * The pictures rendered so far, a PNG data URL per design id. A design
+	 * missing here (still rendering, or failed) gets no picture and no
+	 * placeholder: the lines stay where they will print with it.
+	 */
+	images?: ReadonlyMap<string, string>;
 	title: string;
 }
 
 function escapeXml(text: string): string {
 	return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-}
-
-/** Where the PDF puts the heart's picture inside a template of this size. */
-export function previewImageBox(widthMm: number, heightMm: number): { cx: number; cy: number; size: number } {
-	return { cx: widthMm / 2, cy: (heightMm / 3) * 0.6, size: Math.min(widthMm * 0.35, heightMm * 0.25) };
 }
 
 export function serializeTemplatePageSvg(
@@ -53,19 +49,30 @@ export function serializeTemplatePageSvg(
 	];
 	const stroke = 'vector-effect="non-scaling-stroke"';
 
-	for (const { index, x, y } of plan.pages[options.page] ?? []) {
+	// One copy of each picture, placed by <use>: a data URL repeated for every
+	// template on the page would be re-parsed on every change of a setting.
+	const page = plan.pages[options.page] ?? [];
+	const symbols = new Map<string, string>();
+	if (options.previewImage && options.images) {
+		for (const { index } of page) {
+			const id = pieces[index]!.design.id;
+			const href = options.images.get(id);
+			if (!href || symbols.has(id)) continue;
+			const symbol = `template-picture-${symbols.size}`;
+			symbols.set(id, symbol);
+			lines.push(
+				`  <symbol id="${symbol}" viewBox="0 0 1 1"><image href="${escapeXml(href)}" width="1" height="1" /></symbol>`
+			);
+		}
+	}
+
+	for (const { index, x, y } of page) {
 		const piece = pieces[index]!;
 		const data = getTemplateData(piece.design, piece.lobe);
-		const cx = coord(x + piece.widthMm / 2);
-		lines.push(
-			`  <text class="label" x="${cx}" y="${coord(y + 4)}" font-size="2.8" text-anchor="middle">${escapeXml(templateLabel(piece, options.lang))}</text>`,
-			`  <text class="address" x="${cx}" y="${coord(y + 7)}" font-size="2.1" text-anchor="middle">${escapeXml(templateAddress(piece.design))}</text>`
-		);
 		// The template's own units, scaled into place: the paths are the ones the
 		// PDF's drawing is made from.
-		const top = y + TEMPLATE_HEADER_MM;
 		const { templateWidth: tw, templateHeight: th, earRadius: r } = data;
-		lines.push(`  <g transform="translate(${coord(x)} ${coord(top)}) scale(${piece.scale})" fill="none">`);
+		lines.push(`  <g transform="translate(${coord(x)} ${coord(y)}) scale(${piece.scale})" fill="none">`);
 		lines.push('    <g class="cut">');
 		lines.push(`      <path d="${data.earPath}" ${stroke} />`);
 		lines.push(`      <path d="M 0 ${r} L 0 ${th} M ${tw} ${r} L ${tw} ${th}" ${stroke} />`);
@@ -73,10 +80,18 @@ export function serializeTemplatePageSvg(
 		lines.push('    </g>');
 		lines.push(`    <g class="fold"><path d="M 0 ${th} L ${tw} ${th}" ${stroke} /></g>`);
 		lines.push('  </g>');
-		if (options.previewImage) {
-			const box = previewImageBox(piece.widthMm, piece.heightMm);
+
+		const ear = templateEar(piece, { lang: options.lang, picture: options.previewImage });
+		const symbol = symbols.get(piece.design.id);
+		if (ear.picture && symbol) {
+			const { x: px, y: py, size } = ear.picture;
 			lines.push(
-				`  <rect class="thumb" x="${coord(x + box.cx - box.size / 2)}" y="${coord(top + box.cy - box.size / 2)}" width="${coord(box.size)}" height="${coord(box.size)}" rx="1" />`
+				`  <use class="picture" href="#${symbol}" x="${coord(x + px)}" y="${coord(y + py)}" width="${coord(size)}" height="${coord(size)}" />`
+			);
+		}
+		for (const line of ear.lines) {
+			lines.push(
+				`  <text class="${line.kind === 'name' ? 'label' : 'address'}" x="${coord(x + line.x)}" y="${coord(y + line.baseline)}" font-size="${coord(line.sizePt * PT_MM)}" text-anchor="middle">${escapeXml(line.text)}</text>`
 			);
 		}
 	}

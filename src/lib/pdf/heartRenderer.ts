@@ -51,3 +51,27 @@ export async function renderHeartToDataURL(
     URL.revokeObjectURL(url);
   }
 }
+
+/**
+ * One picture per design among `designs`, as a PNG data URL by design id. A
+ * design that fails to render is left out (and logged), so the PDF or the
+ * preview goes without its picture rather than without the template.
+ *
+ * Kept here rather than with jsPDF in ./template.ts: the download dialog's
+ * preview shows the same pictures, and must not pull jsPDF in to do it.
+ */
+export async function prerenderHeartImages(designs: HeartDesign[], size: number): Promise<Map<string, string>> {
+  const imageMap = new Map<string, string>();
+  const uniqueDesigns = [...new Map(designs.map((d) => [d.id, d])).values()];
+
+  for (const design of uniqueDesigns) {
+    try {
+      const dataURL = await renderHeartToDataURL(design, { size });
+      imageMap.set(design.id, dataURL);
+    } catch (e) {
+      console.error(`Failed to render heart ${design.id}:`, e);
+    }
+  }
+
+  return imageMap;
+}

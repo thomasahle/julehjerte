@@ -1,8 +1,9 @@
 /**
  * The printer PDF's page planning — docs/redesign/DOWNLOAD.md. The classic
- * heart's folded template at 80 mm is 80 × 120 mm, so with its 9 mm header a
- * box of 80 × 129: two across A4 (5 + 80 + 5 + 80 ≤ 205) and two down
- * (5 + 129 + 5 + 129 ≤ 287, the page less its 5 mm margin and footer).
+ * heart's folded template at 80 mm is 80 × 120 mm, and that is its whole box:
+ * the name and address are printed inside its rounded end (round 2), not in a
+ * header above it. Two across A4 (5 + 80 + 5 + 80 ≤ 205) and two down
+ * (5 + 120 + 5 + 120 ≤ 287, the page less its 5 mm margin and footer).
  */
 import { describe, expect, it } from 'vitest';
 import { SHEETS, type SheetSize } from '$lib/laser/sheet';
@@ -24,7 +25,7 @@ function expectClean({ plan: p, pieces }: { plan: TemplatePagePlan; pieces: { wi
 		const boxes = page.map(({ index, x, y }) => {
 			expect(seen.has(index)).toBe(false);
 			seen.add(index);
-			return { x, y, w: pieces[index]!.widthMm, h: pieces[index]!.heightMm + 9 };
+			return { x, y, w: pieces[index]!.widthMm, h: pieces[index]!.heightMm };
 		});
 		for (const b of boxes) {
 			expect(b.x).toBeGreaterThanOrEqual(5);
@@ -105,6 +106,15 @@ describe('planTemplatePages', () => {
 		expectClean(p);
 	});
 
+	it('packs nine 60 mm templates on A4 now that there is no header above them', () => {
+		// 60 × 90 mm: three down is 5 + 90 + 5 + 90 + 5 + 90 = 285 ≤ 287. With the
+		// old 9 mm header (99 mm boxes) only two rows fitted, six to a page.
+		const p = plan(5, SHEETS.A4, 60);
+		expect(p.plan.pages.map((page) => page.length)).toEqual([9, 1]);
+		expect(p.plan.pages[0]!.map(({ y }) => y)).toEqual([5, 5, 5, 100, 100, 100, 195, 195, 195]);
+		expectClean(p);
+	});
+
 	it('uses one page per template on a small custom sheet', () => {
 		const small = { widthMm: 100, heightMm: 150 };
 		const p = plan(2, small);
@@ -120,18 +130,64 @@ describe('planTemplatePages', () => {
 });
 
 describe('serializeTemplatePageSvg', () => {
+	const { pieces, plan: p } = plan(3, SHEETS.A4);
+	const svg = (page: number, options: { previewImage?: boolean; images?: Map<string, string> } = {}) =>
+		new DOMParser().parseFromString(
+			serializeTemplatePageSvg(p, pieces, {
+				page,
+				lang: 'da',
+				previewImage: options.previewImage ?? true,
+				images: options.images,
+				title: 'Klassisk'
+			}),
+			'image/svg+xml'
+		);
+	const picture = 'data:image/png;base64,iVBORw0KGgo=';
+
 	it('draws the page asked for, a template group per placement', () => {
-		const { pieces, plan: p } = plan(3, SHEETS.A4);
-		const svg = (page: number, previewImage = true) =>
-			new DOMParser().parseFromString(
-				serializeTemplatePageSvg(p, pieces, { page, lang: 'da', previewImage, title: 'Klassisk' }),
-				'image/svg+xml'
-			);
 		expect(svg(0).documentElement.getAttribute('viewBox')).toBe('0 0 210 297');
 		expect(svg(0).querySelectorAll('g.cut')).toHaveLength(4);
 		expect(svg(1).querySelectorAll('g.cut')).toHaveLength(2);
-		expect(svg(0).querySelectorAll('rect.thumb')).toHaveLength(4);
-		expect(svg(0, false).querySelectorAll('rect.thumb')).toHaveLength(0);
+		expect(svg(0).querySelectorAll('g.fold')).toHaveLength(4);
 		expect(svg(0).querySelector('text.address')!.textContent).toBe('juleflet.dk/hjerte/classic-3x3');
+	});
+
+	it('shows the rendered picture once per design, placed in every ear, and no box while it renders', () => {
+		const doc = svg(0, { images: new Map([[classic.id, picture]]) });
+		const images = doc.querySelectorAll('image');
+		expect(images).toHaveLength(1);
+		expect(images[0]!.getAttribute('href')).toBe(picture);
+		const uses = [...doc.querySelectorAll('use.picture')];
+		expect(uses).toHaveLength(4);
+		// The first template at (5, 5): the picture is centred across it, inside the ear.
+		const first = uses[0]!;
+		const size = Number(first.getAttribute('width'));
+		expect(Number(first.getAttribute('x')) + size / 2).toBeCloseTo(45);
+		expect(Number(first.getAttribute('y'))).toBeGreaterThan(5);
+		expect(Number(first.getAttribute('y')) + size).toBeLessThan(5 + 40);
+		// Not rendered yet, or turned off: nothing where it goes.
+		for (const doc of [svg(0), svg(0, { previewImage: false, images: new Map([[classic.id, picture]]) })]) {
+			expect(doc.querySelectorAll('image, use, rect.thumb')).toHaveLength(0);
+			expect(doc.querySelectorAll('rect')).toHaveLength(1);
+		}
+	});
+
+	it('prints the name and address inside the ear, under the picture and above the first cut', () => {
+		const doc = svg(0, { images: new Map([[classic.id, picture]]) });
+		const pictureFoot = Number(doc.querySelector('use')!.getAttribute('y')) + Number(doc.querySelector('use')!.getAttribute('width'));
+		const [name, address] = [...doc.querySelectorAll('text')].slice(0, 2);
+		expect(name!.textContent).toBe(classic.name);
+		expect(address!.getAttribute('class')).toBe('address');
+		const nameY = Number(name!.getAttribute('y'));
+		const addressY = Number(address!.getAttribute('y'));
+		expect(nameY).toBeGreaterThan(pictureFoot);
+		expect(addressY).toBeGreaterThan(nameY);
+		// The ear base, where the cuts begin, is R = 40 mm under the template's top at y = 5.
+		expect(addressY).toBeLessThan(45);
+		// At 80 mm there is room for the full 8 pt and 6 pt.
+		expect(Number(name!.getAttribute('font-size'))).toBeCloseTo((8 * 25.4) / 72, 2);
+		expect(Number(address!.getAttribute('font-size'))).toBeCloseTo((6 * 25.4) / 72, 2);
+		// Nothing above the template any more.
+		expect(Math.min(...[...doc.querySelectorAll('text')].map((t) => Number(t.getAttribute('y'))))).toBeGreaterThan(5);
 	});
 });

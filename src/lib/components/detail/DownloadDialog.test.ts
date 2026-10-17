@@ -11,12 +11,19 @@ import DownloadDialog from './DownloadDialog.svelte';
 import type { HeartDesign } from '$lib/types/heart';
 import { trackHeartDownload, trackLaserDownload } from '$lib/analytics';
 import { downloadTemplatesPDF } from '$lib/pdf/template';
+import { prerenderHeartImages } from '$lib/pdf/heartRenderer';
 import { loadHeart } from '$lib/laser/testHearts';
 
 vi.mock('$lib/analytics', () => ({ trackHeartDownload: vi.fn(), trackLaserDownload: vi.fn() }));
 // The dialog imports the generator on the click, as the page did; jsPDF itself
 // is not wanted here, only what the dialog asks of it.
 vi.mock('$lib/pdf/template', () => ({ downloadTemplatesPDF: vi.fn(async () => {}) }));
+// jsdom has no canvas to draw the heart's picture in; the preview only needs
+// to be handed one, when the PDF's renderer has made it.
+const PICTURE = 'data:image/png;base64,iVBORw0KGgo=';
+vi.mock('$lib/pdf/heartRenderer', () => ({
+	prerenderHeartImages: vi.fn(async (designs: HeartDesign[]) => new Map(designs.map((d) => [d.id, PICTURE])))
+}));
 
 const cleanup: (() => void)[] = [];
 
@@ -43,6 +50,7 @@ beforeEach(() => {
 	vi.mocked(trackLaserDownload).mockClear();
 	vi.mocked(trackHeartDownload).mockClear();
 	vi.mocked(downloadTemplatesPDF).mockClear();
+	vi.mocked(prerenderHeartImages).mockClear();
 	vi.stubGlobal('localStorage', memoryStorage());
 	blobs = [];
 	downloads = [];
@@ -124,6 +132,38 @@ describe('DownloadDialog', () => {
 		// The first page: the heart's two folded templates.
 		expect(view.q('.preview-sheet svg')!.getAttribute('viewBox')).toBe('0 0 210 297');
 		expect(view.q('.preview-sheet')!.querySelectorAll('g.cut')).toHaveLength(2);
+	});
+
+	it('shows the real heart in the printer preview, as the PDF renders it', async () => {
+		let finish: (images: Map<string, string>) => void = () => {};
+		vi.mocked(prerenderHeartImages).mockImplementationOnce(
+			() => new Promise((resolve) => (finish = resolve))
+		);
+		const design = loadHeart('classic-3x3');
+		const view = await render(design);
+		const sheet = () => view.q('.preview-sheet')!;
+		// Rendering: nothing where the picture goes, not even a box.
+		expect(sheet().querySelectorAll('image, use, rect.thumb')).toHaveLength(0);
+		expect(sheet().querySelectorAll('rect')).toHaveLength(1);
+		// The name is in the ear already, where it will be with the picture.
+		expect(sheet().querySelector('text.label')!.textContent).toBe(design.name);
+
+		finish(new Map([[design.id, PICTURE]]));
+		await settle();
+		expect(prerenderHeartImages).toHaveBeenCalledTimes(1);
+		// The PDF's own size: 28 mm at 300 dpi.
+		expect(prerenderHeartImages).toHaveBeenCalledWith([design], 331);
+		expect(sheet().querySelector('image')!.getAttribute('href')).toBe(PICTURE);
+		expect(sheet().querySelectorAll('use.picture')).toHaveLength(2);
+
+		// Turned off: no picture in the preview either, and no new rendering.
+		view.q<HTMLInputElement>('[data-testid="download-preview-image"]')!.click();
+		await settle();
+		expect(sheet().querySelectorAll('image, use')).toHaveLength(0);
+		view.q<HTMLInputElement>('[data-testid="download-preview-image"]')!.click();
+		await settle();
+		expect(sheet().querySelectorAll('use.picture')).toHaveLength(2);
+		expect(prerenderHeartImages).toHaveBeenCalledTimes(1);
 	});
 
 	it('gives the folded height for print and the unfolded one for the laser', async () => {

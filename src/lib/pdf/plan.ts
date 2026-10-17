@@ -15,13 +15,7 @@ import { heartScale } from '$lib/laser/unfold';
 import { layoutSheet, type Placement, type SheetSize } from '$lib/laser/sheet';
 import { lobesShareTemplate } from '$lib/utils/symmetry';
 import { getTemplateData, type TemplateLobe } from '$lib/utils/templateSvg';
-
-/**
- * Above each template, the two lines the PDF has always printed there: the
- * heart's name (8 pt, baseline 4 mm down) and its address (6 pt, at 7 mm),
- * with 2 mm before the ear starts.
- */
-export const TEMPLATE_HEADER_MM = 9;
+import { layoutEar, picturePixels, type EarLayout, type MeasureText } from './earLayout';
 
 /**
  * Kept clear at the foot of every page for the site's name, so a template
@@ -45,6 +39,8 @@ export interface TemplatePiece {
 	/** The folded template: its width, and its height from the ear's top to the fold. */
 	widthMm: number;
 	heightMm: number;
+	/** The rounded end's radius: half the width. Its name and picture go inside it (./earLayout.ts). */
+	earRadiusMm: number;
 	stripWidthMm: number;
 }
 
@@ -67,6 +63,7 @@ export function templatePair(design: HeartDesign, widthMm: number): [TemplatePie
 			scale,
 			widthMm: data.templateWidth * scale,
 			heightMm: data.templateHeight * scale,
+			earRadiusMm: data.earRadius * scale,
 			stripWidthMm: (data.templateWidth * scale) / stripsAcross
 		};
 	};
@@ -107,21 +104,50 @@ export function templateAddress(design: HeartDesign): string {
 	return GALLERY_IDS.has(design.id) ? `${SITE_DOMAIN}/hjerte/${design.id}` : SITE_DOMAIN;
 }
 
+/**
+ * What goes inside this template's rounded end: the picture (when it is
+ * printed), the name and the address. The PDF passes jsPDF's own text
+ * measure; the preview makes do with an estimate.
+ */
+export function templateEar(
+	piece: TemplatePiece,
+	{ lang, picture, measure }: { lang: Language; picture: boolean; measure?: MeasureText }
+): EarLayout {
+	return layoutEar({
+		widthMm: piece.widthMm,
+		heightMm: piece.heightMm,
+		earRadiusMm: piece.earRadiusMm,
+		picture,
+		name: templateLabel(piece, lang),
+		address: templateAddress(piece.design),
+		measure
+	});
+}
+
+/**
+ * The pixel size the heart's picture is rendered at: one rendering per design,
+ * sharp enough for the largest template it is printed in. The dialog's preview
+ * asks for the same rendering, so what it shows is the PDF's picture.
+ */
+export function templatePicturePixels(pieces: readonly TemplatePiece[], lang: Language): number {
+	const sizes = pieces.map((p) => templateEar(p, { lang, picture: true }).picture?.size ?? 0);
+	return picturePixels(Math.max(0, ...sizes));
+}
+
 export interface TemplatePageOptions {
 	sheet: SheetSize;
 	gapMm?: number;
 	marginMm?: number;
-	headerMm?: number;
 	footerMm?: number;
 }
 
 export interface TemplatePagePlan {
 	sheet: SheetSize;
 	/**
-	 * Per page, where each piece's box goes: `index` into the pieces asked
-	 * for, `x`/`y` the box's top-left corner in mm. A box is the template's
-	 * width by its height plus the header; the template itself starts
-	 * `headerMm` below `y`.
+	 * Per page, where each template goes: `index` into the pieces asked for,
+	 * `x`/`y` its top-left corner (the top of the ear) in mm. The box is the
+	 * template itself: its name and address are printed inside its rounded end,
+	 * not above it, so nothing else needs room.
 	 */
 	pages: Placement[][];
 	/** False when one template is too big for an empty page: then there are no pages at all. */
@@ -135,9 +161,9 @@ export interface TemplatePagePlan {
  */
 export function planTemplatePages(
 	pieces: ReadonlyArray<{ widthMm: number; heightMm: number }>,
-	{ sheet, gapMm = 5, marginMm = 5, headerMm = TEMPLATE_HEADER_MM, footerMm = PAGE_FOOTER_MM }: TemplatePageOptions
+	{ sheet, gapMm = 5, marginMm = 5, footerMm = PAGE_FOOTER_MM }: TemplatePageOptions
 ): TemplatePagePlan {
-	const boxes = pieces.map((p) => ({ widthMm: p.widthMm, heightMm: p.heightMm + headerMm }));
+	const boxes = pieces.map((p) => ({ widthMm: p.widthMm, heightMm: p.heightMm }));
 	const area: SheetSize = { widthMm: sheet.widthMm, heightMm: sheet.heightMm - footerMm };
 	const pages: Placement[][] = [];
 	let start = 0;
