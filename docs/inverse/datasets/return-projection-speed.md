@@ -154,3 +154,66 @@ tests, both artwork browser flows and four browser smoke cases pass. The full
 inverse suite has not yet run for this revision. Its waiting queue was stopped
 before launch to investigate the repair-budget variation. The preview on port
 5232 remains the previous validated snapshot.
+
+## Completed suite and clearance scheduling follow-up
+
+The subsequent complete suite on runtime `0b67ca9` finishes with **1,042 passes
+and 14 failures**, in 1,657.81 seconds. All 1,037 source hashes match after the
+run. The [failure records and paired measurements](clearance-repair-budget.json)
+preserve the failures; this revision has not passed release QA. Some assertions
+stop at an expected search route, but others directly reject geometry, image
+error or a missing usable checkpoint. They cannot all be dismissed as test
+bookkeeping or machine load.
+
+The bounded topology-repair tail in `0b67ca9` separately passes its three
+deadline tests and both original-artwork browser workflows. The 30-second
+workflow has 1.3325% editable disagreement and takes 31.258 seconds from click
+to ready; the default request has 0.945% disagreement and takes 33.114 seconds.
+Its downloaded SVG matches the earlier best result byte for byte. These
+successes do not resolve the full-suite failures or the Hunodan speed misses.
+
+Two counterbalanced, serial replays isolate the stacked-heart failure:
+
+| Runtime | Resampled mask, first / second run | Original mask, first / second run |
+| --- | --- | --- |
+| Earlier `e91fd81` | Pass: 1.8025% / 1.9850% | Pass: 1.4206% / 1.2156% |
+| Current `0b67ca9` | Fail: 3.4219% / 3.7144% | Pass: 1.5913% / 1.4375% |
+
+These percentages are engine-reported original-mask disagreement. Passing
+tests also require independent exported rendering below 3%, retained features
+and the unchanged geometry/paper gates. Both versions use the same masks,
+settings and tests through the same frozen-module loader. Both select the
+WebAssembly boundary kernel. Their initial fine-grid counts, phases and errors
+match. One failed run never compares the better clearance layout; the other
+reaches it but rejects repair for insufficient time. This identifies a
+scheduling cliff, not a demonstrated numerical change or a proof that the
+scalar evaluator causes the end-to-end slowdown.
+
+The correction lets a clearance comparison start with 2.5 seconds
+left instead of three. When no acceptable candidate exists, its repair can
+use the polishing window. The repair retains its 1.2-second refinement-window cap and the
+enclosing deadline; the separate export reserve and all acceptance gates stay
+unchanged. Reserving polishing time for an unusable layout must not prevent
+repairing the alternative that can become usable.
+
+A fresh regression advances the global clock at the first clearance stage,
+modelling late initialization without sleeping or supplying saved cuts. The
+previous runtime skips comparison and returns a failed 3.3256% fit. The proposed
+change continues the repaired layout and returns a checked 1.9019% fit, with
+independent 400/800-pixel rendering, feature retention and unchanged inputs.
+These are scheduling checks, not a new browser speed benchmark.
+
+The first focused run passes both ordinary stacked masks and the Viking, but
+the existing delayed-handoff test fails to reach its injected delay. Its
+captured replay passes with 1.9119% disagreement. Both outcomes are retained;
+timing sensitivity is not solved universally. Type checking, lint, build and all 874 application tests pass (one existing
+skip). The larger focused set passes 18 of 19 tests; the delayed-handoff test
+still fails. This time its spacing repair reaches legal geometry and retains
+the features at 3.6875% error, but the continuation gate discards it before
+paper verification because only feature-recovery calls may continue above the
+final image limit. That separate handoff issue remains to be fixed and checked.
+The new delayed-comparison regression passes with independently rendered
+disagreement of 1.9175% at 400 pixels and 2.0678% at 800 pixels. All 1,038 pinned
+source files remain unchanged throughout these checks. The remaining full-suite
+failures and Hunodan speed comparison still need investigation. Port 5232
+remains the previous validated snapshot.

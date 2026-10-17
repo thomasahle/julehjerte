@@ -652,7 +652,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     // Weak-region starts already retain every source feature. Like ordinary
     // grids, their apparent improvement can disappear under the strip-width
     // constraint; compare the retained ordinary finalist before committing.
-    if(i===0&&!clearanceComparison&&!weights&&!symmetryRequested&&(!featureSeed(selected)||earlyFeatureInitialization?.trigger==='weak-region')&&deadline-performance.now()>3000){
+    if(i===0&&!clearanceComparison&&!weights&&!symmetryRequested&&(!featureSeed(selected)||earlyFeatureInitialization?.trigger==='weak-region')&&deadline-performance.now()>2500){
       const retry=clearanceComparisonSeed(fine.slice(i+1).filter(r=>!featureSeed(r)),selected,clear);
       if(retry){
         const at=performance.now(),alternate=prepareRefinement(retry,deadline-at);
@@ -682,7 +682,11 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
         // Keep every finalist. A verified improvement can continue refining
         // before meeting the final image limit; it is not an accepted result.
         if((competitive&&!geometry.passed||recoverFeatures)&&clear.error>cfg.maxImageError&&!candidates.some(c=>c.imagePassed)){
-          repair=stage('directRefining',()=>repairClearanceInitializer(alternate,input,alternate.refinementCfg,{geometry,recoverFeatures,deadline,workDeadline:deadline-1700,onProgress:(r,s)=>onProgress({stage:'directRefining',detail:'clearance-initializer',counts:alternate.clear.model.counts,...r},s)}));
+          // There is no acceptable candidate to polish yet. Let this bounded
+          // repair use that window instead of rejecting a useful alternative
+          // just after its clearance check. The repair still caps itself at
+          // 1.2 seconds; the enclosing deadline retains the export reserve.
+          repair=stage('directRefining',()=>repairClearanceInitializer(alternate,input,alternate.refinementCfg,{geometry,recoverFeatures,deadline,onProgress:(r,s)=>onProgress({stage:'directRefining',detail:'clearance-initializer',counts:alternate.clear.model.counts,...r},s)}));
           const repaired=repair.candidate||repair.continuation;
           if(repaired){
             addCandidate(repaired);
