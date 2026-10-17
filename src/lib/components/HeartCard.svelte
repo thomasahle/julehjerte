@@ -52,6 +52,11 @@
 		onDelete?: (heart: GalleryHeart) => void;
 		/** Position in its category grid — drives the ribbon length and the sway. */
 		index?: number;
+		/**
+		 * Extra `margin-top` in px: the front page's first row steps down along
+		 * the hero's hill line (docs/redesign/GALLERY-CURVE.md).
+		 */
+		drop?: number;
 	}
 
 	let {
@@ -63,7 +68,8 @@
 		onSelect,
 		onClick,
 		onDelete,
-		index = 0
+		index = 0,
+		drop = 0
 	}: Props = $props();
 
 	/** Heart width in px; the card is this plus 120px for the ribbon slack, name and difficulty. */
@@ -97,6 +103,7 @@
 	data-heart-name={heart.name}
 	data-user={heart.isUserCreated ? '' : undefined}
 	style="height: {SIZE + 120}px;"
+	style:margin-top={drop ? `${drop}px` : undefined}
 >
 	<a class="card-link" {href} onclick={handleOpen} aria-label={heart.name}></a>
 

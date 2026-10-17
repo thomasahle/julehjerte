@@ -20,6 +20,10 @@
     .scene-land      the landscape's wrapper
     .scene-land-svg  the landscape <svg>
 
+  `[data-scene-land] > svg` finds the drawing from outside (the front page's
+  gallery measures its rect to follow the hill line, $lib/front/hillLine);
+  the classes above are scoped and are not for that.
+
   Pass `band` to get the front page's variant: below 900px the landscape leaves
   the absolute layer and becomes an in-flow strip that many pixels tall, showing
   the right-hand part of the drawing. A banded scene is a column flex box at
@@ -47,7 +51,7 @@
 	style:--scene-land-aspect="{LANDSCAPE_WIDTH} / {LANDSCAPE_HEIGHT}"
 	style:--scene-band-height={band === null ? null : `${band}px`}
 >
-	<div class="scene-land"><Landscape class="scene-land-svg" /></div>
+	<div class="scene-land" data-scene-land><Landscape class="scene-land-svg" /></div>
 	{@render children()}
 </section>
 

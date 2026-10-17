@@ -11,6 +11,12 @@
   click opens the heart's page), so a visitor who never ticks anything never
   sees a disabled download button asking them to. The bar only reports what
   was clicked; the selection itself and the PDF generation stay on the page.
+
+  On the desktop layout, until the bar sticks, the chips are right-aligned and
+  each steps down onto the hero's hill line (docs/redesign/GALLERY-CURVE.md):
+  the gallery measures the curve and hands each chip its `--lift`, a
+  transform, so the bar's own height never changes. Stuck, they go back to
+  flat and left-aligned next to the wordmark.
 -->
 <script lang="ts">
 	import { onMount } from 'svelte';
@@ -52,6 +58,11 @@
 		 * bar is taller while the selection controls show (two rows on a phone).
 		 */
 		height?: number;
+		/**
+		 * How far down each chip steps, in px, in chip order, while the bar is
+		 * not stuck (desktop only; measured by the gallery). Empty: flat.
+		 */
+		lifts?: readonly number[];
 		onPrint: () => void;
 		onSelectAll: () => void;
 		onSelectNone: () => void;
@@ -66,12 +77,18 @@
 		allSelected,
 		pdfLayout = $bindable(),
 		height = $bindable(0),
+		lifts = [],
 		onPrint,
 		onSelectAll,
 		onSelectNone
 	}: Props = $props();
 
 	let hasSelection = $derived(selectedCount > 0);
+
+	// The chips' row is a scroller (overflow-x), so a chip stepped down out of
+	// it would be clipped: the row gets that much room underneath, which its
+	// negative margin takes back out of the bar's layout.
+	let liftRoom = $derived(Math.max(0, ...lifts));
 
 	// One chip per section that has hearts, in page order, so every chip leads
 	// somewhere; "Mine hjerter" only once the visitor has drawn any — its
@@ -210,11 +227,18 @@
 		{t('siteWordmark', lang)}
 	</a>
 
-	<nav class="chips" aria-label={t('galleryCategories', lang)} bind:this={chipRow}>
+	<nav
+		class="chips"
+		aria-label={t('galleryCategories', lang)}
+		bind:this={chipRow}
+		data-hill-chips
+		style:--lift-room={liftRoom > 0 ? `${liftRoom}px` : undefined}
+	>
 		{#each sections as section, i (section.id)}
 			<a
 				class="chip"
 				href="#{section.id}"
+				style:--lift={lifts[i] ? `${lifts[i]}px` : undefined}
 				aria-current={i === activeIndex ? 'true' : undefined}
 				onclick={smoothJump}
 			>
@@ -396,6 +420,56 @@
 	.chip[aria-current='true'] .chip-count {
 		color: inherit;
 		opacity: 0.75;
+	}
+
+	/* The desktop layout's unstuck bar lies over the hero's snow, with the
+	   first row of hearts starting right behind it: it lets clicks through to
+	   them everywhere but on its own controls. The chips are right-aligned by a
+	   spacer that grows, rather than by justify-content, so that sticking can
+	   slide them back to the left; the spacer's -8px eats the row's gap. */
+	@media (min-width: 900px) {
+		.gallery-bar:not(.stuck),
+		.chips {
+			pointer-events: none;
+		}
+
+		.chip,
+		.selection {
+			pointer-events: auto;
+		}
+
+		.chips {
+			padding-bottom: calc(5px + var(--lift-room, 0px));
+			margin-bottom: calc(-5px - var(--lift-room, 0px));
+		}
+
+		.chips::before {
+			content: '';
+			flex: 1 0 0;
+			margin-right: -8px;
+		}
+
+		.stuck .chips::before {
+			flex-grow: 0;
+		}
+
+		.chip {
+			transform: translateY(var(--lift, 0px));
+		}
+
+		.stuck .chip {
+			transform: none;
+		}
+	}
+
+	@media (min-width: 900px) and (prefers-reduced-motion: no-preference) {
+		.chips::before {
+			transition: flex-grow 150ms ease;
+		}
+
+		.chip {
+			transition: transform 150ms ease;
+		}
 	}
 
 	.selection {

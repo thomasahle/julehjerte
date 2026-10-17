@@ -145,13 +145,19 @@ paper through the `--paper-left` / `--paper-right` tokens instead; the ribbon st
 follows the colour store as before.
 
 ### Gallery
-`main.gallery` max-width 1280, padding `24px 40px 56px` (→ `16px 24px 40px` < 900, `16px 16px 32px` < 600),
+`main.gallery` max-width 1280, padding `0 40px 56px` (→ `16px 24px 40px` < 900, `16px 16px 32px` < 600),
 `id="skabeloner"`. The "Skabeloner" heading is visually hidden (kept for the nav anchor and screen readers); the gallery starts with its first category. **No help text.**
 
-The gallery starts under the hero's drawing, not in it: `.gallery-wrap` has no negative top margin any more
-(the pull-up existed for the old "Skabeloner" heading; without it the gallery bar's chips sat astride the
-snow hill's edge, 2026-10-17). `z-index: 1` stays so the gallery frame paints over the scene. Below 900 the
-landscape is an in-flow band, with the scroll hint on it.
+The gallery follows the hill line (docs/redesign/GALLERY-CURVE.md, owner's decision 2026-10-17, design
+variant "E"). From 900 up `.gallery-wrap` is pulled up so the gallery's top — the bar's top — sits on
+`hillTop`, the highest point of the drawing's `snow-field` top edge inside the content column; the first
+category's first row starts 6px under it (behind the transparent bar) and each of its cards steps down to the
+hill under its own centre, 54px more under the chips. Unstuck, the chips are right-aligned and each is
+translated onto the curve; stuck, they slide back flat to the left. The geometry is `$lib/front/hillLine`;
+`Gallery.svelte` measures (`[data-scene-land] > svg`, on mount and with a ResizeObserver) and hands the bar its
+chip lifts and the first section its card drops. Before hydration the wrap's margin is the 1440 estimate
+`-100vw * 226 / 2172` and the row is flat. `z-index: 1` stays so the gallery paints over the scene. Below 900
+none of this applies: the landscape is an in-flow band, with the scroll hint on it.
 
 Gallery bar (`front/GalleryBar.svelte`, docs/redesign/GALLERY-BAR.md; it replaced the toolbar, 2026-10-17):
 sticky top 0, z-index 5, one row (`display: flex; align-items: center; gap: 12px`, padding 10px 0, 8px below
@@ -184,16 +190,19 @@ A chip is a plain anchor (keyboard accessible, the URL hash updates, `?selected=
 bar puts `smooth-anchors` on `<html>`, which app.css turns into `scroll-behavior: smooth` under
 `prefers-reduced-motion: no-preference`; it is not site-wide, because on `<html>` it would also animate
 SvelteKit's scroll resets and restorations. Sections get `scroll-margin-top: calc(var(--gallery-bar-height) +
-8px)`, the variable set on the gallery from the bar's measured height (49px before hydration), so a heading lands
+8px)`, the variable set on the gallery from the bar's measured height (49px before hydration), so a row lands
 just under the bar; the sections space themselves with `margin-top` rather than `padding-top`, so their box —
-what the anchor lands on and the spy measures — starts at the heading.
+what the anchor lands on and the spy measures — starts at the row.
 
 The three-step strip (print / cut / weave links to the guide) that used to sit at the right end is gone
 (owner's decision, 2026-10-17; the steps live on the guide page). The "Foreslå et hjerte" link is not in the bar
 (it lives on the Om page).
 
-Category section: heading row = uppercase 15px/600 `--green` letter-spacing .06em (the counts are on the
-bar's chips); padding-bottom 4, margin-bottom 10; **no rule under it**; section ids `klassiske`, `stjerner`,
+Category section: **no visible heading** (GALLERY-CURVE.md) — the title is an `sr-only` `<h3>`, the chips
+name the rows and carry the counts; sections are `margin-top: 28px` apart (32 below 600), the grid's own
+row-gap, and the grid is `align-items: start` so a stepped-down first-row card does not stretch its row.
+"Mine hjerter" keeps its visible heading row (uppercase 15px/600 `--green`, letter-spacing .06em,
+padding-bottom 4, margin-bottom 10, no rule under it). Section ids `klassiske`, `stjerner`,
 `moenstre`, `figurer`, `hjerter` (anchors used by the detail page). Grid
 `repeat(auto-fill, minmax(196px, 1fr))`, column-gap 24, row-gap 40 (2 columns, gaps 14/32 below 600).
 
