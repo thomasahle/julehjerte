@@ -118,3 +118,32 @@ third replay and ESLint pass. No solver source changed during these checks,
 and all 845 pinned source hashes still match. Browser screenshot review covers
 the hat, star, Viking and gold angel: their main motifs survive, while the hat
 retains small edge nicks and the Viking has frame seams and uneven details.
+
+## Scalar cubic evaluation follow-up (`b73b7f4`)
+
+The shared editor/worker cubic evaluator now avoids temporary axis arrays and
+callbacks while retaining arithmetic order. A paired, fixed-work projection of
+one captured rejected routing takes 28.6% less time at the median and returns
+identical coordinates. This is a local benchmark, not a whole-pipeline speedup.
+The [measurements](return-arithmetic-speed.json) retain both favourable and
+unfavourable browser outcomes.
+
+For the original Art e Sta artwork, the 30-second browser request improves from
+2.14% to 0.945% editable disagreement; its SVG is byte-identical to the earlier
+default-budget result. The new default-budget replay instead reaches 1.16125%.
+Its routing leaves only 2.287 seconds for repair, versus 4.144 seconds in the
+better run. Both start with the same trace and initial refinement checkpoints;
+the shorter repair performs 45 steps instead of 160. Repair and routing still
+compete for one phase deadline, even when the overall request has time left.
+
+All 22 regular Hunodan browser workflows pass, but only 13 finish within ten
+seconds in this run (median 9.607 seconds, maximum 20.626). Four errors increase
+slightly. Every source-mask hash matches the previous comparison. Other busy
+system processes and browser jobs were observed during this low-priority run;
+that is a confounder, not an attribution of every difference to machine load.
+
+Type checking, lint, build, 874 application tests (one skip), 31 focused inverse
+tests, both artwork browser flows and four browser smoke cases pass. The full
+inverse suite has not yet run for this revision. Its waiting queue was stopped
+before launch to investigate the repair-budget variation. The preview on port
+5232 remains the previous validated snapshot.

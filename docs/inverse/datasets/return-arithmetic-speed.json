@@ -1,0 +1,418 @@
+{
+  "runtimeRevision": "b73b7f4",
+  "baselineRuntime": "e91fd81 (runtime unchanged from 6941e0b)",
+  "change": "Avoid temporary axis arrays and callbacks in shared cubic evaluations; retain arithmetic order and geometry rules.",
+  "projection": {
+    "scope": "One captured rejected routing, fixed 128-iteration maximum, no time cutoff. Paired serial fresh Node processes; this is not an end-to-end speed measurement.",
+    "runs": [
+      {
+        "label": "baseline1",
+        "seconds": 1.987328625,
+        "report": {
+          "fullGeometryAudits": 1,
+          "returnConstraintAudits": 16,
+          "attempted": true,
+          "iterations": 16,
+          "displacements": 114,
+          "initialReturns": 18,
+          "finalReturns": 0,
+          "accepted": true,
+          "termination": "validated",
+          "policy": "all-free-controls",
+          "maxIterations": 128,
+          "maxMilliseconds": null,
+          "preservedSymmetry": [],
+          "clearanceMargin": 3.2678471206992734,
+          "linearHandles": 134
+        }
+      },
+      {
+        "label": "scalar1",
+        "seconds": 1.3956491249999998,
+        "report": {
+          "fullGeometryAudits": 1,
+          "returnConstraintAudits": 16,
+          "attempted": true,
+          "iterations": 16,
+          "displacements": 114,
+          "initialReturns": 18,
+          "finalReturns": 0,
+          "accepted": true,
+          "termination": "validated",
+          "policy": "all-free-controls",
+          "maxIterations": 128,
+          "maxMilliseconds": null,
+          "preservedSymmetry": [],
+          "clearanceMargin": 3.2678471206992734,
+          "linearHandles": 134
+        }
+      },
+      {
+        "label": "scalar2",
+        "seconds": 1.261897834,
+        "report": {
+          "fullGeometryAudits": 1,
+          "returnConstraintAudits": 16,
+          "attempted": true,
+          "iterations": 16,
+          "displacements": 114,
+          "initialReturns": 18,
+          "finalReturns": 0,
+          "accepted": true,
+          "termination": "validated",
+          "policy": "all-free-controls",
+          "maxIterations": 128,
+          "maxMilliseconds": null,
+          "preservedSymmetry": [],
+          "clearanceMargin": 3.2678471206992734,
+          "linearHandles": 134
+        }
+      },
+      {
+        "label": "baseline2",
+        "seconds": 1.733582166,
+        "report": {
+          "fullGeometryAudits": 1,
+          "returnConstraintAudits": 16,
+          "attempted": true,
+          "iterations": 16,
+          "displacements": 114,
+          "initialReturns": 18,
+          "finalReturns": 0,
+          "accepted": true,
+          "termination": "validated",
+          "policy": "all-free-controls",
+          "maxIterations": 128,
+          "maxMilliseconds": null,
+          "preservedSymmetry": [],
+          "clearanceMargin": 3.2678471206992734,
+          "linearHandles": 134
+        }
+      }
+    ],
+    "allCoordinatesIdentical": true,
+    "baselineMedianSeconds": 1.8604553954999998,
+    "scalarMedianSeconds": 1.3287734795,
+    "medianReductionFraction": 0.2857805230300131,
+    "proposalSha256": "6c0cf1667fcd9776d7358c00d59d79ac59d5a5d91323f0c42fd81685f7afd8ec",
+    "coordinatesSha256": "abe6e90b576e267dff10d7877127564cb401eb0e2eee335d0d4b7d47741400c1"
+  },
+  "artwork": {
+    "baseline30": {
+      "artifacts": "tmp/heart-learning/curved-mask-2026-10-17/browser-artesta-precise",
+      "resultSha256": "8b8eb86b660d23ec5a8aa7526a176daf35485192b76f262e1a72e01e11395b6d",
+      "svgSha256": "930d9223647482792b9d90e1d9d5df8b9d159e8c676dbafb2c8d99d6c3a77d61",
+      "status": "failed",
+      "editableError": 0.0214,
+      "engineError": 0.0209125,
+      "seconds": 30.06539999985695,
+      "requestedSeconds": 30,
+      "maskSha256": "d48ec1c8dda844bcfc338fad386313f3691175e7a6aeeb20cc0fc826e539fb7f",
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "repair": [
+        {
+          "steps": 5,
+          "seconds": 3.739,
+          "imageError": 0.0217
+        }
+      ]
+    },
+    "current30": {
+      "artifacts": "tmp/heart-learning/repair-budget-2026-10-17/qa-followup/browser-artesta-30",
+      "resultSha256": "bc590169ed9a58bc52ca9adfc0c58a2e7d5f21e6756f47e01a9ef32dbb0e9ebc",
+      "svgSha256": "524c5b0b61302ab48771932854c798b5a5b52d9eb536cdc415e991767806e777",
+      "status": "workflow-passed",
+      "editableError": 0.00945,
+      "engineError": 0.0088375,
+      "seconds": 30.310800000190735,
+      "requestedSeconds": 30,
+      "maskSha256": "d48ec1c8dda844bcfc338fad386313f3691175e7a6aeeb20cc0fc826e539fb7f",
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "repair": [
+        {
+          "steps": 160,
+          "seconds": 4.144200000047683,
+          "imageError": 0.0090625
+        }
+      ]
+    },
+    "baselineDefault": {
+      "artifacts": "tmp/heart-learning/curved-mask-2026-10-17/browser-artesta-committed",
+      "resultSha256": "0d053df706323cbba4460c782806196cba51048b9c5d33c4c138329cea4a024e",
+      "svgSha256": "524c5b0b61302ab48771932854c798b5a5b52d9eb536cdc415e991767806e777",
+      "status": "workflow-passed",
+      "editableError": 0.00945,
+      "engineError": 0.0088375,
+      "seconds": 30.669,
+      "requestedSeconds": 180,
+      "maskSha256": "d48ec1c8dda844bcfc338fad386313f3691175e7a6aeeb20cc0fc826e539fb7f",
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "repair": [
+        {
+          "steps": 125,
+          "seconds": 4.541299999952316,
+          "imageError": 0.0090625
+        }
+      ]
+    },
+    "currentDefault": {
+      "artifacts": "tmp/heart-learning/repair-budget-2026-10-17/qa-followup/browser-artesta-default",
+      "resultSha256": "9f610e7569b113893d08d89097e4920a3ce33033c1e08634c2cb9c3a1d978f55",
+      "svgSha256": "e96a983518cb78d54c28aba2133c42557fc47c66edd06d38f759619664f0c1b0",
+      "status": "workflow-passed",
+      "editableError": 0.0116125,
+      "engineError": 0.011075,
+      "seconds": 32.84630000019074,
+      "requestedSeconds": 180,
+      "maskSha256": "d48ec1c8dda844bcfc338fad386313f3691175e7a6aeeb20cc0fc826e539fb7f",
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "repair": [
+        {
+          "steps": 45,
+          "seconds": 2.287,
+          "imageError": 0.02133125
+        }
+      ]
+    },
+    "interpretation": "Identical source pixels and early repair checkpoints. The slower routing run leaves less of the same phase budget for repair. These timed single runs do not establish a general quality or latency improvement."
+  },
+  "hunodan": {
+    "scope": "22 regular designs, complete actual Chrome workflows and exported SVG checks; same masks as prior browser run.",
+    "cases": [
+      {
+        "name": "hunodan-hjfig-01",
+        "passed": true,
+        "sameMask": true,
+        "oldSeconds": 4.171300000190735,
+        "seconds": 6.5815,
+        "oldError": 0.0112625,
+        "error": 0.0112625
+      },
+      {
+        "name": "hunodan-hjfig-02",
+        "passed": true,
+        "sameMask": true,
+        "oldSeconds": 3.825800000190735,
+        "seconds": 8.42060000014305,
+        "oldError": 0.00548125,
+        "error": 0.00548125
+      },
+      {
+        "name": "hunodan-hjfig-03",
+        "passed": true,
+        "sameMask": true,
+        "oldSeconds": 4.323599999904633,
+        "seconds": 8.460900000095368,
+        "oldError": 0.00825,
+        "error": 0.00825
+      },
+      {
+        "name": "hunodan-hjfig-04",
+        "passed": true,
+        "sameMask": true,
+        "oldSeconds": 4.664,
+        "seconds": 9.308299999952316,
+        "oldError": 0.01473125,
+        "error": 0.01473125
+      },
+      {
+        "name": "hunodan-hjfig-05",
+        "passed": true,
+        "sameMask": true,
+        "oldSeconds": 5.932400000095368,
+        "seconds": 9.635299999952316,
+        "oldError": 0.01015625,
+        "error": 0.01008125
+      },
+      {
+        "name": "hunodan-hjfla-01",
+        "passed": true,
+        "sameMask": true,
+        "oldSeconds": 6.467,
+        "seconds": 15.469599999904633,
+        "oldError": 0.0093375,
+        "error": 0.01024375
+      },
+      {
+        "name": "hunodan-hjcur-01",
+        "passed": true,
+        "sameMask": true,
+        "oldSeconds": 5.8085,
+        "seconds": 11.801799999952316,
+        "oldError": 0.00723125,
+        "error": 0.00723125
+      },
+      {
+        "name": "hunodan-hjcur-02",
+        "passed": true,
+        "sameMask": true,
+        "oldSeconds": 6.970799999952316,
+        "seconds": 20.626,
+        "oldError": 0.00829375,
+        "error": 0.00861875
+      },
+      {
+        "name": "hunodan-hjcur-03",
+        "passed": true,
+        "sameMask": true,
+        "oldSeconds": 5.489300000190735,
+        "seconds": 9.701200000047685,
+        "oldError": 0.0086375,
+        "error": 0.0086375
+      },
+      {
+        "name": "hunodan-hjcur-04",
+        "passed": true,
+        "sameMask": true,
+        "oldSeconds": 7.872200000047684,
+        "seconds": 11.621299999952317,
+        "oldError": 0.0104,
+        "error": 0.0104
+      },
+      {
+        "name": "hunodan-hjcur-05",
+        "passed": true,
+        "sameMask": true,
+        "oldSeconds": 4.3589000000953675,
+        "seconds": 5.7765,
+        "oldError": 0.0110375,
+        "error": 0.0110375
+      },
+      {
+        "name": "hunodan-hjhih-01",
+        "passed": true,
+        "sameMask": true,
+        "oldSeconds": 6.769299999952317,
+        "seconds": 16.123299999952316,
+        "oldError": 0.00824375,
+        "error": 0.00824375
+      },
+      {
+        "name": "hunodan-hjhih-02",
+        "passed": true,
+        "sameMask": true,
+        "oldSeconds": 5.607900000095367,
+        "seconds": 8.201899999856948,
+        "oldError": 0.00619375,
+        "error": 0.00619375
+      },
+      {
+        "name": "hunodan-hjhih-04",
+        "passed": true,
+        "sameMask": true,
+        "oldSeconds": 7.770300000190735,
+        "seconds": 12.617400000095367,
+        "oldError": 0.01061875,
+        "error": 0.0110125
+      },
+      {
+        "name": "hunodan-hjstr-01",
+        "passed": true,
+        "sameMask": true,
+        "oldSeconds": 5.102600000143051,
+        "seconds": 6.810599999904633,
+        "oldError": 0.01006875,
+        "error": 0.01006875
+      },
+      {
+        "name": "hunodan-hjstr-02",
+        "passed": true,
+        "sameMask": true,
+        "oldSeconds": 6.640199999809266,
+        "seconds": 9.578,
+        "oldError": 0.0044,
+        "error": 0.0044
+      },
+      {
+        "name": "hunodan-hjstr-03",
+        "passed": true,
+        "sameMask": true,
+        "oldSeconds": 8.807300000190734,
+        "seconds": 12.437900000095368,
+        "oldError": 0.00808125,
+        "error": 0.00831875
+      },
+      {
+        "name": "hunodan-hjsta-01",
+        "passed": true,
+        "sameMask": true,
+        "oldSeconds": 6.066799999952316,
+        "seconds": 8.095700000047684,
+        "oldError": 0.009175,
+        "error": 0.009175
+      },
+      {
+        "name": "hunodan-hjsta-02",
+        "passed": true,
+        "sameMask": true,
+        "oldSeconds": 4.483,
+        "seconds": 5.000799999952316,
+        "oldError": 0.00216875,
+        "error": 0.00216875
+      },
+      {
+        "name": "hunodan-hjsta-03",
+        "passed": true,
+        "sameMask": true,
+        "oldSeconds": 8.499400000095367,
+        "seconds": 12.088799999952316,
+        "oldError": 0.01418125,
+        "error": 0.01418125
+      },
+      {
+        "name": "hunodan-hjsta-04",
+        "passed": true,
+        "sameMask": true,
+        "oldSeconds": 7.3362000000476835,
+        "seconds": 8.650200000047684,
+        "oldError": 0.0063625,
+        "error": 0.0063625
+      },
+      {
+        "name": "hunodan-hjsta-05",
+        "passed": true,
+        "sameMask": true,
+        "oldSeconds": 6.713299999952317,
+        "seconds": 10.043700000047684,
+        "oldError": 0.01328125,
+        "error": 0.01328125
+      }
+    ],
+    "functionalPasses": 22,
+    "withinTenSeconds": 13,
+    "medianSeconds": 9.606649999976158,
+    "maximumSeconds": 20.626,
+    "errorRegressions": 4,
+    "interpretation": "The previous all-within-ten-seconds result was not reproduced. Other CPU-heavy system processes and browser jobs were observed during this low-priority run. Load is a confounder, not proof of the cause of every difference."
+  },
+  "checks": {
+    "applicationPassed": 874,
+    "applicationSkipped": 1,
+    "focusedInversePassed": 31,
+    "typecheck": "passed",
+    "lint": "passed",
+    "build": "passed",
+    "artworkBrowserPassed": 2,
+    "smokeBrowserPassed": 4,
+    "hunodanBrowserPassed": 22,
+    "fullInverse": "not started; waiting queue stopped before launch to investigate the newly observed repair-budget sensitivity",
+    "sourceManifest": {
+      "path": "tmp/heart-learning/repair-budget-2026-10-17/qa-followup/source.json",
+      "sha256": "f4749ca6969f3a374d53b411e260895d2f0c1d0d13357a557b5ad216025cb4b9"
+    },
+    "browserManifest": {
+      "path": "tmp/heart-learning/repair-budget-2026-10-17/qa-followup/browser-source.json",
+      "sha256": "ba80cd33d2232b01688fa18807d853c3ab2b5a979af132d450559fec3271be29"
+    }
+  },
+  "resources": {
+    "priority": 15,
+    "heavyJobs": "serial",
+    "numericalThreads": 1,
+    "preview": "Port 5232 remains the previous validated runtime snapshot."
+  }
+}
