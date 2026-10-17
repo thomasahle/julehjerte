@@ -1,0 +1,31 @@
+{
+  "status": "captured_failure_while_full_suite_remains_live",
+  "runtime": "6efe473",
+  "sourceCapture": "tmp/heart-learning/clearance-continuation-2026-10-18/loss-row-index/scoped-qa/live-failure-captures/corner-regions.json",
+  "sourceSha256": "c589de4676b2a6d7a4a1fa8b4470058adf2fed3fc872e98494abbda83962edf2",
+  "test": "a fully observed mask refines or replaces corner routing without opening its enclosed regions",
+  "returnedEngineError": 0.01799375,
+  "returnedGeometryPassed": true,
+  "returnedPaperStatus": "pass",
+  "comparisonSelected": false,
+  "discardedRepair": {
+    "accepted": false,
+    "budgetSeconds": 2.611247833000001,
+    "imageError": 0.01413125,
+    "reason": "deadline",
+    "seconds": 2.6331586250000036,
+    "steps": 85,
+    "projectionSeconds": 0.710307458000003,
+    "refinementSeconds": 1.7688825829999988
+  },
+  "discardedGeometryPassed": true,
+  "discardedFeaturesPassed": true,
+  "discardedPaperStatus": "pass",
+  "overrunMilliseconds": 21.910792000002566,
+  "sourceCode": "static/inverse/core/direct/rejected-routing.js",
+  "finding": "A separately projected and refined routing passed all existing geometry, source-image, feature and paper checks, but the final deadline guard discarded it after the checks ended 21.91ms late. No independent export geometry of this discarded candidate was saved; its logged checks are evidence, not an independent export certification.",
+  "nextExperiment": "After the current full suite is terminal, retain a fully checked candidate whose final audit finishes after the deadline; still reject expired admission, do not start more refinement/audits after expiry, keep every existing geometry/image/feature/paper gate. Reproduce with controlled virtual audit completion time and actual paper audits, then fresh curve-photo replay.",
+  "browser": "Prepared browser comparison must not start while full suite fails.",
+  "evidenceSummarySha256": "305073764d40240dbcbced3e232274d59cd979d1a472994978e78447634345d4",
+  "verificationScope": "Logged repair geometry, image, feature and paper results; discarded cut coordinates were not captured. Full suite remains live; no independent rendering or runtime fix yet."
+}
