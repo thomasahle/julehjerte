@@ -383,6 +383,10 @@
 		/* Room for the chips' focus ring, which overflow would otherwise clip. */
 		padding: 5px;
 		margin: -5px;
+		/* The snap area starts inside that room, so the first chip snaps to
+		   its rest place (scrollLeft 0, in line with the cards) rather than to
+		   the padding edge, 5px further left with its focus ring cut off. */
+		scroll-padding-inline: 5px;
 	}
 
 	.chips::-webkit-scrollbar {
