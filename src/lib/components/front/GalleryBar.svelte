@@ -41,8 +41,7 @@
 		selectedCount: number;
 		/**
 		 * The bar's height in px, bound by the gallery for the sections'
-		 * `scroll-margin-top`: a chip's anchor has to land under the bar, and on
-		 * a phone the bar takes a second row while the button shows.
+		 * `scroll-margin-top`: a chip's anchor has to land under the bar.
 		 */
 		height?: number;
 		/**
@@ -529,16 +528,24 @@
 		background: rgb(255 255 255 / 0.22);
 	}
 
-	/* A phone: the row wraps (when nothing is ticked the chips simply scroll). */
+	/* A phone: still one row (GALLERY-BAR.md), the wordmark (once stuck) and
+	   the chip row side by side, the chips scrolling beside it. It never
+	   wraps: the chip row's content is wider than the screen, so a wrapping
+	   bar always put it on a second row under the wordmark, empty at rest,
+	   and made the bar 70px tall. The padding stays 10px, so the bar is the
+	   desktop's 49-50px and a chip jump lands 8px under it there too. */
 	@media (max-width: 699px) {
 		.gallery-bar {
-			flex-wrap: wrap;
 			gap: 8px;
-			padding: 8px 0;
 		}
 
 		.wordmark {
 			font-size: 16px;
+			margin-right: -8px;
+		}
+
+		.stuck .wordmark {
+			margin-right: 0;
 		}
 	}
 </style>
