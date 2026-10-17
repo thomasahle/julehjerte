@@ -380,6 +380,12 @@
 		/* Room for the chips' focus ring, which overflow would otherwise clip. */
 		padding: 5px;
 		margin: -5px;
+		/* The snap area starts inside that padding too. Without this the first
+		   chip's snap position is 5px in, so the row snapped from 0 to 5px at its
+		   first layout: the chips sat 5px left of the column on a phone, and the
+		   scroll event, fired before the first paint, made Chrome stop looking for
+		   the page's largest contentful paint — the front page reported none. */
+		scroll-padding-inline: 5px;
 	}
 
 	.chips::-webkit-scrollbar {
