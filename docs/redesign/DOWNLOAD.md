@@ -133,3 +133,39 @@ DESIGN.md §8 applies: static prerendered site, both languages, `npm run check`,
 (`front-simplify`) in clear commits, **never push**, work only in this
 worktree, no shared Playwright MCP tools, do not touch `static/inverse`,
 `scripts/inverse`, `docs/inverse`, no new dependencies.
+
+## Amendments, round 2 (owner's testing, 2026-10-17)
+
+1. **No fold scoring.** Remove the "Rids falsen" option, its hint, the score
+   colour and layer, and everything that drew the fold in the laser output and
+   its preview: the laser file is cut lines only, red `#ff0000` hairlines in one
+   `<g id="cut">` (SVG) / one `CUT` layer (DXF). The legend becomes one line,
+   `laserLegend`: "Alle linjer skæres · 0,01 mm streg" / "Every line is cut ·
+   0.01 mm stroke". Drop `scoreFold` from the stored settings (ignore it when
+   reading old values) and from `planLaserSheet`/writer options; update
+   LASER.md, DESIGN.md §4 and the tests. The printer PDF keeps its dashed fold
+   line, which is a drawing instruction, not a laser operation.
+
+2. **The printer preview shows the heart, not a green box.** The dialog's
+   printer-mode preview draws a placeholder rectangle where the PDF prints the
+   heart's picture. It must show the real heart: reuse the same rendering the
+   PDF uses (`prerenderHeartImages`, a PNG data URL per design, async) and
+   embed it in the preview SVG as an `<image href>` at the same place and
+   size the PDF uses; while it renders, draw nothing there (no box). Keep the
+   checkbox that turns the picture off, and then show none in the preview either.
+
+3. **Name and address on the piece, not above it.** Move the two label lines
+   the PDF prints above each template — the heart's name and its address
+   (`templateAddress`, e.g. juleflet.dk/hjerte/jul) — INTO the rounded end of
+   the template, centred, directly under the heart's picture and above the ear
+   base where the cuts begin, so the words survive folding and cutting: the
+   name at 8 pt, the address at 6 pt grey, as today, scaled with the template
+   so they never collide with the picture or the first cut (compute the free
+   band between the picture's bottom and the ear base and shrink the font to
+   fit when a template is small; below 5 pt drop the address first). When the
+   picture is turned off, the text moves up to where the picture was. Remove
+   the 9 mm header the plan reserves (`planTemplatePages`), so the pieces pack
+   tighter, and update `plan.test.ts`. The dialog's printer preview draws the
+   same two lines in the same place (`preview.ts`).
+
+Everything else in this file stands, including round 1.
