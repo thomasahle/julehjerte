@@ -110,6 +110,19 @@ export function trackHeartTrace(heartId: string, heartName: string) {
 }
 
 /**
+ * Track when a heart's laser file is downloaded from "Hent til laserskærer"
+ * (docs/redesign/LASER.md): which format, at what width in millimetres.
+ */
+export function trackLaserDownload(heartId: string, heartName: string, format: 'svg' | 'dxf', widthMm: number) {
+  trackEvent('download_laser', {
+    heart_id: heartId,
+    heart_name: heartName,
+    format,
+    width_mm: widthMm,
+  });
+}
+
+/**
  * Track when a new heart is created in the editor
  */
 /**

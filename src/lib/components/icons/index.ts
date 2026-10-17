@@ -18,6 +18,7 @@
 export { default as ArrowLeftIcon } from '@lucide/svelte/icons/arrow-left';
 export { default as ArrowRightIcon } from '@lucide/svelte/icons/arrow-right';
 export { default as CheckIcon } from '@lucide/svelte/icons/check';
+export { default as ChevronDownIcon } from '@lucide/svelte/icons/chevron-down';
 export { default as ChevronRightIcon } from '@lucide/svelte/icons/chevron-right';
 export { default as CloseIcon } from '@lucide/svelte/icons/x';
 export { default as DownloadIcon } from '@lucide/svelte/icons/download';
