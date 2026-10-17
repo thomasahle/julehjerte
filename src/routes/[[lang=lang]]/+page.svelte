@@ -25,6 +25,7 @@
   import { toGalleryHeart, type GalleryHeart, type HeroHeart } from "$lib/front/galleryHearts";
   import { SITE_TITLE, SITE_TITLE_EN } from "$lib/config";
   import { t, type Language } from "$lib/i18n";
+  import { heartAnchorFromHash } from "$lib/utils/heartAnchors";
   import { focusSectionHeading } from "$lib/front/deleteFocus";
   import { MY_HEARTS_CATEGORY_ID } from "$lib/data/categories";
   import { keepKnown, parseSelected, selectionSearch, toggleSelected } from "$lib/front/selection";
@@ -64,7 +65,8 @@
   onMount(() => {
     userHearts = getUserCollection();
     // Read before the pruning below, which rewrites the URL.
-    pendingAnchorId = window.location.hash.slice(1) || null;
+    // Only a card's `#heart-<id>`: a category hash is the browser's own jump.
+    pendingAnchorId = heartAnchorFromHash(window.location.hash);
     // `?selected=` is shareable, so it can name hearts this browser does not
     // have (the sender's own, or one since deleted). Drop them now that every
     // heart on the page is known, so the badge, the button and the PDF agree
