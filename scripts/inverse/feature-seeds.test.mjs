@@ -6,6 +6,10 @@ import {createCanvas} from 'canvas';
 import {prepare,design} from '../../static/inverse/core/engine.js';
 import {AUTOMATIC_PRESET} from '../../static/inverse/core/presets.js';
 import {settings} from '../../static/inverse/core/settings.js';
+import {loadSolutionJSON} from '../../static/inverse/core/graph.js';
+import {validate} from '../../static/inverse/core/validate.js';
+import {materialAudit} from '../../static/inverse/core/material.js';
+import {finalMaterialAudit} from '../../static/inverse/core/geometric-material.js';
 import {imageFeatures,auditImageFeatures} from '../../static/inverse/core/image-features.js';
 import {initializeFeatureSeeds,featureRefinementObjective} from '../../static/inverse/core/direct/feature-seeds.js';
 import {borderEvidence} from '../../static/inverse/core/direct/counts.js';
@@ -209,7 +213,8 @@ test('early feature routing recovers the frozen puppy opening within a ten-secon
   const prepared=prepare({type:'mask',mask:imported.preview.mask,resolution:400},cfg),source=prepared.target.sourceImage;
   const checkpoints=[];
   const answer=await design(prepared.target,cfg,()=>{},{onCandidate:c=>checkpoints.push(c)}),solver=answer.report.solver;
-  assert.ok(checkpoints.some(c=>c.materialResolution===700&&c.error<.018),
+  const retained=checkpoints.filter(c=>c.materialResolution===700&&c.error<.018).sort((a,b)=>a.error-b.error)[0];
+  assert.ok(retained,
     'Graceful Stop must retain the candidate after its finer paper check passes');
   assert.equal(solver.selectedInitialization,'feature-weighted-grid');
   assert.equal(solver.earlyFeatureInitialization.stage,'before-recovery');
@@ -217,16 +222,33 @@ test('early feature routing recovers the frozen puppy opening within a ten-secon
   assert.equal(solver.featureRecovery,null,'A feature-retaining grid must not spend the fast budget on traced recovery');
   assert.ok(solver.attempts.some(a=>a.stage==='fine'&&a.counts.every(c=>c===3)),
     'The ordinary three-cut finalist is still initialized as a fallback');
-  assert.ok(solver.candidates.some(c=>c.paperVerification?.initialStatus==='uncertain'&&c.paperVerification.status==='pass'),
-    'The original feature routing must earn its finer paper verification before optional detail refinement');
+  // A faster trajectory can pass the coarse paper check directly, then earn
+  // its finer check during detail refinement. Verify the retained geometry
+  // rather than require a detour through an uncertain intermediate layout.
+  const retainedCfg=settings({...answer.report.settings,materialResolution:retained.materialResolution});
+  const retainedSolution=loadSolutionJSON(retained.geometry);
+  assert.equal(validate(retainedSolution,retainedCfg,{checkImage:false}).passed,true);
+  assert.equal(materialAudit(retainedSolution,retainedCfg).passed,true);
+  const retainedRender=await renderExportedWeave(retained.geometry,400);
+  assert.ok(mismatch(retainedRender.mask,source.mask)<.018);
+  assert.equal(auditImageFeatures(source,retainedRender.mask).passed,true);
   assert.ok(solver.paperVerification.initialStatus==='uncertain'||solver.paperVerification.source==='feature-detail-refinement');
   assert.equal(answer.report.settings.materialResolution,solver.paperVerification.resolution);
   assert.equal(answer.report.manufacturing.status,'pass');
   assert.equal(answer.report.validation.passed,true);
   assert.equal(answer.report.templateChecksPassed,true);
-  const replay=await renderExportedWeave(answer.files['cut_geometry.json'],400);
-  assert.equal(auditImageFeatures(source,replay.mask).passed,true);
-  assert.ok(mismatch(replay.mask,source.mask)<.018);
+  const exportedCfg=settings(answer.report.settings),exportedSolution=loadSolutionJSON(answer.files['cut_geometry.json']);
+  assert.equal(validate(exportedSolution,exportedCfg,{checkImage:false,finalGeometry:true}).passed,true);
+  assert.equal(finalMaterialAudit(exportedSolution,exportedCfg).passed,true);
+  for(const scale of [1,2]){
+    const n=400*scale,reference={resolution:n,mask:Uint8Array.from({length:n*n},(_,i)=>source.mask[Math.floor(Math.floor(i/n)/scale)*400+Math.floor(i%n/scale)])};
+    const replay=await renderExportedWeave(answer.files['cut_geometry.json'],n);
+    assert.equal(auditImageFeatures(reference,replay.mask).passed,true);
+    assert.ok(mismatch(replay.mask,reference.mask)<.018);
+    const opening=featureComponentMetrics(reference,replay.mask).find(f=>f.centerMm[1]<80);
+    assert.equal(opening.touchesBorder,false);
+    assert.ok(opening.componentIoU>.5,'The preserved opening must not inflate into surrounding paper.');
+  }
   assert.deepEqual(source.mask,imported.preview.mask);
 });
 

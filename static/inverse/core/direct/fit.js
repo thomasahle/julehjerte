@@ -540,10 +540,11 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   let featureDetail=null;const featureDetailAttempts=[];
   const refineFeatureDetail=async candidate=>{
     const canRefine=candidate.geometryPassed&&(candidate.paperPassed||candidate.paper?.status==='uncertain');
-    // A promising short-budget fit must still get its local shape pass.
-    // Keep the ordinary finalization reserve, rather than requiring the
-    // longer search's extra three seconds after this bounded refinement.
-    const detailReserve=shortBudget?1700:3000;
+    // A checked candidate cannot enter the rejected-boundary rerouting below.
+    // Give its local shape pass more of the short budget, keeping one second
+    // for finalization. Unaccepted candidates retain time for rerouting;
+    // a longer request keeps its existing three-second reserve.
+    const detailReserve=shortBudget?(candidate.imagePassed?1000:1700):3000;
     if(!canRefine||searchDeadline()-performance.now()<=detailReserve+(shortBudget?600:1000))return candidate;
     const plan=featureDetailPlan(candidate.graph,candidate.points,source,sourceFeatures,cfg,n);
     if(plan){
