@@ -451,6 +451,13 @@ export const translations = {
       '<strong>Træk i kontrolhåndtag</strong> (cirkler) for at justere kurvens form',
       '<strong>Brug værktøjslinjen</strong> til venstre for at tilføje/slette noder eller ændre nodetyper'
     ],
+    helpSectionShortcutsTitle: 'Genveje',
+    helpSectionShortcutsBullets: [
+      '<strong>Ctrl+Z</strong> (⌘Z på Mac) fortryder',
+      '<strong>Ctrl+Shift+Z</strong> eller <strong>Ctrl+Y</strong> (⇧⌘Z på Mac) gentager',
+      '<strong>Delete</strong> eller <strong>Backspace</strong> sletter det valgte punkt',
+      '<strong>Esc</strong> fravælger kurven'
+    ],
     helpSectionSymmetryTitle: 'Symmetrimuligheder',
     helpSectionSymmetryIntro: 'Brug symmetripanelet til højre for at håndhæve begrænsninger:',
     helpSectionSymmetryBullets: [
@@ -1099,6 +1106,13 @@ export const translations = {
       '<strong>Drag anchor points</strong> (diamonds) to move curve endpoints',
       '<strong>Drag control handles</strong> (circles) to adjust curve shape',
       '<strong>Use the toolbar</strong> on the left to add/delete nodes or change node types'
+    ],
+    helpSectionShortcutsTitle: 'Keyboard shortcuts',
+    helpSectionShortcutsBullets: [
+      '<strong>Ctrl+Z</strong> (⌘Z on a Mac) undoes',
+      '<strong>Ctrl+Shift+Z</strong> or <strong>Ctrl+Y</strong> (⇧⌘Z on a Mac) redoes',
+      '<strong>Delete</strong> or <strong>Backspace</strong> deletes the selected point',
+      '<strong>Esc</strong> deselects the curve'
     ],
     helpSectionSymmetryTitle: 'Symmetry Options',
     helpSectionSymmetryIntro: 'Use the symmetry panel on the right to enforce constraints:',

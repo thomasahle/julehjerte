@@ -963,6 +963,15 @@
       </section>
 
       <section>
+        <h3>{t('helpSectionShortcutsTitle', lang)}</h3>
+        <ul>
+          {#each tArray('helpSectionShortcutsBullets', lang) as item, i (i)}
+            <li>{@html item}</li>
+          {/each}
+        </ul>
+      </section>
+
+      <section>
         <h3>{t('helpSectionSymmetryTitle', lang)}</h3>
         <p>{t('helpSectionSymmetryIntro', lang)}</p>
         <ul>
