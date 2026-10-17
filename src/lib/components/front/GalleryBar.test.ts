@@ -99,8 +99,13 @@ async function render({ selectedCount = 0, myHeartCount = 0 }: Options = {}) {
 		[...target.querySelectorAll<HTMLButtonElement>('button')].find((b) =>
 			b.textContent?.trim().startsWith(text)
 		);
+	// Unstuck to begin with: the bar's top below the top of the screen.
 	const bar = target.querySelector<HTMLElement>('.gallery-bar')!;
-	placeAt(bar, 0, 50);
+	placeAt(bar, 300, 50);
+	window.dispatchEvent(new Event('scroll'));
+	await Promise.resolve();
+	flushSync();
+	await tick();
 	return {
 		target,
 		handlers,
@@ -112,11 +117,24 @@ async function render({ selectedCount = 0, myHeartCount = 0 }: Options = {}) {
 				a.getAttribute('href')
 			),
 		section: (id: string) => sections.find((s) => s.id === id)!,
-		/** Lets the sentinel report the bar as stuck (or not). */
+		/**
+		 * Puts the bar at its sticky top (or below it) and lets the sentinel
+		 * report it, which asks the bar to measure itself.
+		 */
 		stick: async (stuck: boolean) => {
+			placeAt(bar, stuck ? 0 : 300, 50);
 			reportSentinel!([
 				{ isIntersecting: !stuck, boundingClientRect: { top: stuck ? -1 : 300 } as DOMRect }
 			]);
+			await Promise.resolve();
+			flushSync();
+			await tick();
+		},
+		/** Moves the bar without telling the sentinel, as a jump scroll can. */
+		moveBar: async (top: number) => {
+			placeAt(bar, top, 50);
+			window.dispatchEvent(new Event('scroll'));
+			await Promise.resolve();
 			flushSync();
 			await tick();
 		},
@@ -211,6 +229,7 @@ describe('GalleryBar', () => {
 
 	it('marks the chip of the section that has reached the bar as current', async () => {
 		const ui = await render();
+		await ui.stick(true);
 		// The bar is 50px tall at the top; Mønstre's heading has just reached it.
 		placeAt(ui.section('klassiske'), -2000);
 		placeAt(ui.section('stjerner'), -900);
@@ -229,9 +248,22 @@ describe('GalleryBar', () => {
 		// A chip jump to Klassiske lands just past the point where the bar
 		// sticks, where the row's lowest strand may still hang below the line.
 		const ui = await render();
+		await ui.stick(true);
 		placeAt(ui.section('klassiske'), 70);
 		await ui.scroll();
 		expect(ui.current()).toEqual(['#klassiske']);
+	});
+
+	it('derives stuck from where the bar is, also after a jump scroll the sentinel missed', async () => {
+		const ui = await render();
+		// scrollTo(0, 3000) from the top: the bar is at its sticky top.
+		await ui.moveBar(0);
+		expect(ui.bar.classList.contains('stuck')).toBe(true);
+		expect(ui.wordmark().hasAttribute('aria-hidden')).toBe(false);
+		// And straight back to the top of the page.
+		await ui.moveBar(600);
+		expect(ui.bar.classList.contains('stuck')).toBe(false);
+		expect(ui.wordmark().getAttribute('aria-hidden')).toBe('true');
 	});
 
 	it('marks nothing while the bar has not reached the top', async () => {

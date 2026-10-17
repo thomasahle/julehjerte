@@ -98,18 +98,22 @@
 	// The bar starts up on the hero's snow (Gallery.svelte pulls the gallery
 	// over the drawing), where an opaque background would show as a paler
 	// rectangle over the snow hill. So it is transparent until it actually
-	// sticks, which a 1px sentinel at its top detects (moved down by L on the
-	// desktop layout, where the bar sticks at -L): the sentinel leaves the
-	// viewport at the same moment the bar reaches its sticky top.
+	// sticks: until its own top has reached its sticky top (-L on the desktop
+	// layout, 0 below 900), read from its box by the scroll-spy's frame below
+	// on every scroll and resize. A 1px sentinel at its top (moved down by L)
+	// leaves the viewport at that same moment; its IntersectionObserver only
+	// asks for a measure, as a backstop. On its own it went stale: after a
+	// jump scroll (scrollTo(0, 3000) from the top, and back) and in mobile
+	// emulation the bar kept the state it had before.
 	let sentinel = $state.raw<HTMLElement | null>(null);
 	let stuck = $state(false);
+	/** The spy's frame request; set once the spy runs. */
+	let remeasure = () => {};
 
 	onMount(() => {
 		// Effects and onMount only run in the browser, so no `browser` guard.
 		if (!sentinel) return;
-		const observer = new IntersectionObserver(([entry]) => {
-			stuck = !entry.isIntersecting && entry.boundingClientRect.top < 0;
-		});
+		const observer = new IntersectionObserver(() => remeasure());
 		observer.observe(sentinel);
 		return () => observer.disconnect();
 	});
@@ -180,6 +184,12 @@
 		};
 	});
 
+	/**
+	 * How close to its sticky top the bar's top counts as there: box tops are
+	 * in layout units (1/64px) and L is rounded to a tenth.
+	 */
+	const STUCK_SLACK = 0.5;
+
 	/** Index into `sections` of the section being read, or -1 above the first. */
 	let activeIndex = $state(-1);
 
@@ -201,7 +211,8 @@
 			// Until then the visitor is still above the gallery, on the hero —
 			// even though the first row already sits right under the bar, exactly
 			// ANCHOR_GAP below it, and the rule alone would light its chip.
-			const barStuck = box.top <= 1 - liftRoom;
+			const barStuck = box.top <= STUCK_SLACK - liftRoom;
+			stuck = barStuck;
 			if (!barStuck) {
 				activeIndex = -1;
 				return;
@@ -224,9 +235,11 @@
 			if (!frame) frame = requestAnimationFrame(measure);
 		};
 		measure();
+		remeasure = schedule;
 		window.addEventListener('scroll', schedule, { passive: true });
 		window.addEventListener('resize', schedule);
 		return () => {
+			remeasure = () => {};
 			window.removeEventListener('scroll', schedule);
 			window.removeEventListener('resize', schedule);
 			if (frame) cancelAnimationFrame(frame);
