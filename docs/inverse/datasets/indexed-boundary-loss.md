@@ -57,3 +57,31 @@ skip). All 1,041 pinned sources match after standard QA. The standalone
 benchmark was then added, executed and linted. The complete inverse suite and
 browser benchmarks still require a new run. The preview remains on its prior
 validated snapshot.
+
+## Visual inspection: a passing small-feature test is still imperfect
+
+![Source mask, earlier export and indexed export, with the opening enlarged](indexed-boundary-loss-puppy.png)
+
+Independent rendering of the saved outputs confirms a remaining local defect:
+the source oval becomes a pointed opening. Its area improves from 18.21 mm² to
+12.69 mm², but the source is only 7.36 mm². The 52.5% overlap passes the existing
+regression without establishing a faithful reconstruction. These are the same
+captured runs in the table above, not additional fresh solves.
+
+The recorded detail pass did **not** produce the selected improvement. It ran
+105 steps and returned a geometry/paper-valid candidate, but was rejected:
+original-image disagreement rose from 1.0158% to 1.1729%. Its four rejected
+checkpoints all report the same tight return on sheet 0, slit 1, curves 15–16.
+Those witness points are 35.7–36.7 mm from the small opening, not on its edge.
+
+`featureDetailPlan` adds curve segments near the feature but leaves distant
+controls free. The same common fitter already has a spatially scoped polish
+plan, currently used only after fitted-boundary rerouting. The next experiment
+will compare scoped and ordinary detail refinement from the same captured
+candidate at equal step counts, checking original-image error, local overlap,
+geometry and paper. A useful result must then survive fresh fitting; saved
+controls are only a diagnostic starting point here.
+
+This identifies unnecessary remote motion and repeated repairs during the
+detail pass. It does not yet prove that constraining that motion will recover
+the oval, or that the exact oval satisfies every cutting constraint.

@@ -715,5 +715,193 @@
   },
   "qualification": "All nine previously failing tests pass in one captured serial replay. This is not a counterbalanced causal comparison; the image-loss change cannot be assumed to explain every MILP recovery. Original masks, limits and rules are unchanged. Full inverse and browser benchmarks remain pending.",
   "previewRefreshed": false,
-  "physicalAssemblyTested": false
+  "physicalAssemblyTested": false,
+  "visualInspection": {
+    "comparison": "docs/inverse/datasets/indexed-boundary-loss-puppy.png",
+    "sha256": "ff36ff42d8ce3a4ad3a73bd526f04c1b1db9c48a444f6ad5388f04d1dbe91dff",
+    "capture": "tmp/heart-learning/clearance-continuation-2026-10-18/loss-row-index/qa/captures/51381-1.json",
+    "captureSha256": "8b217a60695b84a52f557ebf767056e154e5635b8c9dc550d8e26a61660c4ef5",
+    "method": "Render the two existing captured exports with the independent resvg renderer. Show the unchanged 390-pixel source and an 80-pixel crop around the opening. No new fitting or image modification.",
+    "finding": "The indexed fit passes the unchanged test but retains a pointed, oversized opening rather than the source oval. Whole-mask agreement is insufficient evidence of local shape quality.",
+    "detailAttempt": {
+      "regions": 1,
+      "addedCurves": 27,
+      "maximumLengthMm": 2,
+      "haloMm": 1,
+      "refinementRate": 0.07,
+      "finalizationReserveSeconds": 1,
+      "applied": false,
+      "errorBefore": 0.010157790927021695,
+      "errorAfter": 0.011729125575279421,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "featuresPassed": true,
+      "steps": 105,
+      "counts": [
+        3,
+        5
+      ],
+      "phase": -1,
+      "seed": "feature-weighted-grid",
+      "materialResolution": 700,
+      "seconds": 1.8586365829999996
+    },
+    "remoteRejectedReturns": [
+      {
+        "step": 0,
+        "type": "short_self_clearance",
+        "family": 0,
+        "slit": 1,
+        "curves": [
+          15,
+          16
+        ],
+        "parameters": [
+          0.609375,
+          0.15625
+        ],
+        "points": [
+          [
+            31.26325098818345,
+            56.11526283375407
+          ],
+          [
+            29.990968852581513,
+            56.89867498500042
+          ]
+        ],
+        "distanceUpper": 1.4941340071400064,
+        "required": 1.5,
+        "arcSeparation": 4.707980190799836,
+        "stationary": false,
+        "totalTurning": 187.75069021294644,
+        "edgeChain": [
+          44,
+          45
+        ],
+        "distanceFromFeatureMm": [
+          35.73959283107921,
+          36.410083675339195
+        ]
+      },
+      {
+        "step": 40,
+        "type": "short_self_clearance",
+        "family": 0,
+        "slit": 1,
+        "curves": [
+          15,
+          16
+        ],
+        "parameters": [
+          0.5625,
+          0.21875
+        ],
+        "points": [
+          [
+            30.894118638522507,
+            55.60222537696032
+          ],
+          [
+            29.850263196662276,
+            56.66623812996628
+          ]
+        ],
+        "distanceUpper": 1.49055604458891,
+        "required": 1.5,
+        "arcSeparation": 5.637822797793649,
+        "stationary": false,
+        "totalTurning": 205.16803595972988,
+        "edgeChain": [
+          44,
+          45
+        ],
+        "distanceFromFeatureMm": [
+          36.328443008010396,
+          36.64986951278329
+        ]
+      },
+      {
+        "step": 80,
+        "type": "short_self_clearance",
+        "family": 0,
+        "slit": 1,
+        "curves": [
+          15,
+          16
+        ],
+        "parameters": [
+          0.5625,
+          0.21875
+        ],
+        "points": [
+          [
+            30.905368412523607,
+            55.593926004598785
+          ],
+          [
+            29.92676338911978,
+            56.72198494998697
+          ]
+        ],
+        "distanceUpper": 1.4933803186400665,
+        "required": 1.5,
+        "arcSeparation": 5.697123311474989,
+        "stationary": false,
+        "totalTurning": 204.58566262384764,
+        "edgeChain": [
+          44,
+          45
+        ],
+        "distanceFromFeatureMm": [
+          36.3235636373143,
+          36.55560630371032
+        ]
+      },
+      {
+        "step": 104,
+        "type": "short_self_clearance",
+        "family": 0,
+        "slit": 1,
+        "curves": [
+          15,
+          16
+        ],
+        "parameters": [
+          0.59375,
+          0.1875
+        ],
+        "points": [
+          [
+            31.115921452689992,
+            55.778078884810704
+          ],
+          [
+            30.05214514595108,
+            56.824186741975275
+          ]
+        ],
+        "distanceUpper": 1.491965709927855,
+        "required": 1.5,
+        "arcSeparation": 5.010837399305369,
+        "stationary": false,
+        "totalTurning": 199.79826428269976,
+        "edgeChain": [
+          44,
+          45
+        ],
+        "distanceFromFeatureMm": [
+          36.04658991948253,
+          36.39556574116932
+        ]
+      }
+    ],
+    "establishedMechanism": "featureDetailPlan subdivides near the opening but leaves distant controls free. Its weighted refinement repeatedly violates final clearance at points 35.7\u201336.7 mm from the opening. Repairs are attempted, and the selected detail proposal is then rejected because its original-image error exceeds the incumbent.",
+    "nextExperiment": "Compare the same captured candidate with ordinary and spatially scoped detail refinement at equal step counts using the existing common fitter. Then test any successful change with fresh fits and independent exports.",
+    "notEstablished": [
+      "That scoping the controls improves the feature while retaining all geometry/paper checks.",
+      "That the exact source oval can be recovered under the current cutting constraints.",
+      "That the repeated clearance repair alone caused the final shape error."
+    ]
+  }
 }
