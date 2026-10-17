@@ -1020,6 +1020,20 @@
     min-height: 0;
   }
 
+  /* Below 900px the editor is a page that scrolls: tool row, canvas (which keeps
+     its own height inside PaperHeart) and the cards follow each other, so the box
+     takes the height of what it holds instead of squeezing the canvas. */
+  @media (max-width: 899px) {
+    .editor-top {
+      height: auto;
+      min-height: 0;
+    }
+
+    .editor-top :global(.paper-heart.fullPage) {
+      flex: none;
+    }
+  }
+
   /* Desktop: the tool fills the viewport, so the page itself never scrolls. */
   @media (min-width: 900px) {
     .editor {

@@ -2035,9 +2035,6 @@
 			};
 		}
 
-			let segmentControlsEl = $state<HTMLDivElement | null>(null);
-			let rightPanelEl = $state<HTMLDivElement | null>(null);
-
 		// The floating toolbars used to be draggable, with their offsets kept in
 		// localStorage under `paperheart.toolbarPositions.<componentId>`. The redesign
 		// gives the rail and the panel fixed places over the canvas, so dragging is
@@ -2960,57 +2957,6 @@
 		return () => window.removeEventListener('resize', updateMobileCanvasMinHeight);
 	});
 
-	// Narrow screens (<= 900px) float the tool rail above and the panels below the canvas.
-	// Measure them so the heart is laid out in the free band between them instead of underneath.
-	let mobileClearance = $state<{ top: number; bottom: number } | null>(null);
-	// Below 900px the toolbar sits on top of the canvas, so canvas notices go directly under it.
-	let mobileNoticeTop = $state<number | null>(null);
-
-	function updateMobileClearance() {
-		if (!fullPage || readonly || !canvasAreaEl || typeof window === 'undefined') {
-			mobileClearance = null;
-			mobileNoticeTop = null;
-			return;
-		}
-		const gap = 8;
-		mobileNoticeTop =
-			segmentControlsEl && window.matchMedia(NARROW_QUERY).matches
-				? Math.round(segmentControlsEl.offsetTop + segmentControlsEl.offsetHeight + gap)
-				: null;
-		// The stacked layout starts at 900px, not 600px: the panels are opaque cards
-		// painted over the canvas, so the heart needs the free band from here down.
-		if (!window.matchMedia(NARROW_QUERY).matches) {
-			mobileClearance = null;
-			return;
-		}
-		const top = segmentControlsEl ? segmentControlsEl.offsetTop + segmentControlsEl.offsetHeight + gap : 0;
-		const bottom = rightPanelEl ? canvasAreaEl.clientHeight - rightPanelEl.offsetTop + gap : 0;
-		const next = { top: Math.max(0, Math.round(top)), bottom: Math.max(0, Math.round(bottom)) };
-		if (mobileClearance && mobileClearance.top === next.top && mobileClearance.bottom === next.bottom) return;
-		mobileClearance = next;
-	}
-
-	onMount(() => {
-		if (!fullPage || readonly) return;
-		const schedule = () => {
-			tick().then(updateMobileClearance);
-		};
-		let ro: ResizeObserver | null = null;
-		try {
-			ro = new ResizeObserver(schedule);
-			if (segmentControlsEl) ro.observe(segmentControlsEl);
-			if (rightPanelEl) ro.observe(rightPanelEl);
-			if (canvasAreaEl) ro.observe(canvasAreaEl);
-		} catch {
-			// ResizeObserver unavailable; window resize still updates the clearance.
-		}
-		window.addEventListener('resize', schedule, { passive: true });
-		schedule();
-		return () => {
-			ro?.disconnect();
-			window.removeEventListener('resize', schedule);
-		};
-	});
 </script>
 
 	<!--
@@ -3083,9 +3029,6 @@
 			class:readonly
 			class:fullPage={fullPage}
 			class:panel-collapsed={panelCollapsed}
-			style:--mobile-top-clearance={mobileClearance ? `${mobileClearance.top}px` : undefined}
-			style:--mobile-bottom-clearance={mobileClearance ? `${mobileClearance.bottom}px` : undefined}
-			style:--mobile-notice-top={mobileNoticeTop != null ? `${mobileNoticeTop}px` : undefined}
 		>
 			<div class="canvas-area" bind:this={canvasAreaEl} style:min-height={fullPage ? undefined : mobileCanvasMinHeight ?? undefined}>
 				<div class="canvas-box">
@@ -3426,7 +3369,7 @@
 			{#if !readonly}
 				<!-- Tool rail. Every tool stays an icon button with a tooltip; nothing is
 				     removed and no labels are printed under the icons (DESIGN.md §7). -->
-				<div bind:this={segmentControlsEl} class="segment-controls" class:floating={fullPage} aria-label={tr('editorCurveTools')}>
+				<div class="segment-controls" class:floating={fullPage} aria-label={tr('editorCurveTools')}>
 					<div class="history-controls" aria-label={tr('editorHistory')}>
 						{@render toolButton({ label: tr('editorUndo'), tip: tr('editorUndoHint'), icon: UndoIcon, onclick: undo, disabled: !canUndo })}
 						{@render toolButton({ label: tr('editorRedo'), tip: tr('editorRedoHint'), icon: RedoIcon, onclick: redo, disabled: !canRedo })}
@@ -3531,7 +3474,6 @@
 				<!-- The 340px panel. Symmetri / Tegning / Farver belong to the editor itself;
 				     the route adds Hjertedetaljer and Handlinger through `panelExtra`. -->
 				<div
-					bind:this={rightPanelEl}
 					id={panelId}
 					class="right-panel"
 					class:floating={fullPage}
@@ -4222,9 +4164,32 @@
 				box-sizing: border-box;
 			}
 
+			/* Phones and small tablets: nothing floats over the drawing. The tool rail
+			   is a row above the canvas, the canvas keeps a fixed share of the screen,
+			   and the Symmetri / Tegning / Farver cards follow it in the page's own
+			   flow, so the page scrolls instead of the heart shrinking to a sliver. */
+			.paper-heart.fullPage {
+				height: auto;
+			}
+
 			.paper-heart.fullPage .canvas-area {
-				height: 100%;
+				height: auto;
 				min-height: 0;
+				padding: 12px 0 0;
+				gap: 12px;
+				justify-content: flex-start;
+			}
+
+			.paper-heart.fullPage .canvas-box {
+				position: relative;
+				inset: auto;
+				flex: none;
+				height: max(55dvh, 280px);
+			}
+
+			/* A little air around the heart at its default zoom. */
+			.paper-heart.fullPage .canvas-fit-band {
+				inset: 16px;
 			}
 
 			.heart-svg {
@@ -4233,7 +4198,6 @@
 			}
 
 			.canvas-notices {
-				top: var(--mobile-notice-top, 16px);
 				max-width: calc(100% - 32px);
 			}
 
@@ -4253,13 +4217,12 @@
 			}
 
 			.paper-heart.fullPage .segment-controls.floating {
-				position: absolute;
-				left: 16px;
-				right: 16px;
-				top: 88px;
+				position: static;
+				align-self: stretch;
 				width: auto;
+				margin: 0 16px;
 				transform: none;
-				order: unset;
+				order: -1;
 			}
 
 			.segment-controls::-webkit-scrollbar {
@@ -4285,14 +4248,17 @@
 			}
 
 			.paper-heart.fullPage .right-panel.floating {
-				position: absolute;
+				position: static;
+				align-self: stretch;
+				align-items: flex-start;
+				margin: 0 16px;
 			}
 
 			.right-panel {
 				flex-wrap: wrap;
 			}
 
-			/* The floating panels sit over the canvas here, so keep them compact and lifted. */
+			/* Keep the panels compact and lifted, as they were when they floated. */
 			.right-panel :global(.editor-panel) {
 				flex: 1 1 200px;
 				min-width: 0;
@@ -4344,14 +4310,6 @@
 				aspect-ratio: unset;
 				max-width: none;
 			}
-
-			/* Keep the heart in the free band between the floating tool rail and the
-			   floating panels; the clearances are measured in updateMobileClearance(). */
-			.paper-heart.fullPage:not(.readonly) .canvas-wrapper {
-				top: var(--mobile-top-clearance, 0px);
-				bottom: var(--mobile-bottom-clearance, 0px);
-				height: auto !important;
-			}
 		}
 
 		/* Narrow phones: wrap the toolbar, stack the bottom panels, and keep everything inside the viewport. */
@@ -4362,10 +4320,6 @@
 				overflow: visible;
 				gap: 0.25rem 0.75rem;
 				border-radius: 16px;
-			}
-
-			.paper-heart.fullPage .segment-controls.floating {
-				top: 16px;
 			}
 
 			.toolbar-separator {
