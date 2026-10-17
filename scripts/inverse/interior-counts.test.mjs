@@ -82,10 +82,15 @@ test('additional count proposals respect requested symmetry and physical strip w
   }
 });
 
-test('the main fitter reconstructs the dense binary photo target with legal editable-sized counts',async()=>{
+test('the main fitter reconstructs the dense binary photo target with legal editable-sized counts',async t=>{
   const {mask,resolution}=await fixture(),raw={...AUTOMATIC_PRESET,timeLimit:10,trials:0};
   const target=prepare({type:'mask',mask:mask.slice(),resolution},raw).target,before=target.sourceImage.probability.slice();
   const answer=await design(target,raw),proposal=answer.report.solver.countSearch.interiorProposal;
+  if(!answer.report.templateChecksPassed)t.diagnostic(JSON.stringify({
+    validation:answer.report.validation,paper:answer.report.manufacturing.status,
+    imageError:answer.report.imageError,termination:answer.report.solver.termination,
+    counts:answer.report.solver.selectedCounts,stages:answer.report.solver.stages,
+  }));
   assert.equal(proposal.previousMaximum,8);assert.equal(proposal.maximumCount,11);assert.ok(proposal.added>0);
   assert.ok(Object.values(answer.report.slits).every(n=>n<=11));
   assert.equal(answer.report.validation.passed,true);assert.equal(answer.report.manufacturing.status,'pass');

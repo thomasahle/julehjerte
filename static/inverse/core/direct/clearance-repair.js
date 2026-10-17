@@ -8,8 +8,8 @@ import {auditFeatureFidelity} from '../feature-shapes.js';
 import {maskDisagreement} from './prefer-matching.js';
 import {requestedSymmetry} from '../settings.js';
 
-export function repairClearanceInitializer(prepared,input,cfg,{deadline=Infinity,geometry=null,recoverFeatures=false,onProgress=()=>{},paperAudit=materialAudit}={}){
-  const started=performance.now(),until=Math.min(deadline,started+1200),report={accepted:false,method:'clearance-initializer-refinement'};
+export function repairClearanceInitializer(prepared,input,cfg,{deadline=Infinity,workDeadline=deadline,geometry=null,recoverFeatures=false,onProgress=()=>{},paperAudit=materialAudit}={}){
+  const started=performance.now(),until=Math.min(deadline,workDeadline,started+1200),report={accepted:false,method:'clearance-initializer-refinement'};
   const finish=reason=>({candidate:null,report:{...report,reason,seconds:(performance.now()-started)/1000}});
   if(until-started<900)return finish('insufficient_time');
   const source=input.sourceImage;
@@ -54,11 +54,12 @@ export function repairClearanceInitializer(prepared,input,cfg,{deadline=Infinity
     }
     report.paper=paper.summary;check.paper=paper.status;
     if(!paper.passed){reason='paper_rejected';continue;}
-    // The local cap stops new repair work. Once these checks have finished,
-    // keep the verified shape if the caller still has time to use it. A slow
-    // final audit must not erase useful work at the smaller local cutoff.
+    // The work cutoff reserves time for later stages. A completed independent
+    // audit can cross that cutoff without crossing the caller's overall
+    // deadline. Retain its verified result; do not start another repair.
     if(performance.now()>deadline)return finish('deadline');
     report.paperVerification=verification;report.usedPaperAlternative=candidate!==fitted;
+    report.retainedAfterWorkDeadline=performance.now()>workDeadline;
     const repaired={...fitted,...candidate,paperAlternative:null,counts:clear.model.counts.slice(),seed:'clearance-repair',geometryPassed:true,validation:geometry,paperPassed:paper.passed,paper:paper.summary,paperVerification:verification};
     report.accepted=imagePassed;report.seconds=(performance.now()-started)/1000;
     if(!imagePassed)return{candidate:null,continuation:repaired,report:{...report,continued:true,reason:'continue_refinement'}};

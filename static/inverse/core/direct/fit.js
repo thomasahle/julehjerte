@@ -647,7 +647,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
         // Keep every finalist. A verified improvement can continue refining
         // before meeting the final image limit; it is not an accepted result.
         if((competitive&&!geometry.passed||recoverFeatures)&&clear.error>cfg.maxImageError&&!candidates.some(c=>c.imagePassed)){
-          repair=stage('directRefining',()=>repairClearanceInitializer(alternate,input,alternate.refinementCfg,{geometry,recoverFeatures,deadline:deadline-1700,onProgress:(r,s)=>onProgress({stage:'directRefining',detail:'clearance-initializer',counts:alternate.clear.model.counts,...r},s)}));
+          repair=stage('directRefining',()=>repairClearanceInitializer(alternate,input,alternate.refinementCfg,{geometry,recoverFeatures,deadline,workDeadline:deadline-1700,onProgress:(r,s)=>onProgress({stage:'directRefining',detail:'clearance-initializer',counts:alternate.clear.model.counts,...r},s)}));
           const repaired=repair.candidate||repair.continuation;
           if(repaired){
             addCandidate(repaired);

@@ -74,10 +74,21 @@ The proposal is now in the main fitter's initialization, with unchanged
 recovery limits, deadlines and acceptance rules. Six focused regressions pass,
 including the dense binary target, preservation of simpler starts and both
 phases, uncertain/noisy inputs, missing coverage, symmetry and strip width.
-Check and lint pass. Full serial QA, integrated corpus parity and browser
-verification remain outstanding. Nothing has been deployed. The pre-integration
-proposal leaves all 55 existing corpus hypothesis sets unchanged and passes
-eight procedural support controls; those checks do not replace full fitting.
+The [integrated QA follow-up](interior-count-release-results.json) passes check,
+lint, build and 874 application tests (one skipped), but only 1,028/1,035 inverse
+tests pass. Seven failures remain recorded, including the new dense target.
+The production proposal leaves all 55 existing corpus hypothesis sets unchanged
+and passes eight procedural support controls. The saved binary checker improves
+editable disagreement from 5.21% to 2.64%, with geometry and paper checks passing.
+
+Two failures exposed a repair-deadline bug: completed independent checks could
+be discarded at the earlier work cutoff despite remaining finalization time.
+Separate work and retention deadlines fix that handoff without extending the
+overall deadline or weakening validation. All eight affected tests pass. The
+six dense-target tests also pass in a focused replay, but that does not resolve
+their full-suite timing sensitivity. Five other full-suite failures and browser
+verification remain outstanding; the full suite has not been repeated after
+the repair correction. Nothing has been deployed.
 
 The [paired selected-box MobileSAM replay](selected-sam-prompt-results.json)
 now completes on seven fixed development photos. Automatic boxes produce four

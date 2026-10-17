@@ -48,15 +48,15 @@ test('a short verified improvement continues fitting without becoming an accepte
   assert.deepEqual(source.sourceImage.mask,mask);
 });
 
-for(const deadline of [10000,1200])test(`completed initializer checks retain the caller's ${deadline}ms deadline`,async t=>{
+for(const {deadline,workDeadline} of [{deadline:10000},{deadline:1200},{deadline:10000,workDeadline:1000}])test(`completed initializer checks retain the caller's ${deadline}ms deadline${workDeadline?' after a '+workDeadline+'ms work cutoff':''}`,async t=>{
   await loadBoundaryKernel();
   const source=input(),prepared=initializer(source),before=prepared.graph.points.slice();
   let clock=0,audits=0,result;
   const now=t.mock.method(performance,'now',()=>clock);
   try{
-    result=repairClearanceInitializer(prepared,source,cfg,{deadline,recoverFeatures:true,onProgress:r=>{
+    result=repairClearanceInitializer(prepared,source,cfg,{deadline,workDeadline,recoverFeatures:true,onProgress:r=>{
       if(r.step>=40)clock=800;
-      if(r.step===44)clock=1100;
+      if(r.step===44)clock=workDeadline?900:1100;
     },paperAudit:(solution,settings)=>{
       // Perform the real independent paper audit, then model its completion
       // beyond the local 1200ms cap. The caller may still have search time.
@@ -76,10 +76,23 @@ for(const deadline of [10000,1200])test(`completed initializer checks retain the
     assert.ok(result.continuation,'Do not discard completed verification solely because the local refinement cap elapsed.');
     assert.equal(result.report.continued,true);
     assert.equal(result.report.reason,'continue_refinement');
+    if(workDeadline)assert.equal(result.report.retainedAfterWorkDeadline,true);
   }else{
     assert.equal(result.continuation,undefined,'Never extend the caller deadline.');
     assert.equal(result.report.reason,'deadline');
   }
   assert.deepEqual(prepared.graph.points,before);
   assert.deepEqual(source.sourceImage.mask,mask);
+});
+
+test('the finalization reserve cannot fund new clearance repair work',t=>{
+  const source=input(),prepared=initializer(source),before=prepared.graph.points.slice();
+  const now=t.mock.method(performance,'now',()=>0);
+  let result;
+  try{result=repairClearanceInitializer(prepared,source,cfg,{deadline:10000,workDeadline:800,recoverFeatures:true});}
+  finally{now.mock.restore();}
+  assert.equal(result.candidate,null);
+  assert.equal(result.report.reason,'insufficient_time');
+  assert.equal(result.report.steps,undefined);
+  assert.deepEqual(prepared.graph.points,before);
 });
