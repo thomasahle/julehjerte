@@ -127,6 +127,23 @@
 		background: var(--cream2);
 	}
 
+	/* At 600px and up the row fits as the shared .btn draws it. Below that the
+	   two labelled buttons tighten (10px padding, 6px icon gap, 14px text) and
+	   the row's gap drops to 8px, so all four still sit on one line on a 390px
+	   or 412px phone (348px of the 358px a 390 screen leaves). The two glyph
+	   buttons keep their 44px. */
+	@media (max-width: 599px) {
+		.actions {
+			gap: 8px;
+		}
+
+		.actions .btn:not(.btn-icon) {
+			gap: 6px;
+			padding: 0 10px;
+			font-size: 14px;
+		}
+	}
+
 	.save-note {
 		margin: 0;
 		color: var(--green);
