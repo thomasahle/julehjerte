@@ -109,20 +109,6 @@
 >
 	<a class="card-link" {href} onclick={handleOpen} aria-label={heart.name}></a>
 
-	<!-- The ✓ is a text glyph, not an icon: the hero clones the first <svg> in
-	     the card, which has to stay the heart's own. -->
-	<span class="pick">
-		<input
-			id={pickId}
-			class="pick-box"
-			type="checkbox"
-			checked={selected}
-			onchange={handleSelect}
-		/>
-		<span class="pick-mark" aria-hidden="true">✓</span>
-		<label class="sr-only" for={pickId}>{t('selectForPdf', lang)}: {heart.name}</label>
-	</span>
-
 	<div class="card-heart">
 		<HangingHeart
 			{design}
@@ -132,7 +118,25 @@
 			{ribbon}
 			delay={swayDelay}
 			idPrefix="card-{heart.id}"
-		/>
+		>
+			<!-- On the heart box, so it sits in the selection ring's top-left corner
+			     on every card, whatever the ribbon's length (SELECTION.md). The ✓ is
+			     a text glyph, not an icon: the hero clones the first <svg> in the
+			     card, which has to stay the heart's own. -->
+			{#snippet badge()}
+				<span class="pick">
+					<input
+						id={pickId}
+						class="pick-box"
+						type="checkbox"
+						checked={selected}
+						onchange={handleSelect}
+					/>
+					<span class="pick-mark" aria-hidden="true">✓</span>
+					<label class="sr-only" for={pickId}>{t('selectForPdf', lang)}: {heart.name}</label>
+				</span>
+			{/snippet}
+		</HangingHeart>
 	</div>
 
 	<div class="card-meta">
@@ -179,12 +183,15 @@
 		background: transparent;
 	}
 
-	/* The PDF checkbox: a real input, restyled, with the tick laid over it. */
+	/* The PDF checkbox: a real input, restyled, with the tick laid over it.
+	   It sits on HangingHeart's heart box, 10px in from the selection ring's
+	   outer edge (the ring is inset -9px, so 1px into the box). */
 	.pick {
 		position: absolute;
-		top: 10px;
-		left: 10px;
+		top: 1px;
+		left: 1px;
 		z-index: 2;
+		pointer-events: auto;
 		display: inline-flex;
 		width: 24px;
 		height: 24px;
@@ -254,7 +261,14 @@
 		}
 	}
 
+	/* Above the card's link, so the tick on the heart box can take clicks —
+	   the swaying .hang is a stacking context of its own, and the link's
+	   z-index would cover it — but click-through everywhere else, so the
+	   heart still opens its page. */
 	.card-heart {
+		position: relative;
+		z-index: 2;
+		pointer-events: none;
 		display: flex;
 		justify-content: center;
 		width: 100%;

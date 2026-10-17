@@ -226,7 +226,10 @@ Card (`article.card`, relative, flex column centred, height size+136 with size 1
   aria-label={name}>`, absolute inset 0, transparent, z-index 1, radius 14, focus ring 3px `--blue`); it records
   `trackHeartView`. There is no "Detaljer" pill;
 - **a small checkbox ticks the heart for the PDF**: a real `<input type="checkbox">` with a visually hidden
-  `<label>` "Vælg til PDF: {name}", 24px round at `top: 10px; left: 10px`, z-index 2 (above the link), white
+  `<label>` "Vælg til PDF: {name}", 24px round, on the heart box itself (HangingHeart's `badge` snippet, so
+  it sways with the heart) at `top: 1px; left: 1px` — 10px in from the selection ring's outer edge, at the
+  ring's top-left corner on every card whatever the ribbon's length (SELECTION.md); `.card-heart` is lifted
+  above the link (z-index 2, `pointer-events: none` except on the box), white
   with a 1.5px `--line` border, red with a white ✓ when checked (the ✓ is a text glyph: the hero clones the
   card's first `<svg>`, which must stay the heart). Opacity 0; 1 on card hover, on keyboard focus (`:has(:focus-visible)`, so a mouse click does not pin it), when checked,
   and always under `@media (hover: none)`, where it is 22px with an `rgb(255 255 255 / .9)` fill so it stays

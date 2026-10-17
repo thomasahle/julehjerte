@@ -22,13 +22,18 @@
     .heart   the square heart box, position: relative, so a parent can hang a
              selection ring or badge on ::before / ::after.
 
+  `badge` is rendered inside .heart, after the heart, so a parent can place
+  something on the heart box itself (the gallery card's tick, SELECTION.md):
+  it then sits at the same spot of the heart whatever the ribbon's length, and
+  sways with it.
+
   A heart that is already drawn in the prerendered HTML is given as `markup`
   instead of being drawn from `design` — see $lib/front/galleryHearts. The
   ribbon is a real element either way, so the footer's colour swatches keep
   reaching it; the frozen SVG follows them through the --paper-* tokens below.
 -->
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, type Snippet } from 'svelte';
 	import PaperHeartSVG from '$lib/components/PaperHeartSVG.svelte';
 	import { swayAnimationDelay } from '$lib/utils/sway';
 	import {
@@ -66,6 +71,8 @@
 		idPrefix: string;
 		/** Extra class on the root .hang element. */
 		class?: string;
+		/** Rendered inside the heart box, after the heart — see the note above. */
+		badge?: Snippet;
 	}
 
 	let {
@@ -76,7 +83,8 @@
 		ribbon = 40,
 		delay = 0,
 		idPrefix,
-		class: className = undefined
+		class: className = undefined,
+		badge = undefined
 	}: Props = $props();
 
 	// The site-wide pair, read after mount so the prerendered markup and the
@@ -124,6 +132,7 @@
 				size={400}
 			/>
 		{/if}
+		{@render badge?.()}
 	</div>
 </div>
 
