@@ -242,12 +242,14 @@ describe('GalleryBar', () => {
 		expect(ui.target.querySelectorAll('button')).toHaveLength(0);
 	});
 
-	it('shows one "Hent skabeloner" button with the count once hearts are ticked, left of the chips', async () => {
+	it('shows one "Hent skabeloner" button with the count once hearts are ticked, first in the chip row', async () => {
 		const ui = await render({ selectedCount: 2 });
 		expect(ui.download()?.textContent).toMatch(/Hent skabeloner\s*2/);
 		// One button: no PDF-layout menu, no select all / none (SELECTION.md).
 		expect(ui.target.querySelectorAll('button')).toHaveLength(1);
-		expect(ui.download()!.nextElementSibling?.tagName).toBe('NAV');
+		// The chip row's first item, right before "Klassiske".
+		expect(ui.download()!.parentElement?.tagName).toBe('NAV');
+		expect(ui.download()!.nextElementSibling?.getAttribute('href')).toBe('#klassiske');
 
 		ui.download()!.click();
 		expect(ui.handlers.onDownload).toHaveBeenCalledTimes(1);

@@ -225,7 +225,8 @@ Everything else in this file stands, including round 1.
 ### As built (several hearts, SELECTION.md)
 
 - **The front page opens this dialog** for the ticked hearts, from the gallery
-  bar's single "Hent skabeloner (n)" button. The dialog and the gallery
+  bar's single "Hent skabeloner (n)" button (the chip row's first item,
+  DESIGN.md §3). The dialog and the gallery
   hearts' geometry are imported on the click, so the front page's first load
   carries neither. `DownloadDialog` takes `designs: HeartDesign[]` (the heart
   page passes `[design]` with its `heartId`/`heartName`, and behaves exactly as

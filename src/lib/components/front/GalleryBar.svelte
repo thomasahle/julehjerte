@@ -4,10 +4,12 @@
 
   One row, left to right: the Juleflet.dk wordmark, which only shows once the
   bar has stuck (the page header carrying the same wordmark has scrolled away
-  by then); only while hearts are ticked, one red "Hent skabeloner (n)" button
-  (docs/redesign/SELECTION.md), which opens the download dialog for them; and
-  one chip per category, right-aligned, with scroll-spy marking the one being
-  read — so the button comes and goes without moving the chips. Ticking is
+  by then); then the right-aligned chip row: only while hearts are ticked, one
+  red "Hent skabeloner (n)" button (docs/redesign/SELECTION.md), which opens
+  the download dialog for them, and one chip per category, with scroll-spy
+  marking the one being read. The button is the row's first item and behaves
+  as a chip — its own lift on the hill, pushed down with the chips — and the
+  row is right-aligned, so it comes and goes without moving the chips. Ticking is
   the exception (docs/redesign/FRONT-SIMPLIFY.md — a card click opens the
   heart's page), so a visitor who never ticks anything never sees a disabled
   download button asking them to. The bar only reports the click; the
@@ -118,8 +120,8 @@
 	// how far the page has scrolled past the bar's resting top (clamped to
 	// [0, L]), chip i sits at translateY(max(p, lift_i) − L): on the curve at
 	// rest, then carried down by the top of the screen once p passes its lift,
-	// flat at p = L, when the bar sticks. The download button takes no part
-	// (SELECTION.md): it stays in the bar's bottom row throughout. The
+	// flat at p = L, when the bar sticks. The download button is the row's
+	// first item and moves as a chip, with its own lift (SELECTION.md). The
 	// `translate` property, not `transform`, so nothing else that transforms a
 	// chip is overridden.
 	$effect(() => {
@@ -130,6 +132,7 @@
 		const chipLifts = lifts;
 		// Re-run when the chips come and go.
 		void sections.length;
+		void hasSelection;
 		let frame = 0;
 		const update = () => {
 			frame = 0;
@@ -215,7 +218,7 @@
 		const index = activeIndex;
 		const row = chipRow;
 		if (!row || index < 0) return;
-		const chip = row.children[index];
+		const chip = row.querySelectorAll('.chip')[index];
 		// jsdom has no layout and no Element.scrollBy.
 		if (!(chip instanceof HTMLElement) || typeof row.scrollBy !== 'function') return;
 		const rowBox = row.getBoundingClientRect();
@@ -279,13 +282,6 @@
 		{t('siteWordmark', lang)}
 	</a>
 
-	{#if hasSelection}
-		<button type="button" class="get" onclick={onDownload}>
-			<DownloadIcon size={16} />
-			{t('printSelected', lang)}
-			<span class="get-count">{selectedCount}</span>
-		</button>
-	{/if}
 
 	<nav
 		class="chips"
@@ -293,6 +289,13 @@
 		bind:this={chipRow}
 		data-hill-chips
 	>
+		{#if hasSelection}
+			<button type="button" class="get" onclick={onDownload}>
+				<DownloadIcon size={16} />
+				{t('printSelected', lang)}
+				<span class="get-count">{selectedCount}</span>
+			</button>
+		{/if}
 		{#each sections as section, i (section.id)}
 			<a
 				class="chip"
@@ -473,12 +476,17 @@
 		}
 	}
 
-	/* "Hent skabeloner (n)": an opaque red pill the chips' size (13px, their
-	   6px vertical padding), 32px tall. Its -2px margins keep its box inside
-	   the chips' 29.4px line, so it never changes the bar's height. Opaque, as
-	   the first row's ribbons may run behind it at rest. */
+	/* "Hent skabeloner (n)", the chip row's first item: an opaque red pill the
+	   chips' size (13px, their 6px vertical padding), 32px tall. Its -2px
+	   margins keep its box inside the chips' 29.4px line, so it never changes
+	   the bar's height. Opaque, as ribbons may run behind it at rest. */
 	.get {
 		flex: none;
+		/* Where the row scrolls (a phone), the button stays in view at its
+		   start and the chips pass under it. */
+		position: sticky;
+		left: 0;
+		z-index: 1;
 		display: inline-flex;
 		align-items: center;
 		gap: 6px;
@@ -514,8 +522,7 @@
 		background: rgb(255 255 255 / 0.22);
 	}
 
-	/* A phone has no room for the button beside the chips: the row wraps, the
-	   chips going under it, still under the sticky background. */
+	/* A phone: the row wraps (when nothing is ticked the chips simply scroll). */
 	@media (max-width: 699px) {
 		.gallery-bar {
 			flex-wrap: wrap;

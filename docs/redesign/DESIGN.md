@@ -191,13 +191,15 @@ shows as a paler rectangle over the hero's snow hill. It never collapses. Left t
   is no disabled download button and no "Vælg hjerter først" hint. One opaque red pill (`--red`, hover
   `--red-hover`, `0 2px 8px rgb(31 51 41 / .12)` shadow), 32px tall, 13px/600 with the chips' 6px vertical
   padding, a download icon and the count in a `rgb(255 255 255 / .22)` badge; `margin: -2px 0` keeps its box
-  inside the chips' line, so the bar's height does not change (measured: 49.2px visible at 1440, stuck or not,
-  with or without it). It sits between the wordmark's room and the chip row, whose chips are right-aligned, so
-  they never move when it comes or goes. It opens the download dialog (`DownloadDialog`, DOWNLOAD.md) for the
-  ticked hearts. It takes no part in the scroll push and gets no +54 clearance: at rest it sits in the bar's
-  bottom row over the hero's snow, and the first row's hearts may hang behind it. No gear menu, no PDF
-  layouts, no "Vælg alle"/"Fravælg alle" any more. Below 700 the bar wraps: the button on the first row
-  (next to the wordmark once stuck), the chips under it.
+  inside the chips' line, so the bar's height does not change (49.2px visible at 1440, stuck or not, with or
+  without it). It is the chip row's first item, immediately left of "Klassiske", and behaves exactly as a
+  chip (coordinator's fix after the first build, where it lay across the first heart): its own lift from the
+  hill at its centre, so at rest it sits on the hill line left of the chips; pushed straight down with them;
+  and in the same place in the stuck bar. The row is right-aligned, so the chips never move when it comes or
+  goes. The chips' +54 column clearance span includes it while it shows, so the column under it hangs 54px
+  lower while a selection exists. It opens the download dialog (`DownloadDialog`, DOWNLOAD.md) for the
+  ticked hearts. No gear menu, no PDF layouts, no "Vælg alle"/"Fravælg alle" any more. Where the row scrolls
+  (a phone) it is `position: sticky; left: 0`, so it stays in view and the chips pass under it.
 
 Scroll-spy: the current chip belongs to the last section whose top has reached the bar's bottom edge plus 8px
 (1px slack), measured with `getBoundingClientRect()` on scroll (passive, one `requestAnimationFrame` per frame)
