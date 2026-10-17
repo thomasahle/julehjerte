@@ -14,7 +14,7 @@
 <script lang="ts">
   import { onMount, tick, untrack, type Component } from "svelte";
   import { page } from "$app/stores";
-  import { goto } from "$app/navigation";
+  import { afterNavigate, goto } from "$app/navigation";
   import { browser } from "$app/environment";
   import Modal from "$lib/components/Modal.svelte";
   import PageHeader from "$lib/components/PageHeader.svelte";
@@ -25,7 +25,7 @@
   import { toGalleryHeart, type GalleryHeart, type HeroHeart } from "$lib/front/galleryHearts";
   import { SITE_TITLE, SITE_TITLE_EN } from "$lib/config";
   import { t, type Language } from "$lib/i18n";
-  import { heartAnchorFromHash } from "$lib/utils/heartAnchors";
+  import { heartAnchorFromHash, sectionAnchorToLand } from "$lib/utils/heartAnchors";
   import { focusSectionHeading } from "$lib/front/deleteFocus";
   import { MY_HEARTS_CATEGORY_ID } from "$lib/data/categories";
   import { keepKnown, parseSelected, selectionSearch, toggleSelected } from "$lib/front/selection";
@@ -46,6 +46,53 @@
   let lang = $derived(($page.params.lang === "en" ? "en" : "da") as Language);
   let metaTitle = $derived(lang === "en" ? SITE_TITLE_EN : SITE_TITLE);
   let pendingAnchorId = $state<string | null>(null);
+  /**
+   * A gallery anchor other than a card's (a category, `#skabeloner`) the page
+   * loaded with, to land again once the gallery has been measured.
+   */
+  let pendingSectionId = $state<string | null>(null);
+  /**
+   * The gallery has been measured, with the web font in: its pull-up over the
+   * hero, the bar's room on top (L) and the strands (D) are all set, so the
+   * sections' scroll-margin-top and the cards' places are final. Until then an
+   * anchor lands wrong on the desktop layout: the browser's own jump on a cold
+   * load of `/#moenstre` came before them, and left the first card 113px under
+   * the bar with the previous category's last row showing.
+   */
+  let galleryLaidOut = $state(false);
+
+  function handleGalleryLayout() {
+    if (galleryLaidOut) return;
+    // The chips' widths, and with them the strands, change once the font is
+    // in; the gallery measures again then and calls back.
+    if (document.fonts && document.fonts.status !== "loaded") return;
+    galleryLaidOut = true;
+  }
+
+  // A category hash is the browser's own jump (see heartAnchorFromHash), made
+  // before the gallery was measured, so it is made again once it has been,
+  // as a chip click would land it: the section's scroll-margin-top under the
+  // stuck bar. See sectionAnchorToLand for when.
+  afterNavigate(({ type, to }) => {
+    const entry = performance.getEntriesByType?.("navigation")[0] as
+      | PerformanceNavigationTiming
+      | undefined;
+    // Set, never cleared here: onMount's own `goto` (pruning `?selected=`)
+    // can come between the page's entry and the gallery's first measure.
+    const id = sectionAnchorToLand(type, to?.url.hash ?? "", entry?.type);
+    if (id) pendingSectionId = id;
+  });
+
+  $effect(() => {
+    const id = pendingSectionId;
+    if (!browser || !id || !galleryLaidOut) return;
+    pendingSectionId = null;
+    const target = document.getElementById(id);
+    if (!target?.closest("#skabeloner")) return;
+    // Instant: the browser's jump was instant too, and this is the same
+    // landing, corrected; a slide would show as a second jump.
+    target.scrollIntoView({ block: "start", behavior: "instant" });
+  });
 
   /** Mirror the ticked hearts into `?selected=`, without adding to history. */
   function updateUrlWithSelections(ids: Set<string>) {
@@ -162,10 +209,13 @@
   // localStorage has been read, so the scroll waits for the list to grow: the
   // `allHearts.length` read below is this effect's dependency, and the id is
   // read and cleared outside it so the effect does not depend on itself.
+  // It also waits for the gallery's measure (galleryLaidOut): until then the
+  // gallery's pull-up and strands move every card after the scroll, which
+  // left a card 105px below the centre on a cold load.
   $effect(() => {
     void allHearts.length;
     const anchorId = untrack(() => pendingAnchorId);
-    if (!browser || !anchorId) return;
+    if (!browser || !anchorId || !galleryLaidOut) return;
     const target = document.getElementById(anchorId);
     if (!target) return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -249,6 +299,7 @@
     onSelect={handleSelect}
     onClick={handleClick}
     onDelete={requestDelete}
+    onLayout={handleGalleryLayout}
   />
 
   <!-- Hangs the hero's hearts while the page is still parsing. It clones them

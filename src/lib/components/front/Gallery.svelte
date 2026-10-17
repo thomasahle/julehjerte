@@ -54,6 +54,13 @@
 		onSelect: (heart: GalleryHeart) => void;
 		onClick: (heart: GalleryHeart) => void;
 		onDelete: (heart: GalleryHeart) => void;
+		/**
+		 * Called once the gallery has been measured and its strands written,
+		 * after every measure: the page waits for it before landing a hash it
+		 * loaded with, because the browser's own jump happened before the
+		 * pull-up, the bar's room and the strands were known.
+		 */
+		onLayout?: () => void;
 	}
 
 	let {
@@ -68,7 +75,8 @@
 		onDownload,
 		onSelect,
 		onClick,
-		onDelete
+		onDelete,
+		onLayout
 	}: Props = $props();
 
 	// Measured by the bar; the sections' scroll-margin-top reads it so a chip's
@@ -137,6 +145,7 @@
 
 		const measure = () => {
 			frame = 0;
+			measured = true;
 			const land = document.querySelector('[data-scene-land] > svg');
 			if (narrow.matches || !land) {
 				wrapLift = null;
@@ -221,8 +230,17 @@
 		// a frame writes a handful of variables rather than a style per card.
 		let pushFrame = 0;
 		let strandsSet = 0;
+		/** A measure has run since the last push: report the layout after it. */
+		let measured = false;
 		const push = () => {
 			pushFrame = 0;
+			strands();
+			if (measured) {
+				measured = false;
+				onLayout?.();
+			}
+		};
+		const strands = () => {
 			const drops = strandDrops;
 			const grid = gallery.querySelector<HTMLElement>('[data-hill-row]');
 			for (let k = drops.length; k < strandsSet; k++) gallery.style.removeProperty(`--strand-${k}`);
