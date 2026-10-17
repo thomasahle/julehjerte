@@ -1,0 +1,84 @@
+{
+  "model": "Ideal alternating horizontal/vertical pairs of radius-1/2 semicircles in unit square cells, matching the poster arrangement. This is an analytic diagnostic, never a solver input.",
+  "rule": "Each sheet has disjoint simple slit paths. At an interior point, at most one path per sheet; each path contributes two local branches, hence at most four visible boundary branches in two sheets. Exactly shared hidden cuts cancel and cannot increase this bound.",
+  "analyticArgument": "At grid corner (1,1), on a circle of radius rho in (0,1/2), each quadrant contains one straight boundary ray and one circular boundary. Their angular separation is asin(rho). Thus there are eight distinct boundary crossings for every such rho, not only for the sampled radii.",
+  "conclusion": "The ideal eight-branch grid junction cannot be reproduced exactly under the regular two-sheet model. This does not establish a positive image-error lower bound or impossibility for the raster/JPEG mask, whose tiny joins may already be perturbed.",
+  "numericalCrossCheck": {
+    "angularSamples": 65536,
+    "rows": [
+      {
+        "location": "interior_grid_corner",
+        "point": [
+          1,
+          1
+        ],
+        "inspectionRadiusInCells": 0.2,
+        "colourTransitions": 8
+      },
+      {
+        "location": "interior_grid_corner",
+        "point": [
+          1,
+          1
+        ],
+        "inspectionRadiusInCells": 0.1,
+        "colourTransitions": 8
+      },
+      {
+        "location": "interior_grid_corner",
+        "point": [
+          1,
+          1
+        ],
+        "inspectionRadiusInCells": 0.05,
+        "colourTransitions": 8
+      },
+      {
+        "location": "interior_grid_corner",
+        "point": [
+          1,
+          1
+        ],
+        "inspectionRadiusInCells": 0.01,
+        "colourTransitions": 8
+      },
+      {
+        "location": "semicircle_tangency",
+        "point": [
+          0.5,
+          0.5
+        ],
+        "inspectionRadiusInCells": 0.2,
+        "colourTransitions": 4
+      },
+      {
+        "location": "semicircle_tangency",
+        "point": [
+          0.5,
+          0.5
+        ],
+        "inspectionRadiusInCells": 0.1,
+        "colourTransitions": 4
+      },
+      {
+        "location": "semicircle_tangency",
+        "point": [
+          0.5,
+          0.5
+        ],
+        "inspectionRadiusInCells": 0.05,
+        "colourTransitions": 4
+      },
+      {
+        "location": "semicircle_tangency",
+        "point": [
+          0.5,
+          0.5
+        ],
+        "inspectionRadiusInCells": 0.01,
+        "colourTransitions": 4
+      }
+    ]
+  },
+  "caveat": "The four-branch cell-centre tangencies alone do not violate this local degree bound. Other global or physical constraints may still apply."
+}

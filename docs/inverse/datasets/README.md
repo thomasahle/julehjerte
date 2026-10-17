@@ -143,12 +143,20 @@ That adapter is fixed, and all four of its tests pass on replay. All other
 this isolated offline fix; the linked record retains both the failed full run
 and the successful focused replay. Lint passes with two existing warnings.
 
-The newer [touching-semicircle mask investigation](curved-triangles.md) records
-a separate visual failure despite passing nominal checks: the 19-second
-approximation has 2.76% editable-mask disagreement, but several circle contacts
-become white channels. At those contacts, the fitted curves are separate cuts
-in the same sheet, so the width constraint prevents closing them without a
-different routing. The screenshot is committed as a development QA fixture.
+The newer [touching-semicircle mask investigation](curved-triangles.md) identifies
+why a nominally valid 2.76% editable approximation opened white channels: the
+opposing curves belonged to different cuts in the same sheet, so closing them
+would violate the width constraint. Coarse rerouting followed by bounded
+clearance repair and common Bézier refinement reduces editable disagreement to
+**0.69%**, with a checked 2 / 4-cut pair in a 24.92-second integrated run. Small
+join defects remain. The screenshot is committed as a development QA regression;
+no saved templates or idealized circles enter its fresh solve. The subsequently
+supplied original Art e Sta poster is also committed as a related QA fixture.
+Its manually selected three-by-three artwork region gives **0.945%** editable
+error in **30.63 seconds** through normal browser upload, fitting and export.
+A shorter diagnostic browser run remains a documented 2.14% failure against the
+stricter regression target; import masks match exactly, exposing timed-search
+variability rather than a crop or classification difference.
 
 ## What the network should learn
 

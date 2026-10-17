@@ -1,0 +1,244 @@
+{
+  "schema": 1,
+  "runtimeCommits": [
+    "c1cd749",
+    "0cfa803",
+    "6941e0b"
+  ],
+  "scope": "Development QA, unchanged source masks, no ground-truth cutting paths or physical assembly. Screenshot and original artwork are related inputs and remain grouped outside neural training.",
+  "firstScreenshotIntegration": {
+    "runtimeCommit": "c1cd749",
+    "fixture": "scripts/inverse/fixtures/user-photos-2026-10-17/curved-triangles.json",
+    "sourceSha256": "3238e9930dc45e7697a55ed72494f05fba2647fb700bfd222cd371c7dd2b5037",
+    "maskSha256": "77de47c5de58acf92d0733486f4458530905d7c847f34d6af49557cca0ca7e42",
+    "observation": {
+      "method": "complete-bilinear-support",
+      "sha256": "b15f8e1cf644f9f9e5583fddd438cb3d0409ddf244e72a58c2784af2b757a354",
+      "observedPixels": 159945,
+      "totalPixels": 160000,
+      "file": "observed.bin"
+    },
+    "scope": "Fixed UI-square extraction, fresh automatic fitting and independently rendered editable SVG; not automatic photograph cropping. No ground-truth cuts or physical assembly.",
+    "sourceHashes": {
+      "static/inverse/core/direct/fit.js": "74ce9290467615132890365df18e6902d7f7e317a64871bf9a392ac9d933f748",
+      "static/inverse/core/direct/rejected-routing.js": "183c0180998ef45fe4711c004b5061c1f9377e6575047aa3d5d04e2811bb1fd8",
+      "static/inverse/core/direct/topology.js": "192e9d960b444dc6abdcc15684b72f2f4b5cd95d857b5725952162df3a645fa9",
+      "static/inverse/core/image-reference.js": "ebb0ccbde29b408ab03bb7993f57d07ffa1de919dbcfaa0a0af5e6ec04ca00b1"
+    },
+    "sourceQualification": "Integrated timings precede the commit adding finer-paper-provenance propagation. This candidate did not need that fallback. Committed sources have a separate full regression run.",
+    "searchAllowanceSeconds": 30,
+    "integratedSeconds": 24.916733249999997,
+    "solveAndValidationSeconds": 24.182804458,
+    "independentError": 0.006708556066147738,
+    "editableError": 0.00688986839225984,
+    "slits": {
+      "left": 2,
+      "right": 4
+    },
+    "coarseTopologySeconds": 11.54120575,
+    "repairSeconds": 4.247732875,
+    "projection": {
+      "fullGeometryAudits": 1,
+      "returnConstraintAudits": 10,
+      "attempted": true,
+      "iterations": 10,
+      "displacements": 77,
+      "initialReturns": 21,
+      "finalReturns": 0,
+      "accepted": true,
+      "termination": "validated",
+      "policy": "all-free-controls",
+      "maxIterations": 128,
+      "maxMilliseconds": 5000,
+      "preservedSymmetry": [],
+      "clearanceMargin": 3.2678471206992734,
+      "linearHandles": 120
+    },
+    "MILPTermination": "rejected_candidate_observer",
+    "geometrySha256": "8e79809038f6fdb90ad42bbecb44ff8b232011e160497682eefdf954467fde67",
+    "templateChecksPassed": true,
+    "editableChecks": {
+      "passed": true,
+      "editorIssues": [],
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "minimumInterSlitDistanceLower": 3.235358008478319
+    },
+    "remainingIssues": [
+      "Small join and border irregularities remain",
+      "Ten-second search is not repaired by this change"
+    ],
+    "artifacts": {
+      "integrated-editable/curved-triangles-automatic.svg": "e569870a42b5e49b62d41d9cca39befe66359405fc6be4f60519050998a892b0",
+      "integrated-comparison.png": "c01accceedef60320e4f186cbb3d98c11b0fdeb2c5187a850fe29dd612522c71"
+    }
+  },
+  "verification": {
+    "fullInverse": {
+      "revision": "c1cd749",
+      "passed": 1048,
+      "failed": 3,
+      "log": "tmp/heart-learning/curved-mask-2026-10-17/qa/inverse.log",
+      "followup": "Three failures corrected in 0cfa803; full suite not rerun afterwards."
+    },
+    "correctedScheduling": {
+      "revision": "0cfa803",
+      "affectedTestsPassed": 38,
+      "applicationTestsPassed": 874,
+      "applicationTestsSkipped": 1,
+      "check": "pass",
+      "lint": "pass, two pre-existing warnings",
+      "build": "pass",
+      "stateSha256": "301c437034a02e1d833714fa664e2a1d05f591e7fbd71db72e5d4916ab25b8de"
+    },
+    "finalCornerComparison": {
+      "revision": "6941e0b",
+      "focusedTestsPassed": 5,
+      "check": "pass",
+      "lint": "pass",
+      "build": "pass",
+      "stateSha256": "16fce0cedbd2aeb9fed1606b6fc3962ac02a1743db9db9deb62e57a912a4d38e"
+    },
+    "hunodanBrowser": {
+      "revision": "0cfa803",
+      "passed": 22,
+      "withinTenSeconds": 22,
+      "medianSeconds": 5.999600000023841,
+      "maximumSeconds": 8.807300000190734,
+      "qualification": "Before the corner-comparison change; none of these recorded paths entered that shortcut."
+    },
+    "finalScreenshotBrowser": {
+      "artifacts": "tmp/heart-learning/curved-mask-2026-10-17/qa-corner/browser-mask",
+      "status": "workflow-passed",
+      "resultSha256": "c76be4949a47aadac7ca03639e10a8036df6d6a04d2abb83476f1c7fd118d5ce",
+      "maskSha256": "77de47c5de58acf92d0733486f4458530905d7c847f34d6af49557cca0ca7e42",
+      "timeLimit": 30,
+      "clickToReadySeconds": 30.45889999985695,
+      "engineError": 0.0141,
+      "editableError": 0.01448125,
+      "slits": {
+        "left": 2,
+        "right": 4
+      },
+      "templateChecksPassed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "minimumInterSlitDistanceLower": 3.835425800361293,
+      "svgSha256": "b0ac413776da6940a7f042bf2c0b1c58c9f0ee908d1909d8ffce1c1421619dab"
+    }
+  },
+  "originalArtwork": {
+    "runtimeCommit": "6941e0b",
+    "catalogue": "scripts/inverse/fixtures/user-photos-2026-10-17/artesta-curved-triangles.json",
+    "catalogueSha256": "19a26f6f47ea84848dcfaae9366aeec383fe44fe227d155762a65467e96f7f3a",
+    "sourceSha256": "e3348a430099a088a2e2ecd23c7d4f85f7a33850d542b711dfb1fd56fc5f9550",
+    "quad": [
+      [
+        177,
+        66
+      ],
+      [
+        546,
+        66
+      ],
+      [
+        546,
+        435
+      ],
+      [
+        177,
+        435
+      ]
+    ],
+    "cropMethod": "Manually selected artwork square before fitting; no automatic heart crop claimed.",
+    "observedPixels": 160000,
+    "node30": {
+      "integratedSeconds": 30.051973292,
+      "solveAndValidationSeconds": 29.416937666,
+      "independentError": 0.01303125,
+      "editableError": 0.01318125,
+      "maskSha256": "d48ec1c8dda844bcfc338fad386313f3691175e7a6aeeb20cc0fc826e539fb7f",
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "slits": {
+        "left": 2,
+        "right": 4
+      },
+      "resultsSha256": "3e8853fbe77b6c2de1acf0c212bb09ebcd5b6fdd70a11e498d017ebe20af8347"
+    },
+    "browser30": {
+      "artifacts": "tmp/heart-learning/curved-mask-2026-10-17/browser-artesta-precise",
+      "status": "failed",
+      "resultSha256": "8b8eb86b660d23ec5a8aa7526a176daf35485192b76f262e1a72e01e11395b6d",
+      "maskSha256": "d48ec1c8dda844bcfc338fad386313f3691175e7a6aeeb20cc0fc826e539fb7f",
+      "timeLimit": 30,
+      "clickToReadySeconds": 30.06539999985695,
+      "engineError": 0.0209125,
+      "editableError": 0.0214,
+      "slits": {
+        "left": 2,
+        "right": 4
+      },
+      "templateChecksPassed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "minimumInterSlitDistanceLower": 4.170985311747296,
+      "svgSha256": "930d9223647482792b9d90e1d9d5df8b9d159e8c676dbafb2c8d99d6c3a77d61"
+    },
+    "browserDefault": {
+      "artifacts": "tmp/heart-learning/curved-mask-2026-10-17/browser-artesta-default",
+      "status": "workflow-passed",
+      "resultSha256": "170404a4c763fc91d2cff00acadbb6e863e618463e192682c239fe229fdc32ab",
+      "maskSha256": "d48ec1c8dda844bcfc338fad386313f3691175e7a6aeeb20cc0fc826e539fb7f",
+      "timeLimit": 180,
+      "clickToReadySeconds": 30.63139999985695,
+      "engineError": 0.0088375,
+      "editableError": 0.00945,
+      "slits": {
+        "left": 2,
+        "right": 4
+      },
+      "templateChecksPassed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "minimumInterSlitDistanceLower": 3.756246438897217,
+      "svgSha256": "524c5b0b61302ab48771932854c798b5a5b52d9eb536cdc415e991767806e777"
+    },
+    "browserCommittedHarness": {
+      "artifacts": "tmp/heart-learning/curved-mask-2026-10-17/browser-artesta-committed",
+      "status": "workflow-passed",
+      "resultSha256": "0d053df706323cbba4460c782806196cba51048b9c5d33c4c138329cea4a024e",
+      "maskSha256": "d48ec1c8dda844bcfc338fad386313f3691175e7a6aeeb20cc0fc826e539fb7f",
+      "timeLimit": 180,
+      "clickToReadySeconds": 30.669,
+      "engineError": 0.0088375,
+      "editableError": 0.00945,
+      "slits": {
+        "left": 2,
+        "right": 4
+      },
+      "templateChecksPassed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "minimumInterSlitDistanceLower": 3.756246438897217,
+      "svgSha256": "524c5b0b61302ab48771932854c798b5a5b52d9eb536cdc415e991767806e777"
+    },
+    "browserHarness": "scripts/inverse/curved-contact-browser-test.mjs",
+    "browserHarnessSha256": "a21382c3d6b52d24716bac509fdb21064e92c37cd6fc668eb52950bad3627a1d",
+    "importMasksIdenticalAcrossNodeAndBrowser": true,
+    "remainingIssues": [
+      "Small join and border defects",
+      "Thirty-second browser run misses the stricter 1.5% target despite identical input mask",
+      "Deadline-dependent candidate/refinement variability remains"
+    ]
+  },
+  "idealArtworkTopology": {
+    "diagnostic": "docs/inverse/datasets/curved-triangles-topology.json",
+    "diagnosticSha256": "9b26615c1cc9a98f150fd4fa37c34871197fa6b1271fffbc889bab9b820fca34",
+    "idealGridCornerDegree": 8,
+    "maximumRegularTwoSheetDegree": 4,
+    "exactIdealJunctionRepresentable": false,
+    "rasterImpossibilityProven": false,
+    "minimumErrorBoundProven": false
+  }
+}
