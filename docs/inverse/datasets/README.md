@@ -37,6 +37,14 @@ skip). The inverse suite reported 16 failures before it was stopped for the
 user-requested disk cleanup; verification is incomplete. Dense count expansion
 and smoothing remain offline.
 
+Three isolated follow-ups now pass without code, fixture or timeout changes:
+the shaded diagonal-channel crop, rabbit border routing, and stacked-heart
+clearance projection. They ran sequentially at low process priority; the
+projection took 2.95 seconds after exhausting its ten-second repair allowance
+in the interrupted run. This supports sensitivity to runtime conditions but
+does not establish the cause of all sixteen failures or clear the full suite.
+The [release record](base-count-release-qa.json) retains both observations.
+
 A [57-input interior-transition diagnostic](interior-count-evidence-results.json)
 finds more than eight transitions in 97% and 88% of the dense checker's
 interior bands, despite its edge-based ceiling remaining eight. An exploratory
@@ -63,6 +71,25 @@ fails feature checks: its frozen calibration estimated blue/green paper from
 the incorrectly selected background, leaving a nearly uniform target. This is
 a material-stage failure despite less than 1% mask error. Full follow-up QA is pending. No model is deployed,
 and these seven source-assisted examples are not a new held-out benchmark.
+
+A [paired material-calibration follow-up](selected-sam-calibration-results.json)
+now uses each saved SAM body to choose paper-color samples, while keeping the
+photograph, crop, coverage and color model fixed. All seven old calibrations
+and nine old masks reproduce exactly before the intervention. On the printed
+red/green heart, this replaces the incorrect blue/green background palette and
+restores the four main cells, but snowflake ink still becomes false material
+boundaries. The new target and its reconstruction remain failures.
+
+Both arms retain **five checked masks across fourteen prompt attempts**, with
+one belonging to the wrong neighboring heart: **three distinct intended
+sources** pass in each arm. All eighteen exported pairs pass editable
+conversion and geometry/paper checks; eight still fail image or feature checks.
+Visual review retains the cross's false central diamond, star border defects,
+dense-checker distortions and printed-leaf contamination in the gold tree.
+This is a diagnosed conditioning problem, not an increase in recovered hearts.
+The experiment stays offline; errors against its changed targets are not a
+common-ground-truth accuracy comparison. It ran one low-priority process at a
+time, used about 89 MiB, and needed neither new inference nor Chrome.
 
 The established photo benchmark and the neural experiments have different
 inputs and denominators. Their latest completed comparisons are:

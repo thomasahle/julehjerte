@@ -1,0 +1,2121 @@
+{
+  "schema": "saved-sam-calibration-results-1",
+  "status": "paired-calibration-fits-and-editable-audit-complete",
+  "gitHead": "3d5d780",
+  "runtimeCommit": "ff4827e",
+  "deployed": false,
+  "runtimeChanged": false,
+  "trainingPerformed": false,
+  "newInferencePerformed": false,
+  "scope": "Seven inspected development photographs, fourteen frozen prompt/crop attempts, two calibration arms. Some sources overlap CNN training. These are not held-out photos or new independent examples; the established 31-photo benchmark is unchanged.",
+  "intervention": "Only replace the foreground probability used to sample the RGB palette with the saved SAM body. Preserve full-photo RGB, network material prior, sampling window, supplied selections, frozen crop, coverage, palette algorithm, threshold, and ten-second automatic fitter settings. No crop fitting or outcome-based target tuning.",
+  "revision": "Explicit v2 preparation reviewed sixteen storage-only benchmark-writer pin changes from 41221c0; all runtime and original input pins stayed unchanged. v1 preserved.",
+  "verification": {
+    "pinsVerified": 578,
+    "generatedAssetHashesVerified": 334,
+    "oldCalibrationReproducedExactly": 7,
+    "old400PixelMasksReproducedExactly": 9,
+    "pairedInputsAndCoverageIdentical": 9,
+    "nativeExportsRendered": 18,
+    "editableConversions": 18,
+    "editableGeometryAndPaperPass": 18,
+    "nativeRuntimeUnchanged": true,
+    "browserInteractionTested": false
+  },
+  "counts": {
+    "frozen-old": {
+      "promptAttempts": 14,
+      "cropCandidates": 9,
+      "cropUnresolved": 5,
+      "fits": 9,
+      "checkedDerivedMasks": 5,
+      "checkedIntendedPromptAttempts": 4,
+      "uniqueCheckedIntendedSources": 3,
+      "editableComplete": 5
+    },
+    "sam-conditioned": {
+      "promptAttempts": 14,
+      "cropCandidates": 9,
+      "cropUnresolved": 5,
+      "fits": 9,
+      "checkedDerivedMasks": 5,
+      "checkedIntendedPromptAttempts": 4,
+      "uniqueCheckedIntendedSources": 3,
+      "editableComplete": 5
+    }
+  },
+  "rows": [
+    {
+      "id": "real-7e2c5568d27c2860-roi__automatic-box__frozen-old",
+      "parentPromptId": "real-7e2c5568d27c2860-roi__automatic-box",
+      "sourceCaseId": "real-7e2c5568d27c2860-roi",
+      "sourceGroup": "real-split-9026287107aa6a63",
+      "nearDuplicateGroup": "real-592223f36bcf2c87",
+      "promptArm": "automatic-box",
+      "materialArm": "frozen-old",
+      "status": "crop-unresolved",
+      "motif": "Danish cross",
+      "wrongSelectedObject": false,
+      "oldCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 8537,
+        "applied": true,
+        "colors": [
+          [
+            0.8549019607843137,
+            0.24313725490196078,
+            0.3137254901960784
+          ],
+          [
+            0.8196078431372549,
+            0.8588235294117647,
+            0.9058823529411765
+          ]
+        ],
+        "seedCounts": [
+          5935,
+          2602
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.06485533599064876
+      },
+      "newCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 4648,
+        "applied": true,
+        "colors": [
+          [
+            0.8705882352941177,
+            0.2196078431372549,
+            0.2823529411764706
+          ],
+          [
+            0.8431372549019608,
+            0.8666666666666667,
+            0.9098039215686274
+          ]
+        ],
+        "seedCounts": [
+          2937,
+          1711
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.07216715558415772
+      }
+    },
+    {
+      "id": "real-7e2c5568d27c2860-roi__automatic-box__sam-conditioned",
+      "parentPromptId": "real-7e2c5568d27c2860-roi__automatic-box",
+      "sourceCaseId": "real-7e2c5568d27c2860-roi",
+      "sourceGroup": "real-split-9026287107aa6a63",
+      "nearDuplicateGroup": "real-592223f36bcf2c87",
+      "promptArm": "automatic-box",
+      "materialArm": "sam-conditioned",
+      "status": "crop-unresolved",
+      "motif": "Danish cross",
+      "wrongSelectedObject": false,
+      "oldCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 8537,
+        "applied": true,
+        "colors": [
+          [
+            0.8549019607843137,
+            0.24313725490196078,
+            0.3137254901960784
+          ],
+          [
+            0.8196078431372549,
+            0.8588235294117647,
+            0.9058823529411765
+          ]
+        ],
+        "seedCounts": [
+          5935,
+          2602
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.06485533599064876
+      },
+      "newCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 4648,
+        "applied": true,
+        "colors": [
+          [
+            0.8705882352941177,
+            0.2196078431372549,
+            0.2823529411764706
+          ],
+          [
+            0.8431372549019608,
+            0.8666666666666667,
+            0.9098039215686274
+          ]
+        ],
+        "seedCounts": [
+          2937,
+          1711
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.07216715558415772
+      }
+    },
+    {
+      "id": "real-7e2c5568d27c2860-roi__selection-box__sam-conditioned",
+      "parentPromptId": "real-7e2c5568d27c2860-roi__selection-box",
+      "sourceCaseId": "real-7e2c5568d27c2860-roi",
+      "sourceGroup": "real-split-9026287107aa6a63",
+      "nearDuplicateGroup": "real-592223f36bcf2c87",
+      "promptArm": "selection-box",
+      "materialArm": "sam-conditioned",
+      "status": "checked-derived-mask",
+      "motif": "Danish cross",
+      "wrongSelectedObject": false,
+      "oldCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 8537,
+        "applied": true,
+        "colors": [
+          [
+            0.8549019607843137,
+            0.24313725490196078,
+            0.3137254901960784
+          ],
+          [
+            0.8196078431372549,
+            0.8588235294117647,
+            0.9058823529411765
+          ]
+        ],
+        "seedCounts": [
+          5935,
+          2602
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.06485533599064876
+      },
+      "newCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 2532,
+        "applied": true,
+        "colors": [
+          [
+            0.8862745098039215,
+            0.24313725490196078,
+            0.28627450980392155
+          ],
+          [
+            0.8509803921568627,
+            0.8784313725490196,
+            0.9176470588235294
+          ]
+        ],
+        "seedCounts": [
+          1513,
+          1019
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.07006669548062074
+      },
+      "targetMaskSha256": "08c8f6e3ce7f04e282b75587038baaa3263ba738ba43bf40af7c578da6af6722",
+      "cropSha256": "968d1b535e39de725e96b03dd8022b3b9135d95c0615448b79a0f1a54943cccd",
+      "observedPixels": 160000,
+      "rawMaskChange": 0.00630625,
+      "phaseInvariantMaskChange": 0.00630625,
+      "minorityMaskFraction": 0.32248125,
+      "solveSeconds": 4.188895542,
+      "counts": {
+        "left": 2,
+        "right": 2
+      },
+      "nativeError": 0.0036625,
+      "nativeGeometryPassed": true,
+      "nativePaper": "pass",
+      "featuresPassed": true,
+      "checkedDerivedMask": true,
+      "editableError": 0.00354375,
+      "conversionPassed": true,
+      "editableGeometryPassed": true,
+      "editablePaper": "pass",
+      "editableComplete": true
+    },
+    {
+      "id": "real-7e2c5568d27c2860-roi__selection-box__frozen-old",
+      "parentPromptId": "real-7e2c5568d27c2860-roi__selection-box",
+      "sourceCaseId": "real-7e2c5568d27c2860-roi",
+      "sourceGroup": "real-split-9026287107aa6a63",
+      "nearDuplicateGroup": "real-592223f36bcf2c87",
+      "promptArm": "selection-box",
+      "materialArm": "frozen-old",
+      "status": "checked-derived-mask",
+      "motif": "Danish cross",
+      "wrongSelectedObject": false,
+      "oldCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 8537,
+        "applied": true,
+        "colors": [
+          [
+            0.8549019607843137,
+            0.24313725490196078,
+            0.3137254901960784
+          ],
+          [
+            0.8196078431372549,
+            0.8588235294117647,
+            0.9058823529411765
+          ]
+        ],
+        "seedCounts": [
+          5935,
+          2602
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.06485533599064876
+      },
+      "newCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 2532,
+        "applied": true,
+        "colors": [
+          [
+            0.8862745098039215,
+            0.24313725490196078,
+            0.28627450980392155
+          ],
+          [
+            0.8509803921568627,
+            0.8784313725490196,
+            0.9176470588235294
+          ]
+        ],
+        "seedCounts": [
+          1513,
+          1019
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.07006669548062074
+      },
+      "targetMaskSha256": "ac772a3edb18417b11802e9201b154841ee3c35f73063fecd146735c7ab8158d",
+      "cropSha256": "968d1b535e39de725e96b03dd8022b3b9135d95c0615448b79a0f1a54943cccd",
+      "observedPixels": 160000,
+      "rawMaskChange": 0.00630625,
+      "phaseInvariantMaskChange": 0.00630625,
+      "minorityMaskFraction": 0.316175,
+      "solveSeconds": 3.966162624999999,
+      "counts": {
+        "left": 2,
+        "right": 2
+      },
+      "nativeError": 0.00413125,
+      "nativeGeometryPassed": true,
+      "nativePaper": "pass",
+      "featuresPassed": true,
+      "checkedDerivedMask": true,
+      "editableError": 0.004075,
+      "conversionPassed": true,
+      "editableGeometryPassed": true,
+      "editablePaper": "pass",
+      "editableComplete": true
+    },
+    {
+      "id": "real-ca2f9adc67ee4cea-roi__selection-box__frozen-old",
+      "parentPromptId": "real-ca2f9adc67ee4cea-roi__selection-box",
+      "sourceCaseId": "real-ca2f9adc67ee4cea-roi",
+      "sourceGroup": "real-split-9000149a8629b681",
+      "nearDuplicateGroup": "real-ca2f9adc67ee4cea",
+      "promptArm": "selection-box",
+      "materialArm": "frozen-old",
+      "status": "checked-derived-mask",
+      "motif": "Six-point star scene",
+      "wrongSelectedObject": false,
+      "oldCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 7794,
+        "applied": true,
+        "colors": [
+          [
+            0.8509803921568627,
+            0.29411764705882354,
+            0.3568627450980392
+          ],
+          [
+            0.5725490196078431,
+            0.7843137254901961,
+            0.48627450980392156
+          ]
+        ],
+        "seedCounts": [
+          5456,
+          2338
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.08126829208933269
+      },
+      "newCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 6804,
+        "applied": true,
+        "colors": [
+          [
+            0.35490196078431374,
+            0.5843137254901961,
+            0.26666666666666666
+          ],
+          [
+            0.8313725490196079,
+            0.17647058823529413,
+            0.21176470588235294
+          ]
+        ],
+        "seedCounts": [
+          3318,
+          3486
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.16407436043522208
+      },
+      "targetMaskSha256": "5b3b7484aabb4c94cf869ee95af2a80b703c1839adb7451b971d9603478114f2",
+      "cropSha256": "88203345440197e63ee9d9b1fe83a67fb70f9d2d926212e4f316d44093b13274",
+      "observedPixels": 160000,
+      "rawMaskChange": 0.9703375,
+      "phaseInvariantMaskChange": 0.029662500000000036,
+      "minorityMaskFraction": 0.47924375,
+      "solveSeconds": 9.444122709000002,
+      "counts": {
+        "left": 4,
+        "right": 4
+      },
+      "nativeError": 0.00813125,
+      "nativeGeometryPassed": true,
+      "nativePaper": "pass",
+      "featuresPassed": true,
+      "checkedDerivedMask": true,
+      "editableError": 0.00815,
+      "conversionPassed": true,
+      "editableGeometryPassed": true,
+      "editablePaper": "pass",
+      "editableComplete": true
+    },
+    {
+      "id": "real-ca2f9adc67ee4cea-roi__selection-box__sam-conditioned",
+      "parentPromptId": "real-ca2f9adc67ee4cea-roi__selection-box",
+      "sourceCaseId": "real-ca2f9adc67ee4cea-roi",
+      "sourceGroup": "real-split-9000149a8629b681",
+      "nearDuplicateGroup": "real-ca2f9adc67ee4cea",
+      "promptArm": "selection-box",
+      "materialArm": "sam-conditioned",
+      "status": "checked-derived-mask",
+      "motif": "Six-point star scene",
+      "wrongSelectedObject": false,
+      "oldCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 7794,
+        "applied": true,
+        "colors": [
+          [
+            0.8509803921568627,
+            0.29411764705882354,
+            0.3568627450980392
+          ],
+          [
+            0.5725490196078431,
+            0.7843137254901961,
+            0.48627450980392156
+          ]
+        ],
+        "seedCounts": [
+          5456,
+          2338
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.08126829208933269
+      },
+      "newCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 6804,
+        "applied": true,
+        "colors": [
+          [
+            0.35490196078431374,
+            0.5843137254901961,
+            0.26666666666666666
+          ],
+          [
+            0.8313725490196079,
+            0.17647058823529413,
+            0.21176470588235294
+          ]
+        ],
+        "seedCounts": [
+          3318,
+          3486
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.16407436043522208
+      },
+      "targetMaskSha256": "54c0d2c30b0befe2ad88126f4985a3cfea74a9af5143d61f8b8158cc61f843dc",
+      "cropSha256": "88203345440197e63ee9d9b1fe83a67fb70f9d2d926212e4f316d44093b13274",
+      "observedPixels": 160000,
+      "rawMaskChange": 0.9703375,
+      "phaseInvariantMaskChange": 0.029662500000000036,
+      "minorityMaskFraction": 0.49109375,
+      "solveSeconds": 7.644102583,
+      "counts": {
+        "left": 4,
+        "right": 4
+      },
+      "nativeError": 0.00825625,
+      "nativeGeometryPassed": true,
+      "nativePaper": "pass",
+      "featuresPassed": true,
+      "checkedDerivedMask": true,
+      "editableError": 0.00813125,
+      "conversionPassed": true,
+      "editableGeometryPassed": true,
+      "editablePaper": "pass",
+      "editableComplete": true
+    },
+    {
+      "id": "real-ca2f9adc67ee4cea-roi__automatic-box__sam-conditioned",
+      "parentPromptId": "real-ca2f9adc67ee4cea-roi__automatic-box",
+      "sourceCaseId": "real-ca2f9adc67ee4cea-roi",
+      "sourceGroup": "real-split-9000149a8629b681",
+      "nearDuplicateGroup": "real-ca2f9adc67ee4cea",
+      "promptArm": "automatic-box",
+      "materialArm": "sam-conditioned",
+      "status": "checked-derived-mask",
+      "motif": "Six-point star scene",
+      "wrongSelectedObject": true,
+      "oldCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 7794,
+        "applied": true,
+        "colors": [
+          [
+            0.8509803921568627,
+            0.29411764705882354,
+            0.3568627450980392
+          ],
+          [
+            0.5725490196078431,
+            0.7843137254901961,
+            0.48627450980392156
+          ]
+        ],
+        "seedCounts": [
+          5456,
+          2338
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.08126829208933269
+      },
+      "newCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 7197,
+        "applied": true,
+        "colors": [
+          [
+            0.8588235294117647,
+            0.33725490196078434,
+            0.4
+          ],
+          [
+            0.5725490196078431,
+            0.7803921568627451,
+            0.48627450980392156
+          ]
+        ],
+        "seedCounts": [
+          4063,
+          3134
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.06817811529185978
+      },
+      "targetMaskSha256": "08069ddc538bfc8268826ac448eb910ae7802a4cdbea21828648980de86534ac",
+      "cropSha256": "964a4cb6bce834cc033a3f981be2460f8c2ee701df4b9993ecc292ad01b1f297",
+      "observedPixels": 160000,
+      "rawMaskChange": 0.00989375,
+      "phaseInvariantMaskChange": 0.00989375,
+      "minorityMaskFraction": 0.35501875,
+      "solveSeconds": 5.298613957999998,
+      "counts": {
+        "left": 4,
+        "right": 4
+      },
+      "nativeError": 0.00405,
+      "nativeGeometryPassed": true,
+      "nativePaper": "pass",
+      "featuresPassed": true,
+      "checkedDerivedMask": true,
+      "editableError": 0.0040125,
+      "conversionPassed": true,
+      "editableGeometryPassed": true,
+      "editablePaper": "pass",
+      "editableComplete": true
+    },
+    {
+      "id": "real-ca2f9adc67ee4cea-roi__automatic-box__frozen-old",
+      "parentPromptId": "real-ca2f9adc67ee4cea-roi__automatic-box",
+      "sourceCaseId": "real-ca2f9adc67ee4cea-roi",
+      "sourceGroup": "real-split-9000149a8629b681",
+      "nearDuplicateGroup": "real-ca2f9adc67ee4cea",
+      "promptArm": "automatic-box",
+      "materialArm": "frozen-old",
+      "status": "checked-derived-mask",
+      "motif": "Six-point star scene",
+      "wrongSelectedObject": true,
+      "oldCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 7794,
+        "applied": true,
+        "colors": [
+          [
+            0.8509803921568627,
+            0.29411764705882354,
+            0.3568627450980392
+          ],
+          [
+            0.5725490196078431,
+            0.7843137254901961,
+            0.48627450980392156
+          ]
+        ],
+        "seedCounts": [
+          5456,
+          2338
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.08126829208933269
+      },
+      "newCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 7197,
+        "applied": true,
+        "colors": [
+          [
+            0.8588235294117647,
+            0.33725490196078434,
+            0.4
+          ],
+          [
+            0.5725490196078431,
+            0.7803921568627451,
+            0.48627450980392156
+          ]
+        ],
+        "seedCounts": [
+          4063,
+          3134
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.06817811529185978
+      },
+      "targetMaskSha256": "cc32a9a6de80e7f3a17656f50880bf254dcd4c9e09e80275b2f74b3f3b577b1d",
+      "cropSha256": "964a4cb6bce834cc033a3f981be2460f8c2ee701df4b9993ecc292ad01b1f297",
+      "observedPixels": 160000,
+      "rawMaskChange": 0.00989375,
+      "phaseInvariantMaskChange": 0.00989375,
+      "minorityMaskFraction": 0.3649125,
+      "solveSeconds": 4.994408166999998,
+      "counts": {
+        "left": 4,
+        "right": 4
+      },
+      "nativeError": 0.00390625,
+      "nativeGeometryPassed": true,
+      "nativePaper": "pass",
+      "featuresPassed": true,
+      "checkedDerivedMask": true,
+      "editableError": 0.00384375,
+      "conversionPassed": true,
+      "editableGeometryPassed": true,
+      "editablePaper": "pass",
+      "editableComplete": true
+    },
+    {
+      "id": "real-f1af2fbb127278e4-roi__automatic-box__frozen-old",
+      "parentPromptId": "real-f1af2fbb127278e4-roi__automatic-box",
+      "sourceCaseId": "real-f1af2fbb127278e4-roi",
+      "sourceGroup": "real-split-1c907ad4f70d8815",
+      "nearDuplicateGroup": "real-f1af2fbb127278e4",
+      "promptArm": "automatic-box",
+      "materialArm": "frozen-old",
+      "status": "review-required",
+      "motif": "Dense checker",
+      "wrongSelectedObject": false,
+      "oldCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 12444,
+        "applied": true,
+        "colors": [
+          [
+            0.5176470588235295,
+            0.24705882352941178,
+            0.3568627450980392
+          ],
+          [
+            0.8117647058823529,
+            0.7568627450980392,
+            0.6745098039215687
+          ]
+        ],
+        "seedCounts": [
+          6337,
+          6107
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.011314278522949238
+      },
+      "newCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 11917,
+        "applied": true,
+        "colors": [
+          [
+            0.5176470588235295,
+            0.25098039215686274,
+            0.3568627450980392
+          ],
+          [
+            0.807843137254902,
+            0.7529411764705882,
+            0.6745098039215687
+          ]
+        ],
+        "seedCounts": [
+          6560,
+          5357
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.01090900418050373
+      },
+      "targetMaskSha256": "23a51e082e323dba4f8f6b9f80167ea6254a20760547371ac4f06d20091042d3",
+      "cropSha256": "fabae7080df641aa57c84f6bba3d8dfafb34a47573612f828e17714d0c745de2",
+      "observedPixels": 160000,
+      "rawMaskChange": 0.00186875,
+      "phaseInvariantMaskChange": 0.00186875,
+      "minorityMaskFraction": 0.492075,
+      "solveSeconds": 10.809751084000004,
+      "counts": {
+        "left": 8,
+        "right": 8
+      },
+      "nativeError": 0.055975,
+      "nativeGeometryPassed": true,
+      "nativePaper": "pass",
+      "featuresPassed": true,
+      "checkedDerivedMask": false,
+      "editableError": 0.05635,
+      "conversionPassed": true,
+      "editableGeometryPassed": true,
+      "editablePaper": "pass",
+      "editableComplete": false
+    },
+    {
+      "id": "real-f1af2fbb127278e4-roi__automatic-box__sam-conditioned",
+      "parentPromptId": "real-f1af2fbb127278e4-roi__automatic-box",
+      "sourceCaseId": "real-f1af2fbb127278e4-roi",
+      "sourceGroup": "real-split-1c907ad4f70d8815",
+      "nearDuplicateGroup": "real-f1af2fbb127278e4",
+      "promptArm": "automatic-box",
+      "materialArm": "sam-conditioned",
+      "status": "review-required",
+      "motif": "Dense checker",
+      "wrongSelectedObject": false,
+      "oldCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 12444,
+        "applied": true,
+        "colors": [
+          [
+            0.5176470588235295,
+            0.24705882352941178,
+            0.3568627450980392
+          ],
+          [
+            0.8117647058823529,
+            0.7568627450980392,
+            0.6745098039215687
+          ]
+        ],
+        "seedCounts": [
+          6337,
+          6107
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.011314278522949238
+      },
+      "newCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 11917,
+        "applied": true,
+        "colors": [
+          [
+            0.5176470588235295,
+            0.25098039215686274,
+            0.3568627450980392
+          ],
+          [
+            0.807843137254902,
+            0.7529411764705882,
+            0.6745098039215687
+          ]
+        ],
+        "seedCounts": [
+          6560,
+          5357
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.01090900418050373
+      },
+      "targetMaskSha256": "1c27b84257492a6d846096dc36b782c155ca005d0cb01ea1895bcad3c8e1e168",
+      "cropSha256": "fabae7080df641aa57c84f6bba3d8dfafb34a47573612f828e17714d0c745de2",
+      "observedPixels": 160000,
+      "rawMaskChange": 0.00186875,
+      "phaseInvariantMaskChange": 0.00186875,
+      "minorityMaskFraction": 0.49394375,
+      "solveSeconds": 11.428234790999996,
+      "counts": {
+        "left": 8,
+        "right": 8
+      },
+      "nativeError": 0.04628125,
+      "nativeGeometryPassed": true,
+      "nativePaper": "pass",
+      "featuresPassed": true,
+      "checkedDerivedMask": false,
+      "editableError": 0.04650625,
+      "conversionPassed": true,
+      "editableGeometryPassed": true,
+      "editablePaper": "pass",
+      "editableComplete": false
+    },
+    {
+      "id": "real-f1af2fbb127278e4-roi__selection-box__sam-conditioned",
+      "parentPromptId": "real-f1af2fbb127278e4-roi__selection-box",
+      "sourceCaseId": "real-f1af2fbb127278e4-roi",
+      "sourceGroup": "real-split-1c907ad4f70d8815",
+      "nearDuplicateGroup": "real-f1af2fbb127278e4",
+      "promptArm": "selection-box",
+      "materialArm": "sam-conditioned",
+      "status": "review-required",
+      "motif": "Dense checker",
+      "wrongSelectedObject": false,
+      "oldCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 12444,
+        "applied": true,
+        "colors": [
+          [
+            0.5176470588235295,
+            0.24705882352941178,
+            0.3568627450980392
+          ],
+          [
+            0.8117647058823529,
+            0.7568627450980392,
+            0.6745098039215687
+          ]
+        ],
+        "seedCounts": [
+          6337,
+          6107
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.011314278522949238
+      },
+      "newCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 12487,
+        "applied": true,
+        "colors": [
+          [
+            0.5176470588235295,
+            0.25098039215686274,
+            0.3568627450980392
+          ],
+          [
+            0.8117647058823529,
+            0.7529411764705882,
+            0.6745098039215687
+          ]
+        ],
+        "seedCounts": [
+          6677,
+          5810
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.010720720932686185
+      },
+      "targetMaskSha256": "ce5ad04f4df4408105107ae65938331db63aadf8c6ea0003e86a64bc7e88d1a1",
+      "cropSha256": "796213cadef46be019552db62d841f9263ed02fa1925f41eac65b922a1468a83",
+      "observedPixels": 159985,
+      "rawMaskChange": 0.00036878457355377065,
+      "phaseInvariantMaskChange": 0.00036878457355377065,
+      "minorityMaskFraction": 0.49366875,
+      "solveSeconds": 10.867731333000004,
+      "counts": {
+        "left": 8,
+        "right": 8
+      },
+      "nativeError": 0.049760915085789295,
+      "nativeGeometryPassed": true,
+      "nativePaper": "pass",
+      "featuresPassed": true,
+      "checkedDerivedMask": false,
+      "editableError": 0.05022345844922962,
+      "conversionPassed": true,
+      "editableGeometryPassed": true,
+      "editablePaper": "pass",
+      "editableComplete": false
+    },
+    {
+      "id": "real-f1af2fbb127278e4-roi__selection-box__frozen-old",
+      "parentPromptId": "real-f1af2fbb127278e4-roi__selection-box",
+      "sourceCaseId": "real-f1af2fbb127278e4-roi",
+      "sourceGroup": "real-split-1c907ad4f70d8815",
+      "nearDuplicateGroup": "real-f1af2fbb127278e4",
+      "promptArm": "selection-box",
+      "materialArm": "frozen-old",
+      "status": "review-required",
+      "motif": "Dense checker",
+      "wrongSelectedObject": false,
+      "oldCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 12444,
+        "applied": true,
+        "colors": [
+          [
+            0.5176470588235295,
+            0.24705882352941178,
+            0.3568627450980392
+          ],
+          [
+            0.8117647058823529,
+            0.7568627450980392,
+            0.6745098039215687
+          ]
+        ],
+        "seedCounts": [
+          6337,
+          6107
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.011314278522949238
+      },
+      "newCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 12487,
+        "applied": true,
+        "colors": [
+          [
+            0.5176470588235295,
+            0.25098039215686274,
+            0.3568627450980392
+          ],
+          [
+            0.8117647058823529,
+            0.7529411764705882,
+            0.6745098039215687
+          ]
+        ],
+        "seedCounts": [
+          6677,
+          5810
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.010720720932686185
+      },
+      "targetMaskSha256": "c7fcfb80f95d948a81c720f9e66a2b59a7949aa960435581daae73f9c3c7f998",
+      "cropSha256": "796213cadef46be019552db62d841f9263ed02fa1925f41eac65b922a1468a83",
+      "observedPixels": 159985,
+      "rawMaskChange": 0.00036878457355377065,
+      "phaseInvariantMaskChange": 0.00036878457355377065,
+      "minorityMaskFraction": 0.4939375,
+      "solveSeconds": 10.969620750000002,
+      "counts": {
+        "left": 8,
+        "right": 8
+      },
+      "nativeError": 0.05066099946870019,
+      "nativeGeometryPassed": true,
+      "nativePaper": "pass",
+      "featuresPassed": true,
+      "checkedDerivedMask": false,
+      "editableError": 0.05105478638622371,
+      "conversionPassed": true,
+      "editableGeometryPassed": true,
+      "editablePaper": "pass",
+      "editableComplete": false
+    },
+    {
+      "id": "real-80c07aedd993f117-roi__selection-box__frozen-old",
+      "parentPromptId": "real-80c07aedd993f117-roi__selection-box",
+      "sourceCaseId": "real-80c07aedd993f117-roi",
+      "sourceGroup": "real-split-018c84732bc5d243",
+      "nearDuplicateGroup": "real-80c07aedd993f117",
+      "promptArm": "selection-box",
+      "materialArm": "frozen-old",
+      "status": "review-required",
+      "motif": "Printed red/green checker",
+      "wrongSelectedObject": false,
+      "oldCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 6837,
+        "applied": true,
+        "colors": [
+          [
+            0.24313725490196078,
+            0.33725490196078434,
+            0.6470588235294118
+          ],
+          [
+            0.4823529411764706,
+            0.7058823529411765,
+            0.5725490196078431
+          ]
+        ],
+        "seedCounts": [
+          5261,
+          1576
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.03947080121790097
+      },
+      "newCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 3866,
+        "applied": true,
+        "colors": [
+          [
+            0.8235294117647058,
+            0.2901960784313726,
+            0.42745098039215684
+          ],
+          [
+            0.4470588235294118,
+            0.7098039215686275,
+            0.6039215686274509
+          ]
+        ],
+        "seedCounts": [
+          1643,
+          2223
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.09351450226299356
+      },
+      "targetMaskSha256": "257f6c53189317c13aea647fab83da25fa9cf647fce70dfcc40d40b288357d5d",
+      "cropSha256": "f8f3a95249e2c7a5206622d7ccdb0e2e88bffd6a434e0af2e23d2409ccccc39d",
+      "observedPixels": 160000,
+      "rawMaskChange": 0.41375,
+      "phaseInvariantMaskChange": 0.41375,
+      "minorityMaskFraction": 0.0097625,
+      "solveSeconds": 8.109726458000004,
+      "counts": {
+        "left": 1,
+        "right": 1
+      },
+      "nativeError": 0.00723125,
+      "nativeGeometryPassed": true,
+      "nativePaper": "pass",
+      "featuresPassed": false,
+      "checkedDerivedMask": false,
+      "editableError": 0.00721875,
+      "conversionPassed": true,
+      "editableGeometryPassed": true,
+      "editablePaper": "pass",
+      "editableComplete": false
+    },
+    {
+      "id": "real-80c07aedd993f117-roi__selection-box__sam-conditioned",
+      "parentPromptId": "real-80c07aedd993f117-roi__selection-box",
+      "sourceCaseId": "real-80c07aedd993f117-roi",
+      "sourceGroup": "real-split-018c84732bc5d243",
+      "nearDuplicateGroup": "real-80c07aedd993f117",
+      "promptArm": "selection-box",
+      "materialArm": "sam-conditioned",
+      "status": "review-required",
+      "motif": "Printed red/green checker",
+      "wrongSelectedObject": false,
+      "oldCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 6837,
+        "applied": true,
+        "colors": [
+          [
+            0.24313725490196078,
+            0.33725490196078434,
+            0.6470588235294118
+          ],
+          [
+            0.4823529411764706,
+            0.7058823529411765,
+            0.5725490196078431
+          ]
+        ],
+        "seedCounts": [
+          5261,
+          1576
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.03947080121790097
+      },
+      "newCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 3866,
+        "applied": true,
+        "colors": [
+          [
+            0.8235294117647058,
+            0.2901960784313726,
+            0.42745098039215684
+          ],
+          [
+            0.4470588235294118,
+            0.7098039215686275,
+            0.6039215686274509
+          ]
+        ],
+        "seedCounts": [
+          1643,
+          2223
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.09351450226299356
+      },
+      "targetMaskSha256": "ecd4d485ddb3ac864013e6c0b67ae3f6795a202f96ae37b71488c4f686e076af",
+      "cropSha256": "f8f3a95249e2c7a5206622d7ccdb0e2e88bffd6a434e0af2e23d2409ccccc39d",
+      "observedPixels": 160000,
+      "rawMaskChange": 0.41375,
+      "phaseInvariantMaskChange": 0.41375,
+      "minorityMaskFraction": 0.405825,
+      "solveSeconds": 7.477800625000003,
+      "counts": {
+        "left": 2,
+        "right": 2
+      },
+      "nativeError": 0.04165625,
+      "nativeGeometryPassed": true,
+      "nativePaper": "pass",
+      "featuresPassed": false,
+      "checkedDerivedMask": false,
+      "editableError": 0.0416375,
+      "conversionPassed": true,
+      "editableGeometryPassed": true,
+      "editablePaper": "pass",
+      "editableComplete": false
+    },
+    {
+      "id": "real-80c07aedd993f117-roi__automatic-box__sam-conditioned",
+      "parentPromptId": "real-80c07aedd993f117-roi__automatic-box",
+      "sourceCaseId": "real-80c07aedd993f117-roi",
+      "sourceGroup": "real-split-018c84732bc5d243",
+      "nearDuplicateGroup": "real-80c07aedd993f117",
+      "promptArm": "automatic-box",
+      "materialArm": "sam-conditioned",
+      "status": "crop-unresolved",
+      "motif": "Printed red/green checker",
+      "wrongSelectedObject": false,
+      "oldCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 6837,
+        "applied": true,
+        "colors": [
+          [
+            0.24313725490196078,
+            0.33725490196078434,
+            0.6470588235294118
+          ],
+          [
+            0.4823529411764706,
+            0.7058823529411765,
+            0.5725490196078431
+          ]
+        ],
+        "seedCounts": [
+          5261,
+          1576
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.03947080121790097
+      },
+      "newCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 10653,
+        "applied": false,
+        "reason": "Paper colors are insufficiently separated"
+      }
+    },
+    {
+      "id": "real-80c07aedd993f117-roi__automatic-box__frozen-old",
+      "parentPromptId": "real-80c07aedd993f117-roi__automatic-box",
+      "sourceCaseId": "real-80c07aedd993f117-roi",
+      "sourceGroup": "real-split-018c84732bc5d243",
+      "nearDuplicateGroup": "real-80c07aedd993f117",
+      "promptArm": "automatic-box",
+      "materialArm": "frozen-old",
+      "status": "crop-unresolved",
+      "motif": "Printed red/green checker",
+      "wrongSelectedObject": false,
+      "oldCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 6837,
+        "applied": true,
+        "colors": [
+          [
+            0.24313725490196078,
+            0.33725490196078434,
+            0.6470588235294118
+          ],
+          [
+            0.4823529411764706,
+            0.7058823529411765,
+            0.5725490196078431
+          ]
+        ],
+        "seedCounts": [
+          5261,
+          1576
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.03947080121790097
+      },
+      "newCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 10653,
+        "applied": false,
+        "reason": "Paper colors are insufficiently separated"
+      }
+    },
+    {
+      "id": "real-3f24113792188631-roi__automatic-box__frozen-old",
+      "parentPromptId": "real-3f24113792188631-roi__automatic-box",
+      "sourceCaseId": "real-3f24113792188631-roi",
+      "sourceGroup": "real-split-6459d28c6c10b90f",
+      "nearDuplicateGroup": "real-3f24113792188631",
+      "promptArm": "automatic-box",
+      "materialArm": "frozen-old",
+      "status": "review-required",
+      "motif": "Gold tree with printed paper",
+      "wrongSelectedObject": false,
+      "oldCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 13810,
+        "applied": true,
+        "colors": [
+          [
+            0.47058823529411764,
+            0.39215686274509803,
+            0.24313725490196078
+          ],
+          [
+            0.6588235294117647,
+            0.6705882352941176,
+            0.7764705882352941
+          ]
+        ],
+        "seedCounts": [
+          7312,
+          6498
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.018378255361944817
+      },
+      "newCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 13287,
+        "applied": true,
+        "colors": [
+          [
+            0.5098039215686274,
+            0.4235294117647059,
+            0.27450980392156865
+          ],
+          [
+            0.6509803921568628,
+            0.6705882352941176,
+            0.7803921568627451
+          ]
+        ],
+        "seedCounts": [
+          6512,
+          6775
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.01923400170994783
+      },
+      "targetMaskSha256": "c7ed23187f0009d895a3e9a00a0d611ce21de2c756d33f1098a3ff59310e7cf7",
+      "cropSha256": "0d49d0da7de6a1323bd1392dbad51d267509d4e18c5f29a3b78e725e74ce0269",
+      "observedPixels": 160000,
+      "rawMaskChange": 0.0051375,
+      "phaseInvariantMaskChange": 0.0051375,
+      "minorityMaskFraction": 0.42465625,
+      "solveSeconds": 9.784666916000003,
+      "counts": {
+        "left": 4,
+        "right": 4
+      },
+      "nativeError": 0.0448,
+      "nativeGeometryPassed": true,
+      "nativePaper": "pass",
+      "featuresPassed": false,
+      "checkedDerivedMask": false,
+      "editableError": 0.044925,
+      "conversionPassed": true,
+      "editableGeometryPassed": true,
+      "editablePaper": "pass",
+      "editableComplete": false
+    },
+    {
+      "id": "real-3f24113792188631-roi__automatic-box__sam-conditioned",
+      "parentPromptId": "real-3f24113792188631-roi__automatic-box",
+      "sourceCaseId": "real-3f24113792188631-roi",
+      "sourceGroup": "real-split-6459d28c6c10b90f",
+      "nearDuplicateGroup": "real-3f24113792188631",
+      "promptArm": "automatic-box",
+      "materialArm": "sam-conditioned",
+      "status": "review-required",
+      "motif": "Gold tree with printed paper",
+      "wrongSelectedObject": false,
+      "oldCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 13810,
+        "applied": true,
+        "colors": [
+          [
+            0.47058823529411764,
+            0.39215686274509803,
+            0.24313725490196078
+          ],
+          [
+            0.6588235294117647,
+            0.6705882352941176,
+            0.7764705882352941
+          ]
+        ],
+        "seedCounts": [
+          7312,
+          6498
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.018378255361944817
+      },
+      "newCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 13287,
+        "applied": true,
+        "colors": [
+          [
+            0.5098039215686274,
+            0.4235294117647059,
+            0.27450980392156865
+          ],
+          [
+            0.6509803921568628,
+            0.6705882352941176,
+            0.7803921568627451
+          ]
+        ],
+        "seedCounts": [
+          6512,
+          6775
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.01923400170994783
+      },
+      "targetMaskSha256": "06780225856b5513687f9166cb83a2cc2977e81ef28821eee5384cd8f383646e",
+      "cropSha256": "0d49d0da7de6a1323bd1392dbad51d267509d4e18c5f29a3b78e725e74ce0269",
+      "observedPixels": 160000,
+      "rawMaskChange": 0.0051375,
+      "phaseInvariantMaskChange": 0.0051375,
+      "minorityMaskFraction": 0.41951875,
+      "solveSeconds": 9.884443249999997,
+      "counts": {
+        "left": 3,
+        "right": 3
+      },
+      "nativeError": 0.04584375,
+      "nativeGeometryPassed": true,
+      "nativePaper": "pass",
+      "featuresPassed": false,
+      "checkedDerivedMask": false,
+      "editableError": 0.04596875,
+      "conversionPassed": true,
+      "editableGeometryPassed": true,
+      "editablePaper": "pass",
+      "editableComplete": false
+    },
+    {
+      "id": "real-3f24113792188631-roi__selection-box__sam-conditioned",
+      "parentPromptId": "real-3f24113792188631-roi__selection-box",
+      "sourceCaseId": "real-3f24113792188631-roi",
+      "sourceGroup": "real-split-6459d28c6c10b90f",
+      "nearDuplicateGroup": "real-3f24113792188631",
+      "promptArm": "selection-box",
+      "materialArm": "sam-conditioned",
+      "status": "crop-unresolved",
+      "motif": "Gold tree with printed paper",
+      "wrongSelectedObject": false,
+      "oldCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 13810,
+        "applied": true,
+        "colors": [
+          [
+            0.47058823529411764,
+            0.39215686274509803,
+            0.24313725490196078
+          ],
+          [
+            0.6588235294117647,
+            0.6705882352941176,
+            0.7764705882352941
+          ]
+        ],
+        "seedCounts": [
+          7312,
+          6498
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.018378255361944817
+      },
+      "newCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 11476,
+        "applied": true,
+        "colors": [
+          [
+            0.5098039215686274,
+            0.42745098039215684,
+            0.2784313725490196
+          ],
+          [
+            0.6901960784313725,
+            0.6862745098039216,
+            0.7568627450980392
+          ]
+        ],
+        "seedCounts": [
+          6386,
+          5090
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.014350071098974444
+      }
+    },
+    {
+      "id": "real-3f24113792188631-roi__selection-box__frozen-old",
+      "parentPromptId": "real-3f24113792188631-roi__selection-box",
+      "sourceCaseId": "real-3f24113792188631-roi",
+      "sourceGroup": "real-split-6459d28c6c10b90f",
+      "nearDuplicateGroup": "real-3f24113792188631",
+      "promptArm": "selection-box",
+      "materialArm": "frozen-old",
+      "status": "crop-unresolved",
+      "motif": "Gold tree with printed paper",
+      "wrongSelectedObject": false,
+      "oldCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 13810,
+        "applied": true,
+        "colors": [
+          [
+            0.47058823529411764,
+            0.39215686274509803,
+            0.24313725490196078
+          ],
+          [
+            0.6588235294117647,
+            0.6705882352941176,
+            0.7764705882352941
+          ]
+        ],
+        "seedCounts": [
+          7312,
+          6498
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.018378255361944817
+      },
+      "newCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 11476,
+        "applied": true,
+        "colors": [
+          [
+            0.5098039215686274,
+            0.42745098039215684,
+            0.2784313725490196
+          ],
+          [
+            0.6901960784313725,
+            0.6862745098039216,
+            0.7568627450980392
+          ]
+        ],
+        "seedCounts": [
+          6386,
+          5090
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.014350071098974444
+      }
+    },
+    {
+      "id": "real-3a89de4eae04a025-roi__selection-box__frozen-old",
+      "parentPromptId": "real-3a89de4eae04a025-roi__selection-box",
+      "sourceCaseId": "real-3a89de4eae04a025-roi",
+      "sourceGroup": "real-split-e15997e1ba929b7f",
+      "nearDuplicateGroup": "real-0d51442459c3d4c9",
+      "promptArm": "selection-box",
+      "materialArm": "frozen-old",
+      "status": "checked-derived-mask",
+      "motif": "Pale printed checker",
+      "wrongSelectedObject": false,
+      "oldCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 11532,
+        "applied": true,
+        "colors": [
+          [
+            0.7019607843137254,
+            0.5843137254901961,
+            0.6
+          ],
+          [
+            0.792156862745098,
+            0.807843137254902,
+            0.8196078431372549
+          ]
+        ],
+        "seedCounts": [
+          4828,
+          6704
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.0021206011353689445
+      },
+      "newCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 8711,
+        "applied": true,
+        "colors": [
+          [
+            0.7058823529411765,
+            0.5803921568627451,
+            0.596078431372549
+          ],
+          [
+            0.7647058823529411,
+            0.788235294117647,
+            0.803921568627451
+          ]
+        ],
+        "seedCounts": [
+          4082,
+          4629
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.002731073157169798
+      },
+      "targetMaskSha256": "c0de54753d6034c7234e5954d7bd28eff661d32726eadbea5d908d0d2302ec0a",
+      "cropSha256": "68f1d80575be18d6ff63d0daacd655b31cf540c330f09315b96e31b10420476f",
+      "observedPixels": 159989,
+      "rawMaskChange": 0.0005250360962316159,
+      "phaseInvariantMaskChange": 0.0005250360962316159,
+      "minorityMaskFraction": 0.4376375,
+      "solveSeconds": 3.7467639169999893,
+      "counts": {
+        "left": 2,
+        "right": 2
+      },
+      "nativeError": 0.0072129958934676755,
+      "nativeGeometryPassed": true,
+      "nativePaper": "pass",
+      "featuresPassed": true,
+      "checkedDerivedMask": true,
+      "editableError": 0.00720049503403359,
+      "conversionPassed": true,
+      "editableGeometryPassed": true,
+      "editablePaper": "pass",
+      "editableComplete": true
+    },
+    {
+      "id": "real-3a89de4eae04a025-roi__selection-box__sam-conditioned",
+      "parentPromptId": "real-3a89de4eae04a025-roi__selection-box",
+      "sourceCaseId": "real-3a89de4eae04a025-roi",
+      "sourceGroup": "real-split-e15997e1ba929b7f",
+      "nearDuplicateGroup": "real-0d51442459c3d4c9",
+      "promptArm": "selection-box",
+      "materialArm": "sam-conditioned",
+      "status": "checked-derived-mask",
+      "motif": "Pale printed checker",
+      "wrongSelectedObject": false,
+      "oldCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 11532,
+        "applied": true,
+        "colors": [
+          [
+            0.7019607843137254,
+            0.5843137254901961,
+            0.6
+          ],
+          [
+            0.792156862745098,
+            0.807843137254902,
+            0.8196078431372549
+          ]
+        ],
+        "seedCounts": [
+          4828,
+          6704
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.0021206011353689445
+      },
+      "newCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 8711,
+        "applied": true,
+        "colors": [
+          [
+            0.7058823529411765,
+            0.5803921568627451,
+            0.596078431372549
+          ],
+          [
+            0.7647058823529411,
+            0.788235294117647,
+            0.803921568627451
+          ]
+        ],
+        "seedCounts": [
+          4082,
+          4629
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.002731073157169798
+      },
+      "targetMaskSha256": "a030e08999a55aee6adcefa0950d7c52001a404f762dadd70f452fc69dce7251",
+      "cropSha256": "68f1d80575be18d6ff63d0daacd655b31cf540c330f09315b96e31b10420476f",
+      "observedPixels": 159989,
+      "rawMaskChange": 0.0005250360962316159,
+      "phaseInvariantMaskChange": 0.0005250360962316159,
+      "minorityMaskFraction": 0.4381375,
+      "solveSeconds": 3.688790792,
+      "counts": {
+        "left": 2,
+        "right": 2
+      },
+      "nativeError": 0.007231747182618805,
+      "nativeGeometryPassed": true,
+      "nativePaper": "pass",
+      "featuresPassed": true,
+      "checkedDerivedMask": true,
+      "editableError": 0.007206745463750633,
+      "conversionPassed": true,
+      "editableGeometryPassed": true,
+      "editablePaper": "pass",
+      "editableComplete": true
+    },
+    {
+      "id": "real-3a89de4eae04a025-roi__automatic-box__sam-conditioned",
+      "parentPromptId": "real-3a89de4eae04a025-roi__automatic-box",
+      "sourceCaseId": "real-3a89de4eae04a025-roi",
+      "sourceGroup": "real-split-e15997e1ba929b7f",
+      "nearDuplicateGroup": "real-0d51442459c3d4c9",
+      "promptArm": "automatic-box",
+      "materialArm": "sam-conditioned",
+      "status": "checked-derived-mask",
+      "motif": "Pale printed checker",
+      "wrongSelectedObject": false,
+      "oldCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 11532,
+        "applied": true,
+        "colors": [
+          [
+            0.7019607843137254,
+            0.5843137254901961,
+            0.6
+          ],
+          [
+            0.792156862745098,
+            0.807843137254902,
+            0.8196078431372549
+          ]
+        ],
+        "seedCounts": [
+          4828,
+          6704
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.0021206011353689445
+      },
+      "newCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 9771,
+        "applied": true,
+        "colors": [
+          [
+            0.7019607843137254,
+            0.5803921568627451,
+            0.6
+          ],
+          [
+            0.7647058823529411,
+            0.788235294117647,
+            0.803921568627451
+          ]
+        ],
+        "seedCounts": [
+          5118,
+          4653
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.002514986923670576
+      },
+      "targetMaskSha256": "9a9a3c61967128c7f3b6e735c5496c35037a2946659c922501d668273e506ffa",
+      "cropSha256": "fa97d9b34752479881b3b441a10e264e959fd2cead47ed6461ff2ce1b0232286",
+      "observedPixels": 159955,
+      "rawMaskChange": 0.0040698946578725265,
+      "phaseInvariantMaskChange": 0.0040698946578725265,
+      "minorityMaskFraction": 0.44064375,
+      "solveSeconds": 4.155479541000008,
+      "counts": {
+        "left": 2,
+        "right": 2
+      },
+      "nativeError": 0.009977806258010065,
+      "nativeGeometryPassed": true,
+      "nativePaper": "pass",
+      "featuresPassed": true,
+      "checkedDerivedMask": true,
+      "editableError": 0.009946547466474946,
+      "conversionPassed": true,
+      "editableGeometryPassed": true,
+      "editablePaper": "pass",
+      "editableComplete": true
+    },
+    {
+      "id": "real-3a89de4eae04a025-roi__automatic-box__frozen-old",
+      "parentPromptId": "real-3a89de4eae04a025-roi__automatic-box",
+      "sourceCaseId": "real-3a89de4eae04a025-roi",
+      "sourceGroup": "real-split-e15997e1ba929b7f",
+      "nearDuplicateGroup": "real-0d51442459c3d4c9",
+      "promptArm": "automatic-box",
+      "materialArm": "frozen-old",
+      "status": "checked-derived-mask",
+      "motif": "Pale printed checker",
+      "wrongSelectedObject": false,
+      "oldCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 11532,
+        "applied": true,
+        "colors": [
+          [
+            0.7019607843137254,
+            0.5843137254901961,
+            0.6
+          ],
+          [
+            0.792156862745098,
+            0.807843137254902,
+            0.8196078431372549
+          ]
+        ],
+        "seedCounts": [
+          4828,
+          6704
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.0021206011353689445
+      },
+      "newCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 9771,
+        "applied": true,
+        "colors": [
+          [
+            0.7019607843137254,
+            0.5803921568627451,
+            0.6
+          ],
+          [
+            0.7647058823529411,
+            0.788235294117647,
+            0.803921568627451
+          ]
+        ],
+        "seedCounts": [
+          5118,
+          4653
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.002514986923670576
+      },
+      "targetMaskSha256": "9e4a245419b4b4e4ae2c051a572a7ad588c4930fbf3a7256e3068a20092a2e3c",
+      "cropSha256": "fa97d9b34752479881b3b441a10e264e959fd2cead47ed6461ff2ce1b0232286",
+      "observedPixels": 159955,
+      "rawMaskChange": 0.0040698946578725265,
+      "phaseInvariantMaskChange": 0.0040698946578725265,
+      "minorityMaskFraction": 0.436575,
+      "solveSeconds": 4.090584457999998,
+      "counts": {
+        "left": 2,
+        "right": 2
+      },
+      "nativeError": 0.010377918789659591,
+      "nativeGeometryPassed": true,
+      "nativePaper": "pass",
+      "featuresPassed": true,
+      "checkedDerivedMask": true,
+      "editableError": 0.010184114282141853,
+      "conversionPassed": true,
+      "editableGeometryPassed": true,
+      "editablePaper": "pass",
+      "editableComplete": true
+    },
+    {
+      "id": "real-e1b1492e32f6cdf5-roi__automatic-box__frozen-old",
+      "parentPromptId": "real-e1b1492e32f6cdf5-roi__automatic-box",
+      "sourceCaseId": "real-e1b1492e32f6cdf5-roi",
+      "sourceGroup": "real-split-79137bb425b64798",
+      "nearDuplicateGroup": "real-e1b1492e32f6cdf5",
+      "promptArm": "automatic-box",
+      "materialArm": "frozen-old",
+      "status": "crop-unresolved",
+      "motif": "Painted paper",
+      "wrongSelectedObject": false,
+      "oldCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 15772,
+        "applied": true,
+        "colors": [
+          [
+            0.611764705882353,
+            0.11764705882352941,
+            0.23137254901960785
+          ],
+          [
+            0.9176470588235294,
+            0.4627450980392157,
+            0.6862745098039216
+          ]
+        ],
+        "seedCounts": [
+          7878,
+          7894
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.019976312482725175
+      },
+      "newCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 15764,
+        "applied": true,
+        "colors": [
+          [
+            0.5647058823529412,
+            0.11764705882352941,
+            0.2627450980392157
+          ],
+          [
+            0.9098039215686274,
+            0.5019607843137255,
+            0.7058823529411765
+          ]
+        ],
+        "seedCounts": [
+          6738,
+          9026
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.015517190667564981
+      }
+    },
+    {
+      "id": "real-e1b1492e32f6cdf5-roi__automatic-box__sam-conditioned",
+      "parentPromptId": "real-e1b1492e32f6cdf5-roi__automatic-box",
+      "sourceCaseId": "real-e1b1492e32f6cdf5-roi",
+      "sourceGroup": "real-split-79137bb425b64798",
+      "nearDuplicateGroup": "real-e1b1492e32f6cdf5",
+      "promptArm": "automatic-box",
+      "materialArm": "sam-conditioned",
+      "status": "crop-unresolved",
+      "motif": "Painted paper",
+      "wrongSelectedObject": false,
+      "oldCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 15772,
+        "applied": true,
+        "colors": [
+          [
+            0.611764705882353,
+            0.11764705882352941,
+            0.23137254901960785
+          ],
+          [
+            0.9176470588235294,
+            0.4627450980392157,
+            0.6862745098039216
+          ]
+        ],
+        "seedCounts": [
+          7878,
+          7894
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.019976312482725175
+      },
+      "newCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 15764,
+        "applied": true,
+        "colors": [
+          [
+            0.5647058823529412,
+            0.11764705882352941,
+            0.2627450980392157
+          ],
+          [
+            0.9098039215686274,
+            0.5019607843137255,
+            0.7058823529411765
+          ]
+        ],
+        "seedCounts": [
+          6738,
+          9026
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.015517190667564981
+      }
+    },
+    {
+      "id": "real-e1b1492e32f6cdf5-roi__selection-box__sam-conditioned",
+      "parentPromptId": "real-e1b1492e32f6cdf5-roi__selection-box",
+      "sourceCaseId": "real-e1b1492e32f6cdf5-roi",
+      "sourceGroup": "real-split-79137bb425b64798",
+      "nearDuplicateGroup": "real-e1b1492e32f6cdf5",
+      "promptArm": "selection-box",
+      "materialArm": "sam-conditioned",
+      "status": "crop-unresolved",
+      "motif": "Painted paper",
+      "wrongSelectedObject": false,
+      "oldCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 15772,
+        "applied": true,
+        "colors": [
+          [
+            0.611764705882353,
+            0.11764705882352941,
+            0.23137254901960785
+          ],
+          [
+            0.9176470588235294,
+            0.4627450980392157,
+            0.6862745098039216
+          ]
+        ],
+        "seedCounts": [
+          7878,
+          7894
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.019976312482725175
+      },
+      "newCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 1503,
+        "applied": true,
+        "colors": [
+          [
+            0.23921568627450981,
+            0.00392156862745098,
+            0.023529411764705882
+          ],
+          [
+            0.3803921568627451,
+            0.0196078431372549,
+            0.09803921568627451
+          ]
+        ],
+        "seedCounts": [
+          666,
+          837
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.004933024352641237
+      }
+    },
+    {
+      "id": "real-e1b1492e32f6cdf5-roi__selection-box__frozen-old",
+      "parentPromptId": "real-e1b1492e32f6cdf5-roi__selection-box",
+      "sourceCaseId": "real-e1b1492e32f6cdf5-roi",
+      "sourceGroup": "real-split-79137bb425b64798",
+      "nearDuplicateGroup": "real-e1b1492e32f6cdf5",
+      "promptArm": "selection-box",
+      "materialArm": "frozen-old",
+      "status": "crop-unresolved",
+      "motif": "Painted paper",
+      "wrongSelectedObject": false,
+      "oldCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 15772,
+        "applied": true,
+        "colors": [
+          [
+            0.611764705882353,
+            0.11764705882352941,
+            0.23137254901960785
+          ],
+          [
+            0.9176470588235294,
+            0.4627450980392157,
+            0.6862745098039216
+          ]
+        ],
+        "seedCounts": [
+          7878,
+          7894
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.019976312482725175
+      },
+      "newCalibration": {
+        "palette": "rgb",
+        "mode": "illumination",
+        "bodySeedPixels": 1503,
+        "applied": true,
+        "colors": [
+          [
+            0.23921568627450981,
+            0.00392156862745098,
+            0.023529411764705882
+          ],
+          [
+            0.3803921568627451,
+            0.0196078431372549,
+            0.09803921568627451
+          ]
+        ],
+        "seedCounts": [
+          666,
+          837
+        ],
+        "model": "nonnegative-color-mixture",
+        "conditioning": 0.004933024352641237
+      }
+    }
+  ],
+  "visualReview": {
+    "reviewed": "Original saved source/crop overlays, all nine paired masks and probability maps, all eighteen native weaves and all eighteen editable replays. Color phase differs in some previews; no target phase alignment was used.",
+    "findings": [
+      "Red/green printed checker: conditioning on SAM replaces the blue/green background palette with red/green and restores four main cells, but printed snowflakes and the handle remain false material boundaries. Fresh and editable fits still fail feature/image checks.",
+      "Cross: both fits retain a small false central diamond and a thin left-edge artifact despite passing mask and geometry checks. Palette recalibration does not remove these.",
+      "Selected star: both retain the six rays, but rounded junctions and small border defects remain. Recalibration reverses color order; 97.03% raw mask change is only 2.97% after a phase swap, not a large design change.",
+      "Automatic star-scene box selects the neighboring heart, and remains excluded from intended-object success.",
+      "Dense checker: targets remain visibly checker-like. All four fits use eight cuts per sheet and distort/merge cells. This supports investigating count initialization alongside the earlier expanded-count experiment; this palette probe alone does not isolate the count-cap cause or establish crop accuracy.",
+      "Gold tree: printed leaves still enter the two-color target and lead to a visibly wrong weave in both arms.",
+      "Pale printed checker: both targets and outputs retain the main grid; wavy boundaries and the existing tip/crop uncertainty remain.",
+      "Five saved prompt/crop failures per arm are preserved, including painted paper; no new crop search was performed."
+    ]
+  },
+  "importWarnings": {
+    "count": 2,
+    "details": "Legacy raw-JSON validation warned about out-of-range cubic handles (cross left control x=-1.3; wrong-neighbor right control y=-1.1). src/lib/utils/validatePaths.ts tests all control coordinates. Both candidates pass the independent full curve/paper audit and editor intersection checks. The warnings are preserved here; this study does not change that check."
+  },
+  "conclusion": "The conditioning mismatch explains the printed red/green near-uniform target, but recalibration alone adds no checked intended source. Keep this offline. Printed-ink/material separation, dense count selection, false small features, and remaining crop failures need separate interventions. Never use a low error against an incorrectly extracted target as source-image accuracy.",
+  "timingQualification": "One serial paired replay with alternating material-arm order and low process priority; timings are not a speed comparison. Each error is measured against its own material target, so error changes across arms are not accuracy improvements against a common ground truth.",
+  "resources": {
+    "execution": "Sequential, nice 15, Python numerical pools limited to one. No Chrome or preview server launched.",
+    "studyBytesBeforeSummary": 92585621,
+    "freeGiBAfter": 56,
+    "storagePolicy": "No bulky HTML or manufacturability SVG engine diagnostics persisted. Source data and all generated mask/template evidence retained."
+  },
+  "artifacts": {
+    "tmp/heart-learning/selected-sam-calibration-v2/revision.json": "4460b287639a47711e212eb2ae10156cc8e52232743b70dcd6a83e031f098e6b",
+    "tmp/heart-learning/selected-sam-calibration-v2/plan.json": "00a82008153127cc2166801618592df532a2e39e93fd33788dc0abdd28dc5420",
+    "tmp/heart-learning/selected-sam-calibration-v2/pins.json": "889713b40464498042fdd4b526532f9c608126422fc0d1112d2ae3995ff975c1",
+    "tmp/heart-learning/selected-sam-calibration-v2/calibration-audit.json": "0dc38121f01963856c0f5a9712362d593764b4aa1d64954f779e2e2925f6702c",
+    "tmp/heart-learning/selected-sam-calibration-v2/targets/report.json": "c14c9e1b2a3d5210d8c95e0f9c559759a9b573bebea959ee3ffe8d7b1ac61c2a",
+    "tmp/heart-learning/selected-sam-calibration-v2/pipeline/report.json": "2810bd04cf19c107ad1be4c5724e2cc4a884ee7f42c2d79a61ced9cdb36e7a7a",
+    "tmp/heart-learning/selected-sam-calibration-v2/editable/results.json": "3f19357ae3855fd00a6158d66ccf5fcb7cb267b0388b0f134d1181edd22454fd",
+    "tmp/heart-learning/selected-sam-calibration-v2/visual-review.json": "ca6da3c2ddc4f277276ebebb90b3e1060c20de7386a243023b40b2e39e1187fd",
+    "tmp/heart-learning/selected-sam-calibration-v2/targets/review-1.png": "1404037f31a28999fb9f87fc4e972da7f08be10646ed77ce68d93adee4addb07",
+    "tmp/heart-learning/selected-sam-calibration-v2/targets/review-2.png": "c614d17c32efc3b126e12af7cacdf7f2ec7058a14fd1f060f23260b2ca0013c2",
+    "tmp/heart-learning/selected-sam-calibration-v2/targets/probability-review-1.png": "587274ada0fefa0d4eb6b1b5a04db37d0a224200f15d29182ae9fec9599ad5b6",
+    "tmp/heart-learning/selected-sam-calibration-v2/targets/probability-review-2.png": "74078eaafba72220a41d0ff9ef9c6a9748d6150ebd1e2c2a3bf0b6a0a3f61d15",
+    "tmp/heart-learning/selected-sam-calibration-v2/fit-review-1.png": "ad7262597e8bdac5cd8ec5750013c7e06dc1438c6f723b23ff493e4c096be492",
+    "tmp/heart-learning/selected-sam-calibration-v2/fit-review-2.png": "ff8c18d1c4bb025e7246ce486a58416a046ff0752218801338e73276df5ad31b",
+    "tmp/heart-learning/selected-sam-calibration-v2/editable-review-1.png": "fc98a7d1a75f983a3c043e79bb65bea66c7a81e35916bf2858ef68594d1ef042",
+    "tmp/heart-learning/selected-sam-calibration-v2/editable-review-2.png": "b1b32f3d0fa01c4fd636425af40b4afdf90c0b99d75cb083dc01fbec95a5137d"
+  },
+  "next": [
+    "Separate printed ink from sheet identity, using the existing material-label task and controlled printed-paper data.",
+    "Complete the previously saved expanded-count editable audit and retain legal-geometry checks before considering a count-policy change.",
+    "Investigate the small false cross-center feature without relaxing fidelity or paper checks."
+  ]
+}
