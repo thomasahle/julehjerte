@@ -1,5 +1,13 @@
 # "Hent til laserskærer" — laser-cutter export from the heart page
 
+> **The dialog now lives in docs/redesign/DOWNLOAD.md**: one "Hent skabelon"
+> dialog for the printer PDF and the laser file (`DownloadDialog.svelte`),
+> which replaced the split button and `LaserDialog.svelte` described below. The
+> geometry, the writers and the sheet layout here still stand, with two
+> amendments from DOWNLOAD.md: a laser sheet holds **one lobe's pieces**, one
+> per heart (`planLaserSheet(design, { widthMm, count, sheet, lobe })`), and the
+> preview draws cut lines red and score lines blue, as the file does.
+
 A visitor with a laser cutter (Glowforge, xTool, a LightBurn-driven machine)
 wants one file that cuts a heart's pieces straight out of paper or card: the
 **whole unfolded piece**, not the folded print template, with the strip cuts as
@@ -45,10 +53,12 @@ Keep numbers as numbers; formatting (3 decimals) happens in the writers.
 
 `layoutSheet(pieces, { sheet: { widthMm, heightMm }, gapMm = 5, marginMm = 5 })`
 places pieces top-left to bottom-right in rows (no rotation), returns their
-offsets and how many fit; the caller asks for `hearts × 2` pieces (left and
-right lobe per heart; two identical pieces when `lobesShareTemplate`). If not
-all fit, the dialog says so ("Der er plads til {n} på arket") and exports what
-fits — one sheet per file, no multi-page.
+offsets and how many fit. The caller asks for one piece per heart, all of one
+lobe — the two halves are cut from two paper colours, so a sheet is one colour
+(DOWNLOAD.md, amendment 9); when `lobesShareTemplate` it is the left piece
+whichever lobe is chosen. If not all fit, the dialog says so ("Der er kun plads
+til {n} af {total} stykker på arket") and exports what fits — one sheet per
+file, no multi-page.
 
 ## Writers (`src/lib/laser/svg.ts`, `src/lib/laser/dxf.ts`, unit-tested)
 

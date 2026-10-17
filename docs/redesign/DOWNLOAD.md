@@ -50,6 +50,31 @@ dialog does today. Settings, top to bottom:
 7. Buttons: ghost `cancel`, primary `downloadFile` "Hent {format}" where format
    is PDF, SVG or DXF. The legend line stays in Laser mode only.
 
+### Amendments after the owner's testing (2026-10-17)
+
+8. **Laser preview colours.** In Laser mode the preview draws in the file's
+   colours — cut `#ff0000`, score `#0000ff` (display stroke 0.6 px, the score
+   dashed) — so the legend "Rød = skær · Blå = rids" describes what is on
+   screen. Printer mode's preview stays black and has no legend.
+9. **One colour per laser sheet.** A heart's two pieces are cut from two paper
+   colours, so a laser sheet holds pieces of **one lobe only**, one per heart
+   ("Antal hjerter" = pieces on the sheet):
+   - a heart whose lobes share a template (`lobesShareTemplate`): N identical
+     pieces, with the note `laserSameNote` "Halvdelene er ens: skær arket én
+     gang i hver papirfarve, eller læg to ark oven på hinanden.";
+   - an asymmetric heart: a segmented control `laserPiece` "Stykke" with
+     Venstre / Højre (`lobeLeft` / `lobeRight`), default Venstre, and the note
+     `laserBothNote` "Hent begge halvdele – én fil pr. papirfarve."; the file is
+     named `{heart id}-laser-{width}mm-{lobe}.{svg|dxf}` with the lobe's word in
+     the page's language, slugged (`venstre`, `hoejre`, `left`, `right`). The
+     lobe is remembered for the visit only (module state), not in storage.
+   - `planLaserSheet` takes `{ widthMm, count, sheet, lobe }` and returns
+     `piecesFit` / `piecesRequested`; `layoutSheet` is unchanged. The fit note
+     `sheetFit` counts pieces: "Der er kun plads til {n} af {total} stykker på
+     arket".
+   The printer PDF is unchanged: two folded templates per heart, since a
+   printed template is traced or cut with scissors, not fed to a laser.
+
 Settings are remembered in `localStorage` under `juleflet:download`
 (`{ mode, widthMm, hearts, sheet, format, scoreFold, previewImage }`, try/catch,
 unknown values ignored). Read the old `juleflet:laser` once as a fallback and

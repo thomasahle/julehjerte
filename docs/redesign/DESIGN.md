@@ -252,21 +252,25 @@ Right column: panel `rgb(255 255 255 / .55)`, radius 16, padding 24px 28px, gap 
 "Se den illustrerede vejledning →" to the guide page 12px under it; two-column block bordered top/bottom by
 `--line`: SVÆRHEDSGRAD (dots + label) and SYMMETRI ("Spejlsymmetri – én skabelon til begge sider" or the
 asymmetric equivalent). Under the panel, flush with its left edge and wrapping when the column narrows, the
-buttons in two rows — first the two ways to get the template: primary "Download PDF-skabelon" and outline
+buttons in two rows — first the two ways to get the template: primary "Hent skabelon…" and outline
 "Tegn af fra skærmen" (the tracing mode, docs/redesign/TRACE.md); then outline "Rediger i editor", ghost "Del" (share, existing
 hash-link sharing) — the ghost one on `rgb(255 255 255 / .8)`, since the row crosses the landscape drawing.
 When the columns stack below 1100 the buttons follow the panel down.
 
-Laser: "Download PDF-skabelon" is a split button like the gallery toolbar's. The label still downloads the PDF;
-its caret opens a menu with "PDF til print (A4)" and "Til laserskærer…", which opens "Hent til laserskærer"
-(docs/redesign/LASER.md): the whole *unfolded* piece — the template mirrored across the fold, every strip cut one
-continuous path through it — as an SVG in real millimetres (red 0.01 mm cut lines, blue score lines) or an R12 DXF
-(layers CUT and SCORE, exact half-circle ears as bulged polyline vertices, curved cuts flattened to 0.05 mm). The
-dialog sets the format and the heart's width (both remembered), the number of hearts, the sheet (A4, A3 or a
-custom size, with "Der er plads til n på arket" when not all fit) and whether to score the fold, and previews the
-sheet with the SVG writer's own output. The geometry and both writers live in `$lib/laser`; the dialog is
-`LaserDialog.svelte`. Both pieces of a heart share one scale, so on a non-square grid the given width is the wider
-piece's and the strips of the two pieces match.
+Hent skabelon: the primary button opens one dialog (`DownloadDialog.svelte`, docs/redesign/DOWNLOAD.md) for
+every way of getting the template out of the site. "Til" chooses **Printer** or **Laserskærer**; the heart's
+width in mm, the number of hearts and the sheet (A4, A3 or a custom size) are shared by both, and the preview
+on the right shows the sheet as it will come out. Printer makes a PDF of the *folded* templates at true size —
+two per heart, each with its name and address lines and (optionally) the heart's picture in the ear — laid out
+by `$lib/pdf/plan` on as many pages of the sheet as they need ("{n} sider", "Side 1 af {n}" under the preview).
+Laserskærer makes the whole *unfolded* piece (docs/redesign/LASER.md) — the template mirrored across the fold,
+every strip cut one continuous path through it — as an SVG in real millimetres (red 0.01 mm cut lines, blue
+score lines) or an R12 DXF (layers CUT and SCORE, exact half-circle ears as bulged polyline vertices, curved
+cuts flattened to 0.05 mm). A laser sheet holds one lobe's pieces, one per heart, since the two halves are cut
+from two colours of paper; an asymmetric heart gets a Venstre / Højre choice and a file per half, and the
+preview draws in the file's red and blue. Every setting but the laser lobe is remembered (`juleflet:download`).
+Both pieces of a heart share one scale, so on a non-square grid the given width is the wider piece's and the
+strips of the two pieces match, in print as on the laser.
 
 The panel used to repeat the five weaving steps as numbered green circles. It does not any more (the owner's
 decision): the steps live only on `/saadan-goer-du/`, and every gallery heart carries a written paragraph of
