@@ -80,12 +80,6 @@
 	// takes back out of the bar's layout.
 	let liftRoom = $derived(Math.max(0, ...lifts));
 
-	// The box's full height, L included; `height` reports what is left on
-	// screen once stuck, which is what an anchor has to clear.
-	let boxHeight = $state(0);
-	$effect(() => {
-		height = Math.max(0, boxHeight - liftRoom);
-	});
 
 	// One chip per section that has hearts, in page order, so every chip leads
 	// somewhere; "Mine hjerter" only once the visitor has drawn any — its
@@ -147,13 +141,27 @@
 	// as "ResizeObserver loop completed with undelivered notifications". The
 	// read and the write wait for the next frame, once per frame however
 	// often the observer fires.
+	//
+	// `height` is what is left on screen once stuck, which is what an anchor
+	// has to clear: the box less the room on top. It is read off the box's
+	// own padding, not worked out as the box less `liftRoom`, so it never
+	// depends on L. The first section's margin is 6px − height − L (see
+	// CategorySection), so the first row stays at the bar's top + 6 whatever
+	// L is: when the download button appears with a larger lift than the
+	// chips', L grows, and `height` must not. Read as box − L it did not:
+	// the observer only watches the content box, which L's padding leaves
+	// alone, so the box − L went stale and the whole first row dropped by
+	// the change in L (5.8px at 1440). Unrounded, unlike offsetHeight, which
+	// left the row up to 0.5px off its line.
 	$effect(() => {
 		if (!barEl) return;
 		const bar = barEl;
 		let frame = 0;
 		const read = () => {
 			frame = 0;
-			boxHeight = bar.offsetHeight;
+			const style = getComputedStyle(bar);
+			const room = parseFloat(style.paddingTop) - parseFloat(style.paddingBottom);
+			height = Math.max(0, bar.getBoundingClientRect().height - Math.max(0, room || 0));
 		};
 		read();
 		const observer = new ResizeObserver(() => {
