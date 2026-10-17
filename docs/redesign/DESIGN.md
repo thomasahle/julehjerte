@@ -156,15 +156,19 @@ to clear the base of the hero's left-hand firs, and the toolbar's opaque `--page
 above the drawing's front snow edge, where it would show as a paler rectangle over the snow hill behind it.
 Below 900 there is no overlap: the landscape is an in-flow band there, with the scroll hint on it.
 
-Toolbar (sticky top 0, z-index 5, `--page` background, flex-wrap, gap 12, padding 14px 0): red split button
-"Hent skabeloner (n)" + gear (PDF settings) with `0 2px 8px rgb(31 51 41 / .12)` shadow; with nothing selected
-the split button is `aria-disabled` rather than `disabled` (so it stays focusable and its "Vælg hjerter først"
-hint is reachable from the keyboard) and dims to .75, not .5, so the red still reads as the toolbar's anchor; ghost buttons
-"Vælg alle", "Fravælg alle"; at the right end (`margin-left:auto`) the three steps, each a link to the guide page:
+Toolbar (sticky top 0, z-index 5, `--page` background once stuck, flex-wrap, gap 12, padding 14px 0). A card
+click opens the heart's page and ticking hearts for one PDF is the exception (docs/redesign/FRONT-SIMPLIFY.md),
+so the selection controls only appear while at least one heart is ticked; there is no disabled download button
+and no "Vælg hjerter først" hint. Then, at the left: red split button "Hent skabeloner (n)" + gear (PDF settings)
+with `0 2px 8px rgb(31 51 41 / .12)` shadow (dimmed to .75, not .5, while the PDF is generating, so the red
+still reads as the toolbar's anchor); ghost buttons "Vælg alle" (hidden when every heart is ticked) and
+"Fravælg alle". At the right end (`margin-left:auto`), always, the three steps, each a link to the guide page:
 printer icon "Vælg og print" / "I 100% størrelse på A4"; scissors "Klip og fold" / "Følg vejledningen"; weave
 (hash) icon "Flet" / "Ind i og uden om". Step = icon 24px green + title 14px/600 `--deep` + hint 12px
 `--muted`, gap 10, items gap 26. Below 1200 the steps take their own line (`margin-left:0; flex-basis:100%`);
-below 700 they are hidden. The "Foreslå et hjerte" link is removed from the toolbar (it lives on the Om page).
+below 700 they are hidden, so with nothing ticked the toolbar has nothing to show there and collapses
+(`display: none`) rather than leave an empty sticky bar. The "Foreslå et hjerte" link is removed from the
+toolbar (it lives on the Om page).
 
 Category section: heading row = uppercase 15px/600 `--green` letter-spacing .06em + "N hjerter" 13px
 `--muted`; padding-bottom 4, margin-bottom 10; **no rule under it**; section ids `klassiske`, `stjerner`,
@@ -174,14 +178,18 @@ Category section: heading row = uppercase 15px/600 `--green` letter-spacing .06e
 Card (`article.card`, relative, flex column centred, height size+136 with size 168, radius 14, hover
 `transform: scale(1.02)`, transition .2s):
 - hanging heart with ribbon length `[26, 54, 38, 66, 44][i % 5]` and sway delay `(i * 0.7) % 5` s;
-- **the whole card is one button** (`<button class="card-select" aria-pressed aria-label="Vælg til PDF: {name}">`,
-  absolute inset 0, transparent, z-index 1, radius 14, focus ring 3px `--blue`) toggling PDF selection;
+- **the whole card is one link** to the heart's page (`<a class="card-link" href={detail url}
+  aria-label={name}>`, absolute inset 0, transparent, z-index 1, radius 14, focus ring 3px `--blue`); it records
+  `trackHeartView`. There is no "Detaljer" pill;
+- **a small checkbox ticks the heart for the PDF**: a real `<input type="checkbox">` with a visually hidden
+  `<label>` "Vælg til PDF: {name}", 24px round at `top: 10px; left: 10px`, z-index 2 (above the link), white
+  with a 1.5px `--line` border, red with a white ✓ when checked (the ✓ is a text glyph: the hero clones the
+  card's first `<svg>`, which must stay the heart). Opacity 0; 1 on card hover, `:focus-within`, when checked,
+  and always under `@media (hover: none)`, where it is 22px with an `rgb(255 255 255 / .9)` fill so it stays
+  quiet over the ribbon;
 - selected: `.heart::before` ring (`inset:-9px; border:3px solid var(--red); border-radius:20px`),
   `.heart::after` check badge (28px red circle, white ✓, top -10 right -10, shadow `0 2px 6px rgb(31 51 41/.25)`),
   name turns red;
-- `<a class="details" href={detail url}>Detaljer</a>`: centred pill at `top: ribbon + size - 30px`, padding
-  7px 13px, radius 8, `rgb(28 51 41 / .84)` bg, white 13px/600, z-index 2; opacity 0, 1 on card hover,
-  `:focus-within`, and always under `@media (hover: none)`; 12px / 5px 10px on phones;
 - under the heart (margin-top auto): name 16px/600 `--ink` (plain text, not a link) and difficulty: four 8px dots
   (red up to the level, `--sage` after) + label Let / Mellem / Svær / Ekspert 13px `--muted`;
 - phones: `.card-heart .hang { max-width: 88% }`.
@@ -205,7 +213,8 @@ snow dots — copy the positions from `galleryFrame()`. The wrapper has `positio
 "Mine hjerter": heading styled like a category heading; when empty a dashed box (1.5px dashed `--sage`,
 radius 12, padding 22, 15px `--muted`) with a pencil icon tile (44px, `--cream2`), the text "Hjerter du tegner i
 editoren gemmes her i din browser, så du kan printe og dele dem senere." and an outline "Lav nyt hjerte"
-button; user hearts render as normal cards (keep delete).
+button; user hearts render as normal cards plus a delete button (30px, top right, z-index 2, revealed like the
+checkbox).
 
 Footer: `--cream2` background, centred wrapping row (gap 28, padding 32px 40px): colour swatches (white, red)
 with a swap button, EN, GitHub, "© Thomas Ahle".
