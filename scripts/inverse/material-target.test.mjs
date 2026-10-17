@@ -39,6 +39,22 @@ test('letterboxed prediction coordinates remain in source pixel edges',()=>{
   for(let y=0;y<n;y++)for(let x=0;x<n;x++)assert.equal(crop.probability[y*n+x],(8+(x+.5)*48/n+64)/256);
 });
 
+test('inverting a full-photo letterbox tolerates roundoff but not missing source pixels',()=>{
+  const width=3730,height=2137,scale=256/width,oy=(256-height*scale)/2;
+  const window=[0,-oy/scale,256/scale,(256-oy)/scale];
+  assert.ok(window[2]<width,'Reproduce the real photograph’s inverse-scale roundoff');
+  const input={imageWidth:width,imageHeight:height,rgba:new Uint8ClampedArray(width*height*4).fill(255)};
+  const exact={...prediction,window:[0,window[1],width,window[3]]};
+  const before=window.slice(),reference=rectifyMaterialPrediction(input,exact,null,n);
+  const actual=rectifyMaterialPrediction(input,{...prediction,window},null,n);
+  assert.deepEqual(actual,reference);
+  assert.deepEqual(window,before,'Do not move the prediction sampling window');
+  for(let edge=0;edge<4;edge++){
+    const narrower=[0,0,width,height];narrower[edge]+=edge<2?1e-6:-1e-6;
+    assert.throws(()=>rectifyMaterialPrediction(input,{...prediction,window:narrower},null,n),/contain/);
+  }
+});
+
 test('invalid and partial prediction fields fail instead of shrinking the evaluation region',()=>{
   assert.throws(()=>rectifyMaterialPrediction(source,{...prediction,window:[8,0,64,64]},null,n),/contain/);
   assert.throws(()=>rectifyMaterialPrediction(source,{...prediction,values:new Float32Array(n*n).fill(NaN)},null,n),/Invalid/);
