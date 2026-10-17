@@ -162,3 +162,22 @@ so editable conversion is not their origin. The count **27/31** describes the
 current quantitative gates, not 27 faithful original cutting templates.
 Photographic latency is not bounded by ten seconds: that is the search allowance,
 and crop detection, preparation, export and independent checks take extra time.
+
+
+## Remaining shared-cut gaps
+
+An [offline additional-cleanup probe](post-release-shared-gap-probe.json) tests
+bird, crown, puppy and Viking from their saved exports, without new fitting.
+One more ordinary sharing pass gets 6, 4, 1 and 10 additional alignments,
+respectively. Final geometry, lattice, unfolded-paper offsets and source-feature
+checks pass. All baseline independent renders reproduce their release errors.
+
+The four additional passes cost 5.11, 2.34, 0.51 and 4.43 seconds. Bird improves
+by only two pixels at 400 resolution; its obvious neck gap remains. Crown's
+binary score is unchanged. Puppy's binary score improves by one pixel at 400
+but worsens by two pixels at 800. Fractional-coverage error improves for all
+four, and some faint seams disappear, but the larger visual defects remain.
+These are native diagnostic candidates, not fresh solves or editable/browser
+validation. No extra pass was added to production. The next investigation
+should inspect missing alignment proposals and their rejection reasons rather
+than simply extending cleanup time.

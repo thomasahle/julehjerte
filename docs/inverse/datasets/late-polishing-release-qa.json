@@ -792,6 +792,13 @@
       "editablePassed": 27,
       "lostPreviousPasses": 0,
       "qualification": "Jigsaw improves on unchanged input; crossed ribbons also changes target classification/coverage and still loses its old 72-pixel component. See paired-domain and visual review."
+    },
+    "manualPreview": {
+      "runtimeCommit": "b7daccc12eb56887cd1006e0c75f1edd2053391c",
+      "origin": "http://127.0.0.1:5232",
+      "servedAssetsVerified": 176,
+      "sourceFilesVerified": 1018,
+      "state": "tmp/heart-learning/late-polishing-release-v1/preview-state.json"
     }
   }
 }

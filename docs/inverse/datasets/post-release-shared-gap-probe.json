@@ -1,0 +1,181 @@
+{
+  "schema": "post-release-shared-gap-probe-1",
+  "status": "complete-offline-not-promoted",
+  "scope": "One additional ordinary finalizeShared pass on each saved accepted export, with its unchanged binary target and settings. No time cutoff inside the ordinary twelve-round limit; this is not a fresh solve or application timing. Final nominal geometry, lattice, unfolded-offset paper and feature checks remain enabled.",
+  "sourceFilesVerified": 1018,
+  "baselineReproduction": "All four 400-pixel independent renders exactly reproduce their recorded release errors. Source masks and input geometry remain unchanged.",
+  "rows": [
+    {
+      "id": "bird",
+      "milliseconds": 5106.797292,
+      "changed": true,
+      "checksPassed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "renders": [
+        {
+          "resolution": 400,
+          "errorBefore": 0.01963125,
+          "errorAfter": 0.01961875,
+          "coverageBefore": 0.021877769568236546,
+          "coverageAfter": 0.021791519571002574
+        },
+        {
+          "resolution": 800,
+          "errorBefore": 0.021365625,
+          "errorAfter": 0.0213484375,
+          "coverageBefore": 0.02190678307574708,
+          "coverageAfter": 0.021821507343114353
+        }
+      ],
+      "geometrySha256": "3b507585b06c8d1128e0ebcae3c2ff99670dc7f8ddc93460063101c4e67a450c",
+      "maskSha256": "7137173fa17abe3f8f7788ddb7d321fe48258a4a3f4c2f8b3171b9ff9f15a16f",
+      "acceptedAlignments": 6,
+      "rejectionCounts": {
+        "paper": 8,
+        "higher_resolution_error": 17,
+        "cut_quality": 6
+      }
+    },
+    {
+      "id": "crown",
+      "milliseconds": 2342.306457999999,
+      "changed": true,
+      "checksPassed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "renders": [
+        {
+          "resolution": 400,
+          "errorBefore": 0.0224125,
+          "errorAfter": 0.0224125,
+          "coverageBefore": 0.024836936230678112,
+          "coverageAfter": 0.024775048978370615
+        },
+        {
+          "resolution": 800,
+          "errorBefore": 0.0244484375,
+          "errorAfter": 0.024428125,
+          "coverageBefore": 0.024950300238234923,
+          "coverageAfter": 0.02488089460229967
+        }
+      ],
+      "geometrySha256": "ae5e552f1396f7ea6c08b1539b343a081c12cbd2625c06235fbd8f78887abb31",
+      "maskSha256": "28f4380aaf5bb197acbaf7750b4560e317c442740098abaf4c91eb88ac7866aa",
+      "acceptedAlignments": 4,
+      "rejectionCounts": {
+        "higher_resolution_error": 10
+      }
+    },
+    {
+      "id": "flettede-puppy",
+      "milliseconds": 510.17454200000066,
+      "changed": true,
+      "checksPassed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "renders": [
+        {
+          "resolution": 400,
+          "errorBefore": 0.01049375,
+          "errorAfter": 0.0104875,
+          "coverageBefore": 0.01196931369251106,
+          "coverageAfter": 0.011967328398325481
+        },
+        {
+          "resolution": 800,
+          "errorBefore": 0.0115484375,
+          "errorAfter": 0.0115515625,
+          "coverageBefore": 0.012137542878038948,
+          "coverageAfter": 0.01213086395697901
+        }
+      ],
+      "geometrySha256": "ba11c5f4ccf47b0b596f9df7dffc28e8d6e4bd90d1017107f28f56e6c6f9e7c7",
+      "maskSha256": "45bb41ffbb961e933cb29f4effbe47239533035ab522c7e654b7d9c1de1a0dad",
+      "acceptedAlignments": 1,
+      "rejectionCounts": {
+        "cut_quality": 6,
+        "higher_resolution_error": 2
+      }
+    },
+    {
+      "id": "flettede-viking",
+      "milliseconds": 4432.072333999999,
+      "changed": true,
+      "checksPassed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "renders": [
+        {
+          "resolution": 400,
+          "errorBefore": 0.02123125,
+          "errorAfter": 0.02116875,
+          "coverageBefore": 0.023783676423458383,
+          "coverageAfter": 0.02344757348515559
+        },
+        {
+          "resolution": 800,
+          "errorBefore": 0.0232921875,
+          "errorAfter": 0.0231203125,
+          "coverageBefore": 0.023882426459144335,
+          "coverageAfter": 0.023551464450458297
+        }
+      ],
+      "geometrySha256": "399843c55f5a60ae31469bc4feb5e725fddcf4ccc35b19f3b9467e58c0b2f708",
+      "maskSha256": "7791de154fdbc94b618ece0bf018522573d57c231c46bc0385d24a9e2b9a9bb8",
+      "acceptedAlignments": 10,
+      "rejectionCounts": {
+        "paper": 2
+      }
+    }
+  ],
+  "decision": "Do not add another automatic cleanup pass: gains are small relative to extra cost and the conspicuous motif gaps remain. Investigate candidate coverage and individual rejection reasons before changing the algorithm.",
+  "visualReview": "All four after-render PNGs inspected. Faint seams reduce, but the bird neck gap, crown distortions, puppy opening and Viking discontinuities remain.",
+  "limitations": [
+    "Saved fitted cuts initialize this diagnostic; it is not a fresh photo-to-template recovery.",
+    "Native geometry, lattice, unfolded offset paper and source-feature-change checks pass for all four outputs. Editable SVG replay and browser QA were not repeated for these experimental outputs.",
+    "No production or neural change. The higher-resolution binary score slightly worsens for puppy despite improved fractional coverage."
+  ],
+  "artifacts": {
+    "tmp/heart-learning/late-polishing-release-v1/share-probe.mjs": {
+      "sha256": "3c62671ff576c8f0fb55a2a6f37febc68bc4b319b9bac3e18ffd25191e0b60a8",
+      "bytes": 4573
+    },
+    "tmp/heart-learning/late-polishing-release-v1/extra-sharing/summary.json": {
+      "sha256": "48f8d8cbc71da7a07e4868f38576ea589d5d35c8d944cdef8b1eb329763b9cfd",
+      "bytes": 35416
+    },
+    "tmp/heart-learning/late-polishing-release-v1/extra-sharing/bird-after.png": {
+      "sha256": "a4293d5ea6370455dcd6d5daa10bf5485ffa13dd824c95138d5e55735ea8cddb",
+      "bytes": 15925
+    },
+    "tmp/heart-learning/late-polishing-release-v1/extra-sharing/crown-after.png": {
+      "sha256": "10d42fab45ec928b177db1cce1271b534f5361fead10de28b58be1dd4d0dada7",
+      "bytes": 17720
+    },
+    "tmp/heart-learning/late-polishing-release-v1/extra-sharing/flettede-puppy-after.png": {
+      "sha256": "753191b41ddb7e2bd1ba72d4ba1235caad3af2355ad3839dbf9b24267871b0b3",
+      "bytes": 10894
+    },
+    "tmp/heart-learning/late-polishing-release-v1/extra-sharing/flettede-viking-after.png": {
+      "sha256": "eed32080671301b87f61a5102491abaa2e009eb7672676cc3fdbfb8a8bfcb7d7",
+      "bytes": 16195
+    },
+    "tmp/heart-learning/late-polishing-release-v1/extra-sharing/bird-cut_geometry.json": {
+      "sha256": "66e2b7d0d7ed21213ea8ff1c0f294ee5fc7644dde3d58ae12811dc3ed8ee25ef",
+      "bytes": 48641
+    },
+    "tmp/heart-learning/late-polishing-release-v1/extra-sharing/crown-cut_geometry.json": {
+      "sha256": "9de467d2ffae5dad9c7a3b06ac38d5e4f8f0190326905c86ddbe872769ec6060",
+      "bytes": 39184
+    },
+    "tmp/heart-learning/late-polishing-release-v1/extra-sharing/flettede-puppy-cut_geometry.json": {
+      "sha256": "b9bee70b5efde68d1673581e911d2318d841e7c46ff616d08cdf8716b5e6d59d",
+      "bytes": 42478
+    },
+    "tmp/heart-learning/late-polishing-release-v1/extra-sharing/flettede-viking-cut_geometry.json": {
+      "sha256": "d0d0902b3ece2509c0839f283b3a0ac7dbca7216eedb50d428b62ce6125a23ab",
+      "bytes": 55006
+    }
+  }
+}
