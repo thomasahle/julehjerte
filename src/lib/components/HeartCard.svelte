@@ -180,8 +180,10 @@
 		transition: opacity 0.2s;
 	}
 
+	/* Keyboard focus shows the box; a mouse click leaves focus on it too, and
+	   :focus-within would then keep it on screen after the pointer has left. */
 	.card:hover .pick,
-	.card:focus-within .pick,
+	.card:has(:focus-visible) .pick,
 	.card.is-selected .pick {
 		opacity: 1;
 	}
@@ -302,7 +304,7 @@
 	}
 
 	.card:hover .delete-btn,
-	.card:focus-within .delete-btn {
+	.card:has(:focus-visible) .delete-btn {
 		opacity: 1;
 	}
 

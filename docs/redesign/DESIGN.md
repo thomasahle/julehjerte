@@ -184,7 +184,7 @@ Card (`article.card`, relative, flex column centred, height size+136 with size 1
 - **a small checkbox ticks the heart for the PDF**: a real `<input type="checkbox">` with a visually hidden
   `<label>` "Vælg til PDF: {name}", 24px round at `top: 10px; left: 10px`, z-index 2 (above the link), white
   with a 1.5px `--line` border, red with a white ✓ when checked (the ✓ is a text glyph: the hero clones the
-  card's first `<svg>`, which must stay the heart). Opacity 0; 1 on card hover, `:focus-within`, when checked,
+  card's first `<svg>`, which must stay the heart). Opacity 0; 1 on card hover, on keyboard focus (`:has(:focus-visible)`, so a mouse click does not pin it), when checked,
   and always under `@media (hover: none)`, where it is 22px with an `rgb(255 255 255 / .9)` fill so it stays
   quiet over the ribbon;
 - selected: `.heart::before` ring (`inset:-9px; border:3px solid var(--red); border-radius:20px`) and the
