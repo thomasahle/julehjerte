@@ -1,0 +1,574 @@
+{
+  "reviewedAt": "2026-10-17",
+  "runtimeCommit": "b7daccc12eb56887cd1006e0c75f1edd2053391c",
+  "fixtureCommit": "69570f0",
+  "status": "diagnostic; no production defaults changed; nothing pushed or deployed",
+  "sourceCatalogues": [
+    "scripts/inverse/fixtures/user-photos-2026-10-17/stacked.json",
+    "scripts/inverse/fixtures/user-photos-2026-10-17/window.json"
+  ],
+  "borderStudy": {
+    "script": "scripts/inverse/diagnostics/photo-edge-inset-study.mjs",
+    "artifacts": "tmp/heart-learning/photo-border-repro-v1",
+    "sourceSha256": "c25d43d008c63dba490e4426f972cd347d3b578a510b478edac6874ecfee6ab5",
+    "sourcePinsCount": 106,
+    "sourcePinsSha256": "2c68c4f5507bfc654e180951b35f701398e6197582e26c9db03ee14767c27051",
+    "cropQuad": [
+      [
+        328.68018835288376,
+        94.2801998068486
+      ],
+      [
+        568.7245969318753,
+        350.390222659565
+      ],
+      [
+        318.3496044147103,
+        597.2237937041144
+      ],
+      [
+        68.74493970200332,
+        338.6891289810733
+      ]
+    ],
+    "rows": [
+      {
+        "name": "baseline",
+        "inset": 0,
+        "solveSeconds": 9.743659459,
+        "templateChecksPassed": true,
+        "slits": {
+          "left": 5,
+          "right": 5
+        },
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "missingFeatures": 0,
+        "commonOriginalInterior": {
+          "inset": 0.03,
+          "pixels": 141376,
+          "disagreements": 478,
+          "fraction": 0.0033810547759167042,
+          "reference": "Unchanged baseline classified photo, not ground truth; 1600px independent export mapped through source photograph to original rectified coordinates."
+        },
+        "maskSha256": "f4ec4215d056758bed572c6648e46cd942350058113993c5f3491151e2b8c2b9",
+        "independentError": 0.00676875
+      },
+      {
+        "name": "inset-005",
+        "inset": 0.005,
+        "solveSeconds": 7.491105916999999,
+        "templateChecksPassed": true,
+        "slits": {
+          "left": 5,
+          "right": 5
+        },
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "missingFeatures": 0,
+        "commonOriginalInterior": {
+          "inset": 0.03,
+          "pixels": 141376,
+          "disagreements": 941,
+          "fraction": 0.006656009506564056,
+          "reference": "Unchanged baseline classified photo, not ground truth; 1600px independent export mapped through source photograph to original rectified coordinates."
+        },
+        "maskSha256": "6ffc028127f101a17f60d57221ccaf23a3c633c3fc80d24c3db51f3e7c4dbf16",
+        "independentError": 0.0050625
+      },
+      {
+        "name": "inset-010",
+        "inset": 0.01,
+        "solveSeconds": 7.161382499999999,
+        "templateChecksPassed": true,
+        "slits": {
+          "left": 5,
+          "right": 5
+        },
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "missingFeatures": 0,
+        "commonOriginalInterior": {
+          "inset": 0.03,
+          "pixels": 141376,
+          "disagreements": 562,
+          "fraction": 0.003975215029425079,
+          "reference": "Unchanged baseline classified photo, not ground truth; 1600px independent export mapped through source photograph to original rectified coordinates."
+        },
+        "maskSha256": "666b3b0bd5b1a0eed8c88790d0ad999f1d6725054d2609e3e76c7f336f9372fd",
+        "independentError": 0.0029625
+      },
+      {
+        "name": "ignore-020",
+        "inset": 0,
+        "ignoredBand": 0.02,
+        "solveSeconds": 9.812715666,
+        "templateChecksPassed": true,
+        "slits": {
+          "left": 6,
+          "right": 6
+        },
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "missingFeatures": 0,
+        "commonOriginalInterior": {
+          "inset": 0.03,
+          "pixels": 141376,
+          "disagreements": 1102,
+          "fraction": 0.007794816659121775,
+          "reference": "Unchanged baseline classified photo, not ground truth; 1600px independent export mapped through source photograph to original rectified coordinates."
+        },
+        "maskSha256": "f4ec4215d056758bed572c6648e46cd942350058113993c5f3491151e2b8c2b9",
+        "independentError": 0.009141710069444444
+      }
+    ],
+    "perturbationArtifacts": "tmp/heart-learning/photo-border-perturbed-v1",
+    "perturbationRows": [
+      {
+        "name": "perturb-0-0",
+        "inset": 0,
+        "dx": 1,
+        "dy": 0,
+        "solveSeconds": 7.460854042,
+        "templateChecksPassed": true,
+        "slits": {
+          "left": 5,
+          "right": 5
+        },
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "missingFeatures": 0,
+        "commonOriginalInterior": {
+          "inset": 0.03,
+          "pixels": 141376,
+          "disagreements": 762,
+          "fraction": 0.005389882299683115,
+          "reference": "Unchanged baseline classified photo; 1600px independent export mapped through source photograph to original rectified coordinates, not ground truth."
+        },
+        "maskSha256": "0c577a549cf3d1f55ff56b5ccdae942c6176ad8baf420446b060eb2aaa93b686",
+        "independentError": 0.010425
+      },
+      {
+        "name": "perturb-0-0.01",
+        "inset": 0.01,
+        "dx": 1,
+        "dy": 0,
+        "solveSeconds": 7.276752375,
+        "templateChecksPassed": true,
+        "slits": {
+          "left": 5,
+          "right": 5
+        },
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "missingFeatures": 0,
+        "commonOriginalInterior": {
+          "inset": 0.03,
+          "pixels": 141376,
+          "disagreements": 671,
+          "fraction": 0.004746208691715708,
+          "reference": "Unchanged baseline classified photo; 1600px independent export mapped through source photograph to original rectified coordinates, not ground truth."
+        },
+        "maskSha256": "be8496651427e4ff7f0c6b29f7b5f33d7dfb09829244db3c0e05353c9cdfa317",
+        "independentError": 0.002775
+      },
+      {
+        "name": "perturb-1-0",
+        "inset": 0,
+        "dx": 0,
+        "dy": 1,
+        "solveSeconds": 7.672174957999999,
+        "templateChecksPassed": true,
+        "slits": {
+          "left": 5,
+          "right": 5
+        },
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "missingFeatures": 0,
+        "commonOriginalInterior": {
+          "inset": 0.03,
+          "pixels": 141376,
+          "disagreements": 750,
+          "fraction": 0.005305002263467633,
+          "reference": "Unchanged baseline classified photo; 1600px independent export mapped through source photograph to original rectified coordinates, not ground truth."
+        },
+        "maskSha256": "8e7e1df22181686d26a0b219a81abfc922f4e88bfab3bb8e32534ccfb22cce05",
+        "independentError": 0.00725625
+      },
+      {
+        "name": "perturb-1-0.01",
+        "inset": 0.01,
+        "dx": 0,
+        "dy": 1,
+        "solveSeconds": 6.919918416999997,
+        "templateChecksPassed": true,
+        "slits": {
+          "left": 5,
+          "right": 5
+        },
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "missingFeatures": 0,
+        "commonOriginalInterior": {
+          "inset": 0.03,
+          "pixels": 141376,
+          "disagreements": 687,
+          "fraction": 0.0048593820733363515,
+          "reference": "Unchanged baseline classified photo; 1600px independent export mapped through source photograph to original rectified coordinates, not ground truth."
+        },
+        "maskSha256": "fccf7e6967761bab82874d87aa9787fe09baebe8c3db77f182808485a960d8b0",
+        "independentError": 0.003375
+      },
+      {
+        "name": "perturb-2-0",
+        "inset": 0,
+        "outward": 0.005,
+        "solveSeconds": 9.746274540999998,
+        "templateChecksPassed": true,
+        "slits": {
+          "left": 5,
+          "right": 5
+        },
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "missingFeatures": 0,
+        "commonOriginalInterior": {
+          "inset": 0.03,
+          "pixels": 141376,
+          "disagreements": 884,
+          "fraction": 0.0062528293345405165,
+          "reference": "Unchanged baseline classified photo; 1600px independent export mapped through source photograph to original rectified coordinates, not ground truth."
+        },
+        "maskSha256": "e9c7df7ef2537c21cdb1b1f387517b11ff46f4d2aee05e4b77a01043df67f131",
+        "independentError": 0.0113875
+      },
+      {
+        "name": "perturb-2-0.01",
+        "inset": 0.01,
+        "outward": 0.005,
+        "solveSeconds": 7.484313708999995,
+        "templateChecksPassed": true,
+        "slits": {
+          "left": 5,
+          "right": 5
+        },
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "missingFeatures": 0,
+        "commonOriginalInterior": {
+          "inset": 0.03,
+          "pixels": 141376,
+          "disagreements": 839,
+          "fraction": 0.0059345291987324585,
+          "reference": "Unchanged baseline classified photo; 1600px independent export mapped through source photograph to original rectified coordinates, not ground truth."
+        },
+        "maskSha256": "c65e358a4b2acbd2731513c01d3e7ae9970afe45db87a65f25cf1444c350d329",
+        "independentError": 0.004975
+      }
+    ],
+    "interpretation": "A 1% inset on each side removes the visible fringe. It improves common-interior disagreement in the three perturbed crops, but slightly worsens it on the unperturbed input. Whole-mask errors cannot be compared directly between different crops. Ignoring the outer 2% selects six cuts per sheet rather than five and is not selected for production.",
+    "timing": "Each fresh solve has a 10s search allowance. solveSeconds includes design(), validation and generated exports, but not detection, preparation, independent rendering, file writes or browser conversion. Separate wall-clock runs do not establish a causal speedup.",
+    "editableReplay": {
+      "sourceRun": "tmp/heart-learning/photo-border-exact-v1",
+      "artifacts": "tmp/heart-learning/photo-border-editable-v1",
+      "note": "Earlier exact-file solves; not the later canonical replay. Their masks match, but time-bounded fitted geometry can differ. Ignored-band arm was not replayed.",
+      "rows": [
+        {
+          "id": "baseline",
+          "conversionPassed": true,
+          "checksPassed": true,
+          "error": 0.0065625,
+          "maskSha256": "f4ec4215d056758bed572c6648e46cd942350058113993c5f3491151e2b8c2b9",
+          "geometrySha256": "c9b58ee96281eb92d84182ea8d1a13a4ddb777e44450c7a347197514ca852628"
+        },
+        {
+          "id": "inset-005",
+          "conversionPassed": true,
+          "checksPassed": true,
+          "error": 0.0050875,
+          "maskSha256": "6ffc028127f101a17f60d57221ccaf23a3c633c3fc80d24c3db51f3e7c4dbf16",
+          "geometrySha256": "de6f2eefa868095d093a53e28bb0cc5d88094b19510be4130a36804b981edaa7"
+        },
+        {
+          "id": "inset-010",
+          "conversionPassed": true,
+          "checksPassed": true,
+          "error": 0.0030625,
+          "maskSha256": "666b3b0bd5b1a0eed8c88790d0ad999f1d6725054d2609e3e76c7f336f9372fd",
+          "geometrySha256": "19fecbf0e98201c9fb1f9b78b2b46a79991792aea3e357ec2d0126c09f0a5b72"
+        }
+      ]
+    }
+  },
+  "windowAutomatic": {
+    "artifacts": "tmp/heart-learning/window-hearts-v1",
+    "editableArtifacts": "tmp/heart-learning/window-hearts-editable-v1",
+    "rows": [
+      {
+        "id": "window-blue-orange",
+        "status": "no_crop",
+        "quad": null,
+        "detectionSeconds": 3.822736458,
+        "visualReview": "No proposed crop. The locator reports that it cannot identify both lower paper edges."
+      },
+      {
+        "id": "window-orange-white",
+        "status": "validated",
+        "quad": [
+          [
+            511.44477647367864,
+            350.72091631791955
+          ],
+          [
+            645.7239349817286,
+            475.56292459053657
+          ],
+          [
+            565.0823944311398,
+            698.0541620320976
+          ],
+          [
+            367.47172145379466,
+            504.66363696471865
+          ]
+        ],
+        "detectionSeconds": 3.967719417,
+        "visualReview": "Rejected as a photo reconstruction in visual review: the needs_review crop extends over the hand, with weak lower-edge/lobe support. A legal fit to that contaminated mask is not a faithful photo reconstruction.",
+        "independentError": 0.0209875,
+        "checksPassed": true,
+        "slits": {
+          "left": 4,
+          "right": 5
+        },
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "missingFeatures": [],
+        "solveAndValidationSeconds": 9.82577175
+      },
+      {
+        "id": "window-red-white",
+        "status": "validated",
+        "quad": [
+          [
+            225.15743985796485,
+            557.5667759268762
+          ],
+          [
+            397.8951496261698,
+            711.8339627411832
+          ],
+          [
+            241.9495798310296,
+            885.1617623970203
+          ],
+          [
+            63.60470436505767,
+            730.6586832707893
+          ]
+        ],
+        "detectionSeconds": 0.2681071669999983,
+        "visualReview": "Plausible complete overlap crop and editable reconstruction; curved/wavy checker edges and a thin photographed seam remain. No original cutting-path ground truth.",
+        "independentError": 0.01001875,
+        "checksPassed": true,
+        "slits": {
+          "left": 2,
+          "right": 2
+        },
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "missingFeatures": [],
+        "solveAndValidationSeconds": 9.485680792000004
+      }
+    ],
+    "editableRows": [
+      {
+        "id": "window-orange-white",
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "editableError": 0.0210125,
+        "editorIssues": [],
+        "geometrySha256": "05d9f86ed095391392da73b6ca46fc5fd623f8c69e79835a243dd9580de6becd",
+        "maskSha256": "655774b5f6869a6dec03a475c27683cf29aa55ba8f5687252b7e3b24f4ae7dab"
+      },
+      {
+        "id": "window-red-white",
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "editableError": 0.010025,
+        "editorIssues": [],
+        "geometrySha256": "3698e0a50d2419f47f7e410a5f0078987fc15f9e6f041c0791a7059a31d8a779",
+        "maskSha256": "29dd36df253d748cc661e8c15cf7abb9ba3840f414d00334da9ec79d04ef97a8"
+      }
+    ]
+  },
+  "windowReviewedCorners": {
+    "artifacts": "tmp/heart-learning/window-hearts-review-v1",
+    "editableArtifacts": "tmp/heart-learning/window-hearts-reviewed-editable-v1",
+    "corners": [
+      {
+        "id": "window-blue-orange",
+        "quad": [
+          [
+            198,
+            247
+          ],
+          [
+            310,
+            426
+          ],
+          [
+            222,
+            520
+          ],
+          [
+            69,
+            396
+          ]
+        ],
+        "cropInsetFraction": 0,
+        "cropStatus": "manual_review_diagnostic",
+        "cropNote": "Approximate corners selected by visual inspection of the source photograph. These are diagnostic interventions, not ground truth or automatic detections."
+      },
+      {
+        "id": "window-orange-white",
+        "quad": [
+          [
+            510,
+            356
+          ],
+          [
+            649,
+            494
+          ],
+          [
+            511,
+            652
+          ],
+          [
+            402,
+            539
+          ]
+        ],
+        "cropInsetFraction": 0,
+        "cropStatus": "manual_review_diagnostic",
+        "cropNote": "Approximate corners selected by visual inspection of the source photograph. These are diagnostic interventions, not ground truth or automatic detections."
+      }
+    ],
+    "rows": [
+      {
+        "id": "window-blue-orange",
+        "status": "validated",
+        "quad": [
+          [
+            198,
+            247
+          ],
+          [
+            310,
+            426
+          ],
+          [
+            222,
+            520
+          ],
+          [
+            69,
+            396
+          ]
+        ],
+        "detectionSeconds": null,
+        "independentError": 0.0176375,
+        "checksPassed": true,
+        "slits": {
+          "left": 2,
+          "right": 4
+        },
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "missingFeatures": [],
+        "solveAndValidationSeconds": 6.133986042
+      },
+      {
+        "id": "window-orange-white",
+        "status": "failed",
+        "quad": [
+          [
+            510,
+            356
+          ],
+          [
+            649,
+            494
+          ],
+          [
+            511,
+            652
+          ],
+          [
+            402,
+            539
+          ]
+        ],
+        "detectionSeconds": null,
+        "independentError": 0.01455625,
+        "checksPassed": false,
+        "slits": {
+          "left": 5,
+          "right": 5
+        },
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "missingFeatures": [
+          {
+            "value": 0,
+            "areaMm2": 6.4375,
+            "centerMm": [
+              79.30703883495146,
+              48.65898058252427
+            ],
+            "retainedFraction": 0
+          },
+          {
+            "value": 0,
+            "areaMm2": 3.125,
+            "centerMm": [
+              76.55,
+              98.095
+            ],
+            "retainedFraction": 0
+          }
+        ],
+        "solveAndValidationSeconds": 9.881688124999998
+      }
+    ],
+    "scope": "Approximate photo-only visual corner interventions diagnose downstream fitting. They are neither ground truth nor automatic crop successes.",
+    "editableRows": [
+      {
+        "id": "window-blue-orange",
+        "conversionPassed": true,
+        "completeCandidatePassed": true,
+        "editableError": 0.01759375,
+        "editorIssues": [],
+        "geometrySha256": "196d39bc518bf0abc9924dfcdd4841d91429b4e4d55128329c6fe2e4ad92cf76",
+        "maskSha256": "a6cc76d783266adf7009872ce7f7f8060349b62b87a57b55fbec2cc94748dcb5"
+      },
+      {
+        "id": "window-orange-white",
+        "conversionPassed": true,
+        "completeCandidatePassed": false,
+        "editableError": 0.01476875,
+        "editorIssues": [],
+        "geometrySha256": "a9609f6c7c4a7e1f190b8370c14eac16612dbfcc43cbc0816b53be233aa18712",
+        "maskSha256": "c63012901d6410fd760bd017dc2a92ef8c70bd1a49ea9507905da2ce95236a54"
+      }
+    ]
+  },
+  "verification": {
+    "focusedTests": 5,
+    "focusedPassed": 5,
+    "productionSourceChanges": false,
+    "fullApplicationAndInverseQA": "Existing b7daccc release checks remain applicable to the unchanged runtime; this diagnostic is not a new browser validation of an inset feature. All 1018 previously pinned production source files are checked separately before this record is committed.",
+    "pinnedProductionFilesVerified": 1018
+  }
+}

@@ -119,6 +119,13 @@ Local review galleries are `tmp/heart-training-real/index.html` and
 `tmp/heart-training-synthetic/batch-v1/index.html`. Do not expand old archived
 artifact collections just to inspect one case; use the retained compact exports.
 
+The [four user-supplied regression cases received on 2026-10-17](../../../scripts/inverse/fixtures/user-photos-2026-10-17/README.md)
+are retained separately from the 1,254-file inventory above. The
+[edge-inset study](photo-edge-inset-study.md) reproduces the reported fringe and
+tests all three hearts in the window photograph, including cropping and
+downstream feature failures. These additions are QA-reserved, not new training
+labels; the website's cropping defaults are unchanged.
+
 ## What the network should learn
 
 Keep full-photo localization separate from rectified-pattern interpretation.
