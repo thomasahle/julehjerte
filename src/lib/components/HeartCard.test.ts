@@ -155,6 +155,8 @@ describe('HeartCard', () => {
 		expect((await render({ onDelete })).deleteButton()).toBeNull();
 		const own = await render({ heart: mine, onDelete });
 		expect(own.target.querySelector('article')!.hasAttribute('data-user')).toBe(true);
+		// Named after the heart, so several delete buttons do not all sound alike.
+		expect(own.deleteButton()!.getAttribute('aria-label')).toBe('Slet Mit hjerte');
 		own.deleteButton()!.click();
 		expect(onDelete).toHaveBeenCalledWith(mine);
 	});

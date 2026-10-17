@@ -25,6 +25,8 @@
   import { toGalleryHeart, type GalleryHeart, type HeroHeart } from "$lib/front/galleryHearts";
   import { SITE_TITLE, SITE_TITLE_EN } from "$lib/config";
   import { t, type Language } from "$lib/i18n";
+  import { focusSectionHeading } from "$lib/front/deleteFocus";
+  import { MY_HEARTS_CATEGORY_ID } from "$lib/data/categories";
   import { keepKnown, parseSelected, selectionSearch, toggleSelected } from "$lib/front/selection";
   import type { HeartDesign } from "$lib/types/heart";
   import { trackHeartView, trackHeartSelect } from "$lib/analytics";
@@ -97,18 +99,30 @@
     }
   }
 
+  // <Modal> leaves focus to its caller. Cancelled, it goes back to the delete
+  // button that opened the dialog; confirmed, that button is gone with its card,
+  // so it goes to the "Mine hjerter" heading rather than falling to <body>.
+  let deleteOpener: HTMLElement | null = null;
+
   function requestDelete(heart: GalleryHeart) {
+    deleteOpener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     deleteCandidate = heart;
   }
 
-  function cancelDelete() {
+  async function cancelDelete() {
     deleteCandidate = null;
+    await tick();
+    deleteOpener?.focus();
+    deleteOpener = null;
   }
 
-  function confirmDelete() {
+  async function confirmDelete() {
     if (!deleteCandidate) return;
     handleDelete(deleteCandidate);
     deleteCandidate = null;
+    deleteOpener = null;
+    await tick();
+    focusSectionHeading(document.getElementById(MY_HEARTS_CATEGORY_ID));
   }
 
   let galleryCategories = $derived(

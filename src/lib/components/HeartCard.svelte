@@ -149,7 +149,7 @@
 			class="delete-btn"
 			type="button"
 			onclick={handleDelete}
-			aria-label={t('delete', lang)}
+			aria-label="{t('delete', lang)} {heart.name}"
 			title={t('delete', lang)}
 		>
 			<TrashIcon size={16} />
