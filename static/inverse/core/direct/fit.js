@@ -133,7 +133,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
       // the checked incumbent if it fails or opens an already enclosed motif.
       const comparisonSeconds=Math.min(12,(start+cfg.timeLimit*1000-performance.now()-1800)/1000);
       if(error>Math.min(.015,cfg.maxImageError*.5)&&comparisonSeconds>=10){
-        const alternative=await initializeCoarseTopology(input,cfg,{seconds:comparisonSeconds,onProgress,repairRejected:true});
+        const alternative=await initializeCoarseTopology(input,cfg,{seconds:comparisonSeconds,onProgress,repairRejected:true,repairDeadline:start+cfg.timeLimit*1000-1800});
         comparison={...alternative.report,beforeImageError:error,selected:false};
         if(alternative.graph){
           const proposed=alternative.graph.solution(alternative.graph.points,alternative.phase,input),checkedCfg=verifiedPaperSettings(alternative,cfg);
@@ -232,7 +232,8 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   const coarseDeadline=repairCoarseRouting?Math.max(deadline,start+Math.min(cfg.timeLimit,20)*1000-1300):deadline;
   const coarseTopologySeconds=shortBudget?Math.max(0,shortTopologyBudget-(topology?.report.seconds||0)):repairCoarseRouting?12:2.5;
   if(!topology?.graph&&(!weights||repairCoarseRouting)&&requestedSymmetry(cfg.symmetry).every(name=>name==='transpose')&&poorGrid&&coarseTopologySeconds>.25&&coarseDeadline-performance.now()>3500){
-    coarseTopology=await initializeCoarseTopology(input,cfg,{seconds:Math.min(coarseTopologySeconds,(coarseDeadline-performance.now()-1700)/1000),onProgress,repairRejected:repairCoarseRouting});
+    coarseTopology=await initializeCoarseTopology(input,cfg,{seconds:Math.min(coarseTopologySeconds,(coarseDeadline-performance.now()-1700)/1000),onProgress,repairRejected:repairCoarseRouting,
+      repairDeadline:repairCoarseRouting?start+cfg.timeLimit*1000-2500:null});
     if(coarseTopology.graph){
       deadline=coarseDeadline;
       const verification=coarseTopology.report.paperVerification,refinementCfg=verifiedPaperSettings(coarseTopology,cfg);

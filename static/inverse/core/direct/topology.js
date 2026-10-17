@@ -15,7 +15,7 @@ import {maskDisagreement} from './prefer-matching.js';
 import {CurveGraph} from './curves.js';
 import {symmetryTies} from './symmetry.js';
 import {initializationMask,sourceWeights,hasOnlyObservationWeights} from '../image-reference.js';
-import {repairRejectedRouting} from './rejected-routing.js';
+import {repairRejectedRouting,projectedRoutingRepairMilliseconds} from './rejected-routing.js';
 
 export function prepareBoundary(input,cfg,{useInitializationGuide=true,guidePhase=0,borderRadius=0}={}){
   if(useInitializationGuide&&guidePhase===0&&borderRadius===0&&input.boundarySeed?.width===cfg.width)return input.boundarySeed;
@@ -71,7 +71,7 @@ export function prepareTopologyBoundary(input,cfg,{maximumError=.005,guidePhase=
 /** A small routing portfolio for poor grid fits. Coarsening changes only the
  * seed; its source pixels and the final geometry/paper gates are unchanged.
  */
-export async function initializeCoarseTopology(input,cfg,{maximumError=Math.min(.025,cfg.maxImageError),seconds=2.5,onProgress=()=>{},repairRejected=false}={}){
+export async function initializeCoarseTopology(input,cfg,{maximumError=Math.min(.025,cfg.maxImageError),seconds=2.5,onProgress=()=>{},repairRejected=false,repairDeadline=null}={}){
   const started=performance.now(),source=input.sourceImage,report={method:'coarse-boundary-topology',maximumError,accepted:false,attempts:[]},candidates=[];
   const remaining=()=>seconds-(performance.now()-started)/1000;
   if(source.weights&&(!repairRejected||!hasOnlyObservationWeights(source)))return{report};
@@ -92,7 +92,7 @@ export async function initializeCoarseTopology(input,cfg,{maximumError=Math.min(
   candidates.sort((a,b)=>a.attempt.segments-b.attempt.segments||a.attempt.imageError-b.attempt.imageError);
   for(const {target,attempt}of candidates.slice(0,2)){
     if(remaining()<.1)break;
-    const seed=await initializeTopology({...input,boundarySeed:target},cfg,{maximumError,seconds:remaining(),onProgress,repairRejected});
+    const seed=await initializeTopology({...input,boundarySeed:target},cfg,{maximumError,seconds:remaining(),onProgress,repairRejected,repairDeadline});
     attempt.routing=seed.report;
     if(seed.graph){
       report.accepted=true;report.seconds=(performance.now()-started)/1000;
@@ -104,9 +104,9 @@ export async function initializeCoarseTopology(input,cfg,{maximumError=Math.min(
   return{report};
 }
 
-export async function initializeTopology(input,cfg,{maximumError=.005,seconds=3,onProgress=()=>{},repairRejected=false}={}){
+export async function initializeTopology(input,cfg,{maximumError=.005,seconds=3,onProgress=()=>{},repairRejected=false,repairDeadline=null}={}){
   const source=input.sourceImage,weights=source.weights?sourceWeights(source):null;
-  if(!weights?.some(w=>w===0)||repairRejected&&hasOnlyObservationWeights(source))return initializeTopologyPhase(input,cfg,{maximumError,seconds,onProgress,repairRejected});
+  if(!weights?.some(w=>w===0)||repairRejected&&hasOnlyObservationWeights(source))return initializeTopologyPhase(input,cfg,{maximumError,seconds,onProgress,repairRejected,repairDeadline});
   // Probe both free-band phases as LPs before spending the small budget on
   // branch-and-bound. Integral LP answers still face the original binary,
   // geometry, image and paper checks. Fractional answers are never rounded.
@@ -165,17 +165,22 @@ function prepareTopologyPhase(input,cfg,{maximumError,guidePhase,onProgress}){
   }catch(error){report.error=error.message;return{report};}
 }
 
-async function initializeTopologyPhase(input,cfg,{maximumError,seconds,onProgress,guidePhase=0,prepared=null,relaxationOnly=false,repairRejected=false}){
+async function initializeTopologyPhase(input,cfg,{maximumError,seconds,onProgress,guidePhase=0,prepared=null,relaxationOnly=false,repairRejected=false,repairDeadline=null}){
   const start=performance.now(),source=input.sourceImage;
+  // A caller may reserve a bounded repair tail from its overall allowance.
+  // Keep the MILP deadline unchanged: a late promising integer proposal must
+  // not spend that tail on more routing. Without a finite caller deadline,
+  // retain the original shared phase budget.
+  const routingDeadline=start+seconds*1000,recoveryDeadline=Number.isFinite(repairDeadline)?Math.min(repairDeadline,routingDeadline+projectedRoutingRepairMilliseconds):routingDeadline;
   const phase=prepared||prepareTopologyPhase(input,cfg,{maximumError,guidePhase,onProgress}),report={...phase.report};
   try{
     if(!phase.graph)return{report};
     const graphCfg=settings({...phase.cfg,timeLimit:Math.max(.1,seconds-(performance.now()-start)/1000),...(relaxationOnly?{maxRounds:1}:{})});
     let solution,repaired=null,repairUsed=false;
     const onRejectedCandidate=repairRejected&&!relaxationOnly?(proposal)=>{
-      if(repairUsed||start+seconds*1000-performance.now()<1000)return false;
+      if(repairUsed||recoveryDeadline-performance.now()<1000)return false;
       repairUsed=true;
-      const attempt=repairRejectedRouting(proposal,input,cfg,{deadline:start+seconds*1000,projectClearance:true});
+      const attempt=repairRejectedRouting(proposal,input,cfg,{deadline:recoveryDeadline,projectClearance:true});
       report.continuousRepair=attempt.report;
       if(!attempt.solution)return false;
       repaired=attempt.solution;return true;
