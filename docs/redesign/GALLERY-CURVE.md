@@ -30,7 +30,7 @@ The category headings go.
    Page coordinates follow from the rendered rect of the landscape svg
    (`Scene.svelte` renders it as `.scene-land-svg`): `scale = rect.width /
    2172`, `y = rect.top + yUnits * scale`. The scroll hint at the foot of the
-   hero is covered by this and is removed on the desktop layout.
+   the hero only shows below 900px, so nothing there is covered.)
 
    Reference numbers at 1440px wide (header 62px tall, landscape rect top at
    page y 243, 480px tall; content column x 120–1320): the hill line is at
