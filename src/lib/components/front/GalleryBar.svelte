@@ -499,9 +499,12 @@
 		color: var(--white);
 	}
 
+	/* --muted (5.1:1 on the page) fell to 3.98:1 where a chip rests on the
+	   hill with a dark fir showing through its translucent white; the darker
+	   --muted-on-sky keeps the count above 4.5:1 there too. */
 	.chip-count {
 		font-weight: 500;
-		color: var(--muted);
+		color: var(--muted-on-sky);
 	}
 
 	.chip[aria-current='true'] .chip-count {
