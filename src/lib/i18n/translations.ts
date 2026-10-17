@@ -50,12 +50,6 @@ export const translations = {
     galleryHeading: 'Skabeloner',
     /** {n} = hearts in the category */
     pdfSettings: 'PDF-indstillinger',
-    stepPrintTitle: 'Vælg og print',
-    stepPrintHint: 'I 100% størrelse på A4',
-    stepCutTitle: 'Klip og fold',
-    stepCutHint: 'Følg vejledningen',
-    stepWeaveTitle: 'Flet',
-    stepWeaveHint: 'Ind i og uden om',
     myHeartsEmpty: 'Hjerter du tegner i editoren gemmes her i din browser, så du kan printe og dele dem senere.',
 
     // Category names; the *Lower forms are for mid-sentence use
@@ -673,12 +667,6 @@ export const translations = {
     galleryHeading: 'Templates',
     /** {n} = hearts in the category */
     pdfSettings: 'PDF settings',
-    stepPrintTitle: 'Pick and print',
-    stepPrintHint: 'At 100% size on A4',
-    stepCutTitle: 'Cut and fold',
-    stepCutHint: 'Follow the guide',
-    stepWeaveTitle: 'Weave',
-    stepWeaveHint: 'Through and around',
     myHeartsEmpty: 'Hearts you draw in the editor are saved here in your browser, so you can print and share them later.',
 
     // Category names; the *Lower forms are for mid-sentence use

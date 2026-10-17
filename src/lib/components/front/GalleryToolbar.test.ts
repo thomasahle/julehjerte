@@ -60,15 +60,14 @@ async function render(selectedCount: number, allSelected = false) {
 }
 
 describe('GalleryToolbar', () => {
-	it('shows only the steps while nothing is ticked', async () => {
+	it('renders no controls while nothing is ticked, and marks itself idle', async () => {
 		const ui = await render(0);
 		expect(ui.download()).toBeUndefined();
 		expect(ui.gear()).toBeNull();
 		expect(ui.selectAll()).toBeUndefined();
 		expect(ui.selectNone()).toBeUndefined();
-		expect(ui.target.querySelectorAll('button')).toHaveLength(0);
-		// The steps are still there, and the bar knows it is idle (it collapses on phones).
-		expect(ui.target.querySelectorAll('a').length).toBe(3);
+		expect(ui.target.querySelectorAll('button, a')).toHaveLength(0);
+		// The idle bar is hidden by CSS at every width.
 		expect(ui.toolbar().classList.contains('idle')).toBe(true);
 	});
 

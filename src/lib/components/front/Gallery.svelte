@@ -99,9 +99,9 @@
 	<GalleryFrame height={frameHeight} />
 
 	<div class="gallery" id="skabeloner">
-		<div class="gallery-head">
-			<h2>{t('galleryHeading', lang)}</h2>
-		</div>
+		<!-- The section keeps a heading for the nav's "Skabeloner" anchor and for
+		     screen readers; visually the gallery starts with the first category. -->
+		<h2 class="sr-only">{t('galleryHeading', lang)}</h2>
 
 		<GalleryToolbar
 			{lang}
@@ -174,21 +174,6 @@
 		box-sizing: border-box;
 	}
 
-	.gallery-head {
-		display: flex;
-		align-items: baseline;
-		justify-content: space-between;
-		flex-wrap: wrap;
-		gap: 16px;
-		padding-bottom: 6px;
-	}
-
-	.gallery-head h2 {
-		margin: 0;
-		font-size: 32px;
-		font-weight: 600;
-		color: var(--deep);
-	}
 
 	@media (max-width: 1399px) {
 		.gallery-wrap {
@@ -211,9 +196,6 @@
 			padding: 16px 24px 40px;
 		}
 
-		.gallery-head h2 {
-			font-size: 26px;
-		}
 	}
 
 	@media (max-width: 599px) {

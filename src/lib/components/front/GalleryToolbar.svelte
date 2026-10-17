@@ -16,7 +16,6 @@
 	import { DownloadIcon, GearIcon } from '$lib/components/icons';
 	import type { LayoutMode } from '$lib/pdf/template';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-	import StepsStrip from './StepsStrip.svelte';
 
 	/** The three A4 layouts the PDF menu offers, in menu order. */
 	const LAYOUT_OPTIONS: {
@@ -126,7 +125,6 @@
 		</button>
 	{/if}
 
-	<StepsStrip {lang} />
 </div>
 
 <style>
@@ -190,17 +188,16 @@
 		font-size: 13px;
 	}
 
+	/* With nothing ticked there is nothing to show, and an empty sticky bar
+	   would still be a strip of --page sliding over the hearts. */
+	.toolbar.idle {
+		display: none;
+	}
+
 	@media (max-width: 699px) {
 		.toolbar {
 			gap: 8px;
 			padding: 10px 0;
-		}
-
-		/* The steps are hidden at this width, so with nothing ticked there is
-		   nothing left to show — and an empty sticky bar would still be a
-		   strip of --page sliding over the hearts. */
-		.toolbar.idle {
-			display: none;
 		}
 	}
 </style>

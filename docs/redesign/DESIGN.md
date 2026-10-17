@@ -146,7 +146,7 @@ follows the colour store as before.
 
 ### Gallery
 `main.gallery` max-width 1280, padding `24px 40px 56px` (→ `16px 24px 40px` < 900, `16px 16px 32px` < 600),
-`id="skabeloner"`. Heading "Skabeloner" 32px/600 (26 < 900). **No help text.**
+`id="skabeloner"`. The "Skabeloner" heading is visually hidden (kept for the nav anchor and screen readers); the gallery starts with its first category. **No help text.**
 
 The gallery starts *in* the hero's foreground snow rather than under it: `.gallery-wrap` is pulled up with a
 negative top margin (−70 ≥ 1400, −64 at 1200–1399, −44 at 900–1199, none below 900) and `z-index: 1` so it
@@ -162,12 +162,9 @@ so the selection controls only appear while at least one heart is ticked; there 
 and no "Vælg hjerter først" hint. Then, at the left: red split button "Hent skabeloner (n)" + gear (PDF settings)
 with `0 2px 8px rgb(31 51 41 / .12)` shadow (dimmed to .75, not .5, while the PDF is generating, so the red
 still reads as the toolbar's anchor); ghost buttons "Vælg alle" (hidden when every heart is ticked) and
-"Fravælg alle". At the right end (`margin-left:auto`), always, the three steps, each a link to the guide page:
-printer icon "Vælg og print" / "I 100% størrelse på A4"; scissors "Klip og fold" / "Følg vejledningen"; weave
-(hash) icon "Flet" / "Ind i og uden om". Step = icon 24px green + title 14px/600 `--deep` + hint 12px
-`--muted`, gap 10, items gap 26. Below 1200 the steps take their own line (`margin-left:0; flex-basis:100%`);
-below 700 they are hidden, so with nothing ticked the toolbar has nothing to show there and collapses
-(`display: none`) rather than leave an empty sticky bar. The "Foreslå et hjerte" link is removed from the
+"Fravælg alle". The three-step strip (print / cut / weave links to the guide) that used to sit at the right end is
+gone (owner's decision, 2026-10-17; the steps live on the guide page), so with nothing ticked the toolbar has
+nothing to show and collapses (`display: none`) at every width rather than leave an empty sticky bar. The "Foreslå et hjerte" link is removed from the
 toolbar (it lives on the Om page).
 
 Category section: heading row = uppercase 15px/600 `--green` letter-spacing .06em + "N hjerter" 13px
