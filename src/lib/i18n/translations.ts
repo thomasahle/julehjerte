@@ -150,6 +150,32 @@ export const translations = {
     traceLockedAnnouncement: 'Skærmen er låst. Hold knappen nederst til højre i 2 sekunder, eller tryk Escape, for at låse op.',
     traceUnlockedAnnouncement: 'Skærmen er låst op.',
 
+    // Heart page: laser export ("Hent til laserskærer", docs/redesign/LASER.md)
+    moreDownloadOptions: 'Flere måder at hente skabelonen',
+    pdfForPrinting: 'PDF til print (A4)',
+    laserMenuItem: 'Til laserskærer…',
+    laserTitle: 'Hent til laserskærer',
+    laserFormat: 'Filformat',
+    laserFormatHint: 'SVG læses af alle laserprogrammer. DXF til xTool, LightBurn og CAD.',
+    laserWidth: 'Bredde (mm)',
+    /** {strip} = one strip's width in mm, {height} = the unfolded piece's height in mm */
+    laserDerived: 'Stribebredde {strip} mm · højde {height} mm',
+    laserHearts: 'Antal hjerter',
+    laserPiecesNote: 'Et hjerte er to stykker.',
+    /** {n} = whole hearts that fit on the sheet */
+    laserSheetFit: 'Der er plads til {n} på arket',
+    laserSheet: 'Ark',
+    laserCustom: 'Eget mål',
+    laserSheetWidth: 'Arkets bredde (mm)',
+    laserSheetHeight: 'Arkets højde (mm)',
+    laserScoreFold: 'Rids falsen (blå linje)',
+    laserScoreHint: 'Slå til for karton; papir folder fint uden.',
+    laserPreview: 'Forhåndsvisning af arket',
+    /** {format} = SVG or DXF */
+    laserDownload: 'Hent {format}',
+    laserFailed: 'Filen kunne ikke laves. Prøv en anden bredde, eller hent PDF-skabelonen.',
+    laserLegend: 'Rød = skær · Blå = rids · 0,01 mm streg',
+
     // Editor: top bar, tool rail, panels and canvas notices
     editHeart: 'Rediger hjerte',
     createNewHeartTitle: 'Lav nyt hjerte',
@@ -766,6 +792,32 @@ export const translations = {
     traceHoldToUnlock: 'Hold 2 s to unlock',
     traceLockedAnnouncement: 'The screen is locked. Hold the button in the bottom right corner for 2 seconds, or press Escape, to unlock.',
     traceUnlockedAnnouncement: 'The screen is unlocked.',
+
+    // Heart page: laser export ("Hent til laserskærer", docs/redesign/LASER.md)
+    moreDownloadOptions: 'More ways to get the template',
+    pdfForPrinting: 'PDF for printing (A4)',
+    laserMenuItem: 'For a laser cutter…',
+    laserTitle: 'Download for a laser cutter',
+    laserFormat: 'File format',
+    laserFormatHint: 'SVG is read by every laser program. DXF for xTool, LightBurn and CAD.',
+    laserWidth: 'Width (mm)',
+    /** {strip} = one strip's width in mm, {height} = the unfolded piece's height in mm */
+    laserDerived: 'Strip width {strip} mm · height {height} mm',
+    laserHearts: 'Number of hearts',
+    laserPiecesNote: 'One heart is two pieces.',
+    /** {n} = whole hearts that fit on the sheet */
+    laserSheetFit: 'There is room for {n} on the sheet',
+    laserSheet: 'Sheet',
+    laserCustom: 'Custom size',
+    laserSheetWidth: 'Sheet width (mm)',
+    laserSheetHeight: 'Sheet height (mm)',
+    laserScoreFold: 'Score the fold (blue line)',
+    laserScoreHint: 'Turn on for card; paper folds fine without.',
+    laserPreview: 'Preview of the sheet',
+    /** {format} = SVG or DXF */
+    laserDownload: 'Download {format}',
+    laserFailed: 'The file could not be made. Try another width, or download the PDF template.',
+    laserLegend: 'Red = cut · Blue = score · 0.01 mm stroke',
 
     // Editor: top bar, tool rail, panels and canvas notices
     editHeart: 'Edit heart',

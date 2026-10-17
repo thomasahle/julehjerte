@@ -1,13 +1,21 @@
 <!--
   The row of buttons under the detail page's info panel — docs/redesign/DESIGN.md
-  §4: download the PDF template, open the heart in the editor, share it, trace it
+  §4: download the PDF template (or, from its caret, a laser-cutter file —
+  docs/redesign/LASER.md), open the heart in the editor, share it, trace it
   from the screen (docs/redesign/TRACE.md), and for a heart someone sent by link,
   save it to "Mine hjerter".
 
   The note underneath reports how the last save or share went.
 -->
 <script lang="ts">
-	import { DownloadIcon, PencilIcon, ShareIcon, TabletIcon } from '$lib/components/icons';
+	import {
+		ChevronDownIcon,
+		DownloadIcon,
+		PencilIcon,
+		ShareIcon,
+		TabletIcon
+	} from '$lib/components/icons';
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import { t, type Language } from '$lib/i18n';
 
 	interface Props {
@@ -29,6 +37,12 @@
 		onShare: () => void;
 		onSaveShared: () => void;
 		onTrace: () => void;
+		/**
+		 * "Til laserskærer…" in the download button's menu. Hands over the caret,
+		 * which is where focus goes back to when the dialog closes: the menu item
+		 * that was clicked is gone by then.
+		 */
+		onLaser: (opener: HTMLElement | null) => void;
 	}
 
 	let {
@@ -44,8 +58,20 @@
 		onEdit,
 		onShare,
 		onSaveShared,
-		onTrace
+		onTrace,
+		onLaser
 	}: Props = $props();
+
+	let caret = $state.raw<HTMLElement | null>(null);
+
+	// The menu puts focus back on its caret as it closes, which would pull it out
+	// of the dialog the laser item has just opened; the dialog takes it instead.
+	let openingDialog = false;
+
+	function chooseLaser(): void {
+		openingDialog = true;
+		onLaser(caret);
+	}
 </script>
 
 <!-- Two rows: first the two ways to get the template (print it, or trace it
@@ -61,10 +87,39 @@
 				</button>
 			{/if}
 		{/if}
-		<button class="btn btn-primary" type="button" onclick={onDownload} disabled={!hasDesign}>
-			<DownloadIcon size={18} />
-			{t('downloadPdfTemplate', lang)}
-		</button>
+		<!-- One split button, as the gallery toolbar's: a click on the label
+		     still downloads the PDF, the caret offers the other files. -->
+		<span class="split">
+			<button class="btn btn-primary split-main" type="button" onclick={onDownload} disabled={!hasDesign}>
+				<DownloadIcon size={18} />
+				{t('downloadPdfTemplate', lang)}
+			</button>
+			<DropdownMenu.Root>
+				<DropdownMenu.Trigger bind:ref={caret} disabled={!hasDesign}>
+					{#snippet child({ props })}
+						<button
+							{...props}
+							type="button"
+							class="btn btn-primary btn-icon split-caret"
+							aria-label={t('moreDownloadOptions', lang)}
+						>
+							<ChevronDownIcon size={18} />
+						</button>
+					{/snippet}
+				</DropdownMenu.Trigger>
+				<DropdownMenu.Content
+					align="end"
+					class="border-0"
+					onCloseAutoFocus={(e) => {
+						if (openingDialog) e.preventDefault();
+						openingDialog = false;
+					}}
+				>
+					<DropdownMenu.Item onSelect={onDownload}>{t('pdfForPrinting', lang)}</DropdownMenu.Item>
+					<DropdownMenu.Item onSelect={chooseLaser}>{t('laserMenuItem', lang)}</DropdownMenu.Item>
+				</DropdownMenu.Content>
+			</DropdownMenu.Root>
+		</span>
 		<button class="btn btn-outline" type="button" onclick={onTrace} disabled={!hasDesign}>
 			<TabletIcon size={18} />
 			{t('traceFromScreen', lang)}
@@ -118,6 +173,27 @@
 
 	.actions .btn-ghost:hover {
 		background: var(--cream2);
+	}
+
+	/* "Download PDF-skabelon" and its caret: two .btn-primary halves butted
+	   together, with the toolbar's radii and divider (GalleryToolbar.svelte). */
+	.split {
+		display: inline-flex;
+		border-radius: 10px;
+	}
+
+	.split-main,
+	.split-caret {
+		border: none;
+	}
+
+	.split-main {
+		border-radius: 10px 0 0 10px;
+	}
+
+	.split-caret {
+		border-radius: 0 10px 10px 0;
+		border-left: 1px solid rgb(255 255 255 / 0.35);
 	}
 
 	.save-note {

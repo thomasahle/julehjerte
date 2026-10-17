@@ -11,7 +11,8 @@
   Behaviour that must survive any restyling: /hjerte/delt/ (a heart shared in the
   URL fragment, noindex, "Gem i Mine hjerter"), the editor hand-off in editHref,
   navigator.share with a clipboard fallback, downloadPDF(), the tracing mode
-  (docs/redesign/TRACE.md) and the four analytics events.
+  (docs/redesign/TRACE.md), the laser export (docs/redesign/LASER.md) and the
+  analytics events.
 -->
 <script lang="ts">
   import { page } from "$app/stores";
@@ -23,6 +24,7 @@
   import HeartStage from "$lib/components/detail/HeartStage.svelte";
   import RelatedHearts from "$lib/components/detail/RelatedHearts.svelte";
   import TraceMode from "$lib/components/detail/TraceMode.svelte";
+  import LaserDialog from "$lib/components/detail/LaserDialog.svelte";
   import Fir from "$lib/components/Fir.svelte";
   import Scene from "$lib/components/Scene.svelte";
   import PageHeader from "$lib/components/PageHeader.svelte";
@@ -262,6 +264,23 @@
     traceOpener?.focus();
   }
 
+  // "Til laserskærer…" from the download button's menu. Focus goes back to the
+  // menu's caret, which HeartActions hands over: the clicked item is gone.
+  let laserOpen = $state(false);
+  let laserOpener: HTMLElement | null = null;
+
+  function handleLaser(opener: HTMLElement | null) {
+    if (!design) return;
+    laserOpener = opener;
+    laserOpen = true;
+  }
+
+  async function handleLaserClose() {
+    laserOpen = false;
+    await tick();
+    laserOpener?.focus();
+  }
+
   function handleEdit() {
     if (info) trackHeartEdit(heartId, info.name);
   }
@@ -435,6 +454,7 @@
               onShare={handleShare}
               onSaveShared={handleSaveShared}
               onTrace={handleTrace}
+              onLaser={handleLaser}
             />
           </div>
         </div>
@@ -464,6 +484,14 @@
       {lang}
       open={traceOpen}
       onClose={handleTraceClose}
+    />
+    <LaserDialog
+      {design}
+      {heartId}
+      heartName={info.name}
+      {lang}
+      open={laserOpen}
+      onClose={handleLaserClose}
     />
   {/if}
 </div>
