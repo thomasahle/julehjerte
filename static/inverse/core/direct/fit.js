@@ -22,7 +22,7 @@ import {boundaryKernelChoices} from './boundary.js';
 import {maskDisagreement} from './prefer-matching.js';
 import {initializeTopology,initializeCoarseTopology} from './topology.js';
 import {curvesOf} from '../graph.js';
-import {sourceWeights,initializationMask} from '../image-reference.js';
+import {sourceWeights,initializationMask,hasOnlyObservationWeights} from '../image-reference.js';
 import {resizeObjective} from './image-objective.js';
 import {initializeFeatureSeeds,initializeFeatureSampling,featureRefinementObjective,interiorFeatureIndices} from './feature-seeds.js';
 import {featureDetailPlan} from './feature-details.js';
@@ -202,11 +202,21 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   // far outside the accepted image error and none of the fine grids has
   // reached it. Retain those grids too: a simplified seed must earn its place
   // against the original image.
-  const coarseTopologySeconds=shortBudget?Math.max(0,shortTopologyBudget-(topology?.report.seconds||0)):2.5;
-  if(!topology?.graph&&!weights&&requestedSymmetry(cfg.symmetry).every(name=>name==='transpose')&&poorGrid&&coarseTopologySeconds>.25&&deadline-performance.now()>3500){
-    coarseTopology=await initializeCoarseTopology(input,cfg,{seconds:Math.min(coarseTopologySeconds,(deadline-performance.now()-1700)/1000),onProgress});
+  const repairCoarseRouting=!shortBudget&&!symmetryRequested&&poorGrid&&hasOnlyObservationWeights(source);
+  // A rejected integer routing can need a small continuous clearance repair,
+  // not another discrete assignment with the same narrow returns. Longer
+  // requests may fund one such attempt; short searches keep their old budget.
+  if(repairCoarseRouting&&!topology?.graph)deadline=Math.max(deadline,start+Math.min(cfg.timeLimit,20)*1000-1300);
+  const coarseTopologySeconds=shortBudget?Math.max(0,shortTopologyBudget-(topology?.report.seconds||0)):repairCoarseRouting?12:2.5;
+  if(!topology?.graph&&(!weights||repairCoarseRouting)&&requestedSymmetry(cfg.symmetry).every(name=>name==='transpose')&&poorGrid&&coarseTopologySeconds>.25&&deadline-performance.now()>3500){
+    coarseTopology=await initializeCoarseTopology(input,cfg,{seconds:Math.min(coarseTopologySeconds,(deadline-performance.now()-1700)/1000),onProgress,repairRejected:repairCoarseRouting});
     if(coarseTopology.graph){
-      boundaryCandidate=stage('directRefining',()=>refineCurves(coarseTopology.graph,fullProb,source.resolution,coarseTopology.phase,cfg,{input,steps:80,rate:.008,selection:'mask',deadline:Math.min(deadline-1700,performance.now()+500),onProgress:cfg.progressGeometry||hasCandidateObserver(onProgress)?(r,solution)=>onProgress({stage:'directRefining',counts:coarseTopology.graph.families.map(f=>f.length),...r},solution):undefined}));
+      const verification=coarseTopology.report.paperVerification,refinementCfg=verifiedPaperSettings(coarseTopology,cfg);
+      boundaryCandidate=stage('directRefining',()=>refineCurves(coarseTopology.graph,fullProb,source.resolution,coarseTopology.phase,refinementCfg,{input,weights:fullWeights,steps:80,rate:.008,selection:'mask',deadline:Math.min(deadline-1700,performance.now()+500),onProgress:cfg.progressGeometry||hasCandidateObserver(onProgress)?(r,solution)=>{
+        if(verification)solution.report={...solution.report,paperVerification:{...verification,status:r.paper}};
+        onProgress({stage:'directRefining',counts:coarseTopology.graph.families.map(f=>f.length),...r},solution);
+      }:undefined}));
+      if(verification)boundaryCandidate.paperVerification={...verification,status:boundaryCandidate.paper?.status};
       boundaryCandidate.counts=coarseTopology.graph.families.map(f=>f.length);boundaryCandidate.seed='coarse-boundary-topology';
     }
   }

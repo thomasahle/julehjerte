@@ -7,7 +7,9 @@ import {materialAudit} from '../material.js';
 import {auditFeatureFidelity} from '../feature-shapes.js';
 import {requestedSymmetry} from '../settings.js';
 import {CurveGraph} from './curves.js';
-import {refineCurves} from './refine.js';
+import {refineCurves,fittingMargin} from './refine.js';
+import {projectShortReturns} from './short-return-project.js';
+import {hasOnlyObservationWeights,sourceWeights} from '../image-reference.js';
 import {maskDisagreement} from './prefer-matching.js';
 import {shortSelfReturns} from '../self-returns.js';
 
@@ -51,13 +53,13 @@ export function rejectedRoutingQuality(solution,cfg){
   return{geometry,clearanceOnly,affectedCuts,relativeDeficit,repairable:clearanceOnly};
 }
 
-export function repairRejectedRouting(proposal,input,cfg,{deadline=Infinity,quality=null}={}){
+export function repairRejectedRouting(proposal,input,cfg,{deadline=Infinity,quality=null,projectClearance=false}={}){
   // Complete return checks and constraint projection need room to retain a
   // valid checkpoint. This local allowance never extends the caller deadline.
-  const started=performance.now(),until=Math.min(deadline,started+2000),report={accepted:false,method:'continuous-rejected-routing'};
+  const started=performance.now(),until=Math.min(deadline,started+(projectClearance?4500:2000)),report={accepted:false,method:'continuous-rejected-routing'};
   const finish=reason=>({solution:null,report:{...report,reason,seconds:(performance.now()-started)/1000}});
   if(until-started<250)return finish('insufficient_time');
-  if(!input.sourceImage||input.sourceImage.weights||requestedSymmetry(cfg.symmetry).length)return finish('unsupported_constraints');
+  if(!input.sourceImage||(projectClearance?!hasOnlyObservationWeights(input.sourceImage):input.sourceImage.weights)||requestedSymmetry(cfg.symmetry).length)return finish('unsupported_constraints');
   const initial=quality||rejectedRoutingQuality(proposal,cfg);report.initialGeometry=initial.geometry;report.relativeDeficit=initial.relativeDeficit;
   if(!initial.repairable)return finish('geometry_not_repairable');
   const source=input.sourceImage,initialMask=sampleWeave(proposal,source.resolution);
@@ -71,10 +73,21 @@ export function repairRejectedRouting(proposal,input,cfg,{deadline=Infinity,qual
   report.initialFeatures=auditFeatureFidelity(source,initialMask,cfg);
   if(!report.initialFeatures.passed)return finish('initial_image');
   const graph=new CurveGraph(proposal.paths.map((family,f)=>family.map((_,i)=>curvesOf(proposal,f,i).map(c=>c.p))),cfg.width),phase=proposal.graph.target.phase?-1:1;
+  if(projectClearance){
+    // A local image gradient may keep returning to the same narrow routing.
+    // First project its clearance witnesses using the existing bounded repair.
+    // The original pixels and full geometry/paper gates still judge the result.
+    const projected=projectShortReturns(graph,graph.points,phase,input,cfg,{initialAudit:initial.geometry,
+      deadline:until-500,maxIterations:128,maxMilliseconds:5000,clearanceMargin:fittingMargin(cfg,cfg.width)});
+    report.projection=projected.report;
+    if(!projected.points)return finish('projection_rejected');
+    graph.points=projected.points;
+  }
   // Leave room for the final geometry, source-image and paper audits. A late
   // integer proposal can otherwise produce a valid checkpoint and then lose
   // it solely because those required checks overrun the recovery allowance.
-  const fitted=refineCurves(graph,source.probability||Float32Array.from(source.mask),source.resolution,phase,cfg,{input,steps:160,rate:.008,selection:'mask',deadline:until-500});
+  const fitted=refineCurves(graph,source.probability||Float32Array.from(source.mask),source.resolution,phase,cfg,{input,
+    ...(projectClearance?{weights:sourceWeights(source)}:{}),steps:160,rate:.008,selection:'mask',deadline:until-500});
   report.steps=fitted.steps;report.history=fitted.history;
   // The local allowance stops further optimization. Its last checkpoint may
   // finish just after that cutoff; retain it for final checks when the overall

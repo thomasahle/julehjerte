@@ -12,6 +12,14 @@ export function sourceWeights(source){
   return imageWeights(values,length)?.values??null;
 }
 
+/** Missing camera coverage is not permission to edit observed artwork. This
+ * distinguishes an observation mask from free/fractionally weighted pixels
+ * when scheduling recovery; the actual objective still uses sourceWeights. */
+export function hasOnlyObservationWeights(source){
+  const weights=sourceWeights(source);
+  return !weights||weights.every((w,i)=>w===1||source.validMask&&!source.validMask[i]);
+}
+
 export function referenceError(source,woven){
   if(woven.length!==source.mask.length)throw new Error('The rendered image must match the reference resolution.');
   const info=imageWeights(source.weights,woven.length);

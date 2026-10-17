@@ -14,7 +14,8 @@ import {symmetryEvidence} from './matching.js';
 import {maskDisagreement} from './prefer-matching.js';
 import {CurveGraph} from './curves.js';
 import {symmetryTies} from './symmetry.js';
-import {initializationMask,sourceWeights} from '../image-reference.js';
+import {initializationMask,sourceWeights,hasOnlyObservationWeights} from '../image-reference.js';
+import {repairRejectedRouting} from './rejected-routing.js';
 
 export function prepareBoundary(input,cfg,{useInitializationGuide=true,guidePhase=0,borderRadius=0}={}){
   if(useInitializationGuide&&guidePhase===0&&borderRadius===0&&input.boundarySeed?.width===cfg.width)return input.boundarySeed;
@@ -70,36 +71,42 @@ export function prepareTopologyBoundary(input,cfg,{maximumError=.005,guidePhase=
 /** A small routing portfolio for poor grid fits. Coarsening changes only the
  * seed; its source pixels and the final geometry/paper gates are unchanged.
  */
-export async function initializeCoarseTopology(input,cfg,{maximumError=Math.min(.025,cfg.maxImageError),seconds=2.5,onProgress=()=>{}}={}){
+export async function initializeCoarseTopology(input,cfg,{maximumError=Math.min(.025,cfg.maxImageError),seconds=2.5,onProgress=()=>{},repairRejected=false}={}){
   const started=performance.now(),source=input.sourceImage,report={method:'coarse-boundary-topology',maximumError,accepted:false,attempts:[]},candidates=[];
   const remaining=()=>seconds-(performance.now()-started)/1000;
-  if(source.weights)return{report};
+  if(source.weights&&(!repairRejected||!hasOnlyObservationWeights(source)))return{report};
+  const seedMask=repairRejected?initializationMask(source):source.mask,maximumSegments=repairRejected?128:64;
+  if(repairRejected)Object.assign(report,{repairRejected:true,maximumSegments});
   for(const borderRadius of [...new Set([.01,.02,.03].map(v=>Math.min(3,v*cfg.width)))])for(const tolerance of [.01,.015]){
     if(remaining()<.1)break;
     const options={fitTolerance:Math.min(3,tolerance*cfg.width),smoothRadius:.003*cfg.width,snapRadius:Math.min(3,.0075*cfg.width),borderRadius,maxSpan:40,polygonal:false,mixedBoundaries:true};
     const attempt={preprocessing:options};report.attempts.push(attempt);
     try{
-      const target=preprocessMask(source.mask,source.resolution,{...cfg,...options},input.metadata.preprocessing);
+      const target=preprocessMask(seedMask,source.resolution,{...cfg,...options},input.metadata.preprocessing);
       target.sourceImage=source;
       const woven=sampleTarget(target,source.resolution),error=maskDisagreement(source,woven),problem=endpointIssue(target,cfg),featuresPassed=auditImageFeatures(source,woven,cfg.width).passed;
       Object.assign(attempt,{segments:target.curves.length,imageError:error,endpointIssue:problem,featuresPassed});
-      if(!problem&&featuresPassed&&error<=maximumError&&target.curves.length>0&&target.curves.length<=64)candidates.push({target,attempt});
+      if(!problem&&featuresPassed&&error<=maximumError&&target.curves.length>0&&target.curves.length<=maximumSegments)candidates.push({target,attempt});
     }catch(error){attempt.error=error.message;}
   }
   candidates.sort((a,b)=>a.attempt.segments-b.attempt.segments||a.attempt.imageError-b.attempt.imageError);
   for(const {target,attempt}of candidates.slice(0,2)){
     if(remaining()<.1)break;
-    const seed=await initializeTopology({...input,boundarySeed:target},cfg,{maximumError,seconds:remaining(),onProgress});
+    const seed=await initializeTopology({...input,boundarySeed:target},cfg,{maximumError,seconds:remaining(),onProgress,repairRejected});
     attempt.routing=seed.report;
-    if(seed.graph){report.accepted=true;report.seconds=(performance.now()-started)/1000;return{...seed,report};}
+    if(seed.graph){
+      report.accepted=true;report.seconds=(performance.now()-started)/1000;
+      if(seed.report.paperVerification)report.paperVerification=seed.report.paperVerification;
+      return{...seed,report};
+    }
   }
   report.seconds=(performance.now()-started)/1000;
   return{report};
 }
 
-export async function initializeTopology(input,cfg,{maximumError=.005,seconds=3,onProgress=()=>{}}={}){
+export async function initializeTopology(input,cfg,{maximumError=.005,seconds=3,onProgress=()=>{},repairRejected=false}={}){
   const source=input.sourceImage,weights=source.weights?sourceWeights(source):null;
-  if(!weights?.some(w=>w===0))return initializeTopologyPhase(input,cfg,{maximumError,seconds,onProgress});
+  if(!weights?.some(w=>w===0)||repairRejected&&hasOnlyObservationWeights(source))return initializeTopologyPhase(input,cfg,{maximumError,seconds,onProgress,repairRejected});
   // Probe both free-band phases as LPs before spending the small budget on
   // branch-and-bound. Integral LP answers still face the original binary,
   // geometry, image and paper checks. Fractional answers are never rounded.
@@ -158,14 +165,33 @@ function prepareTopologyPhase(input,cfg,{maximumError,guidePhase,onProgress}){
   }catch(error){report.error=error.message;return{report};}
 }
 
-async function initializeTopologyPhase(input,cfg,{maximumError,seconds,onProgress,guidePhase=0,prepared=null,relaxationOnly=false}){
+async function initializeTopologyPhase(input,cfg,{maximumError,seconds,onProgress,guidePhase=0,prepared=null,relaxationOnly=false,repairRejected=false}){
   const start=performance.now(),source=input.sourceImage;
   const phase=prepared||prepareTopologyPhase(input,cfg,{maximumError,guidePhase,onProgress}),report={...phase.report};
   try{
     if(!phase.graph)return{report};
     const graphCfg=settings({...phase.cfg,timeLimit:Math.max(.1,seconds-(performance.now()-start)/1000),...(relaxationOnly?{maxRounds:1}:{})});
-    const solution=await solveBoundary(phase.target,graphCfg,{initialGraph:phase.graph,onProgress,coefficientQuantum:1e-7,stopAfterValidated:true,relaxationOnly,coreGate:cfg.requireMaterialCore?s=>materialAudit(s,cfg):null});
-    report.solver=solution.report;report.imageError=maskDisagreement(source,sampleWeave(solution,source.resolution));
+    let solution,repaired=null,repairUsed=false;
+    const onRejectedCandidate=repairRejected&&!relaxationOnly?(proposal)=>{
+      if(repairUsed||start+seconds*1000-performance.now()<1000)return false;
+      repairUsed=true;
+      const attempt=repairRejectedRouting(proposal,input,cfg,{deadline:start+seconds*1000,projectClearance:true});
+      report.continuousRepair=attempt.report;
+      if(!attempt.solution)return false;
+      repaired=attempt.solution;return true;
+    }:undefined;
+    try{
+      solution=await solveBoundary(phase.target,graphCfg,{initialGraph:phase.graph,onProgress,coefficientQuantum:1e-7,
+        stopAfterValidated:true,relaxationOnly,onRejectedCandidate,coreGate:cfg.requireMaterialCore?s=>materialAudit(s,cfg):null});
+      report.solver=solution.report;
+    }catch(error){
+      // The rejected integer routing remains rejected by its finite MILP.
+      // Only the separately checked, moved curves may supply this seed.
+      if(!repaired)throw error;
+      report.solver=error.report;solution=repaired;
+      if(solution.report.paperVerification)report.paperVerification=solution.report.paperVerification;
+    }
+    report.imageError=maskDisagreement(source,sampleWeave(solution,source.resolution));
     if(report.imageError>maximumError||!auditImageFeatures(source,sampleWeave(solution,source.resolution),cfg.width).passed)return{report};
     const paths=solution.paths.map((family,f)=>family.map((_,i)=>curvesOf(solution,f,i).map(c=>c.p)));
     const curveGraph=new CurveGraph(paths,cfg.width),ties=symmetryTies(curveGraph,cfg.symmetry);

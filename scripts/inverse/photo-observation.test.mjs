@@ -3,11 +3,23 @@ import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {rectifyWithCoverage,quantize} from '../../static/inverse/core/input.js';
 import {prepare} from '../../static/inverse/core/engine.js';
-import {referenceError,sourceWeights} from '../../static/inverse/core/image-reference.js';
+import {referenceError,sourceWeights,hasOnlyObservationWeights} from '../../static/inverse/core/image-reference.js';
 const n=64,rgba=new Uint8ClampedArray(n*n*4);
 for(let y=0;y<n;y++)for(let x=0;x<n;x++){const i=4*(y*n+x);rgba.fill(x<n/2?100:120,i,i+3);rgba[i+3]=255;}
 const input={type:'pixels',rgba,imageWidth:n,imageHeight:n},cfg={algorithm:'direct',resolution:n,mode:'auto'};
 const quad=[[0,0],[128,0],[128,128],[0,128]],expected=Uint8Array.from({length:n*n},(_,i)=>Number(i%n<32&&Math.floor(i/n)<32));
+
+test('recovery distinguishes missing coverage from editable or fractional observed pixels',()=>{
+ const source={mask:new Uint8Array(4),resolution:2,validMask:Uint8Array.of(1,1,0,0)};
+ assert.equal(hasOnlyObservationWeights(source),true);
+ for(const weights of [Float64Array.of(1,1,0,0),Float64Array.of(1,1,.2,1)]){
+  assert.equal(hasOnlyObservationWeights({...source,weights}),true);
+ }
+ for(const weights of [Float64Array.of(0,1,0,0),Float64Array.of(.5,1,0,0)]){
+  assert.equal(hasOnlyObservationWeights({...source,weights}),false);
+ }
+ assert.equal(hasOnlyObservationWeights({mask:source.mask,weights:Float64Array.of(1,1,0,0)}),false);
+});
 
 test('coverage preserves display RGB and marks complete bilinear support only',()=>{
  // Display hashes are pinned from the pre-coverage production rectifier.
