@@ -245,7 +245,7 @@
     traceOpener?.focus();
   }
 
-  // "Hent skabelon…": the dialog for the printer PDF and the laser file, which
+  // "Hent skabelon": the dialog for the printer PDF and the laser file, which
   // also makes the file and sends its analytics event. Focus goes back to the
   // button that opened it.
   let downloadOpen = $state(false);

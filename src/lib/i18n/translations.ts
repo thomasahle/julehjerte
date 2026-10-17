@@ -127,7 +127,7 @@ export const translations = {
     categoryHjerterLower: 'hjerter',
 
     // Heart page: tracing mode ("Tegn af fra skærmen", docs/redesign/TRACE.md)
-    traceFromScreen: 'Tegn af fra skærmen',
+    traceFromScreen: 'Tegn af',
     /** {name} = heart name */
     traceTitle: 'Tegn {name} af fra skærmen',
     close: 'Luk',
@@ -151,7 +151,7 @@ export const translations = {
 
     // Heart page: the download dialog ("Hent skabelon", docs/redesign/DOWNLOAD.md),
     // for the printer PDF and the laser file (docs/redesign/LASER.md)
-    getTemplate: 'Hent skabelon…',
+    getTemplate: 'Hent skabelon',
     getTemplateTitle: 'Hent skabelon',
     downloadMode: 'Til',
     modePrinter: 'Printer',
@@ -560,7 +560,7 @@ export const translations = {
       'Klip to halvdele, og flet hjertet'
     ],
     noPrinterStepTexts: [
-      'Vælg et hjerte i galleriet, tryk på »Hent skabelon…«, og hent PDF’en. Åbn den hentede PDF på din tablet eller computer. Du skal bruge tegningen med klippelinjer og foldelinje, ikke billedet af det færdige hjerte.',
+      'Vælg et hjerte i galleriet, tryk på »Hent skabelon«, og hent PDF’en. Åbn den hentede PDF på din tablet eller computer. Du skal bruge tegningen med klippelinjer og foldelinje, ikke billedet af det færdige hjerte.',
       'Zoom, indtil hele skabelonen kan være på skærmen. For det klassiske hjerte kan du fx vælge en bredde på 6 cm og måle den med en lineal. Læg tabletten fladt og stabilt. Indstil skærmens lys, så linjerne er tydelige gennem dit papir.',
       'Læg et enkelt lag kalkepapir over skabelonen. Hold det med den frie hånd. Har tabletten et cover, der tåler tape, kan du fastgøre papiret til coveret med to små stykker. Sæt ikke tape direkte på skærmen. Tjek, at papiret ikke forskubber sig.',
       'Tegn først den runde top og de lige sider. Tegn så hver indre klippelinje helt til dens endepunkt. Tegn foldelinjen stiplet, og skriv »fold« ved den. Brug lette blyantsstreger uden at presse. Løft forsigtigt et hjørne, og kontrollér, at du har alle linjer med.',
@@ -587,7 +587,7 @@ export const translations = {
       'Klip fra folden. De to papirlag bliver til løkker.'
     ],
     noPrinterScreenHelpTitle: 'Flytter billedet sig, når du tegner?',
-    noPrinterScreenHelpTrace: 'Nemmest: åbn hjertet på juleflet.dk, og tryk på »Tegn af fra skærmen«. Siden låser skabelonen, så den ikke flytter sig, mens du tegner.',
+    noPrinterScreenHelpTrace: 'Nemmest: åbn hjertet på juleflet.dk, og tryk på »Tegn af«. Siden låser skabelonen, så den ikke flytter sig, mens du tegner.',
     noPrinterScreenHelpTraceLink: 'Åbn det klassiske hjerte',
     noPrinterScreenHelpText: 'På iPad kan Forenklet adgang midlertidigt slå berøring fra. Indstil først PDF-visningen og størrelsen, og følg Apples vejledning for at starte og afslutte funktionen. Slå berøring til igen, når du skal flytte til en anden skabelon.',
     noPrinterScreenHelpLink: 'Apples vejledning til Forenklet adgang',
@@ -780,7 +780,7 @@ export const translations = {
     categoryHjerterLower: 'hearts',
 
     // Heart page: tracing mode ("Tegn af fra skærmen", docs/redesign/TRACE.md)
-    traceFromScreen: 'Trace from the screen',
+    traceFromScreen: 'Trace',
     /** {name} = heart name */
     traceTitle: 'Trace {name} from the screen',
     close: 'Close',
@@ -804,7 +804,7 @@ export const translations = {
 
     // Heart page: the download dialog ("Hent skabelon", docs/redesign/DOWNLOAD.md),
     // for the printer PDF and the laser file (docs/redesign/LASER.md)
-    getTemplate: 'Get the template…',
+    getTemplate: 'Get template',
     getTemplateTitle: 'Get the template',
     downloadMode: 'For',
     modePrinter: 'Printer',
@@ -1213,7 +1213,7 @@ export const translations = {
       'Cut two halves and weave the heart'
     ],
     noPrinterStepTexts: [
-      'Choose a heart in the gallery, select “Get the template…” and download the PDF. Open the downloaded PDF on your tablet or computer. You need the drawing with cutting lines and a fold line, rather than the picture of the finished heart.',
+      'Choose a heart in the gallery, select “Get template” and download the PDF. Open the downloaded PDF on your tablet or computer. You need the drawing with cutting lines and a fold line, rather than the picture of the finished heart.',
       'Zoom until the whole template fits on screen. For the classic heart, you might choose a width of 6 cm and check it with a ruler. Lay the tablet flat on a stable surface. Adjust the screen brightness until the lines show clearly through your paper.',
       'Place a single sheet of tracing paper over the template. Hold it with your free hand. If your tablet has a case that tolerates tape, attach the paper to the case with two small pieces. Keep tape off the screen itself. Check that the paper stays in place.',
       'Trace the rounded top and straight sides first. Then trace each internal cutting line all the way to its endpoint. Draw the fold line as dashes and write “fold” next to it. Use light pencil strokes without pressing. Carefully lift a corner to check you have copied every line.',
@@ -1240,7 +1240,7 @@ export const translations = {
       'Cut in from the fold. Both paper layers form loops.'
     ],
     noPrinterScreenHelpTitle: 'Does the image move as you trace?',
-    noPrinterScreenHelpTrace: 'Easiest: open the heart on juleflet.dk and tap “Trace from the screen”. The page locks the template so it does not move while you draw.',
+    noPrinterScreenHelpTrace: 'Easiest: open the heart on juleflet.dk and tap “Trace”. The page locks the template so it does not move while you draw.',
     noPrinterScreenHelpTraceLink: 'Open the classic heart',
     noPrinterScreenHelpText: 'On iPad, Guided Access can temporarily disable touch. Set the PDF view and size first, then follow Apple’s instructions to start and end the session. Enable touch again when you need to move to another template.',
     noPrinterScreenHelpLink: 'Apple’s guide to Guided Access',

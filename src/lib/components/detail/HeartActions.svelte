@@ -8,7 +8,7 @@
   The note underneath reports how the last save or share went.
 -->
 <script lang="ts">
-	import { DownloadIcon, PencilIcon, ShareIcon, TabletIcon } from '$lib/components/icons';
+	import { CheckIcon, CloseIcon, DownloadIcon, PencilIcon, ShareIcon, TabletIcon } from '$lib/components/icons';
 	import { t, type Language } from '$lib/i18n';
 
 	interface Props {
@@ -50,44 +50,55 @@
 	}: Props = $props();
 </script>
 
-<!-- Two rows: first the two ways to get the template (download it, or trace
-     it from the screen), then what else can be done with the heart. -->
+<!-- One row: the two ways to get the template (download it, or trace it from
+     the screen) carry labels; editing and sharing are glyph-only, with their
+     names as tooltips and for screen readers, so the four fit on one line. -->
 <div class="actions">
-	<div class="actions-row">
-		{#if isShared && hasDesign}
-			{#if savedShared}
-				<a class="btn btn-dark" href={galleryHref}>{t('showInGallery', lang)}</a>
-			{:else}
-				<button class="btn btn-dark" type="button" onclick={onSaveShared}>
-					{t('saveToMyHearts', lang)}
-				</button>
-			{/if}
+	{#if isShared && hasDesign}
+		{#if savedShared}
+			<a class="btn btn-dark" href={galleryHref}>{t('showInGallery', lang)}</a>
+		{:else}
+			<button class="btn btn-dark" type="button" onclick={onSaveShared}>
+				{t('saveToMyHearts', lang)}
+			</button>
 		{/if}
-		<button class="btn btn-primary" type="button" onclick={onDownload} disabled={!hasDesign}>
-			<DownloadIcon size={18} />
-			{t('getTemplate', lang)}
-		</button>
-		<button class="btn btn-outline" type="button" onclick={onTrace} disabled={!hasDesign}>
-			<TabletIcon size={18} />
-			{t('traceFromScreen', lang)}
-		</button>
-	</div>
-	<div class="actions-row">
-		<a class="btn btn-outline" href={editHref} onclick={onEdit}>
-			<PencilIcon size={18} />
-			{t('openInEditor', lang)}
-		</a>
-		<button class="btn btn-ghost" type="button" onclick={onShare} aria-label={t('share', lang)}>
-			{#if shareStatus === 'copied'}
-				{t('copied', lang)}
-			{:else if shareStatus === 'error'}
-				{t('failed', lang)}
-			{:else}
-				<ShareIcon size={18} />
-				{t('share', lang)}
-			{/if}
-		</button>
-	</div>
+	{/if}
+	<button class="btn btn-primary" type="button" onclick={onDownload} disabled={!hasDesign}>
+		<DownloadIcon size={18} />
+		{t('getTemplate', lang)}
+	</button>
+	<button class="btn btn-outline" type="button" onclick={onTrace} disabled={!hasDesign}>
+		<TabletIcon size={18} />
+		{t('traceFromScreen', lang)}
+	</button>
+	<a
+		class="btn btn-outline btn-icon"
+		href={editHref}
+		onclick={onEdit}
+		title={t('openInEditor', lang)}
+		aria-label={t('openInEditor', lang)}
+	>
+		<PencilIcon size={18} />
+	</a>
+	<button
+		class="btn btn-ghost btn-icon"
+		type="button"
+		onclick={onShare}
+		title={t('share', lang)}
+		aria-label={t('share', lang)}
+	>
+		{#if shareStatus === 'copied'}
+			<CheckIcon size={18} />
+		{:else if shareStatus === 'error'}
+			<CloseIcon size={18} />
+		{:else}
+			<ShareIcon size={18} />
+		{/if}
+	</button>
+	<!-- The share button is a glyph, so its outcome is announced here. -->
+	<span class="sr-only" role="status">
+		{#if shareStatus === 'copied'}{t('copied', lang)}{:else if shareStatus === 'error'}{t('failed', lang)}{/if}
+	</span>
 </div>
 
 {#if isShared && savedShared}
@@ -99,12 +110,6 @@
 <style>
 	/* The gap to whatever sits above is the parent column's, not ours. */
 	.actions {
-		display: flex;
-		flex-direction: column;
-		gap: 12px;
-	}
-
-	.actions-row {
 		display: flex;
 		gap: 12px;
 		flex-wrap: wrap;
