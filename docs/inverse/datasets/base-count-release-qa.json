@@ -802,5 +802,39 @@
     "worktreeBefore": "46 GiB (rounded)",
     "worktreeAfter": "21 GiB (rounded)",
     "archivedFiles": 27139
+  },
+  "isolatedFollowup20261017": {
+    "gitHead": "3d5d780",
+    "runtimeChanged": false,
+    "status": "three-targeted-tests-pass-full-suite-still-incomplete",
+    "execution": "Sequential isolated Node test processes, nice 15, unchanged fixtures, deadlines, and assertions; no simultaneous browser or training work from this agent.",
+    "selection": "Three distinct failure stages from the interrupted run: crop, fresh routing, and fixed-geometry repair. Other failures were not rerun in this follow-up.",
+    "rows": [
+      {
+        "file": "scripts/inverse/background-crop.test.mjs",
+        "sha256": "f3afb4727033c8b1fc58f006f9bf27c223a898e2895718a92ea30e72d3e61d19",
+        "namePattern": "blurred diagonal channel",
+        "testSeconds": 6.609605375,
+        "processSeconds": 7.009738834,
+        "passed": true
+      },
+      {
+        "file": "scripts/inverse/border-feature-routing.test.mjs",
+        "sha256": "b55ba8bdc6442e73081f6a048ae0bbb274a416d8592c77e6bee48d548367e3ef",
+        "namePattern": null,
+        "testSeconds": 9.766047,
+        "processSeconds": 10.01275,
+        "passed": true
+      },
+      {
+        "file": "scripts/inverse/clearance-projection.test.mjs",
+        "sha256": "5d22da4133b76279c3f75931c914b99b4db9d613c2fbf66e663be8eb2ebfb5e0",
+        "namePattern": null,
+        "testSeconds": 2.953739959,
+        "processSeconds": 3.11107575,
+        "passed": true
+      }
+    ],
+    "interpretation": "All three failures pass without a code change. This supports sensitivity to runtime conditions; it does not establish contention as the sole cause, prove stable speed, or clear the remaining failures. The crop orientation sweep and the repair both retain wall-clock limits."
   }
 }
