@@ -48,6 +48,39 @@ offsets with both ordinary and 1.5× clocks, and shifted-bird rerouting with
 10- and 180-second allowances. The final conditional implementation also passes
 the puppy test in a separate cold process. Type checking, lint, build and 874
 application tests pass (one existing skip); all 1,040 pinned source hashes
-match after these checks. The broader inverse suite and the
-Hunodan browser speed target still require verification. The preview remains
-on the previous validated build.
+match after these checks. The Hunodan browser speed target still requires
+verification. The preview remains on the previous validated build.
+
+The subsequent complete inverse suite on runtime `4379b66` finishes with
+**1,051 passes and nine failures** in 1,476.14 seconds. All 1,040 source hashes
+still match. Twelve of the previous fourteen failing tests pass in this run;
+the ten-second shifted bird and dense checker still fail, and seven other
+tests fail. The measurement file retains every assertion and the comparison
+with the previous run. This revision has **not passed release QA**.
+
+The failures cover different conditions:
+
+- The half-resolution puppy fails final template checks. Its initialization
+  still reaches the expected finer spline; the original failure does not save
+  the complete output, so capture replays are needed to identify the remaining
+  defect.
+- The shifted bird returns a feature-preserving grid instead of the expected
+  rerouting. That assertion precedes its export-quality checks; it alone does
+  not establish the returned image or paper quality.
+- The dense checker passes geometry and paper but has **4.32125%** original-mask
+  disagreement, above the unchanged 3% limit. It selects the same 10-by-11 cuts
+  as an earlier captured passing run with 2.525625% disagreement.
+- The two late-routing repair tests fail differently: one attempts repair but
+  completes zero refinement steps; the other has no rejected-candidate record
+  at the assertion. The separate topology repair-tail tests pass.
+- Three sloth search-scheduling cases fail. The actual reports and exported
+  cuts are preserved in the full log: the synthetic control and vertical shift
+  fail geometry and paper at 5.3536% and 5.1552% error; the Paint-resampled
+  horizontal shift passes those checks but has 6.175625% error.
+- The crown passes geometry but retains uncertain paper support.
+
+These reproductions use frozen masks or fixed crop coordinates. Their failures
+occur downstream of automatic corner detection. Timing-sensitive initialization,
+refinement and selection still need investigation; neither a passing focused
+replay nor observed system load explains away a failed final gate. The preview
+has not been refreshed, and no browser-speed improvement is claimed.
