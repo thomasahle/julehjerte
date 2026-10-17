@@ -162,6 +162,47 @@ describe('TraceMode', () => {
 		expect(view.lockLayer()).not.toBeNull();
 	});
 
+	it('lets go of the implicit touch capture that Chromium takes after pointerdown', async () => {
+		const view = await render();
+		await view.lock();
+		const button = view.unlock();
+		let captured = false;
+		button.hasPointerCapture = () => captured;
+		button.releasePointerCapture = vi.fn(() => {
+			captured = false;
+		});
+		pointer('pointerdown', button);
+		// Chromium: captured only now, after the pointerdown handler ran.
+		captured = true;
+		pointer('gotpointercapture', button);
+		expect(button.releasePointerCapture).toHaveBeenCalledWith(1);
+		expect(captured).toBe(false);
+	});
+
+	it('does not unlock when a captured finger moves off the button', async () => {
+		const view = await render();
+		await view.lock();
+		const button = view.unlock();
+		button.getBoundingClientRect = () => DOMRect.fromRect({ x: 300, y: 600, width: 56, height: 56 });
+		pointer('pointerdown', button);
+		vi.advanceTimersByTime(500);
+		// Still on the button: the hold goes on.
+		button.dispatchEvent(new PointerEvent('pointermove', { bubbles: true, pointerId: 1, clientX: 320, clientY: 620 }));
+		vi.advanceTimersByTime(200);
+		// 150 px away, still down, for well past two seconds.
+		button.dispatchEvent(new PointerEvent('pointermove', { bubbles: true, pointerId: 1, clientX: 170, clientY: 620 }));
+		vi.advanceTimersByTime(2500);
+		await settle();
+		expect(view.lockLayer()).not.toBeNull();
+
+		// A steady hold afterwards still unlocks.
+		pointer('pointerdown', button);
+		button.dispatchEvent(new PointerEvent('pointermove', { bubbles: true, pointerId: 1, clientX: 330, clientY: 630 }));
+		vi.advanceTimersByTime(2000);
+		await settle();
+		expect(view.lockLayer()).toBeNull();
+	});
+
 	it('unlocks after a 2000 ms hold', async () => {
 		const view = await render();
 		await view.lock();

@@ -433,11 +433,35 @@
 	}
 
 	function handleUnlockDown(event: PointerEvent): void {
-		// Touch pointers are captured to their target implicitly, and a captured
-		// pointer never "leaves": released, sliding off the button cancels the hold.
-		const button = event.currentTarget as Element;
-		if (button.hasPointerCapture?.(event.pointerId)) button.releasePointerCapture(event.pointerId);
+		releaseCapture(event);
 		beginHold();
+	}
+
+	// Touch pointers are captured to their target implicitly, and a captured
+	// pointer never "leaves", so sliding off the button would not cancel the hold.
+	// WebKit captures before pointerdown, Chromium only after it (announced by
+	// gotpointercapture), so the capture is let go at both moments.
+	function releaseCapture(event: PointerEvent): void {
+		const button = event.currentTarget as Element;
+		try {
+			if (button.hasPointerCapture?.(event.pointerId)) button.releasePointerCapture(event.pointerId);
+		} catch {
+			// The pointer is already gone.
+		}
+	}
+
+	// Belt and braces for a browser that keeps the capture anyway: a move that
+	// ends outside the button's box cancels like pointerleave would.
+	function handleUnlockMove(event: PointerEvent): void {
+		if (hold.phase !== 'holding') return;
+		const box = (event.currentTarget as Element).getBoundingClientRect();
+		if (box.width === 0 && box.height === 0) return;
+		const outside =
+			event.clientX < box.left ||
+			event.clientX > box.right ||
+			event.clientY < box.top ||
+			event.clientY > box.bottom;
+		if (outside) cancelHold();
 	}
 
 	function handleUnlockKey(event: KeyboardEvent): void {
@@ -577,6 +601,8 @@
 						aria-label={t('traceUnlock', lang)}
 						aria-describedby="trace-hold-hint"
 						onpointerdown={handleUnlockDown}
+						ongotpointercapture={releaseCapture}
+						onpointermove={handleUnlockMove}
 						onpointerup={cancelHold}
 						onpointercancel={cancelHold}
 						onpointerleave={cancelHold}
