@@ -8,12 +8,17 @@
 const FOCUSABLE =
 	'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
+/** The elements Tab can reach inside `container`, in document order. */
+export function focusableIn(container: HTMLElement): HTMLElement[] {
+	return Array.from(container.querySelectorAll<HTMLElement>(FOCUSABLE)).filter(
+		(el) => el.offsetParent !== null || el === document.activeElement
+	);
+}
+
 /** Call from the dialog's keydown handler; anything but Tab is left alone. */
 export function trapTab(event: KeyboardEvent, container: HTMLElement | null): void {
 	if (event.key !== 'Tab' || !container) return;
-	const items = Array.from(container.querySelectorAll<HTMLElement>(FOCUSABLE)).filter(
-		(el) => el.offsetParent !== null || el === document.activeElement
-	);
+	const items = focusableIn(container);
 	if (items.length === 0) {
 		event.preventDefault();
 		container.focus();

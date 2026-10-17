@@ -28,7 +28,7 @@
 </script>
 
 <script lang="ts">
-	import { untrack } from 'svelte';
+	import { tick, untrack } from 'svelte';
 	import Modal from '$lib/components/Modal.svelte';
 	import { ToggleGroup, ToggleGroupItem } from '$lib/components/ui/toggle-group';
 	import { DownloadIcon } from '$lib/components/icons';
@@ -392,7 +392,22 @@
 			failure = 'printer';
 		} finally {
 			generating = false;
+			await restoreFocus();
 		}
+	}
+
+	let downloadButton = $state.raw<HTMLButtonElement | null>(null);
+
+	// The button disables itself while the PDF is generated, and a disabled
+	// button cannot keep focus: Chromium drops it to <body>, outside the dialog.
+	// Once it is enabled again it takes focus back, so the next Tab, Enter or
+	// Escape lands inside the dialog — but only if focus really went astray, not
+	// if the visitor has moved on to another control meanwhile.
+	async function restoreFocus(): Promise<void> {
+		await tick();
+		const active = document.activeElement;
+		if (!open || !downloadButton) return;
+		if (active === null || active === document.body) downloadButton.focus();
 	}
 
 	function downloadLaser(): void {
@@ -621,7 +636,13 @@
 
 		<div class="buttons">
 			<button type="button" class="btn btn-ghost" onclick={onClose}>{t('cancel', lang)}</button>
-			<button type="button" class="btn btn-primary" onclick={download} disabled={!canDownload}>
+			<button
+				bind:this={downloadButton}
+				type="button"
+				class="btn btn-primary"
+				onclick={download}
+				disabled={!canDownload}
+			>
 				<DownloadIcon size={18} />
 				{generating ? t('generating', lang) : t('downloadFile', lang, { format: fileFormat })}
 			</button>
