@@ -67,7 +67,8 @@ export type PaintResult = {
 	design: HeartDesign;
 	report: {
 		cuts: [number, number];
-		clearanceMm: number;
+		/** Null when the engine had no two slits to measure between (a single line, say). */
+		clearanceMm: number | null;
 		mismatch: number;
 		identical: boolean;
 		/**

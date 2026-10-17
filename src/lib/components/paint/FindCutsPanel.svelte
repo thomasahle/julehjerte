@@ -114,10 +114,15 @@
 
 	/**
 	 * One decimal in the visitor's own notation: Danish writes 3,9 mm and 1,3 %
-	 * where `toFixed` writes a point.
+	 * where `toFixed` writes a point. `scale` turns a fraction into a percentage.
+	 *
+	 * The engine reports no clearance (null) when it had no two slits to measure
+	 * between, and a number that is not there is a dash: throwing here once left
+	 * the panel on "Søger efter snit …" for good, with the heart already found.
 	 */
-	function decimal(value: number): string {
-		return value.toLocaleString(lang === 'en' ? 'en' : 'da', {
+	function decimal(value: number | null | undefined, scale = 1): string {
+		if (value == null || !Number.isFinite(value)) return '–';
+		return (scale * value).toLocaleString(lang === 'en' ? 'en' : 'da', {
 			minimumFractionDigits: 1,
 			maximumFractionDigits: 1
 		});
@@ -214,8 +219,8 @@
 				     visitor painted (docs/inverse/MOTIF-BORDER.md). -->
 				<p class="numbers">
 					{t('paintFoundMotifSummary', lang, {
-						motif: decimal(100 * result.report.motifMismatch),
-						mismatch: decimal(100 * result.report.mismatch)
+						motif: decimal(result.report.motifMismatch, 100),
+						mismatch: decimal(result.report.mismatch, 100)
 					})}
 				</p>
 				<p class="numbers">
@@ -231,7 +236,7 @@
 						left: result.report.cuts[0],
 						right: result.report.cuts[1],
 						clearance: decimal(result.report.clearanceMm),
-						mismatch: decimal(100 * result.report.mismatch)
+						mismatch: decimal(result.report.mismatch, 100)
 					})}
 				</p>
 			{/if}
