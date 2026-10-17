@@ -155,9 +155,9 @@ category's first row starts 6px under it (behind the transparent bar) and each o
 hill under its own centre, 54px more under the chips. At rest the chips are right-aligned, each on the
 curve. Scrolling pushes them (amendment 1, all scroll-linked, no transitions): the bar's box is L — the
 largest chip lift — taller on top and sticks at `top: -L`; chip i sits at `translateY(clamp(s − H, lift_i, L)
-− L)` and the right-aligning spacer's flex-grow goes from 1 to 0 over the same L, so the top of the screen
-carries the chips down until they are flat and left-aligned, and only then does the bar stick (the wordmark
-keeps its room from 900 up and only fades in). First-row card i gets `translateY(clamp(s + 50 − c_i, 0, D −
+− L)`, so the top of the screen carries the chips straight down until they are flat, and only then does the
+bar stick; they stay right-aligned in the stuck bar too (the wordmark keeps its room from 900 up and only
+fades in). First-row card i gets `translateY(clamp(s + 50 − c_i, 0, D −
 drop_i))`: the stuck bar's bottom edge pushes it until the row is level. Both use the `translate` property,
 so the card's hover scale stays. The geometry is `$lib/front/hillLine`;
 `Gallery.svelte` measures (`[data-scene-land] > svg`, on mount and with a ResizeObserver) and hands the bar its

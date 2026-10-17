@@ -154,7 +154,6 @@
 			if (room <= 0) {
 				for (const chip of chips) chip.style.removeProperty('translate');
 				selection?.style.removeProperty('translate');
-				row.style.removeProperty('--spacer-grow');
 				return;
 			}
 			const p = Math.min(Math.max(-bar.getBoundingClientRect().top, 0), room);
@@ -162,7 +161,6 @@
 				chip.style.translate = `0 ${Math.max(p, chipLifts[i] ?? 0) - room}px`;
 			});
 			if (selection) selection.style.translate = `0 ${p - room}px`;
-			row.style.setProperty('--spacer-grow', String(1 - p / room));
 		};
 		const schedule = () => {
 			if (!frame) frame = requestAnimationFrame(update);
@@ -497,10 +495,10 @@
 
 	   The box is L taller on top (--bar-room, set from the lifts) and sticks
 	   at -L, so it sticks when exactly its bottom, a normal bar, is left on
-	   screen. The chips are right-aligned at rest by a spacer whose flex-grow
-	   the scroll handler takes from 1 to 0 as the screen pushes the chips
-	   flat; its -8px eats the row's gap. The wordmark keeps its room here
-	   (only its opacity changes), so nothing moves sideways when it appears. */
+	   screen. The chips are right-aligned by a spacer, stuck or not: the screen
+	   pushes them straight down, never sideways (its -8px eats the row's gap).
+	   The wordmark keeps its room here (only its opacity changes), so nothing
+	   moves sideways when it appears either. */
 	@media (min-width: 900px) {
 		.gallery-bar {
 			top: calc(-1 * var(--bar-room, 0px));
@@ -524,7 +522,7 @@
 
 		.chips::before {
 			content: '';
-			flex: var(--spacer-grow, 1) 0 0;
+			flex: 1 0 0;
 			margin-right: -8px;
 		}
 

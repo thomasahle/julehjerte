@@ -87,7 +87,7 @@ The category headings go.
 - A Playwright check (your own script against `vite preview`, not committed
   as a test unless it is stable) at 1440, 1200, 1024 and 390: measure the
   first row's card tops and the chip tops against `hillY` at their centres;
-  scroll and confirm the bar sticks with the chips flat and left-aligned,
+  scroll and confirm the bar sticks with the chips flat,
   then unsticks back onto the curve; `aria-current` still follows scroll.
 - Screenshots at 1440, 1200, 1024 and 390 of the hero-to-gallery region, in
   `docs/redesign/gallery-curve-qa/` (gitignored like `download-qa/`), for the
@@ -119,12 +119,11 @@ Chip *i* carries `transform: translateY(y_i)` with
 At rest (`s ≤ H`) that is `lift_i − L`: the chip sits on the curve as now.
 As `s` grows past `H + lift_i` the chip's screen y stays at 10px: the top of
 the screen carries it down the page. At `s = H + L` every chip is at `y = 0`,
-flat and left-aligned, and the bar sticks. The wordmark fades in at that
-moment as today. Scrolling back up reverses it exactly. No transition on the
-transform; the stuck/unstuck change of alignment (the spacer) must also not
-animate any more: the chips are already flat when it happens, so flip the
-spacer to 0 at `s = H + L` without a transition, or better, make the spacer's
-width part of the same scroll-linked calculation.
+flat, and the bar sticks. The wordmark fades in at that moment as today.
+Scrolling back up reverses it exactly. No transition on the transform.
+
+*Amendment 2 (same day):* the chips stay right-aligned in the stuck bar too.
+The screen pushes them straight down; they never slide sideways.
 
 **First-row hearts.** The push line for cards is the stuck bar's bottom
 edge, 50px from the top of the screen. Card *i* carries
