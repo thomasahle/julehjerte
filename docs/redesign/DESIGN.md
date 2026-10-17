@@ -286,8 +286,16 @@ Hent skabelon: the primary button opens one dialog (`DownloadDialog.svelte`, doc
 every way of getting the template out of the site. "Til" chooses **Printer** or **Laserskærer**; the heart's
 width in mm, the number of hearts and the sheet (A4, A3 or a custom size) are shared by both, and the preview
 on the right shows the sheet as it will come out. Printer makes a PDF of the *folded* templates at true size —
-two per heart, each with its name and address lines and (optionally) the heart's picture in the ear — laid out
-by `$lib/pdf/plan` on as many pages of the sheet as they need ("{n} sider", "Side 1 af {n}" under the preview).
+two per heart, laid out by `$lib/pdf/plan` on as many pages of the sheet as they need ("{n} sider", "Side 1 af
+{n}" under the preview). Each template carries everything inside its rounded end, the one part no cut crosses
+and folding keeps whole, so a template cut out of the sheet still says what it is: (optionally) the heart's
+picture as high as the curve allows, then directly under it the name (8 pt) and the address (6 pt grey,
+e.g. juleflet.dk/hjerte/jul), above the ear base where the cuts begin. On a small template the two lines shrink
+together to the band left under the picture, and the address goes first when it would fall below 5 pt; with
+the picture off the lines take its place (`$lib/pdf/earLayout`). Nothing is printed above a template, so the
+pieces pack edge to edge (nine 60 mm templates to an A4 page). The preview draws the same layout with the
+real picture — the very PNG the PDF embeds, rendered once per heart — and leaves its place empty while it
+renders.
 Laserskærer makes the whole *unfolded* piece (docs/redesign/LASER.md) — the template mirrored across the fold,
 every strip cut one continuous path through it — as an SVG in real millimetres or an R12 DXF (exact
 half-circle ears as bulged polyline vertices, curved cuts flattened to 0.05 mm). Every line in the file is a

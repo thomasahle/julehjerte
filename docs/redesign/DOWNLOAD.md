@@ -40,7 +40,8 @@ dialog does today. Settings, top to bottom:
    gets more pages (no limit); the note `pdfPages` "{n} sider" replaces the
    laser's "plads til {n}" line. Laser mode keeps its single sheet and its note.
 5. **Laser mode only**: Filformat SVG / DXF (`laserFormat`) and "Rids falsen"
-   (`laserScoreFold` + hint), as now. Printer mode only: checkbox
+   (`laserScoreFold` + hint), as now (the scoring was removed in round 2,
+   amendment 1). Printer mode only: checkbox
    `pdfShowPreviewImage` "Vis et lille billede af hjertet på skabelonen"
    (default on) for the thumbnail the PDF prints inside the ear today.
 6. Preview (right column): the sheet, with the pieces as they will be placed —
@@ -76,7 +77,7 @@ dialog does today. Settings, top to bottom:
    printed template is traced or cut with scissors, not fed to a laser.
 
 Settings are remembered in `localStorage` under `juleflet:download`
-(`{ mode, widthMm, hearts, sheet, format, scoreFold, previewImage }`, try/catch,
+(`{ mode, widthMm, hearts, sheet, format, previewImage }` since round 2; try/catch,
 unknown values ignored). Read the old `juleflet:laser` once as a fallback and
 then ignore it.
 
@@ -89,7 +90,7 @@ footer and `prerenderHeartImages` exactly as the existing pages do, but placing
 the templates with the laser module's `layoutSheet` (`src/lib/laser/sheet.ts`,
 5 mm gap and margin) on as many pages as needed. The piece box handed to
 `layoutSheet` is the folded template's width × (height + the 9 mm header the
-labels take). Pull the page-planning maths into a pure function
+labels take) — since round 2 the template alone, the labels being inside it. Pull the page-planning maths into a pure function
 (`planTemplatePages`) in `src/lib/pdf/plan.ts` with tests. Keep the existing
 `generatePDF`/`generateMultiPDF`/`LayoutMode` code path intact for the front
 page toolbar. `downloadTemplatesPDF` saves `{slug}-{width}mm.pdf`.
@@ -169,3 +170,33 @@ worktree, no shared Playwright MCP tools, do not touch `static/inverse`,
    same two lines in the same place (`preview.ts`).
 
 Everything else in this file stands, including round 1.
+
+### As built (round 2)
+
+- **Scoring** is gone from the dialog, `$lib/download/settings` (an old stored
+  `scoreFold` is ignored), `planLaserSheet`, both writers (`serializeLaserSvg`
+  takes no `scoreFold`, `serializeLaserDxf(layout)` has one `CUT` layer) and the
+  unfolded piece (`UnfoldedPiece.fold` removed: nothing drew it any more). The
+  printer preview's dashed fold is now the class `fold`, not `score`.
+- **The ear layout** is one pure function, `layoutEar` in
+  `src/lib/pdf/earLayout.ts` (tests in `earLayout.test.ts`), reached through
+  `templateEar(piece, { lang, picture, measure })` in `plan.ts`; the PDF passes
+  jsPDF's exact text widths, the preview a Helvetica estimate (and draws its
+  lines in Helvetica). The picture keeps its old size, `min(35 % of the width,
+  25 % of the height)`, but sits as high in the ear as the curve allows
+  instead of at a fifth of the height: at the old place it ended 2 mm above
+  the ear base, which left no band for the text. Fonts never grow past 8 / 6 pt;
+  if even the name alone would fall under 5 pt the picture shrinks instead (no
+  size in 40–200 mm needs it). Each line is also shrunk to the ear's width at
+  the top of the text block, so a long name never runs over the curve.
+- **The picture** is rendered by `prerenderHeartImages`, moved to
+  `src/lib/pdf/heartRenderer.ts` so the dialog can use it without loading
+  jsPDF, at `templatePicturePixels(pieces)` (300 dpi for the largest
+  template, as the PDF). The preview embeds it once per design as an
+  `<image>` inside a `<symbol>`, placed in each ear with `<use>`. While the
+  width changes, the last picture of the same heart stays until the new one
+  is ready (only its sharpness differs).
+- `TEMPLATE_HEADER_MM` and the `headerMm` option are gone; `TemplatePiece`
+  gained `earRadiusMm`. The front page toolbar's gallery PDF
+  (`generatePDF`/`generateMultiPDF`, its own fixed layouts) still prints its
+  labels above the templates: it was left alone, as the first round asked.
