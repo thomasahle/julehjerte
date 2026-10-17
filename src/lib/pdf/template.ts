@@ -2,12 +2,14 @@ import { jsPDF } from 'jspdf';
 import type { HeartDesign, Vec } from '$lib/types/heart';
 import { renderHeartToDataURL } from './heartRenderer';
 import { SITE_DOMAIN } from '$lib/config';
-import { ALL_HEART_IDS } from '$lib/data/categories';
 import { segmentsToPathData } from '$lib/geometry/bezierSegments';
 import { inferOverlapRect as inferOverlapRectShared } from '$lib/utils/overlapRect';
 import { lobesShareTemplate } from '$lib/utils/symmetry';
 import { slugify } from '$lib/utils/slug';
 import { t, type Language } from '$lib/i18n';
+import { SHEETS, type SheetSize } from '$lib/laser/sheet';
+import { planTemplatePages, templateAddress, templateLabel, templatePieces, TEMPLATE_HEADER_MM } from './plan';
+import { previewImageBox } from './preview';
 
 // A4 dimensions in mm
 const PAGE_WIDTH = 210;
@@ -237,7 +239,8 @@ function drawArc(
   }
 }
 
-// Draw a single lobe template (vertical orientation with ear at top)
+// Draw a single lobe template (vertical orientation with ear at top), as large
+// as fits in a box centred on (centerX, centerY): the gallery's fixed layouts.
 function drawLobeTemplate(
   pdf: jsPDF,
   design: HeartDesign,
@@ -264,10 +267,33 @@ function drawLobeTemplate(
   const scale = Math.min(scaleX, scaleY) * 0.95; // Use 95% to leave minimal padding
 
   // Calculate offset to center the template
+  const offsetX = centerX - (templateWidth * scale) / 2;
+  const offsetY = centerY - (templateHeight * scale) / 2;
+
+  drawLobeTemplateAt(pdf, design, lobe, offsetX, offsetY, scale);
+}
+
+// Draw a single lobe template with its top-left corner (the ear's bounding
+// box) at (offsetX, offsetY), at `scale` mm per template unit. The dialog's
+// PDF uses this directly, since there the size is the visitor's to choose.
+function drawLobeTemplateAt(
+  pdf: jsPDF,
+  design: HeartDesign,
+  lobe: 'left' | 'right',
+  offsetX: number,
+  offsetY: number,
+  scale: number
+) {
+  const rect = inferOverlapRect(design);
+  const overlapWidth = rect.overlapWidth;
+  const overlapHeight = rect.overlapHeight;
+  const earRadius = lobe === 'left' ? overlapHeight / 2 : overlapWidth / 2;
+  const bodyWidth = lobe === 'left' ? overlapHeight : overlapWidth;
+  const bodyHeight = lobe === 'left' ? overlapWidth : overlapHeight;
+  const templateWidth = bodyWidth;
+  const templateHeight = bodyHeight + earRadius;
   const scaledWidth = templateWidth * scale;
   const scaledHeight = templateHeight * scale;
-  const offsetX = centerX - scaledWidth / 2;
-  const offsetY = centerY - scaledHeight / 2;
 
   // Transform coordinates: we want vertical template with ear at top
   // Original left lobe: ear on left, fold on bottom
@@ -398,10 +424,9 @@ function drawLobeTemplate(
 }
 
 // Pre-render heart images for all unique designs
-async function prerenderHeartImages(designs: HeartDesign[], layout: LayoutMode): Promise<Map<string, string>> {
+async function prerenderHeartImages(designs: HeartDesign[], size: number): Promise<Map<string, string>> {
   const imageMap = new Map<string, string>();
   const uniqueDesigns = [...new Map(designs.map(d => [d.id, d])).values()];
-  const size = previewSizePx(layout);
 
   for (const design of uniqueDesigns) {
     try {
@@ -436,17 +461,6 @@ function collectTemplates(designs: HeartDesign[]): TemplateSlot[] {
   }
 
   return templates;
-}
-
-const GALLERY_IDS = new Set<string>(ALL_HEART_IDS);
-
-/**
- * The address printed under a template's name. A gallery heart has its own page,
- * which is the shortest way back to exactly this template; a heart the visitor
- * drew has none, so it gets the site.
- */
-function templateAddress(design: HeartDesign): string {
-  return GALLERY_IDS.has(design.id) ? `${SITE_DOMAIN}/hjerte/${design.id}` : SITE_DOMAIN;
 }
 
 function addTemplatesPage(
@@ -562,7 +576,7 @@ async function generatePDF(design: HeartDesign, options: PDFOptions = {}): Promi
     format: 'a4'
   });
 
-  const heartImages = await prerenderHeartImages([design], layout);
+  const heartImages = await prerenderHeartImages([design], previewSizePx(layout));
   const templates = collectTemplates([design]);
   addTemplatesPage(pdf, templates, 0, true, heartImages, layout, lang);
 
@@ -579,7 +593,7 @@ async function generateMultiPDF(designs: HeartDesign[], options: PDFOptions = {}
     format: 'a4'
   });
 
-  const heartImages = await prerenderHeartImages(designs, layout);
+  const heartImages = await prerenderHeartImages(designs, previewSizePx(layout));
   const templates = collectTemplates(designs);
   let index = 0;
   let isFirst = true;
@@ -611,4 +625,98 @@ export async function downloadMultiPDF(designs: HeartDesign[], options: PDFOptio
     ? singleFilename(designs[0])
     : `${t('pdfMultiFilename', options.lang, { n: designs.length })}.pdf`;
   pdf.save(filename);
+}
+
+// ---- The "Hent skabelon" dialog's PDF (docs/redesign/DOWNLOAD.md) ----------
+
+export interface TemplatesPDFOptions {
+  /** The heart's width: its wider template's, as the laser export reads it. */
+  widthMm: number;
+  /** Hearts per design; each heart is two templates. */
+  hearts: number;
+  /** The page. */
+  sheet: SheetSize;
+  lang?: Language;
+  /** Print the heart's picture in each template's ear. */
+  previewImage?: boolean;
+}
+
+/** jsPDF's own names for the two standard sheets, so a printer sees "A4", not 210 × 297 mm. */
+function pageFormat(sheet: SheetSize): { format: string | [number, number]; orientation: 'portrait' | 'landscape' } {
+  const same = (a: SheetSize) => a.widthMm === sheet.widthMm && a.heightMm === sheet.heightMm;
+  if (same(SHEETS.A4)) return { format: 'a4', orientation: 'portrait' };
+  if (same(SHEETS.A3)) return { format: 'a3', orientation: 'portrait' };
+  // jsPDF turns [w, h] to match the orientation it is given, so it has to be
+  // the one the sheet already has.
+  return {
+    format: [sheet.widthMm, sheet.heightMm],
+    orientation: sheet.widthMm > sheet.heightMm ? 'landscape' : 'portrait'
+  };
+}
+
+/**
+ * The templates at true size: each heart's two folded templates at
+ * `widthMm`, laid out by planTemplatePages on as many pages as they take.
+ * Every template gets the name and address lines and (optionally) the heart's
+ * picture the gallery's PDF gives it, and every page the footer.
+ */
+export async function generateTemplatesPDF(designs: HeartDesign[], options: TemplatesPDFOptions): Promise<jsPDF> {
+  const lang = options.lang ?? 'da';
+  const pieces = templatePieces(designs, options.widthMm, options.hearts);
+  const plan = planTemplatePages(pieces, { sheet: options.sheet });
+  if (!plan.fits) throw new Error('A template is larger than the page.');
+
+  const { format, orientation } = pageFormat(options.sheet);
+  const pdf = new jsPDF({ orientation, unit: 'mm', format });
+
+  // One picture per design, rendered for the largest template it appears in.
+  let heartImages = new Map<string, string>();
+  if (options.previewImage ?? true) {
+    const largest = Math.max(...pieces.map((p) => previewImageBox(p.widthMm, p.heightMm).size));
+    heartImages = await prerenderHeartImages(designs, Math.max(200, Math.round((largest / 25.4) * PREVIEW_DPI)));
+  }
+
+  for (const [pageIndex, placements] of plan.pages.entries()) {
+    if (pageIndex > 0) pdf.addPage(format, orientation);
+
+    for (const { index, x, y } of placements) {
+      const piece = pieces[index]!;
+      const centerX = x + piece.widthMm / 2;
+
+      pdf.setFontSize(8);
+      pdf.setTextColor(0);
+      pdf.text(templateLabel(piece, lang), centerX, y + 4, { align: 'center' });
+      // A sheet often ends up separated from the rest (a school, a workshop), so
+      // each template carries the address that leads back to it.
+      pdf.setFontSize(6);
+      pdf.setTextColor(128);
+      pdf.text(templateAddress(piece.design), centerX, y + 7, { align: 'center' });
+
+      const top = y + TEMPLATE_HEADER_MM;
+      drawLobeTemplateAt(pdf, piece.design, piece.lobe, x, top, piece.scale);
+
+      const imageData = heartImages.get(piece.design.id);
+      if (imageData) {
+        const box = previewImageBox(piece.widthMm, piece.heightMm);
+        pdf.addImage(imageData, 'PNG', x + box.cx - box.size / 2, top + box.cy - box.size / 2, box.size, box.size);
+      }
+    }
+
+    pdf.setFontSize(7);
+    pdf.setTextColor(128);
+    pdf.text(SITE_DOMAIN, options.sheet.widthMm / 2, options.sheet.heightMm - 3, { align: 'center' });
+  }
+
+  return pdf;
+}
+
+/** "klassisk-80mm.pdf": the heart, and the width it was printed at. */
+export function templatesFilename(design: HeartDesign, widthMm: number): string {
+  return `${slugify(design.name)}-${widthMm}mm.pdf`;
+}
+
+export async function downloadTemplatesPDF(designs: HeartDesign[], options: TemplatesPDFOptions) {
+  if (designs.length === 0) return;
+  const pdf = await generateTemplatesPDF(designs, options);
+  pdf.save(templatesFilename(designs[0]!, options.widthMm));
 }
