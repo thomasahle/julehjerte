@@ -139,6 +139,33 @@
 	});
 
 	let barEl = $state.raw<HTMLElement | null>(null);
+
+	// The box's height, observed rather than bound (bind:offsetHeight): the
+	// gallery turns it into the first section's margin, so writing it from
+	// inside the ResizeObserver callback changed the layout of elements the
+	// gallery observes while WebKit was still delivering, which it reports
+	// as "ResizeObserver loop completed with undelivered notifications". The
+	// read and the write wait for the next frame, once per frame however
+	// often the observer fires.
+	$effect(() => {
+		if (!barEl) return;
+		const bar = barEl;
+		let frame = 0;
+		const read = () => {
+			frame = 0;
+			boxHeight = bar.offsetHeight;
+		};
+		read();
+		const observer = new ResizeObserver(() => {
+			if (!frame) frame = requestAnimationFrame(read);
+		});
+		observer.observe(bar);
+		return () => {
+			observer.disconnect();
+			if (frame) cancelAnimationFrame(frame);
+		};
+	});
+
 	let chipRow = $state.raw<HTMLElement | null>(null);
 
 	// The push (GALLERY-CURVE.md amendment 1), scroll-linked: with p = s − H,
@@ -329,7 +356,6 @@
 	data-gallery-bar
 	class:stuck
 	bind:this={barEl}
-	bind:offsetHeight={boxHeight}
 	style:--bar-room={liftRoom > 0 ? `${liftRoom}px` : undefined}
 >
 	<!-- Always in the DOM, so nothing shifts when it appears; hidden from the

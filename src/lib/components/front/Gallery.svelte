@@ -83,15 +83,26 @@
 		if (!browser || !galleryWrapEl) return;
 		const el = galleryWrapEl;
 		const wideEnough = window.matchMedia(WIDE_FRAME_QUERY);
+		// In the next frame, not inside the ResizeObserver callback: a layout
+		// write during delivery is what WebKit reports as "ResizeObserver
+		// loop completed with undelivered notifications" (see the hill
+		// measure below and GalleryBar's height). One frame at a time.
+		let frame = 0;
 		const measure = () => {
+			frame = 0;
 			frameHeight = wideEnough.matches ? Math.round(el.getBoundingClientRect().height) : 0;
 		};
-		const observer = new ResizeObserver(measure);
+		const schedule = () => {
+			if (!frame) frame = requestAnimationFrame(measure);
+		};
+		measure();
+		const observer = new ResizeObserver(schedule);
 		observer.observe(el);
-		wideEnough.addEventListener('change', measure);
+		wideEnough.addEventListener('change', schedule);
 		return () => {
 			observer.disconnect();
-			wideEnough.removeEventListener('change', measure);
+			wideEnough.removeEventListener('change', schedule);
+			if (frame) cancelAnimationFrame(frame);
 		};
 	});
 
