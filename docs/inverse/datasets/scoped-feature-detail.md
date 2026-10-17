@@ -42,8 +42,11 @@ is **61.93%** and **60.58%**, respectively. Final geometry and paper checks pass
 
 The opening remains too angular and too large: 11.37 mm² versus the source's
 7.36 mm². This change does not establish exact recovery or physical assembly.
-Broader QA is still pending, and the earlier supported-count metadata failure
-remains unresolved. The preview has not been refreshed.
+Seventeen broader feature/routing tests, type checks, lint, the build and
+874 application tests pass (one existing skip). All 1,044 pinned source files
+match after those checks. The complete inverse suite is now running. The
+earlier supported-count metadata failure remains unresolved; a passing
+focused replay does not explain it. The preview has not been refreshed.
 
 ## Regression checks
 

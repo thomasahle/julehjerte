@@ -233,7 +233,19 @@
   "checks": {
     "focusedTestsPassed": 12,
     "freshHalfPuppyPassed": true,
-    "broaderQA": "pending"
+    "broaderFeatureTestsPassed": 17,
+    "typeCheck": "passed",
+    "lint": "passed",
+    "lintExistingWarnings": 3,
+    "applicationPassed": 874,
+    "applicationSkipped": 1,
+    "build": "passed",
+    "completeInverse": "running",
+    "sourceFiles": 1044,
+    "sourceHashesMatchedAfterStandardChecks": true,
+    "sourceManifest": "tmp/heart-learning/clearance-continuation-2026-10-18/loss-row-index/scoped-qa/source.json",
+    "sourceManifestSha256": "b70af480c904e740ea81cd7a214c14caa5a7de8112393cdfed5e433a653a446d",
+    "qaState": "tmp/heart-learning/clearance-continuation-2026-10-18/loss-row-index/scoped-qa/state.json"
   },
   "limitations": [
     "The small opening remains too angular and larger than the source; this is an improvement, not exact reconstruction.",
