@@ -83,10 +83,21 @@ export function createBoundaryEvaluator(graph,prob,n,{rows=192,ns=24,transpose=f
   const offset=objective.offset;
   return(points,phase)=>{
     const index=polygonIndex(graph,points,ns),segments=transpose?index.segments.map(s=>[s[1],s[0],s[3],s[2]]):index.segments;
+    // Keep segment orientation and insertion order: bins only exclude rows
+    // which cannot cross a segment, without changing crossing arithmetic.
+    const bins=transpose?Array.from({length:index.bins.length},()=>[]):index.bins;
+    if(transpose)for(let id=0;id<segments.length;id++){
+      const s=segments[id];if(s[1]===s[3])continue;
+      const lo=Math.max(0,Math.min(bins.length-1,Math.floor(Math.min(s[1],s[3])/w*bins.length)));
+      const hi=Math.max(0,Math.min(bins.length-1,Math.floor(Math.max(s[1],s[3])/w*bins.length)));
+      for(let bin=lo;bin<=hi;bin++)bins[bin].push(id);
+    }
     let total=0;
     for(let row=0;row<rows;row++){
       const y=(row+.5)*w/rows,crossings=[],start=row*stride;
-      for(const s of segments)if((s[1]>y)!==(s[3]>y))crossings.push(s[0]+(y-s[1])*(s[2]-s[0])/(s[3]-s[1]));
+      for(const id of bins[Math.max(0,Math.min(bins.length-1,Math.floor(y/w*bins.length)))]){
+        const s=segments[id];if((s[1]>y)!==(s[3]>y))crossings.push(s[0]+(y-s[1])*(s[2]-s[0])/(s[3]-s[1]));
+      }
       crossings.sort((a,b)=>a-b);
       const integral=x=>{x=Math.max(0,Math.min(w,x));const j=Math.max(0,Math.min(n,Math.floor(x*n/w+.5))),dx=x-xs[j],i=start+j;return cdfs[i]+costs[i]*dx+.5*(costs[i+1]-costs[i])*dx*dx/(xs[j+1]-xs[j]);};
       let area=0;for(let j=0;j<crossings.length;j++)area+=(j%2?1:-1)*integral(crossings[j]);

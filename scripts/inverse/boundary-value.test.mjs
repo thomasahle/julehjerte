@@ -2,6 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {boundaryValue,createBoundaryEvaluator} from '../../static/inverse/core/direct/boundary.js';
 import {CurveGraph} from '../../static/inverse/core/direct/curves.js';
+import {gridModel,gridPaths} from '../../static/inverse/core/direct/grid.js';
+import {referenceBoundaryEvaluator} from './fixtures/boundary-value-reference.mjs';
 
 const line=(a,b)=>[a,a.map((v,i)=>v+(b[i]-v)/3),a.map((v,i)=>v+2*(b[i]-v)/3),b];
 const near=(actual,expected,tolerance=1e-10)=>assert.ok(Math.abs(actual-expected)<tolerance,`${actual} vs ${expected}`);
@@ -46,6 +48,30 @@ test('prepared weighted fields cancel shared boundaries and preserve zero-weight
       const colour=phase===1?0:1,expected=prob.reduce((s,p,i)=>s+weights[i]*(colour-p)**2,0)/mass;
       near(evaluate(graph.points,phase),expected);
       assert.equal(evaluate(graph.points,phase),other(graph.points,phase));
+    }
+  }
+});
+
+test('row indexing retains every full-scan scalar through bin edges, reversals and disconnected joins',()=>{
+  const shared=line([30,0],[30,100]);
+  const graphs=[
+    new CurveGraph([[],[]]),
+    new CurveGraph([[[shared],[shared]],[]]),
+    new CurveGraph([[[line([25,0],[25,100])]],[[line([0,37],[100,37])]]]),
+    new CurveGraph([[[line([100*17/128,0],[100*17/128,100])]],[[line([0,100*23/128],[100,100*23/128])]]]),
+    new CurveGraph([[[[[25,0],[120,140],[-20,-40],[75,100]]]],[]]),
+    new CurveGraph([[[line([25,0],[25,45]),line([30,55],[30,100])]],[]]),
+    new CurveGraph(gridPaths(gridModel([8,8],16,17))),
+    new CurveGraph([[[line([20,0],[40,73])]],[[line([0,18],[73,52])]]],73)
+  ];
+  const n=17,prob=Float64Array.from({length:n*n},(_,i)=>(i*19%31)/31);
+  for(const graph of graphs)for(const weighted of [false,true])for(const rows of [1,17,192,193])for(const transpose of [false,true]){
+    const weights=weighted?Float64Array.from(prob,(_,i)=>i%n<5?0:i%n<12?.25:1):null,options={weights,rows,transpose};
+    const reference=referenceBoundaryEvaluator(graph,prob,n,options),evaluate=createBoundaryEvaluator(graph,prob,n,options);
+    for(const amount of [0,.013,-.071]){
+      const points=Float64Array.from(graph.points,(v,i)=>v+amount*Math.sin(i+1));
+      for(const phase of [1,-1])assert.ok(Object.is(evaluate(points,phase),reference(points,phase)),
+        `Changed scalar for ${graph.edges.length} edges, ${rows} rows, transpose=${transpose}, phase=${phase}, perturbation=${amount}, weighted=${weighted}.`);
     }
   }
 });

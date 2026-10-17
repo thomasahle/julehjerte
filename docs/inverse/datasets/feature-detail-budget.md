@@ -84,3 +84,8 @@ occur downstream of automatic corner detection. Timing-sensitive initialization,
 refinement and selection still need investigation; neither a passing focused
 replay nor observed system load explains away a failed final gate. The preview
 has not been refreshed, and no browser-speed improvement is claimed.
+
+The subsequent [indexed scalar-loss experiment](indexed-boundary-loss.md)
+reduces repeated segment scans without changing the loss values. All nine
+failures pass its targeted replay; it still requires complete-suite and browser
+verification and does not replace the failed full-run record above.

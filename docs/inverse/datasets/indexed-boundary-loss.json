@@ -1,0 +1,719 @@
+{
+  "scope": "Exact indexed scalar-loss integration. Fixed-work component timing is separate from timed fresh fits and does not establish whole-browser speed.",
+  "baselineRuntime": "4379b66",
+  "productionFiles": {
+    "static/inverse/core/direct/boundary.js": "bf77844da0994943db90228a2eb230e4b8a3e2fa5f966724a08699c431b36ae4",
+    "scripts/inverse/boundary-value.test.mjs": "dc35a82913a6ec9c21e026b41df14b728d39b582e8807e5a6dea27f29d4628cf",
+    "scripts/inverse/fixtures/boundary-value-reference.mjs": "28562b7db8872f7d2f6ded4d3c51ae0f3c1b1fb978760cc16dba8a56aa382655",
+    "scripts/inverse/diagnostics/boundary-row-index-study.mjs": "5432e5c300189dd0e04a06a8b5650779dac8c4fbdd069f550ecbe905197844db"
+  },
+  "reproducer": "nice -n 15 node scripts/inverse/diagnostics/boundary-row-index-study.mjs --output=tmp/boundary-row-index-study",
+  "study": {
+    "results": "tmp/heart-learning/clearance-continuation-2026-10-18/loss-row-index/reproduction/results.json",
+    "sha256": "034c73980b185618219d93e2b49f826495638636da1ccde3880897deb5008bf1",
+    "method": "Fixed scalar-loss evaluation, not whole-solver or browser timing. Both policies prepare image integrals once, outside evaluation timing. Every scalar must match exactly. Saved curves are evaluation inputs only.",
+    "cases": 40,
+    "allScalarsIdentical": true,
+    "sourceHashesMatchedAfterRun": true,
+    "seconds": 6.542236625,
+    "medianIndexedToBaselineRatio": 0.5331177593847924,
+    "equalWorkMedianSumRatio": 0.2825225835731466,
+    "casesSlower": 4,
+    "rows": [
+      {
+        "case": "empty",
+        "resolution": 17,
+        "weighted": false,
+        "baselineMilliseconds": 0.08851009375000007,
+        "indexedMilliseconds": 0.13797363281250008,
+        "ratio": 1.5588463074303316
+      },
+      {
+        "case": "empty",
+        "resolution": 17,
+        "weighted": true,
+        "baselineMilliseconds": 0.08155794531249994,
+        "indexedMilliseconds": 0.11042871093750017,
+        "ratio": 1.3539908406762593
+      },
+      {
+        "case": "empty",
+        "resolution": 256,
+        "weighted": false,
+        "baselineMilliseconds": 0.08241406249999983,
+        "indexedMilliseconds": 0.11416991406250032,
+        "ratio": 1.3853207887003576
+      },
+      {
+        "case": "empty",
+        "resolution": 256,
+        "weighted": true,
+        "baselineMilliseconds": 0.08346679687500025,
+        "indexedMilliseconds": 0.11468066406249999,
+        "ratio": 1.3739674739674699
+      },
+      {
+        "case": "horizontal-and-vertical",
+        "resolution": 17,
+        "weighted": false,
+        "baselineMilliseconds": 0.7674126904761907,
+        "indexedMilliseconds": 0.5953543812997348,
+        "ratio": 0.7757942873349004
+      },
+      {
+        "case": "horizontal-and-vertical",
+        "resolution": 17,
+        "weighted": true,
+        "baselineMilliseconds": 0.7847609285714292,
+        "indexedMilliseconds": 0.567812566666668,
+        "ratio": 0.7235484667926935
+      },
+      {
+        "case": "horizontal-and-vertical",
+        "resolution": 256,
+        "weighted": false,
+        "baselineMilliseconds": 0.8044549690476205,
+        "indexedMilliseconds": 0.5616673793103457,
+        "ratio": 0.6981961712229753
+      },
+      {
+        "case": "horizontal-and-vertical",
+        "resolution": 256,
+        "weighted": true,
+        "baselineMilliseconds": 0.7881855,
+        "indexedMilliseconds": 0.5614784482758637,
+        "ratio": 0.7123684060108486
+      },
+      {
+        "case": "bin-edge",
+        "resolution": 17,
+        "weighted": false,
+        "baselineMilliseconds": 0.7982652202380931,
+        "indexedMilliseconds": 0.5704876964285759,
+        "ratio": 0.7146593412380167
+      },
+      {
+        "case": "bin-edge",
+        "resolution": 17,
+        "weighted": true,
+        "baselineMilliseconds": 0.8150969988095187,
+        "indexedMilliseconds": 0.5918875563660493,
+        "ratio": 0.7261559755839175
+      },
+      {
+        "case": "bin-edge",
+        "resolution": 256,
+        "weighted": false,
+        "baselineMilliseconds": 1.0205528897058849,
+        "indexedMilliseconds": 0.7794355608695687,
+        "ratio": 0.7637385271567804
+      },
+      {
+        "case": "bin-edge",
+        "resolution": 256,
+        "weighted": true,
+        "baselineMilliseconds": 1.2623829999999998,
+        "indexedMilliseconds": 0.7819833090909056,
+        "ratio": 0.6194501265391769
+      },
+      {
+        "case": "nonmonotone-outside",
+        "resolution": 17,
+        "weighted": false,
+        "baselineMilliseconds": 0.5669159655172413,
+        "indexedMilliseconds": 0.48982414705882205,
+        "ratio": 0.8640154394168764
+      },
+      {
+        "case": "nonmonotone-outside",
+        "resolution": 17,
+        "weighted": true,
+        "baselineMilliseconds": 0.735404487781951,
+        "indexedMilliseconds": 0.6309150576923082,
+        "ratio": 0.8579157024118893
+      },
+      {
+        "case": "nonmonotone-outside",
+        "resolution": 256,
+        "weighted": false,
+        "baselineMilliseconds": 0.6722508199999992,
+        "indexedMilliseconds": 0.47118124815724605,
+        "ratio": 0.7009009645495807
+      },
+      {
+        "case": "nonmonotone-outside",
+        "resolution": 256,
+        "weighted": true,
+        "baselineMilliseconds": 0.9046970873015894,
+        "indexedMilliseconds": 0.8102519359903424,
+        "ratio": 0.8956057749749748
+      },
+      {
+        "case": "disconnected-joins",
+        "resolution": 17,
+        "weighted": false,
+        "baselineMilliseconds": 0.9546363831168847,
+        "indexedMilliseconds": 0.6560717731481523,
+        "ratio": 0.6872478199564112
+      },
+      {
+        "case": "disconnected-joins",
+        "resolution": 17,
+        "weighted": true,
+        "baselineMilliseconds": 0.9428897664835052,
+        "indexedMilliseconds": 0.5821234193548418,
+        "ratio": 0.6173822646584269
+      },
+      {
+        "case": "disconnected-joins",
+        "resolution": 256,
+        "weighted": false,
+        "baselineMilliseconds": 0.7191117134615446,
+        "indexedMilliseconds": 0.5104905112085687,
+        "ratio": 0.7098904129252066
+      },
+      {
+        "case": "disconnected-joins",
+        "resolution": 256,
+        "weighted": true,
+        "baselineMilliseconds": 0.65147374999999,
+        "indexedMilliseconds": 0.4273065273648648,
+        "ratio": 0.6559075133339929
+      },
+      {
+        "case": "grid-3-8",
+        "resolution": 17,
+        "weighted": false,
+        "baselineMilliseconds": 5.6644930000000695,
+        "indexedMilliseconds": 1.739918700000021,
+        "ratio": 0.307162300315315
+      },
+      {
+        "case": "grid-3-8",
+        "resolution": 17,
+        "weighted": true,
+        "baselineMilliseconds": 5.292140624999945,
+        "indexedMilliseconds": 1.6625958000000083,
+        "ratio": 0.3141631936509672
+      },
+      {
+        "case": "grid-3-8",
+        "resolution": 256,
+        "weighted": false,
+        "baselineMilliseconds": 5.810930666666687,
+        "indexedMilliseconds": 1.9545703541666657,
+        "ratio": 0.3363609835131387
+      },
+      {
+        "case": "grid-3-8",
+        "resolution": 256,
+        "weighted": true,
+        "baselineMilliseconds": 6.24813183333337,
+        "indexedMilliseconds": 2.1018045396825413,
+        "ratio": 0.3363892753462008
+      },
+      {
+        "case": "grid-8-8",
+        "resolution": 17,
+        "weighted": false,
+        "baselineMilliseconds": 16.99146875000008,
+        "indexedMilliseconds": 5.215116375000017,
+        "ratio": 0.3069255784612494
+      },
+      {
+        "case": "grid-8-8",
+        "resolution": 17,
+        "weighted": true,
+        "baselineMilliseconds": 18.058395749999818,
+        "indexedMilliseconds": 5.188281374999974,
+        "ratio": 0.2873057743792123
+      },
+      {
+        "case": "grid-8-8",
+        "resolution": 256,
+        "weighted": false,
+        "baselineMilliseconds": 16.178239500000018,
+        "indexedMilliseconds": 5.386532875000057,
+        "ratio": 0.33294926033206834
+      },
+      {
+        "case": "grid-8-8",
+        "resolution": 256,
+        "weighted": true,
+        "baselineMilliseconds": 16.84491700000035,
+        "indexedMilliseconds": 5.372713583333356,
+        "ratio": 0.31895162103400354
+      },
+      {
+        "case": "grid-8-16",
+        "resolution": 17,
+        "weighted": false,
+        "baselineMilliseconds": 34.211249999999836,
+        "indexedMilliseconds": 7.24370133333332,
+        "ratio": 0.2117344830526027
+      },
+      {
+        "case": "grid-8-16",
+        "resolution": 17,
+        "weighted": true,
+        "baselineMilliseconds": 31.777479000000312,
+        "indexedMilliseconds": 7.104062500000055,
+        "ratio": 0.22355651623591616
+      },
+      {
+        "case": "grid-8-16",
+        "resolution": 256,
+        "weighted": false,
+        "baselineMilliseconds": 32.7324165,
+        "indexedMilliseconds": 7.0329028333332335,
+        "ratio": 0.21486048343950512
+      },
+      {
+        "case": "grid-8-16",
+        "resolution": 256,
+        "weighted": true,
+        "baselineMilliseconds": 33.55977050000001,
+        "indexedMilliseconds": 7.633159666666719,
+        "ratio": 0.22744969804447013
+      },
+      {
+        "case": "shared-corners",
+        "resolution": 17,
+        "weighted": false,
+        "baselineMilliseconds": 1.4794450909091046,
+        "indexedMilliseconds": 0.6640537433333293,
+        "ratio": 0.44885325411115784
+      },
+      {
+        "case": "shared-corners",
+        "resolution": 17,
+        "weighted": true,
+        "baselineMilliseconds": 1.498589045454537,
+        "indexedMilliseconds": 0.6588191600000209,
+        "ratio": 0.43962630181925194
+      },
+      {
+        "case": "shared-corners",
+        "resolution": 256,
+        "weighted": false,
+        "baselineMilliseconds": 1.5224450909091005,
+        "indexedMilliseconds": 0.6702861250000198,
+        "ratio": 0.4402694908358045
+      },
+      {
+        "case": "shared-corners",
+        "resolution": 256,
+        "weighted": true,
+        "baselineMilliseconds": 1.6589949500000207,
+        "indexedMilliseconds": 0.688554687499997,
+        "ratio": 0.4150432691190461
+      },
+      {
+        "case": "hat",
+        "resolution": 17,
+        "weighted": false,
+        "baselineMilliseconds": 12.638635499999964,
+        "indexedMilliseconds": 3.013156166666704,
+        "ratio": 0.2384083445294955
+      },
+      {
+        "case": "hat",
+        "resolution": 17,
+        "weighted": true,
+        "baselineMilliseconds": 12.483187499999985,
+        "indexedMilliseconds": 3.4040666333333776,
+        "ratio": 0.2726921015432462
+      },
+      {
+        "case": "hat",
+        "resolution": 256,
+        "weighted": false,
+        "baselineMilliseconds": 12.995916500000249,
+        "indexedMilliseconds": 3.200547950000085,
+        "ratio": 0.2462733544032869
+      },
+      {
+        "case": "hat",
+        "resolution": 256,
+        "weighted": true,
+        "baselineMilliseconds": 12.667822999999999,
+        "indexedMilliseconds": 3.015815916666649,
+        "ratio": 0.23806899706971352
+      }
+    ]
+  },
+  "checks": {
+    "scalar": {
+      "log": "tmp/heart-learning/clearance-continuation-2026-10-18/loss-row-index/focused.log",
+      "sha256": "0d306793212be3b0b47bc3f86a225987bb32180f182f8b1d7858e21b79805b23",
+      "tests": 7,
+      "pass": 7,
+      "fail": 0,
+      "duration_ms": 1217.015875
+    },
+    "weighted": {
+      "log": "tmp/heart-learning/clearance-continuation-2026-10-18/loss-row-index/qa/weighted.log",
+      "sha256": "29a26d96577d05c8df22b0f11130309dc484f11041a9a9e0dc25a4e6b2045d5a",
+      "tests": 21,
+      "pass": 21,
+      "fail": 0,
+      "duration_ms": 1599.78925
+    },
+    "fresh": {
+      "log": "tmp/heart-learning/clearance-continuation-2026-10-18/loss-row-index/qa/fresh.log",
+      "sha256": "7f4bd9b6d8be5cd542cc0d0f1820b14c2f557e7babd8355da907c2269dc99b90",
+      "tests": 9,
+      "pass": 9,
+      "fail": 0,
+      "duration_ms": 86154.453042
+    }
+  },
+  "standardChecks": {
+    "state": {
+      "status": "complete",
+      "pid": 51282,
+      "stages": [
+        {
+          "name": "weighted",
+          "command": [
+            "node",
+            "--test",
+            "--test-concurrency=1",
+            "scripts/inverse/weighted-image.test.mjs",
+            "scripts/inverse/weighted-pipeline.test.mjs"
+          ],
+          "status": "passed",
+          "log": "weighted.log",
+          "pid": 51313,
+          "exitCode": 0,
+          "seconds": 1.721919708
+        },
+        {
+          "name": "fresh",
+          "command": [
+            "node",
+            "--import",
+            "/Users/ahle/repos/julehjerte-solver-initialization/tmp/heart-learning/repair-budget-2026-10-17/capture-current-loader.mjs",
+            "--test",
+            "--test-concurrency=1",
+            "--test-name-pattern=a finer spline recovers|a fresh shifted bird fit.*10-second|the main fitter reconstructs the dense|a late routing candidate|fresh synthetic-control routing|fresh y-plus-1 routing|fresh x-plus-1-paint routing|crown retains",
+            "scripts/inverse/feature-seeds.test.mjs",
+            "scripts/inverse/fitted-rerouting.test.mjs",
+            "scripts/inverse/interior-counts.test.mjs",
+            "scripts/inverse/late-routing-repair.test.mjs",
+            "scripts/inverse/search-scheduling.test.mjs",
+            "scripts/inverse/short-budget-features.test.mjs"
+          ],
+          "status": "passed",
+          "log": "fresh.log",
+          "pid": 51380,
+          "exitCode": 0,
+          "seconds": 86.266319333
+        },
+        {
+          "name": "check",
+          "command": [
+            "npm",
+            "run",
+            "check"
+          ],
+          "status": "passed",
+          "log": "check.log",
+          "pid": 54268,
+          "exitCode": 0,
+          "seconds": 13.479885541999991
+        },
+        {
+          "name": "lint",
+          "command": [
+            "npm",
+            "run",
+            "lint"
+          ],
+          "status": "passed",
+          "log": "lint.log",
+          "pid": 54777,
+          "exitCode": 0,
+          "seconds": 9.35078150000001
+        },
+        {
+          "name": "application",
+          "command": [
+            "node",
+            "node_modules/vitest/vitest.mjs",
+            "run",
+            "--maxWorkers=1"
+          ],
+          "status": "passed",
+          "log": "application.log",
+          "pid": 55104,
+          "exitCode": 0,
+          "seconds": 59.95820366700001
+        },
+        {
+          "name": "build",
+          "command": [
+            "npm",
+            "run",
+            "build"
+          ],
+          "status": "passed",
+          "log": "build.log",
+          "pid": 57201,
+          "exitCode": 0,
+          "seconds": 29.895528083999977
+        }
+      ],
+      "scope": "Exact scalar-loss row indexing: weighted checks, captured fresh replays of all nine full-suite failures, then standard application checks. Not a full inverse release pass. Existing preview remains unchanged.",
+      "sourceFiles": 1041,
+      "priority": 15,
+      "minimumFreeGiB": 10
+    },
+    "sourceManifest": "tmp/heart-learning/clearance-continuation-2026-10-18/loss-row-index/qa/source.json",
+    "sourceManifestSha256": "eeb2b6aec3cb253504e37c81c245bc163573ab37f78b678106dc92e7608d9ff9",
+    "sourceHashesMatchedAfterRun": true,
+    "applicationPassed": 874,
+    "applicationSkipped": 1,
+    "diagnosticAddedAfterStandardRun": "The standalone benchmark was subsequently run and the repository lint command passed again; tested runtime and existing source hashes remain unchanged."
+  },
+  "freshCaptures": [
+    {
+      "capture": "tmp/heart-learning/clearance-continuation-2026-10-18/loss-row-index/qa/captures/51381-1.json",
+      "sha256": "8b217a60695b84a52f557ebf767056e154e5635b8c9dc550d8e26a61660c4ef5",
+      "maskSha256": "892ade9f2353db4be42a7c22ddec818734930e100a1ab6b63837e1d9b07076b5",
+      "templateChecksPassed": true,
+      "engineMaskError": 0.010157790927021695,
+      "counts": [
+        3,
+        5
+      ],
+      "initialization": "feature-weighted-grid",
+      "reportedSeconds": 9.077196707999999
+    },
+    {
+      "capture": "tmp/heart-learning/clearance-continuation-2026-10-18/loss-row-index/qa/captures/51795-1.json",
+      "sha256": "57c4b77969a193556e3a26db4a4c07218e74d5110e178f6df0dc59c7c04f3e73",
+      "maskSha256": "bc122e4659773ece5abab69eae4934c528c8eba8feda8c0aa92d5e6ba86afe91",
+      "templateChecksPassed": true,
+      "engineMaskError": 0.0251375,
+      "counts": [
+        5,
+        5
+      ],
+      "initialization": "fitted-boundary-rerouting",
+      "reportedSeconds": 9.193820707999999
+    },
+    {
+      "capture": "tmp/heart-learning/clearance-continuation-2026-10-18/loss-row-index/qa/captures/52172-1.json",
+      "sha256": "b2d0e9f1e5b1df507c6146b909055cfec4ed77fbee92d096dfe94a3969c5bb56",
+      "maskSha256": "9ac385b123d8f9783d50523b4c68f609ccb94287780ce2cdc8a4e8de7020fa9c",
+      "templateChecksPassed": true,
+      "engineMaskError": 0.02670625,
+      "counts": [
+        10,
+        11
+      ],
+      "initialization": "grid",
+      "reportedSeconds": 9.072731375
+    },
+    {
+      "capture": "tmp/heart-learning/clearance-continuation-2026-10-18/loss-row-index/qa/captures/52971-1.json",
+      "sha256": "159e52926da743474e5911f72db4dcb5ab04cec5d055a51c6f5f69d747b13eb1",
+      "maskSha256": "9d4accdee263a24380ff50f12f1739f29044b582e057c2835fe1b3461a6e62d3",
+      "templateChecksPassed": true,
+      "engineMaskError": 0.016304,
+      "counts": [
+        2,
+        2
+      ],
+      "initialization": null,
+      "reportedSeconds": 8.906503791999999
+    },
+    {
+      "capture": "tmp/heart-learning/clearance-continuation-2026-10-18/loss-row-index/qa/captures/52971-2.json",
+      "sha256": "821791250983bbf92d4dc0bbed8f8d0361a3f4740da6857ac579e7c2e8fdd65f",
+      "maskSha256": "69d731a527592afab42c30f570d54e70c3a9d874837ded7fbfe75e9530295412",
+      "templateChecksPassed": true,
+      "engineMaskError": 0.004688,
+      "counts": [
+        2,
+        2
+      ],
+      "initialization": null,
+      "reportedSeconds": 8.150991541
+    },
+    {
+      "capture": "tmp/heart-learning/clearance-continuation-2026-10-18/loss-row-index/qa/captures/52971-3.json",
+      "sha256": "734227649a82e9b0f07f8a47f66414ba082636cf0e2374965746749b73895854",
+      "maskSha256": "3e296fe2d3c49167d74ce59a20654efc12ef37e12fbc2f6cff21ee3cce036ff4",
+      "templateChecksPassed": true,
+      "engineMaskError": 0.01186875,
+      "counts": [
+        2,
+        2
+      ],
+      "initialization": null,
+      "reportedSeconds": 8.690775958000001
+    },
+    {
+      "capture": "tmp/heart-learning/clearance-continuation-2026-10-18/loss-row-index/qa/captures/53931-1.json",
+      "sha256": "1c810a53f038f707adfe1c5961a138ccc973628e13d2064d762411ed9c6e11e3",
+      "maskSha256": "28f4380aaf5bb197acbaf7750b4560e317c442740098abaf4c91eb88ac7866aa",
+      "templateChecksPassed": true,
+      "engineMaskError": 0.0225875,
+      "counts": [
+        5,
+        5
+      ],
+      "initialization": "grid",
+      "reportedSeconds": 9.077647125
+    }
+  ],
+  "halfPuppy": {
+    "sourceMaskSha256": "892ade9f2353db4be42a7c22ddec818734930e100a1ab6b63837e1d9b07076b5",
+    "beforeWarm": {
+      "capture": "tmp/heart-learning/clearance-continuation-2026-10-18/half-puppy-replay/warm-file/captures/35646-3.json",
+      "sourceMaskSha256": "892ade9f2353db4be42a7c22ddec818734930e100a1ab6b63837e1d9b07076b5",
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "paperResolution": 700,
+      "comparisons": [
+        {
+          "resolution": 390,
+          "supplemental": false,
+          "error": 0.011926364234056542,
+          "featuresPassed": true,
+          "opening": {
+            "centerMm": [
+              61.31181318681318,
+              75.46474358974359
+            ],
+            "sourceAreaMm2": 7.363576594345823,
+            "intersectionPixels": 109,
+            "retention": 0.9732142857142857,
+            "predictedComponentAreaMm2": 12.754766600920444,
+            "touchesBorder": false,
+            "componentIoU": 0.5532994923857868
+          },
+          "passed": true
+        },
+        {
+          "resolution": 780,
+          "supplemental": true,
+          "error": 0.013279092702169626,
+          "featuresPassed": true,
+          "opening": {
+            "centerMm": [
+              61.31181318681318,
+              75.46474358974359
+            ],
+            "sourceAreaMm2": 7.363576594345823,
+            "intersectionPixels": 432,
+            "retention": 0.9642857142857143,
+            "predictedComponentAreaMm2": 12.886259040105191,
+            "touchesBorder": false,
+            "componentIoU": 0.54
+          },
+          "passed": false
+        }
+      ]
+    },
+    "beforeCold": {
+      "capture": "tmp/heart-learning/clearance-continuation-2026-10-18/half-puppy-replay/cold-half/captures/38530-1.json",
+      "sourceMaskSha256": "892ade9f2353db4be42a7c22ddec818734930e100a1ab6b63837e1d9b07076b5",
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "paperResolution": 360,
+      "comparisons": [
+        {
+          "resolution": 390,
+          "supplemental": false,
+          "error": 0.012235371466140697,
+          "featuresPassed": true,
+          "opening": {
+            "centerMm": [
+              61.31181318681318,
+              75.46474358974359
+            ],
+            "sourceAreaMm2": 7.363576594345823,
+            "intersectionPixels": 107,
+            "retention": 0.9553571428571429,
+            "predictedComponentAreaMm2": 18.21170282708744,
+            "touchesBorder": false,
+            "componentIoU": 0.37943262411347517
+          },
+          "passed": false
+        },
+        {
+          "resolution": 780,
+          "supplemental": true,
+          "error": 0.013308678500986193,
+          "featuresPassed": true,
+          "opening": {
+            "centerMm": [
+              61.31181318681318,
+              75.46474358974359
+            ],
+            "sourceAreaMm2": 7.363576594345823,
+            "intersectionPixels": 417,
+            "retention": 0.9308035714285714,
+            "predictedComponentAreaMm2": 18.22813938198553,
+            "touchesBorder": false,
+            "componentIoU": 0.36578947368421055
+          },
+          "passed": false
+        }
+      ]
+    },
+    "indexedCold": {
+      "capture": "tmp/heart-learning/clearance-continuation-2026-10-18/loss-row-index/qa/captures/51381-1.json",
+      "sourceMaskSha256": "892ade9f2353db4be42a7c22ddec818734930e100a1ab6b63837e1d9b07076b5",
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "paperResolution": 700,
+      "comparisons": [
+        {
+          "resolution": 390,
+          "supplemental": false,
+          "error": 0.01,
+          "featuresPassed": true,
+          "opening": {
+            "centerMm": [
+              61.31181318681318,
+              75.46474358974359
+            ],
+            "sourceAreaMm2": 7.363576594345823,
+            "intersectionPixels": 105,
+            "retention": 0.9375,
+            "predictedComponentAreaMm2": 12.68902038132807,
+            "touchesBorder": false,
+            "componentIoU": 0.525
+          },
+          "passed": true
+        },
+        {
+          "resolution": 780,
+          "supplemental": true,
+          "error": 0.011314924391847468,
+          "featuresPassed": true,
+          "opening": {
+            "centerMm": [
+              61.31181318681318,
+              75.46474358974359
+            ],
+            "sourceAreaMm2": 7.363576594345823,
+            "intersectionPixels": 419,
+            "retention": 0.9352678571428571,
+            "predictedComponentAreaMm2": 12.63971071663379,
+            "touchesBorder": false,
+            "componentIoU": 0.525062656641604
+          },
+          "passed": true
+        }
+      ]
+    }
+  },
+  "qualification": "All nine previously failing tests pass in one captured serial replay. This is not a counterbalanced causal comparison; the image-loss change cannot be assumed to explain every MILP recovery. Original masks, limits and rules are unchanged. Full inverse and browser benchmarks remain pending.",
+  "previewRefreshed": false,
+  "physicalAssemblyTested": false
+}
