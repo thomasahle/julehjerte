@@ -93,7 +93,9 @@ the templates with the laser module's `layoutSheet` (`src/lib/laser/sheet.ts`,
 labels take) — since round 2 the template alone, the labels being inside it. Pull the page-planning maths into a pure function
 (`planTemplatePages`) in `src/lib/pdf/plan.ts` with tests. Keep the existing
 `generatePDF`/`generateMultiPDF`/`LayoutMode` code path intact for the front
-page toolbar. `downloadTemplatesPDF` saves `{slug}-{width}mm.pdf`.
+page toolbar. `downloadTemplatesPDF` saves `{heart id}-{width}mm.pdf` (since the
+QA round of 2026-10-17 the id, `heartFileStem`, as the laser files are named;
+it was the display name's slug, so `circle` printed as `uret-v2-60mm.pdf`).
 
 Analytics: a PDF download from the dialog calls the page's existing
 `trackHeartDownload` once (unchanged); a laser download calls

@@ -6,7 +6,7 @@ import { segmentsToPathData } from '$lib/geometry/bezierSegments';
 import { inferOverlapRect as inferOverlapRectShared } from '$lib/utils/overlapRect';
 import { lobesShareTemplate, SHARED_TEMPLATE_LOBE } from '$lib/utils/symmetry';
 import { transformPathData } from '$lib/utils/templateSvg';
-import { slugify } from '$lib/utils/slug';
+import { heartFileStem, slugify } from '$lib/utils/slug';
 import { t, type Language } from '$lib/i18n';
 import { SHEETS, type SheetSize } from '$lib/laser/sheet';
 import {
@@ -594,7 +594,8 @@ export async function generateTemplatesPDF(designs: HeartDesign[], options: Temp
 }
 
 /**
- * "klassisk-80mm.pdf": the heart, and the width it was printed at; for
+ * "classic-3x3-80mm.pdf": the heart's id (as the laser files are named,
+ * `heartFileStem`), and the width it was printed at; for
  * several hearts (SELECTION.md) "julehjerter-3-skabeloner.pdf", the count.
  */
 export function templatesFilename(
@@ -604,7 +605,7 @@ export function templatesFilename(
 ): string {
   const list = Array.isArray(designs) ? (designs as readonly HeartDesign[]) : [designs as HeartDesign];
   if (list.length > 1) return `${t('pdfMultiFilename', lang, { n: list.length })}.pdf`;
-  return `${slugify(list[0]!.name)}-${widthMm}mm.pdf`;
+  return `${heartFileStem(list[0]!.id)}-${widthMm}mm.pdf`;
 }
 
 export async function downloadTemplatesPDF(designs: HeartDesign[], options: TemplatesPDFOptions) {

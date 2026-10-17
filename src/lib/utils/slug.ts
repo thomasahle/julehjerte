@@ -23,3 +23,13 @@ export function slugify(value: string, fallback = 'julehjerte'): string {
 	// file called "-template.pdf" helps no one.
 	return slug || fallback;
 }
+
+/**
+ * A heart's id as the stem of a downloaded file's name: the PDF and the laser
+ * files of one heart are both named from it (`circle-60mm.pdf`,
+ * `circle-laser-60mm.svg`), not from its display name. Gallery ids are already
+ * safe; anything else unsafe is dashed out.
+ */
+export function heartFileStem(heartId: string): string {
+	return heartId.replace(/[^\w-]+/g, '-').replace(/^-+|-+$/g, '') || 'juleflet';
+}

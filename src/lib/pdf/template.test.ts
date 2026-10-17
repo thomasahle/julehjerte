@@ -9,6 +9,8 @@ import { describe, expect, it, vi } from 'vitest';
 import { jsPDF } from 'jspdf';
 import { SHEETS } from '$lib/laser/sheet';
 import { loadHeart } from '$lib/laser/testHearts';
+import { laserFileName } from '$lib/laser/export';
+import { getGalleryDesign } from '$lib/data/heartDesigns';
 import { generateTemplatesPDF, templatesFilename } from './template';
 import { planTemplatePages, templatePieces } from './plan';
 
@@ -89,8 +91,17 @@ describe('templatesFilename', () => {
 	it('names one heart and its width, several by their count', () => {
 		const classic = loadHeart('classic-3x3');
 		const jul = loadHeart('jul');
-		expect(templatesFilename([classic], 80)).toBe(`${classic.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-80mm.pdf`);
+		expect(templatesFilename([classic], 80)).toBe('classic-3x3-80mm.pdf');
 		expect(templatesFilename([classic, jul], 80)).toBe('julehjerter-2-skabeloner.pdf');
 		expect(templatesFilename([classic, jul, jul], 60, 'en')).toBe('christmas-hearts-3-templates.pdf');
+	});
+
+	it('names one heart by its id, as the laser files are, not by its display name', () => {
+		const circle = getGalleryDesign('circle')!;
+		expect(circle.name).not.toBe(circle.id);
+		expect(templatesFilename([circle], 60)).toBe('circle-60mm.pdf');
+		expect(templatesFilename([circle], 60, 'en')).toBe('circle-60mm.pdf');
+		expect(laserFileName(circle.id, 60, 'svg')).toBe('circle-laser-60mm.svg');
+		expect(templatesFilename([{ ...circle, id: 'mit hjerte/2' }], 60)).toBe('mit-hjerte-2-60mm.pdf');
 	});
 });

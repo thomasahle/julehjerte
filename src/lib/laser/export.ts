@@ -10,7 +10,7 @@ import { layoutSheet, type LaserSheet, type SheetSize } from './sheet';
 import { serializeLaserSvg } from './svg';
 import { unfoldPiece, type UnfoldedPiece } from './unfold';
 import type { TemplateLobe } from '$lib/utils/templateSvg';
-import { slugify } from '$lib/utils/slug';
+import { heartFileStem, slugify } from '$lib/utils/slug';
 
 export type LaserFormat = 'svg' | 'dxf';
 
@@ -137,7 +137,7 @@ export function laserFileContent(plan: LaserSheet, format: LaserFormat, info: La
  * files of one heart are told apart; anything unsafe in a file name dashed out.
  */
 export function laserFileName(heartId: string, widthMm: number, format: LaserFormat, lobeName?: string): string {
-	const id = heartId.replace(/[^\w-]+/g, '-').replace(/^-+|-+$/g, '') || 'juleflet';
+	const id = heartFileStem(heartId);
 	// "Højre" on disk as "hoejre", the way the gallery's ids spell Danish.
 	const lobe = lobeName ? `-${slugify(lobeName, '')}`.replace(/-$/, '') : '';
 	return `${id}-laser-${widthMm}mm${lobe}.${format}`;
