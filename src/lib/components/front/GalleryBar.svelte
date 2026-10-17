@@ -29,7 +29,7 @@
 	import { t, type Language } from '$lib/i18n';
 	import { href } from '$lib/i18n/routes';
 	import { categoryTitle, MY_HEARTS_CATEGORY_ID } from '$lib/data/categories';
-	import { ANCHOR_GAP, currentSection, isAtPageBottom } from '$lib/front/scrollSpy';
+	import { ANCHOR_GAP, chipRowScroll, currentSection, isAtPageBottom } from '$lib/front/scrollSpy';
 	import { DownloadIcon } from '$lib/components/icons';
 	import { NARROW_QUERY } from '$lib/breakpoints';
 
@@ -238,17 +238,38 @@
 	// the spy fires in the middle of the window's own smooth scroll after a chip
 	// click, and scrollIntoView() is allowed to scroll every ancestor, the
 	// window included — it must not get the chance to cut that scroll short.
+	// Fully in sight: inside the row's box less its focus-ring padding. Also
+	// when the row narrows because the download button has appeared beside
+	// it (below 900) or the wordmark has.
 	$effect(() => {
 		const index = activeIndex;
 		const row = chipRow;
+		void hasSelection;
+		void narrow;
+		void stuck;
 		if (!row || index < 0) return;
 		const chip = row.querySelectorAll('.chip')[index];
-		// jsdom has no layout and no Element.scrollBy.
-		if (!(chip instanceof HTMLElement) || typeof row.scrollBy !== 'function') return;
-		const rowBox = row.getBoundingClientRect();
-		const chipBox = chip.getBoundingClientRect();
-		if (chipBox.left < rowBox.left) row.scrollBy({ left: chipBox.left - rowBox.left });
-		else if (chipBox.right > rowBox.right) row.scrollBy({ left: chipBox.right - rowBox.right });
+		// jsdom has no layout and no Element.scrollTo.
+		if (!(chip instanceof HTMLElement) || typeof row.scrollTo !== 'function') return;
+		const reveal = () => {
+			const rowBox = row.getBoundingClientRect();
+			const style = getComputedStyle(row);
+			const chipBox = chip.getBoundingClientRect();
+			const left = chipRowScroll(
+				chipBox.left,
+				chipBox.right,
+				rowBox.left + parseFloat(style.paddingLeft),
+				rowBox.right - parseFloat(style.paddingRight)
+			);
+			// An absolute target (the delta plus where the row is now, read in
+			// the same frame), so calling this again in the middle of the
+			// row's smooth scroll aims at the same place instead of adding up.
+			if (Math.abs(left) >= 1) row.scrollTo({ left: row.scrollLeft + left });
+		};
+		reveal();
+		// The wordmark takes its room over 150ms once the bar sticks.
+		const later = setTimeout(reveal, 200);
+		return () => clearTimeout(later);
 	});
 
 	// A chip is a plain anchor, so the browser and SvelteKit's router do the

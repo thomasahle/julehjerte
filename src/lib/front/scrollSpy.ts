@@ -73,3 +73,22 @@ export function isAtPageBottom(scrollY: number, viewportHeight: number, scrollHe
 	if (scrollHeight <= viewportHeight) return false;
 	return scrollY + viewportHeight >= scrollHeight - SLACK;
 }
+
+/**
+ * How far to scroll the chip row (positive: to the right) so the current chip
+ * is fully inside the row's visible part, `viewLeft`..`viewRight` (the row's
+ * box less its focus-ring padding); 0 when it already is. A chip that is cut
+ * off on either side is brought to the view's left edge: the row snaps chip
+ * starts (`scroll-snap-align: start`), and a position that only just shows a
+ * chip on the right would snap back to the previous start, cutting it off
+ * again. The browser clamps the last chips to the end of the row.
+ */
+export function chipRowScroll(
+	chipLeft: number,
+	chipRight: number,
+	viewLeft: number,
+	viewRight: number
+): number {
+	if (chipLeft >= viewLeft && chipRight <= viewRight) return 0;
+	return chipLeft - viewLeft;
+}

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { activeSection, currentSection, isAtPageBottom } from './scrollSpy';
+import { activeSection, chipRowScroll, currentSection, isAtPageBottom } from './scrollSpy';
 
 describe('activeSection', () => {
 	it('is -1 with no sections', () => {
@@ -63,5 +63,25 @@ describe('isAtPageBottom', () => {
 
 	it('is false for a page that does not scroll', () => {
 		expect(isAtPageBottom(0, 800, 800)).toBe(false);
+	});
+});
+
+describe('chipRowScroll', () => {
+	it('is 0 for a chip already fully in view', () => {
+		expect(chipRowScroll(220, 300, 200, 380)).toBe(0);
+		expect(chipRowScroll(200, 380, 200, 380)).toBe(0);
+	});
+
+	it('brings a chip cut off on the right to the left edge, where the row snaps', () => {
+		expect(chipRowScroll(350, 430, 200, 380)).toBe(150);
+		expect(chipRowScroll(600, 680, 200, 380)).toBe(400);
+	});
+
+	it('brings a chip cut off on the left to the left edge', () => {
+		expect(chipRowScroll(150, 230, 200, 380)).toBe(-50);
+	});
+
+	it('aligns a chip wider than the view to the left edge', () => {
+		expect(chipRowScroll(250, 500, 200, 380)).toBe(50);
 	});
 });
