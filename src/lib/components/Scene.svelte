@@ -24,10 +24,18 @@
   gallery measures its rect to follow the hill line, $lib/front/hillLine);
   the classes above are scoped and are not for that.
 
+  The landscape comes *last* in the markup. The page paints while it is still
+  parsing, and on a phone the band is an in-flow strip at the foot of the scene:
+  had it come first it would paint at the top with nothing above it yet and then
+  jump down by the height of the content when that arrived (CLS 0.35 on the
+  front page). Being last, it is parsed where it ends up. It still paints under
+  everything else in the scene at every width: the scene is its own stacking
+  context and the landscape sits at z-index -1 in it.
+
   Pass `band` to get the front page's variant: below 900px the landscape leaves
   the absolute layer and becomes an in-flow strip that many pixels tall, showing
   the right-hand part of the drawing. A banded scene is a column flex box at
-  every width, because that is what lets the band order itself last.
+  every width, so the band's box model never changes across the breakpoint.
 -->
 <script lang="ts">
 	import type { Snippet } from 'svelte';
@@ -51,21 +59,25 @@
 	style:--scene-land-aspect="{LANDSCAPE_WIDTH} / {LANDSCAPE_HEIGHT}"
 	style:--scene-band-height={band === null ? null : `${band}px`}
 >
-	<div class="scene-land" data-scene-land><Landscape class="scene-land-svg" /></div>
 	{@render children()}
+	<div class="scene-land" data-scene-land><Landscape class="scene-land-svg" /></div>
 </section>
 
 <style>
 	.scene {
 		position: relative;
+		/* A stacking context of its own, so the landscape's z-index: -1 puts it
+		   just above this background and under the rest of the scene. */
+		isolation: isolate;
 		overflow: hidden;
 		background: linear-gradient(var(--sky), var(--sky)) 0 0 / 100% calc(100% - 12px) no-repeat
 			var(--page);
 	}
 
-	/* The band below 900px takes `order: 10` to sit last, which needs a flex
-	   container; the scene is one at every width so the box model never changes
-	   across the breakpoint. */
+	/* The band below 900px is in flow at the foot of the scene, which it is by
+	   being last in the markup (`order: 10` keeps it there whatever a page puts
+	   after it). The scene is a column flex box at every width so the box model
+	   never changes across the breakpoint. */
 	.banded {
 		display: flex;
 		flex-direction: column;
@@ -73,6 +85,8 @@
 
 	.scene-land {
 		position: absolute;
+		/* Last in the markup, but painted first: see the note at the top. */
+		z-index: -1;
 		left: 0;
 		right: 0;
 		bottom: -1px;

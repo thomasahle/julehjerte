@@ -63,17 +63,6 @@
 		<SkyDecor stars={HERO_SKY_STARS} dots={HERO_SKY_DOTS} />
 	</svg>
 
-	<svg
-		class="hero-tree-m"
-		viewBox="0 0 390 230"
-		preserveAspectRatio="xMinYMax meet"
-		aria-hidden="true"
-		focusable="false"
-	>
-		<Fir x={70} tipY={128} height={100} fill={FIR_FILLS[1]} symbol="pine-b" widthFactor={0.9} />
-		<Fir x={20} tipY={52} height={178} fill={FIR_FILLS[0]} symbol="pine-c" widthFactor={0.85} />
-	</svg>
-
 	<div class="hero-inner">
 		<div class="hero-hearts hero-hearts-m">
 			<HeroHearts
@@ -115,6 +104,21 @@
 		</div>
 	</div>
 
+	<!-- After the hero's content, not before it: the firs are pinned to the foot of
+	     the scene, and a page painted mid-parse would otherwise show them at the
+	     foot of a scene that is still growing (Scene explains the same for the
+	     landscape). -->
+	<svg
+		class="hero-tree-m"
+		viewBox="0 0 390 230"
+		preserveAspectRatio="xMinYMax meet"
+		aria-hidden="true"
+		focusable="false"
+	>
+		<Fir x={70} tipY={128} height={100} fill={FIR_FILLS[1]} symbol="pine-b" widthFactor={0.9} />
+		<Fir x={20} tipY={52} height={178} fill={FIR_FILLS[0]} symbol="pine-c" widthFactor={0.85} />
+	</svg>
+
 	<ScrollHint {lang} />
 </Scene>
 
@@ -126,9 +130,9 @@
 		pointer-events: none;
 	}
 
-	/* A flex container paints absolutely positioned children in order-modified
-	   document order, and the landscape is order: 10 below 900px — so the corner
-	   firs need a stacking order of their own to stay on top of it. */
+	/* The landscape paints under the whole scene anyway (z-index -1, see Scene);
+	   this keeps the corner firs over the hero's own content whatever order the
+	   markup puts them in. */
 	.hero-tree-m {
 		z-index: 1;
 	}

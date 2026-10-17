@@ -3,9 +3,8 @@
   (docs/redesign/DESIGN.md §3 "Hero (< 900px)").
 
   Only shown below 900px, where it sits absolutely at the foot of the hero, on
-  the snow. The hero is a flex column and the landscape is order: 10 there, so
-  this needs z-index: 1 to stay above it (a flex container paints absolutely
-  positioned children in order-modified document order).
+  the snow, which <Scene> paints under everything else in the hero. Its
+  z-index: 1 keeps it in the same layer as the corner firs it sits beside.
 
   The mouse outline is 22x34 rather than the icon set's 24x24 square, so it is
   drawn here instead of reusing MouseIcon.
