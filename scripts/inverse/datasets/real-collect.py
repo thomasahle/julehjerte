@@ -246,9 +246,9 @@ def discover(args, seeds, fetcher):
 
 
 def pinterest_runs(output=DEFAULT_OUTPUT):
-    """Only the two explicitly authorized collection ledgers, not arbitrary caches."""
+    """Only explicitly authorized collection ledgers, not arbitrary caches."""
     result=[]
-    for folder in ('pinterest','pinterest-expanded'):
+    for folder in ('pinterest','pinterest-expanded','sabrina-board'):
         path=output/folder/'imports.json'
         if path.exists():result.append({'path':str(path.relative_to(ROOT)),**json.loads(path.read_text())})
     return result
@@ -295,8 +295,10 @@ def existing_candidates(output=DEFAULT_OUTPUT):
         for pin in run['pins']:
             if pin['status'] != 'downloaded':
                 continue
-            rows.append({'imageUrl': pin['imageUrl'], 'sourcePages': [pin['url']], 'source': 'pinterest',
+            board=run.get('boardUrl')
+            rows.append({'imageUrl': pin['imageUrl'], 'sourcePages': [pin['url']]+([board] if board else []), 'source': 'pinterest',
                          'sourceGroup': 'pinterest-pin-' + pin['url'].split('/')[-2], 'importFile': pin['file'],
+                         **({'sourceGroups':['pinterest-pin-'+pin['url'].split('/')[-2], 'pinterest-board:'+board]} if board else {}),
                          'author': None, 'rights': {'status': 'unknown', 'fact': 'Pinterest uploader is not assumed to be the photographer or rights holder; original source rights remain unverified.'},
                          'observedSourceLinks': pin['observedSourceLinks'], 'pinTitle': pin.get('title'),
                          'publicPinRetrievedAt': pin['retrievedAt'], 'publicPinPageSha256':pin.get('pageSha256'),

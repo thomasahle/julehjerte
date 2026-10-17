@@ -121,14 +121,14 @@ class CollectionTests(unittest.TestCase):
     def test_multiple_pin_ledgers_count_revisited_pin_once_and_keep_success(self):
         with tempfile.TemporaryDirectory() as folder:
             root=Path(folder)
-            for name,status in [('pinterest','unavailable'),('pinterest-expanded','downloaded')]:
+            for name,status in [('pinterest','unavailable'),('pinterest-expanded','downloaded'),('sabrina-board','downloaded')]:
                 (root/name).mkdir()
                 collector.save(root/name/'imports.json',{'pins':[{'url':'https://dk.pinterest.com/pin/123/','status':status}]})
             with patch.object(collector,'ROOT',root):result=collector.pinterest_inventory(root)
-            self.assertEqual(len(result['runs']),2)
+            self.assertEqual(len(result['runs']),3)
             self.assertEqual(len(result['pins']),1)
             self.assertEqual(result['pins'][0]['status'],'downloaded')
-            self.assertEqual(len(result['pins'][0]['runReferences']),2)
+            self.assertEqual(len(result['pins'][0]['runReferences']),3)
 
 
 if __name__=='__main__':unittest.main()

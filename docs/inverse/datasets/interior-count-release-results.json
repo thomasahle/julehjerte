@@ -173,5 +173,30 @@
       "sha256": "e65321fe13ca5b23e163631b1aae89e7ea4aee7f16265c16cd783b0f4f86e338",
       "bytes": 98496
     }
+  },
+  "postRepairChecks": {
+    "commit": "5e48e29",
+    "stages": [
+      {
+        "name": "check",
+        "status": "passed",
+        "exitCode": 0,
+        "seconds": 10.256052749999998
+      },
+      {
+        "name": "lint",
+        "status": "passed",
+        "exitCode": 0,
+        "seconds": 6.928958792000003
+      },
+      {
+        "name": "build",
+        "status": "passed",
+        "exitCode": 0,
+        "seconds": 16.044425708000006
+      }
+    ],
+    "applicationTestsRepeated": false,
+    "fullInverseSuiteRepeated": false
   }
 }

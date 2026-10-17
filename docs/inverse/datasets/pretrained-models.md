@@ -1,6 +1,6 @@
 # Pretrained models for photographic heart reconstruction
 
-Reviewed 2026-10-12. **Start with `timm/mobilenetv3_small_100.lamb_in1k` and new boundary, junction and connection-scoring heads.** Keep DINOv2-S/14 as an optional offline feature teacher. These are proposed experiments, not measured improvements. No training, inference or ONNX export has run.
+Reviewed 2026-10-12. **Start with `timm/mobilenetv3_small_100.lamb_in1k` and new boundary, junction and connection-scoring heads.** Keep DINOv2-S/14 as an optional offline feature teacher. This historical selection pass did not run training, inference or ONNX export. Later experiments use TorchVision's ImageNet-pretrained MobileNetV3-Small and official pretrained MobileSAM; see the [current inventory and measured results](README.md). No learned model is deployed.
 
 The selected checkpoint has been downloaded and its actual length and SHA-256 checked against the publisher's metadata. Exact revisions, artifact hashes, license sources and retrieval status are in [pretrained-model-sources.json](pretrained-model-sources.json). The binary is untracked under `tmp/heart-training-models/`; it is not included in the website.
 

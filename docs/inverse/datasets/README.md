@@ -145,13 +145,13 @@ combined or read as newer than this overview.
 
 A [source-only review of the four remaining selected-photo crop failures](selection-failure-source-review.json) confirms substantial visible lower edges in all four. The pale printed checker is the clearest failure on usable evidence; the other photos add notch occlusion, a clipped lobe, or warped/stepped paper edges. This rules out absent lower edges as a blanket explanation, but does not yet establish the failing implementation stage. All ten review artifacts, four originals and the fixed selections verify unchanged; no annotations or benchmark successes are added.
 
-The inventory, with material annotations updated on 2026-10-16, contains:
+The inventory, with [Sabrina's complete board](sabrina-board.md) added on 2026-10-17, contains:
 
 | Asset | Verified count | Meaning |
 | --- | ---: | --- |
-| Real-source image files | 1,034 | Includes templates, process shots and rejected/uncertain material. |
-| Files containing assembled-heart photographs | 564 | Includes multi-heart scenes and mixed photo/template pages; 451 reviewed near-duplicate groups after source-kind and repost corrections. |
-| Public Pinterest imports | 470 of 487 selected pins | 190 image files contain assembled-heart photographs; these are a subset of the real-source totals. |
+| Real-source image files | 1,254 | Includes templates, process shots and rejected/uncertain material. |
+| Files containing assembled-heart photographs | 783 | Includes multi-heart scenes and mixed photo/template pages; 670 current photo groups, with motif-family review still pending. |
+| Public Pinterest imports | 695 of 712 selected pins | 409 image files contain assembled-heart photographs; these are a subset of the real-source totals. |
 | Synthetic cutting geometries in existing experiments | 192 | Original 128 plus 64 mixed-angle lattices; color phase is excluded from geometry identity; still only three recipe groups. |
 | Synthetic photographic views in existing experiments | 768 | Original 512 plus 256 supplementary views; all 5,952 referenced assets verified. |
 | Unassigned radial-motif candidates | 64 geometries / 256 views | One additional recipe group with exact shared approaches; not used in training. All 1,984 referenced assets verified. |
