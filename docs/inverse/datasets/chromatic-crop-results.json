@@ -1,0 +1,511 @@
+{
+  "schema": "chromatic-heart-crop-study-1",
+  "runtimeCommit": "f1cf52e2a42c294458f1c9904997c5d7dfa44bcc",
+  "scope": "User photo through automatic rough-ROI detection, classified mask, fresh fitting, independent exported renderer, editable conversion and a real Chrome upload/export.",
+  "changes": [
+    "Learn two separated chromatic paper colours inside the selected region, independently of background brightness.",
+    "Audit photograph contrast along fitted physical lower edges, separately from segmentation agreement; retain both lobe and paper-colour gates.",
+    "When the centre scan fails, propose lower lines from observed outer runs without filling reflections in the mask.",
+    "Rank additional coarse shape starts to reduce sensitivity to a shifted selection."
+  ],
+  "regressions": {
+    "newTests": 9,
+    "cropSuite": {
+      "tests": 90,
+      "initialPassed": 88,
+      "initialFailed": 2,
+      "cause": "Offline foreground diagnostic intentionally rejected a changed source-injection seam.",
+      "repair": "Updated the exact guarded seam; all 3 foreground diagnostic tests then passed."
+    },
+    "previousPhotos": {
+      "cases": 31,
+      "changedCrops": [],
+      "changedMasks": [],
+      "qualification": "Crop/mask comparison only; the 31 solvers were not rerun here. Existing missing crops remain failures."
+    }
+  },
+  "windowCases": [
+    {
+      "id": "window-blue-orange",
+      "previousStatus": "no_crop",
+      "cropChanged": true,
+      "maskChanged": true,
+      "quad": [
+        [
+          199.90684837282853,
+          246.1285712978729
+        ],
+        [
+          350.47608174392565,
+          378.4198358817762
+        ],
+        [
+          220.15362605481909,
+          521.2582991264323
+        ],
+        [
+          65.02636106733729,
+          394.214739075494
+        ]
+      ],
+      "maskSha256": "fcf66c0e6e66008e581880ae39473f66ebc067d3bfe2ae7e78fd199fe86bbf83",
+      "cropAssessment": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          1,
+          0.9722222222222222
+        ],
+        "lobeOutlineSupport": [
+          0.8333333333333334,
+          0.9444444444444444
+        ],
+        "capColourLoss": [
+          0.006472739550497344,
+          0.05999462409316145
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "detectionSeconds": 3.4325789999999996,
+      "solveAndValidationSeconds": 7.535811,
+      "runSeconds": 8.526426208,
+      "independentMaskDisagreement": 0.0066875,
+      "editableMaskDisagreement": 0.00665,
+      "templateChecksPassed": true,
+      "editorIssues": [],
+      "editablePaper": "pass",
+      "visualCropReview": "plausible physical overlap; not ground-truth corners"
+    },
+    {
+      "id": "window-orange-white",
+      "previousStatus": "validated",
+      "cropChanged": false,
+      "maskChanged": false,
+      "quad": [
+        [
+          511.44477647367864,
+          350.72091631791955
+        ],
+        [
+          645.7239349817286,
+          475.56292459053657
+        ],
+        [
+          565.0823944311398,
+          698.0541620320976
+        ],
+        [
+          367.47172145379466,
+          504.66363696471865
+        ]
+      ],
+      "maskSha256": "655774b5f6869a6dec03a475c27683cf29aa55ba8f5687252b7e3b24f4ae7dab",
+      "cropAssessment": {
+        "outlineSupported": false,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.8913043478260869,
+          0.34782608695652173
+        ],
+        "lobeOutlineSupport": [
+          0.2777777777777778,
+          0.7777777777777778
+        ],
+        "capColourLoss": [
+          0.07144518564952172,
+          0.11837622335928495
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "detectionSeconds": 4.656402041999998,
+      "solveAndValidationSeconds": 9.729279791999998,
+      "runSeconds": 10.405688708000001,
+      "independentMaskDisagreement": 0.0202125,
+      "editableMaskDisagreement": 0.0202125,
+      "templateChecksPassed": true,
+      "editorIssues": [],
+      "editablePaper": "pass",
+      "visualCropReview": "rejected: the lower right edge follows the hand; low mask error is not photographic reconstruction success"
+    },
+    {
+      "id": "window-red-white",
+      "previousStatus": "validated",
+      "cropChanged": false,
+      "maskChanged": false,
+      "quad": [
+        [
+          225.15743985796485,
+          557.5667759268762
+        ],
+        [
+          397.8951496261698,
+          711.8339627411832
+        ],
+        [
+          241.9495798310296,
+          885.1617623970203
+        ],
+        [
+          63.60470436505767,
+          730.6586832707893
+        ]
+      ],
+      "maskSha256": "29dd36df253d748cc661e8c15cf7abb9ba3840f414d00334da9ec79d04ef97a8",
+      "cropAssessment": {
+        "outlineSupported": true,
+        "withinPhotograph": true,
+        "outOfFrameCorners": [],
+        "lowerEdgeSupport": [
+          0.6764705882352942,
+          0.9705882352941176
+        ],
+        "lobeOutlineSupport": [
+          0.9166666666666666,
+          0.9166666666666666
+        ],
+        "capColourLoss": [
+          0.10490739746977801,
+          0.00022076533584330308
+        ],
+        "meaning": "Outline support and image bounds are diagnostics, not verified corners or known cutting paths."
+      },
+      "detectionSeconds": 0.25977808300000105,
+      "solveAndValidationSeconds": 9.580598082999996,
+      "runSeconds": 10.345431083000003,
+      "independentMaskDisagreement": 0.01001875,
+      "editableMaskDisagreement": 0.010025,
+      "templateChecksPassed": true,
+      "editorIssues": [],
+      "editablePaper": "pass",
+      "visualCropReview": "plausible physical overlap; not ground-truth corners"
+    }
+  ],
+  "browser": {
+    "status": "workflow-passed",
+    "editableMaskDisagreement": 0.00654375,
+    "timings": {
+      "clickToPrepareRequestSeconds": 0.011199999809265136,
+      "prepareRoundTripSeconds": 0.201,
+      "preparedToSolveRequestSeconds": 0.0005,
+      "solveRoundTripSeconds": 6.781200000047684,
+      "resultToReadySeconds": 0.2659000000953674,
+      "clickToReadySeconds": 7.259799999952317
+    },
+    "geometryPassed": true,
+    "paperStatus": "pass",
+    "roi": [
+      14.99997150109436,
+      205,
+      377.99996580131324,
+      526.0000342653509
+    ]
+  },
+  "verification": {
+    "application": {
+      "status": "complete",
+      "pid": 47723,
+      "stages": [
+        {
+          "name": "check",
+          "command": [
+            "npm",
+            "run",
+            "check"
+          ],
+          "status": "passed",
+          "log": "check.log",
+          "pid": 47754,
+          "exitCode": 0,
+          "seconds": 19.969923917
+        },
+        {
+          "name": "lint",
+          "command": [
+            "npm",
+            "run",
+            "lint"
+          ],
+          "status": "passed",
+          "log": "lint.log",
+          "pid": 48436,
+          "exitCode": 0,
+          "seconds": 10.345877250000001
+        },
+        {
+          "name": "application",
+          "command": [
+            "node",
+            "node_modules/vitest/vitest.mjs",
+            "run",
+            "--maxWorkers=1"
+          ],
+          "status": "passed",
+          "log": "application.log",
+          "pid": 48802,
+          "exitCode": 0,
+          "seconds": 72.060943667
+        },
+        {
+          "name": "build",
+          "command": [
+            "npm",
+            "run",
+            "build"
+          ],
+          "status": "passed",
+          "log": "build.log",
+          "pid": 51619,
+          "exitCode": 0,
+          "seconds": 27.768868583000014
+        }
+      ],
+      "scope": "Chromatic crop integration: check, lint, application tests with one worker, build. Crop regressions run separately; complete inverse suite and browser checks have separate controllers.",
+      "sourceFiles": 1029,
+      "priority": 15,
+      "minimumFreeGiB": 10
+    },
+    "browser": {
+      "status": "complete",
+      "pid": 53047,
+      "stages": [
+        {
+          "name": "browser-chromatic",
+          "status": "passed",
+          "pid": 53086,
+          "exitCode": 0,
+          "seconds": 22.833184542
+        },
+        {
+          "name": "browser-smoke",
+          "status": "passed",
+          "pid": 53827,
+          "exitCode": 0,
+          "seconds": 47.550711959000004
+        },
+        {
+          "name": "browser-hunodan",
+          "status": "passed",
+          "pid": 55417,
+          "exitCode": 0,
+          "seconds": 226.91609408299996,
+          "cases": 22,
+          "functionalPasses": 22,
+          "withinTenSeconds": 21,
+          "medianSeconds": 6.7161499999761585,
+          "maximumSeconds": 10.1155
+        }
+      ],
+      "sourceFiles": 1031,
+      "origin": "http://127.0.0.1:5232",
+      "priority": 15,
+      "previewPid": 53052,
+      "previewStopped": true
+    },
+    "fullInverse": {
+      "status": "not-started",
+      "reason": "Deferred for the newly supplied curved-pattern screenshot before starting another long serial suite."
+    },
+    "hunodanComparison": {
+      "cases": 22,
+      "sameCrops": 22,
+      "sameMasks": 22,
+      "worseErrors": 0,
+      "betterErrors": 0,
+      "rows": [
+        {
+          "id": "hunodan-hjfig-01",
+          "sameCrop": true,
+          "sameMask": true,
+          "beforeError": 0.0112625,
+          "afterError": 0.0112625,
+          "seconds": 4.6342000000476835
+        },
+        {
+          "id": "hunodan-hjfig-02",
+          "sameCrop": true,
+          "sameMask": true,
+          "beforeError": 0.00548125,
+          "afterError": 0.00548125,
+          "seconds": 4.125400000095367
+        },
+        {
+          "id": "hunodan-hjfig-03",
+          "sameCrop": true,
+          "sameMask": true,
+          "beforeError": 0.00825,
+          "afterError": 0.00825,
+          "seconds": 4.5005
+        },
+        {
+          "id": "hunodan-hjfig-04",
+          "sameCrop": true,
+          "sameMask": true,
+          "beforeError": 0.01473125,
+          "afterError": 0.01473125,
+          "seconds": 5.082199999809265
+        },
+        {
+          "id": "hunodan-hjfig-05",
+          "sameCrop": true,
+          "sameMask": true,
+          "beforeError": 0.01015625,
+          "afterError": 0.01015625,
+          "seconds": 6.4934000000953676
+        },
+        {
+          "id": "hunodan-hjfla-01",
+          "sameCrop": true,
+          "sameMask": true,
+          "beforeError": 0.0093375,
+          "afterError": 0.0093375,
+          "seconds": 8.060899999856948
+        },
+        {
+          "id": "hunodan-hjcur-01",
+          "sameCrop": true,
+          "sameMask": true,
+          "beforeError": 0.00723125,
+          "afterError": 0.00723125,
+          "seconds": 6.1807000000476835
+        },
+        {
+          "id": "hunodan-hjcur-02",
+          "sameCrop": true,
+          "sameMask": true,
+          "beforeError": 0.00829375,
+          "afterError": 0.00829375,
+          "seconds": 7.858
+        },
+        {
+          "id": "hunodan-hjcur-03",
+          "sameCrop": true,
+          "sameMask": true,
+          "beforeError": 0.0086375,
+          "afterError": 0.0086375,
+          "seconds": 8.23160000014305
+        },
+        {
+          "id": "hunodan-hjcur-04",
+          "sameCrop": true,
+          "sameMask": true,
+          "beforeError": 0.0104,
+          "afterError": 0.0104,
+          "seconds": 8.390900000095368
+        },
+        {
+          "id": "hunodan-hjcur-05",
+          "sameCrop": true,
+          "sameMask": true,
+          "beforeError": 0.0110375,
+          "afterError": 0.0110375,
+          "seconds": 4.7845
+        },
+        {
+          "id": "hunodan-hjhih-01",
+          "sameCrop": true,
+          "sameMask": true,
+          "beforeError": 0.00824375,
+          "afterError": 0.00824375,
+          "seconds": 7.761899999856949
+        },
+        {
+          "id": "hunodan-hjhih-02",
+          "sameCrop": true,
+          "sameMask": true,
+          "beforeError": 0.00619375,
+          "afterError": 0.00619375,
+          "seconds": 6.4242000000476835
+        },
+        {
+          "id": "hunodan-hjhih-04",
+          "sameCrop": true,
+          "sameMask": true,
+          "beforeError": 0.01061875,
+          "afterError": 0.01061875,
+          "seconds": 8.2965
+        },
+        {
+          "id": "hunodan-hjstr-01",
+          "sameCrop": true,
+          "sameMask": true,
+          "beforeError": 0.01006875,
+          "afterError": 0.01006875,
+          "seconds": 5.626
+        },
+        {
+          "id": "hunodan-hjstr-02",
+          "sameCrop": true,
+          "sameMask": true,
+          "beforeError": 0.0044,
+          "afterError": 0.0044,
+          "seconds": 6.872700000047684
+        },
+        {
+          "id": "hunodan-hjstr-03",
+          "sameCrop": true,
+          "sameMask": true,
+          "beforeError": 0.00808125,
+          "afterError": 0.00808125,
+          "seconds": 10.1155
+        },
+        {
+          "id": "hunodan-hjsta-01",
+          "sameCrop": true,
+          "sameMask": true,
+          "beforeError": 0.009175,
+          "afterError": 0.009175,
+          "seconds": 6.559599999904632
+        },
+        {
+          "id": "hunodan-hjsta-02",
+          "sameCrop": true,
+          "sameMask": true,
+          "beforeError": 0.00216875,
+          "afterError": 0.00216875,
+          "seconds": 4.788699999809265
+        },
+        {
+          "id": "hunodan-hjsta-03",
+          "sameCrop": true,
+          "sameMask": true,
+          "beforeError": 0.01418125,
+          "afterError": 0.01418125,
+          "seconds": 9.481399999856949
+        },
+        {
+          "id": "hunodan-hjsta-04",
+          "sameCrop": true,
+          "sameMask": true,
+          "beforeError": 0.0063625,
+          "afterError": 0.0063625,
+          "seconds": 7.694899999856949
+        },
+        {
+          "id": "hunodan-hjsta-05",
+          "sameCrop": true,
+          "sameMask": true,
+          "beforeError": 0.01328125,
+          "afterError": 0.01328125,
+          "seconds": 7.562700000047684
+        }
+      ]
+    }
+  },
+  "limitations": [
+    "No known original cutting paths. Error is measured against each classified photograph.",
+    "Small boundary tabs remain visible in the blue/orange reconstruction.",
+    "Orange/white hand-adjacent crop remains visually wrong despite formal template and low mask-error passes.",
+    "No global border inset was enabled.",
+    "This is a deterministic photographic preprocessing improvement, not a trained neural-network release."
+  ],
+  "artifacts": {
+    "root": "tmp/heart-learning/chromatic-crop-v1",
+    "baseline31": "tmp/heart-learning/late-polishing-release-v1/photos/results.json",
+    "newPhotoRun": "tmp/heart-learning/chromatic-crop-v1/automatic-v2/results.json",
+    "editable": "tmp/heart-learning/chromatic-crop-v1/editable-v2/results.json",
+    "browser": "tmp/heart-learning/chromatic-crop-v1/qa/browser-chromatic/results.json",
+    "sourcePins": "tmp/heart-learning/chromatic-crop-v1/qa/source.json"
+  }
+}

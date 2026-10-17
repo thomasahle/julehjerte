@@ -124,7 +124,19 @@ are retained separately from the 1,254-file inventory above. The
 [edge-inset study](photo-edge-inset-study.md) reproduces the reported fringe and
 tests all three hearts in the window photograph, including cropping and
 downstream feature failures. These additions are QA-reserved, not new training
-labels; the website's cropping defaults are unchanged.
+labels; no automatic border inset has been enabled.
+
+The subsequent [chromatic-paper crop study](chromatic-crop-results.json) recovers
+the blue/orange window heart through automatic cropping, fresh fitting and a
+downloaded editable SVG. Reflections had interrupted the foreground scanlines
+and reduced edge-confidence scores despite visible physical edges. The new
+fallback learns two coloured papers and checks contrast along the fitted
+outline, retaining the lobe checks. All 31 previous photographic crops and masks
+remain identical. The hand-adjacent orange/white crop is still visibly wrong;
+its low mask error does not establish a faithful reconstruction. Small boundary
+tabs also remain in the blue/orange result. This is a deterministic preprocessing
+improvement, not a neural-network release. The linked record distinguishes
+completed browser checks from the outstanding full inverse suite.
 
 ## What the network should learn
 
