@@ -26,6 +26,16 @@ the pale sheet, while smoothed candidates still fail outline support. The same-c
 regressions and 23 existing photographic/budget tests pass; its full release
 QA is pending. Dense count expansion and smoothing remain offline.
 
+A [57-input interior-transition diagnostic](interior-count-evidence-results.json)
+finds more than eight transitions in 97% and 88% of the dense checker's
+interior bands, despite its edge-based ceiling remaining eight. An exploratory
+rule would expand that case to twelve while leaving all 55 existing corpus
+limits and the selected star unchanged. Fourteen transformed/noisy-input
+checks preserve those proposed limits. The support threshold was chosen after
+inspecting these development profiles; no new fitting, editable validation or
+production policy change is claimed. Interior transitions can exceed the true
+cut count when curves turn back, so they are proposals, not constraints.
+
 The [paired selected-box MobileSAM replay](selected-sam-prompt-results.json)
 now completes on seven fixed development photos. Automatic boxes produce four
 crops and two checked masks, but one is the wrong heart in the star scene.
