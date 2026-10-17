@@ -1,0 +1,117 @@
+{
+  "scope": "Fixed-work spacing-repair continuation plus serial fresh-fit and standard checks; not a whole-pipeline browser benchmark.",
+  "previousRuntime": "dbd004b",
+  "fixture": "scripts/inverse/fixtures/clearance-spacing-initializer.json",
+  "fixtureSha256": "3afc14eb5745006e34d82a639f5de9f9550eef8fa76a8835eb65bd444d25cf05",
+  "regression": "scripts/inverse/clearance-spacing-continuation.test.mjs",
+  "regressionSha256": "3a9c2e404c7c8e4056007f2aa43e96967ebaa893f9a2c444362afdf8e72854a9",
+  "initialMaskError": 0.07526875,
+  "intermediateMaskError": 0.036875,
+  "exportedMaskError": 0.01581875,
+  "exportedResolution": 400,
+  "finalImageErrorLimit": 0.03,
+  "repairSteps": 45,
+  "continuationRefinementSteps": 120,
+  "inputUnchanged": true,
+  "intermediateAccepted": false,
+  "intermediateGeometryPassed": true,
+  "intermediatePaperPassed": true,
+  "finalGeometryPassed": true,
+  "finalPaperPassed": true,
+  "finalFeaturesPassed": true,
+  "physicalAssemblyTested": false,
+  "before": {
+    "log": "tmp/heart-learning/clearance-continuation-2026-10-18/before.log",
+    "sha256": "8cf208e5a96d7fb04bd2b67ab0722d64168cfae6421ea232b3ab5bb5e52a3c3a",
+    "status": "failed",
+    "reason": "No continuation was returned; original strict image limit was not reached."
+  },
+  "after": {
+    "log": "tmp/heart-learning/clearance-continuation-2026-10-18/after.log",
+    "sha256": "5b3003375043ddc6581dbfb0deecf64a382ab393ef422577b64bca932fd373e1",
+    "status": "passed"
+  },
+  "negativeCases": [
+    "uncertain paper rejects continuation",
+    "failed paper rejects continuation"
+  ],
+  "focused": {
+    "log": "tmp/heart-learning/clearance-continuation-2026-10-18/focused.log",
+    "sha256": "d06bcf1ff845112ac70ed43fd8a6ac383b63e37378e9f61bc9fbaf106de2a2c4",
+    "passed": 23,
+    "failed": 0,
+    "seconds": 113.533044958
+  },
+  "standardChecks": {
+    "directory": "tmp/heart-learning/clearance-continuation-2026-10-18/qa",
+    "state": {
+      "status": "complete",
+      "pid": 29210,
+      "stages": [
+        {
+          "name": "check",
+          "command": [
+            "npm",
+            "run",
+            "check"
+          ],
+          "status": "passed",
+          "log": "check.log",
+          "pid": 29242,
+          "exitCode": 0,
+          "seconds": 11.671506833999999
+        },
+        {
+          "name": "lint",
+          "command": [
+            "npm",
+            "run",
+            "lint"
+          ],
+          "status": "passed",
+          "log": "lint.log",
+          "pid": 29646,
+          "exitCode": 0,
+          "seconds": 8.0164685
+        },
+        {
+          "name": "application",
+          "command": [
+            "node",
+            "node_modules/vitest/vitest.mjs",
+            "run",
+            "--maxWorkers=1"
+          ],
+          "status": "passed",
+          "log": "application.log",
+          "pid": 29908,
+          "exitCode": 0,
+          "seconds": 60.573309416
+        },
+        {
+          "name": "build",
+          "command": [
+            "npm",
+            "run",
+            "build"
+          ],
+          "status": "passed",
+          "log": "build.log",
+          "pid": 32127,
+          "exitCode": 0,
+          "seconds": 33.56663987500001
+        }
+      ],
+      "scope": "Standard checks for spacing-repair continuation; focused tests and fixed-work before/after evidence live in the parent directory. Existing broader inverse failures remain under investigation.",
+      "sourceFiles": 1040,
+      "priority": 15,
+      "minimumFreeGiB": 10
+    },
+    "sourceManifestSha256": "8826e6ee86ebea9ef44b951ecc89111e18886da972cbf8b9e8b849bd0884f1d9",
+    "sourceFiles": 1040,
+    "sourceHashesMatchedAfterRun": true,
+    "applicationPassed": 874,
+    "applicationSkipped": 1
+  },
+  "remaining": "Other previously failed inverse cases and the Hunodan speed comparison require replay. The preview has not been refreshed."
+}

@@ -217,3 +217,8 @@ disagreement of 1.9175% at 400 pixels and 2.0678% at 800 pixels. All 1,038 pinne
 source files remain unchanged throughout these checks. The remaining full-suite
 failures and Hunodan speed comparison still need investigation. Port 5232
 remains the previous validated snapshot.
+
+The subsequent [spacing-continuation correction](clearance-continuation.md)
+reproduces that discarded intermediate result with fixed work. It extends the
+same checked handoff rule to spacing repair and passes all 23 focused tests;
+the other failures from the complete suite remain a separate investigation.

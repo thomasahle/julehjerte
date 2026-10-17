@@ -18,7 +18,7 @@ export function repairClearanceInitializer(prepared,input,cfg,{deadline=Infinity
   report.initialGeometry=geometry||validate(graph.solution(graph.points,phase,input),cfg,{checkImage:false});
   report.trigger=recoverFeatures?'missing-source-feature':'inter-slit-clearance';
   if(report.initialGeometry.passed?!recoverFeatures:(!report.initialGeometry.issues.length||report.initialGeometry.issues.some(i=>i.type!=='inter_slit_clearance')))return finish('geometry_not_repairable');
-  if(recoverFeatures)report.initialImageError=maskDisagreement(source,sampleWeave(graph.solution(graph.points,phase,input),source.resolution));
+  report.initialImageError=maskDisagreement(source,sampleWeave(graph.solution(graph.points,phase,input),source.resolution));
   const n=Math.sqrt(objectiveProb.length);
   // A valid starting grid supplies a rollback position. Resolve uncertain
   // paper checkpoints as in the main fit, so that this incumbent does not
@@ -46,8 +46,9 @@ export function repairClearanceInitializer(prepared,input,cfg,{deadline=Infinity
     const imagePassed=imageError<=cfg.maxImageError;
     // This bounded stage prepares a starting shape. A legal, feature-retaining
     // improvement may need the main fit's remaining time to meet the final
-    // image limit. Keep that handoff separate from an accepted template.
-    if(!geometry.passed||!features.passed||!imagePassed&&!(recoverFeatures&&imageError<report.initialImageError))continue;
+    // image limit. This applies to spacing repairs as well as restored
+    // features: neither kind of unfinished initializer is an accepted result.
+    if(!geometry.passed||!features.passed||!imagePassed&&!(imageError<report.initialImageError))continue;
     const resolution=Math.max(cfg.materialResolution,candidate.paperVerification?.resolution||0,candidate!==fitted?700:0);
     let paper=paperAudit(solution,{...cfg,materialResolution:resolution}),verification=null;
     report.initialPaper=paper.summary;
