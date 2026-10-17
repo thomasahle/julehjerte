@@ -142,6 +142,13 @@ slightly. Every source-mask hash matches the previous comparison. Other busy
 system processes and browser jobs were observed during this low-priority run;
 that is a confounder, not an attribution of every difference to machine load.
 
+The stage comparison also finds slower preparation, outside the edited return
+evaluator: median 0.147 seconds previously and 0.398 seconds in this run.
+Median solve time rises from 5.625 to 8.555 seconds. All 22 cut counts match;
+the four increased errors retain the same grid counts and have earlier final
+refinement checkpoints. A counterbalanced reference-engine replay is needed
+before attributing this whole-pipeline slowdown to the implementation.
+
 Type checking, lint, build, 874 application tests (one skip), 31 focused inverse
 tests, both artwork browser flows and four browser smoke cases pass. The full
 inverse suite has not yet run for this revision. Its waiting queue was stopped
