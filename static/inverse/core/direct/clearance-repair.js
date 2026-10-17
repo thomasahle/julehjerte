@@ -22,10 +22,14 @@ export function repairClearanceInitializer(prepared,input,cfg,{deadline=Infinity
   const n=Math.sqrt(objectiveProb.length);
   // A valid starting grid supplies a rollback position. Resolve uncertain
   // paper checkpoints as in the main fit, so that this incumbent does not
-  // repeatedly erase a better trajectory. Keep the same total repair cap.
+  // repeatedly erase a better trajectory. Keep the same refinement work cap.
   const fitted=refineCurves(graph,objectiveProb,n,phase,{...cfg,preferMatchingSheets:false},{input,weights:objectiveWeights,rate:.05,resolvePaperBeforeRollback:true,deadline:recoverFeatures?until-450:Math.min(started+500,until-450),onProgress});
   report.steps=fitted.steps;report.history=fitted.history;
-  if(performance.now()>until)return finish('deadline');
+  // Optimization has stopped. Its completed checkpoints may still need the
+  // source and paper audits before they can continue in the main fit. Charge
+  // these bounded checks to the caller's deadline, not the earlier cutoff
+  // reserved for polishing. No new gradient work is authorized here.
+  if(performance.now()>deadline)return finish('deadline');
   // The last useful checkpoint can miss the in-loop verification reserve.
   // It remains unaccepted until its actual curves pass the finer audit here.
   // Compare against the retained incumbent using the unchanged source mask.
@@ -35,7 +39,7 @@ export function repairClearanceInitializer(prepared,input,cfg,{deadline=Infinity
   }).sort((a,b)=>a.imageError-b.imageError);
   let reason='refinement_rejected';report.checkpoints=[];
   for(const {candidate,solution,imageError,features}of checkpoints){
-    if(performance.now()>until)return finish('deadline');
+    if(performance.now()>deadline)return finish('deadline');
     const geometry=validate(solution,cfg,{checkImage:false,finalGeometry:true});
     const check={imageError,featuresPassed:features.passed,geometryPassed:geometry.passed,paperAlternative:candidate!==fitted};report.checkpoints.push(check);
     Object.assign(report,{geometry,imageError,features});
@@ -48,7 +52,7 @@ export function repairClearanceInitializer(prepared,input,cfg,{deadline=Infinity
     let paper=paperAudit(solution,{...cfg,materialResolution:resolution}),verification=null;
     report.initialPaper=paper.summary;
     if(resolution>cfg.materialResolution)verification={requestedResolution:cfg.materialResolution,initialStatus:'uncertain',resolution,status:paper.status,source:'clearance-initializer-refinement'};
-    if(paper.status==='uncertain'&&resolution<700&&until-performance.now()>200){
+    if(paper.status==='uncertain'&&resolution<700&&deadline-performance.now()>200){
       paper=paperAudit(solution,{...cfg,materialResolution:700});
       verification={requestedResolution:cfg.materialResolution,initialStatus:'uncertain',resolution:700,status:paper.status,source:'clearance-initializer-refinement'};
     }

@@ -48,7 +48,7 @@ test('a short verified improvement continues fitting without becoming an accepte
   assert.deepEqual(source.sourceImage.mask,mask);
 });
 
-for(const {deadline,workDeadline} of [{deadline:10000},{deadline:1200},{deadline:10000,workDeadline:1000}])test(`completed initializer checks retain the caller's ${deadline}ms deadline${workDeadline?' after a '+workDeadline+'ms work cutoff':''}`,async t=>{
+for(const {deadline,workDeadline,verificationStart} of [{deadline:10000},{deadline:1200},{deadline:10000,workDeadline:1000},{deadline:10000,workDeadline:1000,verificationStart:1100}])test(`completed initializer checks retain the caller's ${deadline}ms deadline${workDeadline?' after a '+workDeadline+'ms work cutoff':''}${verificationStart?' with verification starting after that cutoff':''}`,async t=>{
   await loadBoundaryKernel();
   const source=input(),prepared=initializer(source),before=prepared.graph.points.slice();
   let clock=0,audits=0,result;
@@ -56,7 +56,7 @@ for(const {deadline,workDeadline} of [{deadline:10000},{deadline:1200},{deadline
   try{
     result=repairClearanceInitializer(prepared,source,cfg,{deadline,workDeadline,recoverFeatures:true,onProgress:r=>{
       if(r.step>=40)clock=800;
-      if(r.step===44)clock=workDeadline?900:1100;
+      if(r.step===44)clock=verificationStart||(workDeadline?900:1100);
     },paperAudit:(solution,settings)=>{
       // Perform the real independent paper audit, then model its completion
       // beyond the local 1200ms cap. The caller may still have search time.
@@ -64,7 +64,7 @@ for(const {deadline,workDeadline} of [{deadline:10000},{deadline:1200},{deadline
     }});
   }finally{now.mock.restore();}
   assert.equal(result.report.steps,45);
-  assert.ok(audits>0);
+  assert.ok(audits>0,'Completed refinement can still begin verification before the caller deadline.');
   assert.equal(result.report.geometry.passed,true);
   assert.equal(result.report.features.passed,true);
   assert.equal(result.report.paper.status,'pass');
