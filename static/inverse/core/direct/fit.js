@@ -546,17 +546,22 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     // a longer request keeps its existing three-second reserve.
     const detailReserve=shortBudget?(candidate.imagePassed?1000:1700):3000;
     if(!canRefine||searchDeadline()-performance.now()<=detailReserve+(shortBudget?600:1000))return candidate;
-    const plan=featureDetailPlan(candidate.graph,candidate.points,source,sourceFeatures,cfg,n);
+    const plan=featureDetailPlan(candidate.graph,candidate.points,source,sourceFeatures,cfg,n,{local:!!candidate.imagePassed&&!symmetryRequested&&!candidate.matching?.identical});
     if(plan){
       const detailCfg={...cfg,preferMatchingSheets:false,materialResolution:Math.max(cfg.materialResolution,700)};
       const verification={requestedResolution:cfg.materialResolution,resolution:detailCfg.materialResolution,source:'feature-detail-refinement'};
       const detailStarted=performance.now(),detailRate=(shortBudget||earlyFeatureInitialization?.enclosurePending) ? .07 : .035;let rejected=null;
-      let refined=stage('directPolishing',()=>refineCurves(plan.graph,plan.objective.probability,n,candidate.phase,detailCfg,{input,weights:plan.objective.weights,steps:160,rate:detailRate,deadline:Math.min(searchDeadline()-detailReserve,performance.now()+1800),onProgress:(r,solution)=>{
+      let refined;
+      try{refined=stage('directPolishing',()=>refineCurves(plan.graph,plan.objective.probability,n,candidate.phase,detailCfg,{input,weights:plan.objective.weights,steps:160,rate:detailRate,deadline:Math.min(searchDeadline()-detailReserve,performance.now()+1800),onProgress:(r,solution)=>{
         solution.report={paperVerification:{...verification,status:r.paper}};
         const woven=sampleWeave(solution,source.resolution),error=maskDisagreement(source,woven);
         if(!candidate.imagePassed&&!symmetryRequested&&!r.geometry&&error<=cfg.maxImageError&&(!rejected||error<rejected.error)&&auditFeatureFidelity(source,woven,cfg,sourceFeatures).passed)rejected={solution,error};
         onProgress({stage:'directPolishing',detail:'small-feature-shape',counts:candidate.counts,...r,weightedError:r.error,error},solution);
-      }}));
+      }}));}finally{
+        // Scope this optimization only; later repair and editing retain the
+        // graph's original endpoint constraints and shared control identities.
+        if(plan.originalFixed)plan.graph.fixed.set(plan.originalFixed);
+      }
       refined.error=mismatch(renderCurves(plan.graph,refined.points,refined.phase,n,32),prob,fitWeights);
       refined.paperVerification={...verification,status:refined.paper?.status};
       Object.assign(refined,{counts:candidate.counts,seed:candidate.seed});

@@ -1,0 +1,256 @@
+{
+  "method": "Fixed-candidate, equal-step comparison followed by a fresh photo replay. No saved geometry enters fresh fitting.",
+  "baselineRuntime": "2ab29c1",
+  "fixedWork": {
+    "steps": 160,
+    "rate": 0.07,
+    "resolution": 256,
+    "source": "tmp/heart-learning/clearance-continuation-2026-10-18/loss-row-index/qa/captures/51381-1.json",
+    "sourceSha256": "8b217a60695b84a52f557ebf767056e154e5635b8c9dc550d8e26a61660c4ef5",
+    "maskSha256": "892ade9f2353db4be42a7c22ddec818734930e100a1ab6b63837e1d9b07076b5",
+    "baseline": {
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "comparisons": [
+        {
+          "resolution": 390,
+          "error": 0.01,
+          "opening": {
+            "centerMm": [
+              61.31181318681318,
+              75.46474358974359
+            ],
+            "sourceAreaMm2": 7.363576594345823,
+            "intersectionPixels": 105,
+            "retention": 0.9375,
+            "predictedComponentAreaMm2": 12.68902038132807,
+            "touchesBorder": false,
+            "componentIoU": 0.525
+          },
+          "featuresPassed": true
+        },
+        {
+          "resolution": 780,
+          "error": 0.011314924391847468,
+          "opening": {
+            "centerMm": [
+              61.31181318681318,
+              75.46474358974359
+            ],
+            "sourceAreaMm2": 7.363576594345823,
+            "intersectionPixels": 419,
+            "retention": 0.9352678571428571,
+            "predictedComponentAreaMm2": 12.63971071663379,
+            "touchesBorder": false,
+            "componentIoU": 0.525062656641604
+          },
+          "featuresPassed": true
+        }
+      ]
+    },
+    "cases": [
+      {
+        "policy": "ordinary",
+        "seconds": 2.4607219159999993,
+        "freeCoordinates": 1554,
+        "nonIncreasingOriginalError": false,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "comparisons": [
+          {
+            "resolution": 390,
+            "error": 0.011038790269559501,
+            "opening": {
+              "centerMm": [
+                61.31181318681318,
+                75.46474358974359
+              ],
+              "sourceAreaMm2": 7.363576594345823,
+              "intersectionPixels": 109,
+              "retention": 0.9732142857142857,
+              "predictedComponentAreaMm2": 11.439842209072976,
+              "touchesBorder": false,
+              "componentIoU": 0.615819209039548
+            },
+            "featuresPassed": true
+          },
+          {
+            "resolution": 780,
+            "error": 0.012427679158448389,
+            "opening": {
+              "centerMm": [
+                61.31181318681318,
+                75.46474358974359
+              ],
+              "sourceAreaMm2": 7.363576594345823,
+              "intersectionPixels": 435,
+              "retention": 0.9709821428571429,
+              "predictedComponentAreaMm2": 11.620644312952003,
+              "touchesBorder": false,
+              "componentIoU": 0.6041666666666666
+            },
+            "featuresPassed": true
+          }
+        ]
+      },
+      {
+        "policy": "scoped",
+        "seconds": 1.5857220829999996,
+        "freeCoordinates": 110,
+        "nonIncreasingOriginalError": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "comparisons": [
+          {
+            "resolution": 390,
+            "error": 0.009796186719263642,
+            "opening": {
+              "centerMm": [
+                61.31181318681318,
+                75.46474358974359
+              ],
+              "sourceAreaMm2": 7.363576594345823,
+              "intersectionPixels": 109,
+              "retention": 0.9732142857142857,
+              "predictedComponentAreaMm2": 11.242603550295856,
+              "touchesBorder": false,
+              "componentIoU": 0.6264367816091954
+            },
+            "featuresPassed": true
+          },
+          {
+            "resolution": 780,
+            "error": 0.011140696909927679,
+            "opening": {
+              "centerMm": [
+                61.31181318681318,
+                75.46474358974359
+              ],
+              "sourceAreaMm2": 7.363576594345823,
+              "intersectionPixels": 435,
+              "retention": 0.9709821428571429,
+              "predictedComponentAreaMm2": 11.571334648257722,
+              "touchesBorder": false,
+              "componentIoU": 0.606694560669456
+            },
+            "featuresPassed": true
+          }
+        ]
+      },
+      {
+        "policy": "scoped-frequent-checkpoints",
+        "seconds": 5.881586875000001,
+        "freeCoordinates": 110,
+        "nonIncreasingOriginalError": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "comparisons": [
+          {
+            "resolution": 390,
+            "error": 0.009848783694937541,
+            "opening": {
+              "centerMm": [
+                61.31181318681318,
+                75.46474358974359
+              ],
+              "sourceAreaMm2": 7.363576594345823,
+              "intersectionPixels": 110,
+              "retention": 0.9821428571428571,
+              "predictedComponentAreaMm2": 11.834319526627215,
+              "touchesBorder": false,
+              "componentIoU": 0.6043956043956044
+            },
+            "featuresPassed": true
+          },
+          {
+            "resolution": 780,
+            "error": 0.011191650230111769,
+            "opening": {
+              "centerMm": [
+                61.31181318681318,
+                75.46474358974359
+              ],
+              "sourceAreaMm2": 7.363576594345823,
+              "intersectionPixels": 433,
+              "retention": 0.9665178571428571,
+              "predictedComponentAreaMm2": 11.817882971729123,
+              "touchesBorder": false,
+              "componentIoU": 0.5899182561307902
+            },
+            "featuresPassed": true
+          }
+        ]
+      }
+    ]
+  },
+  "freshReplay": {
+    "capture": "tmp/heart-learning/clearance-continuation-2026-10-18/loss-row-index/scoped-qa/half-captures/31902-1.json",
+    "sourceMaskSha256": "892ade9f2353db4be42a7c22ddec818734930e100a1ab6b63837e1d9b07076b5",
+    "geometryPassed": true,
+    "paperStatus": "pass",
+    "paperResolution": 700,
+    "comparisons": [
+      {
+        "resolution": 390,
+        "supplemental": false,
+        "error": 0.00980276134122288,
+        "featuresPassed": true,
+        "opening": {
+          "centerMm": [
+            61.31181318681318,
+            75.46474358974359
+          ],
+          "sourceAreaMm2": 7.363576594345823,
+          "intersectionPixels": 109,
+          "retention": 0.9732142857142857,
+          "predictedComponentAreaMm2": 11.374095989480603,
+          "touchesBorder": false,
+          "componentIoU": 0.6193181818181818
+        },
+        "passed": true
+      },
+      {
+        "resolution": 780,
+        "supplemental": true,
+        "error": 0.011143984220907299,
+        "featuresPassed": true,
+        "opening": {
+          "centerMm": [
+            61.31181318681318,
+            75.46474358974359
+          ],
+          "sourceAreaMm2": 7.363576594345823,
+          "intersectionPixels": 435,
+          "retention": 0.9709821428571429,
+          "predictedComponentAreaMm2": 11.587771203155816,
+          "touchesBorder": false,
+          "componentIoU": 0.6058495821727019
+        },
+        "passed": true
+      }
+    ]
+  },
+  "checks": {
+    "focusedTestsPassed": 12,
+    "freshHalfPuppyPassed": true,
+    "broaderQA": "pending"
+  },
+  "limitations": [
+    "The small opening remains too angular and larger than the source; this is an improvement, not exact reconstruction.",
+    "Fixed-work timings are diagnostic, not a browser-speed benchmark.",
+    "The previous full inverse suite had one unresolved supported-count metadata failure; preserving its checks and adding failure capture is not a fix.",
+    "No physical assembly has been tested."
+  ],
+  "visualComparison": {
+    "path": "docs/inverse/datasets/scoped-feature-detail.png",
+    "sha256": "975b55f6e65de03c74dd885f84fddf06bfec70a03b16200f6bb011c3db932ee3"
+  },
+  "study": {
+    "path": "tmp/heart-learning/clearance-continuation-2026-10-18/loss-row-index/scoped-comparison/results.json",
+    "sha256": "4ec99164fd84f6ad9865bc2e7aaf88dc4accfbf5565816a6dcb31b4b7fea8ab9"
+  },
+  "freshCapture": {
+    "path": "tmp/heart-learning/clearance-continuation-2026-10-18/loss-row-index/scoped-qa/half-captures/31902-1.json",
+    "sha256": "5e03243457de330db2702295240ca3f5b707c60f0c2d0a9c920858ca8ab44a24"
+  }
+}
