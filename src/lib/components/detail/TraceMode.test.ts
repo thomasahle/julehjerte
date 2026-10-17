@@ -265,6 +265,41 @@ describe('TraceMode', () => {
 		expect(view.dialog()).toBeNull();
 	});
 
+	it('fits the surface to a viewport that changed while locked, once unlocked', async () => {
+		const setViewport = (width: number, height: number) => {
+			Object.defineProperty(window, 'innerWidth', { configurable: true, value: width });
+			Object.defineProperty(window, 'innerHeight', { configurable: true, value: height });
+			window.dispatchEvent(new Event('resize'));
+		};
+		cleanup.push(() => {
+			delete (window as { innerWidth?: number }).innerWidth;
+			delete (window as { innerHeight?: number }).innerHeight;
+		});
+		setViewport(1440, 900);
+		const view = await render();
+		const surface = () => view.q<SVGSVGElement>('svg.surface')!;
+		expect([surface().getAttribute('width'), surface().getAttribute('height')]).toEqual(['1440', '900']);
+		await view.lock();
+		const locked = view.q('[data-testid="trace-template"]')!.getAttribute('transform');
+
+		// Rotated while locked: nothing on screen may move.
+		setViewport(900, 1440);
+		await settle();
+		expect([surface().getAttribute('width'), surface().getAttribute('height')]).toEqual(['1440', '900']);
+		expect(view.q('[data-testid="trace-template"]')!.getAttribute('transform')).toBe(locked);
+
+		escape();
+		await settle();
+		await settle();
+		expect(view.lockLayer()).toBeNull();
+		expect([surface().getAttribute('width'), surface().getAttribute('height')]).toEqual(['900', '1440']);
+		expect(surface().getAttribute('viewBox')).toBe('0 0 900 1440');
+		// Re-placed for the new viewport: the template sits inside it.
+		const [, x] = /translate\(([-\d.e]+)/.exec(view.q('[data-testid="trace-template"]')!.getAttribute('transform')!)!;
+		expect(Number(x)).toBeGreaterThanOrEqual(0);
+		expect(Number(x)).toBeLessThan(900);
+	});
+
 	it('swallows touches on the overlay', async () => {
 		const view = await render();
 		await view.lock();

@@ -196,13 +196,17 @@
 	 */
 	function handleResize(): void {
 		if (!open || mode === 'locked') return;
+		remeasure();
+	}
+
+	/** Read the viewport again and place or clamp the template for it. */
+	async function remeasure(): Promise<void> {
 		vw = window.innerWidth;
 		vh = window.innerHeight;
-		tick().then(() => {
-			measureChrome();
-			if (adjusted) view = clampView(view, size, viewport, pxPerMm);
-			else place(remembered);
-		});
+		await tick();
+		measureChrome();
+		if (adjusted) view = clampView(view, size, viewport, pxPerMm);
+		else place(remembered);
 	}
 
 	function saveSettings(): void {
@@ -333,8 +337,14 @@
 		cancelHold();
 		mode = 'size';
 		announcement = t('traceUnlockedAnnouncement', lang);
-		await tick();
-		measureChrome();
+		// Resizes are ignored while locked, so a rotation then left the surface
+		// at the old size: catch up now that the template may move again.
+		if (vw !== window.innerWidth || vh !== window.innerHeight) {
+			await remeasure();
+		} else {
+			await tick();
+			measureChrome();
+		}
 		lockButton?.focus();
 	}
 
