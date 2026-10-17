@@ -243,10 +243,15 @@ Everything else in this file stands, including round 1.
   `planLaserSheet(designs, …)`, which now takes one heart or several: copies of
   each heart's piece, heart by heart, `hearts: LaserHeart[]` on the plan, the
   lobe choice applying to every heart whose halves differ (shared ones are cut
-  from their left piece as before), and offered only when at least one heart's
+  from `SHARED_TEMPLATE_LOBE`'s piece, the right one the PDF prints, since the
+  QA round of 2026-10-17; it was the left), and offered only when at least one heart's
   halves differ. The file is `laserFileName(t('laserMultiFilename'), …)`:
   `julehjerter-{n}-laser-{width}mm[-{lobe}].svg|dxf`; its SVG title lists the
-  hearts' names and its description points at the front page.
+  hearts' names and its description points at the front page. (Since the QA
+  round of 2026-10-17, `n` and the title count only the hearts with a piece on
+  the sheet, `plan.heartsOnSheet`; when the sheet has no room for some,
+  `sheetFit` is followed by `sheetLeftOut`, "Ikke med: {names}" / "Left out:
+  {names}", naming `plan.heartsLeftOut`.)
 - **Analytics:** the PDF sends `trackMultiDownload` (one `download_heart` per
   heart with a shared `download_id`, plus `download_multi_hearts`); the laser
   file sends `trackMultiLaserDownload`, one `download_laser` per heart with a

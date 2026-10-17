@@ -67,6 +67,10 @@ export interface LaserPlan extends LaserSheet {
 	lobe: TemplateLobe;
 	piecesRequested: number;
 	piecesFit: number;
+	/** The hearts with at least one piece on the sheet, in order: what the file holds. */
+	heartsOnSheet: LaserHeart[];
+	/** The hearts the sheet had no room for at all. */
+	heartsLeftOut: LaserHeart[];
 }
 
 export function clamp(n: number, min: number, max: number): number {
@@ -102,6 +106,8 @@ export function planLaserSheet(
 	const shared = hearts.every((heart) => heart.shared);
 
 	const layout = layoutSheet(wanted, { sheet: request.sheet });
+	// `wanted` is heart by heart, `count` pieces each.
+	const placed = new Set(layout.placements.map(({ index }) => Math.floor(index / request.count)));
 	return {
 		sheet: request.sheet,
 		pieces: layout.placements.map(({ index, x, y }) => ({ piece: wanted[index]!, x, y })),
@@ -110,7 +116,9 @@ export function planLaserSheet(
 		shared,
 		lobe: shared ? SHARED_TEMPLATE_LOBE : request.lobe,
 		piecesRequested: wanted.length,
-		piecesFit: layout.fitted
+		piecesFit: layout.fitted,
+		heartsOnSheet: hearts.filter((_, i) => placed.has(i)),
+		heartsLeftOut: hearts.filter((_, i) => !placed.has(i))
 	};
 }
 

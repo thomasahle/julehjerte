@@ -90,12 +90,12 @@ async function settle(): Promise<void> {
 }
 
 /** One heart, as the heart's page opens it, or several, as the front page does. */
-async function render(design: HeartDesign | HeartDesign[] = loadHeart('classic-3x3')) {
+async function render(design: HeartDesign | HeartDesign[] = loadHeart('classic-3x3'), lang: 'da' | 'en' = 'da') {
 	const target = document.createElement('div');
 	document.body.appendChild(target);
 	const props = Array.isArray(design)
-		? { designs: design, lang: 'da' as const, open: true, onClose: () => {} }
-		: { designs: [design], heartId: design.id, heartName: 'Klassisk', lang: 'da' as const, open: true, onClose: () => {} };
+		? { designs: design, lang, open: true, onClose: () => {} }
+		: { designs: [design], heartId: design.id, heartName: 'Klassisk', lang, open: true, onClose: () => {} };
 	const component = mount(DownloadDialog, { target, props });
 	let disposed = false;
 	const dispose = () => {
@@ -490,6 +490,33 @@ describe('DownloadDialog', () => {
 				80
 			);
 			expect(trackLaserDownload).not.toHaveBeenCalled();
+		});
+
+		describe('when the sheet holds only some of them', () => {
+			// At 80 mm on A4 there is room for two pieces: Classic's and Jul's, not Weave 1's.
+			const three = () => [loadHeart('classic-3x3'), loadHeart('jul'), loadHeart('amy-weave-1')];
+
+			it('names the heart left out, and the file holds and is named for the hearts on it', async () => {
+				const designs = three();
+				const view = await render(designs);
+				await view.choose('Laserskærer');
+				expect(view.note()).toBe('Der er kun plads til 2 af 3 stykker på arket. Ikke med: Weave 1');
+				view.button('Hent SVG')!.click();
+				await settle();
+				expect(downloads[0]!.name).toBe('julehjerter-2-laser-80mm-venstre.svg');
+				const svg = await blobs[0]!.text();
+				expect(svg).toContain('<title>Classic 3x3, JUL</title>');
+				expect(svg).not.toContain('Weave 1');
+			});
+
+			it('says the same in English', async () => {
+				const view = await render(three(), 'en');
+				await view.choose('Laser cutter');
+				expect(view.note()).toBe('There is only room for 2 of 3 pieces on the sheet. Left out: Weave 1');
+				view.button('Download SVG')!.click();
+				await settle();
+				expect(downloads[0]!.name).toBe('christmas-hearts-2-laser-80mm-left.svg');
+			});
 		});
 
 		it("offers no lobe choice when every heart's halves are the same", async () => {

@@ -164,6 +164,8 @@ export const translations = {
     sheetHeight: 'Arkets højde (mm)',
     /** {n} = laser pieces that fit on the sheet, {total} = pieces asked for */
     sheetFit: 'Der er kun plads til {n} af {total} stykker på arket',
+    /** After sheetFit with several hearts; {names} = the hearts with no piece on the sheet */
+    sheetLeftOut: 'Ikke med: {names}',
     sheetPreview: 'Forhåndsvisning af arket',
     pdfOnePage: '1 side',
     /** {n} = pages in the PDF, 2 or more */
@@ -813,6 +815,8 @@ export const translations = {
     sheetHeight: 'Sheet height (mm)',
     /** {n} = laser pieces that fit on the sheet, {total} = pieces asked for */
     sheetFit: 'There is only room for {n} of {total} pieces on the sheet',
+    /** After sheetFit with several hearts; {names} = the hearts with no piece on the sheet */
+    sheetLeftOut: 'Left out: {names}',
     sheetPreview: 'Preview of the sheet',
     pdfOnePage: '1 page',
     /** {n} = pages in the PDF, 2 or more */

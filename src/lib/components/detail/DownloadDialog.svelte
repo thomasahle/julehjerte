@@ -261,17 +261,24 @@
 			};
 		}
 		if (laserPlan && laserPlan.piecesFit < laserPlan.piecesRequested) {
-			return {
-				text: t('sheetFit', lang, { n: laserPlan.piecesFit, total: laserPlan.piecesRequested }),
-				warn: true
-			};
+			let text = t('sheetFit', lang, { n: laserPlan.piecesFit, total: laserPlan.piecesRequested });
+			// With several hearts, say which ones the file will not hold.
+			if (several && laserPlan.heartsLeftOut.length && laserPlan.heartsOnSheet.length) {
+				const names = laserPlan.heartsLeftOut.map((h) => h.design.name).join(', ');
+				text += `. ${t('sheetLeftOut', lang, { names })}`;
+			}
+			return { text, warn: true };
 		}
 		return null;
 	});
 
+	// The hearts the laser file holds: with several, only those the sheet had
+	// room for, so its title and name match what is on it.
+	const laserHearts = $derived(laserPlan ? laserPlan.heartsOnSheet.map((h) => h.design) : designs);
+
 	const fileInfo = $derived({
 		heartId,
-		heartName,
+		heartName: several ? laserHearts.map((d) => d.name).join(', ') : heartName,
 		url: several ? `${SITE_URL}${path('home', lang)}` : `${SITE_URL}${heartPath(heartId, lang)}`,
 		widthMm
 	});
@@ -290,7 +297,7 @@
 		}
 		return laserPlan
 			? serializeLaserSvg(laserPlan, {
-					title: heartName,
+					title: fileInfo.heartName,
 					description: t('sheetPreview', lang),
 					look: 'preview'
 				})
@@ -404,7 +411,7 @@
 			const link = document.createElement('a');
 			link.href = url;
 			link.download = laserFileName(
-				several ? t('laserMultiFilename', lang, { n: designs.length }) : heartId,
+				several ? t('laserMultiFilename', lang, { n: laserHearts.length }) : heartId,
 				widthMm,
 				format,
 				laserPlan.shared ? undefined : lobeName(laserPlan.lobe)

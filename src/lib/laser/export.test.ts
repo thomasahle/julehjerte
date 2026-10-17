@@ -90,6 +90,21 @@ describe('planLaserSheet', () => {
 		expect(plan.pieces).toHaveLength(2);
 	});
 
+	it('tells the hearts on the sheet from the ones left out', () => {
+		const designs = [loadHeart('classic-3x3'), loadHeart('jul'), loadHeart('amy-weave-1')];
+		const plan = planLaserSheet(designs, { widthMm: 80, count: 1, sheet: SHEETS.A4, lobe: 'left' });
+		expect(plan.piecesFit).toBe(2);
+		expect(plan.heartsOnSheet.map((h) => h.design.id)).toEqual(['classic-3x3', 'jul']);
+		expect(plan.heartsLeftOut.map((h) => h.design.id)).toEqual(['amy-weave-1']);
+		// Two copies each: Jul gets one of its two, so it is on the sheet.
+		const two = planLaserSheet(designs, { widthMm: 60, count: 2, sheet: SHEETS.A4, lobe: 'left' });
+		const onSheet = new Set(two.pieces.map((p) => p.piece));
+		expect(two.heartsOnSheet.map((h) => h.design.id)).toEqual(
+			two.hearts.filter((h) => onSheet.has(h.pair[0]) || onSheet.has(h.pair[1])).map((h) => h.design.id)
+		);
+		expect(two.heartsOnSheet.length + two.heartsLeftOut.length).toBe(3);
+	});
+
 	it('fits nothing when one piece is taller than the sheet', () => {
 		const plan = planLaserSheet(loadHeart('classic-3x3'), { widthMm: 200, count: 1, sheet: SHEETS.A4, lobe: 'left' });
 		expect(plan.piecesFit).toBe(0);
