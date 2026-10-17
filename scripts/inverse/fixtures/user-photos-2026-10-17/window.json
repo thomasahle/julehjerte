@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "description": "User-supplied photographic QA cases, received 2026-10-17. Rough selection rectangles only; no reference cuts or solver feedback used to place them.",
+  "splitStatus": "qa-reserved",
+  "trainingEligibility": "excluded-existing-development-qa",
+  "familyReviewStatus": "pending; related motifs/reposts must remain together",
+  "rights": "Source creator rights retained; local regression fixtures, not public website assets or newly approved training data.",
+  "source": {
+    "file": "scripts/inverse/fixtures/user-photos-2026-10-17/window-hearts.jpeg",
+    "sha256": "b8faf7feb2ef06a78ad2e3abc45eb143bd2f1db869dcfb9bec9cb36999ad5c4f",
+    "decodedPixelsSha256": "c9eaf8fac17136c55f9d8dba9e83570cde7ec735fdd4d767064d37f7d7f87c18",
+    "width": 720,
+    "height": 960,
+    "receivedAt": "2026-10-17",
+    "originalFilename": "QVZmcmhENTlCRGJwdnUzYQ.jpeg"
+  },
+  "cases": [
+    {
+      "id": "window-blue-orange",
+      "roi": [
+        15,
+        205,
+        378,
+        526
+      ],
+      "tags": [
+        "non-red-paper",
+        "wrinkles",
+        "reflection"
+      ]
+    },
+    {
+      "id": "window-orange-white",
+      "roi": [
+        322,
+        304,
+        709,
+        670
+      ],
+      "tags": [
+        "perspective",
+        "hand-near-boundary",
+        "shading"
+      ]
+    },
+    {
+      "id": "window-red-white",
+      "roi": [
+        7,
+        510,
+        439,
+        900
+      ],
+      "tags": [
+        "curled-paper",
+        "textured-background"
+      ]
+    }
+  ]
+}
