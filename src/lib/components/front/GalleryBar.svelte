@@ -310,12 +310,22 @@
 		opacity: 0;
 		/* Invisible is not enough: a transparent link still takes clicks. */
 		pointer-events: none;
-		transition: opacity 150ms ease;
+		/* Until the bar sticks the wordmark takes no room either, so the chips
+		   start at the content's left edge; the negative margin eats the row's gap. */
+		max-width: 0;
+		margin-right: -12px;
+		overflow: hidden;
+		transition:
+			opacity 150ms ease,
+			max-width 150ms ease,
+			margin-right 150ms ease;
 	}
 
 	.stuck .wordmark {
 		opacity: 1;
 		pointer-events: auto;
+		max-width: 200px;
+		margin-right: 0;
 	}
 
 	.wordmark:hover {

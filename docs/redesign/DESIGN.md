@@ -148,13 +148,10 @@ follows the colour store as before.
 `main.gallery` max-width 1280, padding `24px 40px 56px` (→ `16px 24px 40px` < 900, `16px 16px 32px` < 600),
 `id="skabeloner"`. The "Skabeloner" heading is visually hidden (kept for the nav anchor and screen readers); the gallery starts with its first category. **No help text.**
 
-The gallery starts *in* the hero's foreground snow rather than under it: `.gallery-wrap` is pulled up with a
-negative top margin (−70 ≥ 1400, −64 at 1200–1399, −44 at 900–1199, none below 900) and `z-index: 1` so it
-paints over the scene. The drawing's front snow and `--page` are the same colour, so nothing looks cut. Two
-things cap the overlap and both shrink with the landscape, which is drawn at the page's width: the heading has
-to clear the base of the hero's left-hand firs, and the gallery bar's opaque `--page` background must not begin
-above the drawing's front snow edge, where it would show as a paler rectangle over the snow hill behind it.
-Below 900 there is no overlap: the landscape is an in-flow band there, with the scroll hint on it.
+The gallery starts under the hero's drawing, not in it: `.gallery-wrap` has no negative top margin any more
+(the pull-up existed for the old "Skabeloner" heading; without it the gallery bar's chips sat astride the
+snow hill's edge, 2026-10-17). `z-index: 1` stays so the gallery frame paints over the scene. Below 900 the
+landscape is an in-flow band, with the scroll hint on it.
 
 Gallery bar (`front/GalleryBar.svelte`, docs/redesign/GALLERY-BAR.md; it replaced the toolbar, 2026-10-17):
 sticky top 0, z-index 5, one row (`display: flex; align-items: center; gap: 12px`, padding 10px 0, 8px below

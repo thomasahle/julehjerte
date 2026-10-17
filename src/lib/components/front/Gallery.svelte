@@ -175,7 +175,7 @@
 		position: relative;
 		/* Above the hero's scene, which is positioned as well. */
 		z-index: 1;
-		margin-top: -170px;
+		margin-top: 0;
 	}
 
 	.gallery {
@@ -189,18 +189,6 @@
 		box-sizing: border-box;
 	}
 
-
-	@media (max-width: 1399px) {
-		.gallery-wrap {
-			margin-top: -64px;
-		}
-	}
-
-	@media (max-width: 1199px) {
-		.gallery-wrap {
-			margin-top: -44px;
-		}
-	}
 
 	@media (max-width: 899px) {
 		.gallery-wrap {
