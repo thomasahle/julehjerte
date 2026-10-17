@@ -309,4 +309,79 @@ describe('GalleryBar', () => {
 		expect(ui.chips()[0].getAttribute('href')).toBe('#klassiske');
 		expect(ui.target.querySelectorAll('button')).toHaveLength(1);
 	});
+
+	it('reports a height that does not follow the room on top (L)', async () => {
+		// The first row's top is the bar's top + 6px (CategorySection: margin
+		// 6 − height − L), so `height` has to be the box less the padding L
+		// adds on top, whatever L is: ticking a heart can add a button with a
+		// larger lift than the chips', and the row must not drop with it.
+		let observed: (() => void) | null = null;
+		vi.stubGlobal(
+			'ResizeObserver',
+			class {
+				constructor(callback: () => void) {
+					observed = callback;
+				}
+				observe() {}
+				unobserve() {}
+				disconnect() {}
+			}
+		);
+		vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
+			queueMicrotask(() => callback(0));
+			return 1;
+		});
+		vi.stubGlobal(
+			'IntersectionObserver',
+			class {
+				observe() {}
+				disconnect() {}
+			}
+		);
+		const target = document.createElement('div');
+		document.body.appendChild(target);
+		let height = 0;
+		const component = mount(GalleryBar, {
+			target,
+			props: {
+				lang: 'da',
+				categories: CATEGORIES,
+				myHeartCount: 0,
+				selectedCount: 1,
+				// The lifts the bar was handed; the box below is laid out with
+				// a different L, as for a frame while the two catch up.
+				lifts: [10, 67.8],
+				get height() {
+					return height;
+				},
+				set height(value: number) {
+					height = value;
+				},
+				onDownload: () => {}
+			}
+		});
+		cleanup.push(() => {
+			unmount(component);
+			target.remove();
+		});
+		flushSync();
+		const bar = target.querySelector<HTMLElement>('.gallery-bar')!;
+		const layOut = async (room: number) => {
+			// What the stylesheet does on the desktop layout: 10px + L on top.
+			bar.style.paddingTop = `${10 + room}px`;
+			bar.style.paddingBottom = '10px';
+			placeAt(bar, 300, 49.6 + room);
+			observed?.();
+			await Promise.resolve();
+			flushSync();
+		};
+		await layOut(67.8);
+		expect(height).toBeCloseTo(49.6, 5);
+
+		// The button's larger lift makes L 73.6: the box grows by 5.8, the
+		// height an anchor has to clear does not. Read as the box less the
+		// lifts' L it came out 55.4, and the first row dropped by 5.8.
+		await layOut(73.6);
+		expect(height).toBeCloseTo(49.6, 5);
+	});
 });
