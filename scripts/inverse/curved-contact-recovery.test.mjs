@@ -9,6 +9,7 @@ import {prepare,design} from '../../static/inverse/core/engine.js';
 import {AUTOMATIC_PRESET} from '../../static/inverse/core/presets.js';
 import {settings} from '../../static/inverse/core/settings.js';
 import {referenceError} from '../../static/inverse/core/image-reference.js';
+import {featureComponentMetrics} from '../../static/inverse/core/feature-shapes.js';
 import {initializeCoarseTopology} from '../../static/inverse/core/direct/topology.js';
 
 const folder='scripts/inverse/fixtures/user-photos-2026-10-17/';
@@ -54,16 +55,30 @@ test('fresh automatic fitting repairs a rejected circular routing before common 
  }catch(error){t.diagnostic(JSON.stringify({report,cutGeometry:answer.files['cut_geometry.json']}));throw error;}
 });
 
-test('a fully observed mask compares a stalled corner routing without opening its enclosed regions',async()=>{
+test('a fully observed mask refines or replaces corner routing without opening its enclosed regions',async t=>{
  const extracted=input().sourceImage,mask=extracted.mask.slice();
  // This is the browser's whole-picture variant: its PNG supplies colours for
  // all pixels, including the tiny tip excluded by the screenshot diagnostic.
  const target=prepare({type:'mask',mask,resolution:extracted.resolution},raw).target;
  const answer=await design(target,cfg),comparison=answer.report.solver.cornerTopologyComparison;
- assert.equal(answer.report.templateChecksPassed,true);
- assert.equal(comparison?.selected,true);assert.equal(comparison.featuresPreserved,true);
- assert.ok(comparison.imageError<comparison.beforeImageError);
- const rendered=await renderExportedWeave(answer.files['cut_geometry.json'],extracted.resolution);
- assert.ok(referenceError(target.sourceImage,rendered.mask).mismatchFraction<.015);
- assert.deepEqual(target.sourceImage.mask,mask);
+ try{
+  assert.equal(answer.report.templateChecksPassed,true);
+  // A faster clearance audit can leave enough time for the first routing to
+  // meet the comparison threshold. Test its quality, not wall-clock routing.
+  if(comparison){
+   assert.equal(comparison.selected,true);assert.equal(comparison.featuresPreserved,true);
+   assert.ok(comparison.imageError<comparison.beforeImageError);
+  }else{
+   assert.ok(answer.report.solver.cornerTopologyInitialization.imageError<=.015);
+  }
+  const rendered=await renderExportedWeave(answer.files['cut_geometry.json'],extracted.resolution);
+  assert.ok(referenceError(target.sourceImage,rendered.mask).mismatchFraction<.015);
+  const components=featureComponentMetrics(target.sourceImage,rendered.mask,cfg.width);
+  assert.equal(components.length,12);
+  for(const component of components){
+   assert.ok(component.intersectionPixels>0);
+   assert.equal(component.touchesBorder,false,'An enclosed motif became a channel.');
+  }
+  assert.deepEqual(target.sourceImage.mask,mask);
+ }catch(error){t.diagnostic(JSON.stringify({report:answer.report,cutGeometry:answer.files['cut_geometry.json']}));throw error;}
 });

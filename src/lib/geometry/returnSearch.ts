@@ -43,8 +43,8 @@ const sub = (a: Point, b: Point): Point => [a[0] - b[0], a[1] - b[1]];
 const mul = (a: Point, s: number): Point => [a[0] * s, a[1] * s];
 const dot = (a: Point, b: Point) => a[0] * b[0] + a[1] * b[1];
 const cross = (a: Point, b: Point) => a[0] * b[1] - a[1] * b[0];
-const norm = (a: Point) => Math.hypot(...a);
-const distance = (a: Point, b: Point) => norm(sub(a, b));
+const norm = (a: Point) => Math.hypot(a[0], a[1]);
+const distance = (a: Point, b: Point) => Math.hypot(a[0] - b[0], a[1] - b[1]);
 const mix = (a: Point, b: Point, t: number): Point => add(mul(a, 1 - t), mul(b, t));
 const clamp = (t: number, a: number, b: number) => Math.max(a, Math.min(b, t));
 function segmentDistance(p: Point, a: Point, b: Point) {
@@ -62,15 +62,27 @@ export class ReturnCurve implements ReturnCurveLike {
 		this.p = p.map(q => [...q] as Point);
 	}
 	point(t: number): Point {
-		const u = 1 - t;
-		return [0, 1].map(k => u * u * u * this.p[0][k] + 3 * u * u * t * this.p[1][k] + 3 * u * t * t * this.p[2][k] + t * t * t * this.p[3][k]) as Point;
+		const u = 1 - t, p = this.p;
+		// These evaluations dominate close-return searches. Avoid a temporary
+		// axis array and callback on each evaluation; retain arithmetic order.
+		return [
+			u * u * u * p[0][0] + 3 * u * u * t * p[1][0] + 3 * u * t * t * p[2][0] + t * t * t * p[3][0],
+			u * u * u * p[0][1] + 3 * u * u * t * p[1][1] + 3 * u * t * t * p[2][1] + t * t * t * p[3][1]
+		];
 	}
 	derivative(t: number): Point {
-		const u = 1 - t;
-		return [0, 1].map(k => 3 * (u * u * (this.p[1][k] - this.p[0][k]) + 2 * u * t * (this.p[2][k] - this.p[1][k]) + t * t * (this.p[3][k] - this.p[2][k]))) as Point;
+		const u = 1 - t, p = this.p;
+		return [
+			3 * (u * u * (p[1][0] - p[0][0]) + 2 * u * t * (p[2][0] - p[1][0]) + t * t * (p[3][0] - p[2][0])),
+			3 * (u * u * (p[1][1] - p[0][1]) + 2 * u * t * (p[2][1] - p[1][1]) + t * t * (p[3][1] - p[2][1]))
+		];
 	}
 	second(t: number): Point {
-		return [0, 1].map(k => 6 * ((1 - t) * (this.p[2][k] - 2 * this.p[1][k] + this.p[0][k]) + t * (this.p[3][k] - 2 * this.p[2][k] + this.p[1][k]))) as Point;
+		const p = this.p;
+		return [
+			6 * ((1 - t) * (p[2][0] - 2 * p[1][0] + p[0][0]) + t * (p[3][0] - 2 * p[2][0] + p[1][0])),
+			6 * ((1 - t) * (p[2][1] - 2 * p[1][1] + p[0][1]) + t * (p[3][1] - 2 * p[2][1] + p[1][1]))
+		];
 	}
 	reversed() {
 		return new ReturnCurve([...this.p].reverse());

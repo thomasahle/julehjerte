@@ -12,6 +12,18 @@ test('worker return geometry is exactly generated from the standalone typed impl
   await buildReturnSearch({check:true});
 });
 
+test('return-curve evaluations retain native arithmetic on captured cuts and stationary controls',async()=>{
+  const cases=await returnDiagnosticCases();
+  const controls=cases.flatMap(entry=>entry.paths.flat(2));
+  controls.push([[0,-0],[0,-0],[0,-0],[0,-0]],[[0,0],[0,0],[1,1],[1,1]]);
+  for(const points of controls){
+    const native=new Cubic(points),shared=new ReturnCurve(points);
+    for(const t of [0,.003,.125,.5,.875,.997,1])for(const method of ['point','derivative','second']){
+      assert.deepEqual(shared[method](t),native[method](t));
+    }
+  }
+});
+
 test('typed and native cubic return searches retain every complete captured witness',async()=>{
   for(const entry of await returnDiagnosticCases())for(const knots of Object.values(diagnosticSubdivisions))for(const reflect of [false,true]){
     const divided=subdivideDiagnosticPaths(entry.paths,knots,reflect,entry.cfg.width),graph=new CurveGraph(divided.paths,entry.cfg.width),solution=graph.solution(graph.points,1);
