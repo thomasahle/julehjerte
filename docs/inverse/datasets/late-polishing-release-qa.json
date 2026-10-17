@@ -785,12 +785,13 @@
       }
     },
     "photoReplay": {
-      "status": "queued-or-running-separately",
-      "state": "tmp/heart-learning/late-polishing-release-v1/photo-state.json",
-      "baseline": "tmp/heart-learning/clearance-repair-release-v2/production-release/photos/results.json",
-      "scope": "Fresh automatic crop, binary Mal fitting and editable SVG replay of all 31 complete heart cases, retaining the 16 incomplete/obscured inventory entries. No result claimed yet.",
-      "runner": "tmp/heart-learning/late-polishing-release-v1/photo-run.py",
-      "runnerSha256": "e66b6f7c482ed7dc9d81a00577c1f4898d4bd660c5829df80dc29d0ae4fb24e1"
+      "status": "complete",
+      "record": "late-polishing-photo-qa.json",
+      "completeCases": 31,
+      "passedCurrentChecks": 27,
+      "editablePassed": 27,
+      "lostPreviousPasses": 0,
+      "qualification": "Jigsaw improves on unchanged input; crossed ribbons also changes target classification/coverage and still loses its old 72-pixel component. See paired-domain and visual review."
     }
   }
 }

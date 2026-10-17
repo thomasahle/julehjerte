@@ -110,7 +110,55 @@ The [release record](late-polishing-release-qa.json) includes the comparison,
 source/log hashes and stage results under `qa-handoff/`. Full inverse
 verification now passes **1,039/1,039 tests** with no failures, skips or
 cancellations. The controller verifies all 1,018 pinned source files unchanged.
-It completed in 1,168.7 seconds. A separate fresh replay of all 31 complete
-photographic heart cases follows; no updated corpus score is claimed yet.
+It completed in 1,168.7 seconds. The separate full-photo replay below is also
+complete.
 All heavy jobs stay serial at nice 15 with one numerical thread and a 10 GiB
 free-space floor. Nothing has been pushed or deployed.
+
+
+## Complete-photograph replay
+
+The [paired photo record](late-polishing-photo-qa.json) runs all 31 complete
+heart cases from their original photographs and rough selections, with fresh
+automatic cropping and binary Mal fitting. Fifteen incomplete hearts and one
+obscured heart remain in the inventory. All 27 current candidate passes survive
+production editable conversion, SVG round-trip and independent checks. No old
+pass is lost; this remains a development corpus, not a new holdout.
+
+The **jigsaw improves from 5.64375% to 1.0025%** independent disagreement on
+exactly the same photo, crop, classified mask, fitting mask and observation
+coverage. Editable disagreement is 1.025%. Both runs choose four cuts per
+sheet. The new result uses passing 700-resolution paper verification; the old
+run discarded useful coarse-uncertain checkpoints. Several accumulated solver
+changes separate these runs, so this is not a causal attribution to `b7daccc`.
+The motif is visibly closer, with small protrusions and warped corners remaining.
+
+Crossed ribbons also changes from rejected to passing, but its target changes:
+946 observed pixels change classification after padding is excluded, and 2,809
+outside-source pixels no longer enter the error denominator. On the **common
+observed domain against the old mask**, its error improves from 2.1751% to
+0.8843%. Nevertheless, both exported weaves still lose all 72 pixels of the old
+white border feature. Those pixels remain observed and white in the new mask,
+but now connect to the square border in a 114-pixel component, so they are no
+longer an enclosed feature. This pass does not establish recovery of that detail
+or its physical paper identity. The audit verifies both PNG palettes and
+reproduces the recorded independent errors before comparing pixels.
+
+All source photographs and detected crops remain unchanged. Crossed ribbons,
+bauble and bottom flower change classified targets and observation coverage;
+the comparison excludes these from same-target error claims. Among unchanged
+domains, puppy and Viking errors increase by 0.018125 and 0.0825 percentage
+points respectively; both retain their quantitative checks.
+
+Four cases remain rejected: nested squares and Santa lack supported crops;
+outlined star loses a border component despite 0.7431% overall disagreement;
+bauble has 4.3491% observed disagreement and loses three protected features.
+The bauble's target also omits visible frame detail before fitting.
+
+All 31 source/mask/editable comparisons were visually inspected. Some accepted
+bird, crown, puppy and Viking exports still show false gaps or distorted edges.
+The bird's neck and border gaps already exist in the native independent render,
+so editable conversion is not their origin. The count **27/31** describes the
+current quantitative gates, not 27 faithful original cutting templates.
+Photographic latency is not bounded by ten seconds: that is the search allowance,
+and crop detection, preparation, export and independent checks take extra time.

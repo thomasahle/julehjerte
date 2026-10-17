@@ -14,7 +14,7 @@ production path.
 | Synthetic geometry | 256 saved witnesses pass the current geometry/paper re-audit across 768 original/subdivided/reflected representations | Limited procedural diversity; recipe holdouts are not topology-disjoint splits |
 | Small learned model | TorchVision ImageNet-pretrained MobileNetV3-Small with task-specific heads; offline experiments exist | No demonstrated overall reconstruction advantage, ONNX/browser validation or deployment |
 | Larger segmentation baseline | Official pretrained MobileSAM evaluated offline | A useful body mask alone does not establish correct corners, material boundaries or legal templates |
-| Solver | Recent initialization, repair and polishing fixes are committed | Full inverse, application and browser QA pass; updated full-photo replay is running; see below |
+| Solver | Recent initialization, repair and polishing fixes are committed | Full inverse, application, browser and photo-export QA complete; visible defects and four photo failures remain |
 
 ### Latest solver and browser validation
 
@@ -48,9 +48,13 @@ result). Compared with the preceding complete browser run, all crops and masks
 are identical; 18 editable exports are byte-identical and four have lower mask
 error. None has higher mask error. Small edge irregularities remain visible.
 Full inverse verification of `b7daccc` now passes **1,039/1,039 tests**, with
-1,018 source files checked unchanged. A fresh automatic-crop and editable-export
-replay of all 31 complete heart cases is running separately; it has no new
-corpus result yet. Evidence is under
+1,018 source files checked unchanged. The [fresh photo replay](late-polishing-photo-qa.json)
+passes the current derived-mask checks for **27/31 complete heart cases**,
+including their editable exports, with no lost previous passes. Jigsaw improves
+from **5.64% to 1.00%** on an unchanged crop and target. Crossed ribbons also
+passes, but classification/coverage changed and its old 72-pixel border feature
+is still absent; this is not claimed as faithful feature recovery. Visible
+false gaps and uneven edges remain in some accepted outputs. Evidence is under
 `tmp/heart-learning/late-polishing-release-v1/`. Nothing has been pushed or
 deployed.
 
@@ -58,8 +62,8 @@ Earlier [30-workflow browser validation](late-feature-browser-qa.json) and
 [later slower follow-up](base-count-release-qa.json) describe their respective
 revisions. The faster current timings are observations from a separate run,
 not evidence that the deadline correction caused the speed difference. These
-are development workflows, not a fresh holdout. The historical 31-photo
-benchmark is not automatically updated by this validation.
+are development workflows, not a fresh holdout. The separate photo comparison
+marks changed crops, targets and observation coverage before comparing errors.
 
 ### Neural experiments
 
