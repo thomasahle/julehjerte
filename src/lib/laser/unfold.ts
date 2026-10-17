@@ -49,8 +49,15 @@ export interface UnfoldedPiece {
 	stripWidthMm: number;
 }
 
-/** Endpoints this close to the ear base or the fold are on it (template units). */
-const SNAP = 1e-6;
+/**
+ * Endpoints this close to the ear base or the fold are on it (template units,
+ * a template being a few hundred wide). The gallery's designs are hand-drawn
+ * and shipped rounded to 3 decimals, so a finger can end a thousandth of a
+ * unit off the overlap edge `inferOverlapRect` snaps to (Bølgebrud's span
+ * 75.004–525.005 against an edge at 525.004); `orientCut` then moves the end
+ * onto the line, so the unfolded cut still meets its mirror image exactly.
+ */
+const SNAP = 0.05;
 
 /**
  * How far from the piece's side a cut may stray and still be the side itself.

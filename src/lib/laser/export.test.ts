@@ -9,6 +9,7 @@ import {
 import { coord, formatMm } from './format';
 import { SHEETS } from './sheet';
 import { loadHeart } from './testHearts';
+import { getGalleryDesign } from '$lib/data/heartDesigns';
 
 describe('planLaserSheet', () => {
 	it('cuts a shared-template heart from the left piece, whichever lobe is asked for', () => {
@@ -85,6 +86,22 @@ describe('laserFileContent', () => {
 		expect(laserFileContent(plan, 'svg', info)).toContain('width="210mm"');
 		expect(laserFileContent(plan, 'svg', info)).toContain('<desc>https://juleflet.dk/hjerte/classic-3x3/ · 80 mm</desc>');
 		expect(laserFileContent(plan, 'dxf', info)).toContain('AC1009');
+	});
+});
+
+describe('Bølgebrud, as shipped', () => {
+	const design = getGalleryDesign('boelgebrud')!;
+	const info = { heartId: 'boelgebrud', heartName: 'Bølgebrud', url: 'https://juleflet.dk/hjerte/boelgebrud/', widthMm: 0 };
+
+	it.each([40, 60, 80, 120])('exports both lobes as SVG and DXF at %i mm', (widthMm) => {
+		for (const lobe of ['left', 'right'] as const) {
+			// A 120 mm piece unfolds taller than A4; A3 holds every width here.
+			const plan = planLaserSheet(design, { widthMm, count: 1, sheet: widthMm > 100 ? SHEETS.A3 : SHEETS.A4, lobe });
+			expect(plan.piecesFit).toBe(1);
+			expect(plan.pieces[0]!.piece.lobe).toBe(lobe);
+			expect(laserFileContent(plan, 'svg', { ...info, widthMm })).toContain('<g id="cut"');
+			expect(laserFileContent(plan, 'dxf', { ...info, widthMm })).toContain('AC1009');
+		}
 	});
 });
 

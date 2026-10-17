@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import type { HeartDesign, Vec } from '$lib/types/heart';
 import { getTemplateData } from '$lib/utils/templateSvg';
 import { LaserExportError, reversePath, unfoldPiece, type LaserPath, type LaserSegment } from './unfold';
+import heartDesigns from '$lib/data/heart-designs.json';
 import { gallerySvgs, loadHeart } from './testHearts';
 
 const WIDTH = 80;
@@ -114,13 +115,39 @@ describe('strip width', () => {
 });
 
 describe('every gallery heart', () => {
-	const names = Object.keys(gallerySvgs).map((path) => path.split('/').pop()!.replace(/\.svg$/, ''));
+	// The designs the site ships (heart-designs.json, rounded to 3 decimals), not
+	// the SVGs they came from: the rounding is what the download dialog unfolds.
+	const shipped = Object.values(heartDesigns as unknown as Record<string, HeartDesign>);
 
-	it.each(names)('%s unfolds', (name) => {
-		const design = loadHeart(name);
+	it.each(shipped.map((design) => [design.id, design] as const))('%s unfolds', (_id, design) => {
 		for (const lobe of ['left', 'right'] as const) {
 			const piece = unfoldPiece(design, lobe, WIDTH);
 			expect(piece.cuts.length).toBe((lobe === 'left' ? design.gridSize.y : design.gridSize.x) - 1);
+		}
+	});
+
+	it('covers every gallery SVG', () => {
+		const names = Object.keys(gallerySvgs).map((path) => path.split('/').pop()!.replace(/\.svg$/, ''));
+		expect(shipped.map((design) => design.id).sort()).toEqual(expect.arrayContaining(names.sort()));
+	});
+});
+
+describe('Bølgebrud, whose rounded fingers span 450.001 units', () => {
+	const design = (heartDesigns as unknown as Record<string, HeartDesign>)['boelgebrud']!;
+
+	it.each([40, 60, 80, 120])('unfolds at %i mm, both lobes, its cuts closing on the fold', (width) => {
+		for (const lobe of ['left', 'right'] as const) {
+			const piece = unfoldPiece(design, lobe, width);
+			const template = getTemplateData(design, lobe);
+			const scale = piece.widthMm / template.templateWidth;
+			const R = template.earRadius * scale;
+			const H = template.templateHeight * scale;
+			for (const cut of piece.cuts) {
+				const points = nodes(cut);
+				expect(points[0]!.y).toBe(R);
+				expect(points.filter((p) => p.y === H)).toHaveLength(1);
+				expect(points[points.length - 1]!.y).toBeCloseTo(2 * H - R, 9);
+			}
 		}
 	});
 });
