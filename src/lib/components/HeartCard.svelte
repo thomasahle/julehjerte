@@ -247,17 +247,44 @@
 		opacity: 1;
 	}
 
-	/* No hover to reveal it on a touch screen, so it is always there — a little
-	   smaller and slightly see-through, to stay quiet over the ribbon. */
+	/* No hover to reveal it on a touch screen, so it is always there. A finger
+	   needs more than the desktop's 24px: the visible badge is 28px, centred where
+	   the desktop one is, and the input itself is a transparent 44px circle around
+	   it whose corner is the selection ring's, so a tap that just misses the badge
+	   still ticks rather than falling through to the card link. The unticked
+	   border is --green, 8:1 on white and on the snow (--line was 1.4:1). */
 	@media (hover: none) {
 		.pick {
 			opacity: 1;
-			width: 22px;
-			height: 22px;
+			top: -9px;
+			left: -9px;
+			width: 44px;
+			height: 44px;
 		}
 
-		.pick-box:not(:checked) {
+		.pick-box,
+		.pick-box:checked {
+			border: none;
+			background: transparent;
+		}
+
+		.pick-mark {
+			inset: 8px;
+			opacity: 1;
+			border: 1.5px solid var(--green);
+			border-radius: 50%;
 			background: rgb(255 255 255 / 0.9);
+			color: transparent;
+			font-size: 15px;
+			transition:
+				background 0.2s,
+				border-color 0.2s;
+		}
+
+		.pick-box:checked + .pick-mark {
+			border-color: var(--red);
+			background: var(--red);
+			color: var(--white);
 		}
 	}
 
