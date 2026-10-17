@@ -862,7 +862,7 @@ export const translations = {
     dismissMessage: 'Dismiss message',
     editorOutlines: 'Show outline',
     editorShowCurveOutlines: 'Show curve outlines',
-    editorFlipLobeColors: 'Flip lobe colors',
+    editorFlipLobeColors: 'Flip lobe colours',
     editorWithinCurve: 'Within curve',
     editorWithinLobe: 'Within lobe',
     editorBetweenLobes: 'Between lobes',
@@ -1306,8 +1306,8 @@ export const translations = {
     aboutMetaDescription: 'About Juleflet.dk: free templates for woven Christmas hearts, an editor for your own patterns, and links to other good sites about woven hearts.',
 
     // Footer
-    leftColor: 'Left color',
-    rightColor: 'Right color',
+    leftColor: 'Left colour',
+    rightColor: 'Right colour',
     suggestHeart: 'Suggest a heart',
     madeBy: '©',
     footerColors: 'Colours',
