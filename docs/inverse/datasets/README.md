@@ -23,8 +23,12 @@ The preceding count experiment had a driver error and supplied no expanded-count
 quality result. Finally, smoothing at four scales with three palette models
 recovers **0/12** pale printed-checker crops. The unsmoothed mask loses much of
 the pale sheet, while smoothed candidates still fail outline support. The same-count rescue is now integrated after six deterministic scheduling
-regressions and 23 existing photographic/budget tests pass; its full release
-QA is pending. Dense count expansion and smoothing remain offline.
+regressions and 23 existing photographic/budget tests pass; its [full release
+QA](base-count-release-qa.json) remains pending. The first browser batch stopped
+on a disk-full artifact write after twenty checked Hunodan workflows; two of
+those exceeded ten seconds. Exact duplicate historical previews were
+deduplicated without changing their bytes, and the rebuilt preview is being
+rechecked. Failed attempts and the timing misses remain in the release record. Dense count expansion and smoothing remain offline.
 
 A [57-input interior-transition diagnostic](interior-count-evidence-results.json)
 finds more than eight transitions in 97% and 88% of the dense checker's
