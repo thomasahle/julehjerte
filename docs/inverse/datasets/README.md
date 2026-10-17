@@ -10,6 +10,21 @@ A [rough-selection bounds correction](selection-bounds-reconstruction.json) now 
 
 The [follow-up browser checks](late-feature-browser-qa.json) pass all 30 workflows. All 22 regular Hunodan cases remain below ten seconds (5.99 s median, 8.85 s maximum), with byte-identical masks, cut geometry and editable SVGs, and unchanged image error. The complete 1,022-test inverse suite and 874 application tests pass (one application skip), as do check/lint/build. All 1,041 pinned source files verify unchanged.
 
+Three [offline follow-up diagnostics](selected-photo-initialization-diagnostics.json)
+separate the remaining failures. Under the controlled tight budgets, trying an
+existing near-miss or alternate start at the same cut counts after sampling
+fails increases checked fits from **4/8 to 8/8**. This is not a speed benchmark;
+ray detail and thin seams remain, and one passing control has a higher error.
+On the dense checker, expanding initial count proposals selects **10/11 cuts**
+instead of 8/8 and reduces disagreement from **5.61% to 2.71%**; the star control
+stays unchanged. Its fit/finalization still takes **10.15 seconds**, and this
+single inspected case does not justify raising every image's count limit.
+The preceding count experiment had a driver error and supplied no expanded-count
+quality result. Finally, smoothing at four scales with three palette models
+recovers **0/12** pale printed-checker crops. The unsmoothed mask loses much of
+the pale sheet, while smoothed candidates still fail outline support. None of
+these diagnostic policies is integrated yet.
+
 The established photo benchmark and the neural experiments have different
 inputs and denominators. Their latest completed comparisons are:
 
