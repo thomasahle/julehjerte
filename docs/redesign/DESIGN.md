@@ -152,23 +152,51 @@ The gallery starts *in* the hero's foreground snow rather than under it: `.galle
 negative top margin (−70 ≥ 1400, −64 at 1200–1399, −44 at 900–1199, none below 900) and `z-index: 1` so it
 paints over the scene. The drawing's front snow and `--page` are the same colour, so nothing looks cut. Two
 things cap the overlap and both shrink with the landscape, which is drawn at the page's width: the heading has
-to clear the base of the hero's left-hand firs, and the toolbar's opaque `--page` background must not begin
+to clear the base of the hero's left-hand firs, and the gallery bar's opaque `--page` background must not begin
 above the drawing's front snow edge, where it would show as a paler rectangle over the snow hill behind it.
 Below 900 there is no overlap: the landscape is an in-flow band there, with the scroll hint on it.
 
-Toolbar (sticky top 0, z-index 5, `--page` background once stuck, flex-wrap, gap 12, padding 14px 0). A card
-click opens the heart's page and ticking hearts for one PDF is the exception (docs/redesign/FRONT-SIMPLIFY.md),
-so the selection controls only appear while at least one heart is ticked; there is no disabled download button
-and no "Vælg hjerter først" hint. Then, at the left: red split button "Hent skabeloner (n)" + gear (PDF settings)
-with `0 2px 8px rgb(31 51 41 / .12)` shadow (dimmed to .75, not .5, while the PDF is generating, so the red
-still reads as the toolbar's anchor); ghost buttons "Vælg alle" (hidden when every heart is ticked) and
-"Fravælg alle". The three-step strip (print / cut / weave links to the guide) that used to sit at the right end is
-gone (owner's decision, 2026-10-17; the steps live on the guide page), so with nothing ticked the toolbar has
-nothing to show and collapses (`display: none`) at every width rather than leave an empty sticky bar. The "Foreslå et hjerte" link is removed from the
-toolbar (it lives on the Om page).
+Gallery bar (`front/GalleryBar.svelte`, docs/redesign/GALLERY-BAR.md; it replaced the toolbar, 2026-10-17):
+sticky top 0, z-index 5, one row (`display: flex; align-items: center; gap: 12px`, padding 10px 0, 8px below
+700). It is transparent until it sticks — a 1px sentinel above it tells — and `--page` once stuck, so it never
+shows as a paler rectangle over the hero's snow hill. It never collapses. Left to right:
+- **Wordmark** "Juleflet.dk" linking home, the nav logo's style at 20px (16px below 700), `--deep`. Always in
+  the DOM so nothing shifts, but `opacity: 0`, `aria-hidden`, `tabindex="-1"` and no pointer events until the
+  bar is stuck (the header with the same wordmark is still on screen until then); then opacity 1 over 150 ms.
+- **Category chips**, `<nav aria-label="Kategorier">`: one `<a href="#{id}" class="chip">` per category that
+  has hearts, in gallery order, plus "Mine hjerter" only when the visitor has hearts of their own; the title and
+  a muted count ("Mønstre 26"). Pills 13px/600, padding 6px 12px, radius 999, `rgb(255 255 255 / .8)` with a
+  1px `--line` border; hover `--cream2`; current (`aria-current="true"`): `--deep` background, white text, the
+  border transparent rather than removed so the row does not shift; focus ring 3px `--blue`. The row is
+  `flex: 1 1 auto; min-width: 0; overflow-x: auto` with a hidden scrollbar and `scroll-snap-type: x
+  proximity`, so a phone swipes it sideways.
+- **Selection controls**, `margin-left: auto`, only while at least one heart is ticked (a card click opens the
+  heart's page; ticking hearts for one PDF is the exception — docs/redesign/FRONT-SIMPLIFY.md), so there is no
+  disabled download button and no "Vælg hjerter først" hint: red split button "Hent skabeloner (n)" + gear
+  (PDF settings) with `0 2px 8px rgb(31 51 41 / .12)` shadow (dimmed to .75, not .5, while the PDF is
+  generating, so the red still reads as the bar's anchor); ghost buttons "Vælg alle" (hidden when every heart is
+  ticked) and "Fravælg alle". Below 700 they wrap to a second row (`flex-basis: 100%`).
 
-Category section: heading row = uppercase 15px/600 `--green` letter-spacing .06em + "N hjerter" 13px
-`--muted`; padding-bottom 4, margin-bottom 10; **no rule under it**; section ids `klassiske`, `stjerner`,
+Scroll-spy: the current chip belongs to the last section whose top has reached the bar's bottom edge plus 8px
+(1px slack), measured with `getBoundingClientRect()` on scroll (passive, one `requestAnimationFrame` per frame)
+and on resize. At the bottom of the page the last section is current, since the last rows are too short to
+reach the bar; above the first section — and whenever the bar has not yet stuck — none is. The rule is the pure
+`activeSection()` in `$lib/front/scrollSpy`. When the current chip changes, the chip row scrolls just enough to
+show it (the row only, not `scrollIntoView()`, which may also scroll the window and cut a smooth jump short).
+A chip is a plain anchor (keyboard accessible, the URL hash updates, `?selected=` is kept). For that one jump the
+bar puts `smooth-anchors` on `<html>`, which app.css turns into `scroll-behavior: smooth` under
+`prefers-reduced-motion: no-preference`; it is not site-wide, because on `<html>` it would also animate
+SvelteKit's scroll resets and restorations. Sections get `scroll-margin-top: calc(var(--gallery-bar-height) +
+8px)`, the variable set on the gallery from the bar's measured height (49px before hydration), so a heading lands
+just under the bar; the sections space themselves with `margin-top` rather than `padding-top`, so their box —
+what the anchor lands on and the spy measures — starts at the heading.
+
+The three-step strip (print / cut / weave links to the guide) that used to sit at the right end is gone
+(owner's decision, 2026-10-17; the steps live on the guide page). The "Foreslå et hjerte" link is not in the bar
+(it lives on the Om page).
+
+Category section: heading row = uppercase 15px/600 `--green` letter-spacing .06em (the counts are on the
+bar's chips); padding-bottom 4, margin-bottom 10; **no rule under it**; section ids `klassiske`, `stjerner`,
 `moenstre`, `figurer`, `hjerter` (anchors used by the detail page). Grid
 `repeat(auto-fill, minmax(196px, 1fr))`, column-gap 24, row-gap 40 (2 columns, gaps 14/32 below 600).
 
@@ -257,7 +285,7 @@ buttons in two rows — first the two ways to get the template: primary "Downloa
 hash-link sharing) — the ghost one on `rgb(255 255 255 / .8)`, since the row crosses the landscape drawing.
 When the columns stack below 1100 the buttons follow the panel down.
 
-Laser: "Download PDF-skabelon" is a split button like the gallery toolbar's. The label still downloads the PDF;
+Laser: "Download PDF-skabelon" is a split button like the gallery bar's. The label still downloads the PDF;
 its caret opens a menu with "PDF til print (A4)" and "Til laserskærer…", which opens "Hent til laserskærer"
 (docs/redesign/LASER.md): the whole *unfolded* piece — the template mirrored across the fold, every strip cut one
 continuous path through it — as an SVG in real millimetres (red 0.01 mm cut lines, blue score lines) or an R12 DXF
