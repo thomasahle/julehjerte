@@ -1,7 +1,7 @@
 <!--
   The front page's gallery — docs/redesign/DESIGN.md §3 "Gallery".
 
-  The decorative frame, the heading, the sticky toolbar, one row per category and
+  The decorative frame, the heading, the sticky gallery bar, one row per category and
   "Mine hjerter" at the foot. Selection and PDF generation belong to the page;
   this composes the pieces and owns the column's own layout.
 
@@ -11,7 +11,7 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import GalleryFrame from './GalleryFrame.svelte';
-	import GalleryToolbar from './GalleryToolbar.svelte';
+	import GalleryBar from './GalleryBar.svelte';
 	import CategorySection from './CategorySection.svelte';
 	import MyHearts from './MyHearts.svelte';
 	import { WIDE_FRAME_QUERY } from '$lib/breakpoints';
@@ -40,7 +40,7 @@
 		/**
 		 * Ticked hearts that actually exist on this page. Not `selectedIds.size`:
 		 * a shared `?selected=` can name hearts this browser has no card for, and
-		 * the toolbar must not offer a PDF of them.
+		 * the bar must not offer a PDF of them.
 		 */
 		selectedCount: number;
 		generating: boolean;
@@ -74,6 +74,11 @@
 		onDelete
 	}: Props = $props();
 
+	// Measured by the bar; the sections' scroll-margin-top reads it so a chip's
+	// anchor lands under the bar rather than behind it. Left unset until it is
+	// known, so the prerendered page falls back to the stylesheet's estimate.
+	let barHeight = $state(0);
+
 	let galleryWrapEl = $state.raw<HTMLElement | null>(null);
 	let frameHeight = $state(0);
 
@@ -98,13 +103,23 @@
 <div class="gallery-wrap" bind:this={galleryWrapEl}>
 	<GalleryFrame height={frameHeight} />
 
-	<div class="gallery" id="skabeloner">
+	<div
+		class="gallery"
+		id="skabeloner"
+		style:--gallery-bar-height={barHeight > 0 ? `${barHeight}px` : undefined}
+	>
 		<!-- The section keeps a heading for the nav's "Skabeloner" anchor and for
 		     screen readers; visually the gallery starts with the first category. -->
 		<h2 class="sr-only">{t('galleryHeading', lang)}</h2>
 
-		<GalleryToolbar
+		<GalleryBar
 			{lang}
+			categories={categories.map((category) => ({
+				id: category.id,
+				count: category.hearts.length
+			}))}
+			myHeartCount={myHearts.length}
+			bind:height={barHeight}
 			{selectedCount}
 			{generating}
 			{allSelected}
@@ -144,7 +159,7 @@
 <style>
 	/* The gallery starts up in the hero's foreground snow instead of below it.
 	   The drawing's front snow and the page background are the same colour, so
-	   the heading and the toolbar simply carry on over it and the wide empty
+	   the heading and the bar simply carry on over it and the wide empty
 	   band at the foot of the hero disappears.
 
 	   From 1400 up the heading sits in the snow just under the hill line, where
@@ -152,8 +167,8 @@
 	   margin there, which clears the hero's left-hand fir. Below 1400 the
 	   column hugs a 40 px margin and that fir's lower branches reach past it,
 	   so the overlap stays small enough for the heading to start below the
-	   fir's base (measured at 1200 and 1024). The toolbar is transparent until
-	   it sticks (see GalleryToolbar), so its background never shows as a paler
+	   fir's base (measured at 1200 and 1024). The bar is transparent until
+	   it sticks (see GalleryBar), so its background never shows as a paler
 	   rectangle over the snow hill. Below 900 there is no overlap at all: the
 	   landscape is an in-flow band there, with the scroll hint on it. */
 	.gallery-wrap {

@@ -1,0 +1,282 @@
+/**
+ * The gallery bar (docs/redesign/GALLERY-BAR.md): a wordmark that only shows
+ * once the bar has stuck, one chip per category with scroll-spy, and the
+ * download and select controls only while something is ticked
+ * (docs/redesign/FRONT-SIMPLIFY.md).
+ */
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import { flushSync, mount, tick, unmount } from 'svelte';
+import GalleryBar from './GalleryBar.svelte';
+
+const CATEGORIES = [
+	{ id: 'klassiske', count: 12 },
+	{ id: 'stjerner', count: 10 },
+	{ id: 'moenstre', count: 26 },
+	{ id: 'figurer', count: 4 },
+	{ id: 'hjerter', count: 3 }
+];
+
+const cleanup: (() => void)[] = [];
+
+afterEach(() => {
+	for (const dispose of cleanup.splice(0)) dispose();
+	vi.unstubAllGlobals();
+});
+
+/** Fakes an element's box: jsdom has no layout, so every rect is all zeros. */
+function placeAt(el: Element, top: number, height = 40) {
+	el.getBoundingClientRect = () =>
+		({ top, bottom: top + height, left: 0, right: 0, width: 0, height, x: 0, y: top }) as DOMRect;
+}
+
+interface Options {
+	selectedCount?: number;
+	allSelected?: boolean;
+	myHeartCount?: number;
+}
+
+async function render({ selectedCount = 0, allSelected = false, myHeartCount = 0 }: Options = {}) {
+	// The bar watches a sentinel to know when it has stuck; jsdom has no
+	// IntersectionObserver, so the test keeps the callback and calls it itself.
+	let reportSentinel: ((entries: Partial<IntersectionObserverEntry>[]) => void) | null = null;
+	vi.stubGlobal(
+		'IntersectionObserver',
+		class {
+			constructor(callback: (entries: Partial<IntersectionObserverEntry>[]) => void) {
+				reportSentinel = callback;
+			}
+			observe() {}
+			disconnect() {}
+		}
+	);
+	// The bar's height binding measures through a ResizeObserver; jsdom has
+	// none, and there is no layout to measure anyway.
+	vi.stubGlobal(
+		'ResizeObserver',
+		class {
+			observe() {}
+			unobserve() {}
+			disconnect() {}
+		}
+	);
+	// Run the spy's frame on the next microtask rather than a real frame, so a
+	// dispatched scroll is measured before the assertion. Not synchronously:
+	// the bar stores the frame handle after requesting it, as with a real one.
+	vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
+		queueMicrotask(() => callback(0));
+		return 1;
+	});
+
+	// The sections the chips point at, as the gallery would render them.
+	const sections = [...CATEGORIES.map((c) => c.id), 'mine'].map((id) => {
+		const section = document.createElement('section');
+		section.id = id;
+		placeAt(section, 10_000);
+		document.body.appendChild(section);
+		return section;
+	});
+
+	const target = document.createElement('div');
+	document.body.appendChild(target);
+	const handlers = { onPrint: vi.fn(), onSelectAll: vi.fn(), onSelectNone: vi.fn() };
+	const component = mount(GalleryBar, {
+		target,
+		props: {
+			lang: 'da',
+			categories: CATEGORIES,
+			myHeartCount,
+			selectedCount,
+			generating: false,
+			allSelected,
+			pdfLayout: 'medium',
+			...handlers
+		}
+	});
+	cleanup.push(() => {
+		unmount(component);
+		target.remove();
+		for (const section of sections) section.remove();
+	});
+	flushSync();
+	await tick();
+	const button = (text: string) =>
+		[...target.querySelectorAll<HTMLButtonElement>('button')].find((b) =>
+			b.textContent?.trim().startsWith(text)
+		);
+	const bar = target.querySelector<HTMLElement>('.gallery-bar')!;
+	placeAt(bar, 0, 50);
+	return {
+		target,
+		handlers,
+		bar,
+		wordmark: () => target.querySelector<HTMLAnchorElement>('a.wordmark')!,
+		chips: () => [...target.querySelectorAll<HTMLAnchorElement>('nav a.chip')],
+		current: () =>
+			[...target.querySelectorAll<HTMLAnchorElement>('a.chip[aria-current="true"]')].map((a) =>
+				a.getAttribute('href')
+			),
+		section: (id: string) => sections.find((s) => s.id === id)!,
+		/** Lets the sentinel report the bar as stuck (or not). */
+		stick: async (stuck: boolean) => {
+			reportSentinel!([
+				{ isIntersecting: !stuck, boundingClientRect: { top: stuck ? -1 : 300 } as DOMRect }
+			]);
+			flushSync();
+			await tick();
+		},
+		scroll: async () => {
+			window.dispatchEvent(new Event('scroll'));
+			await Promise.resolve();
+			flushSync();
+			await tick();
+		},
+		download: () => button('Hent skabeloner'),
+		selectAll: () => button('Vælg alle'),
+		selectNone: () => button('Fravælg alle'),
+		gear: () => target.querySelector<HTMLButtonElement>('[aria-label="PDF-indstillinger"]')
+	};
+}
+
+describe('GalleryBar', () => {
+	it('shows one chip per category, in order, with its count', async () => {
+		const ui = await render();
+		const nav = ui.target.querySelector('nav')!;
+		expect(nav.getAttribute('aria-label')).toBe('Kategorier');
+		expect(ui.chips().map((a) => a.getAttribute('href'))).toEqual([
+			'#klassiske',
+			'#stjerner',
+			'#moenstre',
+			'#figurer',
+			'#hjerter'
+		]);
+		expect(ui.chips().map((a) => a.textContent?.replace(/\s+/g, ' ').trim())).toEqual([
+			'Klassiske 12',
+			'Stjerner 10',
+			'Mønstre 26',
+			'Figurer 4',
+			'Hjerter 3'
+		]);
+	});
+
+	it('adds "Mine hjerter" only when the visitor has hearts of their own', async () => {
+		const without = await render();
+		expect(without.chips().some((a) => a.getAttribute('href') === '#mine')).toBe(false);
+
+		const withHearts = await render({ myHeartCount: 2 });
+		const last = withHearts.chips().at(-1)!;
+		expect(last.getAttribute('href')).toBe('#mine');
+		expect(last.textContent?.replace(/\s+/g, ' ').trim()).toBe('Mine hjerter 2');
+	});
+
+	it('leaves out a category without hearts', async () => {
+		const ui = await render();
+		expect(ui.chips()).toHaveLength(5);
+		// Re-render with an empty category through a fresh mount.
+		const target = document.createElement('div');
+		document.body.appendChild(target);
+		const component = mount(GalleryBar, {
+			target,
+			props: {
+				lang: 'en',
+				categories: [...CATEGORIES.slice(0, 4), { id: 'hjerter', count: 0 }],
+				myHeartCount: 0,
+				selectedCount: 0,
+				generating: false,
+				allSelected: false,
+				pdfLayout: 'medium',
+				onPrint: vi.fn(),
+				onSelectAll: vi.fn(),
+				onSelectNone: vi.fn()
+			}
+		});
+		cleanup.push(() => {
+			unmount(component);
+			target.remove();
+		});
+		flushSync();
+		expect([...target.querySelectorAll('a.chip')].map((a) => a.getAttribute('href'))).toEqual([
+			'#klassiske',
+			'#stjerner',
+			'#moenstre',
+			'#figurer'
+		]);
+		expect(target.querySelector('nav')?.getAttribute('aria-label')).toBe('Categories');
+	});
+
+	it('keeps the wordmark hidden until the bar has stuck', async () => {
+		const ui = await render();
+		const wordmark = ui.wordmark();
+		expect(wordmark.textContent?.trim()).toBe('Juleflet.dk');
+		expect(wordmark.getAttribute('href')).toBe('/');
+		expect(wordmark.getAttribute('aria-hidden')).toBe('true');
+		expect(wordmark.getAttribute('tabindex')).toBe('-1');
+		expect(ui.bar.classList.contains('stuck')).toBe(false);
+
+		await ui.stick(true);
+		expect(ui.bar.classList.contains('stuck')).toBe(true);
+		expect(wordmark.hasAttribute('aria-hidden')).toBe(false);
+		expect(wordmark.hasAttribute('tabindex')).toBe(false);
+
+		await ui.stick(false);
+		expect(wordmark.getAttribute('aria-hidden')).toBe('true');
+	});
+
+	it('marks the chip of the section that has reached the bar as current', async () => {
+		const ui = await render();
+		await ui.scroll();
+		expect(ui.current()).toEqual([]);
+
+		// The bar is 50px tall at the top; Mønstre's heading has just reached it.
+		placeAt(ui.section('klassiske'), -2000);
+		placeAt(ui.section('stjerner'), -900);
+		placeAt(ui.section('moenstre'), 58);
+		placeAt(ui.section('figurer'), 1500);
+		placeAt(ui.section('hjerter'), 2500);
+		await ui.scroll();
+		expect(ui.current()).toEqual(['#moenstre']);
+
+		placeAt(ui.section('moenstre'), 200);
+		await ui.scroll();
+		expect(ui.current()).toEqual(['#stjerner']);
+	});
+
+	it('marks nothing while the bar has not reached the top', async () => {
+		const ui = await render();
+		placeAt(ui.bar, 300, 50);
+		placeAt(ui.section('klassiske'), 358);
+		await ui.scroll();
+		expect(ui.current()).toEqual([]);
+	});
+
+	it('renders no selection controls while nothing is ticked', async () => {
+		const ui = await render();
+		expect(ui.download()).toBeUndefined();
+		expect(ui.gear()).toBeNull();
+		expect(ui.selectAll()).toBeUndefined();
+		expect(ui.selectNone()).toBeUndefined();
+		expect(ui.target.querySelectorAll('button')).toHaveLength(0);
+	});
+
+	it('shows download, select all and select none once hearts are ticked', async () => {
+		const ui = await render({ selectedCount: 2 });
+		expect(ui.download()?.textContent).toMatch(/Hent skabeloner\s*2/);
+		expect(ui.download()?.hasAttribute('aria-disabled')).toBe(false);
+		expect(ui.gear()).not.toBeNull();
+		expect(ui.selectAll()).toBeDefined();
+		expect(ui.selectNone()).toBeDefined();
+
+		ui.download()!.click();
+		ui.selectAll()!.click();
+		ui.selectNone()!.click();
+		expect(ui.handlers.onPrint).toHaveBeenCalledTimes(1);
+		expect(ui.handlers.onSelectAll).toHaveBeenCalledTimes(1);
+		expect(ui.handlers.onSelectNone).toHaveBeenCalledTimes(1);
+	});
+
+	it('hides "Vælg alle" when every heart is ticked', async () => {
+		const ui = await render({ selectedCount: 2, allSelected: true });
+		expect(ui.selectAll()).toBeUndefined();
+		expect(ui.download()).toBeDefined();
+		expect(ui.selectNone()).toBeDefined();
+	});
+});

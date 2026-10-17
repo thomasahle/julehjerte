@@ -31,7 +31,7 @@ export const translations = {
     heroSeeTemplates: 'Se skabeloner',
     heroScrollHint: 'Scroll for at udforske skabeloner',
 
-    // Gallery: the toolbar, the cards and the three-step strip
+    // Gallery: the sticky bar and the cards
     createNewHeart: 'Lav nyt hjerte',
     printSelected: 'Hent skabeloner',
     generating: 'Genererer...',
@@ -48,7 +48,7 @@ export const translations = {
     selectAll: 'Vælg alle',
     selectNone: 'Fravælg alle',
     galleryHeading: 'Skabeloner',
-    /** {n} = hearts in the category */
+    galleryCategories: 'Kategorier',
     pdfSettings: 'PDF-indstillinger',
     myHeartsEmpty: 'Hjerter du tegner i editoren gemmes her i din browser, så du kan printe og dele dem senere.',
 
@@ -686,7 +686,7 @@ export const translations = {
     heroSeeTemplates: 'Browse templates',
     heroScrollHint: 'Scroll to explore templates',
 
-    // Gallery: the toolbar, the cards and the three-step strip
+    // Gallery: the sticky bar and the cards
     createNewHeart: 'Create new heart',
     printSelected: 'Download templates',
     generating: 'Generating...',
@@ -703,7 +703,7 @@ export const translations = {
     selectAll: 'Select all',
     selectNone: 'Select none',
     galleryHeading: 'Templates',
-    /** {n} = hearts in the category */
+    galleryCategories: 'Categories',
     pdfSettings: 'PDF settings',
     myHeartsEmpty: 'Hearts you draw in the editor are saved here in your browser, so you can print and share them later.',
 
