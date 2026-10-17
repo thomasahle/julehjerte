@@ -11,35 +11,43 @@ import { SHEETS } from './sheet';
 import { loadHeart } from './testHearts';
 
 describe('planLaserSheet', () => {
-	it('cuts a shared-template heart as two copies of the left piece', () => {
-		const plan = planLaserSheet(loadHeart('classic-3x3'), { widthMm: 80, hearts: 1, sheet: SHEETS.A4 });
-		expect(plan.pieces).toHaveLength(2);
+	it('cuts a shared-template heart from the left piece, whichever lobe is asked for', () => {
+		const heart = loadHeart('classic-3x3');
+		const plan = planLaserSheet(heart, { widthMm: 80, count: 2, sheet: SHEETS.A4, lobe: 'right' });
+		expect(plan.shared).toBe(true);
+		expect(plan.lobe).toBe('left');
 		expect(plan.pieces.map((p) => p.piece.lobe)).toEqual(['left', 'left']);
-		expect(plan.heartsFit).toBe(1);
+		expect(plan.piecesFit).toBe(2);
 	});
 
-	it('cuts an asymmetric heart as its left and its right piece', () => {
-		const plan = planLaserSheet(loadHeart('jul'), { widthMm: 60, hearts: 1, sheet: SHEETS.A4 });
-		expect(plan.pieces.map((p) => p.piece.lobe)).toEqual(['left', 'right']);
+	it('puts one lobe of an asymmetric heart on a sheet: one paper colour', () => {
+		const jul = loadHeart('jul');
+		const left = planLaserSheet(jul, { widthMm: 60, count: 2, sheet: SHEETS.A4, lobe: 'left' });
+		expect(left.shared).toBe(false);
+		expect(left.pieces.map((p) => p.piece.lobe)).toEqual(['left', 'left']);
+		const right = planLaserSheet(jul, { widthMm: 60, count: 2, sheet: SHEETS.A4, lobe: 'right' });
+		expect(right.pieces.map((p) => p.piece.lobe)).toEqual(['right', 'right']);
+		// Both halves keep one scale, so their strips still weave.
+		expect(right.pair[1].stripWidthMm).toBeCloseTo(left.pair[0].stripWidthMm, 6);
 	});
 
-	it('keeps only whole hearts when the sheet runs out', () => {
-		// A3 at 80 mm holds three pieces: one heart and a lone left piece.
-		const plan = planLaserSheet(loadHeart('jul'), { widthMm: 80, hearts: 4, sheet: SHEETS.A3 });
-		expect(plan.heartsRequested).toBe(4);
-		expect(plan.heartsFit).toBe(1);
-		expect(plan.pieces).toHaveLength(2);
+	it('counts the pieces that fit when the sheet runs out', () => {
+		// A3 at 80 mm holds three pieces.
+		const plan = planLaserSheet(loadHeart('jul'), { widthMm: 80, count: 4, sheet: SHEETS.A3, lobe: 'left' });
+		expect(plan.piecesRequested).toBe(4);
+		expect(plan.piecesFit).toBe(3);
+		expect(plan.pieces).toHaveLength(3);
 	});
 
 	it('fits nothing when one piece is taller than the sheet', () => {
-		const plan = planLaserSheet(loadHeart('classic-3x3'), { widthMm: 200, hearts: 1, sheet: SHEETS.A4 });
-		expect(plan.heartsFit).toBe(0);
+		const plan = planLaserSheet(loadHeart('classic-3x3'), { widthMm: 200, count: 1, sheet: SHEETS.A4, lobe: 'left' });
+		expect(plan.piecesFit).toBe(0);
 		expect(plan.pieces).toHaveLength(0);
 	});
 });
 
 describe('laserFileContent', () => {
-	const plan = planLaserSheet(loadHeart('classic-3x3'), { widthMm: 80, hearts: 1, sheet: SHEETS.A4 });
+	const plan = planLaserSheet(loadHeart('classic-3x3'), { widthMm: 80, count: 2, sheet: SHEETS.A4, lobe: 'left' });
 	const info = { heartId: 'classic-3x3', heartName: 'Klassisk', url: 'https://juleflet.dk/hjerte/classic-3x3/', widthMm: 80, scoreFold: false };
 
 	it('writes the format asked for', () => {
@@ -53,6 +61,12 @@ describe('laserFileName', () => {
 	it('names the heart, the width and the format', () => {
 		expect(laserFileName('classic-3x3', 80, 'svg')).toBe('classic-3x3-laser-80mm.svg');
 		expect(laserFileName('mit hjerte/2', 125, 'dxf')).toBe('mit-hjerte-2-laser-125mm.dxf');
+	});
+
+	it('names the lobe when the halves differ', () => {
+		expect(laserFileName('jul', 80, 'svg', 'Venstre')).toBe('jul-laser-80mm-venstre.svg');
+		expect(laserFileName('jul', 80, 'dxf', 'Højre')).toBe('jul-laser-80mm-hoejre.dxf');
+		expect(laserFileName('jul', 80, 'svg', 'Right')).toBe('jul-laser-80mm-right.svg');
 	});
 });
 

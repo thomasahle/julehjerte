@@ -10,9 +10,9 @@
 
   Behaviour that must survive any restyling: /hjerte/delt/ (a heart shared in the
   URL fragment, noindex, "Gem i Mine hjerter"), the editor hand-off in editHref,
-  navigator.share with a clipboard fallback, downloadPDF(), the tracing mode
-  (docs/redesign/TRACE.md), the laser export (docs/redesign/LASER.md) and the
-  analytics events.
+  navigator.share with a clipboard fallback, the "Hent skabelon" dialog for the
+  printer PDF and the laser file (docs/redesign/DOWNLOAD.md), the tracing mode
+  (docs/redesign/TRACE.md) and the analytics events.
 -->
 <script lang="ts">
   import { page } from "$app/stores";
@@ -24,7 +24,7 @@
   import HeartStage from "$lib/components/detail/HeartStage.svelte";
   import RelatedHearts from "$lib/components/detail/RelatedHearts.svelte";
   import TraceMode from "$lib/components/detail/TraceMode.svelte";
-  import LaserDialog from "$lib/components/detail/LaserDialog.svelte";
+  import DownloadDialog from "$lib/components/detail/DownloadDialog.svelte";
   import Fir from "$lib/components/Fir.svelte";
   import Scene from "$lib/components/Scene.svelte";
   import PageHeader from "$lib/components/PageHeader.svelte";
@@ -46,11 +46,7 @@
   import { makeHeartAnchorId } from "$lib/utils/heartAnchors";
   import { firstSentence } from "$lib/utils/text";
   import type { HeartDesign, HeartInfo } from "$lib/types/heart";
-  import {
-    trackHeartDownload,
-    trackHeartShare,
-    trackHeartEdit,
-  } from "$lib/analytics";
+  import { trackHeartShare, trackHeartEdit } from "$lib/analytics";
 
   let { data }: PageProps = $props();
 
@@ -232,21 +228,6 @@
     }
   }
 
-  // jsPDF is 140 KB gzipped and only this click needs it, so it is loaded here
-  // rather than in the page's initial bundle.
-  async function handleDownload() {
-    if (!design) return;
-    trackHeartDownload(design.id, design.name);
-    try {
-      const { downloadPDF } = await import("$lib/pdf/template");
-      await downloadPDF(design, { lang });
-    } catch (err) {
-      // Without this the download simply did nothing, with no sign of why.
-      console.error("Generating the PDF failed", err);
-      saveError = t("pdfFailed", lang);
-    }
-  }
-
   // "Tegn af fra skærmen": the full-screen tracing mode. Focus goes back to the
   // button that opened it, which still exists when the mode closes.
   let traceOpen = $state(false);
@@ -264,21 +245,22 @@
     traceOpener?.focus();
   }
 
-  // "Til laserskærer…" from the download button's menu. Focus goes back to the
-  // menu's caret, which HeartActions hands over: the clicked item is gone.
-  let laserOpen = $state(false);
-  let laserOpener: HTMLElement | null = null;
+  // "Hent skabelon…": the dialog for the printer PDF and the laser file, which
+  // also makes the file and sends its analytics event. Focus goes back to the
+  // button that opened it.
+  let downloadOpen = $state(false);
+  let downloadOpener: HTMLElement | null = null;
 
-  function handleLaser(opener: HTMLElement | null) {
+  function handleDownload() {
     if (!design) return;
-    laserOpener = opener;
-    laserOpen = true;
+    downloadOpener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    downloadOpen = true;
   }
 
-  async function handleLaserClose() {
-    laserOpen = false;
+  async function handleDownloadClose() {
+    downloadOpen = false;
     await tick();
-    laserOpener?.focus();
+    downloadOpener?.focus();
   }
 
   function handleEdit() {
@@ -454,7 +436,6 @@
               onShare={handleShare}
               onSaveShared={handleSaveShared}
               onTrace={handleTrace}
-              onLaser={handleLaser}
             />
           </div>
         </div>
@@ -485,13 +466,13 @@
       open={traceOpen}
       onClose={handleTraceClose}
     />
-    <LaserDialog
+    <DownloadDialog
       {design}
       {heartId}
       heartName={info.name}
       {lang}
-      open={laserOpen}
-      onClose={handleLaserClose}
+      open={downloadOpen}
+      onClose={handleDownloadClose}
     />
   {/if}
 </div>

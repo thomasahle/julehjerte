@@ -1,6 +1,6 @@
 /**
  * From a heart and the dialog's settings to a laid-out sheet and a file —
- * docs/redesign/LASER.md. The dialog (LaserDialog.svelte) only holds the
+ * docs/redesign/LASER.md. The dialog (DownloadDialog.svelte) only holds the
  * settings and hands them here, so everything it shows can be tested without it.
  */
 import type { HeartDesign } from '$lib/types/heart';
@@ -9,6 +9,8 @@ import { serializeLaserDxf } from './dxf';
 import { layoutSheet, type LaserSheet, type SheetSize } from './sheet';
 import { serializeLaserSvg } from './svg';
 import { unfoldPiece, type UnfoldedPiece } from './unfold';
+import type { TemplateLobe } from '$lib/utils/templateSvg';
+import { slugify } from '$lib/utils/slug';
 
 export type LaserFormat = 'svg' | 'dxf';
 
@@ -32,16 +34,26 @@ export const MAX_SHEET_MM = 2000;
 
 export interface LaserRequest {
 	widthMm: number;
-	hearts: number;
+	/** Pieces wanted on the sheet: one per heart, since a sheet holds one lobe. */
+	count: number;
 	sheet: SheetSize;
+	/**
+	 * The lobe to cut. A heart's two halves are cut from two colours of paper,
+	 * so one sheet (one colour) holds one lobe's pieces. Ignored for a heart
+	 * whose lobes share a template: its pieces are all the left one.
+	 */
+	lobe: TemplateLobe;
 }
 
 export interface LaserPlan extends LaserSheet {
-	/** The two pieces of one heart, left lobe first. */
+	/** The two pieces of one heart, left lobe first; the same piece twice when the lobes share a template. */
 	pair: [UnfoldedPiece, UnfoldedPiece];
-	heartsRequested: number;
-	/** Whole hearts on the sheet; a lone left piece without its right is left off. */
-	heartsFit: number;
+	/** Both lobes are one piece, so the sheet serves either colour. */
+	shared: boolean;
+	/** The lobe on the sheet. */
+	lobe: TemplateLobe;
+	piecesRequested: number;
+	piecesFit: number;
 }
 
 export function clamp(n: number, min: number, max: number): number {
@@ -49,26 +61,27 @@ export function clamp(n: number, min: number, max: number): number {
 }
 
 /**
- * The pieces for `hearts` hearts, laid out on the sheet. A heart whose lobes
- * share a template (`lobesShareTemplate`) is cut as two copies of the left
- * piece, as the PDF prints one template for both.
+ * `count` pieces of one lobe, laid out on the sheet. A heart whose lobes share
+ * a template (`lobesShareTemplate`) is cut from the left piece whichever lobe
+ * is asked for, as the PDF prints one template for both.
  */
 export function planLaserSheet(design: HeartDesign, request: LaserRequest): LaserPlan {
+	const shared = lobesShareTemplate(design.fingers, design.gridSize);
 	const left = unfoldPiece(design, 'left', request.widthMm);
-	const right = lobesShareTemplate(design.fingers, design.gridSize)
-		? left
-		: unfoldPiece(design, 'right', request.widthMm);
-	const wanted: UnfoldedPiece[] = [];
-	for (let i = 0; i < request.hearts; i++) wanted.push(left, right);
+	const right = shared ? left : unfoldPiece(design, 'right', request.widthMm);
+	const lobe: TemplateLobe = shared ? 'left' : request.lobe;
+	const piece = lobe === 'left' ? left : right;
+	const wanted: UnfoldedPiece[] = Array.from({ length: request.count }, () => piece);
 
 	const layout = layoutSheet(wanted, { sheet: request.sheet });
-	const heartsFit = Math.floor(layout.fitted / 2);
 	return {
 		sheet: request.sheet,
-		pieces: layout.placements.slice(0, heartsFit * 2).map(({ index, x, y }) => ({ piece: wanted[index]!, x, y })),
+		pieces: layout.placements.map(({ index, x, y }) => ({ piece: wanted[index]!, x, y })),
 		pair: [left, right],
-		heartsRequested: request.hearts,
-		heartsFit
+		shared,
+		lobe,
+		piecesRequested: request.count,
+		piecesFit: layout.fitted
 	};
 }
 
@@ -91,13 +104,21 @@ export function laserFileContent(plan: LaserSheet, format: LaserFormat, info: La
 	});
 }
 
-/** `{heart id}-laser-{width}mm.{svg|dxf}`, with anything unsafe in a file name dashed out. */
-export function laserFileName(heartId: string, widthMm: number, format: LaserFormat): string {
+/**
+ * `{heart id}-laser-{width}mm.{svg|dxf}`, or with the lobe's name before the
+ * extension (`…-80mm-venstre.svg`) when the heart's halves differ, so the two
+ * files of one heart are told apart; anything unsafe in a file name dashed out.
+ */
+export function laserFileName(heartId: string, widthMm: number, format: LaserFormat, lobeName?: string): string {
 	const id = heartId.replace(/[^\w-]+/g, '-').replace(/^-+|-+$/g, '') || 'juleflet';
-	return `${id}-laser-${widthMm}mm.${format}`;
+	// "Højre" on disk as "hoejre", the way the gallery's ids spell Danish.
+	const lobe = lobeName ? `-${slugify(lobeName, '')}`.replace(/-$/, '') : '';
+	return `${id}-laser-${widthMm}mm${lobe}.${format}`;
 }
 
 // ---- Remembered settings ----------------------------------------------------
+// The laser dialog's own key, from before it became the "Hent skabelon"
+// dialog. Only read now, once, by $lib/download/settings.
 
 export const LASER_STORAGE_KEY = 'juleflet:laser';
 
@@ -122,21 +143,5 @@ export function parseLaserSettings(raw: string | null): LaserSettings {
 		return { format, widthMm };
 	} catch {
 		return { ...DEFAULT_LASER_SETTINGS };
-	}
-}
-
-export function loadLaserSettings(): LaserSettings {
-	try {
-		return parseLaserSettings(window.localStorage.getItem(LASER_STORAGE_KEY));
-	} catch {
-		return { ...DEFAULT_LASER_SETTINGS };
-	}
-}
-
-export function saveLaserSettings(settings: LaserSettings): void {
-	try {
-		window.localStorage.setItem(LASER_STORAGE_KEY, JSON.stringify(settings));
-	} catch {
-		// Blocked or full: the next visit starts from the defaults again.
 	}
 }

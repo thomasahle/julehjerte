@@ -14,7 +14,7 @@ const classic = loadHeart('classic-3x3');
 const options = { title: 'Klassisk', description: 'https://juleflet.dk/hjerte/classic-3x3/ · 80 mm' };
 
 describe('serializeLaserSvg', () => {
-	const plan = planLaserSheet(classic, { widthMm: 80, hearts: 1, sheet: SHEETS.A4 });
+	const plan = planLaserSheet(classic, { widthMm: 80, count: 2, sheet: SHEETS.A4, lobe: 'left' });
 
 	it('is in millimetres: one user unit per mm', () => {
 		const svg = parse(serializeLaserSvg(plan, { ...options, scoreFold: false })).documentElement;
@@ -50,7 +50,7 @@ describe('serializeLaserSvg', () => {
 	});
 
 	it('bakes the offsets in, at three decimals, and never repeats a path', () => {
-		const doc = parse(serializeLaserSvg(planLaserSheet(loadHeart('stjerne'), { widthMm: 70, hearts: 3, sheet: SHEETS.A3 }), { ...options, scoreFold: true }));
+		const doc = parse(serializeLaserSvg(planLaserSheet(loadHeart('stjerne'), { widthMm: 70, count: 6, sheet: SHEETS.A3, lobe: 'left' }), { ...options, scoreFold: true }));
 		const ds = [...doc.querySelectorAll('path')].map((p) => p.getAttribute('d')!);
 		expect(new Set(ds).size).toBe(ds.length);
 		for (const d of ds) {

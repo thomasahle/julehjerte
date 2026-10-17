@@ -1,13 +1,23 @@
 <!--
-  "Hent til laserskærer" — docs/redesign/LASER.md.
+  "Hent skabelon" — docs/redesign/DOWNLOAD.md.
 
-  The heart's whole unfolded piece as a laser-ready SVG or DXF: the visitor
-  picks the format, the heart's width, how many hearts, the sheet and whether
-  to score the fold, sees the sheet as it will be cut, and downloads one file.
+  Everything about getting a heart's template out of the site, in one dialog:
+  for a printer, a PDF of the folded templates at the width the visitor picks,
+  on as many pages of the chosen sheet as the hearts need; for a laser cutter,
+  the whole unfolded piece as an SVG or DXF (docs/redesign/LASER.md). Width,
+  number of hearts and sheet mean the same in both, so they are set once, and
+  the preview shows the sheet as it will come out.
 
-  The geometry and the file writing are all in $lib/laser; this dialog holds
-  the settings, shows what they give, and hands the file to the browser.
+  The geometry and the file writing are in $lib/laser and $lib/pdf (the page
+  planning in $lib/pdf/plan, without jsPDF, so the preview needs no PDF); this
+  dialog holds the settings, shows what they give, and hands the file over.
 -->
+<script lang="ts" module>
+	import type { TemplateLobe } from '$lib/utils/templateSvg';
+
+	let sessionLobe: TemplateLobe = 'left';
+</script>
+
 <script lang="ts">
 	import { untrack } from 'svelte';
 	import Modal from '$lib/components/Modal.svelte';
@@ -17,9 +27,8 @@
 	import { SITE_URL } from '$lib/config';
 	import { heartPath } from '$lib/i18n/routes';
 	import type { HeartDesign } from '$lib/types/heart';
-	import { trackLaserDownload } from '$lib/analytics';
+	import { trackHeartDownload, trackLaserDownload } from '$lib/analytics';
 	import {
-		DEFAULT_WIDTH_MM,
 		LASER_MIME,
 		MAX_HEARTS,
 		MAX_SHEET_MM,
@@ -31,15 +40,28 @@
 		clamp,
 		laserFileContent,
 		laserFileName,
-		loadLaserSettings,
 		planLaserSheet,
-		saveLaserSettings,
 		type LaserFormat,
 		type LaserPlan
 	} from '$lib/laser/export';
 	import { formatMm } from '$lib/laser/format';
 	import { SHEETS, type SheetSize } from '$lib/laser/sheet';
 	import { serializeLaserSvg } from '$lib/laser/svg';
+	import {
+		planTemplatePages,
+		templatePair,
+		templatePieces,
+		type TemplatePagePlan,
+		type TemplatePiece
+	} from '$lib/pdf/plan';
+	import { serializeTemplatePageSvg } from '$lib/pdf/preview';
+	import { lobesShareTemplate } from '$lib/utils/symmetry';
+	import {
+		DEFAULT_DOWNLOAD_SETTINGS,
+		loadDownloadSettings,
+		saveDownloadSettings,
+		type DownloadMode
+	} from '$lib/download/settings';
 
 	interface Props {
 		design: HeartDesign;
@@ -53,56 +75,139 @@
 
 	let { design, heartId, heartName, lang, open, onClose }: Props = $props();
 
+	// The laser lobe is remembered for this visit only (DOWNLOAD.md): having cut
+	// the left halves, the visitor comes back for the right ones, but a stored
+	// "Højre" would greet the next heart on another day with its second half.
+	let lobe = $state<TemplateLobe>(sessionLobe);
+	$effect(() => {
+		sessionLobe = lobe;
+	});
+
 	type SheetKind = 'A4' | 'A3' | 'custom';
 
-	let format = $state<LaserFormat>('svg');
-	let widthMm = $state(DEFAULT_WIDTH_MM);
-	let hearts = $state(1);
+	const defaults = DEFAULT_DOWNLOAD_SETTINGS;
+	let mode = $state<DownloadMode>(defaults.mode);
+	let format = $state<LaserFormat>(defaults.format);
+	let widthMm = $state(defaults.widthMm);
+	let hearts = $state(defaults.hearts);
 	let sheetKind = $state<SheetKind>('A4');
 	let customWidthMm = $state<number>(SHEETS.A4.widthMm);
 	let customHeightMm = $state<number>(SHEETS.A4.heightMm);
-	let scoreFold = $state(false);
-	let downloadFailed = $state(false);
+	let scoreFold = $state(defaults.scoreFold);
+	let previewImage = $state(defaults.previewImage);
+	/** The last download that went wrong, cleared by the next that works. */
+	let failure = $state<DownloadMode | null>(null);
+	/** jsPDF is loaded and the pictures rendered on the click: it takes a moment. */
+	let generating = $state(false);
 
-	// Each opening starts from what was used last time (format and width); the
-	// rest is per heart and per sheet, and starts afresh.
+	// Each opening starts from what was used last time.
 	$effect(() => {
 		if (!open) return;
 		untrack(() => {
-			const settings = loadLaserSettings();
+			const settings = loadDownloadSettings();
+			mode = settings.mode;
 			format = settings.format;
 			widthMm = settings.widthMm;
-			downloadFailed = false;
+			hearts = settings.hearts;
+			if (typeof settings.sheet === 'string') {
+				sheetKind = settings.sheet;
+			} else {
+				sheetKind = 'custom';
+				customWidthMm = settings.sheet.widthMm;
+				customHeightMm = settings.sheet.heightMm;
+			}
+			scoreFold = settings.scoreFold;
+			previewImage = settings.previewImage;
+			failure = null;
 		});
 	});
 
 	$effect(() => {
-		if (open) saveLaserSettings({ format, widthMm });
+		if (!open) return;
+		saveDownloadSettings({
+			mode,
+			widthMm,
+			hearts,
+			sheet: sheetKind === 'custom' ? { widthMm: customWidthMm, heightMm: customHeightMm } : sheetKind,
+			format,
+			scoreFold,
+			previewImage
+		});
 	});
 
 	const sheet = $derived<SheetSize>(
 		sheetKind === 'custom' ? { widthMm: customWidthMm, heightMm: customHeightMm } : SHEETS[sheetKind]
 	);
 
+	// ---- Printer: the folded templates, page by page ---------------------------
+
+	const printPieces = $derived.by<TemplatePiece[]>(() => {
+		if (!open || mode !== 'printer') return [];
+		return templatePieces([design], widthMm, hearts);
+	});
+
+	const printPlan = $derived.by<TemplatePagePlan | null>(() =>
+		printPieces.length ? planTemplatePages(printPieces, { sheet }) : null
+	);
+
+	const pageCount = $derived(printPlan?.pages.length ?? 0);
+
+	// ---- Laser: one lobe's unfolded pieces on one sheet ------------------------
+	// A heart's halves are cut from two colours of paper, so a sheet holds one
+	// lobe: one piece per heart. A heart whose halves are the same piece needs
+	// no choice; the same sheet is cut once in each colour.
+
+	const sharedTemplate = $derived(lobesShareTemplate(design.fingers, design.gridSize));
+
 	// A design the export cannot cut (a cut that stops short of the fold) has no
 	// plan; the dialog then says so instead of showing a preview.
-	const plan = $derived.by<LaserPlan | null>(() => {
-		if (!open) return null;
+	const laserPlan = $derived.by<LaserPlan | null>(() => {
+		if (!open || mode !== 'laser') return null;
 		try {
-			return planLaserSheet(design, { widthMm, hearts, sheet });
+			return planLaserSheet(design, { widthMm, count: hearts, sheet, lobe });
 		} catch (err) {
 			console.error('Laying out the laser sheet failed', err);
 			return null;
 		}
 	});
 
+	// ---- What the settings give ------------------------------------------------
+
+	// The strips against the visitor's scissors or laser, and the height: the
+	// folded template's for print, the opened-out piece's for the laser.
 	const derivedLine = $derived.by(() => {
-		if (!plan) return '';
-		const [left, right] = plan.pair;
-		return t('laserDerived', lang, {
-			strip: formatMm(left.stripWidthMm, lang),
-			height: formatMm(Math.max(left.heightMm, right.heightMm), lang)
-		});
+		let strip: number;
+		let height: number;
+		if (mode === 'printer') {
+			const [left, right] = templatePair(design, widthMm);
+			strip = left.stripWidthMm;
+			height = Math.max(left.heightMm, right.heightMm);
+		} else if (laserPlan) {
+			const piece = laserPlan.pair[laserPlan.lobe === 'left' ? 0 : 1];
+			strip = piece.stripWidthMm;
+			height = piece.heightMm;
+		} else {
+			return '';
+		}
+		return t('pieceDerived', lang, { strip: formatMm(strip, lang), height: formatMm(height, lang) });
+	});
+
+	const sheetNote = $derived.by<{ text: string; warn: boolean } | null>(() => {
+		if (mode === 'printer') {
+			if (!printPlan) return null;
+			if (!printPlan.fits) return { text: t('pdfTooLarge', lang), warn: true };
+			return {
+				text: pageCount === 1 ? t('pdfOnePage', lang) : t('pdfPages', lang, { n: pageCount }),
+				warn: false
+			};
+		}
+		if (laserPlan && laserPlan.piecesFit < laserPlan.piecesRequested) {
+			return {
+				text: t('sheetFit', lang, { n: laserPlan.piecesFit, total: laserPlan.piecesRequested }),
+				warn: true
+			};
+		}
+		return null;
 	});
 
 	const fileInfo = $derived({
@@ -113,19 +218,39 @@
 		scoreFold
 	});
 
-	const previewSvg = $derived(
-		plan
-			? serializeLaserSvg(plan, {
+	const previewSvg = $derived.by(() => {
+		if (mode === 'printer') {
+			return printPlan?.fits
+				? serializeTemplatePageSvg(printPlan, printPieces, {
+						page: 0,
+						lang,
+						previewImage,
+						title: heartName
+					})
+				: '';
+		}
+		return laserPlan
+			? serializeLaserSvg(laserPlan, {
 					scoreFold,
 					title: heartName,
-					description: t('laserPreview', lang),
+					description: t('sheetPreview', lang),
 					look: 'preview'
 				})
-			: ''
+			: '';
+	});
+
+	const canDownload = $derived(
+		mode === 'printer'
+			? printPlan !== null && printPlan.fits && !generating
+			: laserPlan !== null && laserPlan.piecesFit > 0
 	);
 
-	const canDownload = $derived(plan !== null && plan.heartsFit > 0);
-	const failed = $derived(downloadFailed || plan === null);
+	const errorText = $derived.by(() => {
+		if (mode === 'printer') return failure === 'printer' ? t('pdfFailed', lang) : null;
+		return failure === 'laser' || laserPlan === null ? t('laserFailed', lang) : null;
+	});
+
+	const fileFormat = $derived(mode === 'printer' ? 'PDF' : format.toUpperCase());
 
 	// ---- Inputs ---------------------------------------------------------------
 	// A number field takes what is typed while it is in range and settles on the
@@ -171,8 +296,18 @@
 		input.value = String(current(field));
 	}
 
-	// A single-choice ToggleGroup lets a second click clear it; neither choice
-	// here has an "off", so an empty answer keeps what was there.
+	// A single-choice ToggleGroup lets a second click clear it; none of the
+	// choices here has an "off", so an empty answer keeps what was there.
+	function chooseMode(next: unknown): void {
+		if (next === 'printer' || next === 'laser') mode = next;
+	}
+
+	function chooseLobe(next: unknown): void {
+		if (next === 'left' || next === 'right') lobe = next;
+	}
+
+	const lobeName = (which: TemplateLobe) => t(which === 'left' ? 'lobeLeft' : 'lobeRight', lang);
+
 	function chooseFormat(next: unknown): void {
 		if (next === 'svg' || next === 'dxf') format = next;
 	}
@@ -183,57 +318,88 @@
 
 	// ---- Download -------------------------------------------------------------
 
-	function download(): void {
-		if (!plan || !canDownload) return;
+	// jsPDF is 140 KB gzipped and only this click needs it, so it is loaded here
+	// rather than with the page.
+	async function downloadPdf(): Promise<void> {
+		generating = true;
+		trackHeartDownload(design.id, design.name);
 		try {
-			const content = laserFileContent(plan, format, fileInfo);
+			const { downloadTemplatesPDF } = await import('$lib/pdf/template');
+			await downloadTemplatesPDF([design], { widthMm, hearts, sheet, lang, previewImage });
+			failure = null;
+		} catch (err) {
+			// Without this the download simply did nothing, with no sign of why.
+			console.error('Generating the PDF failed', err);
+			failure = 'printer';
+		} finally {
+			generating = false;
+		}
+	}
+
+	function downloadLaser(): void {
+		if (!laserPlan) return;
+		try {
+			const content = laserFileContent(laserPlan, format, fileInfo);
 			const blob = new Blob([content], { type: LASER_MIME[format] });
 			const url = URL.createObjectURL(blob);
 			const link = document.createElement('a');
 			link.href = url;
-			link.download = laserFileName(heartId, widthMm, format);
+			link.download = laserFileName(
+				heartId,
+				widthMm,
+				format,
+				laserPlan.shared ? undefined : lobeName(laserPlan.lobe)
+			);
 			document.body.appendChild(link);
 			link.click();
 			link.remove();
 			// Some browsers start the download only after the click returns, so the
 			// URL has to outlive it for a moment.
 			setTimeout(() => URL.revokeObjectURL(url), 1000);
-			downloadFailed = false;
+			failure = null;
 			trackLaserDownload(heartId, heartName, format, widthMm);
 		} catch (err) {
 			console.error('Writing the laser file failed', err);
-			downloadFailed = true;
+			failure = 'laser';
 		}
+	}
+
+	function download(): void {
+		if (!canDownload) return;
+		if (mode === 'printer') void downloadPdf();
+		else downloadLaser();
 	}
 </script>
 
-<Modal {open} labelledBy="laser-dialog-title" width="min(860px, 100%)" {onClose}>
-	<div class="laser">
-		<h2 id="laser-dialog-title" class="title">{t('laserTitle', lang)}</h2>
+<Modal {open} labelledBy="download-dialog-title" width="min(860px, 100%)" {onClose}>
+	<div class="download">
+		<h2 id="download-dialog-title" class="title">{t('getTemplateTitle', lang)}</h2>
 
 		<div class="body">
 			<div class="controls">
 				<div class="field">
-					<span class="label" id="laser-format-label">{t('laserFormat', lang)}</span>
+					<span class="label" id="download-mode-label">{t('downloadMode', lang)}</span>
 					<div class="segmented">
 						<ToggleGroup
 							type="single"
 							role="radiogroup"
-							aria-labelledby="laser-format-label"
-							value={format}
-							onValueChange={chooseFormat}
+							aria-labelledby="download-mode-label"
+							value={mode}
+							onValueChange={chooseMode}
 						>
-							<ToggleGroupItem value="svg">SVG</ToggleGroupItem>
-							<ToggleGroupItem value="dxf">DXF</ToggleGroupItem>
+							<ToggleGroupItem value="printer">{t('modePrinter', lang)}</ToggleGroupItem>
+							<ToggleGroupItem value="laser">{t('modeLaser', lang)}</ToggleGroupItem>
 						</ToggleGroup>
 					</div>
-					<p class="hint">{t('laserFormatHint', lang)}</p>
+					<p class="hint">
+						{mode === 'printer' ? t('modePrinterHint', lang) : t('laserFormatHint', lang)}
+					</p>
 				</div>
 
 				<div class="field">
-					<label class="label" for="laser-width">{t('laserWidth', lang)}</label>
+					<label class="label" for="download-width">{t('pieceWidth', lang)}</label>
 					<input
-						id="laser-width"
+						id="download-width"
 						class="number"
 						type="number"
 						min={MIN_WIDTH_MM}
@@ -244,14 +410,14 @@
 						onblur={(e) => commitNumber('width', e.currentTarget)}
 					/>
 					{#if derivedLine}
-						<p class="hint" data-testid="laser-derived">{derivedLine}</p>
+						<p class="hint" data-testid="download-derived">{derivedLine}</p>
 					{/if}
 				</div>
 
 				<div class="field">
-					<label class="label" for="laser-hearts">{t('laserHearts', lang)}</label>
+					<label class="label" for="download-hearts">{t('heartsCount', lang)}</label>
 					<input
-						id="laser-hearts"
+						id="download-hearts"
 						class="number"
 						type="number"
 						min={MIN_HEARTS}
@@ -261,28 +427,28 @@
 						oninput={(e) => setNumber('hearts', e.currentTarget.value)}
 						onblur={(e) => commitNumber('hearts', e.currentTarget)}
 					/>
-					<p class="hint">{t('laserPiecesNote', lang)}</p>
+					<p class="hint">{t('piecesNote', lang)}</p>
 				</div>
 
 				<div class="field">
-					<span class="label" id="laser-sheet-label">{t('laserSheet', lang)}</span>
+					<span class="label" id="download-sheet-label">{t('sheet', lang)}</span>
 					<div class="segmented">
 						<ToggleGroup
 							type="single"
 							role="radiogroup"
-							aria-labelledby="laser-sheet-label"
+							aria-labelledby="download-sheet-label"
 							value={sheetKind}
 							onValueChange={chooseSheet}
 						>
 							<ToggleGroupItem value="A4">A4</ToggleGroupItem>
 							<ToggleGroupItem value="A3">A3</ToggleGroupItem>
-							<ToggleGroupItem value="custom">{t('laserCustom', lang)}</ToggleGroupItem>
+							<ToggleGroupItem value="custom">{t('sheetCustom', lang)}</ToggleGroupItem>
 						</ToggleGroup>
 					</div>
 					{#if sheetKind === 'custom'}
 						<div class="sheet-size">
 							<label class="small-label">
-								<span>{t('laserSheetWidth', lang)}</span>
+								<span>{t('sheetWidth', lang)}</span>
 								<input
 									class="number"
 									type="number"
@@ -295,7 +461,7 @@
 								/>
 							</label>
 							<label class="small-label">
-								<span>{t('laserSheetHeight', lang)}</span>
+								<span>{t('sheetHeight', lang)}</span>
 								<input
 									class="number"
 									type="number"
@@ -309,49 +475,101 @@
 							</label>
 						</div>
 					{/if}
-					{#if plan && plan.heartsFit < plan.heartsRequested}
-						<p class="hint fit" role="status" data-testid="laser-fit">
-							{t('laserSheetFit', lang, { n: plan.heartsFit })}
+					{#if sheetNote}
+						<p class="hint" class:warn={sheetNote.warn} role="status" data-testid="download-sheet-note">
+							{sheetNote.text}
 						</p>
 					{/if}
 				</div>
 
-				<div class="field">
-					<label class="checkbox">
-						<input type="checkbox" bind:checked={scoreFold} />
-						<span>{t('laserScoreFold', lang)}</span>
-					</label>
-					<p class="hint">{t('laserScoreHint', lang)}</p>
-				</div>
+				{#if mode === 'laser'}
+					{#if sharedTemplate}
+						<p class="hint" data-testid="download-lobe-note">{t('laserSameNote', lang)}</p>
+					{:else}
+						<div class="field">
+							<span class="label" id="download-lobe-label">{t('laserPiece', lang)}</span>
+							<div class="segmented">
+								<ToggleGroup
+									type="single"
+									role="radiogroup"
+									aria-labelledby="download-lobe-label"
+									value={lobe}
+									onValueChange={chooseLobe}
+								>
+									<ToggleGroupItem value="left">{lobeName('left')}</ToggleGroupItem>
+									<ToggleGroupItem value="right">{lobeName('right')}</ToggleGroupItem>
+								</ToggleGroup>
+							</div>
+							<p class="hint" data-testid="download-lobe-note">{t('laserBothNote', lang)}</p>
+						</div>
+					{/if}
+
+					<div class="field">
+						<span class="label" id="download-format-label">{t('laserFormat', lang)}</span>
+						<div class="segmented">
+							<ToggleGroup
+								type="single"
+								role="radiogroup"
+								aria-labelledby="download-format-label"
+								value={format}
+								onValueChange={chooseFormat}
+							>
+								<ToggleGroupItem value="svg">SVG</ToggleGroupItem>
+								<ToggleGroupItem value="dxf">DXF</ToggleGroupItem>
+							</ToggleGroup>
+						</div>
+					</div>
+
+					<div class="field">
+						<label class="checkbox">
+							<input type="checkbox" data-testid="download-score" bind:checked={scoreFold} />
+							<span>{t('laserScoreFold', lang)}</span>
+						</label>
+						<p class="hint">{t('laserScoreHint', lang)}</p>
+					</div>
+				{:else}
+					<div class="field">
+						<label class="checkbox">
+							<input type="checkbox" data-testid="download-preview-image" bind:checked={previewImage} />
+							<span>{t('pdfShowPreviewImage', lang)}</span>
+						</label>
+					</div>
+				{/if}
 			</div>
 
-			<figure class="preview">
-				<!-- The writer's own SVG, in its preview look: what is drawn here is
-				     what the file will hold. -->
-				<div class="preview-sheet" role="img" aria-label={t('laserPreview', lang)}>
-					<!-- eslint-disable-next-line svelte/no-at-html-tags -- markup from serializeLaserSvg, which escapes the heart's name -->
+			<figure class="preview" data-mode={mode}>
+				<!-- Drawn from the same plan and geometry the file is made from: what
+				     is here is what the PDF's first page or the laser file holds. -->
+				<div class="preview-sheet" role="img" aria-label={t('sheetPreview', lang)}>
+					<!-- eslint-disable-next-line svelte/no-at-html-tags -- markup from serializeTemplatePageSvg / serializeLaserSvg, which escape the heart's name -->
 					{@html previewSvg}
 				</div>
-				<figcaption class="legend">{t('laserLegend', lang)}</figcaption>
+				{#if mode === 'laser'}
+					<figcaption class="legend">{t('laserLegend', lang)}</figcaption>
+				{:else if pageCount > 1}
+					<figcaption class="legend" data-testid="download-preview-page">
+						{t('pdfPreviewPage', lang, { n: pageCount })}
+					</figcaption>
+				{/if}
 			</figure>
 		</div>
 
-		{#if failed}
-			<p class="error" role="alert">{t('laserFailed', lang)}</p>
+		{#if errorText}
+			<p class="error" role="alert">{errorText}</p>
 		{/if}
 
 		<div class="buttons">
 			<button type="button" class="btn btn-ghost" onclick={onClose}>{t('cancel', lang)}</button>
 			<button type="button" class="btn btn-primary" onclick={download} disabled={!canDownload}>
 				<DownloadIcon size={18} />
-				{t('laserDownload', lang, { format: format.toUpperCase() })}
+				{generating ? t('generating', lang) : t('downloadFile', lang, { format: fileFormat })}
 			</button>
 		</div>
 	</div>
 </Modal>
 
 <style>
-	.laser {
+	.download {
 		display: flex;
 		flex-direction: column;
 		gap: 18px;
@@ -362,8 +580,8 @@
 		font-size: 24px;
 	}
 
-	/* Settings on the left, the sheet on the right; stacked on a phone, with the
-	   preview under the settings it follows from. */
+	/* Settings on the left, the sheet on the right; stacked below 900px, with
+	   the preview under the settings it follows from. */
 	.body {
 		display: grid;
 		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -396,7 +614,7 @@
 		color: var(--muted);
 	}
 
-	.fit {
+	.warn {
 		color: var(--red);
 		font-weight: 600;
 	}
@@ -521,6 +739,32 @@
 		stroke-dasharray: 3 2;
 	}
 
+	/* The laser preview wears the file's own colours, which the legend under it
+	   names: red is cut, blue is scored. The printer page stays black on white,
+	   as it prints. */
+	.preview[data-mode='laser'] .preview-sheet :global(.cut path) {
+		stroke: #ff0000;
+	}
+
+	.preview[data-mode='laser'] .preview-sheet :global(.score path) {
+		stroke: #0000ff;
+	}
+
+	/* The printer page's name and address lines and the heart's picture. */
+	.preview-sheet :global(.label) {
+		fill: var(--ink);
+		font-family: inherit;
+	}
+
+	.preview-sheet :global(.address) {
+		fill: var(--muted);
+		font-family: inherit;
+	}
+
+	.preview-sheet :global(.thumb) {
+		fill: var(--cream2);
+	}
+
 	.legend {
 		font-size: 12px;
 		color: var(--muted);
@@ -540,7 +784,7 @@
 		gap: 12px;
 	}
 
-	@media (max-width: 699px) {
+	@media (max-width: 899px) {
 		.body {
 			grid-template-columns: minmax(0, 1fr);
 		}

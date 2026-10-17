@@ -80,7 +80,6 @@ export const translations = {
     mirrorSymmetry: 'Spejlsymmetri',
     noSymmetry: 'Ingen symmetri',
     classic: 'Klassisk',
-    downloadPdfTemplate: 'Download PDF-skabelon',
     pdfFailed: 'PDF-skabelonen kunne ikke laves. Prøv igen.',
     /** Filename (without .pdf) of a multi-heart download; {n} = number of hearts. */
     pdfMultiFilename: 'julehjerter-{n}-skabeloner',
@@ -150,31 +149,44 @@ export const translations = {
     traceLockedAnnouncement: 'Skærmen er låst. Hold knappen nederst til højre i 2 sekunder, eller tryk Escape, for at låse op.',
     traceUnlockedAnnouncement: 'Skærmen er låst op.',
 
-    // Heart page: laser export ("Hent til laserskærer", docs/redesign/LASER.md)
-    moreDownloadOptions: 'Flere måder at hente skabelonen',
-    pdfForPrinting: 'PDF til print (A4)',
-    laserMenuItem: 'Til laserskærer…',
-    laserTitle: 'Hent til laserskærer',
+    // Heart page: the download dialog ("Hent skabelon", docs/redesign/DOWNLOAD.md),
+    // for the printer PDF and the laser file (docs/redesign/LASER.md)
+    getTemplate: 'Hent skabelon…',
+    getTemplateTitle: 'Hent skabelon',
+    downloadMode: 'Til',
+    modePrinter: 'Printer',
+    modePrinterHint: 'PDF i rigtig størrelse. Print uden tilpasning til siden.',
+    modeLaser: 'Laserskærer',
+    pieceWidth: 'Bredde (mm)',
+    /** {strip} = one strip's width in mm, {height} = the template's height in mm (folded for print, unfolded for laser) */
+    pieceDerived: 'Stribebredde {strip} mm · højde {height} mm',
+    heartsCount: 'Antal hjerter',
+    piecesNote: 'Et hjerte er to stykker.',
+    sheet: 'Ark',
+    sheetCustom: 'Eget mål',
+    sheetWidth: 'Arkets bredde (mm)',
+    sheetHeight: 'Arkets højde (mm)',
+    /** {n} = laser pieces that fit on the sheet, {total} = pieces asked for */
+    sheetFit: 'Der er kun plads til {n} af {total} stykker på arket',
+    sheetPreview: 'Forhåndsvisning af arket',
+    pdfOnePage: '1 side',
+    /** {n} = pages in the PDF, 2 or more */
+    pdfPages: '{n} sider',
+    /** {n} = pages in the PDF, 2 or more */
+    pdfPreviewPage: 'Side 1 af {n}',
+    pdfTooLarge: 'Skabelonen er for stor til arket. Vælg en mindre bredde eller et større ark.',
+    pdfShowPreviewImage: 'Vis et lille billede af hjertet på skabelonen',
+    laserPiece: 'Stykke',
+    laserSameNote: 'Halvdelene er ens: skær arket én gang i hver papirfarve, eller læg to ark oven på hinanden.',
+    laserBothNote: 'Hent begge halvdele – én fil pr. papirfarve.',
     laserFormat: 'Filformat',
     laserFormatHint: 'SVG læses af alle laserprogrammer. DXF til xTool, LightBurn og CAD.',
-    laserWidth: 'Bredde (mm)',
-    /** {strip} = one strip's width in mm, {height} = the unfolded piece's height in mm */
-    laserDerived: 'Stribebredde {strip} mm · højde {height} mm',
-    laserHearts: 'Antal hjerter',
-    laserPiecesNote: 'Et hjerte er to stykker.',
-    /** {n} = whole hearts that fit on the sheet */
-    laserSheetFit: 'Der er plads til {n} på arket',
-    laserSheet: 'Ark',
-    laserCustom: 'Eget mål',
-    laserSheetWidth: 'Arkets bredde (mm)',
-    laserSheetHeight: 'Arkets højde (mm)',
     laserScoreFold: 'Rids falsen (blå linje)',
     laserScoreHint: 'Slå til for karton; papir folder fint uden.',
-    laserPreview: 'Forhåndsvisning af arket',
-    /** {format} = SVG or DXF */
-    laserDownload: 'Hent {format}',
     laserFailed: 'Filen kunne ikke laves. Prøv en anden bredde, eller hent PDF-skabelonen.',
     laserLegend: 'Rød = skær · Blå = rids · 0,01 mm streg',
+    /** {format} = PDF, SVG or DXF */
+    downloadFile: 'Hent {format}',
 
     // Editor: top bar, tool rail, panels and canvas notices
     editHeart: 'Rediger hjerte',
@@ -550,7 +562,7 @@ export const translations = {
       'Klip to halvdele, og flet hjertet'
     ],
     noPrinterStepTexts: [
-      'Vælg et hjerte i galleriet, og tryk på »Download PDF-skabelon«. Åbn den hentede PDF på din tablet eller computer. Du skal bruge tegningen med klippelinjer og foldelinje, ikke billedet af det færdige hjerte.',
+      'Vælg et hjerte i galleriet, tryk på »Hent skabelon…«, og hent PDF’en. Åbn den hentede PDF på din tablet eller computer. Du skal bruge tegningen med klippelinjer og foldelinje, ikke billedet af det færdige hjerte.',
       'Zoom, indtil hele skabelonen kan være på skærmen. For det klassiske hjerte kan du fx vælge en bredde på 6 cm og måle den med en lineal. Læg tabletten fladt og stabilt. Indstil skærmens lys, så linjerne er tydelige gennem dit papir.',
       'Læg et enkelt lag kalkepapir over skabelonen. Hold det med den frie hånd. Har tabletten et cover, der tåler tape, kan du fastgøre papiret til coveret med to små stykker. Sæt ikke tape direkte på skærmen. Tjek, at papiret ikke forskubber sig.',
       'Tegn først den runde top og de lige sider. Tegn så hver indre klippelinje helt til dens endepunkt. Tegn foldelinjen stiplet, og skriv »fold« ved den. Brug lette blyantsstreger uden at presse. Løft forsigtigt et hjørne, og kontrollér, at du har alle linjer med.',
@@ -723,7 +735,6 @@ export const translations = {
     mirrorSymmetry: 'Mirror symmetry',
     noSymmetry: 'No symmetry',
     classic: 'Classic',
-    downloadPdfTemplate: 'Download PDF template',
     pdfFailed: 'The PDF template could not be generated. Please try again.',
     /** Filename (without .pdf) of a multi-heart download; {n} = number of hearts. */
     pdfMultiFilename: 'christmas-hearts-{n}-templates',
@@ -793,31 +804,44 @@ export const translations = {
     traceLockedAnnouncement: 'The screen is locked. Hold the button in the bottom right corner for 2 seconds, or press Escape, to unlock.',
     traceUnlockedAnnouncement: 'The screen is unlocked.',
 
-    // Heart page: laser export ("Hent til laserskærer", docs/redesign/LASER.md)
-    moreDownloadOptions: 'More ways to get the template',
-    pdfForPrinting: 'PDF for printing (A4)',
-    laserMenuItem: 'For a laser cutter…',
-    laserTitle: 'Download for a laser cutter',
+    // Heart page: the download dialog ("Hent skabelon", docs/redesign/DOWNLOAD.md),
+    // for the printer PDF and the laser file (docs/redesign/LASER.md)
+    getTemplate: 'Get the template…',
+    getTemplateTitle: 'Get the template',
+    downloadMode: 'For',
+    modePrinter: 'Printer',
+    modePrinterHint: 'A PDF at true size. Print without fitting to the page.',
+    modeLaser: 'Laser cutter',
+    pieceWidth: 'Width (mm)',
+    /** {strip} = one strip's width in mm, {height} = the template's height in mm (folded for print, unfolded for laser) */
+    pieceDerived: 'Strip width {strip} mm · height {height} mm',
+    heartsCount: 'Number of hearts',
+    piecesNote: 'One heart is two pieces.',
+    sheet: 'Sheet',
+    sheetCustom: 'Custom size',
+    sheetWidth: 'Sheet width (mm)',
+    sheetHeight: 'Sheet height (mm)',
+    /** {n} = laser pieces that fit on the sheet, {total} = pieces asked for */
+    sheetFit: 'There is only room for {n} of {total} pieces on the sheet',
+    sheetPreview: 'Preview of the sheet',
+    pdfOnePage: '1 page',
+    /** {n} = pages in the PDF, 2 or more */
+    pdfPages: '{n} pages',
+    /** {n} = pages in the PDF, 2 or more */
+    pdfPreviewPage: 'Page 1 of {n}',
+    pdfTooLarge: 'The template is too big for the sheet. Choose a smaller width or a larger sheet.',
+    pdfShowPreviewImage: 'Show a small picture of the heart on the template',
+    laserPiece: 'Piece',
+    laserSameNote: 'Both halves are the same: cut the sheet once in each paper colour, or stack two sheets.',
+    laserBothNote: 'Download both halves, one file per paper colour.',
     laserFormat: 'File format',
     laserFormatHint: 'SVG is read by every laser program. DXF for xTool, LightBurn and CAD.',
-    laserWidth: 'Width (mm)',
-    /** {strip} = one strip's width in mm, {height} = the unfolded piece's height in mm */
-    laserDerived: 'Strip width {strip} mm · height {height} mm',
-    laserHearts: 'Number of hearts',
-    laserPiecesNote: 'One heart is two pieces.',
-    /** {n} = whole hearts that fit on the sheet */
-    laserSheetFit: 'There is room for {n} on the sheet',
-    laserSheet: 'Sheet',
-    laserCustom: 'Custom size',
-    laserSheetWidth: 'Sheet width (mm)',
-    laserSheetHeight: 'Sheet height (mm)',
     laserScoreFold: 'Score the fold (blue line)',
     laserScoreHint: 'Turn on for card; paper folds fine without.',
-    laserPreview: 'Preview of the sheet',
-    /** {format} = SVG or DXF */
-    laserDownload: 'Download {format}',
     laserFailed: 'The file could not be made. Try another width, or download the PDF template.',
     laserLegend: 'Red = cut · Blue = score · 0.01 mm stroke',
+    /** {format} = PDF, SVG or DXF */
+    downloadFile: 'Download {format}',
 
     // Editor: top bar, tool rail, panels and canvas notices
     editHeart: 'Edit heart',
@@ -1193,7 +1217,7 @@ export const translations = {
       'Cut two halves and weave the heart'
     ],
     noPrinterStepTexts: [
-      'Choose a heart in the gallery and select “Download PDF template”. Open the downloaded PDF on your tablet or computer. You need the drawing with cutting lines and a fold line, rather than the picture of the finished heart.',
+      'Choose a heart in the gallery, select “Get the template…” and download the PDF. Open the downloaded PDF on your tablet or computer. You need the drawing with cutting lines and a fold line, rather than the picture of the finished heart.',
       'Zoom until the whole template fits on screen. For the classic heart, you might choose a width of 6 cm and check it with a ruler. Lay the tablet flat on a stable surface. Adjust the screen brightness until the lines show clearly through your paper.',
       'Place a single sheet of tracing paper over the template. Hold it with your free hand. If your tablet has a case that tolerates tape, attach the paper to the case with two small pieces. Keep tape off the screen itself. Check that the paper stays in place.',
       'Trace the rounded top and straight sides first. Then trace each internal cutting line all the way to its endpoint. Draw the fold line as dashes and write “fold” next to it. Use light pencil strokes without pressing. Carefully lift a corner to check you have copied every line.',

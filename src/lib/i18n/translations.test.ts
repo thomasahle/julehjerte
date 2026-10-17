@@ -66,7 +66,7 @@ describe('translations', () => {
       'printSelected',
       'select',
       'selected',
-      'downloadPdfTemplate',
+      'getTemplate',
       'errorNotFound',
     ];
 

@@ -74,7 +74,7 @@ function readDxf(text: string) {
 
 describe('serializeLaserDxf', () => {
 	const classic = loadHeart('classic-3x3');
-	const plan = planLaserSheet(classic, { widthMm: 80, hearts: 1, sheet: SHEETS.A4 });
+	const plan = planLaserSheet(classic, { widthMm: 80, count: 2, sheet: SHEETS.A4, lobe: 'left' });
 
 	it('is R12 in millimetres, with its extents', () => {
 		const { header } = readDxf(serializeLaserDxf(plan, { scoreFold: false }));
@@ -143,7 +143,7 @@ describe('serializeLaserDxf', () => {
 	});
 
 	it('flattens curved cuts, and never writes a path twice', () => {
-		const stjerne = planLaserSheet(loadHeart('stjerne'), { widthMm: 80, hearts: 2, sheet: SHEETS.A3 });
+		const stjerne = planLaserSheet(loadHeart('stjerne'), { widthMm: 80, count: 4, sheet: SHEETS.A3, lobe: 'left' });
 		const { entities } = readDxf(serializeLaserDxf(stjerne, { scoreFold: false }));
 		const polylines = entities.filter((e) => e.type === 'POLYLINE');
 		expect(polylines.length).toBe(stjerne.pieces.length * 3);
