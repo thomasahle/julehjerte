@@ -7,7 +7,8 @@
   by then); then the right-aligned chip row: only while hearts are ticked, one
   red "Hent skabeloner (n)" button (docs/redesign/SELECTION.md), which opens
   the download dialog for them, and one chip per category, with scroll-spy
-  marking the one being read. The button is the row's first item and behaves
+  marking the one being read. Below 900, where the chip row scrolls, the
+  button sits before the row instead, outside it. Otherwise it is the row's first item and behaves
   as a chip — its own lift on the hill, pushed down with the chips — and the
   row is right-aligned, so it comes and goes without moving the chips. Ticking is
   the exception (docs/redesign/FRONT-SIMPLIFY.md — a card click opens the
@@ -28,8 +29,9 @@
 	import { t, type Language } from '$lib/i18n';
 	import { href } from '$lib/i18n/routes';
 	import { categoryTitle, MY_HEARTS_CATEGORY_ID } from '$lib/data/categories';
-	import { activeSection, ANCHOR_GAP, isAtPageBottom } from '$lib/front/scrollSpy';
+	import { ANCHOR_GAP, chipRowScroll, currentSection, isAtPageBottom } from '$lib/front/scrollSpy';
 	import { DownloadIcon } from '$lib/components/icons';
+	import { NARROW_QUERY } from '$lib/breakpoints';
 
 	interface Props {
 		lang: Language;
@@ -41,8 +43,7 @@
 		selectedCount: number;
 		/**
 		 * The bar's height in px, bound by the gallery for the sections'
-		 * `scroll-margin-top`: a chip's anchor has to land under the bar, and on
-		 * a phone the bar takes a second row while the button shows.
+		 * `scroll-margin-top`: a chip's anchor has to land under the bar.
 		 */
 		height?: number;
 		/**
@@ -97,23 +98,74 @@
 	// The bar starts up on the hero's snow (Gallery.svelte pulls the gallery
 	// over the drawing), where an opaque background would show as a paler
 	// rectangle over the snow hill. So it is transparent until it actually
-	// sticks, which a 1px sentinel at its top detects (moved down by L on the
-	// desktop layout, where the bar sticks at -L): the sentinel leaves the
-	// viewport at the same moment the bar reaches its sticky top.
+	// sticks: until its own top has reached its sticky top (-L on the desktop
+	// layout, 0 below 900), read from its box by the scroll-spy's frame below
+	// on every scroll and resize. A 1px sentinel at its top (moved down by L)
+	// leaves the viewport at that same moment; its IntersectionObserver only
+	// asks for a measure, as a backstop. On its own it went stale: after a
+	// jump scroll (scrollTo(0, 3000) from the top, and back) and in mobile
+	// emulation the bar kept the state it had before.
 	let sentinel = $state.raw<HTMLElement | null>(null);
 	let stuck = $state(false);
+	/** The spy's frame request; set once the spy runs. */
+	let remeasure = () => {};
 
 	onMount(() => {
 		// Effects and onMount only run in the browser, so no `browser` guard.
 		if (!sentinel) return;
-		const observer = new IntersectionObserver(([entry]) => {
-			stuck = !entry.isIntersecting && entry.boundingClientRect.top < 0;
-		});
+		const observer = new IntersectionObserver(() => remeasure());
 		observer.observe(sentinel);
 		return () => observer.disconnect();
 	});
 
+	// Below 900 the chip row scrolls sideways (a phone, a narrow tablet), and
+	// the download button sits outside it, before it, so the chips scroll
+	// beside it. Inside the row, as on the desktop layout's hill, the row grew
+	// by the button's width when a heart was ticked: scroll anchoring then
+	// moved the row's scrollLeft by as much, and the sticky button covered
+	// the first chips.
+	let narrow = $state(false);
+
+	onMount(() => {
+		// jsdom has no matchMedia.
+		if (typeof window.matchMedia !== 'function') return;
+		const query = window.matchMedia(NARROW_QUERY);
+		const update = () => {
+			narrow = query.matches;
+		};
+		update();
+		query.addEventListener('change', update);
+		return () => query.removeEventListener('change', update);
+	});
+
 	let barEl = $state.raw<HTMLElement | null>(null);
+
+	// The box's height, observed rather than bound (bind:offsetHeight): the
+	// gallery turns it into the first section's margin, so writing it from
+	// inside the ResizeObserver callback changed the layout of elements the
+	// gallery observes while WebKit was still delivering, which it reports
+	// as "ResizeObserver loop completed with undelivered notifications". The
+	// read and the write wait for the next frame, once per frame however
+	// often the observer fires.
+	$effect(() => {
+		if (!barEl) return;
+		const bar = barEl;
+		let frame = 0;
+		const read = () => {
+			frame = 0;
+			boxHeight = bar.offsetHeight;
+		};
+		read();
+		const observer = new ResizeObserver(() => {
+			if (!frame) frame = requestAnimationFrame(read);
+		});
+		observer.observe(bar);
+		return () => {
+			observer.disconnect();
+			if (frame) cancelAnimationFrame(frame);
+		};
+	});
+
 	let chipRow = $state.raw<HTMLElement | null>(null);
 
 	// The push (GALLERY-CURVE.md amendment 1), scroll-linked: with p = s − H,
@@ -159,6 +211,12 @@
 		};
 	});
 
+	/**
+	 * How close to its sticky top the bar's top counts as there: box tops are
+	 * in layout units (1/64px) and L is rounded to a tenth.
+	 */
+	const STUCK_SLACK = 0.5;
+
 	/** Index into `sections` of the section being read, or -1 above the first. */
 	let activeIndex = $state(-1);
 
@@ -176,10 +234,13 @@
 		const measure = () => {
 			frame = 0;
 			const box = bar.getBoundingClientRect();
-			// Until the bar sticks the visitor is still above the gallery, on the
-			// hero — even though the first row already sits right under the bar,
-			// exactly ANCHOR_GAP below it, and the rule alone would light its chip.
-			if (box.top > 1 - liftRoom) {
+			// The bar is stuck once its top has reached its sticky top (-L).
+			// Until then the visitor is still above the gallery, on the hero —
+			// even though the first row already sits right under the bar, exactly
+			// ANCHOR_GAP below it, and the rule alone would light its chip.
+			const barStuck = box.top <= STUCK_SLACK - liftRoom;
+			stuck = barStuck;
+			if (!barStuck) {
 				activeIndex = -1;
 				return;
 			}
@@ -190,9 +251,10 @@
 					(id === MY_HEARTS_CATEGORY_ID ? 0 : shift)
 			);
 			const root = document.documentElement;
-			activeIndex = activeSection(
+			activeIndex = currentSection(
 				tops,
 				line,
+				barStuck,
 				isAtPageBottom(window.scrollY, window.innerHeight, root.scrollHeight)
 			);
 		};
@@ -200,9 +262,11 @@
 			if (!frame) frame = requestAnimationFrame(measure);
 		};
 		measure();
+		remeasure = schedule;
 		window.addEventListener('scroll', schedule, { passive: true });
 		window.addEventListener('resize', schedule);
 		return () => {
+			remeasure = () => {};
 			window.removeEventListener('scroll', schedule);
 			window.removeEventListener('resize', schedule);
 			if (frame) cancelAnimationFrame(frame);
@@ -214,17 +278,42 @@
 	// the spy fires in the middle of the window's own smooth scroll after a chip
 	// click, and scrollIntoView() is allowed to scroll every ancestor, the
 	// window included — it must not get the chance to cut that scroll short.
+	// Fully in sight: inside the row's box less its focus-ring padding. Also
+	// when the row narrows because the download button has appeared beside
+	// it (below 900) or the wordmark has.
 	$effect(() => {
 		const index = activeIndex;
 		const row = chipRow;
+		void hasSelection;
+		void narrow;
+		void stuck;
 		if (!row || index < 0) return;
 		const chip = row.querySelectorAll('.chip')[index];
-		// jsdom has no layout and no Element.scrollBy.
-		if (!(chip instanceof HTMLElement) || typeof row.scrollBy !== 'function') return;
-		const rowBox = row.getBoundingClientRect();
-		const chipBox = chip.getBoundingClientRect();
-		if (chipBox.left < rowBox.left) row.scrollBy({ left: chipBox.left - rowBox.left });
-		else if (chipBox.right > rowBox.right) row.scrollBy({ left: chipBox.right - rowBox.right });
+		// jsdom has no layout and no Element.scrollTo.
+		if (!(chip instanceof HTMLElement) || typeof row.scrollTo !== 'function') return;
+		// In the row's own content coordinates (the row is the chips'
+		// offsetParent), not screen rects: during the row's smooth scroll
+		// WebKit's scrollLeft can already report where it is going while the
+		// chips are still drawn where they were, so a rect-based delta added
+		// to scrollLeft overshot. Offsets do not move with the scroll. The
+		// jump is instant, not the row's smooth scroll: WebKit cut that short
+		// when the row narrowed under it (the wordmark coming in as the bar
+		// sticks), and the row stopped part-way with the chip still cut off.
+		const reveal = () => {
+			const style = getComputedStyle(row);
+			const view = row.scrollLeft;
+			const left = chipRowScroll(
+				chip.offsetLeft,
+				chip.offsetLeft + chip.offsetWidth,
+				view + parseFloat(style.paddingLeft),
+				view + row.clientWidth - parseFloat(style.paddingRight)
+			);
+			if (Math.abs(left) >= 1) row.scrollTo({ left: view + left, behavior: 'instant' });
+		};
+		reveal();
+		// The wordmark takes its room over 150ms once the bar sticks.
+		const later = setTimeout(reveal, 200);
+		return () => clearTimeout(later);
 	});
 
 	// A chip is a plain anchor, so the browser and SvelteKit's router do the
@@ -267,7 +356,6 @@
 	data-gallery-bar
 	class:stuck
 	bind:this={barEl}
-	bind:offsetHeight={boxHeight}
 	style:--bar-room={liftRoom > 0 ? `${liftRoom}px` : undefined}
 >
 	<!-- Always in the DOM, so nothing shifts when it appears; hidden from the
@@ -283,18 +371,26 @@
 	</a>
 
 
+	{#snippet getButton()}
+		<button type="button" class="get" onclick={onDownload}>
+			<DownloadIcon size={16} />
+			<span class="get-label">{t('printSelected', lang)}</span>
+			<span class="get-count">{selectedCount}</span>
+		</button>
+	{/snippet}
+
+	{#if hasSelection && narrow}
+		{@render getButton()}
+	{/if}
+
 	<nav
 		class="chips"
 		aria-label={t('galleryCategories', lang)}
 		bind:this={chipRow}
 		data-hill-chips
 	>
-		{#if hasSelection}
-			<button type="button" class="get" onclick={onDownload}>
-				<DownloadIcon size={16} />
-				{t('printSelected', lang)}
-				<span class="get-count">{selectedCount}</span>
-			</button>
+		{#if hasSelection && !narrow}
+			{@render getButton()}
 		{/if}
 		{#each sections as section, i (section.id)}
 			<a
@@ -370,6 +466,8 @@
 	/* The row scrolls sideways when the chips do not fit (a phone), without a
 	   scrollbar: the cut-off chip at the edge already says there is more. */
 	.chips {
+		/* The chips' offsetParent, for keeping the current one in sight. */
+		position: relative;
 		flex: 1 1 auto;
 		min-width: 0;
 		display: flex;
@@ -380,6 +478,10 @@
 		/* Room for the chips' focus ring, which overflow would otherwise clip. */
 		padding: 5px;
 		margin: -5px;
+		/* The snap area starts inside that room, so the first chip snaps to
+		   its rest place (scrollLeft 0, in line with the cards) rather than to
+		   the padding edge, 5px further left with its focus ring cut off. */
+		scroll-padding-inline: 5px;
 	}
 
 	.chips::-webkit-scrollbar {
@@ -423,9 +525,12 @@
 		color: var(--white);
 	}
 
+	/* --muted (5.1:1 on the page) fell to 3.98:1 where a chip rests on the
+	   hill with a dark fir showing through its translucent white; the darker
+	   --muted-on-sky keeps the count above 4.5:1 there too. */
 	.chip-count {
 		font-weight: 500;
-		color: var(--muted);
+		color: var(--muted-on-sky);
 	}
 
 	.chip[aria-current='true'] .chip-count {
@@ -474,19 +579,23 @@
 			max-width: 200px;
 			margin-right: 0;
 		}
+
+		/* Should the row ever scroll here, the button stays in view at its
+		   start and the chips pass under it. */
+		.get {
+			position: sticky;
+			left: 0;
+			z-index: 1;
+		}
 	}
 
-	/* "Hent skabeloner (n)", the chip row's first item: an opaque red pill the
+	/* "Hent skabeloner (n)", the chip row's first item on the desktop layout,
+	   and the item before the chip row below 900: an opaque red pill the
 	   chips' size (13px, their 6px vertical padding), 32px tall. Its -2px
 	   margins keep its box inside the chips' 29.4px line, so it never changes
 	   the bar's height. Opaque, as ribbons may run behind it at rest. */
 	.get {
 		flex: none;
-		/* Where the row scrolls (a phone), the button stays in view at its
-		   start and the chips pass under it. */
-		position: sticky;
-		left: 0;
-		z-index: 1;
 		display: inline-flex;
 		align-items: center;
 		gap: 6px;
@@ -522,16 +631,40 @@
 		background: rgb(255 255 255 / 0.22);
 	}
 
-	/* A phone: the row wraps (when nothing is ticked the chips simply scroll). */
+	/* A phone: still one row (GALLERY-BAR.md), the wordmark (once stuck) and
+	   the chip row side by side, the chips scrolling beside it. It never
+	   wraps: the chip row's content is wider than the screen, so a wrapping
+	   bar always put it on a second row under the wordmark, empty at rest,
+	   and made the bar 70px tall. The padding stays 10px, so the bar is the
+	   desktop's 49-50px and a chip jump lands 8px under it there too. */
 	@media (max-width: 699px) {
 		.gallery-bar {
-			flex-wrap: wrap;
 			gap: 8px;
-			padding: 8px 0;
 		}
 
 		.wordmark {
 			font-size: 16px;
+			margin-right: -8px;
+		}
+
+		.stuck .wordmark {
+			margin-right: 0;
+		}
+
+		/* Stuck, the wordmark and the full button would leave the chips less
+		   than one chip's width (89px on an iPhone 13), so no current chip
+		   could be shown whole. The button keeps its icon and count there;
+		   its name stays for screen readers, as with Tailwind's sr-only. */
+		.stuck .get-label {
+			position: absolute;
+			width: 1px;
+			height: 1px;
+			padding: 0;
+			margin: -1px;
+			overflow: hidden;
+			clip: rect(0, 0, 0, 0);
+			white-space: nowrap;
+			border: 0;
 		}
 	}
 </style>

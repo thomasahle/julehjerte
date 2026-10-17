@@ -45,6 +45,25 @@ export function activeSection(tops: number[], line: number, atPageBottom = false
 }
 
 /**
+ * The current section for the bar: nothing while the bar has not stuck yet
+ * (the visitor is still on the hero, even where the first row already sits
+ * right under the bar), and at least the first section once it has. A chip
+ * jump to the first category lands just past the point where the bar sticks
+ * (CategorySection's scroll-margin), where that category's row may still
+ * be hanging lower than the line on the hill; it is the row being read all
+ * the same, so its chip must be current.
+ */
+export function currentSection(
+	tops: number[],
+	line: number,
+	stuck: boolean,
+	atPageBottom = false
+): number | -1 {
+	if (!stuck || tops.length === 0) return -1;
+	return Math.max(0, activeSection(tops, line, atPageBottom));
+}
+
+/**
  * Whether the page is scrolled to its very bottom (within the same slack, for
  * browsers that stop a fraction of a pixel short).
  */
@@ -53,4 +72,23 @@ export function isAtPageBottom(scrollY: number, viewportHeight: number, scrollHe
 	// section is simply on screen, and the ordinary rule already applies.
 	if (scrollHeight <= viewportHeight) return false;
 	return scrollY + viewportHeight >= scrollHeight - SLACK;
+}
+
+/**
+ * How far to scroll the chip row (positive: to the right) so the current chip
+ * is fully inside the row's visible part, `viewLeft`..`viewRight` (the row's
+ * box less its focus-ring padding); 0 when it already is. A chip that is cut
+ * off on either side is brought to the view's left edge: the row snaps chip
+ * starts (`scroll-snap-align: start`), and a position that only just shows a
+ * chip on the right would snap back to the previous start, cutting it off
+ * again. The browser clamps the last chips to the end of the row.
+ */
+export function chipRowScroll(
+	chipLeft: number,
+	chipRight: number,
+	viewLeft: number,
+	viewRight: number
+): number {
+	if (chipLeft >= viewLeft && chipRight <= viewRight) return 0;
+	return chipLeft - viewLeft;
 }
