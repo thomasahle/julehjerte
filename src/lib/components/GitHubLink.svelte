@@ -2,7 +2,7 @@
   The GitHub link with its star count, in the two shapes the redesign uses:
   a bordered pill (nav) and a plain green link (footer).
 
-  The count is fetched once per hour and cached in localStorage; until it
+  The count is fetched at most once a day and cached in localStorage; until it
   resolves — and in the prerendered HTML — nothing is shown in its place, so the
   markup does not shift on hydration.
 -->

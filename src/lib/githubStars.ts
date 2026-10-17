@@ -1,29 +1,36 @@
 import { browser } from '$app/environment';
 
 /**
- * The repository's star count, fetched once per hour and cached in
+ * The repository's star count, fetched at most once a day and cached in
  * localStorage. Extracted from the old GitHubStarsButton so both the nav pill
  * and the footer link can show the same number without fetching twice.
  *
- * Always resolves — never throws — and resolves to null when the count is not
- * available (offline, rate limited, or called during prerendering).
+ * Always resolves — never throws, never logs — and resolves to null when the
+ * count is not available (offline, rate limited, or called during
+ * prerendering); the link then shows without it.
+ *
+ * api.github.com allows 60 unauthenticated requests an hour per address, and a
+ * visitor browsing the hearts loads a page per heart, so with an hour's cache
+ * and only an in-memory record of failures every page load after the limit
+ * asked again and logged a 403 (QA, 2026-10-17). The count now keeps a day,
+ * and a failure is remembered in storage too, for the rate limit's hour.
  */
-const CACHE_TTL_MS = 60 * 60 * 1000;
+const CACHE_TTL_MS = 24 * 60 * 60 * 1000;
 
-const cacheKey = (repo: string) => `github-stars:${repo}`;
+/** Under the site's own `juleflet:` prefix, as its other stored settings. */
+const cacheKey = (repo: string) => `juleflet:github-stars:${repo}`;
 
-/** How long a failure is remembered. Short, because it is usually a rate limit. */
-const FAILURE_TTL_MS = 5 * 60 * 1000;
+/** How long a failure is remembered: GitHub's rate-limit window. */
+const FAILURE_TTL_MS = 60 * 60 * 1000;
 
 /** In-memory cache so several components on a page share one request. */
 const inFlight = new Map<string, Promise<number | null>>();
 
-/**
- * When the request last failed, per repo. Without this a rate-limited or offline
- * visitor refetches on every client-side navigation: PageHeader mounts per page,
- * and only a *successful* response is written to localStorage.
- */
-const lastFailure = new Map<string, number>();
+interface Cached {
+	/** The count; absent for a remembered failure. */
+	value?: number;
+	ts: number;
+}
 
 export function formatStars(n: number): string {
 	if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1).replace(/\.0$/, '')}m`;
@@ -31,21 +38,24 @@ export function formatStars(n: number): string {
 	return String(n);
 }
 
-function readCache(repo: string): number | null {
+function readCache(repo: string): Cached | null {
 	try {
 		const raw = window.localStorage.getItem(cacheKey(repo));
 		if (!raw) return null;
 		const cached = JSON.parse(raw) as { value?: unknown; ts?: unknown };
-		if (typeof cached.value !== 'number' || typeof cached.ts !== 'number') return null;
-		return Date.now() - cached.ts < CACHE_TTL_MS ? cached.value : null;
+		if (typeof cached.ts !== 'number') return null;
+		const age = Date.now() - cached.ts;
+		if (typeof cached.value === 'number') return age < CACHE_TTL_MS ? { value: cached.value, ts: cached.ts } : null;
+		return age < FAILURE_TTL_MS ? { ts: cached.ts } : null;
 	} catch {
 		return null;
 	}
 }
 
-function writeCache(repo: string, value: number) {
+function writeCache(repo: string, value: number | null) {
 	try {
-		window.localStorage.setItem(cacheKey(repo), JSON.stringify({ value, ts: Date.now() }));
+		const entry: Cached = value === null ? { ts: Date.now() } : { value, ts: Date.now() };
+		window.localStorage.setItem(cacheKey(repo), JSON.stringify(entry));
 	} catch {
 		// Storage full or blocked — the count is a nicety, so ignore it.
 	}
@@ -55,37 +65,28 @@ export async function loadStarCount(repo: string): Promise<number | null> {
 	if (!browser) return null;
 
 	const cached = readCache(repo);
-	if (cached !== null) return cached;
+	if (cached) return cached.value ?? null;
 
 	const pending = inFlight.get(repo);
 	if (pending) return pending;
 
-	const failedAt = lastFailure.get(repo);
-	if (failedAt !== undefined && Date.now() - failedAt < FAILURE_TTL_MS) return null;
-
-	const request = (async () => {
+	const request = (async (): Promise<number | null> => {
+		let count: number | null = null;
 		try {
 			const res = await fetch(`https://api.github.com/repos/${repo}`, {
 				headers: { Accept: 'application/vnd.github+json' }
 			});
-			if (!res.ok) {
-				lastFailure.set(repo, Date.now());
-				return null;
+			if (res.ok) {
+				const data = (await res.json()) as { stargazers_count?: unknown };
+				if (typeof data.stargazers_count === 'number') count = data.stargazers_count;
 			}
-			const data = (await res.json()) as { stargazers_count?: unknown };
-			if (typeof data.stargazers_count !== 'number') {
-				lastFailure.set(repo, Date.now());
-				return null;
-			}
-			writeCache(repo, data.stargazers_count);
-			lastFailure.delete(repo);
-			return data.stargazers_count;
 		} catch {
-			lastFailure.set(repo, Date.now());
-			return null;
+			// Offline or blocked: the same as no count.
 		} finally {
 			inFlight.delete(repo);
 		}
+		writeCache(repo, count);
+		return count;
 	})();
 
 	inFlight.set(repo, request);
