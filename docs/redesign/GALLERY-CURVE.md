@@ -94,3 +94,58 @@ The category headings go.
   owner to look at. At 1200 and 1024 the content column hugs a 40px margin
   and the drawing's left fir reaches into the first column: say in your
   report how that looks, do not try to fix it without being asked.
+
+## Amendment 1 (17 Oct 2026): the screen pushes them down, no snap
+
+The owner tried the first build and does not want the chips to fly into the
+stuck bar. Instead the top of the screen *pushes* each chip (and each
+first-row heart) down the page as it reaches it, until they are all aligned,
+and only then does the bar stick. Everything below is scroll-linked: it is
+driven by `scrollY`, not by a transition, and must be updated on scroll
+(passive listener + `requestAnimationFrame`, transforms only). Let
+
+- `s` = `scrollY`, `H` = `hillTop` (page y of the gallery's top),
+- `lift_i` the chip lifts from §3 (0 for the highest chip), `L = max lift_i`,
+- `c_i` the page top of first-row card *i* as laid out (`H + 6 + drop_i`,
+  with `drop_i` from §4), `D = max drop_i`.
+
+**Chips.** The bar's box grows by `L`: height `50 + L`, chips laid out at its
+bottom (`padding-top: 10px + L`), and `position: sticky; top: -L`, so the bar
+sticks when exactly its bottom 50px are left on screen, as a normal bar.
+Chip *i* carries `transform: translateY(y_i)` with
+
+    y_i = clamp(s − H, lift_i, L) − L
+
+At rest (`s ≤ H`) that is `lift_i − L`: the chip sits on the curve as now.
+As `s` grows past `H + lift_i` the chip's screen y stays at 10px: the top of
+the screen carries it down the page. At `s = H + L` every chip is at `y = 0`,
+flat and left-aligned, and the bar sticks. The wordmark fades in at that
+moment as today. Scrolling back up reverses it exactly. No transition on the
+transform; the stuck/unstuck change of alignment (the spacer) must also not
+animate any more: the chips are already flat when it happens, so flip the
+spacer to 0 at `s = H + L` without a transition, or better, make the spacer's
+width part of the same scroll-linked calculation.
+
+**First-row hearts.** The push line for cards is the stuck bar's bottom
+edge, 50px from the top of the screen. Card *i* carries
+`transform: translateY(t_i)` with
+
+    t_i = clamp(s + 50 − c_i, 0, D − drop_i)
+
+so a card is pinned at screen y 50 once the screen reaches it and is pushed
+down the page until it is level with the lowest card (page y `H + 6 + D`),
+after which the whole row scrolls normally. The row's layout height is
+unchanged (the lowest card already defines it), so later rows are untouched.
+The cards never enter the bar.
+
+**Keep:** the per-card `drop_i` margins and chip `lift_i` from mount and
+resize; the scroll-spy; click-through of the bar while unstuck (the taller
+box overlaps more of the first row now); `prefers-reduced-motion` needs no
+special case, since nothing animates on its own.
+
+**Verify** with Playwright at 1440 and 1024: step `scrollY` from 0 to
+`H + L + 100` in 10px steps and assert for every step that each chip's screen
+y is `max(10 + lift_i − (s − H), 10)` while unstuck and 10 when stuck, and
+each card's screen top is `max(c_i − s, 50)` until the cards align, within
+1px; and that scrolling back to 0 restores the rest state. Screenshots at
+`s = H − 40`, `H + L/2`, `H + L` and `H + D` into `gallery-curve-qa/push-*.png`.
