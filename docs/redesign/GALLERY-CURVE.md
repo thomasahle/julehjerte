@@ -148,3 +148,51 @@ y is `max(10 + lift_i − (s − H), 10)` while unstuck and 10 when stuck, and
 each card's screen top is `max(c_i − s, 50)` until the cards align, within
 1px; and that scrolling back to 0 restores the rest state. Screenshots at
 `s = H − 40`, `H + L/2`, `H + L` and `H + D` into `gallery-curve-qa/push-*.png`.
+
+## Amendment 3 (17 Oct 2026): whole columns hang from the hill
+
+The owner tried amendment 1 and 2 and does not want the gap under the first
+row: "the hearts below the first row should also start shifted up, so there
+isn't this gap to close. Then they can all be pushed down together."
+
+So the hill's offset is no longer a first-row thing but a *column* thing. Each
+grid column of the gallery is a strand: every card in column *k*, in every
+category, is shifted down by that column's drop, and the screen pushes the
+whole strand down together until all strands are level. Layout stays flat;
+only `translate` moves things.
+
+- `k` = a card's index within its grid modulo the column count (all category
+  grids share the same `grid-template-columns`, so the same count; read it
+  once from the first grid's computed style, or from the distinct card lefts).
+- `drop_k` = `hillY(columnCentreX_k) − hillTop`, plus 54 when the column's
+  centre lies under the chips' span (as in §4; the +54 is per column now).
+  `D = max drop_k`. The first row's top in layout, `rowTop`, stays `H + 6`.
+- Every card in column *k* gets `translate: 0 y_k` with
+
+      y_k = drop_k + clamp(s + bar − (rowTop + drop_k), 0, D − drop_k)
+
+  one value per column per frame, set as CSS custom properties on the gallery
+  (`--strand-0` … `--strand-n`) and read by the cards (`translate: 0
+  var(--strand)`, each card carrying `--strand: var(--strand-k)`), so a scroll
+  frame writes a handful of variables, not hundreds of styles. `bar` is the
+  stuck bar's visible height as today. The `margin-top` drops on first-row
+  cards go away.
+- At rest the strands show the hill in every row: within a column, rows are
+  always the grid's `row-gap` (28px) apart. Once the first row's top has
+  passed the bar, all strands are level at `+D` and the whole gallery scrolls
+  as a normal flat grid. Scrolling back up restores the strands.
+- Since the strands end up `D` lower than their layout, the "Mine hjerter"
+  section (full-width, not part of the strands) gets `D` more top margin, so
+  the lowest strand at rest, and every strand when level, stays clear of it.
+  Nothing else below needs room.
+- Below 900px: no strands, as before.
+
+Verify (Playwright, 1440 and 1024): at rest, for every category, consecutive
+rows in the same column are 28px apart and the first row's tops match the
+§4 numbers (minus nothing: `rowTop + drop_k`); stepping `scrollY` as in
+amendment 1, every card's screen top is `max(rowTop + drop_k + rowIndex ×
+rowPitch − s, bar + rowIndex × rowPitch)` until level, within 1px, where
+`rowPitch` is the card height plus 28; after the push every card sits at its
+layout position + D; scrolling back to 0 restores the rest state; "Mine
+hjerter" never overlaps a card. Screenshots at rest and when level into
+`gallery-curve-qa/strands-*.png`.
