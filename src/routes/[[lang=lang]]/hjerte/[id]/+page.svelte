@@ -467,7 +467,7 @@
       onClose={handleTraceClose}
     />
     <DownloadDialog
-      {design}
+      designs={[design]}
       {heartId}
       heartName={info.name}
       {lang}

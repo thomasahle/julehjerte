@@ -45,12 +45,25 @@ export interface LaserRequest {
 	lobe: TemplateLobe;
 }
 
-export interface LaserPlan extends LaserSheet {
-	/** The two pieces of one heart, left lobe first; the same piece twice when the lobes share a template. */
+/** One heart of the sheet: its two pieces and which of them is cut. */
+export interface LaserHeart {
+	design: HeartDesign;
+	/** The heart's two pieces, left lobe first; the same piece twice when the lobes share a template. */
 	pair: [UnfoldedPiece, UnfoldedPiece];
 	/** Both lobes are one piece, so the sheet serves either colour. */
 	shared: boolean;
-	/** The lobe on the sheet. */
+	/** The lobe of this heart on the sheet: the request's, or the left when shared. */
+	lobe: TemplateLobe;
+}
+
+export interface LaserPlan extends LaserSheet {
+	/** Every heart on the sheet, in the order asked for (SELECTION.md: several at once). */
+	hearts: LaserHeart[];
+	/** The first heart's pair — the only one when the sheet is for one heart. */
+	pair: [UnfoldedPiece, UnfoldedPiece];
+	/** Every heart's lobes are one piece, so the sheet serves either colour and needs no lobe choice. */
+	shared: boolean;
+	/** The lobe asked for, or the left when every heart is shared. */
 	lobe: TemplateLobe;
 	piecesRequested: number;
 	piecesFit: number;
@@ -60,27 +73,41 @@ export function clamp(n: number, min: number, max: number): number {
 	return Math.min(max, Math.max(min, n));
 }
 
-/**
- * `count` pieces of one lobe, laid out on the sheet. A heart whose lobes share
- * a template (`lobesShareTemplate`) is cut from the left piece whichever lobe
- * is asked for, as the PDF prints one template for both.
- */
-export function planLaserSheet(design: HeartDesign, request: LaserRequest): LaserPlan {
+function laserHeart(design: HeartDesign, widthMm: number, lobe: TemplateLobe): LaserHeart {
 	const shared = lobesShareTemplate(design.fingers, design.gridSize);
-	const left = unfoldPiece(design, 'left', request.widthMm);
-	const right = shared ? left : unfoldPiece(design, 'right', request.widthMm);
-	const lobe: TemplateLobe = shared ? 'left' : request.lobe;
-	const piece = lobe === 'left' ? left : right;
-	const wanted: UnfoldedPiece[] = Array.from({ length: request.count }, () => piece);
+	const left = unfoldPiece(design, 'left', widthMm);
+	const right = shared ? left : unfoldPiece(design, 'right', widthMm);
+	return { design, pair: [left, right], shared, lobe: shared ? 'left' : lobe };
+}
+
+/**
+ * `count` pieces of one lobe per heart, laid out on the sheet, heart by heart
+ * in the order given. A heart whose lobes share a template (`lobesShareTemplate`)
+ * is cut from the left piece whichever lobe is asked for, as the PDF prints one
+ * template for both; the lobe asked for applies to every other heart.
+ */
+export function planLaserSheet(
+	designs: HeartDesign | readonly HeartDesign[],
+	request: LaserRequest
+): LaserPlan {
+	const list = Array.isArray(designs) ? (designs as readonly HeartDesign[]) : [designs as HeartDesign];
+	if (list.length === 0) throw new Error('No heart to lay out.');
+	const hearts = list.map((design) => laserHeart(design, request.widthMm, request.lobe));
+	const wanted: UnfoldedPiece[] = hearts.flatMap((heart) => {
+		const piece = heart.lobe === 'left' ? heart.pair[0] : heart.pair[1];
+		return Array.from({ length: request.count }, () => piece);
+	});
+	const shared = hearts.every((heart) => heart.shared);
 
 	const layout = layoutSheet(wanted, { sheet: request.sheet });
 	return {
 		sheet: request.sheet,
 		pieces: layout.placements.map(({ index, x, y }) => ({ piece: wanted[index]!, x, y })),
-		pair: [left, right],
+		hearts,
+		pair: hearts[0]!.pair,
 		shared,
-		lobe,
-		piecesRequested: request.count,
+		lobe: shared ? 'left' : request.lobe,
+		piecesRequested: wanted.length,
 		piecesFit: layout.fitted
 	};
 }

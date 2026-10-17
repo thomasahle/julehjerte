@@ -186,12 +186,18 @@ shows as a paler rectangle over the hero's snow hill. It never collapses. Left t
   border transparent rather than removed so the row does not shift; focus ring 3px `--blue`. The row is
   `flex: 1 1 auto; min-width: 0; overflow-x: auto` with a hidden scrollbar and `scroll-snap-type: x
   proximity`, so a phone swipes it sideways.
-- **Selection controls**, `margin-left: auto`, only while at least one heart is ticked (a card click opens the
-  heart's page; ticking hearts for one PDF is the exception — docs/redesign/FRONT-SIMPLIFY.md), so there is no
-  disabled download button and no "Vælg hjerter først" hint: red split button "Hent skabeloner (n)" + gear
-  (PDF settings) with `0 2px 8px rgb(31 51 41 / .12)` shadow (dimmed to .75, not .5, while the PDF is
-  generating, so the red still reads as the bar's anchor); ghost buttons "Vælg alle" (hidden when every heart is
-  ticked) and "Fravælg alle". Below 700 they wrap to a second row (`flex-basis: 100%`).
+- **"Hent skabeloner (n)"** (docs/redesign/SELECTION.md), only while at least one heart is ticked (a card
+  click opens the heart's page; ticking hearts is the exception — docs/redesign/FRONT-SIMPLIFY.md), so there
+  is no disabled download button and no "Vælg hjerter først" hint. One opaque red pill (`--red`, hover
+  `--red-hover`, `0 2px 8px rgb(31 51 41 / .12)` shadow), 32px tall, 13px/600 with the chips' 6px vertical
+  padding, a download icon and the count in a `rgb(255 255 255 / .22)` badge; `margin: -2px 0` keeps its box
+  inside the chips' line, so the bar's height does not change (measured: 49.2px visible at 1440, stuck or not,
+  with or without it). It sits between the wordmark's room and the chip row, whose chips are right-aligned, so
+  they never move when it comes or goes. It opens the download dialog (`DownloadDialog`, DOWNLOAD.md) for the
+  ticked hearts. It takes no part in the scroll push and gets no +54 clearance: at rest it sits in the bar's
+  bottom row over the hero's snow, and the first row's hearts may hang behind it. No gear menu, no PDF
+  layouts, no "Vælg alle"/"Fravælg alle" any more. Below 700 the bar wraps: the button on the first row
+  (next to the wordmark once stuck), the chips under it.
 
 Scroll-spy: the current chip belongs to the last section whose top has reached the bar's bottom edge plus 8px
 (1px slack), measured with `getBoundingClientRect()` on scroll (passive, one `requestAnimationFrame` per frame)

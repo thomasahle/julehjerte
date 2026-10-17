@@ -31,11 +31,10 @@ function placeAt(el: Element, top: number, height = 40) {
 
 interface Options {
 	selectedCount?: number;
-	allSelected?: boolean;
 	myHeartCount?: number;
 }
 
-async function render({ selectedCount = 0, allSelected = false, myHeartCount = 0 }: Options = {}) {
+async function render({ selectedCount = 0, myHeartCount = 0 }: Options = {}) {
 	// The bar watches a sentinel to know when it has stuck; jsdom has no
 	// IntersectionObserver, so the test keeps the callback and calls it itself.
 	let reportSentinel: ((entries: Partial<IntersectionObserverEntry>[]) => void) | null = null;
@@ -78,7 +77,7 @@ async function render({ selectedCount = 0, allSelected = false, myHeartCount = 0
 
 	const target = document.createElement('div');
 	document.body.appendChild(target);
-	const handlers = { onPrint: vi.fn(), onSelectAll: vi.fn(), onSelectNone: vi.fn() };
+	const handlers = { onDownload: vi.fn() };
 	const component = mount(GalleryBar, {
 		target,
 		props: {
@@ -86,9 +85,6 @@ async function render({ selectedCount = 0, allSelected = false, myHeartCount = 0
 			categories: CATEGORIES,
 			myHeartCount,
 			selectedCount,
-			generating: false,
-			allSelected,
-			pdfLayout: 'medium',
 			...handlers
 		}
 	});
@@ -130,10 +126,7 @@ async function render({ selectedCount = 0, allSelected = false, myHeartCount = 0
 			flushSync();
 			await tick();
 		},
-		download: () => button('Hent skabeloner'),
-		selectAll: () => button('Vælg alle'),
-		selectNone: () => button('Fravælg alle'),
-		gear: () => target.querySelector<HTMLButtonElement>('[aria-label="PDF-indstillinger"]')
+		download: () => button('Hent skabeloner')
 	};
 }
 
@@ -181,12 +174,7 @@ describe('GalleryBar', () => {
 				categories: [...CATEGORIES.slice(0, 4), { id: 'hjerter', count: 0 }],
 				myHeartCount: 0,
 				selectedCount: 0,
-				generating: false,
-				allSelected: false,
-				pdfLayout: 'medium',
-				onPrint: vi.fn(),
-				onSelectAll: vi.fn(),
-				onSelectNone: vi.fn()
+				onDownload: vi.fn()
 			}
 		});
 		cleanup.push(() => {
@@ -248,35 +236,20 @@ describe('GalleryBar', () => {
 		expect(ui.current()).toEqual([]);
 	});
 
-	it('renders no selection controls while nothing is ticked', async () => {
+	it('renders no download button while nothing is ticked', async () => {
 		const ui = await render();
 		expect(ui.download()).toBeUndefined();
-		expect(ui.gear()).toBeNull();
-		expect(ui.selectAll()).toBeUndefined();
-		expect(ui.selectNone()).toBeUndefined();
 		expect(ui.target.querySelectorAll('button')).toHaveLength(0);
 	});
 
-	it('shows download, select all and select none once hearts are ticked', async () => {
+	it('shows one "Hent skabeloner" button with the count once hearts are ticked, left of the chips', async () => {
 		const ui = await render({ selectedCount: 2 });
 		expect(ui.download()?.textContent).toMatch(/Hent skabeloner\s*2/);
-		expect(ui.download()?.hasAttribute('aria-disabled')).toBe(false);
-		expect(ui.gear()).not.toBeNull();
-		expect(ui.selectAll()).toBeDefined();
-		expect(ui.selectNone()).toBeDefined();
+		// One button: no PDF-layout menu, no select all / none (SELECTION.md).
+		expect(ui.target.querySelectorAll('button')).toHaveLength(1);
+		expect(ui.download()!.nextElementSibling?.tagName).toBe('NAV');
 
 		ui.download()!.click();
-		ui.selectAll()!.click();
-		ui.selectNone()!.click();
-		expect(ui.handlers.onPrint).toHaveBeenCalledTimes(1);
-		expect(ui.handlers.onSelectAll).toHaveBeenCalledTimes(1);
-		expect(ui.handlers.onSelectNone).toHaveBeenCalledTimes(1);
-	});
-
-	it('hides "Vælg alle" when every heart is ticked', async () => {
-		const ui = await render({ selectedCount: 2, allSelected: true });
-		expect(ui.selectAll()).toBeUndefined();
-		expect(ui.download()).toBeDefined();
-		expect(ui.selectNone()).toBeDefined();
+		expect(ui.handlers.onDownload).toHaveBeenCalledTimes(1);
 	});
 });

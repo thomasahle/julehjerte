@@ -219,3 +219,50 @@ Everything else in this file stands, including round 1.
   were removed in round 2 and are back, for the name; see above.) The front page toolbar's gallery PDF
   (`generatePDF`/`generateMultiPDF`, its own fixed layouts) still prints its
   labels above the templates: it was left alone, as the first round asked.
+  (Since SELECTION.md the front page uses this dialog and that path is gone;
+  see "As built (several hearts)" below.)
+
+### As built (several hearts, SELECTION.md)
+
+- **The front page opens this dialog** for the ticked hearts, from the gallery
+  bar's single "Hent skabeloner (n)" button. The dialog and the gallery
+  hearts' geometry are imported on the click, so the front page's first load
+  carries neither. `DownloadDialog` takes `designs: HeartDesign[]` (the heart
+  page passes `[design]` with its `heartId`/`heartName`, and behaves exactly as
+  before).
+- **With several hearts** the title is `getTemplatesTitle` ("Hent skabeloner"
+  / "Get templates") with the count in a red badge; the strip/height line is
+  left out (the hearts have different strips); the printer plan lays every
+  heart's templates out in order, heart by heart, and the preview shows page 1
+  of n; the PDF is `downloadTemplatesPDF(designs, …)`, named by
+  `templatesFilename`: `pdfMultiFilename` ("julehjerter-{n}-skabeloner.pdf" /
+  "christmas-hearts-{n}-templates.pdf"). The laser sheet is
+  `planLaserSheet(designs, …)`, which now takes one heart or several: copies of
+  each heart's piece, heart by heart, `hearts: LaserHeart[]` on the plan, the
+  lobe choice applying to every heart whose halves differ (shared ones are cut
+  from their left piece as before), and offered only when at least one heart's
+  halves differ. The file is `laserFileName(t('laserMultiFilename'), …)`:
+  `julehjerter-{n}-laser-{width}mm[-{lobe}].svg|dxf`; its SVG title lists the
+  hearts' names and its description points at the front page.
+- **Analytics:** the PDF sends `trackMultiDownload` (one `download_heart` per
+  heart with a shared `download_id`, plus `download_multi_hearts`); the laser
+  file sends `trackMultiLaserDownload`, one `download_laser` per heart with a
+  shared `download_id` and `download_count`. One heart sends the single events
+  as before.
+- **"Antal hjerter" is laser only (owner, with SELECTION.md):** a printed
+  template is cut as often as wanted, so the printer PDF holds exactly one
+  template set per heart — the single-heart dialog included — and the field
+  shows in laser mode only, where it is copies of each heart on the sheet
+  (`piecesEachNote` under it when there are several). The stored `hearts`
+  setting is the laser's.
+- **Removed:** the front page's own PDF path — `generateMultiPDF`,
+  `downloadMultiPDF`, the small/medium/large `LayoutMode`, the page's
+  `pdfLayout` and `generating`, the bar's gear menu and select all/none, and
+  the strings `pdfLayout`, `pdfSettings`, `layoutSmall/Medium/Large`,
+  `selectAll`, `selectNone`. `generatePDF`/`downloadPDF` stay, fixed at nine
+  templates to an A4 page: the editor and the paint mode still use them.
+- Tests: `DownloadDialog.test.ts` (several hearts: title, plan order, PDF
+  call and event, laser file name, contents and event, no lobe when all
+  shared; printer has no count), `export.test.ts` (multi-heart plan, file
+  names), `template.test.ts` (`templatesFilename`).
+

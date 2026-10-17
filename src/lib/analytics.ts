@@ -123,6 +123,29 @@ export function trackLaserDownload(heartId: string, heartName: string, format: '
 }
 
 /**
+ * Track one laser file holding several hearts (docs/redesign/SELECTION.md):
+ * one download_laser per heart, sharing a download_id as the PDF's
+ * download_heart events do, so the hearts of one file can be grouped again.
+ */
+export function trackMultiLaserDownload(
+  hearts: ReadonlyArray<{ id: string; name: string }>,
+  format: 'svg' | 'dxf',
+  widthMm: number
+) {
+  const downloadId = newDownloadId();
+  for (const heart of hearts) {
+    trackEvent('download_laser', {
+      heart_id: heart.id,
+      heart_name: heart.name,
+      format,
+      width_mm: widthMm,
+      download_id: downloadId,
+      download_count: hearts.length,
+    });
+  }
+}
+
+/**
  * Track when a new heart is created in the editor
  */
 /**

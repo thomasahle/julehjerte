@@ -39,6 +39,37 @@ describe('planLaserSheet', () => {
 		expect(plan.pieces).toHaveLength(3);
 	});
 
+	it('lays several hearts out heart by heart, the lobe applying to the asymmetric ones (SELECTION.md)', () => {
+		const classic = loadHeart('classic-3x3');
+		const jul = loadHeart('jul');
+		const plan = planLaserSheet([classic, jul], { widthMm: 60, count: 2, sheet: SHEETS.A3, lobe: 'right' });
+		expect(plan.hearts.map((h) => [h.design.id, h.shared, h.lobe])).toEqual([
+			['classic-3x3', true, 'left'],
+			['jul', false, 'right']
+		]);
+		expect(plan.shared).toBe(false);
+		expect(plan.lobe).toBe('right');
+		expect(plan.piecesRequested).toBe(4);
+		expect(plan.pieces.map((p) => p.piece)).toEqual([
+			plan.hearts[0]!.pair[0],
+			plan.hearts[0]!.pair[0],
+			plan.hearts[1]!.pair[1],
+			plan.hearts[1]!.pair[1]
+		]);
+	});
+
+	it('needs no lobe when every heart shares its template', () => {
+		const plan = planLaserSheet([loadHeart('classic-3x3'), loadHeart('classic-3x3')], {
+			widthMm: 60,
+			count: 1,
+			sheet: SHEETS.A4,
+			lobe: 'right'
+		});
+		expect(plan.shared).toBe(true);
+		expect(plan.lobe).toBe('left');
+		expect(plan.pieces).toHaveLength(2);
+	});
+
 	it('fits nothing when one piece is taller than the sheet', () => {
 		const plan = planLaserSheet(loadHeart('classic-3x3'), { widthMm: 200, count: 1, sheet: SHEETS.A4, lobe: 'left' });
 		expect(plan.piecesFit).toBe(0);
@@ -67,6 +98,9 @@ describe('laserFileName', () => {
 		expect(laserFileName('jul', 80, 'svg', 'Venstre')).toBe('jul-laser-80mm-venstre.svg');
 		expect(laserFileName('jul', 80, 'dxf', 'Højre')).toBe('jul-laser-80mm-hoejre.dxf');
 		expect(laserFileName('jul', 80, 'svg', 'Right')).toBe('jul-laser-80mm-right.svg');
+		// Several hearts, named by the count (SELECTION.md).
+		expect(laserFileName('julehjerter-3', 80, 'svg', 'Venstre')).toBe('julehjerter-3-laser-80mm-venstre.svg');
+		expect(laserFileName('julehjerter-2', 70, 'dxf')).toBe('julehjerter-2-laser-70mm.dxf');
 	});
 });
 

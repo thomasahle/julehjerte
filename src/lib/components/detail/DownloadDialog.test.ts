@@ -9,12 +9,22 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { flushSync, mount, tick, unmount } from 'svelte';
 import DownloadDialog from './DownloadDialog.svelte';
 import type { HeartDesign } from '$lib/types/heart';
-import { trackHeartDownload, trackLaserDownload } from '$lib/analytics';
+import {
+	trackHeartDownload,
+	trackLaserDownload,
+	trackMultiDownload,
+	trackMultiLaserDownload
+} from '$lib/analytics';
 import { downloadTemplatesPDF } from '$lib/pdf/template';
 import { prerenderHeartImages } from '$lib/pdf/heartRenderer';
 import { loadHeart } from '$lib/laser/testHearts';
 
-vi.mock('$lib/analytics', () => ({ trackHeartDownload: vi.fn(), trackLaserDownload: vi.fn() }));
+vi.mock('$lib/analytics', () => ({
+	trackHeartDownload: vi.fn(),
+	trackLaserDownload: vi.fn(),
+	trackMultiDownload: vi.fn(),
+	trackMultiLaserDownload: vi.fn()
+}));
 // The dialog imports the generator on the click, as the page did; jsPDF itself
 // is not wanted here, only what the dialog asks of it.
 vi.mock('$lib/pdf/template', () => ({ downloadTemplatesPDF: vi.fn(async () => {}) }));
@@ -49,6 +59,8 @@ beforeEach(() => {
 	vi.useFakeTimers();
 	vi.mocked(trackLaserDownload).mockClear();
 	vi.mocked(trackHeartDownload).mockClear();
+	vi.mocked(trackMultiDownload).mockClear();
+	vi.mocked(trackMultiLaserDownload).mockClear();
 	vi.mocked(downloadTemplatesPDF).mockClear();
 	vi.mocked(prerenderHeartImages).mockClear();
 	vi.stubGlobal('localStorage', memoryStorage());
@@ -77,13 +89,14 @@ async function settle(): Promise<void> {
 	flushSync();
 }
 
-async function render(design: HeartDesign = loadHeart('classic-3x3')) {
+/** One heart, as the heart's page opens it, or several, as the front page does. */
+async function render(design: HeartDesign | HeartDesign[] = loadHeart('classic-3x3')) {
 	const target = document.createElement('div');
 	document.body.appendChild(target);
-	const component = mount(DownloadDialog, {
-		target,
-		props: { design, heartId: design.id, heartName: 'Klassisk', lang: 'da', open: true, onClose: () => {} }
-	});
+	const props = Array.isArray(design)
+		? { designs: design, lang: 'da' as const, open: true, onClose: () => {} }
+		: { designs: [design], heartId: design.id, heartName: 'Klassisk', lang: 'da' as const, open: true, onClose: () => {} };
+	const component = mount(DownloadDialog, { target, props });
 	let disposed = false;
 	const dispose = () => {
 		if (disposed) return;
@@ -117,14 +130,15 @@ async function render(design: HeartDesign = loadHeart('classic-3x3')) {
 }
 
 describe('DownloadDialog', () => {
-	it('opens on Printer, 80 mm, one heart, A4, with the picture', async () => {
+	it('opens on Printer, 80 mm, A4, with the picture, and no heart count', async () => {
 		const view = await render();
-		expect(view.q('#download-dialog-title')!.textContent).toBe('Hent skabelon');
+		expect(view.q('#download-dialog-title')!.textContent!.trim()).toBe('Hent skabelon');
 		expect(view.button('Printer')!.getAttribute('data-state')).toBe('on');
 		expect(view.button('Laserskærer')!.getAttribute('data-state')).toBe('off');
 		expect(view.button('A4')!.getAttribute('data-state')).toBe('on');
 		expect(view.q<HTMLInputElement>('#download-width')!.value).toBe('80');
-		expect(view.q<HTMLInputElement>('#download-hearts')!.value).toBe('1');
+		// A printed template is cut as often as wanted: the count is the laser's.
+		expect(view.q('#download-hearts')).toBeNull();
 		expect(view.q<HTMLInputElement>('[data-testid="download-preview-image"]')!.checked).toBe(true);
 		expect(view.q('.hint')!.textContent).toContain('Print uden tilpasning til siden');
 		expect(view.note()).toBe('1 side');
@@ -132,6 +146,8 @@ describe('DownloadDialog', () => {
 		// The first page: the heart's two folded templates.
 		expect(view.q('.preview-sheet svg')!.getAttribute('viewBox')).toBe('0 0 210 297');
 		expect(view.q('.preview-sheet')!.querySelectorAll('g.cut')).toHaveLength(2);
+		await view.choose('Laserskærer');
+		expect(view.q<HTMLInputElement>('#download-hearts')!.value).toBe('1');
 	});
 
 	it('shows the real heart in the printer preview, as the PDF renders it', async () => {
@@ -205,8 +221,7 @@ describe('DownloadDialog', () => {
 	});
 
 	it('says how many pages the PDF takes, and when a template is too big for the sheet', async () => {
-		const view = await render();
-		await view.type('#download-hearts', '3');
+		const view = await render([loadHeart('classic-3x3'), loadHeart('jul'), loadHeart('stjerne')]);
 		expect(view.note()).toBe('2 sider');
 		expect(view.q('[data-testid="download-preview-page"]')!.textContent!.trim()).toBe('Side 1 af 2');
 		expect(view.q('.preview-sheet')!.querySelectorAll('g.cut')).toHaveLength(4);
@@ -218,18 +233,21 @@ describe('DownloadDialog', () => {
 		expect(view.button('Hent PDF')!.disabled).toBe(true);
 	});
 
-	it('hands the PDF generator the chosen width, hearts, sheet and picture setting', async () => {
+	it('hands the PDF generator the chosen width, sheet and picture setting, one set per heart', async () => {
 		const design = loadHeart('classic-3x3');
 		const view = await render(design);
 		await view.type('#download-width', '60');
+		// A laser count does not reach the PDF.
+		await view.choose('Laserskærer');
 		await view.type('#download-hearts', '3');
+		await view.choose('Printer');
 		view.button('Hent PDF')!.click();
 		await vi.dynamicImportSettled();
 		await settle();
 		expect(downloadTemplatesPDF).toHaveBeenCalledTimes(1);
 		expect(downloadTemplatesPDF).toHaveBeenCalledWith([design], {
 			widthMm: 60,
-			hearts: 3,
+			hearts: 1,
 			sheet: { widthMm: 210, heightMm: 297 },
 			lang: 'da',
 			previewImage: true
@@ -249,7 +267,7 @@ describe('DownloadDialog', () => {
 		await settle();
 		expect(vi.mocked(downloadTemplatesPDF).mock.calls[1]![1]).toEqual({
 			widthMm: 60,
-			hearts: 3,
+			hearts: 1,
 			sheet: { widthMm: 300, heightMm: 200 },
 			lang: 'da',
 			previewImage: false
@@ -412,5 +430,72 @@ describe('DownloadDialog', () => {
 		await view.choose('Laserskærer');
 		expect(view.q('[role="alert"]')!.textContent).toContain('Filen kunne ikke laves');
 		expect(view.button('Hent SVG')!.disabled).toBe(true);
+	});
+	describe('with several hearts (SELECTION.md)', () => {
+		const set = () => [loadHeart('classic-3x3'), loadHeart('jul')];
+
+		it("names the count, plans every heart in order, and leaves out the single heart's line", async () => {
+			const view = await render(set());
+			expect(view.q('#download-dialog-title')!.textContent!.replace(/\s+/g, ' ').trim()).toBe('Hent skabeloner 2');
+			expect(view.derived()).toBeUndefined();
+			// Classic's one shared template twice (as the single dialog prints it), Jul's two.
+			expect(view.q('.preview-sheet')!.querySelectorAll('g.cut')).toHaveLength(4);
+			const addresses = [...view.q('.preview-sheet')!.querySelectorAll('text.address')].map((t) => t.textContent);
+			expect(addresses).toEqual([
+				'juleflet.dk/hjerte/classic-3x3',
+				'juleflet.dk/hjerte/classic-3x3',
+				'juleflet.dk/hjerte/jul · Venstre',
+				'juleflet.dk/hjerte/jul · Højre',
+				// The page's footer.
+				'juleflet.dk'
+			]);
+		});
+
+		it('hands the PDF generator every heart, with one shared download event', async () => {
+			const designs = set();
+			const view = await render(designs);
+			view.button('Hent PDF')!.click();
+			await vi.dynamicImportSettled();
+			await settle();
+			expect(downloadTemplatesPDF).toHaveBeenCalledWith(designs, expect.objectContaining({ hearts: 1 }));
+			expect(trackMultiDownload).toHaveBeenCalledWith([
+				{ id: 'classic-3x3', name: designs[0]!.name },
+				{ id: 'jul', name: designs[1]!.name }
+			]);
+			expect(trackHeartDownload).not.toHaveBeenCalled();
+		});
+
+		it("packs every heart's pieces into one laser file named by the count, the lobe applying to the asymmetric one", async () => {
+			const designs = set();
+			const view = await render(designs);
+			await view.choose('Laserskærer');
+			// Jul's halves differ, so the lobe choice shows even though Classic's do not.
+			expect(view.button('Venstre')!.getAttribute('data-state')).toBe('on');
+			expect(view.q('.preview-sheet')!.querySelectorAll('g.cut path').length).toBeGreaterThan(0);
+			view.button('Hent SVG')!.click();
+			await settle();
+			expect(downloads[0]!.name).toBe('julehjerter-2-laser-80mm-venstre.svg');
+			const svg = await blobs[0]!.text();
+			expect(svg).toContain(designs[0]!.name);
+			expect(svg).toContain(designs[1]!.name);
+			expect(trackMultiLaserDownload).toHaveBeenCalledWith(
+				[
+					{ id: 'classic-3x3', name: designs[0]!.name },
+					{ id: 'jul', name: designs[1]!.name }
+				],
+				'svg',
+				80
+			);
+			expect(trackLaserDownload).not.toHaveBeenCalled();
+		});
+
+		it("offers no lobe choice when every heart's halves are the same", async () => {
+			const view = await render([loadHeart('classic-3x3'), loadHeart('classic-3x3')]);
+			await view.choose('Laserskærer');
+			expect(view.button('Venstre')).toBeUndefined();
+			view.button('Hent SVG')!.click();
+			await settle();
+			expect(downloads[0]!.name).toBe('julehjerter-2-laser-80mm.svg');
+		});
 	});
 });

@@ -9,7 +9,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { jsPDF } from 'jspdf';
 import { SHEETS } from '$lib/laser/sheet';
 import { loadHeart } from '$lib/laser/testHearts';
-import { generateTemplatesPDF } from './template';
+import { generateTemplatesPDF, templatesFilename } from './template';
 import { planTemplatePages, templatePieces } from './plan';
 
 // A real 1 × 1 PNG: jsPDF reads its header.
@@ -82,5 +82,15 @@ describe('generateTemplatesPDF', () => {
 		const labels = texts.filter((t) => t.text.startsWith(jul.name));
 		expect(labels.map((t) => t.text)).toEqual([`${jul.name} (Venstre)`, expect.stringMatching(/\(H.+jre\)$/)]);
 		expect(texts.filter((t) => t.text === 'juleflet.dk/hjerte/jul')).toHaveLength(2);
+	});
+});
+
+describe('templatesFilename', () => {
+	it('names one heart and its width, several by their count', () => {
+		const classic = loadHeart('classic-3x3');
+		const jul = loadHeart('jul');
+		expect(templatesFilename([classic], 80)).toBe(`${classic.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-80mm.pdf`);
+		expect(templatesFilename([classic, jul], 80)).toBe('julehjerter-2-skabeloner.pdf');
+		expect(templatesFilename([classic, jul, jul], 60, 'en')).toBe('christmas-hearts-3-templates.pdf');
 	});
 });

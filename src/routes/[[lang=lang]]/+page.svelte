@@ -6,13 +6,13 @@
   redesign's 1400 / 1200 / 900 / 700 / 600 breakpoints.
 
   The route composes those sections and holds only what spans them: which hearts
-  are ticked (mirrored into `?selected=`), the multi-heart PDF and its layout,
-  the delete confirmation for the visitor's own hearts, and the `#heart-<id>`
+  are ticked (mirrored into `?selected=`), the download dialog they open
+  (docs/redesign/SELECTION.md), the delete confirmation for the visitor's own hearts, and the `#heart-<id>`
   anchor the detail page links back to. Everything with markup of its own lives
   in $lib/components/front.
 -->
 <script lang="ts">
-  import { onMount, untrack } from "svelte";
+  import { onMount, tick, untrack, type Component } from "svelte";
   import { page } from "$app/stores";
   import { goto } from "$app/navigation";
   import { browser } from "$app/environment";
@@ -23,16 +23,11 @@
   import Gallery from "$lib/components/front/Gallery.svelte";
   import { deleteUserDesign, getUserCollection } from "$lib/stores/collection";
   import { toGalleryHeart, type GalleryHeart, type HeroHeart } from "$lib/front/galleryHearts";
-  import type { LayoutMode } from "$lib/pdf/template";
   import { SITE_TITLE, SITE_TITLE_EN } from "$lib/config";
   import { t, type Language } from "$lib/i18n";
   import { keepKnown, parseSelected, selectionSearch, toggleSelected } from "$lib/front/selection";
   import type { HeartDesign } from "$lib/types/heart";
-  import {
-    trackHeartView,
-    trackHeartSelect,
-    trackMultiDownload,
-  } from "$lib/analytics";
+  import { trackHeartView, trackHeartSelect } from "$lib/analytics";
   import type { PageProps } from "./$types";
 
   let { data }: PageProps = $props();
@@ -45,8 +40,6 @@
   let userHearts = $state.raw<HeartDesign[]>([]);
 
   let selectedIds = $state<Set<string>>(new Set());
-  let generating = $state(false);
-  let pdfLayout = $state<LayoutMode>("medium");
   let lang = $derived(($page.params.lang === "en" ? "en" : "da") as Language);
   let metaTitle = $derived(lang === "en" ? SITE_TITLE_EN : SITE_TITLE);
   let pendingAnchorId = $state<string | null>(null);
@@ -89,17 +82,6 @@
   // The card is a link to the heart's page; this only records the view.
   function handleClick(heart: GalleryHeart) {
     trackHeartView(heart.id, heart.name);
-  }
-
-  // Select all / none (GitHub issue #11): every heart shown, including the user's own.
-  function handleSelectAll() {
-    selectedIds = new Set(allHearts.map((h) => h.id));
-    updateUrlWithSelections(selectedIds);
-  }
-
-  function handleSelectNone() {
-    selectedIds = new Set();
-    updateUrlWithSelections(selectedIds);
   }
 
   let deleteCandidate = $state.raw<GalleryHeart | null>(null);
@@ -154,7 +136,7 @@
     data.heroIds.mobile.map((id, i) => heroHeart(id, data.heroMarkup?.mobile[i])),
   );
 
-  // Every heart on the page (gallery + the visitor's own), for select all and the PDF.
+  // Every heart on the page (gallery + the visitor's own), for the selection.
   let allHearts = $derived([
     ...galleryCategories.flatMap((category) => category.hearts),
     ...myHearts,
@@ -175,40 +157,53 @@
     untrack(() => (pendingAnchorId = null));
   });
 
-  // The ticked hearts, resolved against the page. The toolbar's badge, its
-  // disabled state and the PDF all count these and not the raw ids, so a
+  // The ticked hearts, resolved against the page. The bar's button, its count
+  // and the dialog all count these and not the raw ids, so a
   // `?selected=` naming a heart this browser does not have cannot promise a
   // template that never arrives.
   let selectedHearts = $derived(allHearts.filter((h) => selectedIds.has(h.id)));
 
-  async function handlePrintSelected() {
+  // "Hent skabeloner" opens the download dialog for the ticked hearts. The
+  // dialog (with the laser and page planning behind it) and the gallery
+  // hearts' geometry are fetched on the click: the page itself needs neither,
+  // since the hearts it shows come prerendered.
+  type DialogProps = {
+    designs: readonly HeartDesign[];
+    lang: Language;
+    open: boolean;
+    onClose: () => void;
+  };
+  let DownloadDialog = $state.raw<Component<DialogProps> | null>(null);
+  let downloadDesigns = $state.raw<HeartDesign[]>([]);
+  let downloadOpen = $state(false);
+  let downloadOpener: HTMLElement | null = null;
+
+  async function handleOpenDownload() {
     const selected = selectedHearts;
-    if (selected.length > 0) {
-      generating = true;
-      try {
-        trackMultiDownload(selected.map((h) => ({ id: h.id, name: h.name })));
-        // jsPDF is 140 KB gzipped and the gallery hearts' geometry another 61 KB
-        // — and the page itself needs neither until this click, since the hearts
-        // it shows come prerendered. Both are fetched here rather than in the
-        // front page's initial bundle.
-        const [{ downloadMultiPDF }, { getGalleryDesign }] = await Promise.all([
-          import("$lib/pdf/template"),
-          import("$lib/data/heartDesigns"),
-        ]);
-        const designs = selected
-          .map((h) => myDesigns[h.id] ?? getGalleryDesign(h.id))
-          .filter((d): d is HeartDesign => Boolean(d));
-        await downloadMultiPDF(designs, { layout: pdfLayout, lang });
-      } catch (err) {
-        // The toolbar has no message slot; at least do not fail silently.
-        console.error("Generating the multi-heart PDF failed", err);
-      } finally {
-        generating = false;
-      }
+    if (selected.length === 0) return;
+    downloadOpener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    try {
+      const [dialog, { getGalleryDesign }] = await Promise.all([
+        import("$lib/components/detail/DownloadDialog.svelte"),
+        import("$lib/data/heartDesigns"),
+      ]);
+      downloadDesigns = selected
+        .map((h) => myDesigns[h.id] ?? getGalleryDesign(h.id))
+        .filter((d): d is HeartDesign => Boolean(d));
+      if (downloadDesigns.length === 0) return;
+      DownloadDialog = dialog.default as unknown as Component<DialogProps>;
+      downloadOpen = true;
+    } catch (err) {
+      // The bar has no message slot; at least do not fail silently.
+      console.error("Opening the download dialog failed", err);
     }
   }
 
-  let allSelected = $derived(allHearts.length > 0 && selectedHearts.length === allHearts.length);
+  async function handleDownloadClose() {
+    downloadOpen = false;
+    await tick();
+    downloadOpener?.focus();
+  }
 </script>
 
 <svelte:head>
@@ -234,12 +229,7 @@
     {myDesigns}
     {selectedIds}
     selectedCount={selectedHearts.length}
-    {generating}
-    {allSelected}
-    bind:pdfLayout
-    onPrint={handlePrintSelected}
-    onSelectAll={handleSelectAll}
-    onSelectNone={handleSelectNone}
+    onDownload={handleOpenDownload}
     onSelect={handleSelect}
     onClick={handleClick}
     onDelete={requestDelete}
@@ -250,6 +240,15 @@
        else — see $lib/front/heroBootstrap. -->
   <HeroBootstrap script={data.heroScript} />
 </main>
+
+{#if DownloadDialog}
+  <DownloadDialog
+    designs={downloadDesigns}
+    {lang}
+    open={downloadOpen}
+    onClose={handleDownloadClose}
+  />
+{/if}
 
 <Modal
   open={deleteCandidate !== null}

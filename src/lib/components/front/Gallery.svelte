@@ -2,7 +2,7 @@
   The front page's gallery — docs/redesign/DESIGN.md §3 "Gallery".
 
   The decorative frame, the heading, the sticky gallery bar, one row per category and
-  "Mine hjerter" at the foot. Selection and PDF generation belong to the page;
+  "Mine hjerter" at the foot. Selection and the download dialog belong to the page;
   this composes the pieces and owns the column's own layout.
 
   The frame is only drawn from 1400px up and has to be exactly as tall as the
@@ -24,7 +24,6 @@
 	import { cardDrop, chipLift, hillTopPage, type LandRect } from '$lib/front/hillLine';
 	import { categoryTitle } from '$lib/data/categories';
 	import { t, type Language } from '$lib/i18n';
-	import type { LayoutMode } from '$lib/pdf/template';
 	import type { HeartDesign } from '$lib/types/heart';
 	import type { GalleryHeart } from '$lib/front/galleryHearts';
 
@@ -50,12 +49,8 @@
 		 * the bar must not offer a PDF of them.
 		 */
 		selectedCount: number;
-		generating: boolean;
-		allSelected: boolean;
-		pdfLayout: LayoutMode;
-		onPrint: () => void;
-		onSelectAll: () => void;
-		onSelectNone: () => void;
+		/** "Hent skabeloner": open the download dialog for the ticked hearts. */
+		onDownload: () => void;
 		onSelect: (heart: GalleryHeart) => void;
 		onClick: (heart: GalleryHeart) => void;
 		onDelete: (heart: GalleryHeart) => void;
@@ -70,12 +65,7 @@
 		myDesigns,
 		selectedIds,
 		selectedCount,
-		generating,
-		allSelected,
-		pdfLayout = $bindable(),
-		onPrint,
-		onSelectAll,
-		onSelectNone,
+		onDownload,
 		onSelect,
 		onClick,
 		onDelete
@@ -296,12 +286,7 @@
 			lifts={chipLifts}
 			{strandRoom}
 			{selectedCount}
-			{generating}
-			{allSelected}
-			bind:pdfLayout
-			{onPrint}
-			{onSelectAll}
-			{onSelectNone}
+			{onDownload}
 		/>
 
 		{#each categories as category, i (category.id)}

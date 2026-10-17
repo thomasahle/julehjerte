@@ -26,28 +26,22 @@ const PAGE_WIDTH = 210;
 const PAGE_HEIGHT = 297;
 const PREVIEW_DPI = 300;
 
-// Layout modes for PDF generation
-export type LayoutMode = 'small' | 'medium' | 'large';
-
-const LAYOUTS = {
-  small: { cols: 4, rows: 4 },   // 16 per page
-  medium: { cols: 3, rows: 3 },  // 9 per page
-  large: { cols: 2, rows: 2 }    // 4 per page
-};
+// The editor's and paint mode's one-page PDF: nine templates to an A4 page.
+// (The front page's small/medium/large choice went with its own PDF path,
+// docs/redesign/SELECTION.md; the front page uses the download dialog now.)
+const GRID = { cols: 3, rows: 3 };
 
 interface PDFOptions {
-  layout?: LayoutMode;
   lang?: Language;
 }
 
-// Calculate template dimensions based on layout mode
-function getTemplateDimensions(layout: LayoutMode) {
+function getTemplateDimensions() {
   const COMPACT_MARGIN = 5;
   const FOOTER_HEIGHT = 5;
   const availableWidth = PAGE_WIDTH - COMPACT_MARGIN * 2;
   const availableHeight = PAGE_HEIGHT - COMPACT_MARGIN * 2 - FOOTER_HEIGHT;
 
-  const { cols, rows } = LAYOUTS[layout];
+  const { cols, rows } = GRID;
 
   const maxWidth = (availableWidth - COMPACT_MARGIN * (cols - 1)) / cols;
   const maxHeight = (availableHeight - COMPACT_MARGIN * (rows - 1)) / rows;
@@ -65,8 +59,8 @@ function getTemplateDimensions(layout: LayoutMode) {
   return { width, height, cols, rows, margin: COMPACT_MARGIN, footerHeight: FOOTER_HEIGHT };
 }
 
-function previewSizePx(layout: LayoutMode): number {
-  const { width, height } = getTemplateDimensions(layout);
+function previewSizePx(): number {
+  const { width, height } = getTemplateDimensions();
   const previewSizeMm = Math.min(width * 0.35, height * 0.25);
   return Math.max(200, Math.round((previewSizeMm / 25.4) * PREVIEW_DPI));
 }
@@ -387,15 +381,13 @@ function addTemplatesPage(
   startIndex: number,
   isFirstPage: boolean,
   heartImages: Map<string, string>,
-  layout: LayoutMode = 'medium',
   lang: Language = 'da'
 ): number {
   if (!isFirstPage) {
     pdf.addPage();
   }
 
-  // Get dimensions based on layout mode
-  const { width: TEMPLATE_WIDTH, height: TEMPLATE_HEIGHT, cols, rows, margin: COMPACT_MARGIN, footerHeight: FOOTER_HEIGHT } = getTemplateDimensions(layout);
+  const { width: TEMPLATE_WIDTH, height: TEMPLATE_HEIGHT, cols, rows, margin: COMPACT_MARGIN, footerHeight: FOOTER_HEIGHT } = getTemplateDimensions();
 
   const maxPerPage = cols * rows;
 
@@ -485,7 +477,6 @@ function addTemplatesPage(
 }
 
 async function generatePDF(design: HeartDesign, options: PDFOptions = {}): Promise<jsPDF> {
-  const layout = options.layout ?? 'medium';
   const lang = options.lang ?? 'da';
 
   const pdf = new jsPDF({
@@ -494,33 +485,9 @@ async function generatePDF(design: HeartDesign, options: PDFOptions = {}): Promi
     format: 'a4'
   });
 
-  const heartImages = await prerenderHeartImages([design], previewSizePx(layout));
+  const heartImages = await prerenderHeartImages([design], previewSizePx());
   const templates = collectTemplates([design]);
-  addTemplatesPage(pdf, templates, 0, true, heartImages, layout, lang);
-
-  return pdf;
-}
-
-async function generateMultiPDF(designs: HeartDesign[], options: PDFOptions = {}): Promise<jsPDF> {
-  const layout = options.layout ?? 'medium';
-  const lang = options.lang ?? 'da';
-
-  const pdf = new jsPDF({
-    orientation: 'portrait',
-    unit: 'mm',
-    format: 'a4'
-  });
-
-  const heartImages = await prerenderHeartImages(designs, previewSizePx(layout));
-  const templates = collectTemplates(designs);
-  let index = 0;
-  let isFirst = true;
-
-  while (index < templates.length) {
-    const drawn = addTemplatesPage(pdf, templates, index, isFirst, heartImages, layout, lang);
-    index += drawn;
-    isFirst = false;
-  }
+  addTemplatesPage(pdf, templates, 0, true, heartImages, lang);
 
   return pdf;
 }
@@ -533,16 +500,6 @@ function singleFilename(design: HeartDesign): string {
 export async function downloadPDF(design: HeartDesign, options: PDFOptions = {}) {
   const pdf = await generatePDF(design, options);
   pdf.save(singleFilename(design));
-}
-
-export async function downloadMultiPDF(designs: HeartDesign[], options: PDFOptions = {}) {
-  if (designs.length === 0) return;
-
-  const pdf = await generateMultiPDF(designs, options);
-  const filename = designs.length === 1
-    ? singleFilename(designs[0])
-    : `${t('pdfMultiFilename', options.lang, { n: designs.length })}.pdf`;
-  pdf.save(filename);
 }
 
 // ---- The "Hent skabelon" dialog's PDF (docs/redesign/DOWNLOAD.md) ----------
@@ -636,13 +593,22 @@ export async function generateTemplatesPDF(designs: HeartDesign[], options: Temp
   return pdf;
 }
 
-/** "klassisk-80mm.pdf": the heart, and the width it was printed at. */
-export function templatesFilename(design: HeartDesign, widthMm: number): string {
-  return `${slugify(design.name)}-${widthMm}mm.pdf`;
+/**
+ * "klassisk-80mm.pdf": the heart, and the width it was printed at; for
+ * several hearts (SELECTION.md) "julehjerter-3-skabeloner.pdf", the count.
+ */
+export function templatesFilename(
+  designs: HeartDesign | readonly HeartDesign[],
+  widthMm: number,
+  lang: Language = 'da'
+): string {
+  const list = Array.isArray(designs) ? (designs as readonly HeartDesign[]) : [designs as HeartDesign];
+  if (list.length > 1) return `${t('pdfMultiFilename', lang, { n: list.length })}.pdf`;
+  return `${slugify(list[0]!.name)}-${widthMm}mm.pdf`;
 }
 
 export async function downloadTemplatesPDF(designs: HeartDesign[], options: TemplatesPDFOptions) {
   if (designs.length === 0) return;
   const pdf = await generateTemplatesPDF(designs, options);
-  pdf.save(templatesFilename(designs[0]!, options.widthMm));
+  pdf.save(templatesFilename(designs, options.widthMm, options.lang));
 }

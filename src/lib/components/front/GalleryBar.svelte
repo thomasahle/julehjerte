@@ -4,13 +4,14 @@
 
   One row, left to right: the Juleflet.dk wordmark, which only shows once the
   bar has stuck (the page header carrying the same wordmark has scrolled away
-  by then); one chip per category, with scroll-spy marking the one being read;
-  and, only while hearts are ticked, the selection controls — "Hent skabeloner
-  (n)" with its PDF-layout menu as one split button, then select all / select
-  none. Ticking is the exception (docs/redesign/FRONT-SIMPLIFY.md — a card
-  click opens the heart's page), so a visitor who never ticks anything never
-  sees a disabled download button asking them to. The bar only reports what
-  was clicked; the selection itself and the PDF generation stay on the page.
+  by then); only while hearts are ticked, one red "Hent skabeloner (n)" button
+  (docs/redesign/SELECTION.md), which opens the download dialog for them; and
+  one chip per category, right-aligned, with scroll-spy marking the one being
+  read — so the button comes and goes without moving the chips. Ticking is
+  the exception (docs/redesign/FRONT-SIMPLIFY.md — a card click opens the
+  heart's page), so a visitor who never ticks anything never sees a disabled
+  download button asking them to. The bar only reports the click; the
+  selection and the dialog stay on the page.
 
   On the desktop layout, at rest, the chips are right-aligned and each steps
   down onto the hero's hill line (docs/redesign/GALLERY-CURVE.md); the gallery
@@ -26,19 +27,7 @@
 	import { href } from '$lib/i18n/routes';
 	import { categoryTitle, MY_HEARTS_CATEGORY_ID } from '$lib/data/categories';
 	import { activeSection, ANCHOR_GAP, isAtPageBottom } from '$lib/front/scrollSpy';
-	import { DownloadIcon, GearIcon } from '$lib/components/icons';
-	import type { LayoutMode } from '$lib/pdf/template';
-	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-
-	/** The three A4 layouts the PDF menu offers, in menu order. */
-	const LAYOUT_OPTIONS: {
-		value: LayoutMode;
-		labelKey: 'layoutSmall' | 'layoutMedium' | 'layoutLarge';
-	}[] = [
-		{ value: 'small', labelKey: 'layoutSmall' },
-		{ value: 'medium', labelKey: 'layoutMedium' },
-		{ value: 'large', labelKey: 'layoutLarge' }
-	];
+	import { DownloadIcon } from '$lib/components/icons';
 
 	interface Props {
 		lang: Language;
@@ -48,16 +37,10 @@
 		myHeartCount: number;
 		/** Hearts currently ticked; shown in the button's badge. */
 		selectedCount: number;
-		/** A PDF is being built, so every control is inert. */
-		generating: boolean;
-		/** Every heart on the page is already ticked. */
-		allSelected: boolean;
-		/** The chosen A4 layout; bound so the page can pass it to the PDF. */
-		pdfLayout: LayoutMode;
 		/**
 		 * The bar's height in px, bound by the gallery for the sections'
-		 * `scroll-margin-top`: a chip's anchor has to land under the bar, and the
-		 * bar is taller while the selection controls show (two rows on a phone).
+		 * `scroll-margin-top`: a chip's anchor has to land under the bar, and on
+		 * a phone the bar takes a second row while the button shows.
 		 */
 		height?: number;
 		/**
@@ -71,9 +54,8 @@
 		 * sees where a category's hearts are rather than its box. 0: none.
 		 */
 		strandRoom?: number;
-		onPrint: () => void;
-		onSelectAll: () => void;
-		onSelectNone: () => void;
+		/** "Hent skabeloner": open the download dialog for the ticked hearts. */
+		onDownload: () => void;
 	}
 
 	let {
@@ -81,15 +63,10 @@
 		categories,
 		myHeartCount,
 		selectedCount,
-		generating,
-		allSelected,
-		pdfLayout = $bindable(),
 		height = $bindable(0),
 		lifts = [],
 		strandRoom = 0,
-		onPrint,
-		onSelectAll,
-		onSelectNone
+		onDownload
 	}: Props = $props();
 
 	let hasSelection = $derived(selectedCount > 0);
@@ -141,33 +118,30 @@
 	// how far the page has scrolled past the bar's resting top (clamped to
 	// [0, L]), chip i sits at translateY(max(p, lift_i) − L): on the curve at
 	// rest, then carried down by the top of the screen once p passes its lift,
-	// flat at p = L, when the bar sticks. The selection controls are pushed
-	// like a chip with no lift. The `translate` property, not `transform`, so
-	// nothing else that transforms a chip is overridden.
+	// flat at p = L, when the bar sticks. The download button takes no part
+	// (SELECTION.md): it stays in the bar's bottom row throughout. The
+	// `translate` property, not `transform`, so nothing else that transforms a
+	// chip is overridden.
 	$effect(() => {
 		if (!barEl || !chipRow) return;
 		const bar = barEl;
 		const row = chipRow;
 		const room = liftRoom;
 		const chipLifts = lifts;
-		// Re-run when the chips or the controls come and go.
+		// Re-run when the chips come and go.
 		void sections.length;
-		void hasSelection;
 		let frame = 0;
 		const update = () => {
 			frame = 0;
 			const chips = Array.from(row.children) as HTMLElement[];
-			const selection = bar.querySelector<HTMLElement>('.selection');
 			if (room <= 0) {
 				for (const chip of chips) chip.style.removeProperty('translate');
-				selection?.style.removeProperty('translate');
 				return;
 			}
 			const p = Math.min(Math.max(-bar.getBoundingClientRect().top, 0), room);
 			chips.forEach((chip, i) => {
 				chip.style.translate = `0 ${Math.max(p, chipLifts[i] ?? 0) - room}px`;
 			});
-			if (selection) selection.style.translate = `0 ${p - room}px`;
 		};
 		const schedule = () => {
 			if (!frame) frame = requestAnimationFrame(update);
@@ -305,6 +279,14 @@
 		{t('siteWordmark', lang)}
 	</a>
 
+	{#if hasSelection}
+		<button type="button" class="get" onclick={onDownload}>
+			<DownloadIcon size={16} />
+			{t('printSelected', lang)}
+			<span class="get-count">{selectedCount}</span>
+		</button>
+	{/if}
+
 	<nav
 		class="chips"
 		aria-label={t('galleryCategories', lang)}
@@ -324,57 +306,6 @@
 		{/each}
 	</nav>
 
-	{#if hasSelection}
-		<div class="selection">
-			<span class="split">
-				<button
-					type="button"
-					class="btn btn-primary split-main"
-					onclick={onPrint}
-					disabled={generating}
-				>
-					<DownloadIcon size={18} />
-					{generating ? t('generating', lang) : t('printSelected', lang)}
-					{#if !generating}
-						<span class="split-count">{selectedCount}</span>
-					{/if}
-				</button>
-				<DropdownMenu.Root>
-					<DropdownMenu.Trigger>
-						{#snippet child({ props })}
-							<button
-								{...props}
-								type="button"
-								class="btn btn-primary btn-icon split-gear"
-								aria-label={t('pdfSettings', lang)}
-								title={t('pdfLayout', lang)}
-							>
-								<GearIcon size={18} />
-							</button>
-						{/snippet}
-					</DropdownMenu.Trigger>
-					<DropdownMenu.Content align="end" class="border-0">
-						<DropdownMenu.RadioGroup bind:value={pdfLayout}>
-							{#each LAYOUT_OPTIONS as option (option.value)}
-								<DropdownMenu.RadioItem value={option.value}>
-									{t(option.labelKey, lang)}
-								</DropdownMenu.RadioItem>
-							{/each}
-						</DropdownMenu.RadioGroup>
-					</DropdownMenu.Content>
-				</DropdownMenu.Root>
-			</span>
-
-			{#if !allSelected}
-				<button type="button" class="btn btn-ghost" onclick={onSelectAll} disabled={generating}>
-					{t('selectAll', lang)}
-				</button>
-			{/if}
-			<button type="button" class="btn btn-ghost" onclick={onSelectNone} disabled={generating}>
-				{t('selectNone', lang)}
-			</button>
-		</div>
-	{/if}
 </div>
 
 <style>
@@ -521,7 +452,7 @@
 		}
 
 		.chip,
-		.selection {
+		.get {
 			pointer-events: auto;
 		}
 
@@ -542,55 +473,49 @@
 		}
 	}
 
-	.selection {
+	/* "Hent skabeloner (n)": an opaque red pill the chips' size (13px, their
+	   6px vertical padding), 32px tall. Its -2px margins keep its box inside
+	   the chips' 29.4px line, so it never changes the bar's height. Opaque, as
+	   the first row's ribbons may run behind it at rest. */
+	.get {
 		flex: none;
-		display: flex;
-		align-items: center;
-		gap: 12px;
-		margin-left: auto;
-	}
-
-	/* "Hent skabeloner (n)" and its PDF settings gear are two .btn-primary halves
-	   butted together; all that is left here is the shared corner radii, the
-	   square gear and the divider between them. */
-	.split {
 		display: inline-flex;
-		border-radius: 10px;
+		align-items: center;
+		gap: 6px;
+		height: 32px;
+		margin: -2px 0;
+		padding: 6px 8px 6px 12px;
+		border: none;
+		border-radius: 999px;
+		box-sizing: border-box;
+		background: var(--red);
+		color: var(--white);
+		font-family: inherit;
+		font-size: 13px;
+		font-weight: 600;
+		line-height: 1.2;
+		white-space: nowrap;
+		cursor: pointer;
 		box-shadow: 0 2px 8px rgb(var(--deep-rgb) / 0.12);
 	}
 
-	/* No border: .btn-primary's 1px would push the label a pixel inwards and add
-	   a second edge next to the divider. */
-	.split-main,
-	.split-gear {
-		border: none;
+	.get:hover {
+		background: var(--red-hover);
 	}
 
-	.split-main {
-		padding: 0 18px;
-		border-radius: 10px 0 0 10px;
+	.get:focus-visible {
+		outline: 3px solid var(--blue);
+		outline-offset: 2px;
 	}
 
-	.split-gear {
-		border-radius: 0 10px 10px 0;
-		border-left: 1px solid rgb(255 255 255 / 0.35);
-	}
-
-	/* Dimmed while the PDF is being built, but the red still has to read as the
-	   bar's anchor — .btn's own 0.5 would wash it out. */
-	.split-main:disabled {
-		opacity: 0.75;
-	}
-
-	.split-count {
-		padding: 1px 9px;
+	.get-count {
+		padding: 1px 8px;
 		border-radius: 999px;
 		background: rgb(255 255 255 / 0.22);
-		font-size: 13px;
 	}
 
-	/* A phone has no room for the controls beside the chips, so they take a
-	   second row of their own, still under the sticky background. */
+	/* A phone has no room for the button beside the chips: the row wraps, the
+	   chips going under it, still under the sticky background. */
 	@media (max-width: 699px) {
 		.gallery-bar {
 			flex-wrap: wrap;
@@ -600,11 +525,6 @@
 
 		.wordmark {
 			font-size: 16px;
-		}
-
-		.selection {
-			flex-basis: 100%;
-			gap: 8px;
 		}
 	}
 </style>

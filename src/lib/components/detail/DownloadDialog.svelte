@@ -4,13 +4,22 @@
   Everything about getting a heart's template out of the site, in one dialog:
   for a printer, a PDF of the folded templates at the width the visitor picks,
   on as many pages of the chosen sheet as the hearts need; for a laser cutter,
-  the whole unfolded piece as an SVG or DXF (docs/redesign/LASER.md). Width,
-  number of hearts and sheet mean the same in both, so they are set once, and
+  the whole unfolded piece as an SVG or DXF (docs/redesign/LASER.md). Width
+  and sheet mean the same in both, so they are set once, and
   the preview shows the sheet as it will come out.
 
   The geometry and the file writing are in $lib/laser and $lib/pdf (the page
   planning in $lib/pdf/plan, without jsPDF, so the preview needs no PDF); this
   dialog holds the settings, shows what they give, and hands the file over.
+
+  It also takes several hearts at once — the front page's ticked hearts,
+  docs/redesign/SELECTION.md: every piece is planned in order, the files are
+  named by the count, and the laser lobe applies to every heart whose halves
+  differ. One heart is exactly the single-heart dialog.
+
+  The printer PDF holds exactly one template set per heart — a template is
+  printed once and cut as often as wanted — so "Antal hjerter" is a laser
+  setting only (copies of each heart on the sheet), shown in laser mode only.
 -->
 <script lang="ts" module>
 	import type { TemplateLobe } from '$lib/utils/templateSvg';
@@ -25,9 +34,14 @@
 	import { DownloadIcon } from '$lib/components/icons';
 	import { t, type Language } from '$lib/i18n';
 	import { SITE_URL } from '$lib/config';
-	import { heartPath } from '$lib/i18n/routes';
+	import { heartPath, path } from '$lib/i18n/routes';
 	import type { HeartDesign } from '$lib/types/heart';
-	import { trackHeartDownload, trackLaserDownload } from '$lib/analytics';
+	import {
+		trackHeartDownload,
+		trackLaserDownload,
+		trackMultiDownload,
+		trackMultiLaserDownload
+	} from '$lib/analytics';
 	import {
 		LASER_MIME,
 		MAX_HEARTS,
@@ -66,16 +80,25 @@
 	} from '$lib/download/settings';
 
 	interface Props {
-		design: HeartDesign;
-		heartId: string;
-		heartName: string;
+		/** The hearts to get, in order; one is the heart page's dialog. */
+		designs: readonly HeartDesign[];
+		/** The single heart's id and name, when they are not the design's own. */
+		heartId?: string;
+		heartName?: string;
 		lang: Language;
 		open: boolean;
 		/** The page returns focus to whatever opened the dialog. */
 		onClose: () => void;
 	}
 
-	let { design, heartId, heartName, lang, open, onClose }: Props = $props();
+	let { designs, heartId: idProp, heartName: nameProp, lang, open, onClose }: Props = $props();
+
+	const design = $derived(designs[0]!);
+	const several = $derived(designs.length > 1);
+	const heartId = $derived(idProp ?? design.id);
+	const heartName = $derived(several ? designs.map((d) => d.name).join(', ') : (nameProp ?? design.name));
+	/** What the multi-heart events and file names count. */
+	const heartList = $derived(designs.map((d) => ({ id: d.id, name: d.name })));
 
 	// The laser lobe is remembered for this visit only (DOWNLOAD.md): having cut
 	// the left halves, the visitor comes back for the right ones, but a stored
@@ -142,7 +165,8 @@
 
 	const printPieces = $derived.by<TemplatePiece[]>(() => {
 		if (!open || mode !== 'printer') return [];
-		return templatePieces([design], widthMm, hearts);
+		// One set per heart: the count is the laser's.
+		return templatePieces(designs, widthMm, 1);
 	});
 
 	const printPlan = $derived.by<TemplatePagePlan | null>(() =>
@@ -158,16 +182,18 @@
 	// at another width is kept meanwhile: only its sharpness differs.
 	const picturePixels = $derived(printPieces.length ? templatePicturePixels(printPieces) : 0);
 	let pictures = $state<{ designId: string; pixels: number; images: Map<string, string> } | null>(null);
+	/** The set's key: the hearts' ids, in order. */
+	const designsKey = $derived(designs.map((d) => d.id).join(' '));
 
 	$effect(() => {
 		if (!open || mode !== 'printer' || !previewImage || !picturePixels) return;
-		const wanted = { design, pixels: picturePixels };
+		const wanted = { designs, key: designsKey, pixels: picturePixels };
 		const have = untrack(() => pictures);
-		if (have && have.designId === wanted.design.id && have.pixels === wanted.pixels) return;
+		if (have && have.designId === wanted.key && have.pixels === wanted.pixels) return;
 		let stale = false;
-		prerenderHeartImages([wanted.design], wanted.pixels).then(
+		prerenderHeartImages([...wanted.designs], wanted.pixels).then(
 			(images) => {
-				if (!stale) pictures = { designId: wanted.design.id, pixels: wanted.pixels, images };
+				if (!stale) pictures = { designId: wanted.key, pixels: wanted.pixels, images };
 			},
 			// prerenderHeartImages logs and skips a heart it cannot draw; this is
 			// for anything else. The preview then simply has no picture.
@@ -178,21 +204,23 @@
 		};
 	});
 
-	const previewImages = $derived(pictures?.designId === design.id ? pictures.images : undefined);
+	const previewImages = $derived(pictures?.designId === designsKey ? pictures.images : undefined);
 
 	// ---- Laser: one lobe's unfolded pieces on one sheet ------------------------
 	// A heart's halves are cut from two colours of paper, so a sheet holds one
 	// lobe: one piece per heart. A heart whose halves are the same piece needs
 	// no choice; the same sheet is cut once in each colour.
 
-	const sharedTemplate = $derived(lobesShareTemplate(design.fingers, design.gridSize));
+	// With several hearts the lobe choice applies to every heart whose halves
+	// differ; it is only left out when none of them do.
+	const sharedTemplate = $derived(designs.every((d) => lobesShareTemplate(d.fingers, d.gridSize)));
 
 	// A design the export cannot cut (a cut that stops short of the fold) has no
 	// plan; the dialog then says so instead of showing a preview.
 	const laserPlan = $derived.by<LaserPlan | null>(() => {
 		if (!open || mode !== 'laser') return null;
 		try {
-			return planLaserSheet(design, { widthMm, count: hearts, sheet, lobe });
+			return planLaserSheet(designs, { widthMm, count: hearts, sheet, lobe });
 		} catch (err) {
 			console.error('Laying out the laser sheet failed', err);
 			return null;
@@ -203,7 +231,10 @@
 
 	// The strips against the visitor's scissors or laser, and the height: the
 	// folded template's for print, the opened-out piece's for the laser.
+	// Several hearts have several strip widths and heights, so the line is the
+	// single heart's only.
 	const derivedLine = $derived.by(() => {
+		if (several) return '';
 		let strip: number;
 		let height: number;
 		if (mode === 'printer') {
@@ -241,7 +272,7 @@
 	const fileInfo = $derived({
 		heartId,
 		heartName,
-		url: `${SITE_URL}${heartPath(heartId, lang)}`,
+		url: several ? `${SITE_URL}${path('home', lang)}` : `${SITE_URL}${heartPath(heartId, lang)}`,
 		widthMm
 	});
 
@@ -349,10 +380,11 @@
 	// rather than with the page.
 	async function downloadPdf(): Promise<void> {
 		generating = true;
-		trackHeartDownload(design.id, design.name);
+		if (several) trackMultiDownload(heartList);
+		else trackHeartDownload(design.id, design.name);
 		try {
 			const { downloadTemplatesPDF } = await import('$lib/pdf/template');
-			await downloadTemplatesPDF([design], { widthMm, hearts, sheet, lang, previewImage });
+			await downloadTemplatesPDF([...designs], { widthMm, hearts: 1, sheet, lang, previewImage });
 			failure = null;
 		} catch (err) {
 			// Without this the download simply did nothing, with no sign of why.
@@ -372,7 +404,7 @@
 			const link = document.createElement('a');
 			link.href = url;
 			link.download = laserFileName(
-				heartId,
+				several ? t('laserMultiFilename', lang, { n: designs.length }) : heartId,
 				widthMm,
 				format,
 				laserPlan.shared ? undefined : lobeName(laserPlan.lobe)
@@ -384,7 +416,8 @@
 			// URL has to outlive it for a moment.
 			setTimeout(() => URL.revokeObjectURL(url), 1000);
 			failure = null;
-			trackLaserDownload(heartId, heartName, format, widthMm);
+			if (several) trackMultiLaserDownload(heartList, format, widthMm);
+			else trackLaserDownload(heartId, heartName, format, widthMm);
 		} catch (err) {
 			console.error('Writing the laser file failed', err);
 			failure = 'laser';
@@ -400,7 +433,14 @@
 
 <Modal {open} labelledBy="download-dialog-title" width="min(860px, 100%)" {onClose}>
 	<div class="download">
-		<h2 id="download-dialog-title" class="title">{t('getTemplateTitle', lang)}</h2>
+		<h2 id="download-dialog-title" class="title">
+			{#if several}
+				{t('getTemplatesTitle', lang)}
+				<span class="title-count" data-testid="download-count">{designs.length}</span>
+			{:else}
+				{t('getTemplateTitle', lang)}
+			{/if}
+		</h2>
 
 		<div class="body">
 			<div class="controls">
@@ -441,21 +481,23 @@
 					{/if}
 				</div>
 
-				<div class="field">
-					<label class="label" for="download-hearts">{t('heartsCount', lang)}</label>
-					<input
-						id="download-hearts"
-						class="number"
-						type="number"
-						min={MIN_HEARTS}
-						max={MAX_HEARTS}
-						step="1"
-						value={hearts}
-						oninput={(e) => setNumber('hearts', e.currentTarget.value)}
-						onblur={(e) => commitNumber('hearts', e.currentTarget)}
-					/>
-					<p class="hint">{t('piecesNote', lang)}</p>
-				</div>
+				{#if mode === 'laser'}
+					<div class="field">
+						<label class="label" for="download-hearts">{t('heartsCount', lang)}</label>
+						<input
+							id="download-hearts"
+							class="number"
+							type="number"
+							min={MIN_HEARTS}
+							max={MAX_HEARTS}
+							step="1"
+							value={hearts}
+							oninput={(e) => setNumber('hearts', e.currentTarget.value)}
+							onblur={(e) => commitNumber('hearts', e.currentTarget)}
+						/>
+						<p class="hint">{several ? t('piecesEachNote', lang) : t('piecesNote', lang)}</p>
+					</div>
+				{/if}
 
 				<div class="field">
 					<span class="label" id="download-sheet-label">{t('sheet', lang)}</span>
@@ -595,8 +637,21 @@
 	}
 
 	.title {
+		display: flex;
+		align-items: center;
+		gap: 10px;
 		margin: 0;
 		font-size: 24px;
+	}
+
+	/* The count, as the bar's button shows it. */
+	.title-count {
+		padding: 2px 10px;
+		border-radius: 999px;
+		background: var(--red);
+		color: var(--white);
+		font-size: 15px;
+		font-weight: 600;
 	}
 
 	/* Settings on the left, the sheet on the right; stacked below 900px, with
