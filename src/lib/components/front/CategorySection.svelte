@@ -156,6 +156,28 @@
 		}
 	}
 
+	/* A chip jump never lands before the bar sticks: the first category's
+	   anchor would otherwise stop short of it (at 1440, D is not L + 51 or
+	   more), leaving the bar transparent, its chips on the hill and no chip
+	   current. So its scroll target is max(anchor target, H + L + 1), H the
+	   bar's resting top and L its room on top (it sticks at H + L): the
+	   section's top is 6px below H on the desktop layout (.cat.first above),
+	   so a margin of at most 6 − L − 1 lands 1px past the stick point, where
+	   its row hangs under the stuck bar as every other category's does. Below
+	   900 the section starts the bar's height plus 8px below H and L is 0. */
+	.cat.first {
+		scroll-margin-top: calc(var(--gallery-bar-height, 49px) + 7px);
+	}
+
+	@media (min-width: 900px) {
+		.cat.first {
+			scroll-margin-top: min(
+				calc(var(--gallery-bar-height, 49px) + 8px - var(--strand-room, 0px)),
+				calc(5px - var(--bar-room, 0px))
+			);
+		}
+	}
+
 	.cat-head {
 		display: flex;
 		align-items: baseline;

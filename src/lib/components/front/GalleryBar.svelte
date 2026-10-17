@@ -28,7 +28,7 @@
 	import { t, type Language } from '$lib/i18n';
 	import { href } from '$lib/i18n/routes';
 	import { categoryTitle, MY_HEARTS_CATEGORY_ID } from '$lib/data/categories';
-	import { activeSection, ANCHOR_GAP, isAtPageBottom } from '$lib/front/scrollSpy';
+	import { ANCHOR_GAP, currentSection, isAtPageBottom } from '$lib/front/scrollSpy';
 	import { DownloadIcon } from '$lib/components/icons';
 
 	interface Props {
@@ -176,10 +176,12 @@
 		const measure = () => {
 			frame = 0;
 			const box = bar.getBoundingClientRect();
-			// Until the bar sticks the visitor is still above the gallery, on the
-			// hero — even though the first row already sits right under the bar,
-			// exactly ANCHOR_GAP below it, and the rule alone would light its chip.
-			if (box.top > 1 - liftRoom) {
+			// The bar is stuck once its top has reached its sticky top (-L).
+			// Until then the visitor is still above the gallery, on the hero —
+			// even though the first row already sits right under the bar, exactly
+			// ANCHOR_GAP below it, and the rule alone would light its chip.
+			const barStuck = box.top <= 1 - liftRoom;
+			if (!barStuck) {
 				activeIndex = -1;
 				return;
 			}
@@ -190,9 +192,10 @@
 					(id === MY_HEARTS_CATEGORY_ID ? 0 : shift)
 			);
 			const root = document.documentElement;
-			activeIndex = activeSection(
+			activeIndex = currentSection(
 				tops,
 				line,
+				barStuck,
 				isAtPageBottom(window.scrollY, window.innerHeight, root.scrollHeight)
 			);
 		};

@@ -211,9 +211,6 @@ describe('GalleryBar', () => {
 
 	it('marks the chip of the section that has reached the bar as current', async () => {
 		const ui = await render();
-		await ui.scroll();
-		expect(ui.current()).toEqual([]);
-
 		// The bar is 50px tall at the top; Mønstre's heading has just reached it.
 		placeAt(ui.section('klassiske'), -2000);
 		placeAt(ui.section('stjerner'), -900);
@@ -226,6 +223,15 @@ describe('GalleryBar', () => {
 		placeAt(ui.section('moenstre'), 200);
 		await ui.scroll();
 		expect(ui.current()).toEqual(['#stjerner']);
+	});
+
+	it('marks the first category once the bar has stuck, even before its row reaches the line', async () => {
+		// A chip jump to Klassiske lands just past the point where the bar
+		// sticks, where the row's lowest strand may still hang below the line.
+		const ui = await render();
+		placeAt(ui.section('klassiske'), 70);
+		await ui.scroll();
+		expect(ui.current()).toEqual(['#klassiske']);
 	});
 
 	it('marks nothing while the bar has not reached the top', async () => {

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { activeSection, isAtPageBottom } from './scrollSpy';
+import { activeSection, currentSection, isAtPageBottom } from './scrollSpy';
 
 describe('activeSection', () => {
 	it('is -1 with no sections', () => {
@@ -26,6 +26,28 @@ describe('activeSection', () => {
 	it('makes the last section current at the bottom of the page', () => {
 		// Hjerter's top is still well below the bar, but the page can go no further.
 		expect(activeSection([-1600, -1000, -400, 300], 60, true)).toBe(3);
+	});
+});
+
+describe('currentSection', () => {
+	it('is -1 until the bar has stuck, whatever the sections say', () => {
+		expect(currentSection([-300, 400], 58, false)).toBe(-1);
+		expect(currentSection([40, 900], 58, false)).toBe(-1);
+	});
+
+	it('is the first section once stuck, even while its row still hangs below the line', () => {
+		// A chip jump to Klassiske lands 1px past the stick point, with the
+		// lowest strand of its first row not yet level.
+		expect(currentSection([70, 900], 58, true)).toBe(0);
+	});
+
+	it('follows the ordinary rule once stuck', () => {
+		expect(currentSection([-800, -200, 300], 58, true)).toBe(1);
+		expect(currentSection([-1600, -1000, 300], 58, true, true)).toBe(2);
+	});
+
+	it('is -1 with no sections', () => {
+		expect(currentSection([], 58, true)).toBe(-1);
 	});
 });
 

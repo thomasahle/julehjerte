@@ -45,6 +45,25 @@ export function activeSection(tops: number[], line: number, atPageBottom = false
 }
 
 /**
+ * The current section for the bar: nothing while the bar has not stuck yet
+ * (the visitor is still on the hero, even where the first row already sits
+ * right under the bar), and at least the first section once it has. A chip
+ * jump to the first category lands just past the point where the bar sticks
+ * (CategorySection's scroll-margin), where that category's row may still
+ * be hanging lower than the line on the hill; it is the row being read all
+ * the same, so its chip must be current.
+ */
+export function currentSection(
+	tops: number[],
+	line: number,
+	stuck: boolean,
+	atPageBottom = false
+): number | -1 {
+	if (!stuck || tops.length === 0) return -1;
+	return Math.max(0, activeSection(tops, line, atPageBottom));
+}
+
+/**
  * Whether the page is scrolled to its very bottom (within the same slack, for
  * browsers that stop a fraction of a pixel short).
  */
