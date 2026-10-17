@@ -3495,9 +3495,9 @@
 
 					<section class="editor-panel symmetry-panel">
 						<h2 class="panel-title">{tr('symmetry')}</h2>
-						<!-- Below 900px this panel leaves the column and floats over the
-						     drawing in a wrapping row, where every line it takes is a line
-						     off the heart: the segments keep the glyph alone there. -->
+						<!-- Below 900px this panel leaves the column for a wrapping row
+						     under the drawing, beside narrow cards: the segments keep the
+						     glyph alone there. -->
 						<SymmetryRows
 							{lang}
 							compact={isMobileLayout}

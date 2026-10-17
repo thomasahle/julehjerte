@@ -433,8 +433,8 @@ that is not the one the owner chose, so no glyph here carries a second colour. T
 a word want 247px, more than any panel that shows them leaves beside a row name, so the label sits above its
 control and the control spans the panel. Whether a segment may drop its word is then the host's call and not a
 viewport width's, because the two hosts differ in what they can afford rather than in how wide they are: below
-900px Tegn's panels leave their column and float over the drawing, where a panel can be 235px wide and every
-line it takes is a line off the heart, so Tegn passes `compact` and its segments keep the glyph alone (172px for
+900px Tegn's panels leave their column for a wrapping row under the drawing, where a panel can be 235px wide, so
+Tegn passes `compact` and its segments keep the glyph alone (172px for
 the three) with the word left in the DOM as their accessible name and repeated in the tooltip; Mal's panel
 stays in the flow of a page that scrolls, passes nothing, and keeps its words down to 390px. A compact row puts
 the name back beside its control, and wraps below it again where even that does not fit — one line in Tegn's
@@ -449,6 +449,12 @@ The canvas fills the whole area under the top bar — full width and height, no 
 rail and the panel **float over it** as white cards with `--shadow-panel`. So does the drawing surface: the SVG
 is the whole canvas area (`inset: 0`), so a zoomed or panned heart carries on under the rail and the panel and
 out to the window edges. Clipping it at their edges was the one thing that gave the floating away.
+
+Below 900px nothing floats over the drawing: there was no room for it, and on a phone the cards squeezed the
+heart to a sliver and covered the canvas notices. The rail becomes a row above the canvas, the canvas keeps
+`max(55dvh, 280px)`, and the Symmetri, Tegning and Farver cards follow it in the page's flow (then
+Hjertedetaljer and Handlinger), so the page scrolls instead of the heart shrinking. The canvas notices sit
+above any card (z-index 27 against the cards' 26) on every width.
 
 The canvas is not a flat colour: it is the hero's scene again (§2) — `--sky` with the winter landscape along
 the bottom edge — behind the drawing surface, the rail and the panel, taking no pointer events and never
