@@ -5,6 +5,7 @@ import { SITE_DOMAIN } from '$lib/config';
 import { segmentsToPathData } from '$lib/geometry/bezierSegments';
 import { inferOverlapRect as inferOverlapRectShared } from '$lib/utils/overlapRect';
 import { lobesShareTemplate } from '$lib/utils/symmetry';
+import { transformPathData } from '$lib/utils/templateSvg';
 import { slugify } from '$lib/utils/slug';
 import { t, type Language } from '$lib/i18n';
 import { SHEETS, type SheetSize } from '$lib/laser/sheet';
@@ -134,81 +135,6 @@ function drawSVGPath(
       currentY = args[1];
     }
   }
-}
-
-// Transform SVG path data coordinates for template rotation
-function transformPathData(
-  pathData: string,
-  overlapTop: number,
-  overlapLeft: number,
-  overlapWidth: number,
-  overlapHeight: number,
-  earRadius: number,
-  lobe: 'left' | 'right'
-): string {
-  const commands = pathData.match(/[MLCQAZ][^MLCQAZ]*/gi) || [];
-  let result = '';
-
-  for (const cmd of commands) {
-    const type = cmd[0].toUpperCase();
-    const args = cmd
-      .slice(1)
-      .trim()
-      .split(/[\s,]+/)
-      .map(Number);
-
-    if (type === 'M') {
-      const [x, y] = args;
-      if (lobe === 'left') {
-        // Rotate 90° counterclockwise, then shift down by earRadius for ear at top
-        // new_x = y - overlapTop, new_y = overlapWidth - (x - overlapLeft) + earRadius
-        const newX = y - overlapTop;
-        const newY = overlapWidth - (x - overlapLeft) + earRadius;
-        result += `M ${newX} ${newY} `;
-      } else {
-        // Right lobe: just translate to local coordinates
-        const newX = x - overlapLeft;
-        const newY = y - overlapTop + earRadius;
-        result += `M ${newX} ${newY} `;
-      }
-    } else if (type === 'C') {
-      // Cubic bezier: C x1 y1 x2 y2 x y
-      if (lobe === 'left') {
-        const newArgs = [];
-        for (let i = 0; i < args.length; i += 2) {
-          const x = args[i];
-          const y = args[i + 1];
-          const newX = y - overlapTop;
-          const newY = overlapWidth - (x - overlapLeft) + earRadius;
-          newArgs.push(newX, newY);
-        }
-        result += `C ${newArgs.join(' ')} `;
-      } else {
-        const newArgs = [];
-        for (let i = 0; i < args.length; i += 2) {
-          const x = args[i];
-          const y = args[i + 1];
-          const newX = x - overlapLeft;
-          const newY = y - overlapTop + earRadius;
-          newArgs.push(newX, newY);
-        }
-        result += `C ${newArgs.join(' ')} `;
-      }
-    } else if (type === 'L') {
-      const [x, y] = args;
-      if (lobe === 'left') {
-        const newX = y - overlapTop;
-        const newY = overlapWidth - (x - overlapLeft) + earRadius;
-        result += `L ${newX} ${newY} `;
-      } else {
-        const newX = x - overlapLeft;
-        const newY = y - overlapTop + earRadius;
-        result += `L ${newX} ${newY} `;
-      }
-    }
-  }
-
-  return result.trim();
 }
 
 // Draw a semicircle arc

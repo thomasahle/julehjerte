@@ -44,7 +44,22 @@ function arcPath(cx: number, cy: number, r: number, startAngle: number, endAngle
   return `M ${startX} ${startY} A ${r} ${r} 0 ${largeArc} 1 ${endX} ${endY}`;
 }
 
-function transformPathData(
+/**
+ * Map a finger's path from the editor's overlap square into one lobe's template
+ * frame: the rounded end ("ear") at the top, the fold at the bottom.
+ *
+ * The right lobe's ear sits above the square, so its fingers run top (ear) to
+ * bottom (fold) already and only move. The left lobe's ear sits to the LEFT of
+ * the square (see buildLobeClipPath in $lib/rendering/svgWeave), so its fingers
+ * run left (ear) to right (fold): the square's x becomes the template's y, with
+ * x = overlapLeft landing at the ear base and x = overlapLeft + overlapWidth at
+ * the fold. (Until 2026-10-17 this ran the other way, so every printed left
+ * template had its strips reversed end to end — a tapered strip came out wide
+ * at the fold instead of at the lobe.) Which way the template's x axis points
+ * is immaterial: a folded piece turned over is its own mirror image, so for a
+ * mirror-symmetric heart the two lobes' templates come out identical.
+ */
+export function transformPathData(
   pathData: string,
   overlapTop: number,
   overlapLeft: number,
@@ -68,7 +83,7 @@ function transformPathData(
       const [x, y] = args;
       if (lobe === 'left') {
         const newX = y - overlapTop;
-        const newY = overlapWidth - (x - overlapLeft) + earRadius;
+        const newY = x - overlapLeft + earRadius;
         result += `M ${newX} ${newY} `;
       } else {
         const newX = x - overlapLeft;
@@ -82,7 +97,7 @@ function transformPathData(
           const x = args[i];
           const y = args[i + 1];
           const newX = y - overlapTop;
-          const newY = overlapWidth - (x - overlapLeft) + earRadius;
+          const newY = x - overlapLeft + earRadius;
           newArgs.push(newX, newY);
         }
         result += `C ${newArgs.join(' ')} `;
@@ -101,7 +116,7 @@ function transformPathData(
       const [x, y] = args;
       if (lobe === 'left') {
         const newX = y - overlapTop;
-        const newY = overlapWidth - (x - overlapLeft) + earRadius;
+        const newY = x - overlapLeft + earRadius;
         result += `L ${newX} ${newY} `;
       } else {
         const newX = x - overlapLeft;
