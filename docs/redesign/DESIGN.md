@@ -25,7 +25,7 @@ Define as CSS custom properties on `:root` (replace the current blue/teal palett
 | `--sage-dark` | `#7f9c86` | secondary strokes |
 | `--green` | `#2e5041` | nav links, outline buttons, icons, category headings |
 | `--deep` | `#1c3329` | headings |
-| `--red` | `#c41e2a` | primary buttons, ribbons, selection ring/badge, active nav |
+| `--red` | `#c41e2a` | primary buttons, ribbons, selection ring, active nav |
 | `--ink` | `#1e2a25` | body text |
 | `--muted` | `#5f6d66` | secondary text |
 | `--line` | `#cfd9cf` | borders, pills |
@@ -187,9 +187,8 @@ Card (`article.card`, relative, flex column centred, height size+136 with size 1
   card's first `<svg>`, which must stay the heart). Opacity 0; 1 on card hover, `:focus-within`, when checked,
   and always under `@media (hover: none)`, where it is 22px with an `rgb(255 255 255 / .9)` fill so it stays
   quiet over the ribbon;
-- selected: `.heart::before` ring (`inset:-9px; border:3px solid var(--red); border-radius:20px`),
-  `.heart::after` check badge (28px red circle, white ✓, top -10 right -10, shadow `0 2px 6px rgb(31 51 41/.25)`),
-  name turns red;
+- selected: `.heart::before` ring (`inset:-9px; border:3px solid var(--red); border-radius:20px`) and the
+  name turns red; the ticked checkbox is the only ✓ (the old badge on the heart doubled it);
 - under the heart (margin-top auto): name 16px/600 `--ink` (plain text, not a link) and difficulty: four 8px dots
   (red up to the level, `--sage` after) + label Let / Mellem / Svær / Ekspert 13px `--muted`;
 - phones: `.card-heart .hang { max-width: 88% }`.

@@ -258,24 +258,6 @@
 		pointer-events: none;
 	}
 
-	.card.is-selected :global(.heart)::after {
-		content: '✓';
-		position: absolute;
-		top: -10px;
-		right: -10px;
-		width: 28px;
-		height: 28px;
-		border-radius: 50%;
-		background: var(--red);
-		color: var(--white);
-		font-size: 15px;
-		font-weight: 700;
-		line-height: 28px;
-		text-align: center;
-		box-shadow: var(--shadow-chip);
-		pointer-events: none;
-	}
-
 	.card-meta {
 		margin-top: auto;
 		display: flex;
