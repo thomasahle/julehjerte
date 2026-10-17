@@ -9,10 +9,11 @@ describe('parseDownloadSettings', () => {
 			hearts: 4,
 			sheet: { widthMm: 300, heightMm: 200 },
 			format: 'dxf',
-			scoreFold: true,
 			previewImage: false
 		};
 		expect(parseDownloadSettings(JSON.stringify(saved))).toEqual(saved);
+		// An older save's fold-scoring flag is left behind.
+		expect(parseDownloadSettings(JSON.stringify({ ...saved, scoreFold: true }))).toEqual(saved);
 		expect(parseDownloadSettings(JSON.stringify({ sheet: 'A3' })).sheet).toBe('A3');
 	});
 

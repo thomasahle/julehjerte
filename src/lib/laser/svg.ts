@@ -2,12 +2,14 @@
  * The laser SVG — docs/redesign/LASER.md "Writers".
  *
  * One user unit is one millimetre (`width="…mm"` against a viewBox of the same
- * numbers), so every laser program imports it at size. Cut lines are red and
- * score lines blue, each in a group of its own, at a 0.01 mm hairline: the
- * colours are how Glowforge, xTool and LightBurn tell operations apart, and a
- * hairline is what they read as "vector, not engrave". No fills, no text and no
- * transforms — the pieces' offsets are baked into the coordinates, because a
- * transform is the one thing every importer handles slightly differently.
+ * numbers), so every laser program imports it at size. Every line is a cut:
+ * red, the colour laser programs conventionally take for cutting, in one
+ * group, at a 0.01 mm hairline, which they read as "vector, not engrave". The
+ * fold is not drawn at all (DOWNLOAD.md, round 2): paper folds without a
+ * score, and a fold line left at cutting power would cut the piece in two.
+ * No fills, no text and no transforms — the pieces' offsets are baked into the
+ * coordinates, because a transform is the one thing every importer handles
+ * slightly differently.
  */
 import type { Vec } from '$lib/types/heart';
 import { coord } from './format';
@@ -15,8 +17,6 @@ import type { LaserSheet } from './sheet';
 import type { LaserPath } from './unfold';
 
 export interface LaserSvgOptions {
-	/** Add the fold lines as a blue score group. */
-	scoreFold: boolean;
 	/** The heart's name, for `<title>`. */
 	title: string;
 	/** Where it came from and at what width, for `<desc>`. */
@@ -30,7 +30,6 @@ export interface LaserSvgOptions {
 }
 
 const CUT_COLOUR = '#ff0000';
-const SCORE_COLOUR = '#0000ff';
 const HAIRLINE = '0.01';
 
 function escapeXml(text: string): string {
@@ -73,29 +72,19 @@ export function serializeLaserSvg(layout: LaserSheet, options: LaserSvgOptions):
 	}
 
 	// A preview's lines keep one screen width however small the sheet is drawn.
-	const group = (name: 'cut' | 'score', colour: string) =>
+	lines.push(
 		preview
-			? `  <g class="${name}" fill="none">`
-			: `  <g id="${name}" fill="none" stroke="${colour}" stroke-width="${HAIRLINE}">`;
+			? '  <g class="cut" fill="none">'
+			: `  <g id="cut" fill="none" stroke="${CUT_COLOUR}" stroke-width="${HAIRLINE}">`
+	);
 	const pathEl = (d: string) =>
 		preview ? `    <path d="${d}" vector-effect="non-scaling-stroke" />` : `    <path d="${d}" />`;
 
-	lines.push(group('cut', CUT_COLOUR));
 	for (const { piece, x, y } of layout.pieces) {
 		lines.push(pathEl(pathData(piece.outline, x, y)));
 		for (const cut of piece.cuts) lines.push(pathEl(pathData(cut, x, y)));
 	}
 	lines.push('  </g>');
-
-	if (options.scoreFold) {
-		lines.push(group('score', SCORE_COLOUR));
-		for (const { piece, x, y } of layout.pieces) {
-			const { from, to } = piece.fold;
-			lines.push(pathEl(`M ${coord(from.x + x)} ${coord(from.y + y)} L ${coord(to.x + x)} ${coord(to.y + y)}`));
-		}
-		lines.push('  </g>');
-	}
-
 	lines.push('</svg>');
 	return lines.join('\n');
 }

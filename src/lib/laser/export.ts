@@ -91,14 +91,12 @@ export interface LaserFileInfo {
 	/** The heart's page, for the SVG's `<desc>`. */
 	url: string;
 	widthMm: number;
-	scoreFold: boolean;
 }
 
 /** The file's text, in the chosen format. */
 export function laserFileContent(plan: LaserSheet, format: LaserFormat, info: LaserFileInfo): string {
-	if (format === 'dxf') return serializeLaserDxf(plan, { scoreFold: info.scoreFold });
+	if (format === 'dxf') return serializeLaserDxf(plan);
 	return serializeLaserSvg(plan, {
-		scoreFold: info.scoreFold,
 		title: info.heartName,
 		description: `${info.url} · ${info.widthMm} mm`
 	});

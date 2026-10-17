@@ -77,7 +77,7 @@ describe('serializeLaserDxf', () => {
 	const plan = planLaserSheet(classic, { widthMm: 80, count: 2, sheet: SHEETS.A4, lobe: 'left' });
 
 	it('is R12 in millimetres, with its extents', () => {
-		const { header } = readDxf(serializeLaserDxf(plan, { scoreFold: false }));
+		const { header } = readDxf(serializeLaserDxf(plan));
 		expect(header.get('$ACADVER')).toEqual([{ code: 1, value: 'AC1009' }]);
 		expect(header.get('$INSUNITS')).toEqual([{ code: 70, value: '4' }]);
 		// Two 80 × 240 pieces from (5, 5), y flipped: 297 − 5 = 292 at the top.
@@ -85,28 +85,19 @@ describe('serializeLaserDxf', () => {
 		expect(header.get('$EXTMAX')!.map((p) => p.value)).toEqual(['170', '292', '0']);
 	});
 
-	it('has a red CUT and a blue SCORE layer', () => {
-		const { layers } = readDxf(serializeLaserDxf(plan, { scoreFold: true }));
-		expect(Object.fromEntries(layers)).toEqual({ CUT: 1, SCORE: 5 });
+	it('has one red CUT layer', () => {
+		const { layers } = readDxf(serializeLaserDxf(plan));
+		expect(Object.fromEntries(layers)).toEqual({ CUT: 1 });
 	});
 
-	it('writes only POLYLINEs and, when scoring, LINEs', () => {
-		const off = readDxf(serializeLaserDxf(plan, { scoreFold: false }));
-		expect(off.entities.map((e) => e.type)).toEqual(Array(6).fill('POLYLINE'));
-		const on = readDxf(serializeLaserDxf(plan, { scoreFold: true }));
-		expect(on.entities.filter((e) => e.type === 'POLYLINE')).toHaveLength(6);
-		const folds = on.entities.filter((e) => e.type === 'LINE');
-		expect(folds).toHaveLength(2);
-		for (const fold of folds) {
-			expect(on.get(fold, 8)).toBe('SCORE');
-			// Halfway down the piece: 297 − (5 + 120).
-			expect(on.get(fold, 20)).toBe('172');
-			expect(on.get(fold, 21)).toBe('172');
-		}
+	it('writes only POLYLINEs, all on CUT: the fold is not drawn', () => {
+		const { entities, get } = readDxf(serializeLaserDxf(plan));
+		expect(entities.map((e) => e.type)).toEqual(Array(6).fill('POLYLINE'));
+		expect(entities.every((e) => get(e, 8) === 'CUT' && get(e, 62) === '1')).toBe(true);
 	});
 
 	it('writes each outline as one closed four-vertex polyline with bulging ears, y up', () => {
-		const { entities, get } = readDxf(serializeLaserDxf(plan, { scoreFold: false }));
+		const { entities, get } = readDxf(serializeLaserDxf(plan));
 		const outlines = entities.filter((e) => get(e, 70) === '1');
 		expect(outlines).toHaveLength(2);
 		const [first] = outlines;
@@ -132,7 +123,7 @@ describe('serializeLaserDxf', () => {
 	});
 
 	it('writes a straight cut through the fold as two vertices', () => {
-		const { entities, get } = readDxf(serializeLaserDxf(plan, { scoreFold: false }));
+		const { entities, get } = readDxf(serializeLaserDxf(plan));
 		const cuts = entities.filter((e) => get(e, 70) === '0');
 		expect(cuts).toHaveLength(4);
 		for (const cut of cuts) {
@@ -144,7 +135,7 @@ describe('serializeLaserDxf', () => {
 
 	it('flattens curved cuts, and never writes a path twice', () => {
 		const stjerne = planLaserSheet(loadHeart('stjerne'), { widthMm: 80, count: 4, sheet: SHEETS.A3, lobe: 'left' });
-		const { entities } = readDxf(serializeLaserDxf(stjerne, { scoreFold: false }));
+		const { entities } = readDxf(serializeLaserDxf(stjerne));
 		const polylines = entities.filter((e) => e.type === 'POLYLINE');
 		expect(polylines.length).toBe(stjerne.pieces.length * 3);
 		expect(Math.max(...polylines.map((p) => p.vertices.length))).toBeGreaterThan(10);

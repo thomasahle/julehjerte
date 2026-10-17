@@ -37,7 +37,6 @@ export interface DownloadSettings {
 	hearts: number;
 	sheet: SheetChoice;
 	format: LaserFormat;
-	scoreFold: boolean;
 	previewImage: boolean;
 }
 
@@ -47,7 +46,6 @@ export const DEFAULT_DOWNLOAD_SETTINGS: DownloadSettings = {
 	hearts: 1,
 	sheet: 'A4',
 	format: 'svg',
-	scoreFold: false,
 	previewImage: true
 };
 
@@ -83,7 +81,8 @@ export function parseDownloadSettings(raw: string | null): DownloadSettings {
 	if (isNumber(value.hearts)) settings.hearts = Math.round(clamp(value.hearts, MIN_HEARTS, MAX_HEARTS));
 	settings.sheet = parseSheet(value.sheet) ?? settings.sheet;
 	if (LASER_FORMATS.includes(value.format as LaserFormat)) settings.format = value.format as LaserFormat;
-	if (typeof value.scoreFold === 'boolean') settings.scoreFold = value.scoreFold;
+	// `scoreFold`, stored before the laser file lost its fold line (DOWNLOAD.md,
+	// round 2), is simply not read: nothing copies unknown fields across.
 	if (typeof value.previewImage === 'boolean') settings.previewImage = value.previewImage;
 	return settings;
 }

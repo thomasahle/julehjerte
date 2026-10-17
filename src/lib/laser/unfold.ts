@@ -38,10 +38,12 @@ export interface UnfoldedPiece {
 	lobe: TemplateLobe;
 	/** Ear arc, right side, mirrored ear arc, left side. */
 	outline: LaserPath;
-	/** One open path per strip boundary, from y = R through the fold to y = 2H − R. */
+	/**
+	 * One open path per strip boundary, from y = R through the fold to y = 2H − R.
+	 * The fold itself (y = H) is not a line of the piece: it is folded by hand,
+	 * not scored (DOWNLOAD.md, round 2).
+	 */
 	cuts: LaserPath[];
-	/** The fold, (0, H) → (W, H). */
-	fold: { from: Vec; to: Vec };
 	widthMm: number;
 	heightMm: number;
 	stripWidthMm: number;
@@ -215,7 +217,6 @@ function unfoldTemplate(design: HeartDesign, template: Template, scale: number):
 		lobe,
 		outline,
 		cuts,
-		fold: { from: { x: 0, y: H }, to: { x: W, y: H } },
 		widthMm: W,
 		heightMm: 2 * H,
 		stripWidthMm: W / stripsAcross(design, lobe)

@@ -289,11 +289,13 @@ on the right shows the sheet as it will come out. Printer makes a PDF of the *fo
 two per heart, each with its name and address lines and (optionally) the heart's picture in the ear — laid out
 by `$lib/pdf/plan` on as many pages of the sheet as they need ("{n} sider", "Side 1 af {n}" under the preview).
 Laserskærer makes the whole *unfolded* piece (docs/redesign/LASER.md) — the template mirrored across the fold,
-every strip cut one continuous path through it — as an SVG in real millimetres (red 0.01 mm cut lines, blue
-score lines) or an R12 DXF (layers CUT and SCORE, exact half-circle ears as bulged polyline vertices, curved
-cuts flattened to 0.05 mm). A laser sheet holds one lobe's pieces, one per heart, since the two halves are cut
-from two colours of paper; an asymmetric heart gets a Venstre / Højre choice and a file per half, and the
-preview draws in the file's red and blue. Every setting but the laser lobe is remembered (`juleflet:download`).
+every strip cut one continuous path through it — as an SVG in real millimetres or an R12 DXF (exact
+half-circle ears as bulged polyline vertices, curved cuts flattened to 0.05 mm). Every line in the file is a
+cut: red 0.01 mm hairlines in one group, one CUT layer in the DXF. The fold is not scored or drawn (the
+owner's call: paper folds without it, and a fold line left at cutting power cuts the piece in two), and the
+legend under the preview says so: "Alle linjer skæres · 0,01 mm streg". A laser sheet holds one lobe's pieces,
+one per heart, since the two halves are cut from two colours of paper; an asymmetric heart gets a Venstre /
+Højre choice and a file per half, and the preview draws in the file's red. Every setting but the laser lobe is remembered (`juleflet:download`).
 Both pieces of a heart share one scale, so on a non-square grid the given width is the wider piece's and the
 strips of the two pieces match, in print as on the laser.
 

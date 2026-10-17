@@ -4,9 +4,10 @@
  *
  * It draws the same plan generateTemplatesPDF draws (./plan.ts), from the same
  * template geometry (`getTemplateData`), in the classes the laser preview
- * already styles: `sheet` for the paper, `cut` for outlines and cuts, `score`
- * for the dashed fold. The name and address lines are drawn as the PDF prints
- * them, and the heart's picture as a light square where the PDF puts it, so
+ * already styles: `sheet` for the paper, `cut` for outlines and cuts, and
+ * `fold` for the dashed fold the PDF prints. The name and address lines are
+ * drawn as the PDF prints them, and the heart's picture as a light square
+ * where the PDF puts it, so
  * what the visitor sees is where things will be on paper. One user unit is one
  * millimetre; the strokes do not scale.
  */
@@ -70,7 +71,7 @@ export function serializeTemplatePageSvg(
 		lines.push(`      <path d="M 0 ${r} L 0 ${th} M ${tw} ${r} L ${tw} ${th}" ${stroke} />`);
 		for (const d of data.cutPaths) lines.push(`      <path d="${d}" ${stroke} />`);
 		lines.push('    </g>');
-		lines.push(`    <g class="score"><path d="M 0 ${th} L ${tw} ${th}" ${stroke} /></g>`);
+		lines.push(`    <g class="fold"><path d="M 0 ${th} L ${tw} ${th}" ${stroke} /></g>`);
 		lines.push('  </g>');
 		if (options.previewImage) {
 			const box = previewImageBox(piece.widthMm, piece.heightMm);

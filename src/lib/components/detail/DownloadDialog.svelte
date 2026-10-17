@@ -93,7 +93,6 @@
 	let sheetKind = $state<SheetKind>('A4');
 	let customWidthMm = $state<number>(SHEETS.A4.widthMm);
 	let customHeightMm = $state<number>(SHEETS.A4.heightMm);
-	let scoreFold = $state(defaults.scoreFold);
 	let previewImage = $state(defaults.previewImage);
 	/** The last download that went wrong, cleared by the next that works. */
 	let failure = $state<DownloadMode | null>(null);
@@ -116,7 +115,6 @@
 				customWidthMm = settings.sheet.widthMm;
 				customHeightMm = settings.sheet.heightMm;
 			}
-			scoreFold = settings.scoreFold;
 			previewImage = settings.previewImage;
 			failure = null;
 		});
@@ -130,7 +128,6 @@
 			hearts,
 			sheet: sheetKind === 'custom' ? { widthMm: customWidthMm, heightMm: customHeightMm } : sheetKind,
 			format,
-			scoreFold,
 			previewImage
 		});
 	});
@@ -214,8 +211,7 @@
 		heartId,
 		heartName,
 		url: `${SITE_URL}${heartPath(heartId, lang)}`,
-		widthMm,
-		scoreFold
+		widthMm
 	});
 
 	const previewSvg = $derived.by(() => {
@@ -231,7 +227,6 @@
 		}
 		return laserPlan
 			? serializeLaserSvg(laserPlan, {
-					scoreFold,
 					title: heartName,
 					description: t('sheetPreview', lang),
 					look: 'preview'
@@ -519,14 +514,6 @@
 							</ToggleGroup>
 						</div>
 					</div>
-
-					<div class="field">
-						<label class="checkbox">
-							<input type="checkbox" data-testid="download-score" bind:checked={scoreFold} />
-							<span>{t('laserScoreFold', lang)}</span>
-						</label>
-						<p class="hint">{t('laserScoreHint', lang)}</p>
-					</div>
 				{:else}
 					<div class="field">
 						<label class="checkbox">
@@ -733,21 +720,19 @@
 		stroke-width: 0.6px;
 	}
 
-	.preview-sheet :global(.score path) {
+	/* The printer page's fold, dashed as the PDF prints it. The laser file has
+	   no fold line: it is cut lines only (DOWNLOAD.md, round 2). */
+	.preview-sheet :global(.fold path) {
 		stroke: var(--muted);
 		stroke-width: 0.6px;
 		stroke-dasharray: 3 2;
 	}
 
-	/* The laser preview wears the file's own colours, which the legend under it
-	   names: red is cut, blue is scored. The printer page stays black on white,
-	   as it prints. */
+	/* The laser preview wears the file's own colour, the red every line of it
+	   is cut in, as the legend under it says. The printer page stays black on
+	   white, as it prints. */
 	.preview[data-mode='laser'] .preview-sheet :global(.cut path) {
 		stroke: #ff0000;
-	}
-
-	.preview[data-mode='laser'] .preview-sheet :global(.score path) {
-		stroke: #0000ff;
 	}
 
 	/* The printer page's name and address lines and the heart's picture. */

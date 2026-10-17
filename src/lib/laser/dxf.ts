@@ -2,15 +2,15 @@
  * The laser DXF — docs/redesign/LASER.md "Writers".
  *
  * AutoCAD R12 (AC1009), the one version every laser program and CAD package
- * still reads, and only the entities R12 readers agree on: POLYLINE with
- * VERTEX … SEQEND, and LINE. The outline's two ears are exact half circles,
- * written as polyline vertices with a bulge of 1 (tan of a quarter of 180°);
+ * still reads, and only the entity R12 readers agree on: POLYLINE with
+ * VERTEX … SEQEND. The outline's two ears are exact half circles, written as
+ * polyline vertices with a bulge of 1 (tan of a quarter of 180°);
  * curved cuts are flattened to within 0.05 mm, because R12 has no Bézier and
  * the SPLINE of later versions is the entity importers get wrong.
  *
- * Two layers, CUT (red, 1) and SCORE (blue, 5), and the same colour on every
- * entity as well, for the programs (xTool's among them) that sort by entity
- * colour and never look at the layer table.
+ * One layer, CUT (red, 1), and the same colour on every entity as well, for
+ * the programs (xTool's among them) that sort by entity colour and never look
+ * at the layer table. Every line is a cut; the fold is not drawn (see svg.ts).
  *
  * DXF's y axis points up, the page's down: every point is written as
  * `y = sheetHeight − y`, which keeps the picture the right way up.
@@ -22,13 +22,11 @@ import type { LaserSheet } from './sheet';
 import type { LaserPath } from './unfold';
 
 export interface LaserDxfOptions {
-	/** Add the fold lines as LINEs on the SCORE layer. */
-	scoreFold: boolean;
 	/** Chord error allowed when flattening a curved cut. */
 	toleranceMm?: number;
 }
 
-const LAYERS = { CUT: 1, SCORE: 5 } as const;
+const LAYERS = { CUT: 1 } as const;
 type Layer = keyof typeof LAYERS;
 
 interface Vertex extends Vec {
@@ -117,12 +115,11 @@ class GroupWriter {
 	}
 }
 
-export function serializeLaserDxf(layout: LaserSheet, options: LaserDxfOptions): string {
+export function serializeLaserDxf(layout: LaserSheet, options: LaserDxfOptions = {}): string {
 	const sheetHeight = layout.sheet.heightMm;
 	const toDxf = (p: Vec, dx: number, dy: number): Vec => ({ x: p.x + dx, y: sheetHeight - (p.y + dy) });
 
 	const polylines: { layer: Layer; closed: boolean; vertices: Vertex[] }[] = [];
-	const lines: { layer: Layer; from: Vec; to: Vec }[] = [];
 
 	const addPath = (path: LaserPath, dx: number, dy: number) => {
 		let vertices = pathVertices(path, options.toleranceMm).map((v) => ({ ...toDxf(v, dx, dy), bulge: v.bulge }));
@@ -133,9 +130,6 @@ export function serializeLaserDxf(layout: LaserSheet, options: LaserDxfOptions):
 	for (const { piece, x, y } of layout.pieces) {
 		addPath(piece.outline, x, y);
 		for (const cut of piece.cuts) addPath(cut, x, y);
-		if (options.scoreFold) {
-			lines.push({ layer: 'SCORE', from: toDxf(piece.fold.from, x, y), to: toDxf(piece.fold.to, x, y) });
-		}
 	}
 
 	// The drawing's extents: the pieces' bounding boxes (bulges stay inside the
@@ -180,9 +174,6 @@ export function serializeLaserDxf(layout: LaserSheet, options: LaserDxfOptions):
 			if (v.bulge !== 0) out.pair(42, coord(v.bulge));
 		}
 		out.pair(0, 'SEQEND').pair(8, polyline.layer);
-	}
-	for (const line of lines) {
-		out.pair(0, 'LINE').pair(8, line.layer).pair(62, LAYERS[line.layer]).point(10, line.from).point(11, line.to);
 	}
 	out.pair(0, 'ENDSEC');
 	out.pair(0, 'EOF');

@@ -181,10 +181,8 @@ export const translations = {
     laserBothNote: 'Hent begge halvdele – én fil pr. papirfarve.',
     laserFormat: 'Filformat',
     laserFormatHint: 'SVG læses af alle laserprogrammer. DXF til xTool, LightBurn og CAD.',
-    laserScoreFold: 'Rids falsen (blå linje)',
-    laserScoreHint: 'Slå til for karton; papir folder fint uden.',
     laserFailed: 'Filen kunne ikke laves. Prøv en anden bredde, eller hent PDF-skabelonen.',
-    laserLegend: 'Rød = skær · Blå = rids · 0,01 mm streg',
+    laserLegend: 'Alle linjer skæres · 0,01 mm streg',
     /** {format} = PDF, SVG or DXF */
     downloadFile: 'Hent {format}',
 
@@ -836,10 +834,8 @@ export const translations = {
     laserBothNote: 'Download both halves, one file per paper colour.',
     laserFormat: 'File format',
     laserFormatHint: 'SVG is read by every laser program. DXF for xTool, LightBurn and CAD.',
-    laserScoreFold: 'Score the fold (blue line)',
-    laserScoreHint: 'Turn on for card; paper folds fine without.',
     laserFailed: 'The file could not be made. Try another width, or download the PDF template.',
-    laserLegend: 'Red = cut · Blue = score · 0.01 mm stroke',
+    laserLegend: 'Every line is cut · 0.01 mm stroke',
     /** {format} = PDF, SVG or DXF */
     downloadFile: 'Download {format}',
 

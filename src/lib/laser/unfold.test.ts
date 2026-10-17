@@ -85,11 +85,6 @@ describe.each(['classic-3x3', 'jul', 'stjerne', 'hanefod'])('unfoldPiece on %s',
 				});
 			}
 		});
-
-		it(`${lobe}: the fold is the middle line`, () => {
-			expectClose(piece.fold.from, { x: 0, y: H });
-			expectClose(piece.fold.to, { x: piece.widthMm, y: H });
-		});
 	}
 });
 

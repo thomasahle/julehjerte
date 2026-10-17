@@ -48,7 +48,7 @@ describe('planLaserSheet', () => {
 
 describe('laserFileContent', () => {
 	const plan = planLaserSheet(loadHeart('classic-3x3'), { widthMm: 80, count: 2, sheet: SHEETS.A4, lobe: 'left' });
-	const info = { heartId: 'classic-3x3', heartName: 'Klassisk', url: 'https://juleflet.dk/hjerte/classic-3x3/', widthMm: 80, scoreFold: false };
+	const info = { heartId: 'classic-3x3', heartName: 'Klassisk', url: 'https://juleflet.dk/hjerte/classic-3x3/', widthMm: 80 };
 
 	it('writes the format asked for', () => {
 		expect(laserFileContent(plan, 'svg', info)).toContain('width="210mm"');

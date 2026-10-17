@@ -140,15 +140,16 @@ describe('DownloadDialog', () => {
 		const previewOf = () => view.q('.preview-sheet')!.innerHTML;
 		const printerPreview = previewOf();
 		expect(view.button('SVG')).toBeUndefined();
-		expect(view.q('[data-testid="download-score"]')).toBeNull();
 		expect(view.q('.legend')).toBeNull();
 
 		await view.choose('Laserskærer');
 		expect(view.button('SVG')!.getAttribute('data-state')).toBe('on');
 		expect(view.button('DXF')).toBeDefined();
-		expect(view.q('[data-testid="download-score"]')).not.toBeNull();
 		expect(view.q('[data-testid="download-preview-image"]')).toBeNull();
-		expect(view.q('.legend')!.textContent).toContain('Rød = skær');
+		// No fold scoring: nothing to switch on, and every line in the preview a cut.
+		expect(view.q('input[type="checkbox"]')).toBeNull();
+		expect(view.q('.legend')!.textContent!.trim()).toBe('Alle linjer skæres · 0,01 mm streg');
+		expect(view.q('.preview-sheet')!.querySelectorAll('g')).toHaveLength(1);
 		expect(view.q('.hint')!.textContent).toContain('DXF til xTool');
 		expect(view.button('Hent SVG')).toBeDefined();
 		expect(previewOf()).not.toBe(printerPreview);
@@ -308,15 +309,12 @@ describe('DownloadDialog', () => {
 		await first.type('#download-width', '70');
 		await first.type('#download-hearts', '2');
 		await first.choose('A3');
-		first.q<HTMLInputElement>('[data-testid="download-score"]')!.click();
-		await settle();
 		expect(JSON.parse(window.localStorage.getItem('juleflet:download')!)).toEqual({
 			mode: 'laser',
 			widthMm: 70,
 			hearts: 2,
 			sheet: 'A3',
 			format: 'dxf',
-			scoreFold: true,
 			previewImage: true
 		});
 		first.dispose();
@@ -327,7 +325,6 @@ describe('DownloadDialog', () => {
 		expect(again.button('A3')!.getAttribute('data-state')).toBe('on');
 		expect(again.q<HTMLInputElement>('#download-width')!.value).toBe('70');
 		expect(again.q<HTMLInputElement>('#download-hearts')!.value).toBe('2');
-		expect(again.q<HTMLInputElement>('[data-testid="download-score"]')!.checked).toBe(true);
 	});
 
 	it('remembers a custom sheet by its size', async () => {

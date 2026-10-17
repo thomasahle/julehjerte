@@ -17,7 +17,7 @@ describe('serializeLaserSvg', () => {
 	const plan = planLaserSheet(classic, { widthMm: 80, count: 2, sheet: SHEETS.A4, lobe: 'left' });
 
 	it('is in millimetres: one user unit per mm', () => {
-		const svg = parse(serializeLaserSvg(plan, { ...options, scoreFold: false })).documentElement;
+		const svg = parse(serializeLaserSvg(plan, options)).documentElement;
 		expect(svg.getAttribute('xmlns')).toBe('http://www.w3.org/2000/svg');
 		expect(svg.getAttribute('width')).toBe('210mm');
 		expect(svg.getAttribute('height')).toBe('297mm');
@@ -27,7 +27,7 @@ describe('serializeLaserSvg', () => {
 	});
 
 	it('puts every outline and cut in the red hairline group, and nothing else', () => {
-		const doc = parse(serializeLaserSvg(plan, { ...options, scoreFold: false }));
+		const doc = parse(serializeLaserSvg(plan, options));
 		const cut = doc.getElementById('cut')!;
 		expect(cut.getAttribute('stroke')).toBe('#ff0000');
 		expect(cut.getAttribute('stroke-width')).toBe('0.01');
@@ -39,18 +39,17 @@ describe('serializeLaserSvg', () => {
 		expect([...doc.querySelectorAll('[fill]')].every((el) => el.getAttribute('fill') === 'none')).toBe(true);
 	});
 
-	it('adds one blue fold line per piece when scoring', () => {
-		const doc = parse(serializeLaserSvg(plan, { ...options, scoreFold: true }));
-		const score = doc.getElementById('score')!;
-		expect(score.getAttribute('stroke')).toBe('#0000ff');
-		expect(score.getAttribute('stroke-width')).toBe('0.01');
-		const folds = [...score.querySelectorAll('path')].map((p) => p.getAttribute('d'));
-		// The first piece sits at the 5 mm margin, so its fold is at 5 + 3·80/2.
-		expect(folds).toEqual(['M 5 125 L 85 125', 'M 90 125 L 170 125']);
+	it('draws nothing on the fold: the file is cut lines only', () => {
+		const doc = parse(serializeLaserSvg(plan, options));
+		expect(doc.querySelectorAll('g')).toHaveLength(1);
+		// The first piece sits at the 5 mm margin, so its fold would be at 5 + 3·80/2.
+		const ds = [...doc.querySelectorAll('path')].map((p) => p.getAttribute('d'));
+		expect(ds).not.toContain('M 5 125 L 85 125');
+		expect(ds.some((d) => /^M [\d.]+ 125 L [\d.]+ 125$/.test(d!))).toBe(false);
 	});
 
 	it('bakes the offsets in, at three decimals, and never repeats a path', () => {
-		const doc = parse(serializeLaserSvg(planLaserSheet(loadHeart('stjerne'), { widthMm: 70, count: 6, sheet: SHEETS.A3, lobe: 'left' }), { ...options, scoreFold: true }));
+		const doc = parse(serializeLaserSvg(planLaserSheet(loadHeart('stjerne'), { widthMm: 70, count: 6, sheet: SHEETS.A3, lobe: 'left' }), options));
 		const ds = [...doc.querySelectorAll('path')].map((p) => p.getAttribute('d')!);
 		expect(new Set(ds).size).toBe(ds.length);
 		for (const d of ds) {
@@ -60,10 +59,10 @@ describe('serializeLaserSvg', () => {
 	});
 
 	it('draws a preview with classes and no laser colours', () => {
-		const doc = parse(serializeLaserSvg(plan, { ...options, scoreFold: true, look: 'preview' }));
+		const doc = parse(serializeLaserSvg(plan, { ...options, look: 'preview' }));
 		expect(doc.documentElement.getAttribute('width')).toBeNull();
 		expect(doc.querySelector('rect.sheet')).not.toBeNull();
 		expect(doc.querySelector('g.cut')!.getAttribute('stroke')).toBeNull();
-		expect(doc.querySelectorAll('g.score path')).toHaveLength(2);
+		expect(doc.querySelectorAll('g')).toHaveLength(1);
 	});
 });

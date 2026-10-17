@@ -3,16 +3,20 @@
 > **The dialog now lives in docs/redesign/DOWNLOAD.md**: one "Hent skabelon"
 > dialog for the printer PDF and the laser file (`DownloadDialog.svelte`),
 > which replaced the split button and `LaserDialog.svelte` described below. The
-> geometry, the writers and the sheet layout here still stand, with two
+> geometry, the writers and the sheet layout here still stand, with three
 > amendments from DOWNLOAD.md: a laser sheet holds **one lobe's pieces**, one
-> per heart (`planLaserSheet(design, { widthMm, count, sheet, lobe })`), and the
-> preview draws cut lines red and score lines blue, as the file does.
+> per heart (`planLaserSheet(design, { widthMm, count, sheet, lobe })`); the
+> preview draws in the file's red; and (round 2) **there is no fold scoring**:
+> the file is cut lines only, red `#ff0000` hairlines in one `<g id="cut">` /
+> one `CUT` layer, with no "Rids falsen" option, no score colour or layer, and
+> no fold line in the file or the preview. Where the text below still speaks of
+> scoring, it describes the first version.
 
 A visitor with a laser cutter (Glowforge, xTool, a LightBurn-driven machine)
 wants one file that cuts a heart's pieces straight out of paper or card: the
 **whole unfolded piece**, not the folded print template, with the strip cuts as
 **continuous paths through the fold**, in real millimetres, with hairline
-strokes and one colour/layer per operation. SVG is read by every laser program;
+strokes in the cut colour (every line is a cut; the fold is folded by hand). SVG is read by every laser program;
 DXF is what xTool, LightBurn and CAD users prefer and Glowforge does not take.
 Both are offered. PDF adds nothing over those two and is not.
 
@@ -41,7 +45,6 @@ be cut.
   fold has no duplicated point and no backtracking (reverse a cubic by reversing
   segment order and swapping `p1`/`p2` of each; an `L` stays an `L`). Every cut
   therefore runs from `y = R` to `y = 2H − R`.
-- `fold`: the line `(0, H) → (W, H)`.
 - `widthMm`, `heightMm = 2H`, `stripWidthMm` (= widthMm / the number of strips
   across the piece, i.e. `gridSize.y` for the left lobe and `gridSize.x` for the
   right — take it from the template data's overlap orientation, and test it on
@@ -66,23 +69,22 @@ SVG: `<svg xmlns="http://www.w3.org/2000/svg" width="{W}mm" height="{H}mm"
 viewBox="0 0 {W} {H}">` so one user unit is one millimetre; `<title>` with the
 heart's name and `<desc>` with the juleflet.dk URL and the width; one
 `<g id="cut" fill="none" stroke="#ff0000" stroke-width="0.01">` holding every
-outline and cut `<path>`, and, when the fold score is on, one
-`<g id="score" fill="none" stroke="#0000ff" stroke-width="0.01">` with the fold
-lines. No fills, no text, no transforms (bake offsets into the coordinates),
+outline and cut `<path>`, and nothing else: no fold line (round 2). No fills, no text, no transforms (bake offsets into the coordinates),
 numbers to 3 decimals, nothing duplicated.
 
 DXF: version **R12** (`$ACADVER` = `AC1009`), `$INSUNITS` 4 (ignored by R12
 readers, read by newer ones), `$EXTMIN`/`$EXTMAX`; a LAYER table with `CUT`
-(colour 1) and `SCORE` (colour 5); ENTITIES only of kinds R12 programs read:
+(colour 1) only; ENTITIES only of kinds R12 programs read:
 the outline as **one closed `POLYLINE`** (flag 1) whose two ear arcs are
 vertices with **bulge 1** (a semicircle) and the straight sides bulge 0 — four
 vertices, exact arcs, no SPLINE; each straight cut as a two-vertex `POLYLINE`;
 each curved cut **flattened** to a `POLYLINE` by adaptive subdivision of its
 cubics to within 0.05 mm (`src/lib/laser/flatten.ts`, tested against a known
-curve); the fold as a `LINE` on `SCORE`. DXF y points up: write
+curve). No fold line. DXF y points up: write
 `y_dxf = sheetHeight − y`. Use `SEQEND` after each polyline's vertices.
 
-Both writers take the laid-out sheet and the "score fold" flag.
+Both writers take the laid-out sheet (and the SVG its title and description);
+the "score fold" flag they once took is gone.
 
 ## The dialog (`src/lib/components/detail/LaserDialog.svelte`)
 
@@ -108,17 +110,18 @@ laserskærer"), with:
    `laserSheetFit` "Der er plads til {n} på arket" when fewer fit.
 4. Sheet: segmented A4 / A3 / `laserCustom` "Eget mål" revealing two number
    inputs (mm). Default A4 (210 × 297, portrait).
-5. Score the fold: checkbox `laserScoreFold` "Rids falsen (blå linje)", default
-   off, with hint `laserScoreHint` "Slå til for karton; papir folder fint uden."
+5. ~~Score the fold~~ — removed in DOWNLOAD.md round 2: there is no
+   "Rids falsen" checkbox and no `laserScoreFold` / `laserScoreHint`.
 6. A live preview: the laid-out sheet as an inline SVG (reuse the SVG writer
-   with display strokes: cut 0.6 px black, score dashed `--muted`), at most
+   with display strokes: cut 0.6 px, red as in the file), at most
    320 px tall, so the visitor sees the unfolded pieces before downloading.
 7. Buttons: primary `laserDownload` "Hent {format}" and ghost `cancel` (reuse an
    existing cancel key if one exists). The download creates a Blob
    (`image/svg+xml` or `application/dxf`), an object URL, an `<a download>`
    named `{heart id}-laser-{width}mm.{svg|dxf}`, and revokes the URL after a
    second. On error show `laserFailed` in red inside the dialog.
-8. A one-line legend `laserLegend` "Rød = skær · Blå = rids · 0,01 mm streg".
+8. A one-line legend `laserLegend` "Alle linjer skæres · 0,01 mm streg" /
+   "Every line is cut · 0.01 mm stroke" (round 2; it named red and blue before).
 
 Analytics: `trackLaserDownload(heartId, heartName, format, widthMm)` →
 event `download_laser` with `heart_id`, `heart_name`, `format`, `width_mm`
@@ -142,7 +145,8 @@ Docs: add a short "Laser" paragraph to DESIGN.md §4 after the buttons.
   gaps respected (no overlap).
 - `svg.test.ts` / `dxf.test.ts`: parse the output (DOMParser for SVG; a tiny
   group-code reader for DXF) and check units, layers/groups, entity counts,
-  the bulge values, y-flip, and that no path is emitted twice.
+  the bulge values, y-flip, that no path is emitted twice, and (round 2) that
+  there is one cut group / one CUT layer and no fold line.
 - `LaserDialog.test.ts` (jsdom, as `TraceMode.test.ts`): defaults, derived
   line, fit note, the download producing a Blob of the chosen type, one
   `download_laser` event.
