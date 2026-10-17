@@ -152,8 +152,14 @@ The gallery follows the hill line (docs/redesign/GALLERY-CURVE.md, owner's decis
 variant "E"). From 900 up `.gallery-wrap` is pulled up so the gallery's top — the bar's top — sits on
 `hillTop`, the highest point of the drawing's `snow-field` top edge inside the content column; the first
 category's first row starts 6px under it (behind the transparent bar) and each of its cards steps down to the
-hill under its own centre, 54px more under the chips. Unstuck, the chips are right-aligned and each is
-translated onto the curve; stuck, they slide back flat to the left. The geometry is `$lib/front/hillLine`;
+hill under its own centre, 54px more under the chips. At rest the chips are right-aligned, each on the
+curve. Scrolling pushes them (amendment 1, all scroll-linked, no transitions): the bar's box is L — the
+largest chip lift — taller on top and sticks at `top: -L`; chip i sits at `translateY(clamp(s − H, lift_i, L)
+− L)` and the right-aligning spacer's flex-grow goes from 1 to 0 over the same L, so the top of the screen
+carries the chips down until they are flat and left-aligned, and only then does the bar stick (the wordmark
+keeps its room from 900 up and only fades in). First-row card i gets `translateY(clamp(s + 50 − c_i, 0, D −
+drop_i))`: the stuck bar's bottom edge pushes it until the row is level. Both use the `translate` property,
+so the card's hover scale stays. The geometry is `$lib/front/hillLine`;
 `Gallery.svelte` measures (`[data-scene-land] > svg`, on mount and with a ResizeObserver) and hands the bar its
 chip lifts and the first section its card drops. Before hydration the wrap's margin is the 1440 estimate
 `-100vw * 226 / 2172` and the row is flat. `z-index: 1` stays so the gallery paints over the scene. Below 900

@@ -12,11 +12,13 @@
   sees a disabled download button asking them to. The bar only reports what
   was clicked; the selection itself and the PDF generation stay on the page.
 
-  On the desktop layout, until the bar sticks, the chips are right-aligned and
-  each steps down onto the hero's hill line (docs/redesign/GALLERY-CURVE.md):
-  the gallery measures the curve and hands each chip its `--lift`, a
-  transform, so the bar's own height never changes. Stuck, they go back to
-  flat and left-aligned next to the wordmark.
+  On the desktop layout, at rest, the chips are right-aligned and each steps
+  down onto the hero's hill line (docs/redesign/GALLERY-CURVE.md); the gallery
+  measures the curve and hands each chip its lift. Scrolling, the top of the
+  screen pushes each chip down the page as it reaches it until they are all
+  flat and left-aligned, and only then does the bar stick (amendment 1). For
+  that the bar's box is L (the largest lift) taller, chips at its bottom, and
+  sticks at `top: -L`; everything is scroll-linked, nothing transitions.
 -->
 <script lang="ts">
 	import { onMount } from 'svelte';
@@ -59,8 +61,8 @@
 		 */
 		height?: number;
 		/**
-		 * How far down each chip steps, in px, in chip order, while the bar is
-		 * not stuck (desktop only; measured by the gallery). Empty: flat.
+		 * How far down each chip steps at rest, in px, in chip order (desktop
+		 * only; measured by the gallery). Empty: flat, and the bar as on a phone.
 		 */
 		lifts?: readonly number[];
 		onPrint: () => void;
@@ -85,10 +87,18 @@
 
 	let hasSelection = $derived(selectedCount > 0);
 
-	// The chips' row is a scroller (overflow-x), so a chip stepped down out of
-	// it would be clipped: the row gets that much room underneath, which its
-	// negative margin takes back out of the bar's layout.
+	// L: the extra height the bar's box gets on top, so the chips can rest on
+	// the curve above their flat place. The chips' row is a scroller
+	// (overflow-x), so it gets the same room on top, which its negative margin
+	// takes back out of the bar's layout.
 	let liftRoom = $derived(Math.max(0, ...lifts));
+
+	// The box's full height, L included; `height` reports what is left on
+	// screen once stuck, which is what an anchor has to clear.
+	let boxHeight = $state(0);
+	$effect(() => {
+		height = Math.max(0, boxHeight - liftRoom);
+	});
 
 	// One chip per section that has hearts, in page order, so every chip leads
 	// somewhere; "Mine hjerter" only once the visitor has drawn any — its
@@ -101,8 +111,9 @@
 	// The bar starts up on the hero's snow (Gallery.svelte pulls the gallery
 	// over the drawing), where an opaque background would show as a paler
 	// rectangle over the snow hill. So it is transparent until it actually
-	// sticks, which a 1px sentinel just above it detects: the sentinel leaves the
-	// viewport at the same moment the bar reaches top: 0.
+	// sticks, which a 1px sentinel at its top detects (moved down by L on the
+	// desktop layout, where the bar sticks at -L): the sentinel leaves the
+	// viewport at the same moment the bar reaches its sticky top.
 	let sentinel = $state.raw<HTMLElement | null>(null);
 	let stuck = $state(false);
 
@@ -118,6 +129,53 @@
 
 	let barEl = $state.raw<HTMLElement | null>(null);
 	let chipRow = $state.raw<HTMLElement | null>(null);
+
+	// The push (GALLERY-CURVE.md amendment 1), scroll-linked: with p = s − H,
+	// how far the page has scrolled past the bar's resting top (clamped to
+	// [0, L]), chip i sits at translateY(max(p, lift_i) − L): on the curve at
+	// rest, then carried down by the top of the screen once p passes its lift,
+	// flat at p = L, when the bar sticks. The selection controls are pushed
+	// like a chip with no lift. The `translate` property, not `transform`, so
+	// nothing else that transforms a chip is overridden.
+	$effect(() => {
+		if (!barEl || !chipRow) return;
+		const bar = barEl;
+		const row = chipRow;
+		const room = liftRoom;
+		const chipLifts = lifts;
+		// Re-run when the chips or the controls come and go.
+		void sections.length;
+		void hasSelection;
+		let frame = 0;
+		const update = () => {
+			frame = 0;
+			const chips = Array.from(row.children) as HTMLElement[];
+			const selection = bar.querySelector<HTMLElement>('.selection');
+			if (room <= 0) {
+				for (const chip of chips) chip.style.removeProperty('translate');
+				selection?.style.removeProperty('translate');
+				row.style.removeProperty('--spacer-grow');
+				return;
+			}
+			const p = Math.min(Math.max(-bar.getBoundingClientRect().top, 0), room);
+			chips.forEach((chip, i) => {
+				chip.style.translate = `0 ${Math.max(p, chipLifts[i] ?? 0) - room}px`;
+			});
+			if (selection) selection.style.translate = `0 ${p - room}px`;
+			row.style.setProperty('--spacer-grow', String(1 - p / room));
+		};
+		const schedule = () => {
+			if (!frame) frame = requestAnimationFrame(update);
+		};
+		update();
+		window.addEventListener('scroll', schedule, { passive: true });
+		window.addEventListener('resize', schedule);
+		return () => {
+			window.removeEventListener('scroll', schedule);
+			window.removeEventListener('resize', schedule);
+			if (frame) cancelAnimationFrame(frame);
+		};
+	});
 
 	/** Index into `sections` of the section being read, or -1 above the first. */
 	let activeIndex = $state(-1);
@@ -138,7 +196,7 @@
 			// Until the bar sticks the visitor is still above the gallery, on the
 			// hero — even though the first row already sits right under the bar,
 			// exactly ANCHOR_GAP below it, and the rule alone would light its chip.
-			if (box.top > 1) {
+			if (box.top > 1 - liftRoom) {
 				activeIndex = -1;
 				return;
 			}
@@ -213,8 +271,20 @@
 	});
 </script>
 
-<div class="bar-sentinel" bind:this={sentinel} aria-hidden="true"></div>
-<div class="gallery-bar" class:stuck bind:this={barEl} bind:offsetHeight={height}>
+<div
+	class="bar-sentinel"
+	bind:this={sentinel}
+	aria-hidden="true"
+	style:top={liftRoom > 0 ? `${liftRoom}px` : undefined}
+></div>
+<div
+	class="gallery-bar"
+	data-gallery-bar
+	class:stuck
+	bind:this={barEl}
+	bind:offsetHeight={boxHeight}
+	style:--bar-room={liftRoom > 0 ? `${liftRoom}px` : undefined}
+>
 	<!-- Always in the DOM, so nothing shifts when it appears; hidden from the
 	     keyboard and screen readers until then, because the header's own
 	     wordmark is still on screen. -->
@@ -232,13 +302,11 @@
 		aria-label={t('galleryCategories', lang)}
 		bind:this={chipRow}
 		data-hill-chips
-		style:--lift-room={liftRoom > 0 ? `${liftRoom}px` : undefined}
 	>
 		{#each sections as section, i (section.id)}
 			<a
 				class="chip"
 				href="#{section.id}"
-				style:--lift={lifts[i] ? `${lifts[i]}px` : undefined}
 				aria-current={i === activeIndex ? 'true' : undefined}
 				onclick={smoothJump}
 			>
@@ -318,6 +386,7 @@
 	}
 
 	.bar-sentinel {
+		position: relative;
 		height: 1px;
 		margin-top: -1px;
 	}
@@ -423,11 +492,21 @@
 	}
 
 	/* The desktop layout's unstuck bar lies over the hero's snow, with the
-	   first row of hearts starting right behind it: it lets clicks through to
-	   them everywhere but on its own controls. The chips are right-aligned by a
-	   spacer that grows, rather than by justify-content, so that sticking can
-	   slide them back to the left; the spacer's -8px eats the row's gap. */
+	   first row of hearts starting right behind it — L more of it now — so it
+	   lets clicks through to them everywhere but on its own controls.
+
+	   The box is L taller on top (--bar-room, set from the lifts) and sticks
+	   at -L, so it sticks when exactly its bottom, a normal bar, is left on
+	   screen. The chips are right-aligned at rest by a spacer whose flex-grow
+	   the scroll handler takes from 1 to 0 as the screen pushes the chips
+	   flat; its -8px eats the row's gap. The wordmark keeps its room here
+	   (only its opacity changes), so nothing moves sideways when it appears. */
 	@media (min-width: 900px) {
+		.gallery-bar {
+			top: calc(-1 * var(--bar-room, 0px));
+			padding-top: calc(10px + var(--bar-room, 0px));
+		}
+
 		.gallery-bar:not(.stuck),
 		.chips {
 			pointer-events: none;
@@ -439,36 +518,19 @@
 		}
 
 		.chips {
-			padding-bottom: calc(5px + var(--lift-room, 0px));
-			margin-bottom: calc(-5px - var(--lift-room, 0px));
+			padding-top: calc(5px + var(--bar-room, 0px));
+			margin-top: calc(-5px - var(--bar-room, 0px));
 		}
 
 		.chips::before {
 			content: '';
-			flex: 1 0 0;
+			flex: var(--spacer-grow, 1) 0 0;
 			margin-right: -8px;
 		}
 
-		.stuck .chips::before {
-			flex-grow: 0;
-		}
-
-		.chip {
-			transform: translateY(var(--lift, 0px));
-		}
-
-		.stuck .chip {
-			transform: none;
-		}
-	}
-
-	@media (min-width: 900px) and (prefers-reduced-motion: no-preference) {
-		.chips::before {
-			transition: flex-grow 150ms ease;
-		}
-
-		.chip {
-			transition: transform 150ms ease;
+		.wordmark {
+			max-width: 200px;
+			margin-right: 0;
 		}
 	}
 

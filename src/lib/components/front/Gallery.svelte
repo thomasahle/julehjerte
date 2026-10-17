@@ -138,6 +138,7 @@
 				wrapLift = null;
 				if (chipLifts.length) chipLifts = [];
 				if (cardDrops.length) cardDrops = [];
+				schedulePush();
 				return;
 			}
 			const { scrollX, scrollY } = window;
@@ -194,9 +195,50 @@
 				}
 			}
 			if (!sameNumbers(drops, cardDrops)) cardDrops = drops;
+			schedulePush();
 		};
 		const schedule = () => {
 			if (!frame) frame = requestAnimationFrame(measure);
+		};
+		const schedulePush = () => {
+			if (!pushFrame) pushFrame = requestAnimationFrame(push);
+		};
+
+		// The push (GALLERY-CURVE.md amendment 1), scroll-linked: once the
+		// stuck bar's bottom edge — the push line, about 50px from the top of
+		// the screen — reaches a first-row card, the card is carried down the
+		// page with it until it is level with the lowest card of the row:
+		// translateY(clamp(s + bar − c_i, 0, D − drop_i)), c_i the card's laid
+		// out page top. The row's height is the lowest card's already, so
+		// nothing below moves. `translate`, so the card's hover scale stays.
+		let pushFrame = 0;
+		const push = () => {
+			pushFrame = 0;
+			const grid = gallery.querySelector<HTMLElement>('[data-hill-row]');
+			if (!grid) return;
+			const drops = cardDrops;
+			const cards = Array.from(grid.children) as HTMLElement[];
+			if (drops.length === 0) {
+				for (const card of cards) card.style.removeProperty('translate');
+				return;
+			}
+			const s = window.scrollY;
+			// The grid is never transformed, and a first-row card's laid-out top
+			// is the grid's top plus its own drop (its margin-top) — exact, where
+			// offsetTop rounds and the card's own rect includes its hover scale.
+			const gridTop = grid.getBoundingClientRect().top + s;
+			const lowest = Math.max(...drops);
+			// The stuck bar's bottom edge: its box less the room on top.
+			const bar = gallery.querySelector('[data-gallery-bar]');
+			const room = chipLifts.length > 0 ? Math.max(...chipLifts) : 0;
+			const line = s + (bar ? bar.getBoundingClientRect().height - room : 50);
+			drops.forEach((drop, i) => {
+				const card = cards[i];
+				if (!card) return;
+				const t = Math.min(Math.max(line - (gridTop + drop), 0), lowest - drop);
+				if (t > 0) card.style.translate = `0 ${t}px`;
+				else card.style.removeProperty('translate');
+			});
 		};
 
 		// Untracked: measure() reads the lifts it compares against.
@@ -211,12 +253,15 @@
 		const land = document.querySelector('[data-scene-land] > svg');
 		if (land) observer.observe(land);
 		narrow.addEventListener('change', schedule);
+		window.addEventListener('scroll', schedulePush, { passive: true });
 		// Chip widths change once the web font is in.
 		document.fonts?.ready.then(schedule);
 		return () => {
 			observer.disconnect();
 			narrow.removeEventListener('change', schedule);
+			window.removeEventListener('scroll', schedulePush);
 			if (frame) cancelAnimationFrame(frame);
+			if (pushFrame) cancelAnimationFrame(pushFrame);
 		};
 	});
 </script>
@@ -233,6 +278,7 @@
 		id="skabeloner"
 		bind:this={galleryEl}
 		style:--gallery-bar-height={barHeight > 0 ? `${barHeight}px` : undefined}
+		style:--bar-room={chipLifts.length > 0 ? `${Math.max(...chipLifts)}px` : undefined}
 	>
 		<!-- The section keeps a heading for the nav's "Skabeloner" anchor and for
 		     screen readers; visually the gallery starts with the first category. -->

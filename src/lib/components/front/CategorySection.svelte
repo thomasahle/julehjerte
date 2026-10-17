@@ -126,10 +126,12 @@
 
 	/* On the desktop layout the gallery bar's top sits on the hill line's
 	   highest point (Gallery.svelte), and the first row starts 6px under that,
-	   behind the transparent bar, instead of under it. */
+	   behind the transparent bar, instead of under it. The bar's box is
+	   --bar-room taller than the --gallery-bar-height it reports (the room its
+	   chips rest in on the curve, GALLERY-CURVE.md amendment 1). */
 	@media (min-width: 900px) {
 		.cat.first {
-			margin-top: calc(6px - var(--gallery-bar-height, 49px));
+			margin-top: calc(6px - var(--gallery-bar-height, 49px) - var(--bar-room, 0px));
 		}
 	}
 
