@@ -304,8 +304,52 @@
       "previewStopped": true
     },
     "fullInverse": {
-      "status": "not-started",
-      "reason": "Deferred for the newly supplied curved-pattern screenshot before starting another long serial suite."
+      "status": "full-run-complete-with-focused-fix",
+      "runtimeCommit": "f1cf52e2a42c294458f1c9904997c5d7dfa44bcc",
+      "fullRun": {
+        "status": "failed",
+        "pid": 94471,
+        "runtimeCommit": "f1cf52e2a42c294458f1c9904997c5d7dfa44bcc",
+        "sourceFiles": 1032,
+        "priority": 15,
+        "minimumFreeGiB": 10,
+        "command": [
+          "npm",
+          "run",
+          "test:inverse"
+        ],
+        "childPid": 94474,
+        "exitCode": 1,
+        "seconds": 1207.0424842910002
+      },
+      "fullRunTests": 1048,
+      "fullRunPassed": 1047,
+      "fullRunFailed": 1,
+      "failure": "Offline projective-body adapter guarded source replacement did not include the new chromatic palette branch.",
+      "fix": "Update only the offline adapter replacement seam; production locator and solver unchanged.",
+      "changedSources": [
+        {
+          "file": "scripts/inverse/learning/projective-body.mjs",
+          "before": "202890ff3b573c6c74076756a6f2ea774a9dbb3b3aade177763a870f2565f9aa",
+          "after": "50e53ebdd40e0ae1068dbe3d69e4e49b23acff76a7926bbf35b4bde20e36cba2"
+        }
+      ],
+      "unchangedPinnedSources": 1031,
+      "focusedRecheck": {
+        "command": "node --test --test-concurrency=1 scripts/inverse/learning/projective-body.test.mjs",
+        "tests": 4,
+        "passed": 4,
+        "failed": 0,
+        "log": "tmp/heart-learning/chromatic-crop-v1/qa/projective-body-fixed.log"
+      },
+      "lintAfterFix": {
+        "command": "npm run lint",
+        "exitCode": 0,
+        "errors": 0,
+        "existingWarnings": 2,
+        "log": "tmp/heart-learning/chromatic-crop-v1/qa/lint-after-adapter.log"
+      },
+      "fullSuiteRepeatedAfterFix": false
     },
     "hunodanComparison": {
       "cases": 22,
@@ -506,6 +550,8 @@
     "newPhotoRun": "tmp/heart-learning/chromatic-crop-v1/automatic-v2/results.json",
     "editable": "tmp/heart-learning/chromatic-crop-v1/editable-v2/results.json",
     "browser": "tmp/heart-learning/chromatic-crop-v1/qa/browser-chromatic/results.json",
-    "sourcePins": "tmp/heart-learning/chromatic-crop-v1/qa/source.json"
+    "sourcePins": "tmp/heart-learning/chromatic-crop-v1/qa/source.json",
+    "inverseLog": "tmp/heart-learning/chromatic-crop-v1/qa/inverse.log",
+    "inverseSourcePins": "tmp/heart-learning/chromatic-crop-v1/qa/source-inverse.json"
   }
 }

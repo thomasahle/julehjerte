@@ -36,7 +36,7 @@ function replaceOne(source, before, after) {
 
 export function bodyOnlySource(original) {
   let source=replaceOne(original,
-    "baseFields=options.palette==='interior'?makeInteriorPaletteFields(work):options.palette==='anchored'?makeAnchoredFields(work):['adaptive','pale'].includes(options.palette)?makePaletteFields(work,{pale:options.palette==='pale'}):makeFields(work);",
+    "baseFields=options.palette==='chromatic'?makeChromaticPaletteFields(work,{roi:sampleROI})\n  :options.palette==='interior'?makeInteriorPaletteFields(work)\n  :options.palette==='anchored'?makeAnchoredFields(work)\n  :['adaptive','pale'].includes(options.palette)?makePaletteFields(work,{pale:options.palette==='pale'})\n  :makeFields(work);",
     'baseFields=options.bodyFields(work);');
   source=replaceOne(source,'for(let mode=0;mode<2;mode++){','for(let mode=0;mode<1;mode++){');
   const start=source.indexOf('   let diameterLoss=0,diameterContrast=[];');

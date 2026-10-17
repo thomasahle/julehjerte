@@ -135,8 +135,20 @@ outline, retaining the lobe checks. All 31 previous photographic crops and masks
 remain identical. The hand-adjacent orange/white crop is still visibly wrong;
 its low mask error does not establish a faithful reconstruction. Small boundary
 tabs also remain in the blue/orange result. This is a deterministic preprocessing
-improvement, not a neural-network release. The linked record distinguishes
-completed browser checks from the outstanding full inverse suite.
+improvement, not a neural-network release. The full inverse run passed
+**1,047/1,048 tests**; its sole failure was the offline body-only crop adapter's
+guarded source replacement, which still expected the old palette expression.
+That adapter is fixed, and all four of its tests pass on replay. All other
+1,031 pinned files remained unchanged. The full suite was not repeated after
+this isolated offline fix; the linked record retains both the failed full run
+and the successful focused replay. Lint passes with two existing warnings.
+
+The newer [touching-semicircle mask investigation](curved-triangles.md) records
+a separate visual failure despite passing nominal checks: the 19-second
+approximation has 2.76% editable-mask disagreement, but several circle contacts
+become white channels. At those contacts, the fitted curves are separate cuts
+in the same sheet, so the width constraint prevents closing them without a
+different routing. The screenshot is committed as a development QA fixture.
 
 ## What the network should learn
 
