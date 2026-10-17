@@ -444,11 +444,14 @@ describe('DownloadDialog', () => {
 			expect(addresses).toEqual([
 				'juleflet.dk/hjerte/classic-3x3',
 				'juleflet.dk/hjerte/classic-3x3',
-				'juleflet.dk/hjerte/jul · Venstre',
-				'juleflet.dk/hjerte/jul · Højre',
+				'juleflet.dk/hjerte/jul',
+				'juleflet.dk/hjerte/jul',
 				// The page's footer.
 				'juleflet.dk'
 			]);
+			// The names, with the side for Jul's two halves, sit above the templates.
+			const labels = [...view.q('.preview-sheet')!.querySelectorAll('text.label')].map((t) => t.textContent);
+			expect(labels).toEqual(['Classic 3x3', 'Classic 3x3', 'JUL (Venstre)', 'JUL (Højre)']);
 		});
 
 		it('hands the PDF generator every heart, with one shared download event', async () => {
