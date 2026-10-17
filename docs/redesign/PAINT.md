@@ -34,7 +34,7 @@ Everything else in docs/redesign/DESIGN.md still applies (tokens, `.btn`, floati
   pass it. On phones (< 600px) the switch shows icons only.
 - Switching mode is plain client-side navigation. State survives it because it lives in a module store (§3), not
   in page components.
-- Top-bar actions in Mal: Hjælp, Download PDF, Gem, EN pill — the same buttons as Tegn. Download PDF and Gem act on
+- Top-bar actions in Mal: Hjælp, Hent PDF, Gem, EN pill — the same buttons as Tegn. Hent PDF and Gem act on
   the session's current heart (the last Find snit result, or the heart the visitor came from). While there is no
   heart yet they are disabled with a tooltip ("Find snit først").
 
@@ -111,7 +111,7 @@ Right floating panel (340px, collapsible with the same "Skjul panel" control as 
   heart rendered by our own `PaperHeartSVG` (not the engine's preview), and a small card with the mask. That card is
   one button, labelled "Tilbage til masken" like the panel's — it used to carry a "Ret masken" link of its own beside
   it, which read as two different steps and is one — and the mask in it is drawn on `--sky`, as the detail page's
-  heart thumbnails are, because on white a white lobe disappears. Download PDF and Gem in the top bar now work on
+  heart thumbnails are, because on white a white lobe disappears. Hent PDF and Gem in the top bar now work on
   this heart.
 - After failure: a notice in the panel: what happened (timed out / no weavable pattern / engine could not load) and
   what to try (paint with fewer thin details, switch off a symmetry, try again), plus `Prøv igen`.

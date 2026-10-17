@@ -59,6 +59,19 @@ describe('translations', () => {
     expect(translations.da.instructions.length).toBe(4);
   });
 
+  it('words getting a template the same way everywhere', () => {
+    // Danish says "Hent" for every download, the editor and paint mode too.
+    expect(translations.da.editorDownloadPdf).toBe('Hent PDF');
+    expect(translations.da.downloadTemplate).toBe('Hent skabelon');
+    // English: the button and the dialog it opens say the same thing, in
+    // sentence case, on the heart page and in the gallery.
+    expect(translations.en.getTemplate).toBe('Get template');
+    expect(translations.en.getTemplateTitle).toBe(translations.en.getTemplate);
+    expect(translations.en.printSelected).toBe('Get templates');
+    expect(translations.en.getTemplatesTitle).toBe(translations.en.printSelected);
+    expect(translations.en.downloadTemplate).toBe('Download template');
+  });
+
   describe('specific translations', () => {
     const criticalKeys: TranslationKey[] = [
       'siteWordmark',
