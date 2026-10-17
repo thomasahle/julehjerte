@@ -3729,7 +3729,9 @@
 			top: 16px;
 			left: 50%;
 			transform: translateX(-50%);
-			z-index: 25;
+			/* Above the rail and the panel (26): the draft prompt's buttons and the
+			   tip's close button must stay tappable wherever a card could reach them. */
+			z-index: 27;
 			display: flex;
 			flex-direction: column;
 			align-items: center;
@@ -4113,8 +4115,8 @@
 				right: var(--editor-panel-inset);
 			}
 
-			/* z-index 26: the rail and the panel float over the canvas chrome (22)
-			   and the notices (25), which now share the same full-size canvas. */
+			/* z-index 26: the rail and the panel float over the canvas chrome (22),
+			   which shares the same full-size canvas; only the notices (27) sit higher. */
 			.paper-heart.fullPage .segment-controls.floating {
 				left: 24px;
 				z-index: 26;
