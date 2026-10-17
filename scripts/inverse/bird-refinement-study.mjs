@@ -1,3 +1,4 @@
+import { benchmarkArtifactEntries } from './benchmark-artifacts.mjs';
 /** Replay image-derived diagnostic starts with ordinary physical checks.
  * Initialization timings are recorded separately, not hidden in solve timings.
  */
@@ -32,7 +33,7 @@ for(const id of ids){
   const solution=await fitDirect(input,cfg,()=>{},{countSearch:()=>({seeds:[{...entry.seed,error:entry.summary.error,model:{...entry.seed.model,z:Float64Array.from(entry.seed.model.z)},seed:'diagnostic-'+id}],report:{strategy:'isolated image-derived diagnostic start',id}})});
   const answer=finish(solution,cfg),rendered=await renderExportedWeave(answer.files['cut_geometry.json'],400);
   row.seconds=(performance.now()-start)/1000;row.error=mismatch(rendered.mask,source.mask);row.features=auditImageFeatures(source,rendered.mask,cfg.width,features);row.geometry=answer.report.validation;row.paper=answer.report.manufacturing;row.passed=answer.report.templateChecksPassed&&row.features.passed&&row.error<=.03;row.solver=answer.report.solver;
-  const dir=output+'/'+id;await fs.mkdir(dir,{recursive:true});for(const [file,data]of Object.entries(answer.files))await fs.writeFile(dir+'/'+file,data);await fs.writeFile(dir+'/woven.png',rendered.png);
+  const dir=output+'/'+id;await fs.mkdir(dir,{recursive:true});for(const [file,data]of benchmarkArtifactEntries(answer.files))await fs.writeFile(dir+'/'+file,data);await fs.writeFile(dir+'/woven.png',rendered.png);
  }catch(error){row.errorMessage=error.message;row.failure=error.report;row.seconds=(performance.now()-start)/1000;}
  await fs.writeFile(output+'/results.json',JSON.stringify({fixture,cfg,seedFileSha256:hash(bytes),sourceHashes,method:'Each precomputed image-derived grid initializes a fresh fit; its full 128-hypothesis sweep time is separate. Other production fallback and cleanup policies remain enabled. No target/reference cutting paths.',results},null,2));
  console.log(JSON.stringify({id,seconds:row.seconds,error:row.error,features:row.features?.regions.map(r=>r.retainedFraction),geometry:row.geometry?.passed,paper:row.paper?.status,passed:row.passed,failure:row.errorMessage}));

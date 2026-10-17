@@ -1,3 +1,4 @@
+import { benchmarkArtifactEntries } from './benchmark-artifacts.mjs';
 /** Feasibility experiment for motif creation / boundary repair.
  * Generic synthetic silhouettes are original fixtures, not artwork from issues #8/#9.
  * Border pixels may change; centre disagreement is measured separately.
@@ -20,7 +21,7 @@ for(const shape of shapes)for(const cells of cellCounts){
  try{const p=prepare(input,cfg),r=await design(p.target,cfg),woven=await renderExportedWeave(r.files['cut_geometry.json'],n);let mismatch=0,observed=0;
  for(let y=0;y<n;y++)for(let x=0;x<n;x++)if(Math.min(x,y,n-1-x,n-1-y)>=border*n){observed++;mismatch+=Number(woven.mask[y*n+x]!==motif[y*n+x]);}
  Object.assign(row,{interiorError:mismatch/observed,checks:r.report.templateChecksPassed,geometry:r.report.validation.passed,paper:r.report.manufacturing.status,overallError:r.report.imageError?.mismatchFraction,slits:r.report.slits,route:r.report.solver.automatic?.selected,algorithm:r.report.solver.algorithm,primitives:r.report.solver.primitives,tracedSegments:(p.target.boundarySeed||p.target).curves.length});
- const dir=`${output}/${shape}-${cells}`;await fs.mkdir(dir,{recursive:true});await fs.writeFile(`${dir}/original.png`,original);for(const[f,b]of Object.entries(r.files))await fs.writeFile(`${dir}/${f}`,b);await fs.writeFile(`${dir}/woven.png`,woven.png);await fs.writeFile(`${dir}/input.png`,png);
+ const dir=`${output}/${shape}-${cells}`;await fs.mkdir(dir,{recursive:true});await fs.writeFile(`${dir}/original.png`,original);for(const[f,b]of benchmarkArtifactEntries(r.files))await fs.writeFile(`${dir}/${f}`,b);await fs.writeFile(`${dir}/woven.png`,woven.png);await fs.writeFile(`${dir}/input.png`,png);
  }catch(e){row.failure=e.message;}row.seconds=(performance.now()-started)/1000;console.log(row);await fs.writeFile(`${output}/results.json`,JSON.stringify(rows,null,2));
 }
 

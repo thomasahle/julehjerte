@@ -1,3 +1,4 @@
+import { benchmarkArtifactEntries } from './benchmark-artifacts.mjs';
 /** Fixed photograph-only inputs. Baseline errors are used only after fitting. */
 import fs from 'node:fs/promises';
 import {createHash} from 'node:crypto';
@@ -49,7 +50,7 @@ for(const e of catalog.cases){
     r.matchingAllowance=answer.report.solver.matchingPreference?.identical?(cfg.matchingErrorAllowance??.01):0;
     r.qualityPassed=r.exportAllowed&&r.features.passed&&r.error<=Math.min(.03,r.baselineError+r.matchingAllowance)+1e-12;r.speedPassed=r.seconds<=10;r.passed=r.qualityPassed&&r.speedPassed;
     const dir=`${out}/${e.id}`;await fs.mkdir(dir,{recursive:true});
-    for(const[name,data]of Object.entries(answer.files))await fs.writeFile(`${dir}/${name}`,data);
+    for(const[name,data]of benchmarkArtifactEntries(answer.files))await fs.writeFile(`${dir}/${name}`,data);
     await fs.writeFile(`${dir}/independent.png`,woven.png);
   }catch(error){r.passed=false;r.failure=error.message;r.failureReport=error.report;}
   if(!r.passed)process.exitCode=1;

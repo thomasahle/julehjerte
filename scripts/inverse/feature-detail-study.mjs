@@ -1,3 +1,4 @@
+import { benchmarkArtifactEntries } from './benchmark-artifacts.mjs';
 /** Fixed-crop diagnostic: does local curve subdivision recover small details?
  * Exact de Casteljau subdivision changes parameters, never the input image.
  * This script is not used by the production fitter.
@@ -107,7 +108,7 @@ for(const halo of (args.halos||'').split(',').filter(Boolean).map(Number)){
       solution.report.paperVerification={resolution:700,status:'pass'};
       const final=finalizeFittedSolution(solution,refinementCfg,{timeLimit:10,searchMatching:false});
       const result=finish(final,refinementCfg),folder=output+'/'+id+'-export';await fs.mkdir(folder,{recursive:true});
-      for(const [name,contents] of Object.entries(result.files))await fs.writeFile(folder+'/'+name,contents);
+      for(const [name,contents] of benchmarkArtifactEntries(result.files))await fs.writeFile(folder+'/'+name,contents);
       const rendered=await renderExportedWeave(result.files['cut_geometry.json'],400);
       rows.at(-1).final={report:result.report,error:mismatch(rendered.mask,source.mask),components:componentMetrics(rendered.mask)};
       await fs.writeFile(folder+'/independent.png',rendered.png);

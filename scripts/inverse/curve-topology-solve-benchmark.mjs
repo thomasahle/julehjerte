@@ -1,3 +1,4 @@
+import { benchmarkArtifactEntries } from './benchmark-artifacts.mjs';
 /** Full image-to-template counterparts of the controlled chord study.
  * Only mask pixels and requested symmetry reach the automatic fitter.
  */
@@ -35,7 +36,7 @@ for(const mode of ['sym','anti'])for(const count of [1,2,3])for(const unequal of
     const data=JSON.parse(answer.files['cut_geometry.json']);row.foundCounts=[data.A_overlap_paths.length,data.B_overlap_paths.length];
     row.geometry=answer.report.validation.passed;row.paper=answer.report.manufacturing.status;row.symmetry=answer.report.symmetry;
     row.passed=answer.report.templateChecksPassed&&row.geometry&&row.paper==='pass'&&row.symmetry.honoured.includes('withinCurve:'+mode)&&row.error<=.03;
-    for(const [file,value]of Object.entries(answer.files))await fs.writeFile(path.join(dir,file),value);
+    for(const [file,value]of benchmarkArtifactEntries(answer.files))await fs.writeFile(path.join(dir,file),value);
     await fs.writeFile(path.join(dir,'independent.png'),replay.png);
   }catch(error){row.passed=false;row.failure=error.message;row.failureReport=error.report;}
   if(!row.passed)process.exitCode=1;

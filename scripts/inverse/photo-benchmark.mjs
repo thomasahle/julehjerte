@@ -1,3 +1,4 @@
+import { benchmarkArtifactEntries } from './benchmark-artifacts.mjs';
 /** Reproducible, image-only photo attempts. These are not reference-cut recovery scores. */
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -50,7 +51,7 @@ for (const entry of catalogue.cases) {
         run.report = result.report;
         const folder = path.join(output, `${entry.id}-${preset}`);
         await fs.mkdir(folder);
-        for (const [name, content] of Object.entries(result.files)) await fs.writeFile(path.join(folder, name), content);
+        for (const [name, content] of benchmarkArtifactEntries(result.files)) await fs.writeFile(path.join(folder, name), content);
       } catch (error) {
         run.status = error.report?.termination || 'error';
         run.message = error.message;

@@ -1,3 +1,4 @@
+import { benchmarkArtifactEntries } from './benchmark-artifacts.mjs';
 import fs from 'node:fs/promises';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
@@ -39,6 +40,6 @@ for(const mode of ['photo','mask'])for(const boost of countPolicy==='unequal'?[1
   return{seeds,report:{strategy:'feature-weighted diagnostic',boost,initial}};
  }});
  const answer=finish(solution,cfg),woven=await renderExportedWeave(answer.files['cut_geometry.json'],source.resolution),error=mismatch(woven.mask,source.mask),featureResult=auditImageFeatures(source,woven.mask),seconds=(performance.now()-start)/1000;
- const folder=output+'/'+mode+'-'+boost;await fs.mkdir(folder,{recursive:true});for(const[f,c]of Object.entries(answer.files))await fs.writeFile(folder+'/'+f,c);await fs.writeFile(folder+'/woven.png',woven.png);
+ const folder=output+'/'+mode+'-'+boost;await fs.mkdir(folder,{recursive:true});for(const[f,c]of benchmarkArtifactEntries(answer.files))await fs.writeFile(folder+'/'+f,c);await fs.writeFile(folder+'/woven.png',woven.png);
  const result={mode,boost,seconds,error,features:featureResult,geometryPassed:answer.report.validation.passed,paperStatus:answer.report.manufacturing.status,checks:answer.report.templateChecksPassed,counts:answer.report.slits,candidates:answer.report.solver.candidates,initial};rows.push(result);await fs.writeFile(output+'/results.json',JSON.stringify(rows,null,2));console.log(JSON.stringify({...result,initial:undefined}));
 }

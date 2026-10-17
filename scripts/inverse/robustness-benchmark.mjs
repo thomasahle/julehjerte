@@ -1,3 +1,4 @@
+import { benchmarkArtifactEntries } from './benchmark-artifacts.mjs';
 /** Test border sensitivity and the user's manually cropped hard cases.
  * Input images remain local; every attempt and original crop is retained. */
 import fs from 'node:fs/promises';
@@ -65,7 +66,7 @@ for (const entry of cases) {
         const result = await design(prepared.target, cfg); run.report = result.report;
         run.status = result.report.templateChecksPassed ? 'checked_pair' : 'review_required';
         const directory = path.join(output, `${entry.id}-${label}`); await fs.mkdir(directory);
-        for (const [name, bytes] of Object.entries(result.files)) await fs.writeFile(path.join(directory, name), bytes);
+        for (const [name, bytes] of benchmarkArtifactEntries(result.files)) await fs.writeFile(path.join(directory, name), bytes);
         const rendered = await renderExportedWeave(result.files['cut_geometry.json'], prepared.preview.resolution);
         let mismatchPixels = 0;
         for (let i = 0; i < rendered.mask.length; i++) mismatchPixels += rendered.mask[i] !== prepared.preview.mask[i];

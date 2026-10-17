@@ -1,3 +1,4 @@
+import { benchmarkArtifactEntries } from './benchmark-artifacts.mjs';
 /** Full automatic solves of fixed and freely editable border objectives.
  * Every case starts from a new mask and fresh grids; no fitted templates are
  * supplied. Scores come from independently rendered exported Bézier curves.
@@ -54,7 +55,7 @@ for(const shape of shapes)for(const size of sizes){
       row.qualityPassed=row.templateChecksPassed&&row.geometryPassed&&row.paper==='pass'&&row.independent.mismatchFraction<=.03;
       row.speedPassed=row.seconds<=seconds;row.passed=row.qualityPassed&&row.speedPassed;
       await fs.writeFile(`${dir}/original.png`,original);await fs.writeFile(`${dir}/target.png`,targetCanvas.toBuffer('image/png'));await fs.writeFile(`${dir}/woven.png`,woven.png);
-      for(const [name,data] of Object.entries(answer.files))await fs.writeFile(`${dir}/${name}`,data);
+      for(const [name,data] of benchmarkArtifactEntries(answer.files))await fs.writeFile(`${dir}/${name}`,data);
     }catch(error){row.failure=error.message;row.failureReport=error.report;row.passed=false;}
     if(!row.passed)process.exitCode=1;
     console.log(JSON.stringify({shape,size,variant,strategy,seconds:row.seconds,counts:row.counts,protectedError:row.independent?.mismatchFraction,qualityPassed:row.qualityPassed,speedPassed:row.speedPassed,passed:row.passed,failure:row.failure}));

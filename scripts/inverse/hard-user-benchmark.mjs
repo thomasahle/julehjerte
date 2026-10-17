@@ -1,3 +1,4 @@
+import { benchmarkArtifactEntries } from './benchmark-artifacts.mjs';
 /** Separate detector failures from fitting failures on supplied photographs.
  * All crops are fixed before fitting; manual landmarks are diagnostics, not truth.
  */
@@ -29,7 +30,7 @@ for(const entry of catalog.cases){
       const n=p.preview.resolution,photo=createCanvas(n,n),pc=photo.getContext('2d'),pixels=pc.createImageData(n,n);
       for(let i=0;i<n*n;i++)pixels.data.set([...p.preview.rgb.slice(3*i,3*i+3),255],4*i);pc.putImageData(pixels,0,0);await fs.writeFile(`${directory}/rectified.png`,photo.toBuffer('image/png'));
       const answer=await design(p.target,cfg);item.seconds=(performance.now()-started)/1000;item.report=answer.report;
-      for(const[name,data]of Object.entries(answer.files))await fs.writeFile(`${directory}/${name}`,data);
+      for(const[name,data]of benchmarkArtifactEntries(answer.files))await fs.writeFile(`${directory}/${name}`,data);
       const woven=await renderExportedWeave(answer.files['cut_geometry.json'],n);await fs.writeFile(`${directory}/independent.png`,woven.png);
       const areas={border:{pixels:0,errors:0},interior:{pixels:0,errors:0}};
       const comparison=createCanvas(n*4,n),cc=comparison.getContext('2d');cc.drawImage(photo,0,0);

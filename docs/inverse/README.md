@@ -4,6 +4,22 @@ The engine runs in the editor's paint mode, `/editor/mal/` and `/en/editor/paint
 
 Run `npm run test:inverse:paint:browser` against the built app for the actual Paint → Draw → export flow. This checks the final editable geometry as well as the worker's result. The older browser harnesses navigate to the retired `/generate/` page and are historical evidence, not tests of the current UI.
 
+Benchmark writers retain cutting geometry, JSON results, template SVGs and
+ordinary previews by default. They omit the engine's `report.html` and two
+`manufacturability_*.svg` files: these repeat dense paper-cell drawings and
+previously accumulated tens of gigabytes. Set `INVERSE_FULL_ARTIFACTS=1` only
+for a selected diagnostic run that needs them. Website downloads, fitting,
+validation and synthetic training labels are unaffected. New experimental
+drivers should use `benchmarkArtifactEntries()` from
+`scripts/inverse/benchmark-artifacts.mjs` when saving engine exports.
+
+Historical bulky visualizations may be stored beside their original location
+with a `.gz` suffix. Restore an individual file with `gzip -dk path/to/file.gz`
+when needed; avoid expanding an entire archived benchmark. Source photos,
+datasets, masks, cutting geometry and JSON result summaries remain uncompressed.
+Check available disk space before starting a new batch; keep at least 10 GiB
+free and stop large artifact-producing runs when that headroom is unavailable.
+
 [COUNT-STRATEGIES.md](COUNT-STRATEGIES.md) compares count initialization on the frozen photo dataset, separating the cost of finding initial grids from complete solve time and measured reconstruction quality.
 
 [FINALIST-DIVERSITY.md](FINALIST-DIVERSITY.md) follows a small photographic

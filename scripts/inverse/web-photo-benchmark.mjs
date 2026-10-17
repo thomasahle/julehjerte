@@ -1,3 +1,4 @@
+import { benchmarkArtifactEntries } from './benchmark-artifacts.mjs';
 /** Image-only workflow benchmark. All proposals remain reviewable, including failures. */
 import fs from 'node:fs/promises';
 import {execFileSync} from 'node:child_process';
@@ -109,7 +110,7 @@ for (const entry of data.cases.filter(c => !ids || ids.includes(c.id))) {
         row.solveAndValidationSeconds = (performance.now() - solveStart) / 1000;
         row.report = answer.report;
         const directory = `${output}/${entry.id}`; await fs.mkdir(directory, {recursive: true});
-        for (const [file, content] of Object.entries(answer.files)) await fs.writeFile(`${directory}/${file}`, content);
+        for (const [file, content] of benchmarkArtifactEntries(answer.files)) await fs.writeFile(`${directory}/${file}`, content);
         currentStage = 'independent_rendering';
         const woven = await renderExportedWeave(answer.files['cut_geometry.json'], n);
         let observed = 0, mismatch = 0;
