@@ -47,6 +47,7 @@
   import { decodeSharedDesign, encodeSharedDesign, sharedDesignUrl } from "$lib/utils/shareDesign";
   import { makeHeartAnchorId } from "$lib/utils/heartAnchors";
   import { openerOf } from "$lib/utils/focusTrap";
+  import { formatHeartDate } from "$lib/utils/date";
   import type { HeartDesign, HeartInfo } from "$lib/types/heart";
   import { trackHeartShare, trackHeartEdit } from "$lib/analytics";
 
@@ -336,7 +337,7 @@
     if (!info) return [] as { label: string; value: string; url: string | null }[];
     const rows: { label: string; value: string; url: string | null }[] = [];
     if (info.publisher) rows.push({ label: t("publisher", lang), value: info.publisher, url: info.publisherUrl });
-    if (info.date) rows.push({ label: t("date", lang), value: info.date, url: null });
+    if (info.date) rows.push({ label: t("date", lang), value: formatHeartDate(info.date, lang), url: null });
     if (info.source && normalizeSource(info.source) !== normalizeSource(SITE_DOMAIN)) {
       rows.push(sourceRow(info.source));
     }
