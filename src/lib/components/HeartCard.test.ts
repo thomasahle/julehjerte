@@ -77,7 +77,6 @@ async function render(options: RenderOptions = {}) {
 		target,
 		links: () => [...target.querySelectorAll<HTMLAnchorElement>('a')],
 		checkbox: () => target.querySelector<HTMLInputElement>('input[type="checkbox"]')!,
-		label: () => target.querySelector<HTMLLabelElement>('label')!,
 		deleteButton: () => target.querySelector<HTMLButtonElement>('.delete-btn')
 	};
 }
@@ -130,10 +129,12 @@ describe('HeartCard', () => {
 
 	it('labels the checkbox for the PDF, in both languages', async () => {
 		const da = await render();
-		expect(da.label().htmlFor).toBe(da.checkbox().id);
-		expect(da.label().textContent).toBe('Vælg til PDF: Stjerne');
+		expect(da.checkbox().getAttribute('aria-label')).toBe('Vælg til PDF: Stjerne');
+		// No <label> text of its own: it would be read again after the checkbox.
+		expect(da.target.querySelector('label')).toBeNull();
+		expect(da.target.querySelector('.card')!.textContent).not.toContain('Vælg til PDF');
 		const en = await render({ lang: 'en', heart: { ...heart, id: 'star' } });
-		expect(en.label().textContent).toBe('Select for PDF: Stjerne');
+		expect(en.checkbox().getAttribute('aria-label')).toBe('Select for PDF: Stjerne');
 		// Two cards on a page must not share a checkbox id.
 		expect(en.checkbox().id).not.toBe(da.checkbox().id);
 	});

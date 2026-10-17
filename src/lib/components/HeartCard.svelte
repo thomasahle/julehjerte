@@ -129,15 +129,18 @@
 			     card, which has to stay the heart's own. -->
 			{#snippet badge()}
 				<span class="pick">
+					<!-- Named by aria-label, not an sr-only <label>: a label's text
+					     stays in the reading order, so browse mode read the name
+					     twice ("Vælg til PDF: Classic 3x3", then the label's text). -->
 					<input
 						id={pickId}
 						class="pick-box"
 						type="checkbox"
 						checked={selected}
 						onchange={handleSelect}
+						aria-label="{t('selectForPdf', lang)}: {heart.name}"
 					/>
 					<span class="pick-mark" aria-hidden="true">✓</span>
-					<label class="sr-only" for={pickId}>{t('selectForPdf', lang)}: {heart.name}</label>
 				</span>
 			{/snippet}
 		</HangingHeart>
