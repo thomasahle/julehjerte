@@ -35,6 +35,7 @@
 	import { t, type Language } from '$lib/i18n';
 	import { heartHref } from '$lib/i18n/routes';
 	import HangingHeart from '$lib/components/HangingHeart.svelte';
+	import { loadPaperHeart } from '$lib/components/loadPaperHeart';
 	import DifficultyDots from '$lib/components/DifficultyDots.svelte';
 	import { TrashIcon } from '$lib/components/icons';
 	import { makeHeartAnchorId } from '$lib/utils/heartAnchors';
@@ -115,6 +116,7 @@
 		<HangingHeart
 			{design}
 			{markup}
+			loadPaper={loadPaperHeart}
 			colors={heart.colors}
 			size={SIZE}
 			{ribbon}

@@ -28,13 +28,26 @@
   sways with it.
 
   A heart that is already drawn in the prerendered HTML is given as `markup`
-  instead of being drawn from `design` — see $lib/front/galleryHearts. The
+  instead of being drawn from `design` — see $lib/front/galleryHearts.
+
+  A heart drawn from `design` needs PaperHeartSVG and the weave renderer under
+  it. It is not imported here, because the front page hangs every heart as
+  `markup` and would otherwise download that code for nothing. The parent supplies it instead: `paper`, the component itself, from a
+  page that draws `design` into its prerendered HTML and has it anyway (the
+  heart page); or `loadPaper`, from a page that only draws in the browser (the
+  front page after a client-side navigation, and the visitor's own hearts in
+  its gallery), whose heart then shows its ribbon a moment before its paper the
+  first time. The dynamic import lives with the front page's components, not
+  here: SvelteKit drops a component's stylesheet from a page that imports it
+  statically when a chunk listed before it also imports it dynamically. The
   ribbon is a real element either way, so the footer's colour swatches keep
   reaching it; the frozen SVG follows them through the --paper-* tokens below.
 -->
 <script lang="ts">
 	import { onMount, type Snippet } from 'svelte';
-	import PaperHeartSVG from '$lib/components/PaperHeartSVG.svelte';
+	// Type only: the component itself is either handed in (`paper`) or loaded on
+	// demand, see the note above.
+	import type PaperHeartSVG from '$lib/components/PaperHeartSVG.svelte';
 	import { swayAnimationDelay } from '$lib/utils/sway';
 	import {
 		DEFAULT_COLORS,
@@ -73,6 +86,18 @@
 		class?: string;
 		/** Rendered inside the heart box, after the heart — see the note above. */
 		badge?: Snippet;
+		/**
+		 * PaperHeartSVG, for a heart drawn from `design` on a page that has the
+		 * component anyway and draws the heart into its prerendered HTML (the
+		 * heart's own page) — see the note above.
+		 */
+		paper?: typeof PaperHeartSVG;
+		/**
+		 * Loads PaperHeartSVG in the browser, for a heart drawn from `design` on a
+		 * page that does not otherwise need it (the front page): see the note
+		 * above and $lib/components/loadPaperHeart.
+		 */
+		loadPaper?: () => Promise<{ default: typeof PaperHeartSVG }>;
 	}
 
 	let {
@@ -84,8 +109,26 @@
 		delay = 0,
 		idPrefix,
 		class: className = undefined,
-		badge = undefined
+		badge = undefined,
+		paper = undefined,
+		loadPaper = undefined
 	}: Props = $props();
+
+	// Only a heart that has to be drawn here fetches the drawing code. The front
+	// page's hearts arrive as `markup`, so its first load never asks for it.
+	let loadedPaper = $state<typeof PaperHeartSVG | undefined>(undefined);
+	let Paper = $derived(paper ?? loadedPaper);
+
+	$effect(() => {
+		if (markup !== undefined || !design || Paper || !loadPaper) return;
+		let live = true;
+		loadPaper().then((module) => {
+			if (live) loadedPaper = module.default;
+		});
+		return () => {
+			live = false;
+		};
+	});
 
 	// The site-wide pair, read after mount so the prerendered markup and the
 	// hydrated one agree — the same dance PaperHeartSVG does for the lobes.
@@ -121,8 +164,8 @@
 		{#if markup !== undefined}
 			<!-- svelte-ignore hydration_html_changed -->
 			{@html markup}
-		{:else if design}
-			<PaperHeartSVG
+		{:else if design && Paper}
+			<Paper
 				readonly
 				{idPrefix}
 				initialFingers={design.fingers}

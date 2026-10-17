@@ -28,6 +28,7 @@
 -->
 <script lang="ts">
 	import HangingHeart from '$lib/components/HangingHeart.svelte';
+	import { loadPaperHeart } from '$lib/components/loadPaperHeart';
 	import type { HeroHeart } from '$lib/front/galleryHearts';
 	import { t, type Language } from '$lib/i18n';
 	import { makeHeartAnchorId } from '$lib/utils/heartAnchors';
@@ -71,6 +72,7 @@
 					<HangingHeart
 						design={heart.design}
 						markup={heart.markup}
+						loadPaper={loadPaperHeart}
 						size={slot.size}
 						ribbon={slot.ribbon}
 						delay={slot.delay}

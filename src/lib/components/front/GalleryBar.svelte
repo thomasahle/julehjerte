@@ -480,7 +480,10 @@
 		margin: -5px;
 		/* The snap area starts inside that room, so the first chip snaps to
 		   its rest place (scrollLeft 0, in line with the cards) rather than to
-		   the padding edge, 5px further left with its focus ring cut off. */
+		   the padding edge, 5px further left with its focus ring cut off. The
+		   same 5px snap at first layout also fired a scroll before the first
+		   paint, which made Chrome stop looking for the page's largest
+		   contentful paint, so the front page reported none on phones. */
 		scroll-padding-inline: 5px;
 	}
 

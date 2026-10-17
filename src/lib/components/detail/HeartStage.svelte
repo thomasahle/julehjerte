@@ -65,7 +65,7 @@
 	{:else if shownView === 'heart'}
 		<!-- Positioned so the heart hangs from the big fir behind it. -->
 		<div class="stage-hang">
-			<HangingHeart {design} size={340} ribbon={70} idPrefix="stage-{idPrefix}" />
+			<HangingHeart {design} paper={PaperHeartSVG} size={340} ribbon={70} idPrefix="stage-{idPrefix}" />
 		</div>
 	{:else if shownView === 'photo' && photo}
 		<div class="stage-media">
