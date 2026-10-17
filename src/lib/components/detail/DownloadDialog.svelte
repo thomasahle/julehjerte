@@ -774,6 +774,17 @@
 		color: var(--white);
 	}
 
+	/* The group's overflow: hidden would clip an outline, and box-shadow: none
+	   above cancels the shadcn ring, so the keyboard ring is drawn inset: 3px of
+	   --blue (3.5:1 on the white segment) with a 2px white halo inside it, which
+	   is what carries the 3:1 against the green "on" segment (SC 1.4.11). */
+	.segmented :global([data-slot='toggle-group-item']:focus-visible) {
+		outline: none;
+		box-shadow:
+			inset 0 0 0 3px var(--blue),
+			inset 0 0 0 5px var(--white);
+	}
+
 	.preview {
 		margin: 0;
 		display: flex;
