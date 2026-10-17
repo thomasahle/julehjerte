@@ -566,8 +566,8 @@ function pageFormat(sheet: SheetSize): { format: string | [number, number]; orie
  * The templates at true size: each heart's two folded templates at
  * `widthMm`, laid out by planTemplatePages on as many pages as they take.
  * Every template carries, inside its rounded end (`templateEar`), the heart's
- * picture (optionally), its name and its address — where the gallery's PDF
- * prints them above the template instead — and every page the footer.
+ * picture (optionally) and its address — where the gallery's PDF prints the
+ * name and address above the template instead — and every page the footer.
  */
 export async function generateTemplatesPDF(designs: HeartDesign[], options: TemplatesPDFOptions): Promise<jsPDF> {
   const lang = options.lang ?? 'da';
@@ -584,8 +584,8 @@ export async function generateTemplatesPDF(designs: HeartDesign[], options: Temp
   const heartImages = picture
     ? await prerenderHeartImages(designs, templatePicturePixels(pieces, lang))
     : new Map<string, string>();
-  // jsPDF's own widths for its Helvetica, in mm, so a line is shrunk only if
-  // it really would not fit the ear.
+  // jsPDF's own widths for its Helvetica, in mm, so the address is shrunk
+  // only if it really would not fit the ear.
   const measure = (text: string, sizePt: number) =>
     (pdf.getStringUnitWidth(text) * sizePt) / pdf.internal.scaleFactor;
 
@@ -597,18 +597,18 @@ export async function generateTemplatesPDF(designs: HeartDesign[], options: Temp
       drawLobeTemplateAt(pdf, piece.design, piece.lobe, x, y, piece.scale);
 
       // Inside the rounded end, which no cut crosses and folding keeps whole:
-      // a template cut out of the sheet still says what it is and where it is
-      // from (a sheet often ends up far from the rest — a school, a workshop).
+      // a template cut out of the sheet still shows what it is and says where
+      // it is from (a sheet often ends up far from the rest — a school, a workshop).
       const imageData = heartImages.get(piece.design.id);
       const ear = templateEar(piece, { lang, picture: picture && imageData !== undefined, measure });
       if (ear.picture && imageData) {
         const { x: px, y: py, size } = ear.picture;
         pdf.addImage(imageData, 'PNG', x + px, y + py, size, size);
       }
-      for (const line of ear.lines) {
-        pdf.setFontSize(line.sizePt);
-        pdf.setTextColor(line.kind === 'name' ? 0 : 128);
-        pdf.text(line.text, x + line.x, y + line.baseline, { align: 'center' });
+      if (ear.address) {
+        pdf.setFontSize(ear.address.sizePt);
+        pdf.setTextColor(128);
+        pdf.text(ear.address.text, x + ear.address.x, y + ear.address.baseline, { align: 'center' });
       }
     }
 

@@ -1,13 +1,14 @@
 /**
  * What the printer PDF puts inside a folded template's rounded end — the
- * heart's picture, its name and its address — docs/redesign/DOWNLOAD.md,
- * round 2, amendments 2 and 3.
+ * heart's picture and its address — docs/redesign/DOWNLOAD.md, round 2,
+ * amendments 2 and 3, and the owner's note after it: the heart's name is not
+ * printed, only the address.
  *
- * The two lines used to sit above the template, on paper that is cut away, so
- * a cut-out template had lost its name. The ear is the one part of the piece no
- * cut crosses (every strip cut starts at the ear base, y = R) and the part that
- * survives folding whole, so everything goes there: the picture as high as the
- * curve allows, the name and the address directly under it, all above the ear
+ * The address used to sit above the template, on paper that is cut away, so a
+ * cut-out template had lost the way back to its heart. The ear is the one part
+ * of the piece no cut crosses (every strip cut starts at the ear base, y = R)
+ * and the part that survives folding whole, so both go there: the picture as
+ * high as the curve allows, the address directly under it, all above the ear
  * base. generateTemplatesPDF (./template.ts) draws this layout with jsPDF and
  * the dialog's preview (./preview.ts) draws it in SVG, so the two agree.
  *
@@ -19,26 +20,23 @@
 /** Points to millimetres. */
 export const PT_MM = 25.4 / 72;
 
-/** The sizes the PDF has always printed the lines at; they shrink, never grow. */
-export const NAME_PT = 8;
+/** The size the PDF has always printed the address at; it shrinks, never grows. */
 export const ADDRESS_PT = 6;
-/** Below this the address is dropped, so the name keeps the room. */
+/** The address never goes below this; the picture shrinks instead. */
 export const MIN_TEXT_PT = 5;
 
 /** Kept free between the ear's outline and the picture's corners. */
 const OUTLINE_CLEARANCE_MM = 0.5;
-/** Between the picture's foot and the name. */
+/** Between the picture's foot and the address. */
 const PICTURE_GAP_MM = 0.8;
-/** Between the last line and the ear base, where the first cut begins. */
+/** Between the address and the ear base, where the first cut begins. */
 const BASE_CLEARANCE_MM = 0.8;
-/** Kept free at each end of a line, inside the curve. */
+/** Kept free at each end of the address, inside the curve. */
 const SIDE_CLEARANCE_MM = 1;
 
 // Helvetica's (jsPDF's default font) vertical metrics, as fractions of the size.
 const ASCENT = 0.75;
 const DESCENT = 0.23;
-/** Name baseline to address baseline, at full size: 3 mm, as the PDF had it. */
-const LINE_STEP_MM = 3;
 
 /** The picture is rendered for print: 300 dots per inch, and never under 200 px. */
 const PICTURE_DPI = 300;
@@ -67,7 +65,6 @@ export const estimateTextWidth: MeasureText = (text, sizePt) => {
 };
 
 export interface EarLine {
-	kind: 'name' | 'address';
 	text: string;
 	sizePt: number;
 	/** The line's centre, across. */
@@ -78,7 +75,8 @@ export interface EarLine {
 export interface EarLayout {
 	/** The picture's square, top-left corner and side; null when there is none. */
 	picture: { x: number; y: number; size: number } | null;
-	lines: EarLine[];
+	/** The address line; null when there is no address. */
+	address: EarLine | null;
 }
 
 export interface EarLayoutInput {
@@ -88,7 +86,7 @@ export interface EarLayoutInput {
 	earRadiusMm: number;
 	/** Whether the heart's picture is printed. */
 	picture: boolean;
-	name: string;
+	/** The line under the picture: `templateEarText` in ./plan.ts. */
 	address: string;
 	measure?: MeasureText;
 }
@@ -105,20 +103,19 @@ function pictureTop(r: number, size: number): number {
 	return r - Math.sqrt(Math.max(0, inner * inner - (size / 2) ** 2));
 }
 
-/** Text block height for both lines at scale `f`, top of the name to the address's descent. */
-const bothHeight = (f: number) => f * (ASCENT * NAME_PT * PT_MM + LINE_STEP_MM + DESCENT * ADDRESS_PT * PT_MM);
-/** The name alone, at scale `f`. */
-const nameHeight = (f: number) => f * (ASCENT + DESCENT) * NAME_PT * PT_MM;
+/** The address's height at `pt` points, from its ascent to its descent. */
+const lineHeight = (pt: number) => (ASCENT + DESCENT) * pt * PT_MM;
 
 /**
- * The picture, then the lines in the band left between its foot and the ear
- * base: at 8 pt and 6 pt when they fit, both shrunk together when they do not,
- * the address dropped when it would fall under 5 pt, and the picture made
- * smaller only if even the name alone would. With the picture turned off the
- * lines sit where its middle would have been.
+ * The picture, then the address in the band left between its foot and the ear
+ * base: at 6 pt when it fits, shrunk to the band's height and to the ear's
+ * width when it does not, but never under 5 pt — if the band cannot hold 5 pt,
+ * the picture is made smaller instead. With the picture turned off the
+ * address sits where the picture's middle would have been (lower, if the
+ * curve is too tight there even for 5 pt).
  */
 export function layoutEar(input: EarLayoutInput): EarLayout {
-	const { widthMm: w, heightMm: h, earRadiusMm: r, name, address } = input;
+	const { widthMm: w, heightMm: h, earRadiusMm: r, address } = input;
 	const measure = input.measure ?? estimateTextWidth;
 	const cx = w / 2;
 	const baseLimit = r - BASE_CLEARANCE_MM;
@@ -127,16 +124,14 @@ export function layoutEar(input: EarLayoutInput): EarLayout {
 	let size = Math.min(w * 0.35, h * 0.25);
 	const top = pictureTop(r, size);
 
-	// Where the text block may start, and how much height it has.
-	let blockTop: number;
-	let room: number;
+	// Where the address's top may be, and how much height it has.
+	let lineTop: number;
 	if (input.picture) {
-		blockTop = top + size + PICTURE_GAP_MM;
-		room = baseLimit - blockTop;
-		// Not even the name at 5 pt: give it the room by shrinking the picture,
-		// which the PDF can lose more easily than the template its name.
-		const needed = nameHeight(MIN_TEXT_PT / NAME_PT);
-		if (room < needed) {
+		lineTop = top + size + PICTURE_GAP_MM;
+		// Not even 5 pt: give the address the room by shrinking the picture,
+		// which a template can lose more easily than the way back to its heart.
+		const needed = lineHeight(MIN_TEXT_PT);
+		if (baseLimit - lineTop < needed) {
 			let lo = 0;
 			let hi = size;
 			for (let i = 0; i < 40; i++) {
@@ -145,51 +140,32 @@ export function layoutEar(input: EarLayoutInput): EarLayout {
 				else hi = mid;
 			}
 			size = lo;
-			blockTop = pictureTop(r, size) + size + PICTURE_GAP_MM;
-			room = baseLimit - blockTop;
+			lineTop = pictureTop(r, size) + size + PICTURE_GAP_MM;
 		}
 	} else {
-		// Centred on the picture's middle, as far as the ear base allows.
+		// Centred on the picture's middle, as far as the ear base allows — and
+		// lower where the curve is too tight there for the address at 5 pt.
 		const middle = top + size / 2;
-		blockTop = Math.min(middle - bothHeight(1) / 2, baseLimit - bothHeight(1));
-		room = baseLimit - blockTop;
+		lineTop = Math.min(middle - lineHeight(ADDRESS_PT) / 2, baseLimit - lineHeight(ADDRESS_PT));
+		const halfAcross = measure(address, MIN_TEXT_PT) / 2 + SIDE_CLEARANCE_MM;
+		if (halfAcross < r) {
+			const wideEnough = r - Math.sqrt(r * r - halfAcross * halfAcross);
+			lineTop = Math.min(Math.max(lineTop, wideEnough), baseLimit - lineHeight(MIN_TEXT_PT));
+		}
 	}
-
-	// The narrowest the block gets is at its top, where the curve is tightest.
-	const across = chord(r, blockTop) - 2 * SIDE_CLEARANCE_MM;
-	const widthScale = (text: string, pt: number) => {
-		const width = measure(text, pt);
-		return width > 0 ? across / width : Infinity;
-	};
 
 	const picture = input.picture ? { x: cx - size / 2, y: pictureTop(r, size), size } : null;
+	if (!address) return { picture, address: null };
 
-	// Both lines, shrunk together to the band's height; each then on its own to the width.
-	const f = Math.min(1, room / bothHeight(1));
-	const nameBaseline = blockTop + f * ASCENT * NAME_PT * PT_MM;
-	const addressPt = ADDRESS_PT * Math.min(f, widthScale(address, ADDRESS_PT));
-	if (addressPt >= MIN_TEXT_PT && address) {
-		return {
-			picture,
-			lines: [
-				{ kind: 'name', text: name, sizePt: NAME_PT * Math.min(f, widthScale(name, NAME_PT)), x: cx, baseline: nameBaseline },
-				{ kind: 'address', text: address, sizePt: addressPt, x: cx, baseline: nameBaseline + f * LINE_STEP_MM }
-			]
-		};
-	}
-
-	// The name alone, with the whole band.
-	const g = Math.min(1, room / nameHeight(1));
+	// To the band's height, and to the ear's width at the line's top, where the
+	// curve is tightest; never under 5 pt.
+	const across = chord(r, lineTop) - 2 * SIDE_CLEARANCE_MM;
+	const width = measure(address, ADDRESS_PT);
+	const widthScale = width > 0 ? across / width : Infinity;
+	const heightScale = (baseLimit - lineTop) / lineHeight(ADDRESS_PT);
+	const sizePt = Math.max(MIN_TEXT_PT, ADDRESS_PT * Math.min(1, heightScale, widthScale));
 	return {
 		picture,
-		lines: [
-			{
-				kind: 'name',
-				text: name,
-				sizePt: NAME_PT * Math.min(g, widthScale(name, NAME_PT)),
-				x: cx,
-				baseline: blockTop + g * ASCENT * NAME_PT * PT_MM
-			}
-		]
+		address: { text: address, sizePt, x: cx, baseline: lineTop + ASCENT * sizePt * PT_MM }
 	};
 }

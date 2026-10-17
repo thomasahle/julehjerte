@@ -185,10 +185,22 @@ Everything else in this file stands, including round 1.
   lines in Helvetica). The picture keeps its old size, `min(35 % of the width,
   25 % of the height)`, but sits as high in the ear as the curve allows
   instead of at a fifth of the height: at the old place it ended 2 mm above
-  the ear base, which left no band for the text. Fonts never grow past 8 / 6 pt;
-  if even the name alone would fall under 5 pt the picture shrinks instead (no
-  size in 40–200 mm needs it). Each line is also shrunk to the ear's width at
-  the top of the text block, so a long name never runs over the curve.
+  the ear base, which left no band for the text.
+- **No name in the ear (owner, after round 2):** "the heart name should not be
+  in the picture, only the url". The ear holds the picture and one line,
+  `templateEarText(piece, lang)` in `plan.ts`: `templateAddress(design)`, and
+  for the two different halves of an asymmetric heart the lobe after it
+  (`juleflet.dk/hjerte/jul · Venstre` / `· Højre`); a shared template gets the
+  bare address. `templateLabel` and `NAME_PT` are gone; `EarLayout` has
+  `address: EarLine | null` instead of `lines`. The address is 6 pt grey,
+  never larger, shrunk to the band under the picture and to the ear's width at
+  its top, never under 5 pt: if the band cannot hold 5 pt the picture shrinks
+  (only under about 32 mm wide; the narrow half of `amy-weave-1` at 40 mm is
+  35 mm and gets 5.3 pt). The classic heart's address is the full 6 pt at 40,
+  60 and 80 mm. With the picture off it is centred where the picture's middle
+  was, moved lower only where the curve is too tight there even for 5 pt.
+  Tested for every gallery heart at 40 mm with jsPDF's widths. The front
+  page's gallery PDF still prints name and address above its templates.
 - **The picture** is rendered by `prerenderHeartImages`, moved to
   `src/lib/pdf/heartRenderer.ts` so the dialog can use it without loading
   jsPDF, at `templatePicturePixels(pieces)` (300 dpi for the largest

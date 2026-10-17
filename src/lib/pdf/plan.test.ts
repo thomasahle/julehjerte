@@ -1,14 +1,14 @@
 /**
  * The printer PDF's page planning — docs/redesign/DOWNLOAD.md. The classic
  * heart's folded template at 80 mm is 80 × 120 mm, and that is its whole box:
- * the name and address are printed inside its rounded end (round 2), not in a
- * header above it. Two across A4 (5 + 80 + 5 + 80 ≤ 205) and two down
+ * the address is printed inside its rounded end (round 2), not in a header
+ * above it. Two across A4 (5 + 80 + 5 + 80 ≤ 205) and two down
  * (5 + 120 + 5 + 120 ≤ 287, the page less its 5 mm margin and footer).
  */
 import { describe, expect, it } from 'vitest';
 import { SHEETS, type SheetSize } from '$lib/laser/sheet';
 import { loadHeart } from '$lib/laser/testHearts';
-import { planTemplatePages, templateLabel, templatePair, templatePieces, type TemplatePagePlan } from './plan';
+import { planTemplatePages, templateEarText, templatePair, templatePieces, type TemplatePagePlan } from './plan';
 import { serializeTemplatePageSvg } from './preview';
 
 const classic = loadHeart('classic-3x3');
@@ -53,7 +53,7 @@ describe('templatePair', () => {
 		expect(left.widthMm).toBeCloseTo(80);
 		expect(left.heightMm).toBeCloseTo(120);
 		expect(left.stripWidthMm).toBeCloseTo(80 / 3);
-		expect(templateLabel(left, 'da')).toBe(classic.name);
+		expect(templateEarText(left, 'da')).toBe('juleflet.dk/hjerte/classic-3x3');
 	});
 
 	it('gives an asymmetric heart its left and its right template, at one scale', () => {
@@ -62,8 +62,8 @@ describe('templatePair', () => {
 		expect([left.lobe, right.lobe]).toEqual(['left', 'right']);
 		expect(left.scale).toBe(right.scale);
 		expect(Math.max(left.widthMm, right.widthMm)).toBeCloseTo(60);
-		expect(templateLabel(left, 'da')).toBe(`${jul.name} (Venstre)`);
-		expect(templateLabel(right, 'en')).toBe(`${jul.name} (Right)`);
+		expect(templateEarText(left, 'da')).toBe('juleflet.dk/hjerte/jul · Venstre');
+		expect(templateEarText(right, 'en')).toBe('juleflet.dk/hjerte/jul · Right');
 	});
 });
 
@@ -172,22 +172,35 @@ describe('serializeTemplatePageSvg', () => {
 		}
 	});
 
-	it('prints the name and address inside the ear, under the picture and above the first cut', () => {
+	it('prints only the address inside the ear, under the picture and above the first cut', () => {
 		const doc = svg(0, { images: new Map([[classic.id, picture]]) });
 		const pictureFoot = Number(doc.querySelector('use')!.getAttribute('y')) + Number(doc.querySelector('use')!.getAttribute('width'));
-		const [name, address] = [...doc.querySelectorAll('text')].slice(0, 2);
-		expect(name!.textContent).toBe(classic.name);
-		expect(address!.getAttribute('class')).toBe('address');
-		const nameY = Number(name!.getAttribute('y'));
-		const addressY = Number(address!.getAttribute('y'));
-		expect(nameY).toBeGreaterThan(pictureFoot);
-		expect(addressY).toBeGreaterThan(nameY);
+		const texts = [...doc.querySelectorAll('text')];
+		// The page's four templates' addresses and the footer; the heart's name nowhere.
+		expect(texts.map((t) => t.textContent)).toEqual([...Array(4).fill('juleflet.dk/hjerte/classic-3x3'), 'juleflet.dk']);
+		expect(doc.querySelector('text.label')).toBeNull();
+		const address = texts[0]!;
+		expect(address.getAttribute('class')).toBe('address');
+		const addressY = Number(address.getAttribute('y'));
+		expect(addressY).toBeGreaterThan(pictureFoot);
 		// The ear base, where the cuts begin, is R = 40 mm under the template's top at y = 5.
 		expect(addressY).toBeLessThan(45);
-		// At 80 mm there is room for the full 8 pt and 6 pt.
-		expect(Number(name!.getAttribute('font-size'))).toBeCloseTo((8 * 25.4) / 72, 2);
-		expect(Number(address!.getAttribute('font-size'))).toBeCloseTo((6 * 25.4) / 72, 2);
+		// At 80 mm there is room for the full 6 pt.
+		expect(Number(address.getAttribute('font-size'))).toBeCloseTo((6 * 25.4) / 72, 2);
 		// Nothing above the template any more.
-		expect(Math.min(...[...doc.querySelectorAll('text')].map((t) => Number(t.getAttribute('y'))))).toBeGreaterThan(5);
+		expect(Math.min(...texts.map((t) => Number(t.getAttribute('y'))))).toBeGreaterThan(5);
+	});
+
+	it("marks each half of an asymmetric heart on its address line", () => {
+		const jul = loadHeart('jul');
+		const pieces = templatePieces([jul], 80, 1);
+		const p = planTemplatePages(pieces, { sheet: SHEETS.A4 });
+		const html = serializeTemplatePageSvg(p, pieces, { page: 0, lang: 'da', previewImage: true, title: 'jul' });
+		const doc = new DOMParser().parseFromString(html, 'image/svg+xml');
+		expect([...doc.querySelectorAll('text.address')].map((t) => t.textContent)).toEqual([
+			'juleflet.dk/hjerte/jul · Venstre',
+			'juleflet.dk/hjerte/jul · Højre',
+			'juleflet.dk'
+		]);
 	});
 });

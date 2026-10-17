@@ -145,8 +145,10 @@ describe('DownloadDialog', () => {
 		// Rendering: nothing where the picture goes, not even a box.
 		expect(sheet().querySelectorAll('image, use, rect.thumb')).toHaveLength(0);
 		expect(sheet().querySelectorAll('rect')).toHaveLength(1);
-		// The name is in the ear already, where it will be with the picture.
-		expect(sheet().querySelector('text.label')!.textContent).toBe(design.name);
+		// The address is in the ear already, where it will be with the picture;
+		// the heart's name is not printed.
+		expect(sheet().querySelector('text.address')!.textContent).toBe('juleflet.dk/hjerte/classic-3x3');
+		expect(sheet().querySelector('text.label')).toBeNull();
 
 		finish(new Map([[design.id, PICTURE]]));
 		await settle();

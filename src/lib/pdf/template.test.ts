@@ -1,7 +1,7 @@
 /**
  * The dialog's PDF draws the plan and the ear layout it shares with the
- * preview: each template's name and address inside its rounded end, under the
- * picture, and nothing above the template (DOWNLOAD.md, round 2). Read from
+ * preview: each template's address inside its rounded end, under the picture,
+ * no name, and nothing above the template (DOWNLOAD.md, round 2). Read from
  * the uncompressed page stream jsPDF writes: text as `x y Td (…) Tj`, a
  * picture as `w 0 0 h x y cm /I… Do`, in points from the page's bottom left.
  */
@@ -41,7 +41,7 @@ describe('generateTemplatesPDF', () => {
 	const pieces = templatePieces([classic], 80, 1);
 	const [page] = planTemplatePages(pieces, { sheet: SHEETS.A4 }).pages;
 
-	it('prints each name and address inside its template, under the picture', async () => {
+	it('prints each address inside its template, under the picture, and no name', async () => {
 		const pdf = await generateTemplatesPDF([classic], { widthMm: 80, hearts: 1, sheet: SHEETS.A4, lang: 'da' });
 		expect(pdf.getNumberOfPages()).toBe(1);
 		const { texts, images } = readPage(pdf, 297);
@@ -49,23 +49,34 @@ describe('generateTemplatesPDF', () => {
 		for (const [i, { x, y }] of page!.entries()) {
 			const piece = pieces[i]!;
 			const inside = texts.filter((t) => t.y > y && t.y < y + piece.earRadiusMm && t.x >= x && t.x <= x + piece.widthMm);
-			expect(inside.map((t) => t.text)).toEqual([classic.name, 'juleflet.dk/hjerte/classic-3x3']);
+			expect(inside.map((t) => t.text)).toEqual(['juleflet.dk/hjerte/classic-3x3']);
 			const picture = images.find((im) => im.x >= x && im.x <= x + piece.widthMm)!;
 			expect(picture.y).toBeGreaterThan(y);
 			expect(inside[0]!.y).toBeGreaterThan(picture.y + picture.size);
 		}
-		// Two templates' two lines, and the footer: nothing above a template.
-		expect(texts).toHaveLength(5);
+		// Two templates' addresses, and the footer: nothing above a template.
+		expect(texts).toHaveLength(3);
+		expect(texts.some((t) => t.text.includes(classic.name))).toBe(false);
 		expect(texts.filter((t) => t.y < 5)).toHaveLength(0);
 	});
 
-	it('moves the lines up when the picture is off', async () => {
+	it('moves the address up when the picture is off', async () => {
 		const pdf = await generateTemplatesPDF([classic], { widthMm: 80, hearts: 1, sheet: SHEETS.A4, previewImage: false });
 		const { texts, images } = readPage(pdf, 297);
 		expect(images).toHaveLength(0);
-		// The name about where the picture's middle was, 17 mm under the template's top at y = 5.
-		const name = texts.find((t) => t.text === classic.name)!;
-		expect(name.y).toBeGreaterThan(5 + 10);
-		expect(name.y).toBeLessThan(5 + 25);
+		// The address about where the picture's middle was, 17 mm under the template's top at y = 5.
+		const address = texts.find((t) => t.text === 'juleflet.dk/hjerte/classic-3x3')!;
+		expect(address.y).toBeGreaterThan(5 + 10);
+		expect(address.y).toBeLessThan(5 + 25);
+	});
+
+	it('says which half each template of an asymmetric heart is, on the address line', async () => {
+		const jul = loadHeart('jul');
+		const pdf = await generateTemplatesPDF([jul], { widthMm: 80, hearts: 1, sheet: SHEETS.A4, lang: 'da' });
+		const { texts } = readPage(pdf, 297);
+		expect(texts).toHaveLength(3);
+		expect(texts[0]!.text).toMatch(/^juleflet\.dk\/hjerte\/jul .+ Venstre$/);
+		expect(texts[1]!.text).toMatch(/^juleflet\.dk\/hjerte\/jul .+ H.+jre$/);
+		expect(texts.some((t) => t.text.includes(jul.name))).toBe(false);
 	});
 });

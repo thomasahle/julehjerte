@@ -29,7 +29,7 @@ export interface TemplatePiece {
 	/** The lobe whose template is drawn. */
 	lobe: TemplateLobe;
 	/**
-	 * Both lobes cut from this one template, so its label carries no
+	 * Both lobes cut from this one template, so its address line carries no
 	 * "Venstre"/"Højre". The right lobe's template is drawn then, as the
 	 * gallery's PDF has always done.
 	 */
@@ -39,7 +39,7 @@ export interface TemplatePiece {
 	/** The folded template: its width, and its height from the ear's top to the fold. */
 	widthMm: number;
 	heightMm: number;
-	/** The rounded end's radius: half the width. Its name and picture go inside it (./earLayout.ts). */
+	/** The rounded end's radius: half the width. Its picture and address go inside it (./earLayout.ts). */
 	earRadiusMm: number;
 	stripWidthMm: number;
 }
@@ -87,16 +87,10 @@ export function templatePieces(designs: readonly HeartDesign[], widthMm: number,
 	return pieces;
 }
 
-/** The template's name line, as the PDF prints it. */
-export function templateLabel(piece: Pick<TemplatePiece, 'design' | 'lobe' | 'shared'>, lang: Language): string {
-	if (piece.shared) return piece.design.name;
-	return `${piece.design.name} (${t(piece.lobe === 'left' ? 'lobeLeft' : 'lobeRight', lang)})`;
-}
-
 const GALLERY_IDS = new Set<string>(ALL_HEART_IDS);
 
 /**
- * The address printed under a template's name. A gallery heart has its own page,
+ * A template's address. A gallery heart has its own page,
  * which is the shortest way back to exactly this template; a heart the visitor
  * drew has none, so it gets the site.
  */
@@ -105,9 +99,22 @@ export function templateAddress(design: HeartDesign): string {
 }
 
 /**
+ * The line printed in a template's rounded end: its address, and for a heart
+ * whose two halves differ, which half this is ("juleflet.dk/hjerte/jul ·
+ * Venstre"), since both are on the sheet. A template both lobes are cut from
+ * gets the bare address.
+ */
+export function templateEarText(piece: Pick<TemplatePiece, 'design' | 'lobe' | 'shared'>, lang: Language): string {
+	const address = templateAddress(piece.design);
+	if (piece.shared) return address;
+	return `${address} · ${t(piece.lobe === 'left' ? 'lobeLeft' : 'lobeRight', lang)}`;
+}
+
+/**
  * What goes inside this template's rounded end: the picture (when it is
- * printed), the name and the address. The PDF passes jsPDF's own text
- * measure; the preview makes do with an estimate.
+ * printed) and the address line (`templateEarText`). The heart's name is not
+ * printed. The PDF passes jsPDF's own text measure; the preview makes do with
+ * an estimate.
  */
 export function templateEar(
 	piece: TemplatePiece,
@@ -118,8 +125,7 @@ export function templateEar(
 		heightMm: piece.heightMm,
 		earRadiusMm: piece.earRadiusMm,
 		picture,
-		name: templateLabel(piece, lang),
-		address: templateAddress(piece.design),
+		address: templateEarText(piece, lang),
 		measure
 	});
 }

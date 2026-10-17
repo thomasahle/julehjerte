@@ -767,13 +767,8 @@
 		stroke: #ff0000;
 	}
 
-	/* The printer page's name and address lines, in the PDF's Helvetica so a
-	   line that fits here fits there. */
-	.preview-sheet :global(.label) {
-		fill: var(--ink);
-		font-family: Helvetica, Arial, sans-serif;
-	}
-
+	/* The printer page's address lines, in the PDF's Helvetica so a line that
+	   fits here fits there. */
 	.preview-sheet :global(.address) {
 		fill: var(--muted);
 		font-family: Helvetica, Arial, sans-serif;

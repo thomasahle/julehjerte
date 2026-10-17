@@ -7,8 +7,8 @@
  * already styles: `sheet` for the paper, `cut` for outlines and cuts, and
  * `fold` for the dashed fold the PDF prints. Inside each template's rounded
  * end it puts what the PDF puts there (`templateEar`): the heart's picture —
- * the very PNG the PDF embeds, once it has been rendered — and the name and
- * address lines, so what the visitor sees is where things will be on paper.
+ * the very PNG the PDF embeds, once it has been rendered — and the address
+ * line, so what the visitor sees is where things will be on paper.
  * One user unit is one millimetre; the strokes do not scale.
  */
 import { SITE_DOMAIN } from '$lib/config';
@@ -26,7 +26,7 @@ export interface TemplatePreviewOptions {
 	/**
 	 * The pictures rendered so far, a PNG data URL per design id. A design
 	 * missing here (still rendering, or failed) gets no picture and no
-	 * placeholder: the lines stay where they will print with it.
+	 * placeholder: the address stays where it will print with it.
 	 */
 	images?: ReadonlyMap<string, string>;
 	title: string;
@@ -89,9 +89,10 @@ export function serializeTemplatePageSvg(
 				`  <use class="picture" href="#${symbol}" x="${coord(x + px)}" y="${coord(y + py)}" width="${coord(size)}" height="${coord(size)}" />`
 			);
 		}
-		for (const line of ear.lines) {
+		if (ear.address) {
+			const a = ear.address;
 			lines.push(
-				`  <text class="${line.kind === 'name' ? 'label' : 'address'}" x="${coord(x + line.x)}" y="${coord(y + line.baseline)}" font-size="${coord(line.sizePt * PT_MM)}" text-anchor="middle">${escapeXml(line.text)}</text>`
+				`  <text class="address" x="${coord(x + a.x)}" y="${coord(y + a.baseline)}" font-size="${coord(a.sizePt * PT_MM)}" text-anchor="middle">${escapeXml(a.text)}</text>`
 			);
 		}
 	}
