@@ -11,6 +11,7 @@ import type { HeartDesign } from '$lib/types/heart';
 import { SITE_DOMAIN } from '$lib/config';
 import { ALL_HEART_IDS } from '$lib/data/categories';
 import { t, type Language } from '$lib/i18n';
+import { heartPath } from '$lib/i18n/routes';
 import { heartScale } from '$lib/laser/unfold';
 import { layoutSheet, type Placement, type SheetSize } from '$lib/laser/sheet';
 import { lobesShareTemplate, SHARED_TEMPLATE_LOBE } from '$lib/utils/symmetry';
@@ -104,10 +105,12 @@ const GALLERY_IDS = new Set<string>(ALL_HEART_IDS);
 /**
  * A template's address, printed in its rounded end. A gallery heart has its own page,
  * which is the shortest way back to exactly this template; a heart the visitor
- * drew has none, so it gets the site.
+ * drew has none, so it gets the site. The page is in the PDF's language
+ * (`juleflet.dk/en/hjerte/<id>` in English), as the laser file's link is.
  */
-export function templateAddress(design: HeartDesign): string {
-	return GALLERY_IDS.has(design.id) ? `${SITE_DOMAIN}/hjerte/${design.id}` : SITE_DOMAIN;
+export function templateAddress(design: HeartDesign, lang: Language): string {
+	if (!GALLERY_IDS.has(design.id)) return SITE_DOMAIN;
+	return `${SITE_DOMAIN}${heartPath(design.id, lang).replace(/\/$/, '')}`;
 }
 
 /**
@@ -127,14 +130,14 @@ export function templateLabel(piece: Pick<TemplatePiece, 'design' | 'lobe' | 'sh
  */
 export function templateEar(
 	piece: TemplatePiece,
-	{ picture, measure }: { picture: boolean; measure?: MeasureText }
+	{ picture, measure, lang }: { picture: boolean; measure?: MeasureText; lang: Language }
 ): EarLayout {
 	return layoutEar({
 		widthMm: piece.widthMm,
 		heightMm: piece.heightMm,
 		earRadiusMm: piece.earRadiusMm,
 		picture,
-		address: templateAddress(piece.design),
+		address: templateAddress(piece.design, lang),
 		measure
 	});
 }
@@ -144,8 +147,9 @@ export function templateEar(
  * sharp enough for the largest template it is printed in. The dialog's preview
  * asks for the same rendering, so what it shows is the PDF's picture.
  */
-export function templatePicturePixels(pieces: readonly TemplatePiece[]): number {
-	const sizes = pieces.map((p) => templateEar(p, { picture: true }).picture?.size ?? 0);
+export function templatePicturePixels(pieces: readonly TemplatePiece[], lang: Language): number {
+	// The address can shrink the picture in a narrow ear, so it is the language's.
+	const sizes = pieces.map((p) => templateEar(p, { picture: true, lang }).picture?.size ?? 0);
 	return picturePixels(Math.max(0, ...sizes));
 }
 

@@ -94,7 +94,7 @@ export function serializeTemplatePageSvg(
 		lines.push(`    <g class="fold"><path d="M 0 ${th} L ${tw} ${th}" ${stroke} /></g>`);
 		lines.push('  </g>');
 
-		const ear = templateEar(piece, { picture: options.previewImage });
+		const ear = templateEar(piece, { picture: options.previewImage, lang: options.lang });
 		const symbol = symbols.get(piece.design.id);
 		if (ear.picture && symbol) {
 			const { x: px, y: py, size } = ear.picture;

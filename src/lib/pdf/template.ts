@@ -431,7 +431,7 @@ function addTemplatesPage(
     // each template carries the address that leads back to it.
     pdf.setFontSize(6);
     pdf.setTextColor(128);
-    pdf.text(templateAddress(template.design), pos.x, slotTop + HEADER_SPACE, { align: 'center' });
+    pdf.text(templateAddress(template.design, lang), pos.x, slotTop + HEADER_SPACE, { align: 'center' });
 
     // Calculate template dimensions to position preview inside the ear
     const templateTop = slotTop + HEADER_SPACE + 2;
@@ -549,7 +549,7 @@ export async function generateTemplatesPDF(designs: HeartDesign[], options: Temp
   // the dialog's preview asks for the same rendering.
   const picture = options.previewImage ?? true;
   const heartImages = picture
-    ? await prerenderHeartImages(designs, templatePicturePixels(pieces))
+    ? await prerenderHeartImages(designs, templatePicturePixels(pieces, lang))
     : new Map<string, string>();
   // jsPDF's own widths for its Helvetica, in mm, so the address is shrunk
   // only if it really would not fit the ear.
@@ -573,7 +573,7 @@ export async function generateTemplatesPDF(designs: HeartDesign[], options: Temp
       // a template cut out of the sheet still shows what it is and says where
       // it is from (a sheet often ends up far from the rest — a school, a workshop).
       const imageData = heartImages.get(piece.design.id);
-      const ear = templateEar(piece, { picture: picture && imageData !== undefined, measure });
+      const ear = templateEar(piece, { picture: picture && imageData !== undefined, measure, lang });
       if (ear.picture && imageData) {
         const { x: px, y: py, size } = ear.picture;
         pdf.addImage(imageData, 'PNG', x + px, top + py, size, size);

@@ -201,7 +201,10 @@ Everything else in this file stands, including round 1.
   allows: six 60 mm templates on A4 (nine without it), four 80 mm ones. The
   preview draws the same label (`text.label`). `NAME_PT` is gone from
   `earLayout.ts`; `EarLayout` has `address: EarLine | null` instead of
-  `lines`, and `templateEar` no longer takes `lang`. The address is 6 pt grey,
+  `lines`, and `templateEar` no longer takes `lang` (it does again since the QA
+  round of 2026-10-17: `templateAddress(design, lang)` gives an English PDF
+  `juleflet.dk/en/hjerte/<id>`, the page its laser file links to; the longest
+  id still gets the full 6 pt at 40 mm). The address is 6 pt grey,
   never larger, shrunk to the band under the picture and to the ear's width at
   its top, never under 5 pt: if the band cannot hold 5 pt the picture shrinks
   (only under about 32 mm wide; the narrow half of `amy-weave-1` at 40 mm is

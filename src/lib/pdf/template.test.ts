@@ -76,6 +76,13 @@ describe('generateTemplatesPDF', () => {
 		expect(address.y).toBeLessThan(14 + 25);
 	});
 
+	it('prints the English page in an English PDF, as the English laser file links to', async () => {
+		const pdf = await generateTemplatesPDF([classic], { widthMm: 80, hearts: 1, sheet: SHEETS.A4, lang: 'en' });
+		const { texts } = readPage(pdf, 297);
+		expect(texts.filter((t) => t.text === 'juleflet.dk/en/hjerte/classic-3x3')).toHaveLength(2);
+		expect(texts.some((t) => t.text === 'juleflet.dk/hjerte/classic-3x3')).toBe(false);
+	});
+
 	it('names each half of an asymmetric heart above it, and prints the bare address in both', async () => {
 		const jul = loadHeart('jul');
 		const pdf = await generateTemplatesPDF([jul], { widthMm: 80, hearts: 1, sheet: SHEETS.A4, lang: 'da' });

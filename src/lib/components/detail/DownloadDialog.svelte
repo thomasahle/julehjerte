@@ -180,7 +180,7 @@
 	// where it goes. It takes a moment (an SVG drawn into a canvas), and until
 	// it is there the preview leaves the place empty. A picture of this design
 	// at another width is kept meanwhile: only its sharpness differs.
-	const picturePixels = $derived(printPieces.length ? templatePicturePixels(printPieces) : 0);
+	const picturePixels = $derived(printPieces.length ? templatePicturePixels(printPieces, lang) : 0);
 	let pictures = $state<{ designId: string; pixels: number; images: Map<string, string> } | null>(null);
 	/** The set's key: the hearts' ids, in order. */
 	const designsKey = $derived(designs.map((d) => d.id).join(' '));

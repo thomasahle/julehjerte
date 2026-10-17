@@ -126,7 +126,12 @@ describe('layoutEar', () => {
 		for (const id of ALL_HEART_IDS) {
 			for (const piece of templatePair(loadHeart(id), MIN_WIDTH_MM)) {
 				for (const picture of [true, false]) {
-					expectClean(templateEar(piece, { picture, measure }), piece.earRadiusMm, measure);
+					// The English address is three characters longer: juleflet.dk/en/hjerte/<id>.
+					for (const lang of ['da', 'en'] as const) {
+						const layout = templateEar(piece, { picture, measure, lang });
+						expect(layout.address!.text).toBe(`juleflet.dk${lang === 'en' ? '/en' : ''}/hjerte/${id}`);
+						expectClean(layout, piece.earRadiusMm, measure);
+					}
 				}
 			}
 		}
