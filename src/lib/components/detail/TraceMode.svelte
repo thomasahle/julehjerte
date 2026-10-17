@@ -627,7 +627,7 @@
 			</div>
 		{:else}
 			<div class="chrome" bind:this={chromeEl}>
-				<div class="toolbar">
+				<div class="toolbar" class:two-templates={twoTemplates && mode !== 'calibrate'}>
 					<button class="btn btn-ghost btn-sm btn-icon close" type="button" aria-label={t('close', lang)} onclick={close}>
 						<CloseIcon size={18} />
 					</button>
@@ -842,17 +842,26 @@
 		display: none;
 	}
 
-	/* Below 600 the toolbar wraps to two rows: the buttons, then the slider
-	   (with the Venstre / Højre switch in front of it when there is one). The
-	   buttons tighten and "Tilpas" keeps only its icon so the first row holds
-	   all four on a 375px phone. */
+	/* Below 600 the toolbar wraps: the buttons, then the Venstre / Højre switch
+	   when there is one, then the slider across the full width, so its 30–200 mm
+	   are not squeezed into a few px beside the switch. The buttons tighten and
+	   "Tilpas" keeps only its icon so the first row holds all four on a 375px
+	   phone; every target is 44px, the size of a fingertip. */
 	@media (max-width: 599px) {
 		.toolbar {
 			gap: 8px;
 		}
 
+		.toolbar .btn-sm {
+			height: 44px;
+		}
+
 		.toolbar .btn-sm:not(.btn-icon) {
 			padding: 0 12px;
+		}
+
+		.segmented button {
+			height: 41px;
 		}
 
 		.toolbar .fit {
@@ -875,19 +884,36 @@
 			order: 10;
 		}
 
-		.slider {
+		/* Beside the switch when there is one, else a short line of its own. */
+		.calibrated {
 			order: 11;
-			flex: 1 1 180px;
+			flex: 1 1 auto;
+		}
+
+		.slider {
+			order: 12;
+			flex: 1 1 100%;
 		}
 
 		.slider input {
-			min-width: 60px;
+			height: 44px;
+			margin: 0;
 		}
 
-		/* No room beside the buttons or the slider: a short line of its own. */
-		.calibrated {
-			order: 12;
-			flex-basis: 100%;
+		/* With the switch, the readout moves up beside it and the slider has
+		   the last row to itself. */
+		.two-templates .slider {
+			display: contents;
+		}
+
+		.two-templates .readout {
+			order: 11;
+			margin-left: auto;
+		}
+
+		.two-templates .slider input {
+			order: 13;
+			flex: 1 1 100%;
 		}
 	}
 

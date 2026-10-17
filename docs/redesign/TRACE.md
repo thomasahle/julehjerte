@@ -64,8 +64,9 @@ at the same size.
   respected): the lobe control when needed, a size slider, the readout, **Tilpas**
   (`traceFit`, FitIcon) that fits the template into 90% of the viewport and
   centres it, **Kalibrér** (`traceCalibrate`), and the primary **Lås skærmen**
-  (`traceLock`). Below 600px the toolbar wraps to two rows; the slider takes
-  the full width.
+  (`traceLock`). Below 600px the toolbar wraps: the buttons, then the lobe
+  control (with the readout beside it) when there is one, then the slider
+  across the full width on a row of its own; every target is 44px.
 - The slider sets the template's *width* in millimetres, 30–200 mm, step 1,
   with the readout `traceWidthMm` ("Bredde {mm} mm" / "Width {mm} mm").
   Width in mm = `templateWidth * s / pxPerMm`. Default `pxPerMm = 96 / 25.4`
