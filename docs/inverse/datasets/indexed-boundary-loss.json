@@ -903,5 +903,30 @@
       "That the exact source oval can be recovered under the current cutting constraints.",
       "That the repeated clearance repair alone caused the final shape error."
     ]
+  },
+  "completeInverseSuite": {
+    "runtime": "2ab29c1",
+    "status": "failed",
+    "tests": 1061,
+    "pass": 1060,
+    "fail": 1,
+    "cancelled": 0,
+    "skipped": 0,
+    "seconds": 1370.2080316249999,
+    "sourceManifest": "tmp/heart-learning/clearance-continuation-2026-10-18/loss-row-index/full/source.json",
+    "sourceManifestSha256": "6a80a40e773ba9502d703822e1bef1b57d10737b6966c7b8ef687b465377812b",
+    "sourceFiles": 1042,
+    "sourceHashesVerifiedAfterRun": true,
+    "verificationEvidence": "tmp/heart-learning/clearance-continuation-2026-10-18/loss-row-index/scoped-comparison/results.json",
+    "previousNineFailuresPassed": true,
+    "remainingFailure": {
+      "test": "scripts/inverse/supported-count-bound.test.mjs",
+      "name": "a finer-verified supported grid stops before other counts that cannot displace it",
+      "exception": "TypeError: Cannot read properties of undefined (reading 'requestedResolution')",
+      "stage": "The three final report geometry/paper/template assertions passed; execution stopped at solver.paperVerification before cut-count, pruning and independent export assertions. The failed full run did not capture its output geometry.",
+      "diagnosis": "Unresolved. Independent fresh capture and elapsed-clock interventions at1.5x and2x all pass the unchanged test. Do not infer that missing metadata was harmless or that the issue was fixed.",
+      "followup": "The test now checks independent output quality before provenance and logs the complete result on any assertion failure; all existing assertions remain."
+    },
+    "browserComparisonStarted": false
   }
 }

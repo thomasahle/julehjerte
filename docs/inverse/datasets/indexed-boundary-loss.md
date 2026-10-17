@@ -54,9 +54,11 @@ their MILP recovery cannot simply be credited to a faster continuous loss.
 Seven scalar/native checks, 21 weighted checks, the nine captured replays,
 type checking, lint, the build, and 874 application tests pass (one existing
 skip). All 1,041 pinned sources match after standard QA. The standalone
-benchmark was then added, executed and linted. The complete inverse suite and
-browser benchmarks still require a new run. The preview remains on its prior
-validated snapshot.
+benchmark was then added, executed and linted. The subsequent complete inverse
+suite finished with **1,060 passed and one failed** in 1,370 seconds, with all
+1,042 pinned sources unchanged. All nine earlier failures passed. Browser
+comparisons have not started; the preview remains on its prior validated
+snapshot.
 
 ## Visual inspection: a passing small-feature test is still imperfect
 
@@ -85,3 +87,17 @@ controls are only a diagnostic starting point here.
 This identifies unnecessary remote motion and repeated repairs during the
 detail pass. It does not yet prove that constraining that motion will recover
 the oval, or that the exact oval satisfies every cutting constraint.
+
+## Remaining full-suite failure
+
+The Hunodan `hjcur-02` supported-count test passed its template, geometry and
+paper report checks, then tried to read an absent `solver.paperVerification`.
+That exception occurred before the independent export assertions. The full
+run did not capture the returned geometry, so its image quality is unknown.
+
+A fresh captured replay and separate 1.5× and 2× elapsed-clock interventions
+all pass the unchanged test, including the finer verification and strict
+0.55% exported-image limit. They do not reproduce or explain the missing
+record. The test now measures the output before checking search provenance
+and preserves its complete report and cuts on failure. No existing assertion
+or acceptance threshold has been removed. This remains unresolved.
