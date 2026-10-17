@@ -260,4 +260,21 @@ describe('GalleryBar', () => {
 		ui.download()!.click();
 		expect(ui.handlers.onDownload).toHaveBeenCalledTimes(1);
 	});
+
+	it('puts the button before the chip row, outside it, below 900px', async () => {
+		vi.stubGlobal('matchMedia', (query: string) => ({
+			matches: query === '(max-width: 899px)',
+			media: query,
+			addEventListener() {},
+			removeEventListener() {}
+		}));
+		const ui = await render({ selectedCount: 1 });
+		const get = ui.download()!;
+		// Not in the scrolling row, so ticking neither widens the row nor
+		// moves its scrollLeft, and the button never covers a chip.
+		expect(get.closest('nav')).toBeNull();
+		expect(get.nextElementSibling?.tagName).toBe('NAV');
+		expect(ui.chips()[0].getAttribute('href')).toBe('#klassiske');
+		expect(ui.target.querySelectorAll('button')).toHaveLength(1);
+	});
 });

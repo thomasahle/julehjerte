@@ -7,7 +7,8 @@
   by then); then the right-aligned chip row: only while hearts are ticked, one
   red "Hent skabeloner (n)" button (docs/redesign/SELECTION.md), which opens
   the download dialog for them, and one chip per category, with scroll-spy
-  marking the one being read. The button is the row's first item and behaves
+  marking the one being read. Below 900, where the chip row scrolls, the
+  button sits before the row instead, outside it. Otherwise it is the row's first item and behaves
   as a chip — its own lift on the hill, pushed down with the chips — and the
   row is right-aligned, so it comes and goes without moving the chips. Ticking is
   the exception (docs/redesign/FRONT-SIMPLIFY.md — a card click opens the
@@ -30,6 +31,7 @@
 	import { categoryTitle, MY_HEARTS_CATEGORY_ID } from '$lib/data/categories';
 	import { ANCHOR_GAP, currentSection, isAtPageBottom } from '$lib/front/scrollSpy';
 	import { DownloadIcon } from '$lib/components/icons';
+	import { NARROW_QUERY } from '$lib/breakpoints';
 
 	interface Props {
 		lang: Language;
@@ -110,6 +112,26 @@
 		});
 		observer.observe(sentinel);
 		return () => observer.disconnect();
+	});
+
+	// Below 900 the chip row scrolls sideways (a phone, a narrow tablet), and
+	// the download button sits outside it, before it, so the chips scroll
+	// beside it. Inside the row, as on the desktop layout's hill, the row grew
+	// by the button's width when a heart was ticked: scroll anchoring then
+	// moved the row's scrollLeft by as much, and the sticky button covered
+	// the first chips.
+	let narrow = $state(false);
+
+	onMount(() => {
+		// jsdom has no matchMedia.
+		if (typeof window.matchMedia !== 'function') return;
+		const query = window.matchMedia(NARROW_QUERY);
+		const update = () => {
+			narrow = query.matches;
+		};
+		update();
+		query.addEventListener('change', update);
+		return () => query.removeEventListener('change', update);
 	});
 
 	let barEl = $state.raw<HTMLElement | null>(null);
@@ -285,18 +307,26 @@
 	</a>
 
 
+	{#snippet getButton()}
+		<button type="button" class="get" onclick={onDownload}>
+			<DownloadIcon size={16} />
+			{t('printSelected', lang)}
+			<span class="get-count">{selectedCount}</span>
+		</button>
+	{/snippet}
+
+	{#if hasSelection && narrow}
+		{@render getButton()}
+	{/if}
+
 	<nav
 		class="chips"
 		aria-label={t('galleryCategories', lang)}
 		bind:this={chipRow}
 		data-hill-chips
 	>
-		{#if hasSelection}
-			<button type="button" class="get" onclick={onDownload}>
-				<DownloadIcon size={16} />
-				{t('printSelected', lang)}
-				<span class="get-count">{selectedCount}</span>
-			</button>
+		{#if hasSelection && !narrow}
+			{@render getButton()}
 		{/if}
 		{#each sections as section, i (section.id)}
 			<a
@@ -480,19 +510,23 @@
 			max-width: 200px;
 			margin-right: 0;
 		}
+
+		/* Should the row ever scroll here, the button stays in view at its
+		   start and the chips pass under it. */
+		.get {
+			position: sticky;
+			left: 0;
+			z-index: 1;
+		}
 	}
 
-	/* "Hent skabeloner (n)", the chip row's first item: an opaque red pill the
+	/* "Hent skabeloner (n)", the chip row's first item on the desktop layout,
+	   and the item before the chip row below 900: an opaque red pill the
 	   chips' size (13px, their 6px vertical padding), 32px tall. Its -2px
 	   margins keep its box inside the chips' 29.4px line, so it never changes
 	   the bar's height. Opaque, as ribbons may run behind it at rest. */
 	.get {
 		flex: none;
-		/* Where the row scrolls (a phone), the button stays in view at its
-		   start and the chips pass under it. */
-		position: sticky;
-		left: 0;
-		z-index: 1;
 		display: inline-flex;
 		align-items: center;
 		gap: 6px;
