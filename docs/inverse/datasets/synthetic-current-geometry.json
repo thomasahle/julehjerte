@@ -7301,5 +7301,151 @@
     "Paper checks were repeated on original cuts; transformed representations repeat geometry checks only.",
     "No photographs or raster labels were regenerated and no model was trained.",
     "Recipe/topology overlap and physical assembly remain separate questions."
-  ]
+  ],
+  "junctionLabelFollowup": {
+    "status": "audited-no-label-or-allocation-changes",
+    "scope": "Current saved procedural witnesses versus unallocated authored import representations. A valid cutting witness need not encode every visible interior crossing as endpoints.",
+    "procedural": {
+      "existingGeometries": 192,
+      "savedViewLabelsChecked": 768,
+      "nominalFourSectorCrossings": 883,
+      "missingNominalFourSectorCrossings": 0,
+      "channelFrameDesigns": 64,
+      "missingVisibleInteriorLineIntersections": 0,
+      "scopeQualification": "Checks generator-defined lattice events and exact straight nonlattice segments; not exhaustive arbitrary cubic topology proof."
+    },
+    "authoredControl": {
+      "id": "classic-3x3",
+      "graphFile": "tmp/heart-learning/library-geometry-v1/results/classic-3x3/graph.json",
+      "graphSha256": "fc86fa7fcdbc643c571f68228da752d921151d98e592fbdef8828487c4be998b",
+      "nodes": 8,
+      "edges": 4,
+      "observedNodeLabels": [],
+      "expectedCrossings": [
+        [
+          33.333333333333336,
+          33.333333333333336
+        ],
+        [
+          33.333333333333336,
+          66.66666666666667
+        ],
+        [
+          66.66666666666667,
+          33.333333333333336
+        ],
+        [
+          66.66666666666667,
+          66.66666666666667
+        ]
+      ]
+    },
+    "independentAnalyticRegression": [
+      {
+        "id": "unsplit-cross",
+        "nodes": [],
+        "expected": [
+          [
+            50,
+            50
+          ]
+        ]
+      },
+      {
+        "id": "split-cross",
+        "nodes": [
+          [
+            50.0,
+            50.0
+          ]
+        ],
+        "expected": [
+          [
+            50,
+            50
+          ]
+        ]
+      },
+      {
+        "id": "unsplit-tee",
+        "nodes": [],
+        "expected": [
+          [
+            50,
+            50
+          ]
+        ]
+      },
+      {
+        "id": "split-tee",
+        "nodes": [
+          [
+            50.0,
+            50.0
+          ]
+        ],
+        "expected": [
+          [
+            50,
+            50
+          ]
+        ]
+      }
+    ],
+    "affected": "Corner/branch labels and their metrics if arbitrary unsplit authored curves are imported unchanged. Body/material supervision and boundary pixels are not affected by this missing-node finding.",
+    "correction": "Prepare a separately validated visible-arrangement/junction sidecar once per imported design. Preserve cutting witnesses, ownership and shared-path indices unchanged. No correction or training allocation has been applied.",
+    "allocation": "All38 gallery designs already overlap reference evaluations; zero new training families assigned. Existing Hunodan references remain excluded. Proposed5-design/10-view work is diagnostic only and has not rendered or trained.",
+    "rootVerification": {
+      "sourceAndAuditArtifacts": 37,
+      "graphs": 192,
+      "savedViewLabels": 768
+    },
+    "artifacts": {
+      "tmp/heart-learning/authored-synthetic-audit-v1/inventory.json": "d657b7811e9b0ffd9b6ae383971cbcf658c52553b3553cd38c8e055b0835d9f0",
+      "tmp/heart-learning/authored-synthetic-audit-v1/README.md": "bd210fd0bbb60f79a0acc554f76588c4b80c38a17f0ea5af0d1c5fdde895ab55",
+      "tmp/heart-learning/authored-synthetic-audit-v1/node-contract-audit.json": "6c3d64398f8b13fc090c9f9c77e19f5e49d851e240cda8e53d0e020b39c2f9ad",
+      "tmp/heart-learning/authored-synthetic-audit-v1/saved-view-metadata.json": "9b5cb08f03c45a731d678bcab9d90a537abe32df18e5406be4d32da3974461ed",
+      "tmp/heart-learning/junction-label-regression-v1/reproduce.py": "68c6afa66884b1dba674f27c0aa0aa48f42654738df4d7a0f43b585b64ca616f",
+      "tmp/heart-learning/junction-label-regression-v1/report.json": "e68cf1672c91f622a6dc5fa0bff08e47038e8d79fa4dec856268b021de815b6e"
+    },
+    "sourceHashes": {
+      "docs/inverse/datasets/repository-template-candidates.json": "2337107231142232368d04762e9dd48c31157904d9f5e6bf4151f750ca238a14",
+      "docs/inverse/datasets/repository-template-candidates.md": "8f1764195e7979be4c00612903111cb1221907893dad1eb90afa695601ece821",
+      "scripts/inverse/datasets/synthetic-geometry.mjs": "57832799ec34075de10da364c9d8dcdba65ad72ef5f249dab49a9550fcb89811",
+      "scripts/inverse/datasets/synthetic-generate.mjs": "d693eedfbcef0506b9c81661b92d9afd09293d0e2d660f5ef342d012a2437807",
+      "scripts/inverse/datasets/synthetic-photo.mjs": "28d1027ccb3d219faeb5cb10d64ebbde7b74810915322f5b6c15e20872a4bb30",
+      "scripts/inverse/datasets/synthetic-verify.mjs": "3726c8c6b0354d0f32b6b425f12788bc9323e7023b3000a384fbead72c5baf99",
+      "scripts/inverse/datasets/foreground-labels.mjs": "e07589ccb2db20420a6457de211f80b6a8ea42162669c68564187b55f2f7c049",
+      "scripts/inverse/learning/data.py": "c4c1c890daff9fa5ccc618d55150b2da7f92e359c50cd0d9d1e689b5283fc54b",
+      "scripts/inverse/learning/model.py": "d23659db131eb826ce713d67bdaa870f032c9ef295715b210d83d02abedd382b",
+      "scripts/inverse/learning/foreground.py": "dfef778c09e376c9be851ba69e4e9831c4a921cc05aeaae7ef86b8e440ff1dc4",
+      "scripts/inverse/learning/material_pilot.py": "d365d74cb838756b2ff730b8b3003da8fd68a768a9e3e05a0c1264f2e37f36a9",
+      "scripts/inverse/learning/prepare.mjs": "6f29378ddb1b2151885c8691c31c21a56365068cf49f9aa1002c13f7feede480",
+      "static/inverse/core/direct/curves.js": "0bb27776f13d6a3693c84a022ae03046dab82d7be0eee6abee43348266a2ee1c",
+      "static/inverse/core/direct/curve-topology.js": "cb71e39c105e590903a4028745f4166138a72c39c54cd30486f1378572c39986",
+      "static/inverse/core/geometry.js": "3dd9575ae9e651b38bc827d040c1784addd4c16a39eaa4e8cab35b9180672b89",
+      "static/inverse/core/graph.js": "fc585dbe542370f91faa6ae9f2f28e677d284fcc7922931dd487751c48b12b01",
+      "scripts/inverse/experiments/graph-oracle.mjs": "babd379fe3f24f2078c48fb09110ca66f8a912ae914f4c04b753372371929e33",
+      "src/lib/data/hearts.json": "3db7c7e5f9cccd23bf48f7460e6c492f950dfe7d5d549caa75a06c6ebab5bc1f",
+      "src/lib/data/heart-meta.json": "cbe2571463cd02bd2ade30a2d4891bf2d15efdc805cef0de386c134e89f2912a",
+      "src/lib/data/heart-designs.json": "5f6efb0d7af8387d44134d41f7549c50b41d84679f1b83794592dc5ca559a9ab",
+      "docs/inverse/REFERENCE-QUALITY.md": "325e164af436f6d4385c8baa362a3b00662943fb1be9a85c1bade9fbe7bea2f9",
+      "docs/inverse/GRAPH-ORACLE-VALIDATION.json": "ce70d09a34f582fdff2b0429a2701cd6c8508abc963d05ce3e29c6092826a1b0",
+      "scripts/inverse/fixtures/hunodan/scope.json": "41a35ca9b7055bfcfa0e61d655e7eff1cb79e49d3f5a91b75c610a0fc908b846",
+      "scripts/inverse/fixtures/hunodan/references.json": "fb7211158a4145b4cadeba6dbdaf3eb1ac4a161d0e91952ac63e7afe69feab83",
+      "scripts/inverse/fixtures/hunodan/sources.json": "c447b3f1ef18bbc2786523153457cc9bc88b197ab182bd59e5a2beba7b9c76f6",
+      "scripts/inverse/collage-rois.json": "c04515d26e9fd22089385683a9df20b8dc605cd309b03fc4cffa8ce209773ab9",
+      "scripts/inverse/fixtures/web-photos/manifest.json": "b66dbc577f8f1a7bfc583c5c7a43b3de1299001772427fc7d59667de3de8d156",
+      "tmp/heart-learning/material-corrected-scenes-v1/candidate-plan.json": "2596891b11b2139740933e3cbc4af37698ade1dfa9c6caf636ae5593bc7fa87e",
+      "docs/inverse/datasets/real-manifest.json": "0f3086fca422238235cbd8d9a46d154f42d1f00b8bd1e336892b3f69331a52d1",
+      "tmp/heart-training-synthetic/batch-v1/manifest.json": "6649301431add7c3a7b7ba2ccb374723bc165fd3a64c9adede0ad11b3a54133d",
+      "tmp/heart-training-synthetic/corner-lattice-v1/manifest.json": "180ecc34ae4294b3e9a70d90009cd2610f918394c0fa531fa64b3aaad0b27732",
+      "tmp/heart-training-synthetic/radial-motif-v1/manifest.json": "78021c200ffc901613219c59851db0d63983546c0ef07250e2ebacbbb0ffe725"
+    },
+    "limitations": [
+      "Nominal lattice crossing audit verifies generator-defined crossings and saved graph endpoint incidence; 1e-4 mm matching accommodates observable_nodes float32 output. It is not a general cubic intersection proof.",
+      "No projected-view heatmaps, renderings, models or fits were generated. Perspective/coverage can legitimately exclude points from individual views.",
+      "All family/source/split metadata and dataset files are unchanged."
+    ]
+  }
 }

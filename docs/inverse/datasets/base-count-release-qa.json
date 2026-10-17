@@ -315,7 +315,7 @@
     "firstResume": "Removed disposable .svelte-kit/output during emergency recovery. Vite preview still needed its generated server modules; browser attempts timed out before solver startup. Owned QA/controller/browser tree stopped, records retained.",
     "secondResume": "Generated output rebuilt successfully. Preview observation window expired before startup; the preview process subsequently became ready and was not restarted.",
     "currentResume": "All22 browser workflows completed and passed functional checks;17 exceeded ten seconds. Parallel application tests then reported873 passes, one skip and one timeout. A new controller runs application tests with one worker, then inverse tests serially.",
-    "calibrationQueue": "Both earlier queues stopped on failed dependencies. No saved-field recalibration, target preparation, fresh material fits, or saved-checker editable audit has run."
+    "calibrationQueue": "Queue v3 waits on the currently live serial-test controller, then will prepare fixed-field calibration/targets and audit saved checker exports. No new fitting is queued. Prior queues and failures remain preserved."
   },
   "qualifications": [
     "Initial completed20 cases did not enter the new early-feature fallback. Timing increases alone do not attribute a regression to that branch.",
@@ -666,7 +666,22 @@
         "previousPaintingEditableError": 0.01328125,
         "newEarlyFeatureBranchEntered": false
       }
-    ]
+    ],
+    "visualReview": {
+      "method": "Inspected saved before/after browser result screenshots for all four changed native geometries.",
+      "cases": [
+        "hunodan-hjfig-05",
+        "hunodan-hjcur-02",
+        "hunodan-hjstr-02",
+        "hunodan-hjstr-03"
+      ],
+      "observations": [
+        "Anchor silhouette and border checks remain recognizable; its displayed error rises from1.0% to1.1%.",
+        "Curved checker retains its silhouette and larger border cells.",
+        "Both straight-grid cases retain their grid motifs; thin border protrusions and irregular corners remain visible, including in the previous outputs."
+      ],
+      "qualification": "No obvious missing main motif observed at screenshot scale. This does not override measured error increases, establish original cutting paths, or prove absence of small seams."
+    }
   },
   "parallelApplicationTest": {
     "status": "failed",
@@ -679,7 +694,7 @@
     "logSha256": "03a8820d0fe4521de544dbf7ce7877d1708ae828b42446205990ef716608d9f5"
   },
   "serialTestFollowup": {
-    "status": "running",
+    "status": "application-passed-inverse-running",
     "isolatedAnchor": {
       "passed": true,
       "testSeconds": 2.85,
@@ -693,6 +708,13 @@
       "node_modules/.bin/vitest run --maxWorkers=1",
       "npm run test:inverse"
     ],
-    "qualification": "Same source and timeouts. A serial pass would not erase the parallel failure or browser latency misses."
+    "qualification": "Same source and timeouts. A serial pass would not erase the parallel failure or browser latency misses.",
+    "application": {
+      "passed": 874,
+      "skipped": 1,
+      "seconds": 164.111499417,
+      "testLog": "tmp/heart-learning/base-count-release-v1/qa-serial-tests/application.log",
+      "testLogSha256": "12ba56a5a573071456c938f8d10e24a39867692c4783ef4c45b88254c8f86098"
+    }
   }
 }

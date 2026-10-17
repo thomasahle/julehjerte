@@ -8,7 +8,7 @@ has been added to the website.
 
 A [rough-selection bounds correction](selection-bounds-reconstruction.json) now recovers the full red/green star instead of a narrow interior strip. In nine development workflows on seven photos, the star passes native and editable checks (2.27% editable disagreement); a newly located dense checker still fails image quality (5.13%). Four other selected photos remain unresolved, and the cross still has a small false central diamond. All 76 focused crop tests and eight browser workflows passed. [Full QA](selection-bounds-release-qa.json) passes check/lint/build and 874 application tests (one skip), but one of 1,020 inverse tests fails: under an accelerated clock, a fixed-crop fitter skips its feature initializer. All eleven captured follow-up tests pass. A controlled delay reproduces the skipped initializer; merely lowering its cutoff helps at 4.8 seconds remaining but worsens the 4.2-second case, so that change is rejected. A cheaper same-count sampling proposal improves candidate passes from 0/8 to 4/8 across four fixed crop variants and two tight budgets, leaving the other errors unchanged. It is now integrated only where the ordinary initializer was skipped, after 25 focused tests pass (including two deterministic scheduling regressions); full follow-up QA now passes 874 application tests (one skip), 1,022 inverse tests, check/lint/build and all 30 browser workflows. Some ray detail and the original/horizontal variants remain unresolved under that pressure. These are separate development cases, not changes to the existing 31-photo or 55-mask benchmark.
 
-The [follow-up browser checks](late-feature-browser-qa.json) pass all 30 workflows. All 22 regular Hunodan cases remain below ten seconds (5.99 s median, 8.85 s maximum), with byte-identical masks, cut geometry and editable SVGs, and unchanged image error. The complete 1,022-test inverse suite and 874 application tests pass (one application skip), as do check/lint/build. All 1,041 pinned source files verify unchanged.
+The [previous-runtime browser checks](late-feature-browser-qa.json) passed all 30 workflows. Its 22 regular Hunodan cases stayed below ten seconds (5.99 s median, 8.85 s maximum), with byte-identical masks, cut geometry and editable SVGs, and unchanged image error. The complete 1,022-test inverse suite and 874 application tests passed (one application skip), as did check/lint/build. All 1,041 pinned source files verified unchanged. The newer runtime's slower follow-up is recorded below; these historical timings do not establish its current speed.
 
 Three [offline follow-up diagnostics](selected-photo-initialization-diagnostics.json)
 separate the remaining failures. Under the controlled tight budgets, trying an
@@ -23,12 +23,18 @@ The preceding count experiment had a driver error and supplied no expanded-count
 quality result. Finally, smoothing at four scales with three palette models
 recovers **0/12** pale printed-checker crops. The unsmoothed mask loses much of
 the pale sheet, while smoothed candidates still fail outline support. The same-count rescue is now integrated after six deterministic scheduling
-regressions and 23 existing photographic/budget tests pass; its [full release
-QA](base-count-release-qa.json) remains pending. The first browser batch stopped
-on a disk-full artifact write after twenty checked Hunodan workflows; two of
-those exceeded ten seconds. Exact duplicate historical previews were
-deduplicated without changing their bytes, and the rebuilt preview is being
-rechecked. Failed attempts and the timing misses remain in the release record. Dense count expansion and smoothing remain offline.
+regressions and 23 existing photographic/budget tests pass. Its [full release
+QA](base-count-release-qa.json) now completes all 22 Hunodan browser workflows
+with passing functional checks, but only **5/22 meet ten seconds** (13.23 s
+median, 20.73 s maximum). Eighteen native geometries remain identical; four
+change and have slightly higher editable painting error, at most 0.09625
+percentage points. All four before/after screenshots were reviewed; the main
+motifs remain, along with small boundary defects. The machine was contended,
+but no latency correction or causal claim is applied. The initial disk-full
+attempt, preview recovery and failed parallel application run remain recorded.
+All 874 application tests pass with one worker and unchanged timeouts (one
+skip); the 1,027 inverse tests are running. Dense count expansion and smoothing
+remain offline.
 
 A [57-input interior-transition diagnostic](interior-count-evidence-results.json)
 finds more than eight transitions in 97% and 88% of the dense checker's
@@ -100,6 +106,13 @@ The inventory, with material annotations updated on 2026-10-16, contains:
 | Sparse four-sector neighbourhood observations | 25 on two sources, plus 8 ordinary-edge controls | Reviewed locations and uncertainty boxes; exact physical joining is unknown. Development observations, not training labels. |
 | Real visible-body annotations | 24 | Includes newly admitted printed-checker/candle/fish instances and one reserved gold-angel instance. Uncertain pixels are excluded; the completed corrected-family study retains its original nineteen instances. |
 | Real partial paper-material annotations | 22 heart instances | Nineteen enter the completed corrected-family study; three new instances remain unassigned and unused in training. Separate body and material uncertainty; all are reviewed development examples. |
+
+A [junction-label audit](synthetic-current-geometry.md#junction-labels-for-future-authored-imports)
+verifies all 883 expected procedural crossings but finds that arbitrary authored
+imports can contain visible crossings without corresponding curve endpoints.
+The current endpoint-only label helper misses those crossings. Separate
+junction extraction is being tested before admitting any such imports;
+existing body/material labels and training allocations remain unchanged.
 
 Two additional [reviewed annotation drafts](real-photo-instance-draft-review.json)
 cover a red/white Danish cross and a red/green six-point star, with six separate

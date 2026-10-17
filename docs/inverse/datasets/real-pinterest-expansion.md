@@ -1,5 +1,12 @@
 # Public Pinterest photograph expansion
 
+This page preserves the expansion snapshot. Later pixel review and repost
+corrections leave **564 photograph-containing files in 451 reviewed groups**
+across the combined inventory, including **190 Pinterest photo-containing
+files**. The 1,034 total assets and 470 successful pin downloads are unchanged.
+Use [the current asset audit](real-validation.json) for current counts; the
+tables below describe the earlier acquisition result.
+
 This collection extends the initial 42 downloaded public pins using the four pins supplied by the user, keyword search, and a bounded traversal of links and explicit Pin records exposed in public pin pages. It does not traverse boards or call private APIs. The machine-readable counts are in [the expansion audit](real-pinterest-expansion.json), and [the merged manifest](real-manifest.json) retains the full provenance.
 
 The follow-up downloaded **428 of 442 visited pins**, yielding 365 distinct file hashes. All 14 failures returned public HTML without an advertised main image; there were no new HTTP rate limits. Including the initial run, **470 of 487 public pins downloaded**, and **198 source files contain assembled-paper-heart photographs**, representing 177 reviewed near-duplicate photo groups within the Pinterest subset.

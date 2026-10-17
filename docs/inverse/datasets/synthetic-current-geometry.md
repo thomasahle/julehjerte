@@ -47,3 +47,31 @@ establish physical assembly, photographic realism or independent motif families.
 Recipe splits still share some topologies, and the radial group remains
 unassigned. The comparison using `finalGeometry: false` is a diagnostic switch
 in the current checker, not a replay of the historical generator runtime.
+
+## Junction labels for future authored imports
+
+A separate source/data audit checks the label representation, not cutting
+validity. All **883 generator-defined four-sector crossings** in the existing
+192 procedural designs are endpoint-noded and emitted by the current label
+helper. All 768 saved view-label records were checked. The 64 channel/frame
+designs have no missing interior intersections between visible straight
+segments. This is not an exhaustive proof for arbitrary cubic arrangements.
+
+An unallocated authored control exposes a real import hazard: `classic-3x3`
+has four visible interior crossings but zero current corner/branch labels,
+because its curves do not end at those crossings. Analytic X and T fixtures
+independently reproduce the omission; subdividing the identical curves at
+their intersection restores the label. Body/material labels and the boundary
+pixels drawn from those curves are unaffected by this particular omission.
+
+Future imports need a separate visible-arrangement/junction record prepared
+once per design. Keep original cutting paths, ownership and shared-curve
+indices unchanged. The existing floating-point `nodeCurves()` helper is a
+candidate for this work, but contacts, cancellation and unresolved overlaps
+need explicit checks. No labels have been rewritten or models retrained.
+
+The evidence record's `junctionLabelFollowup` pins the audit, analytic
+regression and source files. Independent root verification checked all 192
+graph hashes, 768 label hashes and 37 source/audit artifacts. All 38 gallery
+designs already overlap reference evaluations; the proposed five-design
+admission experiment is diagnostic only and allocates zero training families.
