@@ -57,5 +57,84 @@
       "originalAttempt": "failed-test-state.json"
     },
     "retryLogSha256": "e38489486331baa6a18c728fb31882dc80086c80e79e5114306a3dc972de7524"
+  },
+  "userRequestedCleanup20261017": {
+    "status": "complete",
+    "scope": "Only older generated visualizations under the assigned worktree tmp directory; no Documents/Codex files changed.",
+    "method": "Gzip each unique source with level1, independently decompress and hash it, recheck source identity, then remove the uncompressed path. Existing hard-linked aliases get verified immutable archive aliases. Every original byte remains recoverable.",
+    "summary": {
+      "status": "complete",
+      "pid": 27074,
+      "files": 27139,
+      "uniqueFiles": 19613,
+      "inputAllocatedBytes": 31637606400,
+      "archivedFiles": 27139,
+      "sourceBytes": 31596030727,
+      "archiveBytes": 4033020288,
+      "protectedOrExternalHardlinkGroups": 2,
+      "freeBytesBefore": 11019853824,
+      "policy": {
+        "olderThanHours": 24,
+        "names": [
+          "manufacturability_left.svg",
+          "manufacturability_right.svg",
+          "report.html"
+        ],
+        "excludedTopLevelDirectories": [
+          "heart-training-models",
+          "heart-training-real",
+          "heart-training-synthetic"
+        ],
+        "activePinsProtected": 1182
+      },
+      "startedAt": 1792249198.416348,
+      "freeBytesNow": 44174286848,
+      "elapsedSeconds": 374.4126341342926,
+      "freeBytesAfter": 44215906304
+    },
+    "worktreeDuBefore": "46 GiB (rounded)",
+    "worktreeDuAfter": "21 GiB (rounded)",
+    "visualizationByteReduction": 27563010439,
+    "availableSpaceQualification": "Available-space change includes concurrent system and other-agent activity; do not attribute its full delta to this cleanup.",
+    "independentChecks": {
+      "manifestRows": 27139,
+      "allowedFilenamesAndScopeChecked": true,
+      "sampleArchivesDecompressedAndHashChecked": 3
+    },
+    "preserved": [
+      "Source photos",
+      "Real and synthetic datasets",
+      "Model checkpoints",
+      "Masks",
+      "Cutting geometry",
+      "JSON results and reports",
+      "Current preview build",
+      "Active-study pinned inputs"
+    ],
+    "futurePolicy": {
+      "benchmarkWriterCommit": "41221c0",
+      "writersChanged": 16,
+      "fullDiagnosticsOptIn": "INVERSE_FULL_ARTIFACTS=1",
+      "minimumFreeSpaceBeforeNewBatchesGiB": 10,
+      "bulkExperimentQueueStopped": true
+    },
+    "verification": {
+      "focusedArtifactTestsPassed": 2,
+      "changedScriptsSyntaxChecked": 18,
+      "targetedLint": "pass",
+      "applicationCheck": "0 errors;7 existing warnings",
+      "fullLint": "0 errors;2 existing warnings",
+      "build": "pass",
+      "inverseSuite": "Interrupted for disk cleanup after16 failures; not a full release pass."
+    },
+    "artifacts": {
+      "tmp/artifact-storage-20261017/archive.py": "49ab960c3c20dca521a01ddec3c1760a8aab43244df0c4f95bf319942074fd46",
+      "tmp/artifact-storage-20261017/state.json": "fce014282ba3708324fbe5066c3c82561748efedcde624e8238aa340b1196dd4",
+      "tmp/artifact-storage-20261017/manifest.jsonl": "984bf7312aceeda01c2443a3cc9db445ab522ca3a4af7c1059b55730502f0bd5",
+      "tmp/artifact-storage-20261017/archive.log": "0fde306ac0efcbf525edc9f028ecb38124e1f06309a57f877643ddc26286a860",
+      "tmp/artifact-storage-20261017/check.log": "9f4a5367856dceab5f8c947f3ab68cc93d78cc9a7d2367e6a37d0e37bbfad092",
+      "tmp/artifact-storage-20261017/lint.log": "2b7add329ca80a0f26dcb26c7eb139cd28b3768793c6b0797002f91a54119a34",
+      "tmp/artifact-storage-20261017/build.log": "eb50701babace55762159edb93dcb574e39091f7eb4872e177fb9df325c44941"
+    }
   }
 }

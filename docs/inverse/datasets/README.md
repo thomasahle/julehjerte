@@ -33,8 +33,9 @@ motifs remain, along with small boundary defects. The machine was contended,
 but no latency correction or causal claim is applied. The initial disk-full
 attempt, preview recovery and failed parallel application run remain recorded.
 All 874 application tests pass with one worker and unchanged timeouts (one
-skip); the 1,027 inverse tests are running. Dense count expansion and smoothing
-remain offline.
+skip). The inverse suite reported 16 failures before it was stopped for the
+user-requested disk cleanup; verification is incomplete. Dense count expansion
+and smoothing remain offline.
 
 A [57-input interior-transition diagnostic](interior-count-evidence-results.json)
 finds more than eight transitions in 97% and 88% of the dense checker's
