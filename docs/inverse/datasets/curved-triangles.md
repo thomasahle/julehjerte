@@ -204,46 +204,40 @@ node scripts/inverse/hard-photo-editor-replay.mjs \
   --run=tmp/artesta-fresh --output=tmp/artesta-fresh-editable
 ```
 
-## Exact ideal artwork has an eight-branch obstruction
+## Boundary count in the current model; physical impossibility is unproven
 
-This conclusion concerns the **ideal semicircle construction**, not a proof
-about every thresholded JPEG pixel. It uses the regular model enforced by our
-validator: within either sheet, slit paths are simple and mutually disjoint.
-At an interior point there can therefore be at most one slit from each sheet.
-Each contributes two local branches, so the visible colour boundary has degree
-at most four. Shared cuts can cancel visibility; they cannot raise that bound.
+**Correction after user review:** the previous version cited *Weaving Paper
+into Star Patterns* as support for a conclusion about julehjerter. That paper
+uses a different paper-weaving construction. It is not an applicable reference
+for our folded-loop julehjerter, and the citation has been removed. The previous
+physical impossibility claim was overstated.
 
-An interior **tile-grid corner** in this artwork has four straight boundary
-segments and four circular arcs meeting at the same point: degree eight. This
-is different from the degree-four tangency in the centre of a tile. In unit-cell
-coordinates, inspect `(1,1)` on a circle of radius `rho`, `0 < rho < 1/2`. In
-each quadrant one boundary is a grid ray and the other is a semicircle; their
-angular separation is `asin(rho)`. Hence the inspection circle crosses the
-colour boundary eight times. The [diagnostic record](curved-triangles-topology.json)
-also checks four radii numerically, with eight transitions at the grid corner
-and four at a tile centre. The count is justified analytically, not inferred
-solely from those samples.
+The following narrower statement concerns our **implemented cut-path model**.
+The validator requires slit paths within either sheet to be simple and mutually
+disjoint. At an interior point it permits at most one path from each sheet.
+Each contributes two branches, so the model's visible boundary has degree at
+most four. Shared segments cancel visibility and do not raise that bound.
 
-Consequently, **the exact eight-branch junction cannot occur in a regular
-two-sheet weave**. Reproducing it would require additional cuts touching in one
-sheet, or a slit visiting the same point more than once, violating these rules.
-An approximation can separate the junction into several ordinary ones and
-shift the tips slightly. This explains why pursuing every ideal contact exactly
-is not an appropriate acceptance target.
+In an ideal alternating-semicircle construction, an interior tile-grid corner
+has four straight boundary segments and four circular arcs meeting at one point:
+degree eight. In unit-cell coordinates, a circle of radius `rho`, with
+`0 < rho < 1/2`, centred on `(1,1)` crosses one grid ray and one circular boundary
+in each quadrant. Their angular separation is `asin(rho)`. The
+[diagnostic record](curved-triangles-topology.json) cross-checks this count at four
+radii; tile-centre tangencies instead have four branches. This ideal construction
+is a diagnostic, never an input to the fitter.
 
-This local argument does **not** prove that 0.945% disagreement is optimal, or
-establish any positive lower bound on image error. Arbitrarily small geometric
-perturbations can change junction degree, and the raster may already have such
-perturbations. The physical minimum-width constraints, finite representation,
-and timed search require separate analysis. Both mathematical restrictions and
-algorithmic defects can contribute to the remaining error.
+Thus the exact ideal junction is outside this disjoint-path representation.
+**Whether that establishes an obstruction for actual folded-loop julehjerter
+requires a separate argument relating the physical construction to the model.**
+That argument has not been established here. This is not a proof that the
+artwork cannot be woven, or that the remaining 0.945% error is unavoidable.
 
-Related mathematical background: Reitebuch, Lipschütz and Polthier,
-[“Weaving Paper into Star Patterns,” Bridges 2020](https://archive.bridgesmathart.org/2020/bridges2020-427.pdf),
-explicitly distinguish constructions with at most two cuts crossing at a point
-from more general tilings requiring additional cuts. The eight-branch argument
-above is our application to this ideal motif, not a theorem claimed by that
-paper about this particular poster.
+There is also no positive image-error lower bound: small perturbations can
+change junction degree, and the JPEG/raster may already contain them. The
+verified practical result is a close approximation that passes our computational
+checks. Timed-search variability and residual join defects remain algorithmic
+issues to investigate.
 
 ## Results on the unchanged runtime
 

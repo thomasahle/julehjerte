@@ -234,11 +234,12 @@
   },
   "idealArtworkTopology": {
     "diagnostic": "docs/inverse/datasets/curved-triangles-topology.json",
-    "diagnosticSha256": "9b26615c1cc9a98f150fd4fa37c34871197fa6b1271fffbc889bab9b820fca34",
+    "diagnosticSha256": "fc13beacc72f586067647e09c3024d8047baebd45c3fc12504030214c99216ca",
     "idealGridCornerDegree": 8,
     "maximumRegularTwoSheetDegree": 4,
-    "exactIdealJunctionRepresentable": false,
     "rasterImpossibilityProven": false,
-    "minimumErrorBoundProven": false
+    "minimumErrorBoundProven": false,
+    "representedByDisjointPathModel": false,
+    "physicalWeaveImpossibilityEstablished": false
   }
 }

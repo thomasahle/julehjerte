@@ -1,8 +1,8 @@
 {
   "model": "Ideal alternating horizontal/vertical pairs of radius-1/2 semicircles in unit square cells, matching the poster arrangement. This is an analytic diagnostic, never a solver input.",
-  "rule": "Each sheet has disjoint simple slit paths. At an interior point, at most one path per sheet; each path contributes two local branches, hence at most four visible boundary branches in two sheets. Exactly shared hidden cuts cancel and cannot increase this bound.",
+  "rule": "Implemented model only: each sheet has disjoint simple slit paths. An interior point admits at most one path per sheet, with two branches each, hence at most four visible branches. Shared segments cannot increase this bound.",
   "analyticArgument": "At grid corner (1,1), on a circle of radius rho in (0,1/2), each quadrant contains one straight boundary ray and one circular boundary. Their angular separation is asin(rho). Thus there are eight distinct boundary crossings for every such rho, not only for the sampled radii.",
-  "conclusion": "The ideal eight-branch grid junction cannot be reproduced exactly under the regular two-sheet model. This does not establish a positive image-error lower bound or impossibility for the raster/JPEG mask, whose tiny joins may already be perturbed.",
+  "conclusion": "The ideal eight-branch junction is not represented by this disjoint-path model. No equivalence proof between this restriction and all physical folded-loop julehjerte constructions is provided; physical impossibility remains unproven. No raster impossibility or positive image-error lower bound is established.",
   "numericalCrossCheck": {
     "angularSamples": 65536,
     "rows": [
@@ -80,5 +80,7 @@
       }
     ]
   },
-  "caveat": "The four-branch cell-centre tangencies alone do not violate this local degree bound. Other global or physical constraints may still apply."
+  "caveat": "The four-branch cell-centre tangencies alone do not violate this local degree bound. Other global or physical constraints may still apply.",
+  "physicalWeaveImpossibilityEstablished": false,
+  "correction": "Removed an inapplicable reference to Weaving Paper into Star Patterns after user review; that paper concerns a different construction."
 }
