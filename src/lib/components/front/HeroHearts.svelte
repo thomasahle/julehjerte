@@ -27,6 +27,8 @@
   bootstrap finds the layers and names the ids of the hearts it clones in.
 -->
 <script lang="ts">
+	import { replaceState } from '$app/navigation';
+	import { page } from '$app/state';
 	import HangingHeart from '$lib/components/HangingHeart.svelte';
 	import type { HeroHeart } from '$lib/front/galleryHearts';
 	import { t, type Language } from '$lib/i18n';
@@ -52,7 +54,10 @@
 		event.preventDefault();
 		const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 		card.scrollIntoView({ block: 'center', behavior: reduce ? 'auto' : 'smooth' });
-		history.replaceState(history.state, '', `#${anchorId}`);
+		// SvelteKit's own replaceState, not history's: the page store has to see
+		// the new hash, or the language toggle links to the other language
+		// without it.
+		replaceState(`#${anchorId}`, page.state);
 	}
 </script>
 
