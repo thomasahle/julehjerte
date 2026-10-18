@@ -27,20 +27,28 @@ the failure does not demonstrate a direct effect of the new local-control
 scope. Timing can change the selected trajectory; no particular source of
 that timing variation has been established.
 
-The proposed correction is to retain a candidate whose mandatory final checks
-have completed successfully, even if those checks crossed the cutoff. This
-must not authorize more optimization after the deadline, waive any check, or
-allow a repair to start after its allowance has expired. Test it with a
-controlled clock advancing during an actual final audit, then rerun the fresh
-photograph. No runtime correction has been applied yet: the full suite is
-still running against pinned sources.
+The correction retains a candidate whose mandatory final checks have completed
+successfully, even if those checks crossed the cutoff. It records the overrun
+and does no further optimization or verification. Expired admission and an
+unresolved paper result remain rejections.
+
+A controlled-clock regression reproduces the failure using an actual paper
+audit, advancing time only as that final audit returns. Before the correction,
+the 0.8192% fit passes geometry, features and paper but is discarded for
+finishing 25 ms late. Afterward it is retained and independently rendered and
+validated. Two companion tests confirm that expired work cannot start and
+that a genuinely uncertain coarse paper audit cannot bypass finer verification
+when time is gone. All three pass. Fresh photograph replays remain pending.
 
 These percentages come from the engine's logged sampling. The discarded
 candidate's coordinates were not saved, so its independent exported error is
 unknown. The returned candidate's coordinates are preserved in the failure
-diagnostic. The full run has also reported failures in partial-photo recovery,
-the partially observed curved pattern and two delayed near-miss cases; their
-exact final assertion diagnostics still need review. The browser comparison
-and preview refresh remain pending.
+diagnostic. The full run on the preceding runtime finished with **1,057 passes
+and five failures**, all 1,044 pinned sources unchanged. Its other failures
+were a legal partial-photo fit at 5.1611% disagreement (limit 5%), the partially
+observed curved pattern's independent error (limit 1.5%), the delayed sun's
+4.7193% local error (limit 4%), and an unaccepted delayed diagonal near miss.
+These are unresolved quality failures, not a reason to loosen their limits.
+The browser comparison and preview refresh remain pending.
 
 [Machine-readable evidence](repair-completion-deadline.json).

@@ -1,5 +1,5 @@
 {
-  "status": "captured_failure_while_full_suite_remains_live",
+  "status": "runtime_corrected_controlled_regression_passes_fresh_replays_pending",
   "runtime": "6efe473",
   "sourceCapture": "tmp/heart-learning/clearance-continuation-2026-10-18/loss-row-index/scoped-qa/live-failure-captures/corner-regions.json",
   "sourceSha256": "c589de4676b2a6d7a4a1fa8b4470058adf2fed3fc872e98494abbda83962edf2",
@@ -24,8 +24,45 @@
   "overrunMilliseconds": 21.910792000002566,
   "sourceCode": "static/inverse/core/direct/rejected-routing.js",
   "finding": "A separately projected and refined routing passed all existing geometry, source-image, feature and paper checks, but the final deadline guard discarded it after the checks ended 21.91ms late. No independent export geometry of this discarded candidate was saved; its logged checks are evidence, not an independent export certification.",
-  "nextExperiment": "After the current full suite is terminal, retain a fully checked candidate whose final audit finishes after the deadline; still reject expired admission, do not start more refinement/audits after expiry, keep every existing geometry/image/feature/paper gate. Reproduce with controlled virtual audit completion time and actual paper audits, then fresh curve-photo replay.",
+  "nextExperiment": "Fresh related-photo replays and captured failures, followed by standard checks; do not infer their outcome from the controlled-clock test.",
   "browser": "Prepared browser comparison must not start while full suite fails.",
   "evidenceSummarySha256": "305073764d40240dbcbced3e232274d59cd979d1a472994978e78447634345d4",
-  "verificationScope": "Logged repair geometry, image, feature and paper results; discarded cut coordinates were not captured. Full suite remains live; no independent rendering or runtime fix yet."
+  "verificationScope": "Logged repair geometry, image, feature and paper results; discarded cut coordinates were not captured. Full suite remains live; no independent rendering or runtime fix yet.",
+  "previousFullSuite": {
+    "path": "tmp/heart-learning/clearance-continuation-2026-10-18/loss-row-index/scoped-qa/summary.json",
+    "sha256": "3838a17926e6f245f1866702f35d2fcdacaba48f3e3f47e68a3d64e59c49eef5",
+    "runtime": "6efe473",
+    "passed": 1057,
+    "failed": 5,
+    "seconds": 1394.841350458,
+    "pinnedSourcesUnchanged": 1044
+  },
+  "controlledRegression": {
+    "test": "scripts/inverse/rejected-routing-deadline.test.mjs",
+    "delayMilliseconds": 25,
+    "engineImageError": 0.008192,
+    "before": {
+      "passed": 2,
+      "failed": 1,
+      "reason": "deadline",
+      "geometry": true,
+      "features": true,
+      "paper": "pass"
+    },
+    "after": {
+      "passed": 3,
+      "failed": 0,
+      "independentExportChecked": true
+    },
+    "logs": {
+      "before.log": {
+        "path": "tmp/heart-learning/clearance-continuation-2026-10-18/repair-completion/before.log",
+        "sha256": "90e8e3e54d78a72df2cae6d1ee3430d5e18742fd0b0264d640d4f3b843740697"
+      },
+      "after.log": {
+        "path": "tmp/heart-learning/clearance-continuation-2026-10-18/repair-completion/after.log",
+        "sha256": "271ab9d7af729267448c58213dc4927db105057a5ccf7e5beb3d0a8f6060ac66"
+      }
+    }
+  }
 }

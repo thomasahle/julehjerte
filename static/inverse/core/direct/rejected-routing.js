@@ -55,7 +55,7 @@ export function rejectedRoutingQuality(solution,cfg){
   return{geometry,clearanceOnly,affectedCuts,relativeDeficit,repairable:clearanceOnly};
 }
 
-export function repairRejectedRouting(proposal,input,cfg,{deadline=Infinity,quality=null,projectClearance=false}={}){
+export function repairRejectedRouting(proposal,input,cfg,{deadline=Infinity,quality=null,projectClearance=false,paperAudit=materialAudit}={}){
   // Complete return checks and constraint projection need room to retain a
   // valid checkpoint. This local allowance never extends the caller deadline.
   const started=performance.now(),until=Math.min(deadline,started+(projectClearance?projectedRoutingRepairMilliseconds:2000)),report={accepted:false,method:'continuous-rejected-routing',budgetSeconds:Math.max(0,until-started)/1000};
@@ -99,18 +99,23 @@ export function repairRejectedRouting(proposal,input,cfg,{deadline=Infinity,qual
   const solution=graph.solution(fitted.points,phase,input),woven=sampleWeave(solution,source.resolution);
   report.geometry=validate(solution,cfg);report.imageError=maskDisagreement(source,woven);report.features=auditFeatureFidelity(source,woven,cfg);
   if(!report.geometry.passed||report.imageError>cfg.maxImageError||!report.features.passed)return finish('refinement_rejected');
-  report.paper=materialAudit(solution,cfg).summary;
+  report.paper=paperAudit(solution,cfg).summary;
   // Resolve a conservative lattice ambiguity just as the main fitter does.
   // Uncertainty itself never passes, and every later edit must retain the
   // finer verified lattice rather than reverting to the coarser one.
   if(report.paper.status==='uncertain'&&cfg.materialResolution<700&&deadline-performance.now()>300){
-    const paper=materialAudit(solution,{...cfg,materialResolution:700});
+    const paper=paperAudit(solution,{...cfg,materialResolution:700});
     report.paperVerification={requestedResolution:cfg.materialResolution,initialStatus:'uncertain',resolution:700,status:paper.status};
     report.paper=paper.summary;
   }
   if(report.paper.status!=='pass')return finish('paper_rejected');
-  if(performance.now()>deadline)return finish('deadline');
-  report.accepted=true;report.seconds=(performance.now()-started)/1000;
+  // Verification began before the deadline and every required check has now
+  // passed. A slow final audit must not discard this completed repair and
+  // leave the caller with worse geometry. No further search or audit starts;
+  // expired admission and an unresolved paper result still reject above.
+  const finished=performance.now();
+  report.deadlineOverrunMilliseconds=Number.isFinite(deadline)?Math.max(0,finished-deadline):0;
+  report.accepted=true;report.seconds=(finished-started)/1000;
   solution.report={status:'continuously_repaired',algorithm:'direct-bezier',rejectedRoutingRepair:report,...(report.paperVerification?{paperVerification:report.paperVerification}:{}),physicalAssemblyTested:false};
   return{solution,report};
 }

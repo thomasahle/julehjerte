@@ -44,12 +44,13 @@ The opening remains too angular and too large: 11.37 mm² versus the source's
 7.36 mm². This change does not establish exact recovery or physical assembly.
 Seventeen broader feature/routing tests, type checks, lint, the build and
 874 application tests pass (one existing skip). All 1,044 pinned source files
-match after those checks. The complete inverse suite is still running and
-has exposed five failures so far. One captured curved-pattern repair passed
-its logged checks but was discarded just after its deadline; see the
+match after those checks. The complete inverse suite finished with 1,057
+passes and five failures. One captured curved-pattern repair passed its
+logged checks but was discarded just after its deadline; see the
 [deadline diagnosis](repair-completion-deadline.md). The earlier
-supported-count metadata failure remains unresolved; a passing focused replay
-does not explain it. The preview has not been refreshed.
+supported-count regression passed this full run, although the preceding
+metadata failure has not been reproduced or explained. The preview has not
+been refreshed.
 
 ## Regression checks
 
