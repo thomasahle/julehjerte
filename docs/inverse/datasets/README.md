@@ -15,22 +15,53 @@ production path.
 | Synthetic geometry | 256 saved witnesses pass the current geometry/paper re-audit across 768 original/subdivided/reflected representations | Limited procedural diversity; recipe holdouts are not topology-disjoint splits |
 | Small learned model | TorchVision ImageNet-pretrained MobileNetV3-Small with task-specific heads; offline experiments exist | No demonstrated overall reconstruction advantage, ONNX/browser validation or deployment |
 | Larger segmentation baseline | Official pretrained MobileSAM evaluated offline | A useful body mask alone does not establish correct corners, material boundaries or legal templates |
-| Solver | Earlier validated revision passes 22/22 regular Hunodan browser workflows and 27/31 photo cases | Latest candidate passes 1,096/1,098 inverse tests; two failures prevent recommending that bundle for release |
+| Solver | Current revision passes 1,109/1,109 inverse tests and 34 browser workflows; all 22 regular Hunodan designs finish under ten seconds | Some hard fits retain thin false seams; the earlier 27/31 photo benchmark has not been rerun |
 
 ### Latest solver and browser validation
 
-The **18 October candidate** (`23d48e3`, including the `bd7e1d7` retained-paper
-repair) passes type checking, lint, build and **874 application tests** (one
-skipped), but only **1,096/1,098 inverse tests**. One curved-contact case misses
-the asserted initializer error bound; a separate late-cleanup replay has
-**1.9300%** independently rendered disagreement, equal to a bound requiring
-strictly less than **1.93%**. The causes remain under investigation; these
-failures are not evidence of invalid exported geometry. All 1,121 pinned source
-files remained unchanged through QA. Logs and the tested revision are in
-`tmp/heart-learning/retained-paper-qa-2026-10-18/`. The latest bundle is **not yet
-recommended for deployment**, and the local preview retains its previously
-validated solver. The successful broader benchmarks below describe their named
-earlier revisions, not a fresh benchmark of this candidate.
+The **18 October validated revision** (`1921279a`) passes type checking, lint,
+build, **874 application tests** (one skipped), and **1,109/1,109 inverse tests**.
+All 1,124 pinned source files remained unchanged throughout the full run.
+The [complete QA record](finalist-release-qa.json) includes the failed preceding
+run, the captured defect, and the regression that fails before its fix.
+
+All **34 actual Chromium workflows** pass: 22 regular Hunodan photographs,
+eight photos/examples, three explicitly constrained ten-second mask diagnostics,
+and one normal-budget replay of a related sloth mask. Engine checks and
+independent checks of the downloaded editable SVGs pass in every case.
+All **22 Hunodan designs finish under ten seconds**: **5.88 s median,
+8.64 s maximum**, measured from clicking Find the cuts to an editable result.
+Their crops, classified masks, observation coverage and weights match the earlier
+`b7daccc` benchmark; every editable-mask error is unchanged. Timings come from
+separate shared-machine runs, so this is not a causal speedup claim.
+
+The changes remove a hidden wall-clock cutoff from explicitly untimed repairs,
+prioritize useful feature routing, and protect refinement/polishing reserves.
+The final fix concerns verification: a captured paper repair passed the polygon
+offset checks but remained uncertain on a coarse 360-cell lattice. Both models
+pass the same repaired curves at 700 cells. One bounded finer audit now verifies
+that repair, and exports record the resolution actually used. No paper-width,
+feature-retention or image-error limit is relaxed. This final verification adds
+work after the optimization cutoff, just as the existing final audit does; one
+diagnostic finer audit took 0.525 seconds.
+
+Visual review covers all 34 rendered results, three import/Draw screenshots and
+all nine downloaded PDF pages. PDF labels and templates are unclipped, and the
+hat retains its shared seams. Small boundary spurs, imperfect curved contacts
+and false seams remain in some hard fits. On one exact native sloth mask,
+increasing the allowance from ten to 180 seconds reduces independent error from
+**1.63% to 1.50%** in **16.36 seconds**, but leaves visible defects and the same
+four-cut-per-sheet layout. More time alone is insufficient there; topology
+choice remains a candidate cause. The cleaner browser sloth fixture is a
+**different mask**, verified by hashes, and is not evidence of recovery on that
+native input.
+
+The current local preview at `http://localhost:5232/editor/mal/` serves an
+immutable snapshot of the validated build. All changes are committed locally;
+nothing has been pushed or deployed. The neural prototypes remain offline, and
+this QA does not replace the earlier, separately recorded 31-photo benchmark.
+
+### Earlier solver experiments
 
 The [interior-supported count proposal](interior-count-fit-results.json) retains
 all original hypotheses and adds denser starts only with repeated interior
@@ -74,7 +105,7 @@ deployed.
 
 Earlier [30-workflow browser validation](late-feature-browser-qa.json) and
 [later slower follow-up](base-count-release-qa.json) describe their respective
-revisions. The faster current timings are observations from a separate run,
+revisions. Those timing differences are observations from a separate run,
 not evidence that the deadline correction caused the speed difference. These
 are development workflows, not a fresh holdout. The separate photo comparison
 marks changed crops, targets and observation coverage before comparing errors.

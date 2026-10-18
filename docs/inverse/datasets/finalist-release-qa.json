@@ -1,0 +1,545 @@
+{
+  "schema": "finalist-release-qa-1",
+  "date": "2026-10-18",
+  "runtimeRevision": "1921279ac8e2c38ad19e3f58c0f5b6f7da68a2ed",
+  "scope": "Fresh serial development QA of the geometric solver and actual Chromium Paint/import/worker/Draw/editable-SVG/PDF workflow. No neural inference and no production deployment.",
+  "fixes": [
+    {
+      "commit": "5d4e9f89",
+      "change": "Replace the hidden wall-clock cutoff in explicitly untimed routing repairs with bounded work."
+    },
+    {
+      "commit": "b2208366",
+      "change": "Retain time to repair and verify late clearance checkpoints."
+    },
+    {
+      "commit": "7c7bd6c6",
+      "change": "Try detailed feature routing before spending a short failed-grid search on coarse routing; bound the coarse fallback graph."
+    },
+    {
+      "commit": "cb6fe0b2",
+      "change": "Reserve useful refinement for late same-count feature layouts."
+    },
+    {
+      "commit": "938aaafb",
+      "change": "Keep speculative weak-region retries outside the short missing-feature reserve."
+    },
+    {
+      "commit": "268ef4f0",
+      "change": "Preserve ordinary outline polishing for sampling layouts promoted to the main candidate."
+    },
+    {
+      "commit": "66530959",
+      "change": "Accept the documented outline-refinement route in cleanup QA and capture failed short-budget photo fits."
+    },
+    {
+      "commit": "1921279a",
+      "change": "Recheck a repaired offset-valid candidate when its coarse lattice is uncertain; export the actual finer verification resolution."
+    }
+  ],
+  "fullQA": {
+    "status": "passed",
+    "inversePassed": 1109,
+    "inverseTotal": 1109,
+    "applicationPassed": 874,
+    "applicationSkipped": 1,
+    "check": "passed",
+    "lint": "passed",
+    "build": "passed",
+    "sourceFilesVerifiedUnchanged": 1124,
+    "phaseSeconds": {
+      "check": 11.979349136352539,
+      "lint": 7.816632032394409,
+      "app": 50.07017779350281,
+      "build": 28.64535117149353,
+      "inverse": 1544.7996189594269
+    },
+    "record": "tmp/heart-learning/finalist-qa-2026-10-18/full-v7/state.json"
+  },
+  "browserQA": {
+    "status": "passed",
+    "workflows": 34,
+    "distinctCaseNames": 33,
+    "checkedTemplates": 34,
+    "mainGroups": [
+      {
+        "name": "hunodan",
+        "cases": 22,
+        "requestedSeconds": null,
+        "status": "passed",
+        "started": 1792342661.621068,
+        "pid": 27185,
+        "exitCode": 0,
+        "seconds": 195.06729817390442,
+        "checkedTemplates": 22,
+        "pdfDownloads": 0,
+        "bytes": 29099478
+      },
+      {
+        "name": "photos-and-examples",
+        "cases": 8,
+        "requestedSeconds": null,
+        "status": "passed",
+        "started": 1792342857.0510862,
+        "pid": 33201,
+        "exitCode": 0,
+        "seconds": 155.5916187763214,
+        "checkedTemplates": 8,
+        "pdfDownloads": 5,
+        "bytes": 14610865
+      },
+      {
+        "name": "short-budget",
+        "cases": 3,
+        "requestedSeconds": 10,
+        "status": "passed",
+        "started": 1792343012.989461,
+        "pid": 38651,
+        "exitCode": 0,
+        "seconds": 42.34351897239685,
+        "checkedTemplates": 3,
+        "pdfDownloads": 3,
+        "bytes": 4475233
+      }
+    ],
+    "extraRelatedMask": {
+      "name": "default-budget",
+      "cases": 1,
+      "requestedSeconds": null,
+      "status": "passed",
+      "started": 1792343090.3592992,
+      "pid": 41024,
+      "exitCode": 0,
+      "seconds": 17.300413846969604,
+      "checkedTemplates": 1,
+      "pdfDownloads": 1,
+      "bytes": 1467192
+    },
+    "browser": "Chromium 145.0.7632.6, own Chrome for Testing",
+    "runtimeAssetsVerified": 180,
+    "buildFilesPinned": 378,
+    "record": "tmp/heart-learning/finalist-qa-2026-10-18/browser-v7/state.json",
+    "extraRecord": "tmp/heart-learning/finalist-qa-2026-10-18/browser-v7-sloth-default/state.json"
+  },
+  "hunodan": {
+    "referenceRevision": "b7daccc12eb56887cd1006e0c75f1edd2053391c",
+    "scope": "Twenty-two regular Hunodan development workflows, fresh browser contexts with the actual upload/crop/worker/editor/export flow. Errors use the classified source mask, not original cutting-path ground truth. Timing comparisons are separate shared-machine runs, not a causal speed estimate. Compare errors only on unchanged masks, observation coverage and weights.",
+    "summary": {
+      "passed": 22,
+      "total": 22,
+      "underTenSeconds": 22,
+      "medianSeconds": 5.8754500000476835,
+      "maximumSeconds": 8.644899999856948,
+      "sameReference": 22,
+      "sameCrop": 22,
+      "sameEditableSVG": 0,
+      "increasedComparableErrors": 0
+    },
+    "allEditableErrorsExactlyUnchanged": true,
+    "rows": [
+      {
+        "name": "hunodan-hjfig-01",
+        "passed": true,
+        "sameReference": true,
+        "sameCrop": true,
+        "sameSettings": true,
+        "sameEditableSVG": false,
+        "beforeClickToReadySeconds": 4.076399999856949,
+        "afterClickToReadySeconds": 4.286400000095368,
+        "beforeEditableError": 0.009891555555555556,
+        "afterEditableError": 0.009891555555555556,
+        "errorChangeComparable": 0.0
+      },
+      {
+        "name": "hunodan-hjfig-02",
+        "passed": true,
+        "sameReference": true,
+        "sameCrop": true,
+        "sameSettings": true,
+        "sameEditableSVG": false,
+        "beforeClickToReadySeconds": 3.7285,
+        "afterClickToReadySeconds": 3.886599999904633,
+        "beforeEditableError": 0.00548125,
+        "afterEditableError": 0.00548125,
+        "errorChangeComparable": 0.0
+      },
+      {
+        "name": "hunodan-hjfig-03",
+        "passed": true,
+        "sameReference": true,
+        "sameCrop": true,
+        "sameSettings": true,
+        "sameEditableSVG": false,
+        "beforeClickToReadySeconds": 4.310099999904633,
+        "afterClickToReadySeconds": 4.6725,
+        "beforeEditableError": 0.006592,
+        "afterEditableError": 0.006592,
+        "errorChangeComparable": 0.0
+      },
+      {
+        "name": "hunodan-hjfig-04",
+        "passed": true,
+        "sameReference": true,
+        "sameCrop": true,
+        "sameSettings": true,
+        "sameEditableSVG": false,
+        "beforeClickToReadySeconds": 4.441,
+        "afterClickToReadySeconds": 4.581399999856949,
+        "beforeEditableError": 0.014016,
+        "afterEditableError": 0.014016,
+        "errorChangeComparable": 0.0
+      },
+      {
+        "name": "hunodan-hjfig-05",
+        "passed": true,
+        "sameReference": true,
+        "sameCrop": true,
+        "sameSettings": true,
+        "sameEditableSVG": false,
+        "beforeClickToReadySeconds": 5.7475,
+        "afterClickToReadySeconds": 5.4841000001430515,
+        "beforeEditableError": 0.007678151608273384,
+        "afterEditableError": 0.007678151608273384,
+        "errorChangeComparable": 0.0
+      },
+      {
+        "name": "hunodan-hjfla-01",
+        "passed": true,
+        "sameReference": true,
+        "sameCrop": true,
+        "sameSettings": true,
+        "sameEditableSVG": false,
+        "beforeClickToReadySeconds": 6.295099999904632,
+        "afterClickToReadySeconds": 6.476900000095368,
+        "beforeEditableError": 0.007120768229166667,
+        "afterEditableError": 0.007120768229166667,
+        "errorChangeComparable": 0.0
+      },
+      {
+        "name": "hunodan-hjcur-01",
+        "passed": true,
+        "sameReference": true,
+        "sameCrop": true,
+        "sameSettings": true,
+        "sameEditableSVG": false,
+        "beforeClickToReadySeconds": 5.623700000047684,
+        "afterClickToReadySeconds": 6.058700000047684,
+        "beforeEditableError": 0.005091555555555556,
+        "afterEditableError": 0.005091555555555556,
+        "errorChangeComparable": 0.0
+      },
+      {
+        "name": "hunodan-hjcur-02",
+        "passed": true,
+        "sameReference": true,
+        "sameCrop": true,
+        "sameSettings": true,
+        "sameEditableSVG": false,
+        "beforeClickToReadySeconds": 6.887799999952316,
+        "afterClickToReadySeconds": 6.973,
+        "beforeEditableError": 0.004878222222222222,
+        "afterEditableError": 0.004878222222222222,
+        "errorChangeComparable": 0.0
+      },
+      {
+        "name": "hunodan-hjcur-03",
+        "passed": true,
+        "sameReference": true,
+        "sameCrop": true,
+        "sameSettings": true,
+        "sameEditableSVG": false,
+        "beforeClickToReadySeconds": 5.440400000095368,
+        "afterClickToReadySeconds": 5.447600000143051,
+        "beforeEditableError": 0.004238222222222222,
+        "afterEditableError": 0.004238222222222222,
+        "errorChangeComparable": 0.0
+      },
+      {
+        "name": "hunodan-hjcur-04",
+        "passed": true,
+        "sameReference": true,
+        "sameCrop": true,
+        "sameSettings": true,
+        "sameEditableSVG": false,
+        "beforeClickToReadySeconds": 7.656,
+        "afterClickToReadySeconds": 7.5386000001430515,
+        "beforeEditableError": 0.005418666666666666,
+        "afterEditableError": 0.005418666666666666,
+        "errorChangeComparable": 0.0
+      },
+      {
+        "name": "hunodan-hjcur-05",
+        "passed": true,
+        "sameReference": true,
+        "sameCrop": true,
+        "sameSettings": true,
+        "sameEditableSVG": false,
+        "beforeClickToReadySeconds": 4.191,
+        "afterClickToReadySeconds": 4.316399999856949,
+        "beforeEditableError": 0.009450666666666666,
+        "afterEditableError": 0.009450666666666666,
+        "errorChangeComparable": 0.0
+      },
+      {
+        "name": "hunodan-hjhih-01",
+        "passed": true,
+        "sameReference": true,
+        "sameCrop": true,
+        "sameSettings": true,
+        "sameEditableSVG": false,
+        "beforeClickToReadySeconds": 6.6835,
+        "afterClickToReadySeconds": 6.749099999904632,
+        "beforeEditableError": 0.005919622003275255,
+        "afterEditableError": 0.005919622003275255,
+        "errorChangeComparable": 0.0
+      },
+      {
+        "name": "hunodan-hjhih-02",
+        "passed": true,
+        "sameReference": true,
+        "sameCrop": true,
+        "sameSettings": true,
+        "sameEditableSVG": false,
+        "beforeClickToReadySeconds": 5.433699999809265,
+        "afterClickToReadySeconds": 5.480099999904633,
+        "beforeEditableError": 0.0038585033642604422,
+        "afterEditableError": 0.0038585033642604422,
+        "errorChangeComparable": 0.0
+      },
+      {
+        "name": "hunodan-hjhih-04",
+        "passed": true,
+        "sameReference": true,
+        "sameCrop": true,
+        "sameSettings": true,
+        "sameEditableSVG": false,
+        "beforeClickToReadySeconds": 7.692599999904632,
+        "afterClickToReadySeconds": 7.6476000001430515,
+        "beforeEditableError": 0.007750131111240604,
+        "afterEditableError": 0.007750131111240604,
+        "errorChangeComparable": 0.0
+      },
+      {
+        "name": "hunodan-hjstr-01",
+        "passed": true,
+        "sameReference": true,
+        "sameCrop": true,
+        "sameSettings": true,
+        "sameEditableSVG": false,
+        "beforeClickToReadySeconds": 4.933,
+        "afterClickToReadySeconds": 4.9815,
+        "beforeEditableError": 0.007295347924029181,
+        "afterEditableError": 0.007295347924029181,
+        "errorChangeComparable": 0.0
+      },
+      {
+        "name": "hunodan-hjstr-02",
+        "passed": true,
+        "sameReference": true,
+        "sameCrop": true,
+        "sameSettings": true,
+        "sameEditableSVG": false,
+        "beforeClickToReadySeconds": 6.4255,
+        "afterClickToReadySeconds": 6.555,
+        "beforeEditableError": 0.004122287968441814,
+        "afterEditableError": 0.004122287968441814,
+        "errorChangeComparable": 0.0
+      },
+      {
+        "name": "hunodan-hjstr-03",
+        "passed": true,
+        "sameReference": true,
+        "sameCrop": true,
+        "sameSettings": true,
+        "sameEditableSVG": false,
+        "beforeClickToReadySeconds": 8.6195,
+        "afterClickToReadySeconds": 8.644899999856948,
+        "beforeEditableError": 0.005446912530555851,
+        "afterEditableError": 0.005446912530555851,
+        "errorChangeComparable": 0.0
+      },
+      {
+        "name": "hunodan-hjsta-01",
+        "passed": true,
+        "sameReference": true,
+        "sameCrop": true,
+        "sameSettings": true,
+        "sameEditableSVG": false,
+        "beforeClickToReadySeconds": 5.6875,
+        "afterClickToReadySeconds": 5.692200000047683,
+        "beforeEditableError": 0.00788781163434903,
+        "afterEditableError": 0.00788781163434903,
+        "errorChangeComparable": 0.0
+      },
+      {
+        "name": "hunodan-hjsta-02",
+        "passed": true,
+        "sameReference": true,
+        "sameCrop": true,
+        "sameSettings": true,
+        "sameEditableSVG": false,
+        "beforeClickToReadySeconds": 4.332700000047684,
+        "afterClickToReadySeconds": 4.368299999952316,
+        "beforeEditableError": 0.00216875,
+        "afterEditableError": 0.00216875,
+        "errorChangeComparable": 0.0
+      },
+      {
+        "name": "hunodan-hjsta-03",
+        "passed": true,
+        "sameReference": true,
+        "sameCrop": true,
+        "sameSettings": true,
+        "sameEditableSVG": false,
+        "beforeClickToReadySeconds": 8.3655,
+        "afterClickToReadySeconds": 8.533399999856949,
+        "beforeEditableError": 0.012257224468092359,
+        "afterEditableError": 0.012257224468092359,
+        "errorChangeComparable": 0.0
+      },
+      {
+        "name": "hunodan-hjsta-04",
+        "passed": true,
+        "sameReference": true,
+        "sameCrop": true,
+        "sameSettings": true,
+        "sameEditableSVG": false,
+        "beforeClickToReadySeconds": 7.093199999809265,
+        "afterClickToReadySeconds": 7.266600000143051,
+        "beforeEditableError": 0.004885081604658325,
+        "afterEditableError": 0.004885081604658325,
+        "errorChangeComparable": 0.0
+      },
+      {
+        "name": "hunodan-hjsta-05",
+        "passed": true,
+        "sameReference": true,
+        "sameCrop": true,
+        "sameSettings": true,
+        "sameEditableSVG": false,
+        "beforeClickToReadySeconds": 6.556799999952316,
+        "afterClickToReadySeconds": 6.598899999856949,
+        "beforeEditableError": 0.010577465166850116,
+        "afterEditableError": 0.010577465166850116,
+        "errorChangeComparable": 0.0
+      }
+    ]
+  },
+  "pairedNative": {
+    "referenceRevision": "5d4e9f897a140f796866027c7b07b0e82fe99604",
+    "scope": "Three related development masks from one sloth source, fresh paired inference using unchanged ten-second requests. No saved template is supplied. This is not a fresh independent-photo benchmark.",
+    "pairs": [
+      {
+        "id": "routing-x-plus-1",
+        "beforeError": 0.009584,
+        "afterError": 0.009584,
+        "beforeSeconds": 8.368254792,
+        "afterSeconds": 6.078417041,
+        "currentPassed": true,
+        "currentFeaturesPassed": true,
+        "errorIncreased": false
+      },
+      {
+        "id": "routing-y-minus-1",
+        "beforeError": 0.013376,
+        "afterError": 0.008912,
+        "beforeSeconds": 9.393895875,
+        "afterSeconds": 9.440447915999998,
+        "currentPassed": true,
+        "currentFeaturesPassed": true,
+        "errorIncreased": false
+      },
+      {
+        "id": "real-abf590088db891f9-body-1",
+        "beforeError": 0.017136,
+        "afterError": 0.016304,
+        "beforeSeconds": 9.928044958000001,
+        "afterSeconds": 9.906664916,
+        "currentPassed": true,
+        "currentFeaturesPassed": true,
+        "errorIncreased": false
+      }
+    ],
+    "sameReferencePixelsAndProbabilities": true,
+    "record": "tmp/heart-learning/finalist-qa-2026-10-18/scheduling-comparison-v7/state.json"
+  },
+  "visualQA": {
+    "renderedBrowserCasesInspected": 34,
+    "actualUIScreenshotsInspected": 3,
+    "downloadedPDFsInspected": 9,
+    "downloadedPDFPagesInspected": 9,
+    "records": [
+      "tmp/heart-learning/finalist-qa-2026-10-18/browser-v7/visual-review/inspection.json",
+      "tmp/heart-learning/finalist-qa-2026-10-18/browser-v7-sloth-default/visual-review/inspection.json",
+      "tmp/heart-learning/finalist-qa-2026-10-18/browser-v7/pdf-review.json",
+      "tmp/heart-learning/finalist-qa-2026-10-18/paired-visual-review.json"
+    ],
+    "pdfFinding": "Titles, one-sheet or left/right-sheet layouts, woven previews, cut lines and fold lines are visible without clipping, black boxes or overlapping labels. Printed cut geometry retains the already recorded fitting imperfections; no physical assembly test was performed."
+  },
+  "remainingSeamStudy": {
+    "scope": "Separate within-mask budget comparisons; do not compare the distinct native and browser mask variants as identical inputs.",
+    "native": {
+      "maskSha256": "f47bb73d7a6160b172fe52fc900f440b6eff0bd5926be035932184b19fc02911",
+      "probabilitySha256": "5c38191c674bb1259f4fc64d32ced536e3db13660222f640c86b8c9f40741d1c",
+      "sameInputs": true,
+      "shortBudget": 10,
+      "shortSeconds": 9.906664916,
+      "shortIndependentError": 0.016304,
+      "longBudget": 180,
+      "longSeconds": 16.357075416999997,
+      "longIndependentError": 0.01504,
+      "bothChecked": true,
+      "counts": [
+        [
+          4,
+          4
+        ],
+        [
+          4,
+          4
+        ]
+      ],
+      "visualFinding": "Longer fitting reduces a few thin seams but retains false gaps and border spurs. Both fits choose four cuts per sheet. More time alone does not resolve the visible defects; topology choice is a candidate cause, not a proof of the only cause."
+    },
+    "browserRelatedVariant": {
+      "samePreparedInputs": true,
+      "shortClickToReadySeconds": 9.8095,
+      "shortEditableError": 0.004848,
+      "normalClickToReadySeconds": 9.991599999904633,
+      "normalEditableError": 0.004912,
+      "bothChecked": true
+    }
+  },
+  "rootCauses": {
+    "timing": "A hidden local deadline made untimed work hardware-dependent; other stages could spend the first useful refinement or polishing reserve on lower-priority routing.",
+    "finalPaperVerification": "A captured short-budget photo fit had an offset-paper defect. Refinement repaired it, but its 360-cell lattice remained uncertain. Both models pass the same repaired geometry at 700. The old code discarded the repair; this fix preserves it without lowering width, feature or image limits.",
+    "testContract": "The late-cleanup test insisted on a continuation even after the intended useful outline-refinement route; the quality threshold remained unchanged.",
+    "remainingFailurePattern": "Some accepted hard fits still have thin false seams and uneven contacts. Longer time alone does not remove these on the exact native sloth mask. Its selected four-cut layout is a candidate cause; this is not proof of the only cause."
+  },
+  "verificationCost": "One finer final paper audit is bounded to the next supported resolution. Like the existing mandatory audit, it completes after the optimization cutoff. A diagnostic 700-cell audit took 0.525 s; this change is not presented as a faster search. Browser timings include actual readiness.",
+  "historicalFailures": {
+    "fullV6": {
+      "passed": 1106,
+      "total": 1108,
+      "record": "tmp/heart-learning/finalist-qa-2026-10-18/full-v6/state.json",
+      "capturedDefect": "tmp/inverse-test-failures/fit-pzjSZ3"
+    },
+    "newRegressionBeforeFix": {
+      "failed": 1,
+      "log": "tmp/heart-learning/finalist-qa-2026-10-18/final-paper-lattice-red.log"
+    },
+    "focusedAfterFix": {
+      "passed": 16,
+      "total": 16,
+      "log": "tmp/heart-learning/finalist-qa-2026-10-18/final-paper-lattice-green.log"
+    }
+  },
+  "limitations": [
+    "These are repeatedly inspected development cases, not an independent holdout.",
+    "Errors refer to classified photographic masks, not unknown original cutting paths.",
+    "The earlier 27/31 photo benchmark was not rerun in this validation.",
+    "No neural network is production-ready or included. No ONNX/browser NN claim.",
+    "No physical cutting, threading, tearing or assembly test has been performed.",
+    "Nothing has been pushed or deployed."
+  ]
+}
