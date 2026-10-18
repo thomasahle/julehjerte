@@ -419,68 +419,12 @@
     "scope": "Near-miss crop translations at real and 1.5x stress clocks, plus late feature initializations."
   },
   "latestFullReplay": {
-    "url": "https://github.com/thomasahle/julehjerte/actions/runs/39173161568",
-    "diagnosticCommit": "a4f1fdd8",
-    "sourceCommit": "9efa38f5",
-    "status": "completed",
-    "scope": "Complete inverse suite in four isolated-process shards. No diagnostic clock imported; original request budgets, image-error and physical acceptance thresholds.",
-    "conclusion": "failure",
-    "passed": 1094,
-    "failed": 25,
-    "shards": [
-      {
-        "shard": 1,
-        "passed": 249,
-        "failed": 4,
-        "failures": [
-          "one unobserved corner preserves the significant features of photo-bird",
-          "the main fitter reconstructs the dense binary photo target with legal editable-sized counts",
-          "the common fitter refines the alternative junction routing against the unchanged photograph",
-          "fresh round-checker fitting verifies its accurate finalist before choosing a worse routing"
-        ]
-      },
-      {
-        "shard": 2,
-        "passed": 236,
-        "failed": 11,
-        "failures": [
-          "fresh fitting continues an unfinished verified initializer within the remaining search allowance",
-          "fresh automatic fitting repairs a rejected circular routing before common Bezier refinement",
-          "a fully observed mask refines or replaces corner routing without opening its enclosed regions",
-          "an exhausted corner MILP leaves the remaining caller allowance for fresh coarse routing",
-          "a finer spline recovers a half-resolution opening after all coarse feature starts fail",
-          "early feature routing recovers the frozen puppy opening within a ten-second search",
-          "a one-pixel crop shift cannot discard a feature-preserving fine-grid checkpoint",
-          "a fresh shifted bird fit preserves its eye with a 10-second allowance",
-          "a fresh shifted bird fit preserves its eye with a 180-second allowance",
-          "a late routing candidate uses the repair time already provided by its caller",
-          "a late routing candidate cannot manufacture an unprovided repair allowance"
-        ]
-      },
-      {
-        "shard": 3,
-        "passed": 294,
-        "failed": 0,
-        "failures": []
-      },
-      {
-        "shard": 4,
-        "passed": 315,
-        "failed": 10,
-        "failures": [
-          "fresh fitting retains the stacked motif on the resampled mask",
-          "fresh fitting retains the stacked motif on the original mask",
-          "the vertical near-miss layout produces checked exports within the original short search (1x clock)",
-          "the vertical near-miss layout produces checked exports within the original short search (1.5x clock)",
-          "the negative-diagonal near-miss layout produces checked exports within the original short search (1.5x clock)",
-          "late photo cleanup preserves source fidelity inside a 180-second request (750 ms interruption)",
-          "fresh frozen routing retains time for a valid template without changing the mask",
-          "fresh synthetic-control routing retains time for a valid template without changing the mask",
-          "flettede-stonehenge retains its interior detail in a fresh fit (10s allowance)",
-          "flettede-viking retains its interior detail in a fresh fit (60s allowance)"
-        ]
-      }
-    ]
+    "url": "https://github.com/thomasahle/julehjerte/actions/runs/39174809846",
+    "sourceCommit": "5f53ec00",
+    "diagnosticCommit": "da0ac441",
+    "status": "running",
+    "clock": "normal, unmodified, cold-process isolated test files",
+    "releaseReady": false
   },
   "matchingContinuation": {
     "commit": "1cc30d71",
@@ -741,6 +685,131 @@
     "offset": "fail: two significant floating core pieces, total area 0.7300800716293452 mm\u00b2, family 1",
     "finalRepairSteps": 5,
     "finalRepairAccepted": false,
-    "note": "Export correctly reports failed paper checks. This is a real unresolved geometry defect, not merely a timed quality assertion."
+    "note": "Export correctly reports failed paper checks. This is a real unresolved geometry defect, not merely a timed quality assertion.",
+    "followup": "The saved failure and fresh Viking pass after 73cf36fe locally and in Linux run 39174460896; complete release verification remains outstanding."
+  },
+  "unusedPaperRepairBudget": {
+    "sourceCommit": "73cf36fe",
+    "change": "Finite requests can lend up to 4.5 seconds of otherwise idle time to mandatory final paper repair. Keep a one-second final-check reserve, the caller deadline and the existing bounded iterations/quality/physical gates. Untimed inspection retains its 1.5-second cap.",
+    "savedVikingProbe": {
+      "originalCapMs": 1500,
+      "originalSteps": 5,
+      "originalAccepted": false,
+      "largerCapMs": 4500,
+      "repairedSteps": 160,
+      "repairedAccepted": true,
+      "observedElapsedMs": 3695.904792,
+      "sourceErrorBefore": 0.01889375,
+      "sourceErrorAfter": 0.01883125
+    },
+    "localFixedAndNeighborTests": {
+      "passed": 9,
+      "failed": 0
+    },
+    "freshLocalViking": {
+      "passed": 1,
+      "failed": 0,
+      "testMilliseconds": 28645.44725
+    },
+    "linux": {
+      "url": "https://github.com/thomasahle/julehjerte/actions/runs/39174460896",
+      "diagnosticCommit": "6402691e",
+      "passed": 12,
+      "failed": 0,
+      "scope": "Geometric paper, unused budget, and all three short-budget photographic regressions, including fresh Viking."
+    },
+    "appChecks": {
+      "typecheckErrors": 0,
+      "typecheckExistingWarnings": 6,
+      "lintErrors": 0,
+      "lintExistingWarnings": 4,
+      "vitestPassed": 1570,
+      "vitestSkipped": 1,
+      "build": "pass"
+    },
+    "qualification": "A focused success, not a complete Linux suite or main CI pass."
+  },
+  "fixedWitnessPreflight": {
+    "sourceCommit": "5f53ec00",
+    "change": "Reject only the hidden-controls-only projection when both witness cubics are entirely fixed. Preserve the general free-control repair, its original deadline and all final geometry/image/paper gates.",
+    "evidence": "Three circular-pattern failures spent half of each 400 ms checkpoint repair on hidden-only motion while unmovable visible gaps remained. General repair then timed out with 1\u20137 returns remaining.",
+    "localProjectionTests": {
+      "passed": 17,
+      "failed": 0
+    },
+    "freshCircularTests": {
+      "passed": 4,
+      "failed": 0,
+      "log": "/tmp/julehjerte-fixed-witness-curved-contact.log",
+      "exhaustedCornerIndependentError": 0.0089125,
+      "exhaustedCornerSolverSeconds": 21.366426083000007,
+      "qualification": "Local fresh solves, not a Linux full-suite result."
+    },
+    "linuxFullReplay": "https://github.com/thomasahle/julehjerte/actions/runs/39174809846",
+    "changedFileLint": "pass"
+  },
+  "fullReplayBeforePaperRepair": {
+    "url": "https://github.com/thomasahle/julehjerte/actions/runs/39173161568",
+    "diagnosticCommit": "a4f1fdd8",
+    "sourceCommit": "9efa38f5",
+    "status": "completed",
+    "scope": "Complete inverse suite in four isolated-process shards. No diagnostic clock imported; original request budgets, image-error and physical acceptance thresholds.",
+    "conclusion": "failure",
+    "passed": 1094,
+    "failed": 25,
+    "shards": [
+      {
+        "shard": 1,
+        "passed": 249,
+        "failed": 4,
+        "failures": [
+          "one unobserved corner preserves the significant features of photo-bird",
+          "the main fitter reconstructs the dense binary photo target with legal editable-sized counts",
+          "the common fitter refines the alternative junction routing against the unchanged photograph",
+          "fresh round-checker fitting verifies its accurate finalist before choosing a worse routing"
+        ]
+      },
+      {
+        "shard": 2,
+        "passed": 236,
+        "failed": 11,
+        "failures": [
+          "fresh fitting continues an unfinished verified initializer within the remaining search allowance",
+          "fresh automatic fitting repairs a rejected circular routing before common Bezier refinement",
+          "a fully observed mask refines or replaces corner routing without opening its enclosed regions",
+          "an exhausted corner MILP leaves the remaining caller allowance for fresh coarse routing",
+          "a finer spline recovers a half-resolution opening after all coarse feature starts fail",
+          "early feature routing recovers the frozen puppy opening within a ten-second search",
+          "a one-pixel crop shift cannot discard a feature-preserving fine-grid checkpoint",
+          "a fresh shifted bird fit preserves its eye with a 10-second allowance",
+          "a fresh shifted bird fit preserves its eye with a 180-second allowance",
+          "a late routing candidate uses the repair time already provided by its caller",
+          "a late routing candidate cannot manufacture an unprovided repair allowance"
+        ]
+      },
+      {
+        "shard": 3,
+        "passed": 294,
+        "failed": 0,
+        "failures": []
+      },
+      {
+        "shard": 4,
+        "passed": 315,
+        "failed": 10,
+        "failures": [
+          "fresh fitting retains the stacked motif on the resampled mask",
+          "fresh fitting retains the stacked motif on the original mask",
+          "the vertical near-miss layout produces checked exports within the original short search (1x clock)",
+          "the vertical near-miss layout produces checked exports within the original short search (1.5x clock)",
+          "the negative-diagonal near-miss layout produces checked exports within the original short search (1.5x clock)",
+          "late photo cleanup preserves source fidelity inside a 180-second request (750 ms interruption)",
+          "fresh frozen routing retains time for a valid template without changing the mask",
+          "fresh synthetic-control routing retains time for a valid template without changing the mask",
+          "flettede-stonehenge retains its interior detail in a fresh fit (10s allowance)",
+          "flettede-viking retains its interior detail in a fresh fit (60s allowance)"
+        ]
+      }
+    ]
   }
 }
