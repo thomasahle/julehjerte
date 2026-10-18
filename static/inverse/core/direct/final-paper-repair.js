@@ -13,7 +13,7 @@ import {refineCurves} from './refine.js';
 
 export function repairFinalPaper(solution,cfg,{deadline=Infinity,maxMilliseconds=1500,includeMaps=false}={}){
   if(!Number.isFinite(maxMilliseconds)||maxMilliseconds<=0)throw new RangeError('Paper repair needs a finite positive time allowance.');
-  const limit=Math.min(deadline,performance.now()+maxMilliseconds),report={attempted:false,accepted:false,attempts:[]};
+  const start=performance.now(),limit=Math.min(deadline,start+maxMilliseconds),report={attempted:false,accepted:false,attempts:[],budgetMilliseconds:Math.max(0,limit-start)};
   let material=null;
   const unchanged=()=>({solution,report,material});
   if(!cfg.requireMaterialCore){report.rejected='paper_check_disabled';return unchanged();}

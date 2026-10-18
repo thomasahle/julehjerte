@@ -49,7 +49,12 @@ export function finish(solution,cfg,onProgress=()=>{},{refine=true,stoppedEarly=
   // Keep the cheaper search guidance inside fitting. The final pair uses the
   // same complete-cut rule as the editor, with bounded repair before export.
   const returnRepair=repairFinalReturns(solution,cfg,{deadline});
-  const paperRepair=repairFinalPaper(returnRepair.solution,cfg,{deadline,includeMaps:true});
+  // A detected disconnected core needs real curve updates after its initial
+  // audit. Use otherwise idle caller time, retaining a second for final
+  // checks, instead of imposing the short-request cap on a longer request.
+  // Saved-template inspection has no finite caller budget and keeps its cap.
+  const paperRepairMilliseconds=Number.isFinite(deadline)?Math.min(4500,Math.max(1500,deadline-performance.now()-1000)):1500;
+  const paperRepair=repairFinalPaper(returnRepair.solution,cfg,{deadline,maxMilliseconds:paperRepairMilliseconds,includeMaps:true});
   solution=paperRepair.solution;
   cfg=verifiedPaperSettings(solution,cfg);
   const check=validate(solution,cfg,{finalGeometry:true});
