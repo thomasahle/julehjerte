@@ -199,6 +199,10 @@
     "name": "Kugle",
     "difficulty": "medium"
   },
+  "ball-6x6": {
+    "name": "Kugle 6×6",
+    "difficulty": "medium"
+  },
   "triple-heart": {
     "name": "Triple Hjerte",
     "difficulty": "medium"
