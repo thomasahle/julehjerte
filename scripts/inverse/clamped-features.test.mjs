@@ -104,17 +104,21 @@ test('a correction cannot silently discard a requested cutting symmetry',async()
   assert.deepEqual(solutionJSON(result),serialized);
 });
 
-test('an early checked correction bounds a long photographic search and survives export',async()=>{
+test('an early checked correction bounds a long photographic search and survives export',async t=>{
   const input=await sourceImage(),before=structuredClone(input.sourceImage),snapshots=[];
   // Only the original photograph and shifted crop enter this fresh fit.
   // The frozen proposal used by the helper tests above is not supplied here.
   const answer=await design(input,{...AUTOMATIC_PRESET,timeLimit:180,trials:0,earlyStop:false},()=>{},{onCandidate:c=>snapshots.push(c)});
   const report=answer.report.solver,repair=report.clampedFeatureRecovery;
+  try{
   assert.equal(repair.applied,true);assert.ok(repair.sourceErrorAfter<=repair.sourceErrorBefore);
   assert.ok(report.earlyClampedFeatureRecovery.some(attempt=>attempt.report?.applied&&attempt.elapsedSeconds<25));
   // The outer engine subtracts its own setup time before entering the fitter.
   assert.ok(report.refinementBudget.requestedSeconds>179&&report.refinementBudget.requestedSeconds<=180);
   assert.equal(report.refinementBudget.maximumSearchSeconds,25);
+  assert.equal(report.cleanupContinuation,null,'An early completed feature repair keeps its existing cleanup bound.');
+  assert.equal(report.cleanupBudget.addedSeconds,0);
+  assert.equal(report.cleanupBudget.polishingExtensionSeconds,0);
   assert.ok(report.seconds<30);assert.equal(answer.report.templateChecksPassed,true);
   assert.equal(answer.report.validation.passed,true);assert.equal(answer.report.manufacturing.status,'pass');
   assert.ok(snapshots.some(c=>c.stage==='directPolishing'&&c.materialResolution===700&&c.error<.03));
@@ -127,4 +131,5 @@ test('an early checked correction bounds a long photographic search and survives
     assert.ok(error<.03,`Original-mask disagreement ${error} at ${n} pixels.`);
   }
   assert.deepEqual(input.sourceImage,before);
+  }catch(failure){const {captureFitFailure}=await import('./diagnostics/fit-failure.mjs');t.diagnostic(await captureFitFailure({answer,source:input.sourceImage,context:{assertion:failure.message}}));throw failure;}
 });

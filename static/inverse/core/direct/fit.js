@@ -494,12 +494,12 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery){
       // routings. assess() also checks every source feature and independently
       // resolves paper uncertainty; an unverified alternative cannot win.
       alternative.error=mismatch(renderCurves(alternative.graph,alternative.points,alternative.phase,n,32),prob,fitWeights);
-      if(assess(alternative)){
-        alternative.imagePassed=true;
+      alternative.imagePassed=assess(alternative,{approximationReference:c});
+      if(alternative.imagePassed||alternative.approximationImproves&&alternative.paperPassed){
         alternative.matching=matchingSummary(alternative.graph.solution(alternative.points,alternative.phase,input));
-        alternative.paperVerification={...alternative.paperVerification,source:'retained-refinement-alternative',incumbentImageError:c.originalImageError};
+        alternative.paperVerification={...alternative.paperVerification,source:'retained-refinement-alternative',incumbentImageError:c.originalImageError,...(!alternative.imagePassed?{incompleteFeatures:true}:{})};
         proposals.push(alternative);
-        verifiedAlternative=true;
+        verifiedAlternative||=alternative.imagePassed;
       }
     }
     // Refinement can cross a coarse-paper-failed interval just before its
@@ -913,8 +913,10 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery){
   // of the unused requested budget to finish both bounded passes. Ordinary
   // fast fits and short requests retain their existing deadlines; keep the
   // finalization reserve inside the user's hard allowance.
-  const cleanupStart=performance.now(),cleanupBefore=deadline;
-  if(!shortBudget&&cleanupStart-start>=fastSeconds*1000)deadline=Math.min(start+cfg.timeLimit*1000-1300,Math.max(deadline,cleanupStart+6500));
+  const cleanupStart=performance.now(),cleanupBefore=deadline,completedFeatureRepair=candidate.clampedFeatureRecovery?.applied===true;
+  // An early feature correction already earned the bounded comparison path;
+  // optional cleanup must not reopen that deliberately completed search.
+  if(!completedFeatureRepair&&!shortBudget&&cleanupStart-start>=fastSeconds*1000)deadline=Math.min(start+cfg.timeLimit*1000-1300,Math.max(deadline,cleanupStart+6500));
   const cleanupBudget={startedAtSeconds:(cleanupStart-start)/1000,previousSeconds:(cleanupBefore-cleanupStart)/1000,availableSeconds:(deadline-cleanupStart)/1000,addedSeconds:(deadline-cleanupBefore)/1000};
   // This optional early pass precedes polishing. The final selected pair also
   // receives sharing recovery after any matching-sheet replacement.
@@ -928,12 +930,12 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery){
   // cleanup window. A long caller with unused time must still fund a bounded
   // full-resolution polish, rather than receiving only its first few steps.
   const polishingStart=performance.now(),beforePolishing=deadline;
-  if(!featureDetail?.applied&&candidate.paperPassed&&cleanupBudget.addedSeconds>0)deadline=Math.min(start+cfg.timeLimit*1000-1300,Math.max(deadline,polishingStart+4000));
+  if(!completedFeatureRepair&&!featureDetail?.applied&&candidate.paperPassed&&cleanupBudget.addedSeconds>0)deadline=Math.min(start+cfg.timeLimit*1000-1300,Math.max(deadline,polishingStart+4000));
   cleanupBudget.polishingExtensionSeconds=(deadline-beforePolishing)/1000;
   if(!featureDetail?.applied&&candidate.paperPassed&&performance.now()<deadline-450){
     const polishing=orbitObjective(Float64Array.from(source.mask),source.resolution,orbit,weights);
     let polished=stage('directPolishing',()=>polishCandidate(candidate,polishing.probability,source.resolution,{...cfg,preferMatchingSheets:false},{input,weights:polishing.weights,steps:160,rate:.008,deadline:deadline-250,selection:'mask',identicalSheets:candidate.matching?.identical||false,onProgress:hasCandidateObserver(onProgress)?(r,solution)=>onProgress({stage:'directPolishing',counts:candidate.counts,...r},solution):undefined}));
-    polished.imagePassed=assess(polished);
+    polished.imagePassed=assess(polished,{approximationReference:candidate});
     // The ordinary refiner return prioritizes a coarse paper pass. A better
     // geometry-valid checkpoint can remain uncertain only because that paper
     // lattice is too coarse. Recheck the retained coordinates before losing
@@ -954,7 +956,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery){
     // Keep a better legal approximation even when neither fit meets the
     // image limit. That limit still controls the final mismatch warning;
     // it must not discard useful work or weaken geometry/paper/feature gates.
-    const polishValid=polished.geometryPassed&&polished.paperPassed&&polished.originalFeatures?.passed;
+    const polishValid=polished.geometryPassed&&polished.paperPassed&&(polished.originalFeatures?.passed||polished.approximationImproves);
     const polishAccepted=polishValid&&(polished.outlineDetail?polished.originalImageError<candidate.originalImageError:polished.originalImageError<=candidate.originalImageError);
     if(polished.outlineDetail)outlineDetail={...polished.outlineDetail,applied:polishAccepted,errorBefore:candidate.originalImageError,errorAfter:polished.originalImageError,steps:polished.steps,geometryPassed:polished.geometryPassed,paperStatus:polished.paper?.status};
     if(polishAccepted)candidate=polished;
@@ -965,7 +967,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery){
     // keep their existing work. Every replacement still faces the same gates.
     const middle=polished.history.find(h=>h.step>=80&&h.geometry&&h.paper==='pass');
     const continuationStart=performance.now(),hardCleanupDeadline=start+cfg.timeLimit*1000-1300;
-    if(polishAccepted&&polished.imagePassed&&!polished.outlineDetail&&polished.steps===160&&middle&&polished.error<middle.error
+    if(!completedFeatureRepair&&polishAccepted&&polished.imagePassed&&!polished.outlineDetail&&polished.steps===160&&middle&&polished.error<middle.error
       &&cleanupBudget.addedSeconds>0&&hardCleanupDeadline-continuationStart>=4000){
       deadline=Math.min(hardCleanupDeadline,continuationStart+4000);
       const next=stage('directPolishing',()=>polishCandidate(candidate,polishing.probability,source.resolution,{...cfg,preferMatchingSheets:false},{input,weights:polishing.weights,steps:160,rate:.004,deadline:deadline-250,selection:'mask',identicalSheets:candidate.matching?.identical||false,onProgress:hasCandidateObserver(onProgress)?(r,solution)=>onProgress({stage:'directPolishing',counts:candidate.counts,...r},solution):undefined}));
