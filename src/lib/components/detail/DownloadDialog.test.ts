@@ -746,6 +746,16 @@ describe('DownloadDialog', () => {
 				const svg = await blobs[0]!.text();
 				expect(svg).toContain('<title>Classic 3x3, JUL</title>');
 				expect(svg).not.toContain('Weave 1');
+				// The events count the hearts on the sheet too, not every ticked one.
+				expect(trackMultiLaserDownload).toHaveBeenCalledTimes(1);
+				expect(trackMultiLaserDownload).toHaveBeenCalledWith(
+					[
+						{ id: 'classic-3x3', name: designs[0]!.name },
+						{ id: 'jul', name: designs[1]!.name }
+					],
+					'svg',
+					80
+				);
 			});
 
 			it('says the same in English', async () => {

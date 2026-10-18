@@ -97,7 +97,7 @@
 	const several = $derived(designs.length > 1);
 	const heartId = $derived(idProp ?? design.id);
 	const heartName = $derived(several ? designs.map((d) => d.name).join(', ') : (nameProp ?? design.name));
-	/** What the multi-heart events and file names count. */
+	/** What the multi-heart PDF event counts: every heart, as the PDF holds them all. */
 	const heartList = $derived(designs.map((d) => ({ id: d.id, name: d.name })));
 
 	// The laser lobe is remembered for this visit only (DOWNLOAD.md): having cut
@@ -458,7 +458,8 @@
 			// URL has to outlive it for a moment.
 			setTimeout(() => URL.revokeObjectURL(url), 1000);
 			failure = null;
-			if (several) trackMultiLaserDownload(heartList, format, widthMm);
+			// The hearts with a piece on the sheet, as the file name counts them.
+			if (several) trackMultiLaserDownload(laserHearts.map((d) => ({ id: d.id, name: d.name })), format, widthMm);
 			else trackLaserDownload(heartId, heartName, format, widthMm);
 		} catch (err) {
 			console.error('Writing the laser file failed', err);
