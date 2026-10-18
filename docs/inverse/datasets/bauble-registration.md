@@ -144,3 +144,25 @@ from the offline/application settings. Browser timing remains another factor.
 The production preview on port 5232 retains the previously validated runtime;
 the temporary browser-QA server has been stopped. Full inverse-suite validation
 of the new crop fallback is still pending.
+
+
+The four fresh Node comparisons completed with all 1,109 pinned files unchanged:
+
+| Classified mask | Settings | Independent error | Cuts per sheet | Feature/template checks | Time |
+|---|---|---:|---:|---|---:|
+| Browser (15 changed pixels) | Application | 1.500% | 4 | Fail | 104.55 s |
+| Earlier | Application | 1.713% | 5 | Pass | 33.49 s |
+| Browser (15 changed pixels) | Offline benchmark | 1.538% | 4 | Fail | 86.98 s |
+| Earlier | Offline benchmark | 1.775% | 5 | Pass | 24.14 s |
+
+The mask-dependent failure persists under both settings, and Node reproduces the
+browser failure. Runtime-only and settings-only explanations do not account for
+this pattern. Timing can still affect exact numerical results.
+
+The failed search did find a geometry/paper-valid six-cut candidate preserving
+all features at approximately 3.17% error. Its final cleanup instead polishes
+the four-cut candidate, because neither candidate has passed the combined 3%
+image/feature gate and the latter has lower overall error. A bounded experiment
+now tries polishing the feature-complete alternative before discarding it. This
+uses the existing polish eligibility band and retains the original fallback if
+the alternative fails any unchanged final check. It is not yet validated.

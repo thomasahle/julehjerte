@@ -693,7 +693,92 @@
       "sessionId": 29973,
       "controllerPid": 39795,
       "firstWorkerPid": 39801,
-      "status": "running"
-    }
+      "status": "complete",
+      "sourceFilesUnchanged": 1109,
+      "rows": [
+        {
+          "id": "browser-mask--application",
+          "maskSha256": "92431f8caa3e5c60e959947e2a0ee9685d99df15e6c52ed92b95a40fd9ab7547",
+          "settings": "application",
+          "seconds": 104.55364287500001,
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "independentError": 0.015,
+          "templateChecksPassed": false,
+          "geometryPassed": true,
+          "featuresPassed": false,
+          "missing": [
+            {
+              "value": 1,
+              "areaMm2": 5,
+              "centerMm": [
+                96.059375,
+                68.88125
+              ],
+              "retainedFraction": 0
+            }
+          ]
+        },
+        {
+          "id": "offline-mask--application",
+          "maskSha256": "20b38c7b0945412e646ed91ce068562d8c4e562bc713e37d5ddc3afd8639801d",
+          "settings": "application",
+          "seconds": 33.48967375,
+          "counts": {
+            "left": 5,
+            "right": 5
+          },
+          "independentError": 0.01713125,
+          "templateChecksPassed": true,
+          "geometryPassed": true,
+          "featuresPassed": true,
+          "missing": []
+        },
+        {
+          "id": "browser-mask--offline",
+          "maskSha256": "92431f8caa3e5c60e959947e2a0ee9685d99df15e6c52ed92b95a40fd9ab7547",
+          "settings": "offline",
+          "seconds": 86.977245458,
+          "counts": {
+            "left": 4,
+            "right": 4
+          },
+          "independentError": 0.015375,
+          "templateChecksPassed": false,
+          "geometryPassed": true,
+          "featuresPassed": false,
+          "missing": [
+            {
+              "value": 1,
+              "areaMm2": 5,
+              "centerMm": [
+                96.059375,
+                68.88125
+              ],
+              "retainedFraction": 0
+            }
+          ]
+        },
+        {
+          "id": "offline-mask--offline",
+          "maskSha256": "20b38c7b0945412e646ed91ce068562d8c4e562bc713e37d5ddc3afd8639801d",
+          "settings": "offline",
+          "seconds": 24.144679375,
+          "counts": {
+            "left": 5,
+            "right": 5
+          },
+          "independentError": 0.01775,
+          "templateChecksPassed": true,
+          "geometryPassed": true,
+          "featuresPassed": true,
+          "missing": []
+        }
+      ],
+      "interpretation": "At both fixed setting sets, the earlier mask passes with five cuts and the 15-pixel variant fails with four cuts. Fresh Node application-settings results agree with the browser failure. Runtime-only and settings-only explanations do not account for this pattern; finite-time optimization still contributes to numerical variation."
+    },
+    "nextProbe": "Try cleanup on the lowest-error geometry/paper-valid, feature-complete candidate within the existing polish eligibility band (maxImageError + 0.01). The failing run already found such a six-cut candidate at 3.17% error. Keep the original fallback unless every unchanged check passes."
   }
 }
