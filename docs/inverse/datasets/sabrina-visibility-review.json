@@ -1,0 +1,159 @@
+{
+  "schema": "heart-source-visibility-review-1",
+  "date": "2026-10-18",
+  "selection": {
+    "sourceManifest": "docs/inverse/datasets/real-manifest.json",
+    "sourceManifestSha256": "46986981cdbac3fbada54621014a7584a106576688b08807f52753507c8a6ff5",
+    "board": "https://dk.pinterest.com/sabrinadanholm/mine-egne-flettede-julehjerter/",
+    "rule": "First five photo-kind assets by ascending SHA-256 among board origins, selected before viewing the five full images; no model output was used.",
+    "availablePhotoKindAssets": 223
+  },
+  "scope": "Source-photo visibility review only. No inference, fitting, training, masks, precise corner labels, split changes or new downloads. This is not an independent human annotation audit.",
+  "rows": [
+    {
+      "id": "real-01389cd1b00958b6",
+      "localPath": "tmp/heart-training-real/assets/01389cd1b00958b6894506a4157bdf9686dcab124aaf2af7b2c08221d3c56b3a.jpg",
+      "sha256": "01389cd1b00958b6894506a4157bdf9686dcab124aaf2af7b2c08221d3c56b3a",
+      "width": 2448,
+      "height": 3264,
+      "nearDuplicateGroup": "real-01389cd1b00958b6",
+      "splitGroupId": "real-split-955b42a7b8c97d7b",
+      "splitStatus": "qa-reserved",
+      "sourceGroups": [
+        "pinterest-board:https://dk.pinterest.com/sabrinadanholm/mine-egne-flettede-julehjerter/",
+        "pinterest-pin-405746247663679208"
+      ],
+      "motifDescription": "Drum, red and gold-looking paper on wood",
+      "clippedBodySides": [
+        "left",
+        "right"
+      ],
+      "tipClipped": false,
+      "observations": [
+        "Strong spatial illumination changes and creasing across both sheets.",
+        "Both lobe outlines extend outside the photograph; this is not evidence that the overlap square itself is wholly unobservable.",
+        "Small triangular details and physical gaps require source/template review before assigning regular-slit ground truth."
+      ],
+      "overlapCornerCoordinates": null,
+      "cuttingTemplateGroundTruth": "unverified",
+      "reviewer": "assistant visual inspection of original-source image"
+    },
+    {
+      "id": "real-01924ecd6bb2eeda",
+      "localPath": "tmp/heart-training-real/assets/01924ecd6bb2eeda71aa87408f6122132d0246e355207793245cd9df7f3edf5f.jpg",
+      "sha256": "01924ecd6bb2eeda71aa87408f6122132d0246e355207793245cd9df7f3edf5f",
+      "width": 1000,
+      "height": 1334,
+      "nearDuplicateGroup": "real-01924ecd6bb2eeda",
+      "splitGroupId": "real-split-955b42a7b8c97d7b",
+      "splitStatus": "qa-reserved",
+      "sourceGroups": [
+        "pinterest-board:https://dk.pinterest.com/sabrinadanholm/mine-egne-flettede-julehjerter/",
+        "pinterest-pin-405746247658488277"
+      ],
+      "motifDescription": "Blue/yellow heart and four-point star",
+      "clippedBodySides": [
+        "bottom"
+      ],
+      "tipClipped": true,
+      "observations": [
+        "The bottom tip continues beyond the image.",
+        "The thin blue/yellow offset along the lower edge is physical sheet/background evidence, not automatically a desired mask stripe."
+      ],
+      "overlapCornerCoordinates": null,
+      "cuttingTemplateGroundTruth": "unverified",
+      "reviewer": "assistant visual inspection of original-source image"
+    },
+    {
+      "id": "real-026d2551e904584f",
+      "localPath": "tmp/heart-training-real/assets/026d2551e904584f8802d14e26f98a6910f0e59f1800bc5926598e8aa837b87b.jpg",
+      "sha256": "026d2551e904584f8802d14e26f98a6910f0e59f1800bc5926598e8aa837b87b",
+      "width": 1334,
+      "height": 1000,
+      "nearDuplicateGroup": "real-026d2551e904584f",
+      "splitGroupId": "real-split-955b42a7b8c97d7b",
+      "splitStatus": "qa-reserved",
+      "sourceGroups": [
+        "pinterest-board:https://dk.pinterest.com/sabrinadanholm/mine-egne-flettede-julehjerter/",
+        "pinterest-pin-405746247658486178"
+      ],
+      "motifDescription": "Rotated red/white repeated star rings",
+      "clippedBodySides": [
+        "top",
+        "left"
+      ],
+      "tipClipped": true,
+      "observations": [
+        "The heart points left; its tip is clipped at the left edge and the red lobe is clipped at the top.",
+        "The white lobe has weak contrast against the pale background.",
+        "Apparent point contacts need tolerance/visibility labels rather than assuming every dark photographic seam is part of the design."
+      ],
+      "overlapCornerCoordinates": null,
+      "cuttingTemplateGroundTruth": "unverified",
+      "reviewer": "assistant visual inspection of original-source image"
+    },
+    {
+      "id": "real-02fd6d43cc0fd834",
+      "localPath": "tmp/heart-training-real/assets/02fd6d43cc0fd834acbf30ca34f3002729aeebe20d43a261e09bff9a09146e10.jpg",
+      "sha256": "02fd6d43cc0fd834acbf30ca34f3002729aeebe20d43a261e09bff9a09146e10",
+      "width": 1000,
+      "height": 1334,
+      "nearDuplicateGroup": "real-02fd6d43cc0fd834",
+      "splitGroupId": "real-split-955b42a7b8c97d7b",
+      "splitStatus": "qa-reserved",
+      "sourceGroups": [
+        "pinterest-board:https://dk.pinterest.com/sabrinadanholm/mine-egne-flettede-julehjerter/",
+        "pinterest-pin-405746247658550339"
+      ],
+      "motifDescription": "Bowed red/silver-looking grid",
+      "clippedBodySides": [
+        "left",
+        "right"
+      ],
+      "tipClipped": false,
+      "observations": [
+        "Both lobes touch or continue outside the frame; the lower tip is visible.",
+        "Broad reflection changes occur across the silver-looking sheet.",
+        "Strips visibly bow out of plane; a single homography cannot remove that nonplanar distortion."
+      ],
+      "overlapCornerCoordinates": null,
+      "cuttingTemplateGroundTruth": "unverified",
+      "reviewer": "assistant visual inspection of original-source image"
+    },
+    {
+      "id": "real-0367a33a4ede4a2a",
+      "localPath": "tmp/heart-training-real/assets/0367a33a4ede4a2a1b9d5fb5d2f07a1b0adf4e3e844ae663160f6339afcfa770.jpg",
+      "sha256": "0367a33a4ede4a2a1b9d5fb5d2f07a1b0adf4e3e844ae663160f6339afcfa770",
+      "width": 1000,
+      "height": 1334,
+      "nearDuplicateGroup": "real-0367a33a4ede4a2a",
+      "splitGroupId": "real-split-955b42a7b8c97d7b",
+      "splitStatus": "qa-reserved",
+      "sourceGroups": [
+        "pinterest-board:https://dk.pinterest.com/sabrinadanholm/mine-egne-flettede-julehjerter/",
+        "pinterest-pin-405746247658502521"
+      ],
+      "motifDescription": "Gold/silver-looking checker with small hearts",
+      "clippedBodySides": [
+        "right",
+        "bottom"
+      ],
+      "tipClipped": true,
+      "observations": [
+        "The tip is clipped at the bottom and part of the right lobe extends outside the frame.",
+        "Reflections and shade change both paper appearances; the handle is a separate visible region."
+      ],
+      "overlapCornerCoordinates": null,
+      "cuttingTemplateGroundTruth": "unverified",
+      "reviewer": "assistant visual inspection of original-source image"
+    }
+  ],
+  "summary": {
+    "reviewed": 5,
+    "someBodyClipping": 5,
+    "tipClipping": 3,
+    "qualification": "These five observations do not estimate prevalence across the board. Body/lobe clipping and overlap-square visibility are distinct."
+  },
+  "implication": "Future corner proposals need explicit observation/visibility uncertainty. Compare all errors on the same observed source region; an invented off-image corner or missing source pixels must not be treated as exact training or evaluation truth. Retain native RGB for paper classification and independently check reconstructed templates.",
+  "trainingUse": "None; inherited QA reservation remains in place."
+}
