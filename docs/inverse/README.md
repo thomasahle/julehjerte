@@ -499,10 +499,14 @@ in [CONNECTOR-RETRY-VALIDATION.json](CONNECTOR-RETRY-VALIDATION.json).
 
 The [training-data overview](datasets/README.md) now links the collected real
 photographs, Pinterest importer, validated synthetic generator and pretrained
-model comparison. These prepare learning experiments; no neural model has
-been trained or integrated into the live solver.
+model comparison. Small neural prototypes have been trained using TorchVision's
+ImageNet-pretrained MobileNetV3-Small encoder, including boundary/junction and
+foreground models. They remain offline experiments: no neural model is integrated
+into the website or has demonstrated an overall reconstruction advantage. See
+the overview for measured results and the remaining production gates.
 
-The following are proposals, not measured model performance:
+The following table is the research agenda, not a model-performance table.
+The overview distinguishes the experiments already measured from untested ideas:
 
 | Task | Suggested inputs and outputs | Role and limitation |
 | --- | --- | --- |

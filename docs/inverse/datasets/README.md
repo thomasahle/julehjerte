@@ -1,6 +1,7 @@
 # Data for learned heart reconstruction
 
-Status reviewed on **2026-10-17**. **No neural network is ready for production or
+Release status reviewed on **2026-10-18**; dataset counts last audited on
+**2026-10-17**. **No neural network is ready for production or
 included in the website.** The collection, synthetic generator and learned
 prototypes are research tools; the existing geometric solver remains the
 production path.
@@ -14,9 +15,22 @@ production path.
 | Synthetic geometry | 256 saved witnesses pass the current geometry/paper re-audit across 768 original/subdivided/reflected representations | Limited procedural diversity; recipe holdouts are not topology-disjoint splits |
 | Small learned model | TorchVision ImageNet-pretrained MobileNetV3-Small with task-specific heads; offline experiments exist | No demonstrated overall reconstruction advantage, ONNX/browser validation or deployment |
 | Larger segmentation baseline | Official pretrained MobileSAM evaluated offline | A useful body mask alone does not establish correct corners, material boundaries or legal templates |
-| Solver | Recent initialization, repair and polishing fixes are committed | Full inverse, application, browser and photo-export QA complete; visible defects and four photo failures remain |
+| Solver | Earlier validated revision passes 22/22 regular Hunodan browser workflows and 27/31 photo cases | Latest candidate passes 1,096/1,098 inverse tests; two failures prevent recommending that bundle for release |
 
 ### Latest solver and browser validation
+
+The **18 October candidate** (`23d48e3`, including the `bd7e1d7` retained-paper
+repair) passes type checking, lint, build and **874 application tests** (one
+skipped), but only **1,096/1,098 inverse tests**. One curved-contact case misses
+the asserted initializer error bound; a separate late-cleanup replay has
+**1.9300%** independently rendered disagreement, equal to a bound requiring
+strictly less than **1.93%**. The causes remain under investigation; these
+failures are not evidence of invalid exported geometry. All 1,121 pinned source
+files remained unchanged through QA. Logs and the tested revision are in
+`tmp/heart-learning/retained-paper-qa-2026-10-18/`. The latest bundle is **not yet
+recommended for deployment**, and the local preview retains its previously
+validated solver. The successful broader benchmarks below describe their named
+earlier revisions, not a fresh benchmark of this candidate.
 
 The [interior-supported count proposal](interior-count-fit-results.json) retains
 all original hypotheses and adds denser starts only with repeated interior
