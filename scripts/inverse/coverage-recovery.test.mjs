@@ -105,11 +105,12 @@ test('traced recovery ignores arbitrary free-border colours and scores the obser
   }
 });
 
-for(const id of ['photo-bird','hunodan-hjfig-05'])test(`one unobserved corner preserves the significant features of ${id}`,async()=>{
+for(const id of ['photo-bird','hunodan-hjfig-05'])test(`one unobserved corner preserves the significant features of ${id}`,async t=>{
   const {entry,input}=image(id);input.validMask=new Uint8Array(input.mask.length).fill(1);input.validMask[0]=0;
   const prepared=prepare(input,entry.settings),source=prepared.target.sourceImage,before=structuredClone(source);
   assert.equal(sourceWeights(source)[0],0);assert.deepEqual(source.mask,input.mask);
   const answer=await design(prepared.target,entry.settings);
+  try{
   assert.equal(answer.report.validation.passed,true);assert.equal(answer.report.manufacturing.status,'pass');assert.equal(answer.report.templateChecksPassed,true);
   const exported=await renderExportedWeave(answer.files['cut_geometry.json'],entry.resolution);
   assert.ok(referenceError(source,exported.mask).mismatchFraction<(id==='photo-bird'?.03:.011));
@@ -119,6 +120,7 @@ for(const id of ['photo-bird','hunodan-hjfig-05'])test(`one unobserved corner pr
     assert.ok(eye);assert.equal(eye.touchesBorder,false);assert.ok(eye.componentIoU>.8);
   }
   assert.deepEqual(source,before);
+  }catch(error){t.diagnostic(await captureFitFailure({answer,source,context:{case:id,unobservedCorner:true,assertion:error.message}}));throw error;}
 });
 
 test('an invalid feature proposal cannot consume the partial-photo search without a legal result',async t=>{
