@@ -1194,7 +1194,41 @@
       "url": "https://github.com/thomasahle/julehjerte/actions/runs/39177445255",
       "diagnosticCommit": "2b56cb81",
       "mode": "feature-detail",
-      "status": "in_progress"
-    }
+      "status": "completed",
+      "conclusion": "failure",
+      "passed": 9,
+      "failed": 5,
+      "failures": [
+        "a finer spline recovers a half-resolution opening after all coarse feature starts fail",
+        "early feature routing recovers the frozen puppy opening within a ten-second search",
+        "a one-pixel crop shift cannot discard a feature-preserving fine-grid checkpoint",
+        "a fresh shifted bird fit preserves its eye with a 10-second allowance",
+        "a fresh shifted bird fit preserves its eye with a 180-second allowance"
+      ],
+      "log": "/tmp/julehjerte-ci-feature-capture.log"
+    },
+    "finding": "Both puppy fits promoted the ordinary 3+3 grid after a 5+3 feature seed began with narrow strips. The alternative already omitted the opening and consumed all 750 refinement steps. Original and shifted exports had low aggregate disagreement (0.004575 and 0.00371875) but failed feature fidelity; the Stop assertion was an early symptom, not merely a stale lattice expectation. Bird at 180 seconds eventually passed at 41.20 solver seconds; the 10-second fit failed after only 85 protected steps."
+  },
+  "rejectedTightLabelBounds": {
+    "change": "Prototype exact M=max(0,K-1) conditional slit-label bounds instead of max(1,K). Labels lie in [0,K-1], so integral feasibility is unchanged.",
+    "decision": "Restored original source: no material paired timing gain; the same first feasible objective and dual bound indicate presolve already removes the looseness for this graph.",
+    "model": {
+      "columns": 2472,
+      "rows": 6712,
+      "firstFeasibleObjective": 2660.8158965999996,
+      "dual": 1404.315213050224
+    },
+    "seconds": {
+      "original": [
+        3.604550875,
+        3.419367875
+      ],
+      "tight": [
+        3.428776959,
+        3.407282292
+      ]
+    },
+    "validation": "Both first feasible assignments satisfy both models within 2e-5 residual. Ten local routing/LP/deadline regressions passed, but this does not establish a speed improvement.",
+    "log": "/tmp/julehjerte-label-bound-probe.log"
   }
 }
