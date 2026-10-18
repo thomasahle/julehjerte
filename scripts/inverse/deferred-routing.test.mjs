@@ -43,7 +43,11 @@ for(const entry of fixture.cases)test(`${entry.id}: refine the retained grid bef
     assert.equal(solver.selectedInitialization,'grid');
     assert.deepEqual(solver.selectedCounts,[4,4]);
     assert.equal(solver.cleanupBudget.addedSeconds,0,'A fast fit must retain its existing cleanup allowance.');
-    await checkExport(answer,input.sourceImage,entry.baselineIndependentError+1/before.mask.length);
+    const budget=solver.cleanupBudget;
+    assert.ok(budget.startedAtSeconds+budget.availableSeconds+budget.polishingExtensionSeconds+(solver.cleanupContinuation?.addedSeconds??0)<=fixture.settings.timeLimit-1.3+1e-6,
+      'Finishing a fast fit must still preserve the caller\'s export reserve.');
+    const error=await checkExport(answer,input.sourceImage,entry.baselineIndependentError+1/before.mask.length);
+    t.diagnostic(JSON.stringify({case:entry.id,seconds:solver.seconds,independentError:error,polishingExtensionSeconds:budget.polishingExtensionSeconds,continuationSteps:solver.cleanupContinuation?.steps??0}));
     assert.deepEqual(input.sourceImage,before);
   }catch(error){
     t.diagnostic(await captureFitFailure({answer,source:input.sourceImage,context:{case:entry.id,assertion:error.message}}));throw error;

@@ -983,10 +983,12 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery){
   }
   let outlineDetail=null,cleanupContinuation=null;
   // Shared-cut recovery has variable cost and can consume nearly the entire
-  // cleanup window. A long caller with unused time must still fund a bounded
-  // full-resolution polish, rather than receiving only its first few steps.
+  // cleanup window, including when the first valid grid arrived quickly.
+  // The initial fast-search deadline is not the long caller's deadline: give
+  // its full-resolution polish the same bounded window as a later fit.
+  // Short requests and already completed feature repairs keep their deadline.
   const polishingStart=performance.now(),beforePolishing=deadline;
-  if(!completedFeatureRepair&&!featureDetail?.applied&&candidate.paperPassed&&cleanupBudget.addedSeconds>0)deadline=Math.min(start+cfg.timeLimit*1000-1300,Math.max(deadline,polishingStart+4000));
+  if(!shortBudget&&!completedFeatureRepair&&!featureDetail?.applied&&candidate.paperPassed)deadline=Math.min(start+cfg.timeLimit*1000-1300,Math.max(deadline,polishingStart+4000));
   cleanupBudget.polishingExtensionSeconds=(deadline-beforePolishing)/1000;
   if(!featureDetail?.applied&&candidate.paperPassed&&performance.now()<deadline-450){
     const polishing=orbitObjective(Float64Array.from(source.mask),source.resolution,orbit,weights);
