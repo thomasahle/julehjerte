@@ -124,7 +124,7 @@
     "A late feature start reserved 450 ms for a polish that could no longer start after assessment. Lending that time to its unfinished refinement improved the source fit without extending the ten-second request.",
     "The Viking continuation repeatedly gave the whole 400 ms repair allowance to hidden-only controls, starving the existing general-control fallback. A local split-budget experiment reduced independent error from 0.01941875 to 0.0186625 without extending the continuation."
   ],
-  "remaining": "Main remains red. Full cold-process Linux replay 39167894342 passed 1105/1114 tests despite the focused 36/36 pass. Nine timed fit failures remained. The exact paper-audit reuse fix is committed and a fresh full Linux replay is running at 39169067866. No full-suite or release pass is claimed.",
+  "remaining": "Main remains red. Best completed full cold-process replay passed 1105/1114 tests. Paper-audit reuse was rejected and reverted after wider Linux regressions. Explicit short-fit budget fixes are being replayed at 39169949289. No full-suite or release pass is claimed.",
   "branchSafety": "codex/ci-inverse-diagnostics replaces the Pages workflow with manual diagnostics. Never merge that entire branch to main. Transfer only verified fixes from codex/solver-initialization.",
   "limitations": [
     "No fresh 22-design Hunodan speed benchmark in this CI recovery pass.",
@@ -356,6 +356,41 @@
       "productionBuild": "passed"
     },
     "linuxReplay": "https://github.com/thomasahle/julehjerte/actions/runs/39169067866",
+    "linuxStatus": "failure: 1084 passed, 32 failed. Reverted. The run completed before its requested cancellation, so no work was cancelled.",
+    "status": "reverted",
+    "revertCommit": "439a20f3",
+    "completedShards": [
+      {
+        "shard": 1,
+        "passed": 251,
+        "failed": 8
+      },
+      {
+        "shard": 2,
+        "passed": 196,
+        "failed": 13
+      },
+      {
+        "shard": 3,
+        "passed": 261,
+        "failed": 3
+      },
+      {
+        "shard": 4,
+        "passed": 376,
+        "failed": 8
+      }
+    ],
+    "limitation": "Exact numerical equivalence of repeated paper audits did not preserve end-to-end outcomes under wall-clock-driven search scheduling. Reverted rather than shipping the regressions.",
+    "passed": 1084,
+    "failed": 32
+  },
+  "explicitBudgetFix": {
+    "commit": "266ac592",
+    "change": "Defer the early clearance preparation of an alternative already known to lose source colours; retain it in the ordinary finalist queue. Let a caller fund finer paper verification from its checking tail without extending gradient work.",
+    "localPassed": 9,
+    "localFailed": 0,
+    "linuxReplay": "https://github.com/thomasahle/julehjerte/actions/runs/39169949289",
     "linuxStatus": "running"
   }
 }
