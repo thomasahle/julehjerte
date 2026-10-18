@@ -3,6 +3,8 @@
  */
 import {Adam,basisTable,splineBasis,splineKnots,randomNormal,resize} from './math.js';
 import {imageWeights,resizeObjective} from './image-objective.js';
+import {numericalKernel,nativeGridMask} from '../numerical-kernel.js';
+import {measuredKernel,sameArray} from '../kernel-choice.js';
 
 export function gridModel(counts,k=16,seed=0,initial=null){
   const normal=randomNormal(seed),offsets=[0,k*(counts[0]+1)],size=offsets[1]+k*(counts[1]+1);
@@ -129,10 +131,18 @@ export function gridParity(samples,count,n,transpose=false){
   }
   return parity;
 }
-export function gridMask(model,n,phase,floor=.008){
-  const samples=gridSamples(gridControls(model,floor),model,basisTable(n,model.k),n),mask=gridParity(samples[0],model.counts[0],n),other=gridParity(samples[1],model.counts[1],n,true),bit=Number(phase===-1);
-  for(let i=0;i<mask.length;i++)mask[i]^=other[i]^bit;
-  return mask;
+const maskKernel=measuredKernel(sameArray,{repetitions:8,minimumBatchMilliseconds:1,quickDecision:true});
+export const gridMaskKernelChoices=()=>maskKernel.report();
+export function gridMask(model,n,phase,floor=.008,{native='auto'}={}){
+  const samples=gridSamples(gridControls(model,floor),model,basisTable(n,model.k),n);
+  const javascript=()=>{
+    const mask=gridParity(samples[0],model.counts[0],n),other=gridParity(samples[1],model.counts[1],n,true),bit=Number(phase===-1);
+    for(let i=0;i<mask.length;i++)mask[i]^=other[i]^bit;
+    return mask;
+  };
+  if(!native||!numericalKernel()?.grid_mask)return javascript();
+  const accelerated=()=>nativeGridMask(samples,model.counts,n,phase)||javascript();
+  return native===true?accelerated():maskKernel.run(n,javascript,accelerated);
 }
 export function mismatch(mask,prob,weights=null){
   const importance=imageWeights(weights,mask.length);

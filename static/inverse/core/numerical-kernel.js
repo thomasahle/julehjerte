@@ -64,6 +64,19 @@ export function nativeGridRows(target,weights,flips,priors,n,count,family,phase,
   return doubles.slice(out/8,out/8+n*count);
 }
 
+/** Rasterize the two ordered families without an intermediate full-size mask.
+ * Like gridParity(), cuts exactly at a pixel centre do not toggle that pixel.
+ */
+export function nativeGridMask(samples,counts,n,phase){
+  if(!runtime?.grid_mask||!Number.isInteger(n)||n<1||n>4096||![1,-1].includes(phase)||
+    !Array.isArray(counts)||counts.length!==2||counts.some(c=>!Number.isInteger(c)||c<0||c>4096)||
+    !Array.isArray(samples)||samples.length!==2||samples.some((s,f)=>!(s instanceof Float64Array)||s.length!==n*counts[f]))return null;
+  const arena=kernelMemory(),a=arena.alloc(samples[0].byteLength),b=arena.alloc(samples[1].byteLength),out=arena.alloc(n*n);
+  const {doubles,bytes}=arena.views();doubles.set(samples[0],a/8);doubles.set(samples[1],b/8);
+  runtime.grid_mask(a,b,counts[0],counts[1],n,Number(phase===-1),out);
+  return bytes.slice(out,out+n*n);
+}
+
 /** Exact-threshold paper masks, with ambiguous cells deferred to JS hypot.
  * Indices are validated before crossing the memory boundary. Coordinates are
  * float64; nonfinite distance arithmetic is deferred rather than approximated. */
