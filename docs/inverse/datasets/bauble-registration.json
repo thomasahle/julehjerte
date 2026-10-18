@@ -1,5 +1,5 @@
 {
-  "status": "Geometry/photo hypothesis checks complete; fallback integration and actual browser QA pending",
+  "status": "RGB background fallback integrated; crop/application checks pass; actual browser and full inverse validation pending",
   "photo": "scripts/inverse/fixtures/hard-photos/collage.png",
   "photoSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
   "case": "bauble (R5C4)",
@@ -490,5 +490,127 @@
         "known": 14
       }
     }
+  },
+  "integration": {
+    "policy": "Preserve supported in-photo crops; otherwise try RGB/background separation with ordinary and extended lower scan bands. Retain only supported in-photo alternatives and choose by shape score. No artwork error or manual corner labels enter selection.",
+    "cropTests": {
+      "distinctTests": 93,
+      "initialPassed": 91,
+      "initialFailures": 2,
+      "cause": "Offline foreground experiment adapter asserted the old locator field-selection source text. Updated the audited seam; its three tests then passed.",
+      "recheckPassed": 3
+    },
+    "replayedInputs": 83,
+    "exactlyMatchesDiagnosticPolicy": true,
+    "changedFromBaseline": [
+      "collage-bauble"
+    ],
+    "applicationTests": {
+      "passed": 874,
+      "skipped": 1
+    },
+    "typecheck": "passed; 7 existing warnings",
+    "lint": "passed; 3 existing warnings",
+    "build": "passed",
+    "sourceFilesUnchanged": 1106,
+    "browser": "running, not yet validated",
+    "fullInverse": "pending",
+    "evidence": [
+      {
+        "path": "tmp/heart-learning/bauble-segmentation-2026-10-18/production/qa-state.json",
+        "sha256": "820235c2d4b7dbc920c7a99f7dfc0e61694bed2f6266bd32dd5f147d0e7928df"
+      },
+      {
+        "path": "tmp/heart-learning/bauble-segmentation-2026-10-18/production/crop-tests.log",
+        "sha256": "ea415da7e458324e5a76c92b9dd655c5ac2288e278ad90c01d5a0ae055d244b8"
+      },
+      {
+        "path": "tmp/heart-learning/bauble-segmentation-2026-10-18/production/qa2/qa-state.json",
+        "sha256": "cacfd81e16bc52db5b0f68b013e201776bb121e1bc47b283ef2d9db3d1abeb1c"
+      },
+      {
+        "path": "tmp/heart-learning/bauble-segmentation-2026-10-18/production/qa2/source.json",
+        "sha256": "28609781d2a70d83096cc958fcc732173408f8878ba02773273e402c8eb9c734"
+      },
+      {
+        "path": "tmp/heart-learning/bauble-segmentation-2026-10-18/production/replay.json",
+        "sha256": "b3b23402eba21937226f94612d1f52eab4671b660fb5e5cc8634609666dd50dd"
+      }
+    ]
+  },
+  "framedMotifDiagnosis": {
+    "status": "Open; production refinement unchanged",
+    "finding": "Initial segmentation lines recover the known tip closely, but colour-gradient refinement moves it inward by roughly 10 pixels. This happens with the background-covariance gradient metric in all four fully observed failures.",
+    "rows": [
+      {
+        "id": "02-tinted-framed-blob",
+        "knownTip": [
+          190,
+          230
+        ],
+        "cornerError": 8.8123419022697,
+        "metric": "background-covariance",
+        "initialTip": [
+          190.70513153157276,
+          231.49173320257395
+        ],
+        "finalTip": [
+          191.02609413006627,
+          221.24760029256308
+        ]
+      },
+      {
+        "id": "08-lighter-background-framed-blob",
+        "knownTip": [
+          190,
+          230
+        ],
+        "cornerError": 8.937659264942228,
+        "metric": "background-covariance",
+        "initialTip": [
+          191.11997065491892,
+          231.48716113645432
+        ],
+        "finalTip": [
+          191.66271937771705,
+          221.21836476462545
+        ]
+      },
+      {
+        "id": "10-tinted-framed-blob",
+        "knownTip": [
+          190,
+          230
+        ],
+        "cornerError": 11.062679766456247,
+        "metric": "background-covariance",
+        "initialTip": [
+          190.51531747344393,
+          231.49435610656045
+        ],
+        "finalTip": [
+          191.0215717542118,
+          218.98458921482467
+        ]
+      },
+      {
+        "id": "12-lighter-background-framed-blob",
+        "knownTip": [
+          190,
+          230
+        ],
+        "cornerError": 11.828856410066837,
+        "metric": "background-covariance",
+        "initialTip": [
+          191.49682213513546,
+          231.02082420820878
+        ],
+        "finalTip": [
+          191.79441816933553,
+          221.08986953283397
+        ]
+      }
+    ],
+    "nextExperiment": "Require candidate colour-edge refinements to retain an observed foreground/background transition; compare with shadows, blur, clipped and known-layout controls before adoption."
   }
 }

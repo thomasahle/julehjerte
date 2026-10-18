@@ -24,6 +24,12 @@ function outlineOrientation(proposal) {
   return (90 - Math.atan2(dy, dx) * 180 / Math.PI + 360) % 360;
 }
 
+// Out-of-photo corners may be legitimate for a clipped heart. Keep that editable
+// guess unless a separate, fully observed shape hypothesis explains the photo.
+function withinPhotograph(proposal, image) {
+  return !!proposal?.quad && proposal.quad.every(([x, y]) => x >= -.5 && y >= -.5 && x <= image.width - .5 && y <= image.height - .5);
+}
+
 export function detectHeartCrops(input, { roi = input.roi, onProgress = () => {} } = {}) {
   if (input.imageWidth * input.imageHeight > 24e6) throw new Error('Image exceeds 24 megapixels.');
   if (input.imageWidth < 24 || input.imageHeight < 24) return { status: 'not_found', reason: 'The image is too small for automatic outline fitting.', candidates: [] };
@@ -110,6 +116,27 @@ export function detectHeartCrops(input, { roi = input.roi, onProgress = () => {}
       }
     }
     orientationSearch.selectedDegrees = proposal.evidence?.workingRotation?.degrees ?? null;
+  }
+  if (!supportedCropOutline(proposal) || !withinPhotograph(proposal, image)) {
+    // Hue-only fields can merge dark background with pale paper. Retry with
+    // RGB foreground/background separation and two lower-edge sampling bands.
+    // Preserve supported, observed crops. Never use motif error to rank crops,
+    // or clamp an extrapolated corner to manufacture a complete heart.
+    const detect = detector('rgb-background'), alternatives = [];
+    for (const extendLowerBand of [false, true]) {
+      const candidate = detect(0, { extendLowerBand });
+      if (supportedCropOutline(candidate) && withinPhotograph(candidate, image)) {
+        candidate.backgroundRefinement = {
+          method: 'rgb-paper-segment-background',
+          lowerBand: extendLowerBand ? 'extended' : 'ordinary',
+          previousQuad: proposal.quad,
+          previousSupported: supportedCropOutline(proposal),
+        };
+        alternatives.push(candidate);
+      }
+    }
+    alternatives.sort((a, b) => a.score - b.score);
+    if (alternatives.length) proposal = alternatives[0];
   }
   proposal.elapsedMs = performance.now() - started;
   return {

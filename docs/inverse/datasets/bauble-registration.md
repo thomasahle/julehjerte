@@ -64,7 +64,7 @@ equal-domain comparison or a way to select the correct physical crop. The
 earlier current-classifier error of 4.375% used a ten-second request; its
 improvement here is not evidence of a same-budget solver improvement.
 
-Production crop code has not changed. Measurements, source hashes and experiment
+The diagnostic probes above did not change production crop code. Measurements, source hashes and experiment
 identifiers are in [bauble-registration.json](bauble-registration.json).
 Local probe artifacts are under
 `tmp/heart-learning/bauble-segmentation-2026-10-18/`.
@@ -93,4 +93,27 @@ The RGB alternatives for the four fully observed failures remain unsupported;
 the proposed fallback does not fix them. This is retained as an open physical
 registration problem, not counted as successful corner detection merely because
 the outline checks pass. No synthetic painted motif is claimed to have a valid
-weave. Production changes and actual upload/crop/reconstruction QA remain pending.
+weave. Actual upload/crop/reconstruction QA remained pending at this stage.
+
+
+The RGB/background fallback is now integrated in the automatic crop pipeline.
+It reuses one set of learned fields for the two scan bands, retains the existing
+support gates, and does not clamp extrapolated corners. Accepted proposals expose
+the background-colour evidence and selected scan band. Supported, fully observed
+crops keep their original corners.
+
+The integrated implementation replayed all **83** recorded inputs with exactly
+the diagnostic policy's selected coordinates. Only the bauble changed from the
+baseline. The 93 crop tests initially had two failures in the offline foreground
+adapter's audited source-text seam; updating that seam restored its three tests.
+The other 91 crop tests passed, including independent template reconstruction
+checks. Typecheck, lint, build and 874 application tests pass (one existing
+application skip). Browser workflow and full inverse-suite validation are pending.
+
+The framed-blob controls now have a more specific diagnosis. Their initial line
+fits predict the known tip near (190, 230), but the colour-gradient refinement
+moves it to y=219–221. The four failures use the background-covariance metric.
+Thus the initial segmentation is close, and a later registration step introduces
+the displacement. A candidate fix must distinguish a physical paper/background
+edge from the stronger nearby interior frame; merely improving the segmentation
+network would not address this failure. No refinement change is included yet.
