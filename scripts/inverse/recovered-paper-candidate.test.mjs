@@ -7,7 +7,7 @@ import {prepare} from '../../static/inverse/core/engine.js';
 import {settings} from '../../static/inverse/core/settings.js';
 import {loadSolutionJSON,solutionJSON,curvesOf} from '../../static/inverse/core/graph.js';
 import {CurveGraph} from '../../static/inverse/core/direct/curves.js';
-import {assessCandidate} from '../../static/inverse/core/direct/candidate-verification.js';
+import {assessCandidate,verifyCandidatePaper} from '../../static/inverse/core/direct/candidate-verification.js';
 import {validate} from '../../static/inverse/core/validate.js';
 import {materialAudit,verifiedPaperSettings} from '../../static/inverse/core/material.js';
 import {finalMaterialAudit} from '../../static/inverse/core/geometric-material.js';
@@ -40,6 +40,18 @@ for(const witness of fixture.cases)test(`a ${witness.steps}-step repair must res
   assert.equal(assessCandidate(wrongImage,input,{...cfg,maxImageError:0}),false);
   assert.equal(wrongImage.paperVerification.resolution,700,'Paper verification cannot waive image fidelity.');
   assert.equal(assessCandidate({...candidate(),geometryPassed:false},input,cfg),false);
+
+  // Paper can be checked to permit another fitting stage even while the
+  // image is unacceptable. That check must never waive the image gate.
+  const forRefinement=candidate(),strictImage={...cfg,maxImageError:0};
+  assert.equal(verifyCandidatePaper({...forRefinement,geometryPassed:false},input,strictImage),false);
+  assert.equal(verifyCandidatePaper(forRefinement,input,strictImage,{deadline:0}),false);
+  assert.equal(forRefinement.paperVerification.resolution,700);
+  assert.equal(verifyCandidatePaper(forRefinement,input,strictImage),witness.expectedStatus1000==='pass');
+  assert.equal(forRefinement.paperVerification.resolution,1000);
+  assert.equal(assessCandidate(forRefinement,input,strictImage),false);
+  assert.ok(forRefinement.originalImageError>0);
+  assert.deepEqual(forRefinement.points,graph.points,'Verification never edits the fitted paths.');
 
   const checked=candidate(),expected=witness.expectedStatus1000==='pass';
   assert.equal(assessCandidate(checked,input,cfg),expected);

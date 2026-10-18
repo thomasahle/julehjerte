@@ -21,6 +21,18 @@ export function assessCandidate(c,input,cfg,{deadline=Infinity,sourceFeatures,re
     if(!auditFeatureFidelityChange(source,before,woven,cfg,sourceFeatures).passed)return false;
     c.approximationImproves=true;
   }
+  verifyCandidatePaper(c,input,cfg,{deadline,recheckFailed});
+  return c.paperPassed&&c.originalFeatures.passed;
+}
+
+/** Resolve only the paper uncertainty of unchanged, geometry-checked cuts.
+ * This may fund further refinement of an imperfect image fit; it never
+ * certifies image fidelity or makes that candidate an accepted result. */
+export function verifyCandidatePaper(c,input,cfg,{deadline=Infinity,recheckFailed=false}={}){
+  if(!c.geometryPassed)return false;
+  if(c.paperPassed)return true;
+  if(!(c.paper?.status==='uncertain'||recheckFailed&&c.paper?.status==='fail'))return false;
+  const s=c.graph.solution(c.points,c.phase,input);
   // A coarse lattice may be inconclusive or miss a narrow connection that
   // finer sampling resolves. Recheck a failed lattice only when the caller
   // explicitly offers its retained geometric alternative. Full acceptance
@@ -40,7 +52,7 @@ export function assessCandidate(c,input,cfg,{deadline=Infinity,sourceFeatures,re
     c.paperVerification={...c.paperVerification,requestedResolution:cfg.materialResolution,initialStatus,resolution,status:paper.status};
     c.paperPassed=paper.passed;c.paper=paper.summary;
   }
-  return c.paperPassed&&c.originalFeatures.passed;
+  return c.paperPassed;
 }
 
 /** Recheck the retained polish coordinates at the next supported lattice.
