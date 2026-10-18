@@ -6,7 +6,7 @@ on:
       mode:
         type: choice
         default: full
-        options: [full, bicycle, comparison]
+        options: [full, bicycle, comparison, maple]
         description: Full diagnostics or focused normal-budget regressions
 permissions:
   contents: read
@@ -40,6 +40,9 @@ jobs:
       - name: Replay simpler-layout and supported-count regressions
         if: inputs.mode == 'comparison'
         run: node --test --test-concurrency=1 scripts/inverse/comparison-search.test.mjs scripts/inverse/refinement-checkpoints.test.mjs scripts/inverse/supported-count-bound.test.mjs
+      - name: Replay maple comparison regression
+        if: inputs.mode == 'maple'
+        run: node --test scripts/inverse/comparison-search.test.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
