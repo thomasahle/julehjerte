@@ -457,26 +457,54 @@ edge to a corner of the motif's square (the circle with checks leaves the middle
 The motif's cell is one square's diagonal wide, so a wide motif is smaller; cells fitted to the
 motif are the last resort, rather than refusing. **The circle on equal squares** (Cirkel · Lige
 store tern) adds a layer, like the gallery's santa heart (whose lines are not evenly spaced): a
-regular 5×5 board with a circle that reaches into the outer ring of squares, midway between the
-board's junctions inside and outside it, so every line runs straight to it. The motif, divided
-like a letter into four panels, meets the lines' ends in pairs. The eight ends form two cycles,
-upper left to lower right and upper right to lower left, which must cross inside the circle: the
-four panels meet at the motif's centre, or else at a point of background near it with paper in
-every panel around it, so their invisible seams cross its paper but not each other. A convex
-motif has no such point (the star, the heart, the bell): it gets a smaller circle in the middle
-three strips, whose outer lines cross the paper whole, so only the two middle lines of each
-sheet meet the circle and the undivided motif meets them like a letter in the circle frame.
-Either way the motif fills its circle as in the other circle frames, else it is the size of a
-framed letter, and every straight cut lies on the board (tested).
+regular 5×5 board with a circle around the motif. The size setting sizes the circle smoothly and
+the motif fills it up to the space asked for, so both only grow with the setting (tested): from
+five units clear of the centre square's corners (radius 19) to the circle that touches the outer
+ring of squares at their eight inner corners (31.6) at the default 70%, then on into that ring
+almost to the junctions at its corners (42). Up to the touching circle only the two middle lines of
+each sheet end on the circle and the undivided motif meets them like a letter in the circle frame;
+the outer lines cross the paper whole, and once the circle reaches them they follow it, so beside
+each corner of the ring it is left uncut rather than leaving a sliver, a slightly flattened circle.
+At the touching circle the lines end at the junctions on it. Beyond it, like the gallery's santa,
+the circle meets every line, and the motif, divided like a letter into four panels, meets the
+lines' ends in pairs. The eight ends form two cycles, upper left to lower right and upper right to
+lower left, which must cross inside the circle: the panels meet at the motif's centre, or else at
+a point of background near it with paper in every panel around it (a star's lower notch, a cat's
+eye), so their invisible seams cross its paper but not each other. That is the one change of
+construction, between 70% and 71%. Whether a motif can be built each way is decided once, so a
+convex motif (the heart, the bell), which cannot be divided so, stays at the touching circle above
+70%, and one that cannot be kept whole (the gift) takes the large circle's smallest size below it.
+Sizes that cannot be cut cleanly keep their size and are shown as hard to cut (the star at 72–76%,
+the cat beyond the touching circle) rather than jumping smaller; only where nothing at all can be
+finished at a size does the motif shrink a little, and then the circle grow a little. The motif's
+cell takes the usual padding, else little, and an outer gate that the circle passes inside of
+moves in to midway between the motif's farthest point and the circle, so the legs stay inside it.
+Every straight cut lies on the board (tested). Motifs in several separate parts (the coffee cup,
+the bicycle, the sun, the paw) cannot yet be built on this board.
 In the wedge, silhouette and close-fitting
 frames, a symmetric motif gets a symmetric frame: separate extremes that tie (a star's two lower tips, a cat's ears) share a gate
 midway between them, joined to the motif by an invisible coincident cut. That first attempt is
 kept only when it leaves no needle-sharp paper; otherwise every construction uses the motif's own
 extreme points as before. Multi-part motifs that no single cell or panel grid can connect (the
 bicycle, the coffee cup) end in three lanes above and below the motif, with the frame's legs
-from there, after the close-fitting retries. In the frames without a centre panel the frame size only repeated the motif size, so its slider is hidden there, as for small motifs and both equal-squares frames, which also hide the size slider. **Space around the figure** (Luft om figuren, 0–15% of the square, 3% by default) sets the wedges' gap and how far the silhouette's corner checks keep from the motif, so the gallery's simple five-point star can be recreated (about 65% size, 9% space); when the space asked for cannot be cut, half of it and then none are tried. Figure choices are complete templates. Their thumbnails render the actual generated heart in the current colours,
+from there, after the close-fitting retries. Every figure frame has the same two controls (2026-10-18): the motif's size, and the
+**space around the figure** (Luft om figuren, 0–15% of the square, 3% by default). The former
+frame-size slider is gone: in most frames it only scaled the motif a second time. A circle frame
+draws its circle that far outside the motif's outline (the sunburst's circle is four fifths of its
+frame), within the 50–80 frame sizes its outer strips have room for; the motif keeps its size, and a
+circle that cannot be cut that close moves 4% further out, then keeps the frame's own size. The
+wedges stop that far short of the motif; the silhouette's and the checked tips' corner checks move
+that far toward the paper's corners (the gallery's simple five-point star is the silhouette at about
+65% size and 9% space); the close-fitting frame keeps its lines on the motif and moves its outer
+strips out. These try half the space and then none when the space asked for cannot be cut. The
+two board frames whose squares hold the motif (small motifs, equal squares) fix the space with
+their squares; their size setting scales the motif within its square, 0.6–1.1 times the default.
+Figure choices are complete templates. Their thumbnails render the actual generated heart in the current colours,
 with unique SVG IDs; a neutral outline appears while an uncached variant is being prepared. The
-main preview has priority over a cancellable sequential background worker. A circular sunburst
+main preview has priority over a cancellable sequential background worker. While a slider moves,
+the preview worker keeps its current job, only the newest value waits, and a job for a value already
+left is abandoned after 400 ms; every finished result is cached, and a nearby one shows until the
+newest is ready, so the heart follows the slider. A circular sunburst
 adds four open outer strips around a smaller central field, creating eight rays without adding cuts
 through the figure. Templates that fail validation remain explicitly unavailable.
 If the sunburst's inner panel projections graze the outer circle's diagonal

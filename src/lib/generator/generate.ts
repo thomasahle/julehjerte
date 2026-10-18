@@ -47,6 +47,7 @@ import {
 	dot,
 	cross,
 	frameRing,
+	BOARD_RADII,
 	type Ring,
 	type Frame,
 	type FigureStyle,
@@ -77,6 +78,9 @@ export type GeneratorRequest = {
 	gap?: number;
 	/** Letter cells fitted to their letters instead of square ones. */
 	fittedCells?: boolean;
+	/** The letters, or a motif standing in for one on a board, at this
+	 * multiple of the frame's own size: the visitor's size setting. */
+	letterScale?: number;
 };
 export type GeneratorResult = {
 	design: HeartDesign;
@@ -90,7 +94,7 @@ export type GeneratorResult = {
 /** The frame without a centre panel that a figure request selects, if any. */
 function openFrame(request: GeneratorRequest): OpenFrame | undefined {
 	if (request.mode !== 'figure') return;
-	return request.style === 'fitted' ? FITTED : request.style === 'wedges' ? { ...WEDGES, gap: request.gap ?? WEDGES.gap }
+	return request.style === 'fitted' ? { ...FITTED, gap: request.gap ?? FITTED.gap } : request.style === 'wedges' ? { ...WEDGES, gap: request.gap ?? WEDGES.gap }
 		: request.style === 'silhouette' ? { ...SILHOUETTE, gap: request.gap ?? SILHOUETTE.gap } : undefined;
 }
 /** The largest motif keeps this distance (in the 100-unit square) from the
@@ -106,6 +110,26 @@ export function fillSquare(request: GeneratorRequest): GeneratorRequest {
 	const reach = Math.max(...points.map(([x, y]) => Math.abs(x) + Math.abs(y)));
 	const largest = (50 * Math.SQRT2 - SILHOUETTE_MARGIN) / reach;
 	return { ...request, frameSize: 100, scale: largest / 100 * Math.min(1, (request.scale ?? .7) / .85) };
+}
+/** A motif on a board fills its square or circle at the visitor's size,
+ * relative to the default 70%, within what its cell can hold. */
+function boardScale(request: GeneratorRequest): number {
+	return Math.max(.6, Math.min(1.1, (request.scale ?? .7) / .7));
+}
+/** The circle frames, whose circle can follow the motif's outline. */
+const CIRCLE_STYLES: readonly FigureStyle[] = ['rays', 'check', 'sunburst', 'layers'];
+/** A circle frame given space around the motif draws its circle that far
+ * outside the motif's outline. The motif keeps its size (frame size × scale);
+ * the circle's diameter follows, within the frame sizes the outer strips have
+ * room for. The sunburst's circle is four fifths of its frame. */
+export function fitCircle(request: GeneratorRequest): GeneratorRequest {
+	if (request.mode !== 'figure' || request.gap === undefined || !CIRCLE_STYLES.includes(request.style ?? 'rays')) return request;
+	const points = normalizeContours(request.contours ?? []).flat();
+	if (!points.length) return request;
+	const size = (request.frameSize ?? 70) * (request.scale ?? .7), inner = request.style === 'sunburst' ? .8 : 1;
+	const reach = Math.max(...points.map(([x, y]) => Math.hypot(x, y)));
+	const frameSize = Math.max(50, Math.min(80, 2 * (size * reach + request.gap) / inner));
+	return { ...request, frameSize, scale: size / (frameSize * inner) };
 }
 /** Paper a hard-to-cut result keeps, as fractions of the grid clearance, from
  * widest to narrowest. Cuts on one sheet never cross or touch at any of them. */
@@ -455,21 +479,27 @@ function frameAlternatives(request: GeneratorRequest): { request: GeneratorReque
 	if (request.style === 'motifs' || request.style === 'squares') {
 		const contours = normalizeContours(request.contours ?? []);
 		if (!contours.length) throw new ConstructionError('empty', 'No contour');
-		const font: Font = { glyphs: { [MOTIF]: { advance: 1, contours } } };
+		const font: Font = { glyphs: { [MOTIF]: { advance: 1, contours } } }, letterScale = boardScale(request);
 		// Equal squares: the motif is the one letter of the woven text frame
 		// with square cells, the centre square of a regular board. Cells fitted
 		// to it remain rather than refusing.
 		if (request.style === 'squares') return [false, true].map(fittedCells => ({ retries: true, lastResort: fittedCells, request:
-			{ mode: 'text', name: request.name, colors: request.colors, text: MOTIF, font, textFrame: 'woven', fittedCells } }));
+			{ mode: 'text', name: request.name, colors: request.colors, text: MOTIF, font, textFrame: 'woven', fittedCells, letterScale } }));
 		return MOTIF_PATTERNS.map(text => ({ retries: true, request:
-			{ mode: 'text', name: request.name, colors: request.colors, text, font, textFrame: 'checkered' } }));
+			{ mode: 'text', name: request.name, colors: request.colors, text, font, textFrame: 'checkered', letterScale } }));
 	}
-	// Wedges, and a silhouette given space around it, move nearer the motif
-	// when the space asked for cannot be cut, until they touch it.
-	if (request.style === 'wedges' || request.style === 'silhouette' && request.gap) {
+	// The legs of a frame without a centre panel move nearer the motif when
+	// the space asked for cannot be cut, until they touch it. A circle that
+	// cannot be cut that close to the motif moves out, and then keeps the
+	// frame's own size.
+	const style = request.style ?? 'rays';
+	if (style === 'wedges' || request.gap && ['silhouette', 'corners', 'fitted'].includes(style)) {
 		const gap = request.gap ?? WEDGES.gap;
 		return [...new Set([gap, gap / 2, 0])].map(gap => ({ request: fillSquare({ ...request, gap }), retries: true }));
 	}
+	if (request.gap !== undefined && CIRCLE_STYLES.includes(style))
+		return [...[request.gap, request.gap + 4].map(gap => ({ request: fitCircle({ ...request, gap }), retries: true })),
+			{ request: { ...request, gap: undefined }, retries: true }];
 	return [{ request: fillSquare(request), retries: true }];
 }
 
@@ -685,7 +715,7 @@ function retryCornerLanes(request: GeneratorRequest, curveFitter: ReturnType<typ
 	for (const [split, routing] of [[.25, 'separated'], [1 / 3, 'chain']] as const) {
 		let construction: Construction;
 		try {
-			construction = generateCornerChecks(rings, request.frameSize, request.scale, routing, true, false, undefined, split);
+			construction = generateCornerChecks(rings, request.frameSize, request.scale, routing, true, false, undefined, split, request.gap);
 		} catch (error) {
 			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
 			continue;
@@ -717,7 +747,7 @@ function retryChainContacts(request: GeneratorRequest, curveFitter: ReturnType<t
 	let best: GeneratorResult | undefined;
 	for (const tilt of [-.08, .08]) for (const invert of [false, true]) try {
 		const construction = generateCornerChecks(rings, request.frameSize, request.scale,
-			'chain', true, false, { tilt, invert });
+			'chain', true, false, { tilt, invert }, undefined, request.gap);
 		let candidate: GeneratorResult;
 		try {
 			candidate = finishConstruction(request, construction, 'silhouette', undefined, curveFitter);
@@ -1422,19 +1452,23 @@ function generateUsingRecipes(request: GeneratorRequest,
 			// first layout 5% larger, which can route a letter that shrank to
 			// match a wider one without them (Nunito ANNA's N).
 			const caches = new Map<number, [ReturnType<typeof checkeredGridCache>, ReturnType<typeof mixedCheckeredGridCache>]>();
+			// Small motifs on the board have the visitor's size, which these larger
+			// retries and comparisons would override, at the cost of every pattern
+			// they try; typed letters have none.
+			const standard = .82 * (request.letterScale ?? 1), sized = request.letterScale !== undefined;
 			const attempt = (variant: number, fill: number) => {
 				if (!caches.has(fill)) caches.set(fill, [checkeredGridCache(), mixedCheckeredGridCache()]);
 				const [cache, mixed] = caches.get(fill)!;
-				return checkered(variant, fill, cache, mixed, fill === .82 ? finish
+				return checkered(variant, fill, cache, mixed, fill === standard ? finish
 					: (construction, recipe) => finish(construction, recipe, false));
 			};
-			for (const fill of [.82, .82 * 1.05, .82 * 1.1])
-				for (let variant = 0; variant < Math.min(fill === .82 ? variants : 1, layouts.length); variant++) {
+			for (const fill of sized ? [standard] : [standard, standard * 1.05, standard * 1.1])
+				for (let variant = 0; variant < Math.min(fill === standard ? variants : 1, layouts.length); variant++) {
 					try {
 						// Compared as exported, after their shared connections are improved.
 						const result = improveSharedConnections(attempt(variant, fill));
-						if (fill === .82 && cutTipCounts(result.design)[1]) try {
-							const larger = improveSharedConnections(attempt(0, .82 * 1.05));
+						if (!sized && cutTipCounts(result.design)[1]) try {
+							const larger = improveSharedConnections(attempt(0, standard * 1.05));
 							if (fewerCutTips(cutTipCounts(larger.design), cutTipCounts(result.design))) return larger;
 						} catch (error) {
 							if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
@@ -1451,14 +1485,15 @@ function generateUsingRecipes(request: GeneratorRequest,
 		const text = request.text ?? '';
 		const font = request.font;
 		const shape = frame === 'woven' || frame === 'air' ? undefined : frame;
+		const size = request.letterScale ?? 1;
 		const recipes: Array<() => ReturnType<typeof generateTextGrid> | ReturnType<typeof generateCheckedText> | undefined> = text.includes('\n') ? [] : [
-			() => generateCheckedText(text, font, frame === 'air', shape, request.fittedCells)
+			() => generateCheckedText(text, font, frame === 'air', shape, request.fittedCells, size)
 		];
-		recipes.push(() => generateTextGrid(text, font, frame === 'air', shape, { fittedCells: request.fittedCells }));
+		recipes.push(() => generateTextGrid(text, font, frame === 'air', shape, { fittedCells: request.fittedCells, letterScale: size }));
 		// On the regular board the cells cannot grow, but a letter can be a
 		// little larger inside its cell; its connections then meet it elsewhere.
 		const regularGrid = !request.fittedCells && (frame === 'woven' || frame === 'air');
-		if (regularGrid) for (const letterScale of [1.05, 1.1]) recipes.push(text.includes('\n')
+		if (regularGrid) for (const letterScale of [1.05 * size, 1.1 * size]) recipes.push(text.includes('\n')
 			? () => generateTextGrid(text, font, frame === 'air', shape, { letterScale })
 			: () => generateCheckedText(text, font, frame === 'air', shape, false, letterScale));
 		// Give difficult counters/shoulders more room, and spread the projections
@@ -1578,29 +1613,86 @@ function generateUsingRecipes(request: GeneratorRequest,
 	}
 	if (request.style === 'board') {
 		// The circle on a regular board of five strips, every square outside it
-		// equally large, like the gallery's santa: it meets every line of the
-		// board, midway between the junctions inside and outside it, and the
-		// motif, divided like a letter into four panels, meets the lines' ends
-		// in pairs. The panels meet at its centre, or else at a point of
-		// background near it, so their seams cross its paper but not each other.
-		// Failing that, a smaller circle fills the middle three strips: the outer
-		// lines cross the paper whole, and the undivided motif meets the middle
-		// lines like a letter in the circle frame. The motif fills its circle as
-		// in the other circle frames, else it is the size of a framed letter.
+		// equally large, at the radii the board allows (`BOARD_RADII`). Up to the
+		// circle touching the outer ring of squares, the outer lines cross the
+		// paper whole or follow the circle, and the undivided motif meets the
+		// middle lines like a letter in the circle frame. Reaching into the outer
+		// ring, like the gallery's santa, the circle meets every line, and the
+		// motif, divided like a letter into four panels, meets the lines' ends in
+		// pairs. The panels meet at its centre, or else at a point of background
+		// near it, so their seams cross its paper but not each other.
 		const contours = request.contours ?? [];
 		const font: Font = { glyphs: { [MOTIF]: { advance: 1, contours } } };
 		const xs = contours.flat().map(p => p[0]), ys = contours.flat().map(p => p[1]);
 		const centre: Point = [(Math.min(...xs) + Math.max(...xs)) / 2, (Math.min(...ys) + Math.max(...ys)) / 2];
-		const fill = { padding: .05, frameFill: 1 }, compound = { practical: true, compound: true };
-		const four = [undefined, ...backgroundJunctions(contours).map((p): Point => [p[0] - centre[0], p[1] - centre[1]])]
-			.flatMap(junction => [fill, {}].flatMap(size => [{ ...size, columns: 2, slices: 2, junction },
-				{ ...size, ...compound, columns: 2, slices: 2, junction }]));
+		const box = Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys));
+		const reach = Math.max(...contours.flat().map(p => distance(p, centre))) / box;
+		const gap = request.gap ?? 3, compound = { practical: true, compound: true };
+		// The size setting sizes the circle smoothly from the smallest radius
+		// the board allows to the largest, with the touching circle at the
+		// default 70%, where the one change of construction lies. It passes the
+		// outer lines' tangent slightly beyond it, and just beyond the touching
+		// circle it touches, the corners there being too close to cut. The motif
+		// fills the circle up to the space asked for.
+		const [small, large] = BOARD_RADII, setting = Math.max(.45, Math.min(.85, request.scale ?? .7));
+		let radius = setting <= .7 ? small[0] + (setting - .45) / .25 * (small[1] - small[0])
+			: large[0] + (setting - .7) / .15 * (large[1] - large[0]);
+		if (Math.abs(radius - 30) < .1) radius = 30.1;
+		if (radius > large[0] && radius < large[0] + .6) radius = large[0];
+		const range = radius <= small[1] ? small : large;
+		// The slower compound routing only where the panels meet at the centre.
+		const four = [{ columns: 2, slices: 2 }, { ...compound, columns: 2, slices: 2 },
+			...backgroundJunctions(contours).map((p): Point => [p[0] - centre[0], p[1] - centre[1]])
+				.map(junction => ({ columns: 2, slices: 2, junction }))];
+		const layouts = (range: readonly [number, number]) => range === small ? [{}, compound] : four;
+		const fills = (radius: number, factor = 1) => (radius - Math.max(gap, 1.5)) * factor / reach / box;
+		// Only the invisible partition varies: where four panels meet, the
+		// routing, and the padding of the motif's cell, which gives its
+		// connections room: the usual, else little. (Gates the circle passes
+		// inside of move in, see `generateTextGrid`.)
+		const sizes = (range: readonly [number, number], radius: number, scale = fills(radius)) =>
+			[.22, .05].flatMap(padding =>
+				layouts(range).map(layout => ({ radius, scale, layout: { padding, ...layout } })));
+		const build = ({ radius, scale, layout }: ReturnType<typeof sizes>[number]) => {
+			const construction = generateTextGrid(MOTIF, font, false, 'circle', { ...layout, board: 5, circle: 2 * radius, scale });
+			audit(construction.edges);
+			return construction;
+		};
+		// Whether the motif can be built this way at all is decided once, at
+		// sizes of the range's own: one that cannot be kept whole, or divided in
+		// four at both, takes the other construction at its size nearest the
+		// touching circle, whatever the slider.
+		const buildable = (range: readonly [number, number]) => (range === small ? [25] : [34, 39])
+			.every(reference => sizes(range, reference).some(attempt => {
+				try {
+					build(attempt);
+					return true;
+				} catch (error) {
+					if (!(error instanceof ConstructionError)) throw error;
+					return false;
+				}
+			}));
+		const [mode, size] = buildable(range) ? [range, radius] : range === small ? [large, large[0] + .6] : [small, small[1]];
+		// The circle and the motif keep the sizes the setting gives them, so
+		// both only grow with it: cut cleanly if they can be, else as hard to
+		// cut. Only where nothing at all can be finished at those sizes does the
+		// motif shrink a little, and then the circle grow a little.
+		const nearby = [size + 1.5, size + 3].map(other => Math.min(mode[1], other))
+			.filter(other => other - size > .5 && Math.abs(other - 30) > .1);
 		let last: unknown;
-		for (const layout of [...four, fill, { ...fill, ...compound }, {}, compound]) try {
-			return finish(generateTextGrid(MOTIF, font, false, 'circle', { ...layout, board: 5 }), 'nested');
-		} catch (error) {
-			if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
-			last = error;
+		for (const attempts of [sizes(mode, size), [.85, .7].flatMap(factor => sizes(mode, size, fills(size, factor))),
+			nearby.flatMap(other => sizes(mode, other))]) {
+			const rejected: Parameters<typeof hardToCutResult>[1] = [];
+			for (const attempt of attempts) try {
+				const construction = build(attempt);
+				rejected.push({ construction, recipe: 'nested' });
+				return finish(construction, 'nested');
+			} catch (error) {
+				if (!(error instanceof ConstructionError) && !(error instanceof CutGeometryError)) throw error;
+				last = error;
+			}
+			const hard = hardToCutResult(request, rejected, curveFitter);
+			if (hard) return hard;
 		}
 		throw last;
 	}
@@ -1613,7 +1705,8 @@ function generateUsingRecipes(request: GeneratorRequest,
 			['practical', true, true], ['separated', true, true]
 		] as const) {
 			try {
-				const result = generateCornerChecks(request.contours ?? [], request.frameSize, request.scale, routing, fitBorder, bentSpokes);
+				const result = generateCornerChecks(request.contours ?? [], request.frameSize, request.scale, routing, fitBorder, bentSpokes,
+					undefined, undefined, request.gap);
 				// Keep the established frame and skip another fit when moving
 				// separate components did not change any lane or connection.
 				if (routing === 'separated' && !result.separated || fitBorder && !result.borderAdjusted) continue;

@@ -129,10 +129,74 @@
 					colors: toHexColors(colors, DEFAULT_COLORS_HEX)
 				}
 			: null;
-	let workerPending = false;
+	/** The preview worker's job and the newest one waiting for it. While a
+	 * slider moves, only its latest value waits, and every finished result is
+	 * kept, for moving back; a long job for a value already left is abandoned. */
+	type Job = { request: GeneratorRequest; key: string; token: number };
+	let running: (Job & { started: number }) | null = null,
+		waiting: Job | null = null;
 	let worker: Worker | null = null,
 		revision = 0,
 		savedId: string | null = null;
+	const ABANDON_MS = 400;
+	function startJob(job: Job) {
+		if (!worker) {
+			worker = new Worker(new URL('../generator/worker.ts', import.meta.url), { type: 'module' });
+			worker.onmessage = (e) => finishJob(e.data);
+			worker.onerror = () => {
+				const failed = running;
+				worker?.terminate();
+				worker = null;
+				running = null;
+				if (failed?.token === revision) {
+					busy = false;
+					error = t('generatorLoadError', lang);
+					displayed = null;
+				}
+				nextJob();
+			};
+		}
+		running = { ...job, started: performance.now() };
+		worker.postMessage(job.request);
+	}
+	function finishJob(data: { result?: GeneratorResult } & Partial<Failure>) {
+		const job = running;
+		running = null;
+		if (job) {
+			if (data.result) cache.set(job.key, data.result);
+			else failures.set(job.key, data as Failure);
+			if (job.token === revision) {
+				busy = false;
+				if (data.result) {
+					result = data.result;
+					displayed = data.result;
+				} else {
+					displayed = null;
+					error = errorText(data as Failure);
+				}
+				// A nearby value finished on the way shows while the newest is prepared.
+			} else if (data.result && busy) displayed = data.result;
+		}
+		nextJob();
+	}
+	function nextJob() {
+		if (running || !waiting) return;
+		const job = waiting;
+		waiting = null;
+		startJob(job);
+	}
+	function queueJob(job: Job) {
+		if (!running) return startJob(job);
+		waiting = job;
+		setTimeout(() => {
+			if (running && running.token !== revision && waiting === job) {
+				worker?.terminate();
+				worker = null;
+				running = null;
+				nextJob();
+			}
+		}, Math.max(0, ABANDON_MS - (performance.now() - running.started)));
+	}
 	const requests = new Map<string, Promise<unknown>>();
 	const asset = async <T,>(path: string): Promise<T> => {
 		if (!requests.has(path))
@@ -202,6 +266,8 @@
 			unsubscribe();
 			revision++;
 			worker?.terminate();
+			worker = null;
+			running = waiting = null;
 		};
 	});
 	$effect(() => {
@@ -242,11 +308,7 @@
 		// Keep the last preview while calculating, but disable export immediately.
 		// Only the newest request may become the downloadable result.
 		const token = ++revision;
-		if (workerPending) {
-			worker?.terminate();
-			worker = null;
-			workerPending = false;
-		}
+		waiting = null;
 		result = null;
 		notice = '';
 		error = '';
@@ -271,51 +333,17 @@
 			return;
 		}
 		busy = true;
-		const timer = setTimeout(async () => {
-			try {
-				const request = await requestFor(snapshot);
-				if (token !== revision) return;
-				worker ??= new Worker(
-					new URL('../generator/worker.ts', import.meta.url),
-					{ type: 'module' }
-				);
-				worker.onmessage = (e) => {
-					if (token !== revision) return;
-					busy = false;
-					workerPending = false;
-					if (e.data.result) {
-						result = e.data.result;
-						displayed = e.data.result;
-						cache.set(key, e.data.result);
-					} else {
-						displayed = null;
-						failures.set(key, e.data);
-						error = errorText(e.data);
-					}
-				};
-				worker.onerror = () => {
-					if (token === revision) {
-						busy = false;
-						error = t('generatorLoadError', lang);
-						displayed = null;
-						worker?.terminate();
-						worker = null;
-						workerPending = false;
-					}
-				};
-				workerPending = true;
-				worker.postMessage(request);
-			} catch {
+		requestFor(snapshot)
+			.then((request) => {
+				if (token === revision) queueJob({ request, key, token });
+			})
+			.catch(() => {
 				if (token === revision) {
 					busy = false;
 					error = t('generatorLoadError', lang);
 					displayed = null;
 				}
-			}
-		}, 60);
-		return () => {
-			clearTimeout(timer);
-		};
+			});
 	});
 	$effect(() => {
 		if (!mounted) return;
@@ -626,20 +654,17 @@
 						</button>
 					{/each}
 				</div>
-				<!-- The frame size only scales the motif in the frames without a centre panel; small motifs and equal squares fill their squares, and the board fixes its circle and motif. -->
-				{#if !['silhouette', 'wedges', 'fitted', 'motifs', 'squares', 'board'].includes(config.style)}
-					<label class="range-label" for="frame-size"
-						>{t('generatorFrameSize', lang)}<output>{config.frameSize}%</output
-						></label
-					><input
-						id="frame-size"
-						type="range"
-						min="50"
-						max="80"
-						step="1"
-						bind:value={config.frameSize}
-					/>
-				{/if}
+				<!-- Every frame takes the motif's size, and all but the board frames, whose squares hold the motif, the space around it. -->
+				<label class="range-label" for="motif-size"
+					>{t('generatorSize', lang)}<output>{config.scale}%</output></label
+				><input
+					id="motif-size"
+					type="range"
+					min="45"
+					max="85"
+					step="1"
+					bind:value={config.scale}
+				/>
 				{#if SPACED_STYLES.includes(config.style)}
 					<label class="range-label" for="frame-spacing"
 						>{t('generatorSpacing', lang)}<output>{config.spacing}%</output></label
@@ -650,18 +675,6 @@
 						max="15"
 						step="1"
 						bind:value={config.spacing}
-					/>
-				{/if}
-				{#if config.style !== 'motifs' && config.style !== 'squares' && config.style !== 'board'}
-					<label class="range-label" for="motif-size"
-						>{t('generatorSize', lang)}<output>{config.scale}%</output></label
-					><input
-						id="motif-size"
-						type="range"
-						min="45"
-						max="85"
-						step="1"
-						bind:value={config.scale}
 					/>
 				{/if}
 			{:else}

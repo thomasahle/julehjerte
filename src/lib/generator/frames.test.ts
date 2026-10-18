@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { generate, fillSquare } from './generate';
+import { generate, fillSquare, fitCircle } from './generate';
 import { cutTipCounts } from './cutQuality';
 import { generateFittedFigure } from './fitted';
 import { generateLayeredFigure } from './layers';
@@ -303,6 +303,32 @@ describe('frames from real hearts', () => {
    expect(lines.size, name).toBe(8);
   }
  }, 30000);
+ it('grows the board\'s circle and its motif steadily with the size, never refusing', () => {
+  // Through the touching circle at 70%, where the construction changes, the
+  // circle and the motif only grow; sizes that cannot be cut cleanly are hard.
+  for (const [name, motif] of Object.entries({ star, cookie })) {
+   let last = [0, 0];
+   for (const scale of [.6, .66, .7, .71, .72, .73, .76, .8, .85]) {
+    const { design } = generate({ mode: 'figure', name, contours: motif.contours as Ring[], colors, style: 'board', scale, gap: 3 });
+    const rect = inferOverlapRect(design.fingers, design.gridSize);
+    // Where the board's second line from the left leaves the top edge, it
+    // runs down to the circle.
+    const line = design.fingers.find(f => f.id.includes('cut') && [f.segments[0].p0, f.segments.at(-1)!.p3].some(p =>
+     Math.abs((p.x - rect.left) / rect.width - .4) < 1e-6 && Math.abs(p.y - rect.top) < 1e-6))!;
+    const top = (p: { y: number }) => Math.abs(p.y - rect.top) < 1e-6;
+    const segment = top(line.segments[0].p0) ? line.segments[0] : line.segments.at(-1)!;
+    const radius = Math.hypot(10, 50 - ((top(segment.p0) ? segment.p3 : segment.p0).y - rect.top) / rect.height * 100);
+    // The motif's colour within the circle's band of background.
+    const n = 200, mask = rasterizeDesign(design, n).data, ground = mask[Math.round((51 - radius) / 100 * n) * n + n / 2];
+    let area = 0;
+    for (let y = 0; y < n; y++) for (let x = 0; x < n; x++)
+     if (Math.hypot((x + .5) / n * 100 - 50, (y + .5) / n * 100 - 50) < radius - 1.5 && mask[y * n + x] !== ground) area++;
+    expect(radius, `${name} ${scale}`).toBeGreaterThan(last[0] - .05);
+    expect(area, `${name} ${scale}`).toBeGreaterThanOrEqual(last[1]);
+    last = [radius, area];
+   }
+  }
+ }, 120000);
  for (const style of ['wedges', 'silhouette', 'motifs', 'squares', 'board'] as const)
   it(`shares ${style} as one complete frame selection`, () => {
    const state = { ...defaults, mode: 'figure' as const, style };
@@ -311,8 +337,11 @@ describe('frames from real hearts', () => {
   });
  it('recomputes the new frames only for the settings they use', () => {
   const state = { ...defaults, mode: 'figure' as const };
-  for (const [style, size, scale, spacing] of [['motifs', false, false, false], ['squares', false, false, false], ['board', false, false, false],
-   ['silhouette', false, true, true], ['wedges', true, true, true], ['fitted', true, true, false], ['rays', true, true, false]] as const) {
+  // Every frame takes the motif's size, and all but the board frames the space
+  // around it. The hidden frame size remains the motif size's base in links.
+  for (const [style, size, scale, spacing] of [['motifs', false, true, false], ['squares', false, true, false], ['board', true, true, true],
+   ['silhouette', false, true, true], ['wedges', true, true, true], ['fitted', true, true, true], ['corners', true, true, true],
+   ['rays', true, true, true], ['sunburst', true, true, true]] as const) {
    const key = geometryKey({ ...state, style });
    expect(geometryKey({ ...state, style, frameSize: 55 }) !== key).toBe(size);
    expect(geometryKey({ ...state, style, scale: 50 }) !== key).toBe(scale);
@@ -321,21 +350,52 @@ describe('frames from real hearts', () => {
   }
   expect(readGeneratorState('#make=' + JSON.stringify({ ...state, spacing: 40 })).spacing).toBe(15);
  });
+ it('draws the circle the space the visitor sets outside the motif, which keeps its size', () => {
+  const request = { mode: 'figure' as const, name: 'Star', contours: star.contours as Ring[], colors, style: 'rays' as const };
+  const circle = (gap: number, scale = .7) => fitCircle({ ...request, scale, gap });
+  const reach = Math.max(...(star.contours as Ring[]).flat().map(([x, y]) => Math.hypot(x, y)));
+  // Within the frame sizes the outer strips have room for (50–80).
+  for (const [gap, scale] of [[3, .7], [10, .7], [6, .6]]) {
+   const { frameSize, scale: inside } = circle(gap, scale);
+   expect(frameSize! * inside!).toBeCloseTo(70 * scale);
+   expect(frameSize! / 2 - 70 * scale * reach).toBeCloseTo(gap);
+  }
+  // The sunburst's circle is four fifths of its frame.
+  const burst = fitCircle({ ...request, style: 'sunburst', gap: 3 });
+  expect(burst.frameSize! * .8 / 2 - 70 * .7 * reach).toBeCloseTo(3);
+  // Without a space the circle keeps the frame's own size.
+  expect(fitCircle(request)).toBe(request);
+  const { design, hardToCut } = generate({ ...request, gap: 10 });
+  expect(hardToCut).toBeUndefined();
+  expect(design.gridSize).toEqual({ x: 3, y: 3 });
+ }, 20000);
+ it('sizes the motif on a board frame by the visitor\'s size', () => {
+  for (const style of ['squares', 'motifs', 'board'] as const) {
+   const ink = (scale: number) => {
+    const { design } = generate({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style, scale });
+    return rasterizeDesign(design, 120).data.reduce((sum, v) => sum + v, 0);
+   };
+   // The motif's colour covers less of the heart when it is smaller.
+   expect(Math.abs(ink(.55) - ink(.85)), style).toBeGreaterThan(50);
+  }
+ }, 60000);
  it('leaves the space around the motif that the visitor sets, in the wedges and the silhouette', () => {
   // The legs move toward the paper's corners: the wedges get shorter and the
   // silhouette's corner checks smaller, as in the gallery's simple five-point star.
-  for (const [style, scale] of [['silhouette', .65], ['wedges', .7]] as const) {
+  for (const [style, scale] of [['silhouette', .65], ['wedges', .7], ['corners', .7], ['fitted', .6]] as const) {
    const reach = (gap: number) => {
     const { design, hardToCut } = generate({ mode: 'figure', name: 'Star', contours: star.contours as Ring[], colors, style, scale, gap });
     expect(hardToCut).toBeUndefined();
     const rect = inferOverlapRect(design.fingers, design.gridSize);
-    // Where the cuts leave the paper edges, as a fraction of the side from the nearest corner.
-    return Math.min(...design.fingers.filter(f => f.id.includes('cut')).map(({ segments: [{ p0 }] }) =>
+    // Where the cuts leave the paper edges, as a fraction of the side from the
+    // nearest corner, on average: outer bands that do not move stay put.
+    const along = design.fingers.filter(f => f.id.includes('cut')).map(({ segments: [{ p0 }] }) =>
      Math.min(Math.abs(p0.x - rect.left), Math.abs(rect.right - p0.x)) < 1e-6
-      ? Math.min(p0.y - rect.top, rect.bottom - p0.y) / rect.height : Math.min(p0.x - rect.left, rect.right - p0.x) / rect.width));
+      ? Math.min(p0.y - rect.top, rect.bottom - p0.y) / rect.height : Math.min(p0.x - rect.left, rect.right - p0.x) / rect.width);
+    return along.reduce((sum, value) => sum + value, 0) / along.length;
    };
    // The wedges' legs taper toward the corner, so they move about half as far.
-   expect(reach(9), style).toBeLessThan(reach(0) - .02);
+   expect(reach(9), style).toBeLessThan(reach(0) - .01);
   }
  }, 20000);
 });

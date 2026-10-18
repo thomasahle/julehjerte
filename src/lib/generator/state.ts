@@ -11,7 +11,7 @@ export type GeneratorState = {
 	textFrame: TextFrame;
 	cells: Cells;
 	/** The space between the motif and the frame around it, in percent of the
-	 * square: the wedges' gap, the silhouette's corner checks. */
+	 * square: to the circle, the wedges' tips, the corner checks. */
 	spacing: number;
 };
 /** Text cells: square, so every check around the letters is a square of one
@@ -21,8 +21,12 @@ export type GeneratorState = {
 export const CELLS = ['square', 'letters'] as const;
 export type Cells = (typeof CELLS)[number];
 export const CELL_FRAMES: readonly TextFrame[] = ['woven', 'air'];
-/** The frames whose space around the motif the visitor sets. */
-export const SPACED_STYLES: readonly FigureStyle[] = ['wedges', 'silhouette'];
+/** Frames whose squares hold the motif, so they fix the space around it. The
+ * circle on a board takes a space within the radii the board allows. */
+export const BOARD_STYLES: readonly FigureStyle[] = ['motifs', 'squares'];
+/** The frames whose space around the motif the visitor sets: the circle's
+ * distance from it, or the legs' of a frame without a centre panel. */
+export const SPACED_STYLES: readonly FigureStyle[] = FIGURE_STYLES.filter(style => !BOARD_STYLES.includes(style));
 /** The space a state asks between the motif and its frame, where it has one. */
 export function frameGap(s: GeneratorState): number | undefined {
 	return s.mode === 'figure' && SPACED_STYLES.includes(s.style) ? s.spacing : undefined;

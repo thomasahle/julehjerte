@@ -28,7 +28,7 @@ export function hasThreeCounterLanes(rings: Ring[]): boolean {
 
 export function generateCornerChecks(rings: Ring[], size = 70, scale = .7,
 	routing: 'chain' | 'practical' | 'separated' = 'chain', fitBorder = false, bentSpokes = false,
-	contacts?: { tilt: number; invert: boolean }, laneSplit?: number) {
+	contacts?: { tilt: number; invert: boolean }, laneSplit?: number, gap = 0) {
 	const points = rings.flat();
 	if (!points.length) throw new ConstructionError('empty', 'No contour');
 	const artwork = rings.map(r => r.map(([x, y]) => uprightToSheet([x * size * scale, y * size * scale])));
@@ -80,7 +80,8 @@ export function generateCornerChecks(rings: Ring[], size = 70, scale = .7,
 		lanes[lane].push(node);
 	}
 	for (let col = 0; col < 3; col++) {
-		const start: Point = [18 + col * 6, 30 - col * 6], end: Point = [70 + col * 6, 82 - col * 6];
+		// Space around the motif moves both checked tips toward their corners.
+		const start: Point = [18 - gap + col * 6, 30 - gap - col * 6], end: Point = [70 + gap + col * 6, 82 + gap - col * 6];
 		add(edges, [[start[0], 0], start], 'A', 'frame');
 		add(edges, [[0, start[1]], start], 'B', 'frame');
 		const route = (entry: Point, exit: Point) => {
@@ -125,6 +126,7 @@ export function generateCornerChecks(rings: Ring[], size = 70, scale = .7,
 	if (dividers.length) edges = stitch(edges, dividers.map(x => x * size * scale));
 	// Exclude only the two checked corners and the narrow outer bands from the
 	// solid-field check. No decorative colours may appear elsewhere in the field.
-	const domain: Ring = [[30, inset], [100 - inset, inset], [100 - inset, 70], [70, 70], [70, 100 - inset], [inset, 100 - inset], [inset, 30], [30, 30]];
+	const near = 30 - gap, far = 70 + gap;
+	const domain: Ring = [[near, inset], [100 - inset, inset], [100 - inset, far], [far, far], [far, 100 - inset], [inset, 100 - inset], [inset, near], [near, near]];
 	return { edges, geometry: compile(edges), artwork, domain: [domain, ...artwork], separated: changed, borderAdjusted };
 }

@@ -1584,16 +1584,18 @@ export function framedGate(
 				: topRoute([p[1], p[0]], 1 - fraction).map(([x, y]) => [y, x] as Point);
 		return points.map(reflect);
 	};
+	// Both legs of a gate at a board junction on the ring end at the gate itself.
+	const along = (a: Port, b: Port) => near(a.point, b.point) ? [a.point] : arc(ring, a, b);
 	add(
 		edges,
-		[...route(low.point, first).reverse(), ...arc(ring, low, mid).slice(1)],
+		[...route(low.point, first).reverse(), ...along(low, mid).slice(1)],
 		first,
 		'frame'
 	);
 	const other = first === 'A' ? 'B' : 'A';
 	add(
 		edges,
-		[...arc(ring, mid, high), ...route(high.point, other).slice(1)],
+		[...along(mid, high), ...route(high.point, other).slice(1)],
 		other,
 		'frame'
 	);
@@ -1609,39 +1611,81 @@ export function openLeg(gate: Point, corner: Point, axis: 0 | 1, taper: number):
 	return end;
 }
 
-/** The circle on the regular five-strip board, by the motif's cells on each
- * side. One cell: the circle fills the middle three strips, midway between the
- * centre square's corners and the next lines out, so only the two middle lines
- * of each sheet meet it and the outer ring of squares stays whole. Two: it
- * meets every line, midway between the junctions just inside and outside it.
- * Either way no line ends near a junction. */
-export const BOARD_CIRCLES = [Math.hypot(10, 10) + 30, Math.hypot(30, 10) + Math.hypot(30, 30)];
+/** The radii a circle on the regular five-strip board can take. From five
+ * units outside the centre square's corners up to the radius through the
+ * eight inner corners of the outer ring of squares, where it just touches that
+ * ring, the motif meets the two middle lines of each sheet as a letter in the
+ * circle frame; the outer lines cross the paper whole, or, once the circle
+ * reaches them, follow it (see `boardLegs`). From there out to the junctions
+ * at the ring's own corners the circle meets every line, and the motif, divided
+ * into four panels, meets all their ends. */
+export const BOARD_RADII: readonly (readonly [number, number])[] = [
+	[Math.hypot(10, 10) + 5, Math.hypot(30, 10)], [Math.hypot(30, 10), Math.hypot(30, 30) - .4]
+];
+
+/** A circle on the regular board of `strips` strips, with the board's
+ * junctions that lie on it as exact corners: a circle through junctions (one
+ * just touching the outer ring of squares at their inner corners) then ends
+ * both lines of each there, leaving no sliver beside it. */
+export function boardRing(radius: number, strips: number): Ring {
+	const angle = ([x, y]: Point) => (Math.atan2(y - 50, x - 50) + 2 * Math.PI) % (2 * Math.PI);
+	const points: Point[] = frameRing('circle', 2 * radius);
+	for (let i = 1; i < strips; i++) for (let j = 1; j < strips; j++) {
+		const junction: Point = [(100 * i) / strips, (100 * j) / strips];
+		if (Math.abs(distance(junction, [50, 50]) - radius) < 1e-9) points.push(junction);
+	}
+	return points.sort((a, b) => angle(a) - angle(b));
+}
 
 /** Where the lines of a regular board of `strips` strips meet a circle around
- * its centre, for a cell grid with `count` outer gates on each side. In each
- * quarter of the circle the lines' ends alternate between the sheets, and
- * consecutive pairs meet at a gate: for an outer gate (side and index, as in
- * `connectCellGrid`), the gate's angle and the half-angle to its two legs,
- * which then lie exactly on the board's lines. Lines that miss the circle
- * cross the paper whole. */
+ * its centre, for a cell grid with `count` outer gates on each side. Lines
+ * that miss the circle cross the paper whole. A line the circle reaches across
+ * with no other line ending on its far side follows the circle there instead
+ * (the outer lines of a circle just reaching into the outer ring of squares):
+ * beside each corner of that ring the circle is then left uncut, joining the
+ * paper there to it rather than leaving a sliver. In each quarter of the circle
+ * the other lines' ends alternate between the sheets, and consecutive pairs
+ * meet at a gate: for an outer gate (side and index, as in `connectCellGrid`),
+ * the gate's angle and the half-angle to its two legs, which then lie exactly
+ * on the board's lines. */
 function boardLegs(edges: Edge[], ring: Ring, strips: number, count: number): (side: number, index: number) => [number, number] {
-	const quarters: { angle: number; family: 'A' | 'B' }[][] = [[], [], [], []];
+	type End = { angle: number; family: 'A' | 'B'; port: Port };
+	const turn = 2 * Math.PI, lines: { axis: number; line: number; ends: End[] }[] = [];
 	for (let k = 1; k < strips; k++) for (const axis of [0, 1]) {
-		const line = (100 * k) / strips;
-		let crossed = false;
+		const line = (100 * k) / strips, ends: End[] = [];
 		ring.forEach((p, i) => {
 			const q = ring[(i + 1) % ring.length];
 			if ((p[axis] < line) === (q[axis] < line)) return;
 			const t = (line - p[axis]) / (q[axis] - p[axis]);
-			const point = [p[0] + t * (q[0] - p[0]), p[1] + t * (q[1] - p[1])];
-			const angle = (Math.atan2(point[1] - 50, point[0] - 50) + 2 * Math.PI) % (2 * Math.PI);
-			quarters[Math.floor(angle / (Math.PI / 2)) % 4].push({ angle, family: axis ? 'B' : 'A' });
-			crossed = true;
+			const point: Point = [p[0] + t * (q[0] - p[0]), p[1] + t * (q[1] - p[1])];
+			point[axis] = line;
+			const angle = (Math.atan2(point[1] - 50, point[0] - 50) + turn) % turn;
+			ends.push({ angle, family: axis ? 'B' : 'A', port: { point, index: i + t } });
 		});
-		if (!crossed) add(edges, axis ? [[0, line], [100, line]] : [[line, 0], [line, 100]], axis ? 'B' : 'A', 'frame');
+		if (!ends.length) add(edges, axis ? [[0, line], [100, line]] : [[line, 0], [line, 100]], axis ? 'B' : 'A', 'frame');
+		else lines.push({ axis, line, ends });
 	}
+	const all = lines.flatMap(line => line.ends), inside = (angle: number, from: number, to: number) =>
+		(angle - from + turn) % turn > 1e-9 && (to - angle + turn) % turn > 1e-9 && (angle - from + turn) % turn < (to - from + turn) % turn;
+	const open: End[] = [];
+	for (const { axis, line, ends } of lines) {
+		// The far side of the line from the centre.
+		const away = axis ? (line < 50 ? 1.5 : .5) * Math.PI : line < 50 ? Math.PI : 0;
+		let [a, b] = ends;
+		if (ends.length === 2 && !inside(away, a.angle, b.angle)) [a, b] = [b, a];
+		if (ends.length !== 2 || all.some(end => end !== a && end !== b && inside(end.angle, a.angle, b.angle))) {
+			open.push(...ends);
+			continue;
+		}
+		const edge = (end: End): Point => axis ? [end.port.point[0] < 50 ? 0 : 100, line] : [line, end.port.point[1] < 50 ? 0 : 100];
+		add(edges, [edge(a), ...arc(ring, a.port, b.port), edge(b)], axis ? 'B' : 'A', 'frame');
+	}
+	const quarters: End[][] = [[], [], [], []];
+	for (const end of open) quarters[Math.floor(end.angle / (Math.PI / 2)) % 4].push(end);
 	for (const [quarter, ends] of quarters.entries()) {
-		ends.sort((a, b) => a.angle - b.angle);
+		// Two lines ending at one junction on the circle pair at it, in turn.
+		const first = (end: { family: 'A' | 'B' }) => Number(end.family !== (quarter % 2 ? 'A' : 'B'));
+		ends.sort((a, b) => a.angle - b.angle > 1e-9 ? 1 : b.angle - a.angle > 1e-9 ? -1 : first(a) - first(b));
 		if (ends.length !== 2 * count || ends.some((end, i) => end.family !== ((quarter + i) % 2 ? 'A' : 'B')))
 			throw new ConstructionError('topology', 'The circle does not meet the board in turn');
 	}

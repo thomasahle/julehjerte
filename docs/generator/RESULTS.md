@@ -1,5 +1,30 @@
 # Generator robustness results
 
+## Size and space around the figure in every frame
+
+Product decision (2026-10-18): the two figure sliders often did the same thing
+(the frame size scaled the motif a second time), and every frame should take a
+size and a spacing. The frame-size slider is gone; "Luft om figuren" (0–15% of
+the square, 3% by default) sets how far the circle, the wedges' tips, the corner
+checks and the close-fitting frame's outer strips keep from the motif, and the
+size slider scales the motif in every frame, including within the squares of the
+board frames. At the page's defaults the figure corpus (51 motifs × 11 frames)
+is 539 clean, 10 hard, 12 refused: the circle frames,
+the corners and the close-fitting frame stay 51 / 51 (the sunburst 50 / 51).
+Small motifs no longer try larger sizes than the visitor's (those retries made
+them twice as slow, 349 → 774 s for the corpus); without them they take 299 s.
+The circle on equal squares grows smoothly with the size, from radius 19 through
+the circle touching the outer ring of squares (31.6, the default 70%) to 42, and
+changes construction once, there. Its circle and motif only grow with the slider
+(the star, the cookie and the cat measured at nine sizes): a size that cannot be
+cut cleanly stays that size as hard to cut (the star at 72–76%, the cat beyond
+the touching circle) instead of the motif jumping smaller. Outer gates the circle
+passes inside of move in, so the cookie, whose cell reaches outside the circle,
+is clean at every size. At the default: 45 clean (the rabbit joins, 0.3 s instead
+of 21 s hard to cut), 2 hard (snow, the crown), 4 refused (the coffee cup, the
+bicycle, the sun and the paw, in separate parts); the 51 hearts take 20 s. The
+fixture has **1,673** entries.
+
 ## Letters of one size on the checkerboard; equal squares for figures
 
 Product decisions (2026-10-18): checkerboard (Tern) letters were each scaled to

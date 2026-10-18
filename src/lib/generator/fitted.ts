@@ -34,10 +34,13 @@ export function generateFittedFigure(rings: Ring[], size = 70, scale = .7, route
 	// silhouette point with clear outward projections. The motif never moves.
 	const angles = [-3 * Math.PI / 4, -Math.PI / 4, Math.PI / 4, 3 * Math.PI / 4]
 		.map((angle, i) => angle + angleOffsets[i]);
+	// The space around the motif moves the legs out, or, in a frame with outer
+	// strips, whose legs fit the motif, those strips.
+	const legGap = open.border ? 0 : open.gap, band = 4 + (open.border ? open.gap : 0);
 	const gates = angles.map(angle => symmetricSupport(artwork, angle, size * scale, symmetric))
 		.map((p, i): [number, number] => [
-			p[0] + (padding * gridClearance(5) + open.gap) * Math.cos(angles[i]),
-			p[1] + (padding * gridClearance(5) + open.gap) * Math.sin(angles[i])
+			p[0] + (padding * gridClearance(5) + legGap) * Math.cos(angles[i]),
+			p[1] + (padding * gridClearance(5) + legGap) * Math.sin(angles[i])
 		]);
 	// An outward offset leaves space for a coincident connection to a detached
 	// part before reaching the main silhouette. It adds no visible frame edge.
@@ -52,7 +55,6 @@ export function generateFittedFigure(rings: Ring[], size = 70, scale = .7, route
 	if (!open.border) return { edges, artwork, geometry: compile(edges), domain: [gates, ...artwork] };
 	const minX = Math.min(...points.map(p => p[0])), maxX = Math.max(...points.map(p => p[0]));
 	const minY = Math.min(...points.map(p => p[1])), maxY = Math.max(...points.map(p => p[1]));
-	const band = 4;
 	if (Math.min(minX, minY, 100 - maxX, 100 - maxY) <= band)
 		throw new ConstructionError('clearance', 'No room for the outer strips');
 	for (const x of [minX - band, maxX + band]) add(edges, [[x, 0], [x, 100]], 'A', 'frame');

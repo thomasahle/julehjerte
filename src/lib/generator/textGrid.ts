@@ -9,7 +9,7 @@ import {
 	type Edge,
 	uprightToSheet,
 	frameRing,
-	BOARD_CIRCLES,
+	boardRing,
 	ray,
 	distance,
 	fourPortMotif,
@@ -53,7 +53,7 @@ export function generateTextGrid(
 	font: Font,
 	air = false,
 	frame?: Frame,
-	layout: { padding?: number; frameFill?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; adaptGates?: boolean; onGateChange?: () => void; filled?: boolean; onSeamChange?: () => void; inkPanels?: boolean; bentSpokes?: boolean; adaptivePanels?: boolean; guardSeams?: boolean; boundaryIslands?: boolean; contourApproaches?: boolean; guardedAttachments?: boolean; fittedCells?: boolean; letterScale?: number; board?: number; junction?: Point } = {}
+	layout: { padding?: number; frameFill?: number; spread?: boolean; slices?: number; columns?: number; practical?: boolean; compound?: boolean; onCompound?: () => void; balanced?: boolean; onCrowded?: () => void; adaptGates?: boolean; onGateChange?: () => void; filled?: boolean; onSeamChange?: () => void; inkPanels?: boolean; bentSpokes?: boolean; adaptivePanels?: boolean; guardSeams?: boolean; boundaryIslands?: boolean; contourApproaches?: boolean; guardedAttachments?: boolean; fittedCells?: boolean; letterScale?: number; board?: number; junction?: Point; circle?: number; scale?: number } = {}
 ) {
 	const lines = text.normalize('NFC').replace(/\r\n?/g, '\n').split('\n');
 	const cols = Math.max(...lines.map((l) => [...l].length)),
@@ -98,12 +98,12 @@ export function generateTextGrid(
 	// leaving the block's sides, and the outer strips beyond them, are then all
 	// one square apart, on a board of columns + rows + 1 strips.
 	const regular = !layout.fittedCells && !frame;
-	let scale = regular
+	// A given scale and circle (a motif on the regular board) are kept.
+	let scale = layout.scale ?? (regular
 		? 100 * Math.SQRT2 * (layout.slices ?? 1) / ((cols * (layout.columns ?? 1) + rows * (layout.slices ?? 1) + 1) * cellHeight)
-		: 128 / (span + fullHeight);
-	// A circle on the regular board has the board's own size.
-	const boundary = frame ? frameRing(frame, layout.board ? BOARD_CIRCLES[cols * (layout.columns ?? 1) - 1] : 80) : undefined;
-	if (boundary)
+		: 128 / (span + fullHeight));
+	const boundary = frame ? layout.board && layout.circle ? boardRing(layout.circle / 2, layout.board) : frameRing(frame, layout.circle ?? 80) : undefined;
+	if (boundary && layout.scale === undefined)
 		for (const x of [-span / 2, 0, span / 2])
 			for (const y of [-fullHeight / 2, 0, fullHeight / 2]) {
 				if (!x && !y) continue;
@@ -196,6 +196,20 @@ export function generateTextGrid(
 			const letterScale = scale * (layout.letterScale ?? 1);
 			let upright = glyph.contours.map(r => r.map(p => [glyphX + (p[0] - cx) * letterScale, glyphY + (p[1] - cy) * letterScale] as Point));
 			if (row % slices === 0 && col % columns === 0) artwork.push(...upright.map(r => r.map(uprightToSheet)));
+			if (layout.board && layout.circle) {
+				// The circle's legs run straight in to the motif's outer gates. A
+				// gate the circle passes inside of, the cell being square and the
+				// motif large, moves in towards the centre, to midway between the
+				// circle and the motif's farthest point, while it stays in its panel.
+				const reach = Math.max(...upright.flat().map(p => Math.hypot(p[0], p[1]))),
+					limit = (reach + layout.circle / 2) / 2;
+				const outer = [row === 0, col === cols * columns - 1, row === rows * slices - 1, col === 0];
+				[[x, y - h / 2], [x + w / 2, y], [x, y + h / 2], [x - w / 2, y]].forEach(([u, v], i) => {
+					const k = limit / Math.hypot(u, v);
+					if (outer[i] && k < 1 && Math.abs(u * k - x) <= w / 2 + 1e-9 && Math.abs(v * k - y) <= h / 2 + 1e-9)
+						gates[i] = uprightToSheet([u * k, v * k]);
+				});
+			}
 			if (columns > 1) {
 				if (col % columns) upright = clipContours(upright, x - w / 2, false);
 				if (col % columns < columns - 1) upright = clipContours(upright, x + w / 2, true);
