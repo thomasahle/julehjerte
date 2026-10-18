@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
 	STRAND_LAYOUT,
+	clearLevelBootstrap,
 	clearStrandBootstrap,
 	strandBootstrapScript,
 	strandBootstrapSource,
@@ -8,6 +9,9 @@ import {
 } from './strandBootstrap';
 import { cardDrop, hillTopPage, type LandRect } from './hillLine';
 import { LANDSCAPE_HEIGHT, LANDSCAPE_MAX_WIDTH, LANDSCAPE_WIDTH } from '$lib/landscape';
+import { CATEGORIES } from '$lib/data/categories';
+import heartCards from '$lib/data/heart-cards.json';
+import { LEVELS, LEVEL_PARAM, LEVEL_SLUGS, LEVEL_STORAGE_KEY } from './levelFilter';
 
 const CHIPS: StrandChips = {
 	categories: [
@@ -40,7 +44,65 @@ const TEXT_WIDTHS: Record<string, number> = {
 	'12': 14.4,
 	'26': 14.4,
 	'7': 7.2,
-	'6': 7.2
+	'6': 7.2,
+	'8': 7.2,
+	'0': 7.2,
+	'1': 7.2,
+	'3': 7.2,
+	// The difficulty toggles' words, at 600.
+	Let: 20.2,
+	Mellem: 45.1,
+	Svær: 32.2,
+	Ekspert: 48.2
+};
+
+const LABELS: Record<string, string> = {
+	easy: 'Let',
+	medium: 'Mellem',
+	hard: 'Svær',
+	expert: 'Ekspert'
+};
+
+/**
+ * The row's width with the toggles: four toggles (dots and their gap only
+ * from 1200px up), the group's extra gap, and the five category chips with
+ * these counts, 8px apart.
+ */
+function rowTotal(counts: string[], dots: boolean): number {
+	const toggles = ['Let', 'Mellem', 'Svær', 'Ekspert'].map((label) =>
+		Math.round(26 + (dots ? STRAND_LAYOUT.dotsWidth + 6 : 0) + TEXT_WIDTHS[label])
+	);
+	const chips = ['Klassiske', 'Stjerner', 'Mønstre', 'Figurer', 'Hjerter'].map((title, i) =>
+		Math.round(32 + TEXT_WIDTHS[title] + TEXT_WIDTHS[counts[i]])
+	);
+	const widths = [...toggles, ...chips];
+	return widths.reduce((sum, w) => sum + w, 0) + 8 * (widths.length - 1) + STRAND_LAYOUT.groupGap;
+}
+
+const TITLES: Record<string, string> = {
+	klassiske: 'Klassiske',
+	stjerner: 'Stjerner',
+	moenstre: 'Mønstre',
+	figurer: 'Figurer',
+	hjerter: 'Hjerter'
+};
+
+/** The chips as the front page's load hands them over: the real categories, with the filter. */
+const CARDS = heartCards as Record<string, { difficulty: string }>;
+const FILTERED: StrandChips = {
+	...CHIPS,
+	categories: CATEGORIES.map((category) => ({
+		id: category.id,
+		title: TITLES[category.id],
+		count: category.hearts.length,
+		levels: category.hearts.map((id) => CARDS[id].difficulty),
+		hearts: category.hearts
+	})),
+	filter: {
+		levels: LEVELS.map((level) => ({ level, slug: LEVEL_SLUGS[level], label: LABELS[level] })),
+		param: LEVEL_PARAM,
+		storageKey: LEVEL_STORAGE_KEY
+	}
 };
 
 let width = 1440;
@@ -57,9 +119,10 @@ function stubPage() {
 		configurable: true,
 		get: () => width
 	});
-	window.matchMedia = ((query: string) => ({
-		matches: query === '(min-width: 900px)' ? width >= 900 : false
-	})) as unknown as typeof window.matchMedia;
+	window.matchMedia = ((query: string) => {
+		const min = /^\(min-width: (\d+)px\)$/.exec(query);
+		return { matches: min ? width >= Number(min[1]) : false };
+	}) as unknown as typeof window.matchMedia;
 	// A classic scrollbar `scrollbar` px wide, as the script's probe sees it.
 	Object.defineProperty(HTMLElement.prototype, 'offsetWidth', {
 		configurable: true,
@@ -134,6 +197,12 @@ beforeEach(() => {
 		getItem: (key: string) => store.get(key) ?? null,
 		setItem: (key: string, value: string) => void store.set(key, value)
 	});
+	const session = new Map<string, string>();
+	vi.stubGlobal('sessionStorage', {
+		getItem: (key: string) => session.get(key) ?? null,
+		setItem: (key: string, value: string) => void session.set(key, value)
+	});
+	clearLevelBootstrap();
 	window.history.replaceState(null, '', '/');
 	stubPage();
 });
@@ -229,5 +298,146 @@ describe('clearStrandBootstrap', () => {
 		clearStrandBootstrap();
 		expect(root().className).toBe('hero-ready');
 		expect(root().getAttribute('style')).toBe('--other: 1px;');
+	});
+});
+
+describe('the difficulty filter in the strand bootstrap script', () => {
+	const style = () => document.querySelector('style[data-level-bootstrap]')?.textContent ?? null;
+
+	it('counts the toggles into the chips’ span: 1440 as the gallery measures it there', () => {
+		// The numbers Gallery.svelte sets at 1440 with the toggles in the row
+		// (chromium and WebKit agree): the row now reaches over three columns.
+		run(FILTERED);
+		expect([0, 1, 2, 3, 4].map((k) => px(`--strand-${k}`))).toEqual([0.2, 83, 122.8, 105.7, 65.3]);
+		expect(px('--strand-room')).toBe(122.8);
+		// No filter chosen: nothing to hide.
+		expect(style()).toBeNull();
+	});
+
+	it('hides the other levels and the emptied categories for ?level=let', () => {
+		window.history.replaceState(null, '', '/?level=let');
+		run(FILTERED);
+		const css = style()!;
+		for (const level of ['medium', 'hard', 'expert']) {
+			expect(css).toContain(`.cat-grid > [data-level="${level}"]{display:none}`);
+		}
+		expect(css).not.toContain('[data-level="easy"]{display:none}');
+		expect(css).toContain('#skabeloner > #moenstre{display:none}');
+		expect(css).toContain('#skabeloner > #figurer{display:none}');
+		expect(css).not.toContain('#klassiske{display:none}');
+		// Klassiske still has a heart on show, so it keeps the first margin.
+		expect(css).not.toContain('margin-top');
+		// The strands count the cards on show only: five columns at 1440.
+		expect(css).toContain(
+			'html.strands-5 #skabeloner .cat:not(.apart) .cat-grid > :nth-child(5n + 1 of [data-level="easy"]){--strand:var(--strand-0)}'
+		);
+		expect(css).toContain(':nth-child(5n + 5 of [data-level="easy"]){--strand:var(--strand-4)}');
+	});
+
+	it('estimates the chips with the counts the filter leaves, at every desktop width', () => {
+		// "Let": Klassiske 1, Stjerner 3, Mønstre 0, Figurer 0, Hjerter 1, the
+		// emptied ones dimmed but still in the row.
+		const counts = ['1', '3', '0', '0', '1'];
+		for (const viewport of [900, 1024, 1199, 1200, 1440, 1920]) {
+			width = viewport;
+			window.history.replaceState(null, '', '/?level=let');
+			root().removeAttribute('style');
+			root().className = '';
+			run(FILTERED);
+			const { drops } = expected(viewport, rowTotal(counts, viewport >= 1200));
+			drops.forEach((drop, k) => {
+				expect(Math.abs(px(`--strand-${k}`) - drop), `strand ${k} at ${viewport}`).toBeLessThan(0.051);
+			});
+		}
+	});
+
+	it('takes the URL over the tab’s stored choice, and the stored choice without one', () => {
+		sessionStorage.setItem(LEVEL_STORAGE_KEY, 'ekspert');
+		run(FILTERED);
+		expect(style()).toContain('[data-level="easy"]{display:none}');
+		expect(style()).not.toContain('[data-level="expert"]{display:none}');
+
+		clearLevelBootstrap();
+		window.history.replaceState(null, '', '/?level=let,mellem');
+		run(FILTERED);
+		expect(style()).toContain('[data-level="expert"]{display:none}');
+		expect(style()).toContain('of [data-level="easy"],[data-level="medium"])');
+	});
+
+	it('gives the first category on show the first one’s margin', () => {
+		// No "Klassiske" heart is an expert's.
+		window.history.replaceState(null, '', '/?level=ekspert');
+		run(FILTERED);
+		const css = style()!;
+		expect(css).toContain('#skabeloner > #klassiske{display:none}');
+		expect(css).toContain('#skabeloner > #stjerner{margin-top:8px}');
+		expect(css).toContain(
+			'@media (min-width: 900px){#skabeloner > #stjerner{margin-top:calc(6px - var(--gallery-bar-height, 49px) - var(--bar-room, 0px))}}'
+		);
+	});
+
+	it('filters below 900px too, without strands', () => {
+		width = 390;
+		window.history.replaceState(null, '', '/?level=let');
+		run(FILTERED);
+		expect(style()).toContain('#skabeloner > #moenstre{display:none}');
+		expect(style()).not.toContain('--strand');
+		expect(root().getAttribute('style')).toBeNull();
+		expect(root().className).toBe('');
+	});
+
+	it('leaves out a filter that hides what the page was entered at', () => {
+		// A heart's breadcrumb links to its category; a card's anchor to it.
+		sessionStorage.setItem(LEVEL_STORAGE_KEY, 'let');
+		window.history.replaceState(null, '', '/#moenstre');
+		run(FILTERED);
+		expect(style()).toBeNull();
+
+		window.history.replaceState(null, '', '/#heart-jul');
+		run(FILTERED);
+		expect(style()).toBeNull();
+
+		// Shown by the filter: it stays.
+		window.history.replaceState(null, '', '/#stjerner');
+		run(FILTERED);
+		expect(style()).toContain('#skabeloner > #moenstre{display:none}');
+		clearLevelBootstrap();
+		window.history.replaceState(null, '', '/#heart-classic-3x3');
+		run(FILTERED);
+		expect(style()).toContain('#skabeloner > #moenstre{display:none}');
+	});
+
+	it('ignores unknown words', () => {
+		window.history.replaceState(null, '', '/?level=nonsense');
+		run(FILTERED);
+		expect(style()).toBeNull();
+	});
+
+	it('counts the toggles’ dots only from 1200px up and while nothing is ticked', () => {
+		const all = ['4', '12', '26', '8', '6'];
+		// At 1440 a column centre lies between the row's start with and without the dots.
+		const withDots = expected(1440, rowTotal(all, true)).drops;
+		const without = expected(1440, rowTotal(all, false)).drops;
+		expect(withDots).not.toEqual(without);
+		run(FILTERED);
+		[0, 1, 2, 3, 4].forEach((k) => expect(px(`--strand-${k}`)).toBeCloseTo(withDots[k], 1));
+
+		// Ticked: the download button joins the row and the dots go.
+		window.history.replaceState(null, '', '/?selected=a');
+		root().removeAttribute('style');
+		run(FILTERED);
+		const button = Math.round(64 + 'Hent skabeloner'.length * 7 + 7);
+		const ticked = expected(1440, rowTotal(all, false) + button + 8).drops;
+		[0, 1, 2, 3, 4].forEach((k) => expect(px(`--strand-${k}`)).toBeCloseTo(ticked[k], 1));
+	});
+});
+
+describe('clearLevelBootstrap', () => {
+	it('removes the filter’s first-paint rules', () => {
+		window.history.replaceState(null, '', '/?level=let');
+		run(FILTERED);
+		expect(document.querySelectorAll('style[data-level-bootstrap]')).toHaveLength(1);
+		clearLevelBootstrap();
+		expect(document.querySelectorAll('style[data-level-bootstrap]')).toHaveLength(0);
 	});
 });

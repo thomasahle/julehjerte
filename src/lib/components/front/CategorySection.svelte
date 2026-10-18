@@ -17,6 +17,8 @@
 	import type { HeartDesign } from '$lib/types/heart';
 	import type { GalleryHeart } from '$lib/front/galleryHearts';
 	import type { Language } from '$lib/i18n';
+	import type { DifficultyLevel } from '$lib/utils/difficulty';
+	import { matchesLevels } from '$lib/front/levelFilter';
 
 	interface Props {
 		/** Category id; also the anchor the front page scrolls to. */
@@ -47,6 +49,12 @@
 		 * amendment 3); 0: no strands.
 		 */
 		columns?: number;
+		/**
+		 * The front page's difficulty filter: cards of other levels are hidden
+		 * (`display: none`, so the grid closes up), and a category left with
+		 * none hides altogether. Empty: all shown. "Mine hjerter" passes none.
+		 */
+		levels?: ReadonlySet<DifficultyLevel>;
 		/** "Mine hjerter": set apart from the gallery categories above it. */
 		apart?: boolean;
 		/** Shown instead of the grid when `hearts` is empty. */
@@ -66,12 +74,33 @@
 		onDelete,
 		first = false,
 		columns = 0,
+		levels = new Set(),
 		apart = false,
 		empty
 	}: Props = $props();
+
+	/**
+	 * Each card's place among the cards on show, or -1 when the filter hides
+	 * it: the strands follow the grid's columns as laid out, which skip the
+	 * hidden cards.
+	 */
+	let shownIndex = $derived.by(() => {
+		let next = 0;
+		return hearts.map((heart) => (matchesLevels(levels, heart.difficulty) ? next++ : -1));
+	});
+
+	/** A gallery category the filter has emptied takes no room at all. */
+	let filteredAway = $derived(!apart && hearts.length > 0 && !shownIndex.some((i) => i >= 0));
 </script>
 
-<section class="cat" class:first class:apart {id}>
+<section
+	class="cat"
+	class:first
+	class:apart
+	{id}
+	style:display={filteredAway ? 'none' : undefined}
+	data-filtered={filteredAway ? '' : undefined}
+>
 	{#if apart}
 		<div class="cat-head">
 			<h3>{title}</h3>
@@ -90,7 +119,8 @@
 					design={designs?.[heart.id]}
 					{lang}
 					{index}
-					strand={columns > 0 ? index % columns : undefined}
+					strand={columns > 0 && shownIndex[index] >= 0 ? shownIndex[index] % columns : undefined}
+					hidden={shownIndex[index] < 0}
 					selected={selectedIds.has(heart.id)}
 					{onSelect}
 					{onClick}

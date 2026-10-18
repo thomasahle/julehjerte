@@ -15,9 +15,15 @@
 		size?: number;
 		/** Set false to show only the dots. */
 		showLabel?: boolean;
+		/**
+		 * Only the dots, hidden from screen readers and without a tooltip:
+		 * for a control that names the level itself (the gallery bar's
+		 * difficulty toggles).
+		 */
+		decorative?: boolean;
 	}
 
-	let { level, lang, size = 8, showLabel = true }: Props = $props();
+	let { level, lang, size = 8, showLabel = true, decorative = false }: Props = $props();
 
 	const FILLED: Record<DifficultyLevel, number> = { easy: 1, medium: 2, hard: 3, expert: 4 };
 	const LABEL_KEYS: Record<DifficultyLevel, TranslationKey> = {
@@ -31,7 +37,11 @@
 	let label = $derived(t(LABEL_KEYS[level] ?? 'difficultyMedium', lang));
 </script>
 
-<span class="dots" title={label}>
+<span
+	class="dots"
+	title={decorative ? undefined : label}
+	aria-hidden={decorative ? 'true' : undefined}
+>
 	{#each [1, 2, 3, 4] as i (i)}
 		<span
 			class="dot"
@@ -40,7 +50,9 @@
 			aria-hidden="true"
 		></span>
 	{/each}
-	{#if showLabel}
+	{#if decorative}
+		<!-- Named by the control it sits in. -->
+	{:else if showLabel}
 		<span class="label">{label}</span>
 	{:else}
 		<span class="sr-only">{label}</span>

@@ -96,3 +96,67 @@ DESIGN.md §8 applies: static prerendered site, both languages, `npm run check`,
 (`gallery-bar`) in clear commits, **never push**, work only in this worktree,
 no shared Playwright MCP tools, no new dependencies, do not touch
 `static/inverse`, `scripts/inverse`, `docs/inverse`.
+
+## As built: difficulty filter (18 Oct 2026)
+
+A QA tester playing a teacher could not gather six easy hearts: only five are
+"Let", spread over three categories. The bar now filters the gallery by
+difficulty.
+
+- **Toggles.** "Let", "Mellem", "Svær", "Ekspert" ("Easy", "Medium", "Hard",
+  "Expert"; the existing `difficulty*` keys), one per level some gallery heart
+  has, each a chip with the cards' four difficulty dots (6px, decorative)
+  before its word. They are `<button aria-pressed>` in a
+  `role="group"` labelled "Sværhedsgrad" / "Difficulty" (`difficulty`), placed
+  in the chip row after the download button and before the category chips,
+  8px further from the categories than the chips are from each other.
+  Multi-select; none chosen shows all. Chosen: the download button's red fill,
+  white dots and text (the current category chip stays `--deep`: what is being
+  read, not what is picked). Focus ring 3px `--blue` as on the chips.
+- **On the hill.** Each toggle is an item of the row (`[data-hill-chip]`, the
+  attribute the gallery's measure and the bar's push now read instead of the
+  row's children): its own lift, pushed with the chips, and counted in the
+  chips' span, so at 1440 three columns now get the +54 (strands 0.2, 83,
+  122.8, 105.7, 65.3; D 122.8, L 74.2). Below 900 they lead the scrolling chip
+  row; back on the hero the row scrolls back to its start so they are in sight.
+- **Room.** The row would not fit the column with everything at full width,
+  so on the desktop layout the toggles drop their dots below 1200px and
+  whenever the download button is shown. Even so the row overflows from 900
+  to about 975px, and with a selection up to about 1150px; it then scrolls
+  (the button sticky at its start), and snapping is off on the desktop
+  layout because its snap positions kept the row from scrolling back to 0.
+- **Filtering.** Cards of other levels get `display: none` (kept in the page:
+  a prerendered heart's SVG cannot be drawn again), so the grid closes up; the
+  strands count the cards on show (`strand = shown index % columns`). A
+  category left empty is hidden, and the first category on show takes the
+  first one's place on the hill (`first`). Its chip stays, dimmed
+  (`opacity .45`), `aria-disabled`, out of the tab order, never current, and
+  its click does nothing. The chips count the hearts on show ("Stjerner 3").
+  The scroll-spy looks at the sections on show only. "Mine hjerter" is not
+  filtered. A filter change re-runs the gallery's measure (its effect depends
+  on the filter), so the pull-up, lifts, span and strands are re-measured.
+- **State.** `?level=let,mellem` (Danish words in both languages, easiest
+  first), written with the selection's `goto(…, { replaceState })`, so no
+  page view; Back from a heart's page returns to that URL. The choice is also
+  kept in sessionStorage (`juleflet-level`), which applies when the URL has no
+  `level` (the header's "Skabeloner", a breadcrumb), and the URL is brought in
+  line. A filter that would hide what the page is entered at (a breadcrumb's
+  `/#moenstre`, `#heart-<id>`) is dropped, and a hero heart whose card it
+  hides clears it before going there. Pure logic in `$lib/front/levelFilter`.
+- **First paint.** The inline strand script reads the same filter (URL, then
+  sessionStorage, same anchor rule) and writes a `<style data-level-bootstrap>`:
+  the other levels' cards and the emptied sections hidden, the first category
+  on show given the first one's margin, and on the desktop layout the strands
+  with `:nth-child(Nn + k of [data-level=…])`. It estimates the chips' span with
+  the toggles and the filtered counts. The gallery removes the style once the
+  page has applied the filter. With `?level=let`, `?level=ekspert` and none,
+  from 900 to 1920 in Chromium and WebKit, the cards, strands and sections
+  before hydration (app scripts blocked) equal those after.
+
+Verified with Playwright against `vite preview` (Chromium and WebKit, 1440,
+1024 and 390): the stepped push/strand probe of GALLERY-CURVE.md amendment 3
+with the filter on and off, 0 chip or card mismatches and 0 scroll-spy
+mismatches; "Let" shows exactly the five easy hearts with counts 1, 3, 0, 0,
+1; reload, Back from a heart page and the header link keep it; "Let" +
+"Ekspert" shows 16; clearing restores all 56; the bar's visible height stays
+49.6px. Screenshots in `bar-qa/level-*.png`.

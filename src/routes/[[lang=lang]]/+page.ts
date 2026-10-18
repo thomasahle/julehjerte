@@ -7,6 +7,13 @@ import { HERO_HEART_IDS, HERO_HEART_IDS_MOBILE } from '$lib/utils/randomHearts';
 import { HERO_PICKS_ATTRIBUTE, heroBootstrapScript } from '$lib/front/heroBootstrap';
 import { HERO_SLOTS_MOBILE } from '$lib/components/front/heroSlots';
 import { strandBootstrapScript } from '$lib/front/strandBootstrap';
+import {
+	LEVELS,
+	LEVEL_LABEL_KEYS,
+	LEVEL_PARAM,
+	LEVEL_SLUGS,
+	LEVEL_STORAGE_KEY
+} from '$lib/front/levelFilter';
 import { CATEGORIES, categoryTitle } from '$lib/data/categories';
 import { USER_COLLECTION_KEY } from '$lib/stores/collection';
 import { t, type Language } from '$lib/i18n';
@@ -94,11 +101,29 @@ export const load: PageLoad = async ({ params }) => {
 			strandScript: strandBootstrapScript({
 				// The bar's chips: the categories with hearts, counted as the gallery counts them.
 				categories: indexCategories
-					.map((category) => ({
-						title: categoryTitle(category.id, lang),
-						count: category.hearts.filter((id) => id in hearts).length
-					}))
+					.map((category) => {
+						const shown = category.hearts.filter((id) => id in hearts);
+						return {
+							id: category.id,
+							title: categoryTitle(category.id, lang),
+							count: shown.length,
+							levels: shown.map((id) => hearts[id].difficulty),
+							hearts: shown
+						};
+					})
 					.filter((category) => category.count > 0),
+				// The difficulty toggles, one per level some gallery heart has.
+				filter: {
+					levels: LEVELS.filter((level) => ids.some((id) => hearts[id]?.difficulty === level)).map(
+						(level) => ({
+							level,
+							slug: LEVEL_SLUGS[level],
+							label: t(LEVEL_LABEL_KEYS[level], lang)
+						})
+					),
+					param: LEVEL_PARAM,
+					storageKey: LEVEL_STORAGE_KEY
+				},
 				mine: t('categoryMine', lang),
 				download: t('printSelected', lang),
 				storageKey: USER_COLLECTION_KEY

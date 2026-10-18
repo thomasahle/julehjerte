@@ -47,9 +47,11 @@
 		revealed?: boolean;
 		/** Height in px of the landscape band below 900px. */
 		band?: number;
+		/** Before a hero heart goes to its card: see HeroHearts. */
+		onReveal?: (anchorId: string) => string | undefined;
 	}
 
-	let { lang, desktop, mobile, revealed = false, band = 230 }: Props = $props();
+	let { lang, desktop, mobile, revealed = false, band = 230, onReveal }: Props = $props();
 </script>
 
 <Scene {band}>
@@ -71,6 +73,7 @@
 				hearts={mobile}
 				idPrefix="hero-m"
 				{revealed}
+				{onReveal}
 			/>
 		</div>
 
@@ -104,6 +107,7 @@
 				hearts={desktop}
 				idPrefix="hero-d"
 				{revealed}
+				{onReveal}
 			/>
 		</div>
 	</div>

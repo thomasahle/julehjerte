@@ -22,7 +22,9 @@
 	import MyHearts from './MyHearts.svelte';
 	import { NARROW_QUERY, WIDE_FRAME_QUERY } from '$lib/breakpoints';
 	import { cardDrop, chipLift, hillTopPage, type LandRect } from '$lib/front/hillLine';
-	import { clearStrandBootstrap } from '$lib/front/strandBootstrap';
+	import { clearLevelBootstrap, clearStrandBootstrap } from '$lib/front/strandBootstrap';
+	import { LEVELS, levelValue, matchesLevels } from '$lib/front/levelFilter';
+	import type { DifficultyLevel } from '$lib/utils/difficulty';
 	import { CLAIM_PRERENDERED } from '$lib/front/galleryHearts';
 	import { categoryTitle } from '$lib/data/categories';
 	import { t, type Language } from '$lib/i18n';
@@ -69,6 +71,19 @@
 		 * already run or, after a client-side navigation, is not needed.
 		 */
 		strandScript?: string | null;
+		/**
+		 * The difficulty filter (GALLERY-BAR.md, "As built: difficulty
+		 * filter"): the levels shown, none meaning all. "Mine hjerter" is not
+		 * filtered.
+		 */
+		levels?: ReadonlySet<DifficultyLevel>;
+		/**
+		 * The page has read the filter from the URL or the tab's storage, so
+		 * what the gallery shows is final and the inline script's first-paint
+		 * stand-in for it can go.
+		 */
+		levelsRestored?: boolean;
+		onToggleLevel?: (level: DifficultyLevel) => void;
 	}
 
 	let {
@@ -85,8 +100,41 @@
 		onClick,
 		onDelete,
 		onLayout,
-		strandScript = null
+		strandScript = null,
+		levels = new Set(),
+		levelsRestored = false,
+		onToggleLevel = () => {}
 	}: Props = $props();
+
+	/** The levels any gallery heart has, easiest first: one toggle each. */
+	let availableLevels = $derived(
+		LEVELS.filter((level) =>
+			categories.some((category) => category.hearts.some((heart) => heart.difficulty === level))
+		)
+	);
+
+	/** How many of each category's hearts the filter leaves, in gallery order. */
+	let visibleCounts = $derived(
+		categories.map(
+			(category) => category.hearts.filter((heart) => matchesLevels(levels, heart.difficulty)).length
+		)
+	);
+
+	/**
+	 * The first category with hearts on show: it is the one that starts on the
+	 * hill line (`first`), so a filter that empties "Klassiske" hands that
+	 * role to the next.
+	 */
+	let firstShown = $derived(visibleCounts.findIndex((count) => count > 0));
+
+	/** Changes whenever the filter does, for the measure below. */
+	let levelKey = $derived(levelValue(levels));
+
+	// The page has applied the filter it loaded with (this runs after the DOM
+	// shows it), so the inline script's rules for the first paint can go.
+	$effect(() => {
+		if (browser && levelsRestored) clearLevelBootstrap();
+	});
 
 	// Measured by the bar; the sections' scroll-margin-top reads it so a chip's
 	// anchor lands under the bar rather than behind it. Left unset until it is
@@ -151,6 +199,10 @@
 		// controls take room from the chips' row.
 		void myHearts.length;
 		void (selectedCount > 0);
+		// And when the difficulty filter changes: the chips' counts change
+		// their widths, the first row may now belong to another category, and
+		// the wrap's height changes while its width does not.
+		void levelKey;
 		const narrow = window.matchMedia(NARROW_QUERY);
 		let frame = 0;
 
@@ -189,22 +241,33 @@
 			// their widths rather than read off the screen, so the answer is the
 			// same while the bar is stuck (left-aligned) or sliding between the two.
 			const nav = gallery.querySelector<HTMLElement>('[data-hill-chips]');
+			const items = nav ? Array.from(nav.querySelectorAll<HTMLElement>('[data-hill-chip]')) : [];
 			let chipSpan: [number, number] | null = null;
 			const lifts: number[] = [];
-			if (nav && nav.children.length > 0) {
+			if (nav && items.length > 0) {
 				const navBox = nav.getBoundingClientRect();
 				const navStyle = getComputedStyle(nav);
 				const rowLeft = navBox.left + scrollX + parseFloat(navStyle.paddingLeft);
 				const rowRight = navBox.right + scrollX - parseFloat(navStyle.paddingRight);
 				const gap = parseFloat(navStyle.columnGap) || 0;
-				const widths = Array.from(nav.children, (chip) => (chip as HTMLElement).offsetWidth);
-				const total = widths.reduce((sum, width) => sum + width, 0) + gap * (widths.length - 1);
+				// The items in row order, the difficulty toggles' group flattened:
+				// it is a flex row with the same gap, so its toggles sit exactly
+				// where they would as the row's own items.
+				// The group's own margin after its last toggle sets the two groups apart.
+				const widths = items.map((chip) => chip.offsetWidth);
+				const after = items.map((chip) =>
+					chip.parentElement !== nav && chip === chip.parentElement?.lastElementChild
+						? gap + (parseFloat(getComputedStyle(chip.parentElement).marginRight) || 0)
+						: gap
+				);
+				const total =
+					widths.reduce((sum, width, i) => sum + width + after[i], 0) - after[after.length - 1];
 				let x = Math.max(rowLeft, rowRight - total);
 				chipSpan = [x, x + total];
-				for (const width of widths) {
+				widths.forEach((width, i) => {
 					lifts.push(round(chipLift(x + width / 2, landRect, hillTop)));
-					x += width + gap;
-				}
+					x += width + after[i];
+				});
 			}
 			if (!sameNumbers(lifts, chipLifts)) chipLifts = lifts;
 
@@ -283,7 +346,7 @@
 		const nav = gallery.querySelector('[data-hill-chips]');
 		if (nav) {
 			observer.observe(nav);
-			for (const chip of nav.children) observer.observe(chip);
+			for (const chip of nav.querySelectorAll('[data-hill-chip]')) observer.observe(chip);
 		}
 		const land = document.querySelector('[data-scene-land] > svg');
 		if (land) observer.observe(land);
@@ -330,10 +393,14 @@
 
 		<GalleryBar
 			{lang}
-			categories={categories.map((category) => ({
+			categories={categories.map((category, i) => ({
 				id: category.id,
-				count: category.hearts.length
+				count: visibleCounts[i],
+				total: category.hearts.length
 			}))}
+			{levels}
+			{availableLevels}
+			{onToggleLevel}
 			myHeartCount={myHearts.length}
 			bind:height={barHeight}
 			lifts={chipLifts}
@@ -354,8 +421,9 @@
 				{selectedIds}
 				{onSelect}
 				{onClick}
-				first={i === 0}
+				first={i === firstShown}
 				columns={strandDrops.length}
+				{levels}
 			/>
 		{/each}
 

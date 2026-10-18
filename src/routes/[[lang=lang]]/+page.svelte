@@ -12,7 +12,7 @@
   in $lib/components/front.
 -->
 <script lang="ts">
-  import { onMount, tick, untrack, type Component } from "svelte";
+  import { flushSync, onMount, tick, untrack, type Component } from "svelte";
   import { page } from "$app/stores";
   import { afterNavigate, goto } from "$app/navigation";
   import { browser } from "$app/environment";
@@ -29,6 +29,17 @@
   import { focusSectionHeading } from "$lib/front/deleteFocus";
   import { MY_HEARTS_CATEGORY_ID } from "$lib/data/categories";
   import { keepKnown, parseSelected, selectionSearch, toggleSelected } from "$lib/front/selection";
+  import {
+    LEVEL_PARAM,
+    initialLevels,
+    levelSearch,
+    levelValue,
+    filterHidesAnchor,
+    readStoredLevels,
+    storeLevels,
+    toggleLevel,
+  } from "$lib/front/levelFilter";
+  import type { DifficultyLevel } from "$lib/utils/difficulty";
   import type { HeartDesign } from "$lib/types/heart";
   import { trackHeartView, trackHeartSelect } from "$lib/analytics";
   import type { PageProps } from "./$types";
@@ -43,6 +54,13 @@
   let userHearts = $state.raw<HeartDesign[]>([]);
 
   let selectedIds = $state<Set<string>>(new Set());
+  /**
+   * The difficulty filter (docs/redesign/GALLERY-BAR.md): the levels shown,
+   * none meaning all. Mirrored into `?level=` and sessionStorage.
+   */
+  let levels = $state.raw<Set<DifficultyLevel>>(new Set());
+  /** `levels` has been read from the URL or the tab's storage (onMount). */
+  let levelsRestored = $state(false);
   let lang = $derived(($page.params.lang === "en" ? "en" : "da") as Language);
   let metaTitle = $derived(lang === "en" ? SITE_TITLE_EN : SITE_TITLE);
   let pendingAnchorId = $state<string | null>(null);
@@ -94,14 +112,20 @@
     target.scrollIntoView({ block: "start", behavior: "instant" });
   });
 
-  /** Mirror the ticked hearts into `?selected=`, without adding to history. */
+  /**
+   * Mirror the ticked hearts into `?selected=` and the difficulty filter into
+   * `?level=`, without adding to history.
+   */
   function updateUrlWithSelections(ids: Set<string>) {
     if (!browser) return;
     const url = new URL(window.location.href);
     // Rebuilt from the whole URL, not just its query: the hash carries the
     // `#heart-<id>` anchor a visitor arrived on, and ticking a card must not
     // throw it away.
-    const search = selectionSearch(url.searchParams, ids);
+    const search = levelSearch(
+      new URLSearchParams(selectionSearch(url.searchParams, ids)),
+      levels,
+    );
     goto(`${url.pathname}${search}${url.hash}`, {
       replaceState: true,
       noScroll: true,
@@ -120,8 +144,49 @@
     // and the URL stops carrying dead ids.
     const fromUrl = parseSelected(window.location.search);
     selectedIds = keepKnown(fromUrl, allHearts.map((h) => h.id));
-    if (selectedIds.size !== fromUrl.size) updateUrlWithSelections(selectedIds);
+    // The filter: the URL's, or else the one this tab last chose, so a
+    // breadcrumb or the header's "Skabeloner" link keeps it too. The URL
+    // is brought in line with what is shown (a stored filter, or unknown words).
+    const search = window.location.search;
+    levels = initialLevels(search, readStoredLevels());
+    // A filter must not hide what the page was entered at: a heart's
+    // breadcrumb links to its category (`/#moenstre`), and the stored filter
+    // may hide it. Then the filter goes (the inline strand script agrees).
+    if (hidesAnchor(window.location.hash.replace(/^#/, ""))) levels = new Set();
+    storeLevels(levels);
+    levelsRestored = true;
+    const urlValue = new URLSearchParams(search).get(LEVEL_PARAM) ?? "";
+    if (selectedIds.size !== fromUrl.size || levelValue(levels) !== urlValue)
+      updateUrlWithSelections(selectedIds);
   });
+
+  /**
+   * Whether the filter hides the gallery card or category `anchorId` names
+   * (`heart-<id>` or a category id). "Mine hjerter" is never filtered.
+   */
+  function hidesAnchor(anchorId: string): boolean {
+    return filterHidesAnchor(anchorId, galleryCategories, levels);
+  }
+
+  /**
+   * A hero heart is going to its card: clear the filter first if it hides
+   * it, and hand back the query string without it for the hero's own
+   * navigation to the card (one navigation, not two racing).
+   */
+  function revealAnchor(anchorId: string): string | undefined {
+    if (!hidesAnchor(anchorId)) return undefined;
+    levels = new Set();
+    storeLevels(levels);
+    flushSync();
+    const url = new URL(window.location.href);
+    return levelSearch(new URLSearchParams(selectionSearch(url.searchParams, selectedIds)), levels);
+  }
+
+  function handleToggleLevel(level: DifficultyLevel) {
+    levels = toggleLevel(levels, level);
+    storeLevels(levels);
+    updateUrlWithSelections(selectedIds);
+  }
 
   function handleSelect(heart: GalleryHeart) {
     const wasSelected = selectedIds.has(heart.id);
@@ -284,6 +349,7 @@
     desktop={heroDesktop}
     mobile={heroMobile}
     revealed={data.heroMarkup === null}
+    onReveal={revealAnchor}
   />
 
   <Gallery
@@ -300,6 +366,9 @@
     onClick={handleClick}
     onDelete={requestDelete}
     onLayout={handleGalleryLayout}
+    {levels}
+    {levelsRestored}
+    onToggleLevel={handleToggleLevel}
     strandScript={data.strandScript}
   />
 

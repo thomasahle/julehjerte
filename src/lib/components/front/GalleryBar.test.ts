@@ -7,6 +7,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { flushSync, mount, tick, unmount } from 'svelte';
 import GalleryBar from './GalleryBar.svelte';
+import type { DifficultyLevel } from '$lib/utils/difficulty';
 
 const CATEGORIES = [
 	{ id: 'klassiske', count: 12 },
@@ -32,9 +33,20 @@ function placeAt(el: Element, top: number, height = 40) {
 interface Options {
 	selectedCount?: number;
 	myHeartCount?: number;
+	categories?: { id: string; count: number; total?: number }[];
+	levels?: Set<DifficultyLevel>;
+	availableLevels?: DifficultyLevel[];
+	lang?: 'da' | 'en';
 }
 
-async function render({ selectedCount = 0, myHeartCount = 0 }: Options = {}) {
+async function render({
+	selectedCount = 0,
+	myHeartCount = 0,
+	categories = CATEGORIES,
+	levels = new Set(),
+	availableLevels = [],
+	lang = 'da'
+}: Options = {}) {
 	// The bar watches a sentinel to know when it has stuck; jsdom has no
 	// IntersectionObserver, so the test keeps the callback and calls it itself.
 	let reportSentinel: ((entries: Partial<IntersectionObserverEntry>[]) => void) | null = null;
@@ -77,14 +89,16 @@ async function render({ selectedCount = 0, myHeartCount = 0 }: Options = {}) {
 
 	const target = document.createElement('div');
 	document.body.appendChild(target);
-	const handlers = { onDownload: vi.fn() };
+	const handlers = { onDownload: vi.fn(), onToggleLevel: vi.fn() };
 	const component = mount(GalleryBar, {
 		target,
 		props: {
-			lang: 'da',
-			categories: CATEGORIES,
+			lang,
+			categories,
 			myHeartCount,
 			selectedCount,
+			levels,
+			availableLevels,
 			...handlers
 		}
 	});
@@ -144,7 +158,8 @@ async function render({ selectedCount = 0, myHeartCount = 0 }: Options = {}) {
 			flushSync();
 			await tick();
 		},
-		download: () => button('Hent skabeloner')
+		download: () => button('Hent skabeloner'),
+		toggles: () => [...target.querySelectorAll<HTMLButtonElement>('button.level-chip')]
 	};
 }
 
@@ -383,5 +398,117 @@ describe('GalleryBar', () => {
 		// lifts' L it came out 55.4, and the first row dropped by 5.8.
 		await layOut(73.6);
 		expect(height).toBeCloseTo(49.6, 5);
+	});
+
+	describe('the difficulty filter', () => {
+		const ALL: DifficultyLevel[] = ['easy', 'medium', 'hard', 'expert'];
+
+		it('offers one toggle per level, in a labelled group before the category chips', async () => {
+			const ui = await render({ availableLevels: ALL });
+			const group = ui.target.querySelector('[role="group"]')!;
+			expect(group.getAttribute('aria-label')).toBe('Sværhedsgrad');
+			expect(ui.toggles().map((b) => b.textContent?.trim())).toEqual(['Let', 'Mellem', 'Svær', 'Ekspert']);
+			expect(ui.toggles().every((b) => b.getAttribute('aria-pressed') === 'false')).toBe(true);
+			// In the chip row, before the first category chip.
+			const nav = ui.target.querySelector('nav')!;
+			expect(group.parentElement).toBe(nav);
+			expect(group.nextElementSibling?.getAttribute('href')).toBe('#klassiske');
+			// Each toggle and chip is an item the gallery lifts onto the hill.
+			expect(nav.querySelectorAll('[data-hill-chip]')).toHaveLength(4 + 5);
+			// The dots are decoration: the word names the toggle.
+			const dots = ui.toggles()[0].querySelector('.dots')!;
+			expect(dots.getAttribute('aria-hidden')).toBe('true');
+			expect(dots.querySelectorAll('.dot.on')).toHaveLength(1);
+			expect(ui.toggles()[3].querySelectorAll('.dot.on')).toHaveLength(4);
+		});
+
+		it('offers only the levels the gallery has', async () => {
+			const ui = await render({ availableLevels: ['easy', 'hard'] });
+			expect(ui.toggles().map((b) => b.textContent?.trim())).toEqual(['Let', 'Svær']);
+			const none = await render();
+			expect(none.target.querySelector('[role="group"]')).toBeNull();
+		});
+
+		it('reports a click on a toggle and marks the chosen ones as pressed', async () => {
+			const ui = await render({ availableLevels: ALL, levels: new Set(['easy', 'expert']) });
+			expect(ui.toggles().map((b) => b.getAttribute('aria-pressed'))).toEqual([
+				'true',
+				'false',
+				'false',
+				'true'
+			]);
+			ui.toggles()[1].click();
+			expect(ui.handlers.onToggleLevel).toHaveBeenCalledWith('medium');
+			ui.toggles()[0].click();
+			expect(ui.handlers.onToggleLevel).toHaveBeenLastCalledWith('easy');
+			// Toggles, not submit buttons.
+			expect(ui.toggles().every((b) => b.type === 'button')).toBe(true);
+		});
+
+		it('counts the hearts on show and dims a category the filter empties', async () => {
+			const ui = await render({
+				availableLevels: ALL,
+				levels: new Set(['easy']),
+				categories: [
+					{ id: 'klassiske', count: 1, total: 4 },
+					{ id: 'stjerner', count: 3, total: 12 },
+					{ id: 'moenstre', count: 0, total: 26 },
+					{ id: 'figurer', count: 0, total: 8 },
+					{ id: 'hjerter', count: 1, total: 6 }
+				],
+				myHeartCount: 2
+			});
+			expect(ui.chips().map((a) => a.textContent?.replace(/\s+/g, ' ').trim())).toEqual([
+				'Klassiske 1',
+				'Stjerner 3',
+				'Mønstre 0',
+				'Figurer 0',
+				'Hjerter 1',
+				// "Mine hjerter" is not filtered.
+				'Mine hjerter 2'
+			]);
+			const moenstre = ui.chips()[2];
+			expect(moenstre.classList.contains('empty')).toBe(true);
+			expect(moenstre.getAttribute('aria-disabled')).toBe('true');
+			expect(moenstre.getAttribute('tabindex')).toBe('-1');
+			expect(ui.chips()[1].hasAttribute('aria-disabled')).toBe(false);
+			// It leads nowhere: its section is hidden.
+			const click = new MouseEvent('click', { bubbles: true, cancelable: true });
+			moenstre.dispatchEvent(click);
+			expect(click.defaultPrevented).toBe(true);
+		});
+
+		it('never marks a dimmed chip current, and spies only on the sections on show', async () => {
+			const ui = await render({
+				availableLevels: ALL,
+				levels: new Set(['easy']),
+				categories: [
+					{ id: 'klassiske', count: 1, total: 4 },
+					{ id: 'stjerner', count: 3, total: 12 },
+					{ id: 'moenstre', count: 0, total: 26 },
+					{ id: 'figurer', count: 0, total: 8 },
+					{ id: 'hjerter', count: 1, total: 6 }
+				]
+			});
+			await ui.stick(true);
+			placeAt(ui.section('klassiske'), -900);
+			placeAt(ui.section('stjerner'), -300);
+			// Hidden sections have an all-zero box, which reads as reached.
+			placeAt(ui.section('moenstre'), 0);
+			placeAt(ui.section('figurer'), 0);
+			placeAt(ui.section('hjerter'), 1500);
+			await ui.scroll();
+			expect(ui.current()).toEqual(['#stjerner']);
+
+			placeAt(ui.section('hjerter'), 40);
+			await ui.scroll();
+			expect(ui.current()).toEqual(['#hjerter']);
+		});
+
+		it('names the group and the levels in English on /en/', async () => {
+			const ui = await render({ availableLevels: ALL, lang: 'en' });
+			expect(ui.target.querySelector('[role="group"]')?.getAttribute('aria-label')).toBe('Difficulty');
+			expect(ui.toggles().map((b) => b.textContent?.trim())).toEqual(['Easy', 'Medium', 'Hard', 'Expert']);
+		});
 	});
 });

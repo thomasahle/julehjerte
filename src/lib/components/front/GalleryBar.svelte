@@ -23,6 +23,12 @@
   flat and left-aligned, and only then does the bar stick (amendment 1). For
   that the bar's box is L (the largest lift) taller, chips at its bottom, and
   sticks at `top: -L`; everything is scroll-linked, nothing transitions.
+
+  Between the button and the category chips, the difficulty filter's toggles
+  ("Let", "Mellem", "Svær", "Ekspert"; GALLERY-BAR.md, "As built: difficulty
+  filter"): each is an item of the row like a chip, with its own lift and
+  push, and they count in the chips' span. The chips then count the hearts the
+  filter leaves; a category it empties keeps its chip, dimmed.
 -->
 <script lang="ts">
 	import { onMount } from 'svelte';
@@ -32,11 +38,23 @@
 	import { ANCHOR_GAP, chipRowScroll, currentSection, isAtPageBottom } from '$lib/front/scrollSpy';
 	import { DownloadIcon } from '$lib/components/icons';
 	import { NARROW_QUERY } from '$lib/breakpoints';
+	import DifficultyDots from '$lib/components/DifficultyDots.svelte';
+	import { LEVEL_LABEL_KEYS } from '$lib/front/levelFilter';
+	import type { DifficultyLevel } from '$lib/utils/difficulty';
 
 	interface Props {
 		lang: Language;
-		/** The gallery's categories, in gallery order, with their heart counts. */
-		categories: { id: string; count: number }[];
+		/**
+		 * The gallery's categories, in gallery order: `count` the hearts the
+		 * difficulty filter leaves on show, `total` all of them (a category
+		 * with none at all gets no chip). Without `total`, `count` is both.
+		 */
+		categories: { id: string; count: number; total?: number }[];
+		/** The difficulty filter's chosen levels; none: all shown. */
+		levels?: ReadonlySet<DifficultyLevel>;
+		/** The levels to offer a toggle for, easiest first; none: no filter. */
+		availableLevels?: readonly DifficultyLevel[];
+		onToggleLevel?: (level: DifficultyLevel) => void;
 		/** How many hearts the visitor has drawn ("Mine hjerter"). */
 		myHeartCount: number;
 		/** Hearts currently ticked; shown in the button's badge. */
@@ -78,7 +96,10 @@
 		lifts = [],
 		strandRoom = 0,
 		measured = false,
-		onDownload
+		onDownload,
+		levels = new Set(),
+		availableLevels = [],
+		onToggleLevel = () => {}
 	}: Props = $props();
 
 	let hasSelection = $derived(selectedCount > 0);
@@ -93,9 +114,13 @@
 	// One chip per section that has hearts, in page order, so every chip leads
 	// somewhere; "Mine hjerter" only once the visitor has drawn any — its
 	// empty-state panel is not worth a chip of its own.
+	// A category the difficulty filter empties keeps its chip, dimmed and
+	// with nothing to lead to, so the row does not change under the visitor.
 	let sections = $derived([
-		...categories.filter((category) => category.count > 0),
-		...(myHeartCount > 0 ? [{ id: MY_HEARTS_CATEGORY_ID, count: myHeartCount }] : [])
+		...categories
+			.filter((category) => (category.total ?? category.count) > 0)
+			.map((category) => ({ id: category.id, count: category.count, empty: category.count === 0 })),
+		...(myHeartCount > 0 ? [{ id: MY_HEARTS_CATEGORY_ID, count: myHeartCount, empty: false }] : [])
 	]);
 
 	// The bar starts up on the hero's snow (Gallery.svelte pulls the gallery
@@ -202,10 +227,11 @@
 		// Re-run when the chips come and go.
 		void sections.length;
 		void hasSelection;
+		void availableLevels.length;
 		let frame = 0;
 		const update = () => {
 			frame = 0;
-			const chips = Array.from(row.children) as HTMLElement[];
+			const chips = Array.from(row.querySelectorAll<HTMLElement>('[data-hill-chip]'));
 			if (room <= 0) {
 				for (const chip of chips) chip.style.removeProperty('translate');
 				return;
@@ -245,7 +271,10 @@
 		const bar = barEl;
 		// Re-run when the chips change — "Mine hjerter" joins after mount, once
 		// the visitor's hearts have been read from localStorage.
-		const ids = sections.map((section) => section.id);
+		// Only the sections on show: one the difficulty filter has emptied is
+		// display: none, with a box at 0 that would count as reached.
+		const shown = sections.flatMap((section, i) => (section.empty ? [] : [i]));
+		const ids = shown.map((i) => sections[i].id);
 		const shift = strandRoom;
 		let frame = 0;
 		const measure = () => {
@@ -268,12 +297,13 @@
 					(id === MY_HEARTS_CATEGORY_ID ? 0 : shift)
 			);
 			const root = document.documentElement;
-			activeIndex = currentSection(
+			const current = currentSection(
 				tops,
 				line,
 				barStuck,
 				isAtPageBottom(window.scrollY, window.innerHeight, root.scrollHeight)
 			);
+			activeIndex = current < 0 ? -1 : shown[current];
 		};
 		const schedule = () => {
 			if (!frame) frame = requestAnimationFrame(measure);
@@ -304,8 +334,16 @@
 		void hasSelection;
 		void narrow;
 		void stuck;
-		if (!row || index < 0) return;
-		const chip = row.querySelectorAll('.chip')[index];
+		if (!row) return;
+		// Back on the hero, with no chip current, the row starts again from
+		// its first item, so the difficulty toggles before the categories
+		// are in sight once more on a phone.
+		if (index < 0) {
+			if (!stuck && row.scrollLeft > 0 && typeof row.scrollTo === 'function')
+				row.scrollTo({ left: 0, behavior: 'instant' });
+			return;
+		}
+		const chip = row.querySelectorAll('a.chip')[index];
 		// jsdom has no layout and no Element.scrollTo.
 		if (!(chip instanceof HTMLElement) || typeof row.scrollTo !== 'function') return;
 		// In the row's own content coordinates (the row is the chips'
@@ -389,7 +427,7 @@
 
 
 	{#snippet getButton()}
-		<button type="button" class="get" onclick={onDownload}>
+		<button type="button" class="get" data-hill-chip onclick={onDownload}>
 			<DownloadIcon size={16} />
 			<span class="get-label">{t('printSelected', lang)}</span>
 			<span class="get-count">{selectedCount}</span>
@@ -406,16 +444,45 @@
 		bind:this={chipRow}
 		data-hill-chips
 		class:placed={measured}
+		class:ticked={hasSelection}
 	>
 		{#if hasSelection && !narrow}
 			{@render getButton()}
 		{/if}
+		{#if availableLevels.length > 0}
+			<!-- A flex row with the chips' own gap, so its toggles sit where
+			     they would as the row's own items (the gallery measures them
+			     as such, [data-hill-chip]). -->
+			<div class="levels" role="group" aria-label={t('difficulty', lang)}>
+				{#each availableLevels as level (level)}
+					<button
+						type="button"
+						class="level-chip"
+						data-hill-chip
+						data-level={level}
+						aria-pressed={levels.has(level) ? 'true' : 'false'}
+						onclick={() => onToggleLevel(level)}
+					>
+						<DifficultyDots {level} {lang} size={6} decorative />
+						{t(LEVEL_LABEL_KEYS[level], lang)}
+					</button>
+				{/each}
+			</div>
+		{/if}
 		{#each sections as section, i (section.id)}
 			<a
 				class="chip"
+				class:empty={section.empty}
+				data-hill-chip
 				href="#{section.id}"
-				aria-current={i === activeIndex ? 'true' : undefined}
-				onclick={smoothJump}
+				aria-current={i === activeIndex && !section.empty ? 'true' : undefined}
+				aria-disabled={section.empty ? 'true' : undefined}
+				tabindex={section.empty ? -1 : undefined}
+				onclick={(event) => {
+					// Its section is hidden by the difficulty filter: nowhere to go.
+					if (section.empty) event.preventDefault();
+					else smoothJump();
+				}}
 			>
 				{categoryTitle(section.id, lang)}
 				<span class="chip-count">{section.count}</span>
@@ -535,7 +602,8 @@
 		}
 	}
 
-	.chip {
+	.chip,
+	.level-chip {
 		flex: none;
 		display: inline-flex;
 		align-items: baseline;
@@ -553,9 +621,88 @@
 		scroll-snap-align: start;
 	}
 
-	.chip:hover {
+	.chip:hover,
+	.level-chip:hover {
 		background: var(--cream2);
 		color: var(--deep);
+	}
+
+	/* The difficulty filter: its toggles as one group of the row, the chips'
+	   gap inside it as well, so each toggle sits where it would as an item of
+	   the row itself. */
+	.levels {
+		flex: none;
+		display: flex;
+		gap: 8px;
+		/* A little more room before the category chips, so the two groups
+		   read as two. The gallery's measure and the inline strand script
+		   both count it. */
+		margin-right: 8px;
+	}
+
+	/* A toggle is a chip with the cards' difficulty dots before its word. A
+	   button, so it gets the font and the cursor a link would have. The
+	   chip's own line box (13px × 1.2), so the bar keeps its height. */
+	.level-chip {
+		align-items: center;
+		font-family: inherit;
+		cursor: pointer;
+	}
+
+	/* Chosen: the red of the download button and the selection ring (the
+	   current category chip is --deep: what is being read, not what is
+	   picked), its dots in white. */
+	.level-chip[aria-pressed='true'],
+	.level-chip[aria-pressed='true']:hover {
+		border-color: transparent;
+		background: var(--red);
+		color: var(--white);
+	}
+
+	.level-chip[aria-pressed='true']:hover {
+		background: var(--red-hover);
+	}
+
+	.level-chip[aria-pressed='true'] :global(.dot) {
+		background: rgb(255 255 255 / 0.4);
+	}
+
+	.level-chip[aria-pressed='true'] :global(.dot.on) {
+		background: var(--white);
+	}
+
+	/* On the desktop layout the row is one line on the hill, and the toggles'
+	   dots do not fit beside everything else below 1200px, nor beside the
+	   download button at any width (1128px of row for 1098 at 1440): there
+	   they show their words alone, the red fill still marking the chosen
+	   ones. The inline strand script follows the same rule. */
+	@media (min-width: 900px) and (max-width: 1199px) {
+		.level-chip :global(.dots) {
+			display: none;
+		}
+	}
+
+	@media (min-width: 900px) {
+		.chips.ticked .level-chip :global(.dots) {
+			display: none;
+		}
+	}
+
+	.level-chip:focus-visible,
+	.chip:focus-visible {
+		outline: 3px solid var(--blue);
+		outline-offset: 2px;
+	}
+
+	/* A category the difficulty filter has emptied: its chip stays, so the
+	   row holds still, but dimmed, never current, and leads nowhere. */
+	.chip.empty {
+		opacity: 0.45;
+		cursor: default;
+	}
+
+	.chip.empty:hover {
+		background: rgb(255 255 255 / 0.8);
 	}
 
 	/* No border on the current chip, but the same box: the border goes
@@ -601,13 +748,23 @@
 		}
 
 		.chip,
+		.level-chip,
 		.get {
 			pointer-events: auto;
 		}
 
+		.levels {
+			pointer-events: none;
+		}
+
+		/* No snapping here: the row only scrolls when it overflows (with the
+		   difficulty toggles and the download button below about 1150px),
+		   and its snap positions, all past the sticky button, then kept it
+		   from ever scrolling back to its start. */
 		.chips {
 			padding-top: calc(5px + var(--bar-room, 0px));
 			margin-top: calc(-5px - var(--bar-room, 0px));
+			scroll-snap-type: none;
 		}
 
 		.chips::before {
