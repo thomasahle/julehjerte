@@ -42,6 +42,7 @@ test('the matching preference can change cut count and colour phase without forc
   for(let i=0;i<mask.length;i++){total+=weights[i];error+=weights[i]*(replay.mask[i]!==mask[i]);}
   assert.ok(error/total<.007,`Exported motif disagreement: ${error/total}`);
   assert.ok(error/total<=matching.maximumMatchingImageError,'Independent export must retain the allowance.');
+  assert.equal(report.solver.cleanupBudget.polishingDeferredForMatching,true,'A very close independent fit must leave its optional polish allowance for matching.');
   t.diagnostic(JSON.stringify({independentError:error/total,matchingSeconds:matching.seconds,continuationDeferredForMatching:report.solver.cleanupBudget.continuationDeferredForMatching??false,attempts:matching.attempts}));
   assert.deepEqual(mask,before);assert.deepEqual(prepared.target.sourceImage.mask,before);
   assert.deepEqual(prepared.target.sourceImage.weights,weights);
