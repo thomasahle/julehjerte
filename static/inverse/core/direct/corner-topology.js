@@ -62,43 +62,55 @@ export async function recoverCornerTopology(input,cfg,{seconds=15,routingSeconds
   let solution=null,repairUsed=false;
   const checkPaper=candidate=>{
     let paper=materialAudit(candidate,cfg),verification=null;
-    if(paper.status==='uncertain'&&cfg.materialResolution<700&&deadline-performance.now()>300){
-      paper=materialAudit(candidate,{...cfg,materialResolution:700});
-      verification={requestedResolution:cfg.materialResolution,initialStatus:'uncertain',resolution:700,status:paper.status};
+    // Uncertain raster clearance is not a rejection or a certificate. Try
+    // actual finer lattices on the unchanged curves, retaining the requested
+    // physical width and the enclosing routing/repair deadline.
+    for(const resolution of [700,1000])if(paper.status==='uncertain'&&cfg.materialResolution<resolution&&deadline-performance.now()>300){
+      paper=materialAudit(candidate,{...cfg,materialResolution:resolution});
+      verification={requestedResolution:cfg.materialResolution,initialStatus:'uncertain',resolution,status:paper.status};
     }
     if(verification)candidate.report={...candidate.report,paperVerification:verification};
     return{paper:paper.summary,passed:paper.passed};
   };
-  try{
-    const initialGraph=buildGraph({...target,curves:target.curves.slice()},graphCfg),remaining=(deadline-performance.now())/1000;
-    if(remaining<1)return finish('insufficient_routing_time');
-    // Keep a tail for an image-faithful rejected integer candidate. The
-    // observer can repair it, but cannot certify it as a MILP incumbent.
-    const routingLeft=Math.min(remaining-1,routingSeconds-(performance.now()-start)/1000);
-    if(routingLeft<.1)return finish('insufficient_routing_time');
-    const routed=await solveBoundary(target,{...graphCfg,timeLimit:routingLeft},
-      {initialGraph,expandNeighbors:false,coefficientQuantum:1e-7,stopAfterValidated:true,onProgress,
-        coreGate:s=>materialAudit(s,cfg),onRejectedCandidate:(proposal,timing)=>{
-          const attempt={timing};report.attempts.push(attempt);
-          if(repairUsed||deadline-performance.now()<750){attempt.reason=repairUsed?'repair_already_attempted':'insufficient_time';return false;}
-          const audit=validate(proposal,cfg,{checkImage:false});
-          if(!audit.issues.length||audit.issues.some(i=>!['short_self_clearance','nonlocal_self_clearance'].includes(i.type))){attempt.reason='other_geometry';return false;}
-          attempt.before=faithful(proposal);if(!attempt.before.passed){attempt.reason='source_features';return false;}
-          repairUsed=true;
-          const graph=new CurveGraph(proposal.paths.map((family,f)=>family.map((_,i)=>curvesOf(proposal,f,i).map(c=>c.p))),cfg.width),phase=proposal.graph.target.phase?-1:1;
-          const projected=projectShortReturns(graph,graph.points,phase,input,cfg,{initialAudit:audit,deadline:deadline-500,
-            clearanceMargin:fittingMargin(cfg,cfg.width),maxIterations:128,maxMilliseconds:5000});
-          attempt.projection=projected.report;if(!projected.points)return false;
-          const candidate=graph.solution(projected.points,phase,input);attempt.after=faithful(candidate);
-          if(!attempt.after.passed)return false;
-          const physical=checkPaper(candidate);attempt.paper=physical.paper;
-          if(!physical.passed||performance.now()>deadline)return false;
-          candidate.report={...candidate.report,status:'continuously_repaired',algorithm:'direct-bezier'};
-          solution=candidate;attempt.reason='validated_repair';return true;
-        }});
-    report.routing=routed.report;
-    if(faithful(routed).passed)solution=routed;
-  }catch(error){report.routing=error.report;report.routingError=error.message;}
+  // Sparse local connectors often provide the required switches without
+  // thousands of speculative integer variables. Keep the full neighbour
+  // graph as a fallback inside the same total routing allowance.
+  report.routingAttempts=[];
+  for(const neighbors of [4,graphCfg.neighbors]){
+    const attemptCfg={...graphCfg,neighbors};
+    try{
+      const initialGraph=buildGraph({...target,curves:target.curves.slice()},attemptCfg),remaining=(deadline-performance.now())/1000;
+      if(remaining<1)return finish('insufficient_routing_time');
+      // Keep a tail for an image-faithful rejected integer candidate. The
+      // observer can repair it, but cannot certify it as a MILP incumbent.
+      const routingLeft=Math.min(remaining-1,routingSeconds-(performance.now()-start)/1000);
+      if(routingLeft<.1)return finish('insufficient_routing_time');
+      const routed=await solveBoundary(target,{...attemptCfg,timeLimit:routingLeft},
+        {initialGraph,expandNeighbors:false,coefficientQuantum:1e-7,stopAfterValidated:true,onProgress,
+          coreGate:s=>materialAudit(s,cfg),onRejectedCandidate:(proposal,timing)=>{
+            const attempt={timing};report.attempts.push(attempt);
+            if(repairUsed||deadline-performance.now()<750){attempt.reason=repairUsed?'repair_already_attempted':'insufficient_time';return false;}
+            const audit=validate(proposal,cfg,{checkImage:false});
+            if(!audit.issues.length||audit.issues.some(i=>!['short_self_clearance','nonlocal_self_clearance'].includes(i.type))){attempt.reason='other_geometry';return false;}
+            attempt.before=faithful(proposal);if(!attempt.before.passed){attempt.reason='source_features';return false;}
+            repairUsed=true;
+            const graph=new CurveGraph(proposal.paths.map((family,f)=>family.map((_,i)=>curvesOf(proposal,f,i).map(c=>c.p))),cfg.width),phase=proposal.graph.target.phase?-1:1;
+            const projected=projectShortReturns(graph,graph.points,phase,input,cfg,{initialAudit:audit,deadline:deadline-500,
+              clearanceMargin:fittingMargin(cfg,cfg.width),maxIterations:128,maxMilliseconds:5000});
+            attempt.projection=projected.report;if(!projected.points)return false;
+            const candidate=graph.solution(projected.points,phase,input);attempt.after=faithful(candidate);
+            if(!attempt.after.passed)return false;
+            const physical=checkPaper(candidate);attempt.paper=physical.paper;
+            if(!physical.passed||performance.now()>deadline)return false;
+            candidate.report={...candidate.report,status:'continuously_repaired',algorithm:'direct-bezier'};
+            solution=candidate;attempt.reason='validated_repair';return true;
+          }});
+      report.routing=routed.report;
+      if(faithful(routed).passed)solution=routed;
+    }catch(error){report.routing=error.report;report.routingError=error.message;}
+    report.routingAttempts.push({neighbors,...report.routing});
+    if(solution||routingSeconds-(performance.now()-start)/1000<1)break;
+  }
   if(!solution)return finish('no_checked_routing');
   const initial=faithful(solution),checkedCfg=verifiedPaperSettings(solution,cfg);
   report.routedImageError=initial.error;
