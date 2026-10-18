@@ -1,5 +1,11 @@
 # Bauble foreground diagnosis
 
+Current status at `47b3d08`: the bauble and blue/orange upload workflows pass,
+and the 33-case browser corpus has no increase in measured error. The full inverse
+suite is running. Direct feature checks on the downloaded editable SVGs are still
+pending, so port 5232 retains the previous validated runtime. The experiments below
+preserve both the earlier failures and the later improvements.
+
 The automatic R5C4 bauble crop includes background and extrapolates its bottom
 corner below the 1,112-pixel photograph. Earlier experiments with longer scan
 bands or outer foreground runs did not recover a supported physical outline.
@@ -184,3 +190,35 @@ All **three focused tests pass**: the new nearby-crop regression independently
 checks the final weave and feature retention; the existing delayed Viking and
 25-second-budget checks still pass. Final browser/corpus/full-suite verification
 is pending. The preview has not yet been refreshed with this fitter change.
+
+
+Final Chrome QA on `47b3d08` used the actual upload, pointer selection, mask import,
+default 180-second request, Open in Draw, and SVG download workflow:
+
+| Photograph | Cuts per sheet | Native mask error | Independent editable error | Click to ready | Checks |
+|---|---:|---:|---:|---:|---|
+| Bauble | 6 | 2.857% | 2.881% | 109.84 s | Native features; editable geometry/paper pass |
+| Reflective blue/orange | 4 | 0.649% | 0.654% | 6.52 s | Native features; editable geometry/paper pass |
+
+Neither workflow produced a browser error. The central bauble is recovered in
+the inspected preview, while the border remains irregular. The independent SVG
+checks so far cover total image error and physical geometry; an additional
+feature-retention audit of the downloaded SVG is pending. This distinction matters
+because a small lost region can be hidden by a low total error. These comparisons
+use classified photographs, not original cutting-path ground truth.
+
+All **33 browser corpus cases** retain exactly their previous native, source-SVG
+and painting-SVG errors. The **22 regular Hunodan designs** complete in a median
+**5.583 s**, maximum **8.465 s**. These are single-run timings on this machine.
+Typecheck, lint, the 874 application tests (one existing skip), and build also pass
+on the final fitter. Full inverse-suite verification remains in progress.
+
+The saved four-cell experiment also localizes much of the speed difference. Both
+application-setting runs start with 3+3, 4+4 and 5+5 finalists. The earlier mask
+produces a feature-complete 5+5 candidate; the 15-pixel variant's two 5+5 fits both
+lose a feature. The latter proceeds through **21 extra-grid comparisons versus
+three**, spending **81.00 s versus 19.40 s** in curve refinement. Initialization
+takes about two seconds in both runs. The next candidate-selection experiment
+should test polishing a feature-complete near-threshold candidate when it first
+appears. The first point at which the 5+5 refinements diverge still needs a more
+detailed trace; these records do not establish a low-level numerical cause.

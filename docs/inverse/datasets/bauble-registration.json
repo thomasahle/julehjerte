@@ -1,5 +1,5 @@
 {
-  "status": "Crop fallback and feature-complete cleanup implemented; focused regression passes. Broader final verification pending.",
+  "status": "Browser workflows and 33-case comparison passed; full inverse suite running. Editable-SVG feature audit still pending.",
   "photo": "scripts/inverse/fixtures/hard-photos/collage.png",
   "photoSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
   "case": "bauble (R5C4)",
@@ -779,10 +779,122 @@
       ],
       "interpretation": "At both fixed setting sets, the earlier mask passes with five cuts and the 15-pixel variant fails with four cuts. Fresh Node application-settings results agree with the browser failure. Runtime-only and settings-only explanations do not account for this pattern; finite-time optimization still contributes to numerical variation."
     },
-    "nextProbe": "Try cleanup on the lowest-error geometry/paper-valid, feature-complete candidate within the existing polish eligibility band (maxImageError + 0.01). The failing run already found such a six-cut candidate at 3.17% error. Keep the original fallback unless every unchanged check passes."
+    "nextProbe": "Try cleanup on the lowest-error geometry/paper-valid, feature-complete candidate within the existing polish eligibility band (maxImageError + 0.01). The failing run already found such a six-cut candidate at 3.17% error. Keep the original fallback unless every unchanged check passes.",
+    "timingDiagnosis": {
+      "rows": [
+        {
+          "case": "offline-mask--application",
+          "report": "tmp/heart-learning/bauble-segmentation-2026-10-18/sensitivity/offline-mask--application/report.json",
+          "reportSha256": "cda4d81b8910051ecdf3168fe8bbff0b539e6d609877693cd668392d5d8d8e14",
+          "initialFinalistCounts": [
+            [
+              3,
+              3
+            ],
+            [
+              4,
+              4
+            ],
+            [
+              5,
+              5
+            ]
+          ],
+          "stageSeconds": {
+            "directInitializing": 1.9895380430000003,
+            "directFitting": 1.0371347920000007,
+            "directClearance": 1.5563499990000016,
+            "directRefining": 19.399122917,
+            "directPolishing": 3.9228916689999926,
+            "directSharing": 3.510773459
+          },
+          "extraGridComparisons": 3,
+          "refinementBudget": {
+            "requestedSeconds": 179.999996041,
+            "maximumSearchSeconds": 25,
+            "verifiedAlternative": true
+          },
+          "fiveCutCandidates": [
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "sourceImageError": 0.02115,
+              "featuresPassed": true,
+              "imagePassed": true
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "sourceImageError": 0.0173,
+              "featuresPassed": false,
+              "imagePassed": false
+            }
+          ]
+        },
+        {
+          "case": "browser-mask--application",
+          "report": "tmp/heart-learning/bauble-segmentation-2026-10-18/sensitivity/browser-mask--application/report.json",
+          "reportSha256": "6202dfb18b194febc9bfb5a06d0966f2feb46ba38d42e7d3d6cb9d8180757ded",
+          "initialFinalistCounts": [
+            [
+              3,
+              3
+            ],
+            [
+              4,
+              4
+            ],
+            [
+              5,
+              5
+            ]
+          ],
+          "stageSeconds": {
+            "directInitializing": 1.9593826680000006,
+            "directFitting": 5.187272789999974,
+            "directClearance": 8.09276670700001,
+            "directRefining": 80.99734387399997,
+            "directPolishing": 2.6288969989999993,
+            "directSharing": 3.3515040840000148
+          },
+          "extraGridComparisons": 21,
+          "refinementBudget": {
+            "requestedSeconds": 179.99999625,
+            "maximumSearchSeconds": 179.99999625,
+            "verifiedAlternative": false
+          },
+          "fiveCutCandidates": [
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "sourceImageError": 0.017525,
+              "featuresPassed": false,
+              "imagePassed": false
+            },
+            {
+              "counts": [
+                5,
+                5
+              ],
+              "sourceImageError": 0.02699375,
+              "featuresPassed": false,
+              "imagePassed": false
+            }
+          ]
+        }
+      ],
+      "finding": "Both masks begin with 3+3, 4+4 and 5+5 finalists, but the browser-mask run fails to retain the small feature in either 5+5 fit. It expands to 21 extra-grid comparisons versus three, spending 80.997 seconds versus 19.399 in curve refinement. These are saved controlled runs before the cleanup fix, not an isolated repeated speed benchmark.",
+      "nextExperiment": "Test bounded polishing when a feature-complete near-threshold candidate first becomes available, preserving ordinary candidates, existing acceptance gates and the request deadline. Separately trace the first divergence of the 5+5 phase-positive refinement; current candidate summaries omit phase and cannot locate it precisely."
+    }
   },
   "cleanupComparison": {
-    "status": "Implemented; three focused tests pass; browser/corpus/full-suite validation pending",
+    "status": "Browser workflows and 33-case comparison passed; full inverse suite running. Editable-SVG feature audit still pending.",
     "firstProbe": {
       "independentError": 0.02806875,
       "seconds": 108.987264584,
@@ -825,11 +937,126 @@
       ]
     },
     "pending": [
-      "typecheck/lint/application/build on final fitter",
-      "actual bauble/window browser workflows",
-      "33-case browser comparison with all 22 Hunodan designs below 10 seconds and no error increase",
       "full inverse suite",
+      "independent feature-retention audit of downloaded editable SVGs",
       "preview refresh after validation"
-    ]
+    ],
+    "finalValidation": {
+      "implementationCommit": "47b3d08",
+      "status": "Browser workflows and 33-case comparison passed; full inverse suite running. Editable-SVG feature audit still pending.",
+      "browser": {
+        "record": "tmp/heart-learning/bauble-segmentation-2026-10-18/final-cleanup/browser/results.json",
+        "recordSha256": "981486dabf171ed131d44be6935ef3b73e038e46d45c28d3667fa68de812e44c",
+        "rows": [
+          {
+            "id": "bauble",
+            "nativeImageError": 0.02856875,
+            "independentEditableError": 0.0288125,
+            "clickToReadySeconds": 109.83989999985695,
+            "counts": {
+              "left": 6,
+              "right": 6
+            },
+            "nativeTemplateChecksPassed": true,
+            "editableGeometryPassed": true,
+            "editablePaperStatus": "pass",
+            "browserErrors": [],
+            "cleanupComparison": {
+              "beforeCounts": [
+                4,
+                4
+              ],
+              "beforeError": 0.01498125,
+              "proposedCounts": [
+                6,
+                6
+              ],
+              "proposedError": 0.0322,
+              "accepted": true,
+              "finalError": 0.02873125,
+              "featuresPassed": true,
+              "geometryPassed": true,
+              "paperPassed": true,
+              "steps": 160,
+              "seconds": 2.0480999999046325
+            },
+            "observation": "tmp/heart-learning/bauble-segmentation-2026-10-18/final-cleanup/browser/bauble/observation.json",
+            "observationSha256": "1893d3b157dcc1484059115160e5ca85946a9e536590e229b1b2f0980fcf006d"
+          },
+          {
+            "id": "window-blue-orange",
+            "nativeImageError": 0.00649375,
+            "independentEditableError": 0.00654375,
+            "clickToReadySeconds": 6.523599999904633,
+            "counts": {
+              "left": 4,
+              "right": 4
+            },
+            "nativeTemplateChecksPassed": true,
+            "editableGeometryPassed": true,
+            "editablePaperStatus": "pass",
+            "browserErrors": [],
+            "cleanupComparison": null,
+            "observation": "tmp/heart-learning/bauble-segmentation-2026-10-18/final-cleanup/browser/window-blue-orange/observation.json",
+            "observationSha256": "bfda39e9f74b001d25e8dc35f37906caf2d1190908927be54c8b19328f5af971"
+          }
+        ],
+        "scope": "Real uploads with pointer-selected rough rectangles, unchanged application solve settings (180-second maximum), and downloaded editable SVGs. No known ground-truth cutting paths; reported error is against the classified photo.",
+        "qualification": "Native feature checks pass. The browser harness independently checks editable geometry, paper and total image error; direct feature-retention checks on those editable SVGs remain pending."
+      },
+      "corpus": {
+        "record": "tmp/heart-learning/bauble-segmentation-2026-10-18/final-cleanup/corpus-comparison.json",
+        "recordSha256": "f939d3726fb2bf9ec94e54cbaf6eb3f169225961f6e0731fa1be873dd0bb3536",
+        "passed": true,
+        "cases": 33,
+        "regularHunodanCases": 22,
+        "hunodanMedianSeconds": 5.5825,
+        "hunodanMaximumSeconds": 8.465100000143051,
+        "allThreeErrorMeasuresUnchanged": true,
+        "scope": "Same 33-case browser corpus against the last validated cleanup runtime. Errors must not increase and all 22 regular Hunodan requests must finish under 10 seconds. Single-run timings are not an isolated speed distribution."
+      },
+      "completedStages": [
+        {
+          "name": "check",
+          "status": "passed",
+          "seconds": 10.690694666
+        },
+        {
+          "name": "lint",
+          "status": "passed",
+          "seconds": 7.275781750000002
+        },
+        {
+          "name": "application",
+          "status": "passed",
+          "seconds": 45.79836091700001
+        },
+        {
+          "name": "build",
+          "status": "passed",
+          "seconds": 15.359520375000002
+        },
+        {
+          "name": "browser",
+          "status": "passed",
+          "seconds": 141.579812
+        },
+        {
+          "name": "corpus",
+          "status": "passed",
+          "seconds": 327.87121912500004
+        },
+        {
+          "name": "compare-corpus",
+          "status": "passed",
+          "seconds": 0.484288083000024
+        }
+      ],
+      "inverseSuite": {
+        "status": "running",
+        "state": "tmp/heart-learning/bauble-segmentation-2026-10-18/final-cleanup/state.json"
+      },
+      "previewRuntime": "043a8e3; refresh only after full validation and editable-SVG feature audit"
+    }
   }
 }
