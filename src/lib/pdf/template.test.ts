@@ -54,7 +54,8 @@ describe('generateTemplatesPDF', () => {
 			const top = y + 9;
 			const within = (t: { x: number }) => t.x >= x && t.x <= x + piece.widthMm;
 			const above = texts.filter((t) => within(t) && t.y > y && t.y < top);
-			expect(above.map((t) => t.text)).toEqual([classic.name]);
+			// The heart's name in the PDF's language (`heartName`), not the SVG's own.
+			expect(above.map((t) => t.text)).toEqual(['Klassisk 3×3']);
 			expect(above[0]!.y).toBeCloseTo(y + 4);
 			const inside = texts.filter((t) => within(t) && t.y > top && t.y < top + piece.earRadiusMm);
 			expect(inside.map((t) => t.text)).toEqual(['juleflet.dk/hjerte/classic-3x3']);

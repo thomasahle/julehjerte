@@ -28,4 +28,12 @@ describe('heart page load', () => {
 		expect(data.meta).not.toBeNull();
 		expect(data.design).not.toBeNull();
 	});
+
+	it("names the related hearts in the page's language", async () => {
+		const names = async (lang?: string) =>
+			((await run('amy-weave-2', lang)).related as { id: string; name: string }[]).find((h) => h.id === 'amy-weave-1')
+				?.name;
+		expect(await names()).toBe('Flet 1');
+		expect(await names('en')).toBe('Weave 1');
+	});
 });

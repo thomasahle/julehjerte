@@ -1,6 +1,10 @@
 {
   "classic-3x3": {
     "name": "Classic 3x3",
+    "names": {
+      "da": "Klassisk 3×3",
+      "en": "Classic 3×3"
+    },
     "author": "Traditional",
     "authorUrl": null,
     "publisher": null,
@@ -24,6 +28,9 @@
   },
   "ramme": {
     "name": "Ramme",
+    "names": {
+      "en": "Frame"
+    },
     "author": "Thomas",
     "authorUrl": null,
     "publisher": null,
@@ -47,6 +54,9 @@
   },
   "gaver": {
     "name": "Gaver",
+    "names": {
+      "en": "Gifts"
+    },
     "author": "Traditional",
     "authorUrl": null,
     "publisher": null,
@@ -93,6 +103,9 @@
   },
   "stjerne": {
     "name": "Stjerne",
+    "names": {
+      "en": "Star"
+    },
     "author": "Thomas",
     "authorUrl": null,
     "publisher": null,
@@ -120,6 +133,10 @@
   },
   "stjerne-ramme": {
     "name": "Stjerne Ramme",
+    "names": {
+      "da": "Stjerneramme",
+      "en": "Star frame"
+    },
     "author": "Thomas Ahle",
     "authorUrl": null,
     "publisher": null,
@@ -143,6 +160,10 @@
   },
   "5star": {
     "name": "5-Stjerne",
+    "names": {
+      "da": "Femstjerne",
+      "en": "Five-pointed star"
+    },
     "author": "Thomas Ahle",
     "authorUrl": null,
     "publisher": null,
@@ -170,6 +191,10 @@
   },
   "simple-5star": {
     "name": "5-stjerne simpel",
+    "names": {
+      "da": "Femstjerne, enkel",
+      "en": "Five-pointed star, simple"
+    },
     "author": "Thomas Ahle",
     "authorUrl": null,
     "publisher": null,
@@ -193,6 +218,9 @@
   },
   "sun": {
     "name": "Sol",
+    "names": {
+      "en": "Sun"
+    },
     "author": "Klassisk",
     "authorUrl": null,
     "publisher": null,
@@ -220,6 +248,9 @@
   },
   "explosion": {
     "name": "Eksplosion",
+    "names": {
+      "en": "Explosion"
+    },
     "author": "Traditional",
     "authorUrl": null,
     "publisher": null,
@@ -270,6 +301,10 @@
   },
   "davidsstjerne-circ": {
     "name": "Davidsstjerne Cirkel",
+    "names": {
+      "da": "Davidsstjerne i cirkel",
+      "en": "Star of David in a circle"
+    },
     "author": "Thomas Ahle",
     "authorUrl": null,
     "publisher": null,
@@ -293,6 +328,10 @@
   },
   "david4": {
     "name": "David 4",
+    "names": {
+      "da": "Davidsstjerne 4",
+      "en": "Star of David 4"
+    },
     "author": "Thomas Ahle",
     "authorUrl": null,
     "publisher": null,
@@ -343,6 +382,9 @@
   },
   "stjernegitter": {
     "name": "Stjernegitter",
+    "names": {
+      "en": "Star lattice"
+    },
     "author": "Thomas Ahle & Claude",
     "authorUrl": null,
     "publisher": null,
@@ -366,6 +408,9 @@
   },
   "stjernerogkors": {
     "name": "Stjerner og kors",
+    "names": {
+      "en": "Stars and crosses"
+    },
     "author": "Thomas Ahle & Claude",
     "authorUrl": null,
     "publisher": null,
@@ -389,6 +434,10 @@
   },
   "circle": {
     "name": "Uret v2",
+    "names": {
+      "da": "Uret",
+      "en": "The clock"
+    },
     "author": "Thomas Ahle",
     "authorUrl": null,
     "publisher": null,
@@ -439,6 +488,9 @@
   },
   "kogle": {
     "name": "Kogle",
+    "names": {
+      "en": "Pinecone"
+    },
     "author": "Thomas",
     "authorUrl": null,
     "publisher": null,
@@ -508,6 +560,9 @@
   },
   "amy-weave-1": {
     "name": "Weave 1",
+    "names": {
+      "da": "Flet 1"
+    },
     "author": "Amy Young",
     "authorUrl": null,
     "publisher": null,
@@ -531,6 +586,9 @@
   },
   "amy-weave-2": {
     "name": "Weave 2",
+    "names": {
+      "da": "Flet 2"
+    },
     "author": "Amy Young",
     "authorUrl": null,
     "publisher": null,
@@ -577,6 +635,9 @@
   },
   "amy-pattern": {
     "name": "Klokke",
+    "names": {
+      "en": "Bell"
+    },
     "author": "Amy Young",
     "authorUrl": "https://www.amydesign.co/",
     "publisher": null,
@@ -600,6 +661,9 @@
   },
   "amy-flowering": {
     "name": "Flowering",
+    "names": {
+      "da": "Blomstring"
+    },
     "author": "Amy Young",
     "authorUrl": null,
     "publisher": null,
@@ -623,6 +687,10 @@
   },
   "amy-pinecone": {
     "name": "Pinecone",
+    "names": {
+      "da": "Grankogle",
+      "en": "Fir cone"
+    },
     "author": "Amy",
     "authorUrl": null,
     "publisher": null,
@@ -673,6 +741,9 @@
   },
   "squares": {
     "name": "Squares",
+    "names": {
+      "da": "Firkanter"
+    },
     "author": "Thomas Ahle",
     "authorUrl": null,
     "publisher": null,
@@ -696,6 +767,9 @@
   },
   "sildeben": {
     "name": "Sildeben",
+    "names": {
+      "en": "Herringbone"
+    },
     "author": "Thomas Ahle & Claude",
     "authorUrl": null,
     "publisher": null,
@@ -719,6 +793,9 @@
   },
   "puslespil": {
     "name": "Puslespil",
+    "names": {
+      "en": "Jigsaw"
+    },
     "author": "Thomas Ahle & Claude",
     "authorUrl": null,
     "publisher": null,
@@ -742,6 +819,9 @@
   },
   "koelbuer": {
     "name": "Kølbuer",
+    "names": {
+      "en": "Ogee arches"
+    },
     "author": "Thomas Ahle & Claude",
     "authorUrl": null,
     "publisher": null,
@@ -765,6 +845,9 @@
   },
   "roserude": {
     "name": "Roserude",
+    "names": {
+      "en": "Rose window"
+    },
     "author": "Thomas Ahle & Claude",
     "authorUrl": null,
     "publisher": null,
@@ -788,6 +871,9 @@
   },
   "hanefod": {
     "name": "Hanefod",
+    "names": {
+      "en": "Houndstooth"
+    },
     "author": "Thomas Ahle & Claude",
     "authorUrl": null,
     "publisher": null,
@@ -811,6 +897,9 @@
   },
   "flyvendegaes": {
     "name": "Flyvende gæs",
+    "names": {
+      "en": "Flying geese"
+    },
     "author": "Thomas Ahle & Claude",
     "authorUrl": null,
     "publisher": null,
@@ -857,6 +946,9 @@
   },
   "drageskael": {
     "name": "Drageskæl",
+    "names": {
+      "en": "Dragon scales"
+    },
     "author": "Thomas Ahle & Claude",
     "authorUrl": null,
     "publisher": null,
@@ -880,6 +972,9 @@
   },
   "hermanngitter": {
     "name": "Hermann-gitter",
+    "names": {
+      "en": "Hermann grid"
+    },
     "author": "Thomas Ahle & Claude",
     "authorUrl": null,
     "publisher": null,
@@ -903,6 +998,9 @@
   },
   "tragt": {
     "name": "Tragt",
+    "names": {
+      "en": "Funnel"
+    },
     "author": "Thomas Ahle & Claude",
     "authorUrl": null,
     "publisher": null,
@@ -926,6 +1024,9 @@
   },
   "boelgebrud": {
     "name": "Bølgebrud",
+    "names": {
+      "en": "Breakers"
+    },
     "author": "Thomas Ahle & Claude",
     "authorUrl": null,
     "publisher": null,
@@ -949,6 +1050,9 @@
   },
   "glaskuppel": {
     "name": "Glaskuppel",
+    "names": {
+      "en": "Glass dome"
+    },
     "author": "Thomas Ahle & Claude",
     "authorUrl": null,
     "publisher": null,
@@ -972,6 +1076,9 @@
   },
   "hvirvel": {
     "name": "Hvirvel",
+    "names": {
+      "en": "Whirl"
+    },
     "author": "Thomas Ahle & Claude",
     "authorUrl": null,
     "publisher": null,
@@ -995,6 +1102,9 @@
   },
   "juletrae": {
     "name": "Juletræ",
+    "names": {
+      "en": "Christmas tree"
+    },
     "author": "Thomas",
     "authorUrl": null,
     "publisher": null,
@@ -1018,6 +1128,9 @@
   },
   "flower": {
     "name": "Blomst",
+    "names": {
+      "en": "Flower"
+    },
     "author": "Klassisk",
     "authorUrl": null,
     "publisher": null,
@@ -1068,6 +1181,9 @@
   },
   "angel": {
     "name": "Engel",
+    "names": {
+      "en": "Angel"
+    },
     "author": "Thomas Ahle",
     "authorUrl": null,
     "publisher": null,
@@ -1091,6 +1207,9 @@
   },
   "snowflake": {
     "name": "Snowflake",
+    "names": {
+      "da": "Snefnug"
+    },
     "author": "Thomas Ahle",
     "authorUrl": null,
     "publisher": null,
@@ -1114,6 +1233,9 @@
   },
   "santa": {
     "name": "Santa",
+    "names": {
+      "da": "Julemand"
+    },
     "author": "Thomas Ahle",
     "authorUrl": null,
     "publisher": null,
@@ -1137,6 +1259,9 @@
   },
   "dagognat": {
     "name": "Dag og nat",
+    "names": {
+      "en": "Day and night"
+    },
     "author": "Thomas Ahle & Claude",
     "authorUrl": null,
     "publisher": null,
@@ -1160,6 +1285,9 @@
   },
   "ball": {
     "name": "Kugle",
+    "names": {
+      "en": "Bauble"
+    },
     "author": "Thomas Ahle",
     "authorUrl": null,
     "publisher": null,
@@ -1183,6 +1311,10 @@
   },
   "triple-heart": {
     "name": "Triple Hjerte",
+    "names": {
+      "da": "Tre hjerter",
+      "en": "Triple heart"
+    },
     "author": "Ukendt",
     "authorUrl": null,
     "publisher": null,
@@ -1206,6 +1338,9 @@
   },
   "h4h2": {
     "name": "Hjerte i hjerte",
+    "names": {
+      "en": "Heart in heart"
+    },
     "author": "Thomas Ahle",
     "authorUrl": null,
     "publisher": null,
@@ -1229,6 +1364,10 @@
   },
   "nemt-hjerte": {
     "name": "Nemt Hjerte",
+    "names": {
+      "da": "Nemt hjerte",
+      "en": "Easy heart"
+    },
     "author": "Thomas Ahle",
     "authorUrl": null,
     "publisher": null,
@@ -1252,6 +1391,9 @@
   },
   "lilje1": {
     "name": "Lilje 1",
+    "names": {
+      "en": "Lily 1"
+    },
     "author": "Niels Thygesen",
     "authorUrl": null,
     "publisher": "Spejderliv",
@@ -1275,6 +1417,9 @@
   },
   "lilje2": {
     "name": "Lilje 2",
+    "names": {
+      "en": "Lily 2"
+    },
     "author": "Niels Thygesen",
     "authorUrl": null,
     "publisher": "Spejderliv",
@@ -1298,6 +1443,9 @@
   },
   "hjertekloever": {
     "name": "Hjertekløver",
+    "names": {
+      "en": "Heart clover"
+    },
     "author": "Thomas Ahle & Claude",
     "authorUrl": null,
     "publisher": null,
