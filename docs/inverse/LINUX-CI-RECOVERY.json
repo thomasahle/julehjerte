@@ -149,7 +149,10 @@
       "verification": {
         "localFresh25SecondFixture": "passed with unchanged image limit",
         "linuxComparisonRun": "https://github.com/thomasahle/julehjerte/actions/runs/39163891541",
-        "linuxStatus": "pending at record time"
+        "linuxStatus": "success",
+        "linuxPassed": 8,
+        "linuxFailed": 0,
+        "clockRate": 1
       }
     }
   ],
