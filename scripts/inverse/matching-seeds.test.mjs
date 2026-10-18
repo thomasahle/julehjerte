@@ -42,6 +42,7 @@ test('the matching preference can change cut count and colour phase without forc
   for(let i=0;i<mask.length;i++){total+=weights[i];error+=weights[i]*(replay.mask[i]!==mask[i]);}
   assert.ok(error/total<.007,`Exported motif disagreement: ${error/total}`);
   assert.ok(error/total<=matching.maximumMatchingImageError,'Independent export must retain the allowance.');
+  t.diagnostic(JSON.stringify({independentError:error/total,matchingSeconds:matching.seconds,continuationDeferredForMatching:report.solver.cleanupBudget.continuationDeferredForMatching??false,attempts:matching.attempts}));
   assert.deepEqual(mask,before);assert.deepEqual(prepared.target.sourceImage.mask,before);
   assert.deepEqual(prepared.target.sourceImage.weights,weights);
   }catch(error){t.diagnostic(await captureFitFailure({answer:result,source:prepared.target.sourceImage,context:{case:'matching-free-hat',assertion:error.message}}));throw error;}
