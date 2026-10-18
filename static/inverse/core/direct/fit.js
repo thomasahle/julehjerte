@@ -792,7 +792,10 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery,ma
     // first checked geometry-and-paper checkpoint. Keep finalization and a
     // short polish window; existing geometric checkpoints keep their cutoff.
     const geometryRecoveryDeadline=candidates.some(c=>c.geometryPassed&&c.paperPassed)?end:Math.max(end,deadline-450);
-    let candidate=stage('directRefining',()=>refineCurves(graph,objectiveProb,n,clear.phase,{...refinementCfg,preferMatchingSheets:false},{deadline:end,geometryRecoveryDeadline,input,weights:objectiveWeights,skipRepeatedRollbacks:true,resolvePaperBeforeRollback:true,paperVerificationDeadline:Math.max(end,deadline-450),retryPaperSeparation:true,paperSeparationErrorThreshold:cfg.maxImageError,preferCheckpoint:featureSeed(selected)?(_candidate,solution)=>auditFeatureFidelity(source,sampleWeave(solution,source.resolution),cfg,sourceFeatures).passed:null,rate:clear.model.counts[0]+clear.model.counts[1]>4?.05:.035,stopWhen:value=>{
+    // Feature seeds hand off to local outline polishing. Their checking tail
+    // belongs to that pass; only ordinary grids borrow it for verification.
+    const paperVerificationDeadline=featureSeed(selected)?end:Math.max(end,deadline-450);
+    let candidate=stage('directRefining',()=>refineCurves(graph,objectiveProb,n,clear.phase,{...refinementCfg,preferMatchingSheets:false},{deadline:end,geometryRecoveryDeadline,input,weights:objectiveWeights,skipRepeatedRollbacks:true,resolvePaperBeforeRollback:true,paperVerificationDeadline,retryPaperSeparation:true,paperSeparationErrorThreshold:cfg.maxImageError,preferCheckpoint:featureSeed(selected)?(_candidate,solution)=>auditFeatureFidelity(source,sampleWeave(solution,source.resolution),cfg,sourceFeatures).passed:null,rate:clear.model.counts[0]+clear.model.counts[1]>4?.05:.035,stopWhen:value=>{
       if(goodEnough(value))return true;
       if(!selected.protectFeatures||!earlyFeatureInitialization?.enclosurePending)return false;
       // Hand a checked colour-retaining fit to local shape refinement as soon
