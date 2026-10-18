@@ -74,6 +74,7 @@ test('the common fitter refines the alternative junction routing against the unc
   const replay=await renderExportedWeave(geometry,source.resolution);
   const error=replay.mask.reduce((sum,v,i)=>sum+Number(v!==mask[i]),0)/mask.length;
   assert.ok(error<record.baselineIndependentImageError,`The new seed must improve the fixed source-mask error: ${error}`);
+  t.diagnostic(JSON.stringify({independentError:error,curves:Object.keys(geometry.curves).length,solverSeconds:report.solver.seconds,refinementSteps:recovery.refinement.steps}));
   const samples=JSON.parse(await fs.readFile('scripts/inverse/fixtures/photo-material-samples.json')).cases.find(c=>c.id===record.sourceMaterialCase);
   assert.equal(samples.source.sha256,record.source.sha256);
   const classified=reviewMaterialSamples(samples,{mask,resolution:source.resolution,quad:record.quad});

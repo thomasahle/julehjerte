@@ -409,7 +409,13 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery,ma
   // alone misses this evidence on dense patterns with many blurred boundaries.
   // The stronger retention floor only schedules work; all acceptance gates
   // and the unsuccessful-grid routing/weak-region fallbacks remain unchanged.
-  const refineRetainedGridFirst=shortBudget&&features.passed&&features.regions.length>0&&fine[0].error<=2*cfg.maxImageError
+  // A source-faithful coarse boundary with fewer spans than this grid is
+  // evidence for trying the simpler routing first. A failed coarse graph
+  // does not exhaust its smoothed junction alternatives. Dense, inaccurate
+  // or endpoint-inconsistent traces do not earn that preference.
+  const gridSpans=fine[0].model.counts.reduce((sum,count)=>sum+count,0)*(fine[0].model.k-1);
+  const simplerCoarseBoundary=coarseTopology?.report.attempts.some(a=>!a.endpointIssue&&a.featuresPassed&&a.imageError<=cfg.maxImageError&&a.segments<gridSpans);
+  const refineRetainedGridFirst=shortBudget&&!simplerCoarseBoundary&&features.passed&&features.regions.length>0&&fine[0].error<=2*cfg.maxImageError
     &&features.regions.every(r=>r.retainedFraction>=.9);
   const sourceResolutionGrid=refineRetainedGridFirst?fine[0]:null;
   const deferredFeatureRecovery=((!shortBudget&&(probeRouting||deferredRouting))||refineNewFeatureFirst||refineRetainedGridFirst)&&needsRecovery
