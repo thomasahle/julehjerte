@@ -422,9 +422,63 @@
     "url": "https://github.com/thomasahle/julehjerte/actions/runs/39174809846",
     "sourceCommit": "5f53ec00",
     "diagnosticCommit": "da0ac441",
-    "status": "running",
+    "status": "completed",
     "clock": "normal, unmodified, cold-process isolated test files",
-    "releaseReady": false
+    "releaseReady": false,
+    "conclusion": "failure",
+    "passed": 1102,
+    "failed": 21,
+    "shards": [
+      {
+        "shard": 1,
+        "passed": 249,
+        "failed": 3,
+        "failures": [
+          "the common fitter refines the alternative junction routing against the unchanged photograph",
+          "fresh photographic fitting selects and exports finer-verified refinement",
+          "fresh synthetic-control routing retains time for a valid template without changing the mask"
+        ]
+      },
+      {
+        "shard": 2,
+        "passed": 215,
+        "failed": 13,
+        "failures": [
+          "fresh fitting continues an unfinished verified initializer within the remaining search allowance",
+          "fresh automatic fitting repairs a rejected circular routing before common Bezier refinement",
+          "a fully observed mask refines or replaces corner routing without opening its enclosed regions",
+          "an exhausted corner MILP leaves the remaining caller allowance for fresh coarse routing",
+          "hard-bibel-star-outline-jpeg75: refine the retained grid before routing, preserving photographic quality",
+          "a finer spline recovers a half-resolution opening after all coarse feature starts fail",
+          "early feature routing recovers the frozen puppy opening within a ten-second search",
+          "a one-pixel crop shift cannot discard a feature-preserving fine-grid checkpoint",
+          "a fresh shifted bird fit preserves its eye with a 10-second allowance",
+          "a fresh shifted bird fit preserves its eye with a 180-second allowance",
+          "a late routing candidate uses the repair time already provided by its caller",
+          "a late routing candidate cannot manufacture an unprovided repair allowance",
+          "fresh round-checker fitting verifies its accurate finalist before choosing a worse routing"
+        ]
+      },
+      {
+        "shard": 3,
+        "passed": 242,
+        "failed": 2,
+        "failures": [
+          "a simpler seed that never contained the Viking opening leaves time for the viable routing",
+          "a lower-error finalist that erodes a partially retained region cannot claim the refinement reserve"
+        ]
+      },
+      {
+        "shard": 4,
+        "passed": 396,
+        "failed": 3,
+        "failures": [
+          "fresh fitting retains the stacked motif on the resampled mask",
+          "a late y-minus-1 gradient checkpoint can use its reserved clearance repair",
+          "the vertical near-miss layout produces checked exports within the original short search (1.5x clock)"
+        ]
+      }
+    ]
   },
   "matchingContinuation": {
     "commit": "1cc30d71",
@@ -746,7 +800,8 @@
       "qualification": "Local fresh solves, not a Linux full-suite result."
     },
     "linuxFullReplay": "https://github.com/thomasahle/julehjerte/actions/runs/39174809846",
-    "changedFileLint": "pass"
+    "changedFileLint": "pass",
+    "linuxOutcome": "The shortcut is exercised, but all three timed circular fixtures still fail. General projection can end with one return left after the unchanged 400 ms allowance."
   },
   "fullReplayBeforePaperRepair": {
     "url": "https://github.com/thomasahle/julehjerte/actions/runs/39173161568",
@@ -811,5 +866,152 @@
         ]
       }
     ]
+  },
+  "sourceResolutionRefinement": {
+    "sourceCommit": "c136d341",
+    "change": "Keep coarse initialization unchanged; refine the selected near-fit region-retaining ordinary grid against the original classified source samples, retaining source weights and symmetry objective.",
+    "fixedWorkProbe": {
+      "scope": "Identical initializer; internal 400-pixel original-mask measurement, independent geometry and paper checks; not an SVG renderer or paired speed benchmark.",
+      "error256At81Steps": 0.02985625,
+      "error400At81Steps": 0.028325,
+      "error256At161Steps": 0.02734375,
+      "error400At161Steps": 0.0257
+    },
+    "local": {
+      "denseIndependentError": 0.0242875,
+      "denseSolverSeconds": 9.125874,
+      "nearbyChecksPassed": 32,
+      "nearbyChecksFailed": 0
+    },
+    "linux": {
+      "url": "https://github.com/thomasahle/julehjerte/actions/runs/39175481908",
+      "diagnosticCommit": "206f5ad9",
+      "passed": 39,
+      "failed": 2,
+      "denseInternalError": 0.03284375,
+      "roundCheckerInternalError": 0.01194375,
+      "roundCheckerPaperResolution": 1000,
+      "failures": [
+        "Dense checker still exceeds the unchanged 3% source-mask limit within the short request.",
+        "Round checker passes exported image and paper checks, but the newly verified 1000-cell polishing alternative was not emitted to the graceful-Stop observer."
+      ]
+    }
+  },
+  "compactBoundaryPreference": {
+    "sourceCommit": "b0cf82cc",
+    "change": "When an existing coarse trace retains source features, meets the source-image limit, has legal endpoint counts, and uses fewer spans than the ordinary grid, keep its routing alternatives ahead of speculative grid refinement.",
+    "local": {
+      "junctionDenseAndRoundPassed": 12,
+      "junctionDenseAndRoundFailed": 0,
+      "nearbyPhotographsPassed": 12,
+      "nearbyPhotographsFailed": 0,
+      "junctionWholeTestSeconds": 7.849111542
+    },
+    "linux": {
+      "url": "https://github.com/thomasahle/julehjerte/actions/runs/39175974860",
+      "diagnosticCommit": "5df6ed96",
+      "sourceCommit": "f987cb28",
+      "passed": 17,
+      "failed": 0,
+      "junctionIndependentError": 0.0116,
+      "junctionCurves": 68,
+      "junctionSolverSeconds": 8.590861628,
+      "junctionRefinementSteps": 800,
+      "scope": "Focused paper-finalist, recovered and incomplete candidates, junction, and interrupted-clearance regressions; unchanged clocks and acceptance gates."
+    }
+  },
+  "polishingStopNotification": {
+    "sourceCommit": "09c55d27",
+    "rootCause": "The 1000-cell alternative passed image and paper checks after the refiner had emitted it as uncertain. Graceful Stop was never told about the newly verified coordinates.",
+    "change": "Publish the accepted alternative with its actual paper-verification resolution through the existing candidate observer.",
+    "linux": "https://github.com/thomasahle/julehjerte/actions/runs/39175974860"
+  },
+  "lateClearanceCheckpointRegression": {
+    "sourceCommit": "f987cb28",
+    "rootCause": "The y-minus-1 fixed-clock replay now repairs its gap at step 80 and retains that checkpoint. The test incorrectly required another final projection.",
+    "change": "Require an accepted projection either at a retained refinement checkpoint or in the final repair. Preserve interrupted-step, independent final geometry, paper, image, and input-immutability assertions.",
+    "localPassed": 2,
+    "linux": "https://github.com/thomasahle/julehjerte/actions/runs/39175974860"
+  },
+  "returnPathCache": {
+    "sourceCommit": "999b4072",
+    "scope": "Per-projection reuse only for identical directed control coordinates and clearance. Independent final validation remains uncached. Changed coordinates, direction and clearance invalidate the entry; returned witnesses cannot mutate cached data.",
+    "localTests": {
+      "focusedRepairPassed": 17,
+      "freshCircularAndClearancePassed": 11,
+      "failed": 0,
+      "exhaustedCornerIndependentError": 0.0064125,
+      "exhaustedCornerSolverSeconds": 21.993051707999992
+    },
+    "fixedWorkProbe": {
+      "scope": "One saved return fixture, four alternating-order cached/uncached pairs; all points, validation, iteration counts and reports deeply identical. This is not an end-to-end or Linux speed result.",
+      "rows": [
+        {
+          "round": 0,
+          "label": "uncached",
+          "milliseconds": 185.64758400000002,
+          "iterations": 14,
+          "accepted": true
+        },
+        {
+          "round": 0,
+          "label": "cached",
+          "milliseconds": 118.787916,
+          "iterations": 14,
+          "accepted": true
+        },
+        {
+          "round": 1,
+          "label": "cached",
+          "milliseconds": 103.90391699999998,
+          "iterations": 14,
+          "accepted": true
+        },
+        {
+          "round": 1,
+          "label": "uncached",
+          "milliseconds": 122.92841700000008,
+          "iterations": 14,
+          "accepted": true
+        },
+        {
+          "round": 2,
+          "label": "uncached",
+          "milliseconds": 119.22137499999997,
+          "iterations": 14,
+          "accepted": true
+        },
+        {
+          "round": 2,
+          "label": "cached",
+          "milliseconds": 101.07024999999999,
+          "iterations": 14,
+          "accepted": true
+        },
+        {
+          "round": 3,
+          "label": "cached",
+          "milliseconds": 96.04129199999988,
+          "iterations": 14,
+          "accepted": true
+        },
+        {
+          "round": 3,
+          "label": "uncached",
+          "milliseconds": 128.4039170000001,
+          "iterations": 14,
+          "accepted": true
+        }
+      ]
+    },
+    "linux": {
+      "url": "https://github.com/thomasahle/julehjerte/actions/runs/39176243142",
+      "diagnosticCommit": "503d14a9",
+      "status": "running"
+    },
+    "appChecks": {
+      "status": "running",
+      "logPrefix": "/tmp/julehjerte-return-cache-"
+    }
   }
 }
