@@ -188,7 +188,7 @@
     "scope": "Three native-mask quality checks plus a stalled first grid followed by actual coarse and feature routing, with independent export, geometry, paper and feature checks."
   },
   "pending": [
-    "complete inverse suite",
+    "complete six controlled baseline/current Viking browser replays",
     "resolve strict Viking timing/fidelity comparison before refreshing stable preview"
   ],
   "standardVerification": {
@@ -333,5 +333,22 @@
       "finding": "Candidate assessment is identical. Recorded divergence is after selection, in deadline-limited sharing and polishing. The grid-first policy is inactive. This locates the difference but is not a controlled causal replay; no-regression comparison remains failed.",
       "next": "Controlled replays should test timing variability and preserving enough polishing time after sharing. Keep all actual validity and fidelity gates."
     }
+  },
+  "fullInverseVerification": {
+    "status": "passed",
+    "runtime": "a48528f",
+    "sourcesUnchanged": 1061,
+    "summary": {
+      "tests": 1074.0,
+      "pass": 1074.0,
+      "fail": 0.0,
+      "cancelled": 0.0,
+      "skipped": 0.0,
+      "duration_ms": 1322844.648208
+    },
+    "stateSha256": "4d7f9d00a96d390b239d813b8f8045f10d49d9fe08ca0d9e1f9785ba832f86cb",
+    "logSha256": "9f21b72cd68c3ac865e0a15897901c0c89183f32be66923eb0b0802af7d5796e",
+    "qualification": "Full inverse suite passed; the previously recorded browser Viking comparison failure remains open.",
+    "path": "tmp/heart-learning/deferred-routing-2026-10-18/full/summary.json"
   }
 }

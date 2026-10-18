@@ -70,6 +70,12 @@ The frozen fixture records only classified pixels, source/crop provenance and
 settings. No saved curves enter the fit. Browser checks separately repeat photo
 upload, automatic cropping, worker fitting, and editable SVG/PDF export.
 
+The complete inverse suite passed **1,074/1,074 tests**, with no failures, skips
+or cancellations, in 1,322.84 seconds. All 1,061 pinned input/source files were
+unchanged throughout the run. The separate application suite passed 874 tests
+with one existing skip; type checking, lint and the production build passed.
+These checks do not resolve the recorded Viking browser comparison failure.
+
 Machine-readable measurements, hashes, and outstanding verification are in
 [deferred-routing.json](deferred-routing.json). Local diagnostic artifacts are in
 `tmp/heart-learning/deferred-routing-2026-10-18/`.
