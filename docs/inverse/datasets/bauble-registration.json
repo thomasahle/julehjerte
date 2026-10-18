@@ -1,0 +1,172 @@
+{
+  "status": "diagnostic only; full shape and end-to-end reconstruction not yet run",
+  "photo": "scripts/inverse/fixtures/hard-photos/collage.png",
+  "photoSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
+  "case": "bauble (R5C4)",
+  "roiPixelEdges": [
+    456,
+    860,
+    711,
+    1112
+  ],
+  "sourceDimensions": [
+    1482,
+    1112
+  ],
+  "workingROI": [
+    410.1,
+    814.1,
+    756.9,
+    1112
+  ],
+  "rows": [
+    {
+      "variant": "ordinary",
+      "samplesPerEdge": [
+        16,
+        16
+      ],
+      "support": [
+        1,
+        0.625
+      ],
+      "spanWorkingPixels": [
+        15,
+        15
+      ],
+      "tipPixelEdges": [
+        619.5033182277817,
+        1139.311696191154
+      ],
+      "record": "tmp/heart-learning/bauble-segmentation-2026-10-18/edge-ablation.json",
+      "recordSha256": "04ed5c2dce526963f89798fda382fa5e143225daa250dceff01d34871b88b63c"
+    },
+    {
+      "variant": "omit-mixed-paper",
+      "samplesPerEdge": [
+        59,
+        59
+      ],
+      "support": [
+        0.5423728813559322,
+        0.23728813559322035
+      ],
+      "spanWorkingPixels": [
+        72.59018369517952,
+        25.64777070685591
+      ],
+      "tipPixelEdges": [
+        592.6631289754666,
+        1115.5116110880736
+      ],
+      "record": "tmp/heart-learning/bauble-segmentation-2026-10-18/edge-ablation.json",
+      "recordSha256": "04ed5c2dce526963f89798fda382fa5e143225daa250dceff01d34871b88b63c"
+    },
+    {
+      "variant": "learned-fields",
+      "samplesPerEdge": [
+        16,
+        16
+      ],
+      "support": [
+        1,
+        0.625
+      ],
+      "spanWorkingPixels": [
+        15,
+        15
+      ],
+      "tipPixelEdges": [
+        619.5033182277817,
+        1139.311696191154
+      ],
+      "record": "tmp/heart-learning/bauble-segmentation-2026-10-18/learned-fields.json",
+      "recordSha256": "97a29e3b94846254bfbc526d58eea6240938796ee8c1e4a570a314f2b22d85b5"
+    },
+    {
+      "variant": "background-fields",
+      "samplesPerEdge": [
+        16,
+        16
+      ],
+      "support": [
+        1,
+        0.625
+      ],
+      "spanWorkingPixels": [
+        15,
+        15
+      ],
+      "tipPixelEdges": [
+        619.5033182277817,
+        1139.311696191154
+      ],
+      "record": "tmp/heart-learning/bauble-segmentation-2026-10-18/background-fields.json",
+      "recordSha256": "72af630ecb4eab0a27026d3ec5825570ae809153cd98d1d61fe5be8088f24d55"
+    },
+    {
+      "variant": "rgb-background-fields",
+      "samplesPerEdge": [
+        41,
+        41
+      ],
+      "support": [
+        0.975609756097561,
+        0.7317073170731707
+      ],
+      "spanWorkingPixels": [
+        39.662848116772665,
+        40
+      ],
+      "tipPixelEdges": [
+        573.1573879789166,
+        1118.0140589098196
+      ],
+      "record": "tmp/heart-learning/bauble-segmentation-2026-10-18/rgb-background-fields.json",
+      "recordSha256": "2c16f63f7aa95d3745080746d63b91096cabec40188f576031fecc8149fcb22d"
+    },
+    {
+      "variant": "rgb-extended-fields",
+      "samplesPerEdge": [
+        62,
+        62
+      ],
+      "support": [
+        0.6612903225806451,
+        0.7580645161290323
+      ],
+      "spanWorkingPixels": [
+        59.41560873319639,
+        66.69648646676819
+      ],
+      "tipPixelEdges": [
+        583.4353004962968,
+        1109.0941720723395
+      ],
+      "record": "tmp/heart-learning/bauble-segmentation-2026-10-18/rgb-extended-fields.json",
+      "recordSha256": "cb32d583676ed8552cfddceb4c2d69586471d486fa0bec480fffe2764de6efae"
+    }
+  ],
+  "findings": [
+    "The existing mixed-paper term admits background next to the selected heart; neighbour paper and this foreground leakage leave only16 usable scan rows.",
+    "Removing the term also produces internal gaps; its longer line-sampling set is less consistent, so removal is not a crop fix.",
+    "Both learned chromaticity experiments leave the original16-row lines unchanged. Sampled right-background hues are closer to the learned pale hue than to the left-background hue.",
+    "A three-cluster RGB foreground/background hypothesis retains more useful line samples. Extending the lower band also changes the extrapolated tip to within the photo. This is line evidence only, not a validated physical-heart crop."
+  ],
+  "nextProbe": "tmp/heart-learning/bauble-segmentation-2026-10-18/crop-study.mjs",
+  "nextProbeSha256": "ad9753eeb615a28c82952864cc05e94fa22011746069882b750de4c412e51418",
+  "fieldHypothesis": "tmp/heart-learning/bauble-segmentation-2026-10-18/rgb-fields.mjs",
+  "fieldHypothesisSha256": "29497df5fff8266ba47281e92ee5a641b18bcae41fa62f74875033a965f69f40",
+  "requiredBeforeAdoption": [
+    "Full shape/lobe support on unchanged photo and ROI",
+    "Known-geometry, clipped, occluded, rotated and pale-paper controls",
+    "Broader collage and real-photo crop regression coverage",
+    "Actual upload/crop/template workflow plus independent export checks"
+  ],
+  "qualifications": [
+    "No original artwork or cutting-path ground truth is available for this collage.",
+    "Approximate historical corner annotations were not used for fitting or candidate scores.",
+    "Frozen malformed-mask solver fixture is unchanged.",
+    "The shape probe refuses to start while the current full inverse suite is live or failed."
+  ]
+}
