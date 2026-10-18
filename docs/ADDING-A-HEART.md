@@ -4,13 +4,38 @@ A gallery heart is one SVG and one id in `hearts.json` in the project root. The 
 holds everything about the heart, its two descriptions included; `hearts.json` only
 says which category it is in and where. Everything else is generated from those two.
 
-1. **The SVG.** Draw the heart in the editor (`/editor/`) and save it with
-   **Eksportér SVG**; the file carries the name, author, grid and weave parity the
-   gallery reads. A design drawn elsewhere can be brought into the editor with
-   **Importér SVG** first. (`scripts/svg-to-heart.mjs` converts an SVG into
-   HeartDesign JSON for inspection; it does not write the gallery's SVG.) Save it as
+1. **The SVG.** Either draw the heart in the editor (`/editor/`) and save it with
+   **Eksportér SVG**, or draw it elsewhere (Inkscape) and convert it. Both write the
+   gallery format: the name, author, date, grid and weave parity the gallery reads,
+   and the two empty description elements of step 2. Save it as
    `static/hearts/<id>.svg`, where `<id>` is lower-case ASCII with hyphens
    (`boelgebrud`, `stjerne-ramme`) — it becomes the URL `/hjerte/<id>/`.
+
+   **A drawing from Inkscape** goes through the editor's importer, either in the
+   browser (**Importér SVG**, then look the heart over and **Eksportér SVG**) or in
+   one command:
+
+   ```sh
+   node scripts/svg-to-heart.mjs drawing.svg --gallery <id> --name "Kugle" --author "Thomas Ahle"
+   ```
+
+   Both print the same one-line summary (grid size, cuts per half, outline edges
+   dropped, subpaths joined, warnings); read it. The importer accepts:
+
+   - the cuts as `<path>`, `<line>` or `<polyline>` elements, with any path commands
+     (arcs, relative commands, `H`/`V`/`S`/`Q`/`T`/`Z`) and `transform`s on them and
+     their groups;
+   - a cut drawn as several subpaths or pieces whose ends meet (within 1 % of the
+     square) — they are joined; a cut that still does not reach from side to side is
+     named in the summary;
+   - the overlap square's outline drawn or not: lines along the bounding box of the
+     cuts are dropped and that box is the square; without them the viewBox is the
+     square. Any size works (an 80 mm drawing is scaled to the editor's 0–100);
+   - horizontal cuts become the left half, vertical ones the right half; a path that
+     is neither is skipped and named in the summary.
+
+   The script writes `--date` (default today) and refuses to overwrite an existing
+   file without `--force`; without `--gallery` it prints the HeartDesign JSON instead.
 
 2. **The descriptions.** The exported file has two empty elements right after its
    `<title>`:
