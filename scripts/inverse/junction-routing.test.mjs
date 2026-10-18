@@ -12,6 +12,7 @@ import {readHardPhoto} from './hard-photo-data.mjs';
 import {hardPhotoTarget} from './hard-photo-target.mjs';
 import {renderExportedWeave} from './export-renderer.mjs';
 import {reviewMaterialSamples} from './photo-material-samples.mjs';
+import {captureFitFailure} from './diagnostics/fit-failure.mjs';
 
 const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
 async function fixture(){
@@ -62,8 +63,8 @@ test('a short probe tries simpler junctions before densifying exhausted traces',
 test('the common fitter refines the alternative junction routing against the unchanged photograph',async t=>{
   const {record,input,raw,source,mask,probability}=await fixture();
   const answer=await design(input,raw),report=answer.report,recovery=report.solver.featureRecovery;
-  if(!recovery.seedTopologyRetry?.recovered)t.diagnostic(JSON.stringify({report,cuts:answer.files['cut_geometry.json']}));
-  assert.equal(recovery.seedTopologyRetry?.recovered,true);
+  try{
+  assert.equal(recovery?.seedTopologyRetry?.recovered,true);
   assert.ok(recovery.refinement.steps>160,'The provisional trace needs more than the short seed polish.');
   assert.equal(report.templateChecksPassed,true);assert.equal(report.validation.passed,true);
   assert.equal(report.manufacturing.status,'pass');assert.equal(report.imageFidelity.features.missing.length,0);
@@ -79,4 +80,8 @@ test('the common fitter refines the alternative junction routing against the unc
   const exported=reviewMaterialSamples(samples,{mask:replay.mask,resolution:source.resolution,quad:record.quad,phase:classified.phase});
   assert.equal(classified.correct,28);assert.equal(exported.correct,28);
   assert.deepEqual(source.mask,mask);assert.deepEqual(source.probability,probability);
+  }catch(error){
+    t.diagnostic(await captureFitFailure({answer,source,context:{case:'photographic-junction-routing',assertion:error.message}}));
+    throw error;
+  }
 });
