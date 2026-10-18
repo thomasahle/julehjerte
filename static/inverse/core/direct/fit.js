@@ -411,6 +411,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery,ma
   // and the unsuccessful-grid routing/weak-region fallbacks remain unchanged.
   const refineRetainedGridFirst=shortBudget&&features.passed&&features.regions.length>0&&fine[0].error<=2*cfg.maxImageError
     &&features.regions.every(r=>r.retainedFraction>=.9);
+  const sourceResolutionGrid=refineRetainedGridFirst?fine[0]:null;
   const deferredFeatureRecovery=((!shortBudget&&(probeRouting||deferredRouting))||refineNewFeatureFirst||refineRetainedGridFirst)&&needsRecovery
     ?{maximumSeconds:fullRecoverySeconds,attempted:false,...(refineRetainedGridFirst?{reason:'well-retained-grid',minimumRegionRetention:Math.min(...features.regions.map(r=>r.retainedFraction))}:{})}:null;
   const attemptRecovery=async(seconds,budgetPolicy,until=deadline)=>{
@@ -645,15 +646,22 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery,ma
   const prepareRefinement=(selected,allocation)=>{
     if(preparations.has(selected))return preparations.get(selected);
     const protectedObjective=selected.protectFeatures?featureRefinementObjective(source,sourceFeatures,n):null;
-    const objectiveProb=protectedObjective?.probability||prob,objectiveWeights=protectedObjective?.weights||fitWeights;
+    const clearanceProb=protectedObjective?.probability||prob,clearanceWeights=protectedObjective?.weights||fitWeights;
+    // A near-fit which already keeps the source regions does not need another
+    // reduced-image phase. Its small boundary errors are better resolved from
+    // the original samples; a late polish otherwise has to undo their blur.
+    // Keep coarse grid initialization and protected-feature objectives intact.
+    const sourceResolution=selected===sourceResolutionGrid&&!protectedObjective&&source.resolution>n;
+    const refinementResolution=sourceResolution?source.resolution:n;
+    const objectiveProb=sourceResolution?fullProb:clearanceProb,objectiveWeights=sourceResolution?fullWeights:clearanceWeights;
     const refinementCfg=protectedObjective?{...cfg,materialResolution:Math.max(cfg.materialResolution,700)}:cfg;
     const verification=protectedObjective?{requestedResolution:cfg.materialResolution,resolution:refinementCfg.materialResolution,source:'feature-preserving-refinement'}:null;
     // Clearance grids need to retain colours; free refinement may still close
     // an opening. Enclosure is mandatory only for the accepted template.
-    const clear=stage('directClearance',()=>fitGrid(objectiveProb,n,selected.model.counts,selected.phase,{k:selected.model.k,optimizationTarget:protectedObjective?null:gridTarget,optimizationObjective:protectedObjective?null:gridObjective,weights:objectiveWeights,steps:150,initial:refloor(selected,floor),floor,clearance:floor+.0015,deadline:performance.now()+Math.min(800,allocation*.15),preferCheckpoint:featureSeed(selected)?retainsGridColours:null}));
-    attempts.push({stage:'clearance',counts:clear.model.counts,controlPoints:clear.model.k,phase:clear.phase,error:protectedObjective?mismatch(gridMask(clear.model,n,clear.phase,clear.floor),prob,fitWeights):clear.error,steps:clear.steps,...(protectedObjective?{weightedError:clear.error}:{})});
+    const clear=stage('directClearance',()=>fitGrid(clearanceProb,n,selected.model.counts,selected.phase,{k:selected.model.k,optimizationTarget:protectedObjective?null:gridTarget,optimizationObjective:protectedObjective?null:gridObjective,weights:clearanceWeights,steps:150,initial:refloor(selected,floor),floor,clearance:floor+.0015,deadline:performance.now()+Math.min(800,allocation*.15),preferCheckpoint:featureSeed(selected)?retainsGridColours:null}));
+    attempts.push({stage:'clearance',counts:clear.model.counts,controlPoints:clear.model.k,phase:clear.phase,error:protectedObjective?mismatch(gridMask(clear.model,n,clear.phase,clear.floor),prob,fitWeights):clear.error,steps:clear.steps,refinementResolution,...(protectedObjective?{weightedError:clear.error}:{})});
     const graph=new CurveGraph(gridPaths(clear.model,cfg.width,clear.floor),cfg.width);
-    const prepared={clear,graph,protectedObjective,objectiveProb,objectiveWeights,refinementCfg,verification};
+    const prepared={clear,graph,protectedObjective,objectiveProb,objectiveWeights,refinementResolution,refinementCfg,verification};
     preparations.set(selected,prepared);return prepared;
   };
   const extraGridComparisons=[],geometryRecovery=[],simplerComparisonLimits=new Map();
@@ -695,7 +703,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery,ma
     const featurePolishReserve=(featureSeed(selected)||unfinishedClearance)&&!candidates.some(c=>c.imagePassed)
       ?Math.min(1700,Math.max(0,remaining-2500)):1700;
     const polishingReserve=samplingRetry?(samplingRecovery?.preflight?.preferred?1700:0):featurePolishReserve,end=Math.min(deadline-polishingReserve,performance.now()+allocation);
-    const {clear,graph,protectedObjective,objectiveProb,objectiveWeights,refinementCfg,verification}=prepareRefinement(selected,allocation);
+    const {clear,graph,protectedObjective,objectiveProb,objectiveWeights,refinementResolution,refinementCfg,verification}=prepareRefinement(selected,allocation);
     // The unconstrained grid can look best only because its strips are too
     // narrow. If preparation reverses that ranking, give one existing
     // finalist its clearance pass now. Reuse both preparations and keep the
@@ -806,7 +814,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery,ma
     const paperVerificationDeadline=featureSeed(selected)?end:Math.max(end,deadline-450);
     const earlyOutline=shortBudget&&earlyFeatureInitialization?.scheduled===1&&featureSeed(selected)&&polishingReserve<1700&&!weights&&!symmetryRequested;
     let outlineProbe=null,outlineHandoff=null;
-    let candidate=stage('directRefining',()=>refineCurves(graph,objectiveProb,n,clear.phase,{...refinementCfg,preferMatchingSheets:false},{deadline:end,geometryRecoveryDeadline,input,weights:objectiveWeights,skipRepeatedRollbacks:true,resolvePaperBeforeRollback:true,paperVerificationDeadline,retryPaperSeparation:true,paperSeparationErrorThreshold:cfg.maxImageError,preferCheckpoint:featureSeed(selected)?(_candidate,solution)=>auditFeatureFidelity(source,sampleWeave(solution,source.resolution),cfg,sourceFeatures).passed:null,rate:clear.model.counts[0]+clear.model.counts[1]>4?.05:.035,stopWhen:value=>{
+    let candidate=stage('directRefining',()=>refineCurves(graph,objectiveProb,refinementResolution,clear.phase,{...refinementCfg,preferMatchingSheets:false},{deadline:end,geometryRecoveryDeadline,input,weights:objectiveWeights,skipRepeatedRollbacks:true,resolvePaperBeforeRollback:true,paperVerificationDeadline,retryPaperSeparation:true,paperSeparationErrorThreshold:cfg.maxImageError,preferCheckpoint:featureSeed(selected)?(_candidate,solution)=>auditFeatureFidelity(source,sampleWeave(solution,source.resolution),cfg,sourceFeatures).passed:null,rate:clear.model.counts[0]+clear.model.counts[1]>4?.05:.035,stopWhen:value=>{
       if(goodEnough(value))return true;
       // A late initializer has borrowed the normal polish reserve. Once its
       // checked routing retains the source features and is close enough for
