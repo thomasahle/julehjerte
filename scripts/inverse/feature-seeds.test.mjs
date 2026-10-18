@@ -18,7 +18,7 @@ import {resize} from '../../static/inverse/core/direct/math.js';
 import {readHardPhoto} from './hard-photo-data.mjs';
 import {renderExportedWeave} from './export-renderer.mjs';
 import {featureComponentMetrics} from './feature-component-metrics.mjs';
-import {assertFitError} from './diagnostics/fit-failure.mjs';
+import {assertFitError,captureFitFailure} from './diagnostics/fit-failure.mjs';
 
 async function puppy(dy=0,dx=0){
   const fixture=JSON.parse(await fs.readFile('scripts/inverse/fixtures/photographic-puppy-fit.json'));
@@ -208,11 +208,12 @@ test('a crop-edge fragment still counts in fidelity but cannot drive an extra cu
   assert.ok(mismatch(replay.mask,source.mask)<.01,'Do not replace the close star with the 1.8% seam-producing fit');
 });
 
-test('early feature routing recovers the frozen puppy opening within a ten-second search',async()=>{
+test('early feature routing recovers the frozen puppy opening within a ten-second search',async t=>{
   const imported=await puppy(),cfg={...AUTOMATIC_PRESET,timeLimit:10,trials:0,earlyStop:false};
   const prepared=prepare({type:'mask',mask:imported.preview.mask,resolution:400},cfg),source=prepared.target.sourceImage;
   const checkpoints=[];
   const answer=await design(prepared.target,cfg,()=>{},{onCandidate:c=>checkpoints.push(c)}),solver=answer.report.solver;
+  try{
   const retained=checkpoints.filter(c=>c.materialResolution===700&&c.error<.018).sort((a,b)=>a.error-b.error)[0];
   assert.ok(retained,
     'Graceful Stop must retain the candidate after its finer paper check passes');
@@ -250,9 +251,12 @@ test('early feature routing recovers the frozen puppy opening within a ten-secon
     assert.ok(opening.componentIoU>.5,'The preserved opening must not inflate into surrounding paper.');
   }
   assert.deepEqual(source.mask,imported.preview.mask);
+  }catch(error){
+    t.diagnostic(await captureFitFailure({answer,source,candidatePackets:checkpoints,context:{fixture:'photographic-puppy-fit',translation:[0,0],assertion:error.message}}));throw error;
+  }
 });
 
-test('a one-pixel crop shift cannot discard a feature-preserving fine-grid checkpoint',async()=>{
+test('a one-pixel crop shift cannot discard a feature-preserving fine-grid checkpoint',async t=>{
   const imported=await puppy(1),cfg=settings({...AUTOMATIC_PRESET,timeLimit:10,trials:0,earlyStop:false});
   assert.equal(createHash('sha256').update(imported.preview.mask).digest('hex'),'19f2c14b8e5e09abdeda442284bb1187e80369331482ab6db0d935ef8335fd91');
   const prepared=prepare({type:'mask',mask:imported.preview.mask,resolution:400},cfg),source=prepared.target.sourceImage,features=imageFeatures(source);
@@ -267,6 +271,7 @@ test('a one-pixel crop shift cannot discard a feature-preserving fine-grid check
   const unavailable=fitGrid(prob,256,seed.model.counts,seed.phase,{...options,preferCheckpoint:()=>false});
   assert.deepEqual(unavailable.model.z,erased.model.z,'An unavailable preference must leave the ordinary fallback intact');
   const answer=await design(prepared.target,cfg),rendered=await renderExportedWeave(answer.files['cut_geometry.json'],400);
+  try{
   assert.equal(answer.report.templateChecksPassed,true);
   assert.equal(answer.report.manufacturing.status,'pass');assert.equal(answer.report.validation.passed,true);
   assert.equal(auditImageFeatures(source,rendered.mask).passed,true);
@@ -275,6 +280,9 @@ test('a one-pixel crop shift cannot discard a feature-preserving fine-grid check
   assert.equal(opening.touchesBorder,false,'The opening must not become a channel to the background');
   assert.ok(opening.componentIoU>.5,'Preserving the pixels must not create a much larger white blob');
   assert.deepEqual(source.mask,imported.preview.mask);
+  }catch(error){
+    t.diagnostic(await captureFitFailure({answer,source,error:mismatch(rendered.mask,source.mask),maximum:.018,context:{fixture:'photographic-puppy-fit',translation:[0,1],assertion:error.message,components:featureComponentMetrics(source,rendered.mask)}}));throw error;
+  }
 });
 
 test('the candle reaches its better ordinary finalist without losing paper validity',async()=>{
