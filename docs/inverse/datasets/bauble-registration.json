@@ -1,5 +1,5 @@
 {
-  "status": "Full-shape diagnosis complete; independent reconstruction running; no production crop change",
+  "status": "Full-shape and independent reconstruction diagnosis complete; RGB extended-band candidate passes numerical checks but is unshipped pending broader geometry/photo QA",
   "photo": "scripts/inverse/fixtures/hard-photos/collage.png",
   "photoSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
   "case": "bauble (R5C4)",
@@ -289,27 +289,143 @@
     "interpretation": "Both RGB variants satisfy current outline-support checks. Ordinary-band tip remains outside the photo; both have weak upper-diameter colour contrast. Do not treat these support passes as validated overlap geometry or choose a crop using downstream solver error."
   },
   "reconstruction": {
-    "status": "running",
-    "state": "tmp/heart-learning/bauble-segmentation-2026-10-18/reconstruction/state.json",
-    "catalog": "tmp/heart-learning/bauble-segmentation-2026-10-18/reconstruction-catalog.json",
-    "scope": "All three frozen automatic diagnostic proposals, unchanged source, independent fresh processes and exported-curve replay. No inset, historical corner annotations or saved cutting curves.",
-    "ordinaryCompleted": {
-      "requestedSeconds": 180,
-      "solveAndValidationSeconds": 42.794398292,
-      "independentImageError": 0.025493362846093957,
-      "templateChecksPassed": true,
-      "featuresPassed": true,
-      "geometryPassed": true,
-      "paperStatus": "pass",
-      "fittingMaskSha256": "00b9ea58bb82c87c687e9ea7595f89ec9baadf597ca2663f9845f58093876ce2",
-      "observation": {
-        "method": "complete-bilinear-support",
-        "sha256": "20a1ac9fc487002dfba870e2613857cbc550363e6f46f5cde3a9645607d36dca",
+    "status": "complete",
+    "sourceFilesUnchanged": 1066,
+    "rows": [
+      {
+        "id": "bauble-ordinary",
+        "requestedSeconds": 180,
+        "solveAndValidationSeconds": 42.794398292,
+        "independentError": 0.025493362846093957,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "templateChecksPassed": true,
+        "featuresPassed": true,
+        "missingRegions": [],
+        "counts": [
+          6,
+          6
+        ],
         "observedPixels": 155413,
         "totalPixels": 160000,
-        "file": "observed.bin"
+        "fittingMaskSha256": "00b9ea58bb82c87c687e9ea7595f89ec9baadf597ca2663f9845f58093876ce2",
+        "quad": [
+          [
+            585.124945734859,
+            905.2805093237887
+          ],
+          [
+            680.4272015903496,
+            1020.2331968915895
+          ],
+          [
+            619.5033182277817,
+            1139.311696191154
+          ],
+          [
+            466.440010833398,
+            1022.8877039896092
+          ]
+        ],
+        "report": "tmp/heart-learning/bauble-segmentation-2026-10-18/reconstruction/bauble-ordinary/results.json",
+        "reportSha256": "b7811c2ac24154e4db7e483c04b1af648f38a4ed90b5cc1e69c4d3fe926d99d6"
       },
-      "qualification": "The crop remains outside the photo despite numerical reconstruction acceptance. Earlier4.375% error used a10-second request; this180-second run is not evidence of a same-budget solver improvement."
-    }
+      {
+        "id": "bauble-rgb-mixture",
+        "requestedSeconds": 180,
+        "solveAndValidationSeconds": 97.36097925,
+        "independentError": 0.010138012223224125,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "templateChecksPassed": false,
+        "featuresPassed": false,
+        "missingRegions": [
+          {
+            "value": 1,
+            "areaMm2": 5.125,
+            "centerMm": [
+              96.60060975609754,
+              60.40853658536585
+            ],
+            "weightMass": 82,
+            "retainedFraction": 0
+          }
+        ],
+        "counts": [
+          4,
+          4
+        ],
+        "observedPixels": 159696,
+        "totalPixels": 160000,
+        "fittingMaskSha256": "4fb4a03398a0ed0116d424329ee2c439a3ad05f2c054727dd7b5aa4654b5a356",
+        "quad": [
+          [
+            574.77365089074,
+            918.9310871466192
+          ],
+          [
+            675.5529402886888,
+            1014.7458803261463
+          ],
+          [
+            573.1573879789166,
+            1118.0140589098196
+          ],
+          [
+            479.21520650548524,
+            1015.7258013286349
+          ]
+        ],
+        "report": "tmp/heart-learning/bauble-segmentation-2026-10-18/reconstruction/bauble-rgb-mixture/results.json",
+        "reportSha256": "8311dd185d446dd046470462f193823d9ed4f3f5f8d1d45e6992aaaa8a496856"
+      },
+      {
+        "id": "bauble-rgb-mixture-extended",
+        "requestedSeconds": 180,
+        "solveAndValidationSeconds": 33.357340916,
+        "independentError": 0.01713125,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "templateChecksPassed": true,
+        "featuresPassed": true,
+        "missingRegions": [],
+        "counts": [
+          5,
+          5
+        ],
+        "observedPixels": 160000,
+        "totalPixels": 160000,
+        "fittingMaskSha256": "20b38c7b0945412e646ed91ce068562d8c4e562bc713e37d5ddc3afd8639801d",
+        "quad": [
+          [
+            576.2279518380459,
+            916.4004768153825
+          ],
+          [
+            679.498692949357,
+            1010.0551017911937
+          ],
+          [
+            583.4353004962968,
+            1109.0941720723395
+          ],
+          [
+            471.6370800040514,
+            1013.4546059502242
+          ]
+        ],
+        "report": "tmp/heart-learning/bauble-segmentation-2026-10-18/reconstruction/bauble-rgb-mixture-extended/results.json",
+        "reportSha256": "ca961d5d651c48f1c8b30b578673220809464f6b53abae72c19bfba2142ac0dd"
+      }
+    ],
+    "interpretation": "RGB with extended scan band yields an in-photo crop and a numerically accepted pair. The ordinary RGB proposal loses a small source region despite1.01%error and is rejected. The old crop has acceptable reconstruction error with the longer180-second request but remains outside the photo. No candidate is production-ready: known-geometry, photo-regression and actual browser checks remain.",
+    "qualifications": [
+      "Different crops have different classified targets; errors are not an equal-domain ranking or artwork ground truth.",
+      "All three use180-second requests. Earlier4.375% ordinary error was a10-second request.",
+      "No source pixels, manual corner annotations, inset, saved curves or acceptance thresholds changed."
+    ],
+    "summary": "tmp/heart-learning/bauble-segmentation-2026-10-18/reconstruction/summary.json",
+    "summarySha256": "657f4b27b4a5afdad0f94512f6f90fe1be7ae2727c9786b1fd88d6bf0bc46d1f",
+    "visualReview": "Extended-band crop and independent weave inspected: central bauble recovered, with uneven and disconnected border details remaining. Numerical acceptance does not establish original artwork or cutting paths."
   }
 }

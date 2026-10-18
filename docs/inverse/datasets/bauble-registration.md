@@ -44,11 +44,25 @@ Both variants have weak colour contrast across the upper overlap boundary
 Visual overlays were inspected; these numerical support passes do not establish
 the true overlap geometry.
 
-All three frozen proposals are now being replayed through classification,
-fresh template fitting and independent exported-curve rendering. Corners stay
-fixed, no inset is added, and each proposal is tested in a fresh process.
-Different crops produce different targets, so their errors cannot be treated
-as an equal-domain comparison or used to select the correct physical crop.
+All three frozen proposals were replayed through classification, fresh template
+fitting and independent exported-curve rendering. Corners stayed fixed, no inset
+was added, and each proposal used a fresh process with a 180-second request.
+
+| Proposal | Independent mask error | Solve and validation | Numerical result |
+|---|---:|---:|---|
+| Current classifier | 2.549% | 42.79 s | Geometry, paper and features pass; crop remains outside photo |
+| Learned RGB, ordinary band | 1.014% | 97.36 s | Rejected: loses a 5.125 mm² source region; crop also outside photo |
+| Learned RGB, extended band | 1.713% | 33.36 s | Geometry, paper and features pass; crop fully inside photo |
+
+The extended-band candidate uses five cuts per sheet. Its rectified photograph
+and independent weave were inspected: the central bauble is recovered, while
+uneven and disconnected border details remain. Known-geometry and broader photo
+tests are still required before adopting the crop hypothesis.
+
+Different crops produce different targets, so these errors are not an
+equal-domain comparison or a way to select the correct physical crop. The
+earlier current-classifier error of 4.375% used a ten-second request; its
+improvement here is not evidence of a same-budget solver improvement.
 
 Production crop code has not changed. Measurements, source hashes and experiment
 identifiers are in [bauble-registration.json](bauble-registration.json).
