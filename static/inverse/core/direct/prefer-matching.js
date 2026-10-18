@@ -93,7 +93,23 @@ export function preferMatchingSolution(solution,cfg,{deadline=Infinity,steps=200
     const c=refineCurves(p.graph,Float64Array.from(source.mask),source.resolution,p.phase,{...cfg,preferMatchingSheets:false},
       {input,identicalSheets:true,steps,rate:p.counts ? .04 : .012,deadline:end,selection:'mask',weights:sourceWeights(source)});
     const candidate=c.graph.solution(c.points,p.phase,input),attempt={proposal:p.name,...(p.counts?{counts:p.counts,phase:p.phase}:{}),refined:true,steps:c.steps};report.attempts.push(attempt);
-    if(inspect(candidate,attempt))return finish(candidate,'matched');
+    if(inspect(candidate,attempt)){
+      // The exploration slice is shared with alternatives that are no longer
+      // needed once this pair passes. Finish its remaining steps within the
+      // original matching deadline, retaining the checked pair as a fallback.
+      // Starting from that checkpoint also prevents an invalid last excursion
+      // from displacing it. This never increases the per-candidate step cap.
+      if(c.steps<steps&&performance.now()<deadline-160){
+        const graph=new CurveGraph(c.graph.nested(c.points),cfg.width);
+        const refined=refineCurves(graph,Float64Array.from(source.mask),source.resolution,p.phase,{...cfg,preferMatchingSheets:false},
+          {input,identicalSheets:true,steps:steps-c.steps,rate:.012,deadline,selection:'mask',weights:sourceWeights(source)});
+        const polished=refined.graph.solution(refined.points,p.phase,input),continuation={proposal:p.name,...(p.counts?{counts:p.counts,phase:p.phase}:{}),refined:true,continuation:true,steps:refined.steps};
+        report.attempts.push(continuation);
+        continuation.accepted=inspect(polished,continuation)&&continuation.imageError<attempt.imageError;
+        if(continuation.accepted)return finish(polished,'matched');
+      }
+      return finish(candidate,'matched');
+    }
   }
   return finish(solution,performance.now()>=deadline-80?'matching_budget_exhausted':'no_valid_matching_candidate');
 }
