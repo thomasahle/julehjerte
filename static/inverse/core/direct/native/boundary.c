@@ -4,6 +4,28 @@ static double clamp(double x, double lo, double hi) {
   return x < lo ? lo : x > hi ? hi : x;
 }
 
+/* Ordered-grid rasterization. Preserve the strict pixel-centre comparison,
+ * division order and transposed second-family sweep of gridParity(). */
+void grid_mask(const double *a, const double *b, int ca, int cb, int n,
+    int phase, unsigned char *out) {
+  for (int y=0; y<n; ++y) {
+    int cut=0;
+    for (int x=0; x<n; ++x) {
+      double position=((double)x+.5)/n;
+      while (cut<ca && position>a[y*ca+cut]) ++cut;
+      out[y*n+x]=(cut&1)^phase;
+    }
+  }
+  for (int y=0; y<n; ++y) {
+    int cut=0;
+    for (int x=0; x<n; ++x) {
+      double position=((double)x+.5)/n;
+      while (cut<cb && position>b[y*cb+cut]) ++cut;
+      out[x*n+y]^=cut&1;
+    }
+  }
+}
+
 /* One family update from initialize.js. Batch all rows across the JS/Wasm
  * boundary; retain the exact prefix sums, strict DP ties and infeasible-row
  * fallback of fitRuns(). Spline projection remains in JavaScript. */
