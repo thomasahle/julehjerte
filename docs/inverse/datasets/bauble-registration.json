@@ -1579,6 +1579,653 @@
       ],
       "foregroundDecision": "Neither relative-distance nor three-colour-mixture prototype is suitable for adoption. The triangle model removes red-edge expansion but loses most nearby pale-edge crossings on the lighter background (4/36).",
       "next": "Broad 89-input replay of contrast-reward removal, with original or unrefined lower lines for learned-background fields only. Diagnose biased pale-paper colour estimation before any foreground replacement. Preserve physical gates and require downstream reconstruction before adoption."
+    },
+    "broadContrastAblation": {
+      "status": "Complete; neither policy adopted",
+      "inputs": 89,
+      "unchangedRealCollageInstances": 40,
+      "path": "tmp/heart-learning/bauble-segmentation-2026-10-18/frame-edge-study/broad-score-results/results.json",
+      "sha256": "c94cb8de7fdf6dd0e793172b6d7f7d41a4e333af67fc38610dab0276e9369ad6",
+      "summary": [
+        {
+          "id": "score-only",
+          "changed": [
+            "broad-study/brown-gradient-jpeg-1.1",
+            "targeted-study/01-tinted-checker",
+            "targeted-study/02-tinted-framed-blob",
+            "targeted-study/07-lighter-background-checker",
+            "targeted-study/08-lighter-background-framed-blob",
+            "targeted-study/09-tinted-checker",
+            "targeted-study/10-tinted-framed-blob",
+            "targeted-study/11-lighter-background-checker",
+            "targeted-study/12-lighter-background-framed-blob",
+            "targeted-study/13-tinted-checker",
+            "targeted-study/14-tinted-framed-blob",
+            "shadow-frame-0.9",
+            "shadow-frame-1",
+            "shadow-frame-1.1"
+          ],
+          "lostSupportedInPhotoCrop": [],
+          "knownErrorIncreaseOverHalfPixel": [
+            "broad-study/brown-gradient-jpeg-1.1",
+            "targeted-study/01-tinted-checker",
+            "targeted-study/07-lighter-background-checker",
+            "targeted-study/09-tinted-checker",
+            "targeted-study/11-lighter-background-checker",
+            "targeted-study/13-tinted-checker",
+            "shadow-frame-0.9",
+            "shadow-frame-1",
+            "shadow-frame-1.1"
+          ],
+          "knownErrorDecreaseOverHalfPixel": [
+            "targeted-study/12-lighter-background-framed-blob"
+          ],
+          "clippedButSupportedInPhoto": [],
+          "supportedNegativeControl": [],
+          "knownCompleteSupportedMaximumError": 11.062679766456247
+        },
+        {
+          "id": "score-segmentation-lines",
+          "changed": [
+            "broad-study/brown-gradient-jpeg-1.1",
+            "targeted-study/01-tinted-checker",
+            "targeted-study/02-tinted-framed-blob",
+            "targeted-study/07-lighter-background-checker",
+            "targeted-study/08-lighter-background-framed-blob",
+            "targeted-study/09-tinted-checker",
+            "targeted-study/10-tinted-framed-blob",
+            "targeted-study/11-lighter-background-checker",
+            "targeted-study/12-lighter-background-framed-blob",
+            "targeted-study/13-tinted-checker",
+            "targeted-study/14-tinted-framed-blob",
+            "shadow-frame-0.9",
+            "shadow-frame-1",
+            "shadow-frame-1.1"
+          ],
+          "lostSupportedInPhotoCrop": [],
+          "knownErrorIncreaseOverHalfPixel": [
+            "broad-study/brown-gradient-jpeg-1.1",
+            "targeted-study/01-tinted-checker",
+            "targeted-study/09-tinted-checker",
+            "targeted-study/11-lighter-background-checker",
+            "targeted-study/13-tinted-checker",
+            "shadow-frame-1",
+            "shadow-frame-1.1"
+          ],
+          "knownErrorDecreaseOverHalfPixel": [
+            "targeted-study/02-tinted-framed-blob",
+            "targeted-study/08-lighter-background-framed-blob",
+            "targeted-study/10-tinted-framed-blob",
+            "targeted-study/12-lighter-background-framed-blob",
+            "targeted-study/14-tinted-framed-blob"
+          ],
+          "clippedButSupportedInPhoto": [],
+          "supportedNegativeControl": [],
+          "knownCompleteSupportedMaximumError": 6.598840874674189
+        }
+      ],
+      "decision": "Removing the reward alone degrades checkerboards and shadow controls. Removing photographic line refinement as well improves framed motifs but still degrades some checkers. No supported crop is lost and no negative/clipped control is promoted, but those gates alone are insufficient."
+    },
+    "robustMixtureStudy": {
+      "status": "Promising framed-crop correction; not a validated production replacement",
+      "colourDiagnosis": {
+        "path": "tmp/heart-learning/bauble-segmentation-2026-10-18/frame-edge-study/palette-foreground-diagnosis.json",
+        "sha256": "49884bacb20ef249c86e1f54e41771b2ff391d0402260ae2fbecf8c9e935ca6f",
+        "rows": [
+          {
+            "id": "02-tinted-framed-blob",
+            "model": "triangle-half-pool",
+            "colors": [
+              [
+                0.7045210194531355,
+                0.11810341493599351,
+                0.17934684722014663
+              ],
+              [
+                0.9047049552682104,
+                0.8204106985584193,
+                0.8190812589811709
+              ]
+            ],
+            "edges": [
+              {
+                "lobe": "top-pale",
+                "medianThresholdDisplacementPx": 0.11967396879067164,
+                "crossingsFound": 36
+              },
+              {
+                "lobe": "left-red",
+                "medianThresholdDisplacementPx": -0.008543636942772088,
+                "crossingsFound": 36
+              }
+            ]
+          },
+          {
+            "id": "02-tinted-framed-blob",
+            "model": "triangle-half-pool-median",
+            "colors": [
+              [
+                0.7294117647058823,
+                0.08235294117647059,
+                0.14901960784313725
+              ],
+              [
+                0.8980392156862745,
+                0.8352941176470589,
+                0.8352941176470589
+              ]
+            ],
+            "edges": [
+              {
+                "lobe": "top-pale",
+                "medianThresholdDisplacementPx": -0.08505799749750162,
+                "crossingsFound": 36
+              },
+              {
+                "lobe": "left-red",
+                "medianThresholdDisplacementPx": 0.26636554465202045,
+                "crossingsFound": 36
+              }
+            ]
+          },
+          {
+            "id": "02-tinted-framed-blob",
+            "model": "triangle-known-colours-diagnostic-only",
+            "colors": [
+              [
+                0.7294117647058823,
+                0.08235294117647059,
+                0.15294117647058825
+              ],
+              [
+                0.8980392156862745,
+                0.8352941176470589,
+                0.8352941176470589
+              ]
+            ],
+            "edges": [
+              {
+                "lobe": "top-pale",
+                "medianThresholdDisplacementPx": -0.08505799749750162,
+                "crossingsFound": 36
+              },
+              {
+                "lobe": "left-red",
+                "medianThresholdDisplacementPx": 0.26050309561358154,
+                "crossingsFound": 36
+              }
+            ]
+          },
+          {
+            "id": "08-lighter-background-framed-blob",
+            "model": "triangle-half-pool",
+            "colors": [
+              [
+                0.7059232832766287,
+                0.11875881523272148,
+                0.18026272850465616
+              ],
+              [
+                0.9078316179601315,
+                0.8198883129241766,
+                0.8190599253750327
+              ]
+            ],
+            "edges": [
+              {
+                "lobe": "top-pale",
+                "medianThresholdDisplacementPx": 0.3270181210182309,
+                "crossingsFound": 36
+              },
+              {
+                "lobe": "left-red",
+                "medianThresholdDisplacementPx": -0.016414010062464988,
+                "crossingsFound": 36
+              }
+            ]
+          },
+          {
+            "id": "08-lighter-background-framed-blob",
+            "model": "triangle-half-pool-median",
+            "colors": [
+              [
+                0.7294117647058823,
+                0.08235294117647059,
+                0.14901960784313725
+              ],
+              [
+                0.8980392156862745,
+                0.8352941176470589,
+                0.8352941176470589
+              ]
+            ],
+            "edges": [
+              {
+                "lobe": "top-pale",
+                "medianThresholdDisplacementPx": -0.09968099575364493,
+                "crossingsFound": 36
+              },
+              {
+                "lobe": "left-red",
+                "medianThresholdDisplacementPx": 0.25171385091132686,
+                "crossingsFound": 36
+              }
+            ]
+          },
+          {
+            "id": "08-lighter-background-framed-blob",
+            "model": "triangle-known-colours-diagnostic-only",
+            "colors": [
+              [
+                0.7294117647058823,
+                0.08235294117647059,
+                0.15294117647058825
+              ],
+              [
+                0.8980392156862745,
+                0.8352941176470589,
+                0.8352941176470589
+              ]
+            ],
+            "edges": [
+              {
+                "lobe": "top-pale",
+                "medianThresholdDisplacementPx": -0.09968099575364493,
+                "crossingsFound": 36
+              },
+              {
+                "lobe": "left-red",
+                "medianThresholdDisplacementPx": 0.24383611836793462,
+                "crossingsFound": 36
+              }
+            ]
+          },
+          {
+            "id": "10-tinted-framed-blob",
+            "model": "triangle-half-pool",
+            "colors": [
+              [
+                0.7055436633653621,
+                0.11602210995994665,
+                0.1770956417501443
+              ],
+              [
+                0.9042046035806174,
+                0.8217033248082279,
+                0.8204816709292863
+              ]
+            ],
+            "edges": [
+              {
+                "lobe": "top-pale",
+                "medianThresholdDisplacementPx": 0.11341463133075058,
+                "crossingsFound": 36
+              },
+              {
+                "lobe": "left-red",
+                "medianThresholdDisplacementPx": -0.04345800011059153,
+                "crossingsFound": 36
+              }
+            ]
+          },
+          {
+            "id": "10-tinted-framed-blob",
+            "model": "triangle-half-pool-median",
+            "colors": [
+              [
+                0.7294117647058823,
+                0.08235294117647059,
+                0.14901960784313725
+              ],
+              [
+                0.8980392156862745,
+                0.8352941176470589,
+                0.8352941176470589
+              ]
+            ],
+            "edges": [
+              {
+                "lobe": "top-pale",
+                "medianThresholdDisplacementPx": -0.1099875082234523,
+                "crossingsFound": 36
+              },
+              {
+                "lobe": "left-red",
+                "medianThresholdDisplacementPx": 0.2385109123971256,
+                "crossingsFound": 36
+              }
+            ]
+          },
+          {
+            "id": "10-tinted-framed-blob",
+            "model": "triangle-known-colours-diagnostic-only",
+            "colors": [
+              [
+                0.7294117647058823,
+                0.08235294117647059,
+                0.15294117647058825
+              ],
+              [
+                0.8980392156862745,
+                0.8352941176470589,
+                0.8352941176470589
+              ]
+            ],
+            "edges": [
+              {
+                "lobe": "top-pale",
+                "medianThresholdDisplacementPx": -0.1099875082234523,
+                "crossingsFound": 36
+              },
+              {
+                "lobe": "left-red",
+                "medianThresholdDisplacementPx": 0.22746049322785744,
+                "crossingsFound": 36
+              }
+            ]
+          },
+          {
+            "id": "12-lighter-background-framed-blob",
+            "model": "triangle-half-pool",
+            "colors": [
+              [
+                0.7068102198454806,
+                0.11722780748663028,
+                0.17848033273915054
+              ],
+              [
+                0.9069315806565738,
+                0.8211967782214736,
+                0.8204000237837535
+              ]
+            ],
+            "edges": [
+              {
+                "lobe": "top-pale",
+                "medianThresholdDisplacementPx": 0.12724517999246115,
+                "crossingsFound": 36
+              },
+              {
+                "lobe": "left-red",
+                "medianThresholdDisplacementPx": -0.013975515957198474,
+                "crossingsFound": 36
+              }
+            ]
+          },
+          {
+            "id": "12-lighter-background-framed-blob",
+            "model": "triangle-half-pool-median",
+            "colors": [
+              [
+                0.7294117647058823,
+                0.08235294117647059,
+                0.14901960784313725
+              ],
+              [
+                0.8980392156862745,
+                0.8352941176470589,
+                0.8352941176470589
+              ]
+            ],
+            "edges": [
+              {
+                "lobe": "top-pale",
+                "medianThresholdDisplacementPx": -0.2289736209625302,
+                "crossingsFound": 36
+              },
+              {
+                "lobe": "left-red",
+                "medianThresholdDisplacementPx": 0.2447616058276133,
+                "crossingsFound": 36
+              }
+            ]
+          },
+          {
+            "id": "12-lighter-background-framed-blob",
+            "model": "triangle-known-colours-diagnostic-only",
+            "colors": [
+              [
+                0.7294117647058823,
+                0.08235294117647059,
+                0.15294117647058825
+              ],
+              [
+                0.8980392156862745,
+                0.8352941176470589,
+                0.8352941176470589
+              ]
+            ],
+            "edges": [
+              {
+                "lobe": "top-pale",
+                "medianThresholdDisplacementPx": -0.2289736209625302,
+                "crossingsFound": 36
+              },
+              {
+                "lobe": "left-red",
+                "medianThresholdDisplacementPx": 0.2415347139579538,
+                "crossingsFound": 36
+              }
+            ]
+          }
+        ],
+        "conclusion": "Relaxing the pool from p>0.95 to p>0.5 restores all 36 pale crossings on each lighter-background control. Median cluster centres further recover the pale recipe colour in these controls; using known colours only as a separately labelled oracle gives similar edges. This isolates colour-selection/averaging bias; the model is empirical RGB, not physical calibration."
+      },
+      "cropReplay": {
+        "path": "tmp/heart-learning/bauble-segmentation-2026-10-18/frame-edge-study/mixture-crop-results/results.json",
+        "sha256": "9756fd9d2c833a4c894c651c5c6a56890032a90275e4b1561a7aed35e0fdc654",
+        "inputs": 20,
+        "variants": 4,
+        "summary": [
+          {
+            "id": "mixture-only",
+            "changed": [
+              "targeted-study/01-tinted-checker",
+              "targeted-study/02-tinted-framed-blob",
+              "targeted-study/05-neutral-checker",
+              "targeted-study/07-lighter-background-checker",
+              "targeted-study/08-lighter-background-framed-blob",
+              "targeted-study/09-tinted-checker",
+              "targeted-study/10-tinted-framed-blob",
+              "targeted-study/11-lighter-background-checker",
+              "targeted-study/12-lighter-background-framed-blob",
+              "targeted-study/13-tinted-checker",
+              "targeted-study/14-tinted-framed-blob",
+              "shadow-frame-0.9",
+              "shadow-frame-1",
+              "shadow-frame-1.1"
+            ],
+            "lostSupportedInPhotoCrop": [],
+            "knownErrorIncreaseOverHalfPixel": [
+              "targeted-study/01-tinted-checker",
+              "targeted-study/14-tinted-framed-blob"
+            ],
+            "knownErrorDecreaseOverHalfPixel": [
+              "targeted-study/10-tinted-framed-blob",
+              "targeted-study/12-lighter-background-framed-blob",
+              "targeted-study/13-tinted-checker"
+            ],
+            "clippedButSupportedInPhoto": [],
+            "supportedNegativeControl": [],
+            "knownCompleteSupportedMaximumError": 8.899931113362516
+          },
+          {
+            "id": "mixture-no-contrast",
+            "changed": [
+              "targeted-study/01-tinted-checker",
+              "targeted-study/02-tinted-framed-blob",
+              "targeted-study/05-neutral-checker",
+              "targeted-study/07-lighter-background-checker",
+              "targeted-study/08-lighter-background-framed-blob",
+              "targeted-study/09-tinted-checker",
+              "targeted-study/10-tinted-framed-blob",
+              "targeted-study/11-lighter-background-checker",
+              "targeted-study/12-lighter-background-framed-blob",
+              "targeted-study/13-tinted-checker",
+              "targeted-study/14-tinted-framed-blob",
+              "shadow-frame-0.9",
+              "shadow-frame-1",
+              "shadow-frame-1.1"
+            ],
+            "lostSupportedInPhotoCrop": [],
+            "knownErrorIncreaseOverHalfPixel": [
+              "targeted-study/01-tinted-checker",
+              "targeted-study/09-tinted-checker",
+              "targeted-study/11-lighter-background-checker",
+              "targeted-study/14-tinted-framed-blob",
+              "shadow-frame-0.9",
+              "shadow-frame-1",
+              "shadow-frame-1.1"
+            ],
+            "knownErrorDecreaseOverHalfPixel": [
+              "targeted-study/10-tinted-framed-blob",
+              "targeted-study/12-lighter-background-framed-blob",
+              "targeted-study/13-tinted-checker"
+            ],
+            "clippedButSupportedInPhoto": [],
+            "supportedNegativeControl": [],
+            "knownCompleteSupportedMaximumError": 8.899931113362516
+          },
+          {
+            "id": "mixture-segmentation-lines",
+            "changed": [
+              "targeted-study/01-tinted-checker",
+              "targeted-study/02-tinted-framed-blob",
+              "targeted-study/05-neutral-checker",
+              "targeted-study/07-lighter-background-checker",
+              "targeted-study/08-lighter-background-framed-blob",
+              "targeted-study/09-tinted-checker",
+              "targeted-study/10-tinted-framed-blob",
+              "targeted-study/11-lighter-background-checker",
+              "targeted-study/12-lighter-background-framed-blob",
+              "targeted-study/13-tinted-checker",
+              "targeted-study/14-tinted-framed-blob",
+              "shadow-frame-0.9",
+              "shadow-frame-1",
+              "shadow-frame-1.1"
+            ],
+            "lostSupportedInPhotoCrop": [],
+            "knownErrorIncreaseOverHalfPixel": [
+              "targeted-study/01-tinted-checker"
+            ],
+            "knownErrorDecreaseOverHalfPixel": [
+              "targeted-study/02-tinted-framed-blob",
+              "targeted-study/08-lighter-background-framed-blob",
+              "targeted-study/10-tinted-framed-blob",
+              "targeted-study/12-lighter-background-framed-blob",
+              "targeted-study/14-tinted-framed-blob",
+              "shadow-frame-0.9"
+            ],
+            "clippedButSupportedInPhoto": [],
+            "supportedNegativeControl": [],
+            "knownCompleteSupportedMaximumError": 5.115724248024603
+          },
+          {
+            "id": "mixture-no-contrast-segmentation-lines",
+            "changed": [
+              "targeted-study/01-tinted-checker",
+              "targeted-study/02-tinted-framed-blob",
+              "targeted-study/05-neutral-checker",
+              "targeted-study/07-lighter-background-checker",
+              "targeted-study/08-lighter-background-framed-blob",
+              "targeted-study/09-tinted-checker",
+              "targeted-study/10-tinted-framed-blob",
+              "targeted-study/11-lighter-background-checker",
+              "targeted-study/12-lighter-background-framed-blob",
+              "targeted-study/13-tinted-checker",
+              "targeted-study/14-tinted-framed-blob",
+              "shadow-frame-0.9",
+              "shadow-frame-1",
+              "shadow-frame-1.1"
+            ],
+            "lostSupportedInPhotoCrop": [],
+            "knownErrorIncreaseOverHalfPixel": [
+              "targeted-study/09-tinted-checker",
+              "targeted-study/11-lighter-background-checker",
+              "shadow-frame-0.9"
+            ],
+            "knownErrorDecreaseOverHalfPixel": [
+              "targeted-study/02-tinted-framed-blob",
+              "targeted-study/05-neutral-checker",
+              "targeted-study/08-lighter-background-framed-blob",
+              "targeted-study/10-tinted-framed-blob",
+              "targeted-study/12-lighter-background-framed-blob",
+              "targeted-study/14-tinted-framed-blob"
+            ],
+            "clippedButSupportedInPhoto": [],
+            "supportedNegativeControl": [],
+            "knownCompleteSupportedMaximumError": 4.105089366802329
+          }
+        ],
+        "figure": "tmp/heart-learning/bauble-segmentation-2026-10-18/frame-edge-study/mixture-crop-results/corner-comparison.png",
+        "visualInspection": "Inspected baseline versus combined correction on two ordinary framed controls and two deeper checkerboards. Frame boundaries substantially improve; the deeper checkerboard left corners shift outward."
+      },
+      "remainingObjectiveDiagnosis": {
+        "path": "tmp/heart-learning/bauble-segmentation-2026-10-18/frame-edge-study/mixture-objective-results/results.json",
+        "sha256": "ef7024873991c7978f6fbd72eede55165854b3ef804a088aa08953e28bc4a008",
+        "evaluations": 8,
+        "instrumentedCropsMatchPreviousReplayExactly": true,
+        "rows": [
+          {
+            "id": "01-tinted-checker",
+            "selectedScore": 0.5430818828442787,
+            "selectedErrorPx": 1.1940629806093952,
+            "nearestKnownScore": 0.6557251336034366,
+            "exactKnownScore": 0.7222408466159908
+          },
+          {
+            "id": "02-tinted-framed-blob",
+            "selectedScore": 0.40095848282790236,
+            "selectedErrorPx": 1.0290352647930816,
+            "nearestKnownScore": 0.5809195843775837,
+            "exactKnownScore": 0.5226641118822368
+          },
+          {
+            "id": "07-lighter-background-checker",
+            "selectedScore": 0.5288416697170402,
+            "selectedErrorPx": 1.874331705017095,
+            "nearestKnownScore": 0.7008844681270349,
+            "exactKnownScore": 0.8158379518231509
+          },
+          {
+            "id": "08-lighter-background-framed-blob",
+            "selectedScore": 0.4468503261961896,
+            "selectedErrorPx": 1.601102994517887,
+            "nearestKnownScore": 0.6124412482588776,
+            "exactKnownScore": 0.5543221291124272
+          },
+          {
+            "id": "09-tinted-checker",
+            "selectedScore": 0.47837633509864225,
+            "selectedErrorPx": 3.888985861987054,
+            "nearestKnownScore": 0.6404440169229799,
+            "exactKnownScore": 0.6997414263352626
+          },
+          {
+            "id": "10-tinted-framed-blob",
+            "selectedScore": 0.3624287045257545,
+            "selectedErrorPx": 1.7908742267839268,
+            "nearestKnownScore": 0.6035679514893953,
+            "exactKnownScore": 0.48023789856454296
+          },
+          {
+            "id": "11-lighter-background-checker",
+            "selectedScore": 0.46748640128116437,
+            "selectedErrorPx": 3.3295133488716,
+            "nearestKnownScore": 0.7719548098801186,
+            "exactKnownScore": 0.7551375954499862
+          },
+          {
+            "id": "12-lighter-background-framed-blob",
+            "selectedScore": 0.4149228309229336,
+            "selectedErrorPx": 1.3405292114314666,
+            "nearestKnownScore": 0.6665972286339952,
+            "exactKnownScore": 0.5762697190997177
+          }
+        ],
+        "conclusion": "Every selected shifted fit scores lower than both known-geometry probes. These probes do not certify a global optimum; they show that simply finding the known parameters would not make the current selector choose them."
+      },
+      "next": "Test oriented half-paper-fraction crossings for lower-edge refinement before changing optimizer search. No template reconstruction has yet been run for these candidates."
     }
   },
   "fitterSensitivity": {

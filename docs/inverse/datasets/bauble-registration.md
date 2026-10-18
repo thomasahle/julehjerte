@@ -438,3 +438,48 @@ A broad replay now removes only the diameter-contrast reward for the learned
 background model, comparing original and unrefined lower lines on the same
 **89 inputs**. These trials remain outside production; no new template-fitting
 or overall-pipeline improvement is claimed yet.
+
+
+The **89-input contrast ablation is complete**. Both variants leave all 40 real
+collage crops exactly unchanged and lose no supported in-photo crop. No clipped
+or negative control is promoted. Nevertheless, removing the reward alone makes
+nine known cases worse by over half a pixel; also disabling photographic line
+refinement makes seven worse. Some deeper checkerboards move from approximately
+1.4–1.6 px error to 6.0–6.6 px. Neither variant is adopted.
+
+The foreground follow-up identifies **biased paper-colour estimation**. Expanding
+the colour sample pool from paper probability above 0.95 to above 0.5 restores
+all 36 pale-edge crossings in each lighter-background control. Using cluster
+medians then recovers the pale recipe colour from the pixels and places both
+paper edges within **0.27 px median normal displacement** on all four controls.
+A separately labelled diagnostic using the known paper colours gives similar
+results; those oracle colours never enter automatic fitting or selection.
+
+The complete cropper was then replayed on **20 controls × four fixed variants**:
+robust colour centres and a three-colour foreground mixture, with and without
+the contrast reward and photographic line refinement. The combined correction
+substantially improves all four original complete framed failures:
+
+| Control | Baseline maximum corner error | Combined correction |
+|---|---:|---:|
+| Ordinary, tinted | 8.81 px | 1.03 px |
+| Ordinary, lighter background | 8.94 px | 1.60 px |
+| Deeper, tinted | 11.06 px | 1.79 px |
+| Deeper, lighter background | 11.83 px | 1.34 px |
+
+**The combined correction is still not ready for adoption.** The deeper tinted
+checkerboard worsens from 1.36 to 3.89 px; the lighter one from 1.61 to 3.33 px.
+Some shadow controls worsen too. Inspected overlays show the improved frame and
+the shifted left corners of the deeper checkerboards. No new template fits have
+been run, and the painted framed controls are not claimed to have valid cutting
+paths.
+
+An eight-evaluation post-fit diagnosis reproduces the combined correction's
+crops exactly. In every case the selected fit scores better than both the known
+shape and its nearest feasible version under the detected lower lines. For the
+deeper tinted checker, scores are **0.478 selected**, **0.640 nearest known**, and
+**0.700 exact known**. This does not prove the current fit globally optimal; it
+shows that merely finding the known parameters would not make the current score
+select them. The next fixed experiment refines lower lines against oriented
+half-paper-fraction crossings, avoiding both internal colour steps and rounded
+binary-mask edges. Production and the validated preview remain unchanged.
