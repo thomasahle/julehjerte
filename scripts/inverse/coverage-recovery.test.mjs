@@ -17,6 +17,7 @@ import {fitGrid} from '../../static/inverse/core/direct/grid.js';
 import {resizeObjective} from '../../static/inverse/core/direct/image-objective.js';
 import {resize} from '../../static/inverse/core/direct/math.js';
 import {renderExportedWeave} from './export-renderer.mjs';
+import {captureFitFailure} from './diagnostics/fit-failure.mjs';
 
 const fixture=JSON.parse(await fs.readFile(new URL('./fixtures/coverage-fits.json',import.meta.url)));
 const hash=b=>createHash('sha256').update(b).digest('hex');
@@ -120,12 +121,19 @@ for(const id of ['photo-bird','hunodan-hjfig-05'])test(`one unobserved corner pr
   assert.deepEqual(source,before);
 });
 
-test('an invalid feature proposal cannot consume the partial-photo search without a legal result',async()=>{
+test('an invalid feature proposal cannot consume the partial-photo search without a legal result',async t=>{
   const {entry,input}=image('photo-bauble'),prepared=prepare(input,entry.settings),source=prepared.target.sourceImage,before=structuredClone(source);
   const answer=await design(prepared.target,entry.settings);
-  assert.equal(answer.report.validation.passed,true);assert.equal(answer.report.manufacturing.status,'pass');
-  const exported=await renderExportedWeave(answer.files['cut_geometry.json'],entry.resolution),error=referenceError(source,exported.mask);
-  assert.ok(error.mismatchFraction<.05,`Retain a useful legal approximation, not an arbitrary valid grid: ${error.mismatchFraction}`);
-  if(error.mismatchFraction>answer.report.settings.maxImageError)assert.equal(answer.report.templateChecksPassed,false,'Legality does not waive the unchanged image-quality gate.');
-  assert.deepEqual(source,before);
+  let exportedError=null;
+  try{
+    assert.equal(answer.report.validation.passed,true);assert.equal(answer.report.manufacturing.status,'pass');
+    const exported=await renderExportedWeave(answer.files['cut_geometry.json'],entry.resolution),error=referenceError(source,exported.mask);
+    exportedError=error.mismatchFraction;
+    assert.ok(error.mismatchFraction<.05,`Retain a useful legal approximation, not an arbitrary valid grid: ${error.mismatchFraction}`);
+    if(error.mismatchFraction>answer.report.settings.maxImageError)assert.equal(answer.report.templateChecksPassed,false,'Legality does not waive the unchanged image-quality gate.');
+    assert.deepEqual(source,before);
+  }catch(error){
+    t.diagnostic(await captureFitFailure({error:exportedError,maximum:.05,answer,source,resolution:entry.resolution,context:{fixture:entry.id,failedAssertion:error.message}}));
+    throw error;
+  }
 });

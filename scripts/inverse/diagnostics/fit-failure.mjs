@@ -4,8 +4,8 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import {createHash} from 'node:crypto';
 
-export async function assertFitError({error,maximum,answer,source,resolution,context={},output='tmp/inverse-test-failures'}){
-  if(error<maximum)return;
+/** Called after an assertion fails; never add capture work to fitting budgets. */
+export async function captureFitFailure({error=null,maximum=null,answer,source,resolution=source.resolution,context={},output='tmp/inverse-test-failures'}){
   let diagnostic;
   try{
     await fs.mkdir(output,{recursive:true});
@@ -29,5 +29,12 @@ export async function assertFitError({error,maximum,answer,source,resolution,con
     // A failed diagnostic write must not hide or replace the fidelity failure.
     diagnostic=`Could not save the failed fit: ${failure.message}`;
   }
+  return diagnostic;
+}
+
+export async function assertFitError(options){
+  const {error,maximum,resolution}=options;
+  if(error<maximum)return;
+  const diagnostic=await captureFitFailure(options);
   assert.ok(error<maximum,`Independent ${resolution}-pixel disagreement is ${error}; required < ${maximum}. ${diagnostic}`);
 }
