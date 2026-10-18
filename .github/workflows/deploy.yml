@@ -6,7 +6,7 @@ on:
       mode:
         type: choice
         default: full
-        options: [full, bicycle, comparison, maple, profile, shared-runtime]
+        options: [full, bicycle, comparison, maple, polish, profile, shared-runtime]
         description: Full diagnostics or focused normal-budget regressions
 permissions:
   contents: read
@@ -43,6 +43,9 @@ jobs:
       - name: Replay maple comparison regression
         if: inputs.mode == 'maple'
         run: node --test scripts/inverse/comparison-search.test.mjs
+      - name: Replay bounded photographic cleanup regressions
+        if: inputs.mode == 'polish'
+        run: node --test --test-concurrency=1 scripts/inverse/deferred-routing.test.mjs scripts/inverse/late-cleanup.test.mjs scripts/inverse/clamped-features.test.mjs
       - name: Profile the normal-budget star fit
         if: inputs.mode == 'profile'
         run: |
