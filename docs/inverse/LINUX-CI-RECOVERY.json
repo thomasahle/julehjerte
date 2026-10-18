@@ -100,7 +100,7 @@
       "errors": 0,
       "existingWarnings": 4
     },
-    "productionBuild": "passed",
+    "productionBuild": "passed again after repair-budget changes",
     "existingCleanupWindow": {
       "passed": 1,
       "failed": 0,
@@ -114,9 +114,12 @@
     "Exact hashes of PNG compression bytes and floating-point geometry were platform-sensitive; compare decoded pixels and rounded numeric geometry while retaining exact topology.",
     "A test froze performance.now(), which is also the HiGHS Emscripten clock. Native time limits never expired and mock call recording exhausted memory. The test now advances real time during native solving.",
     "Many photographic quality regressions combine a tight wall-clock budget with a particular fitted result. Slower or differently warmed runtimes reach different checkpoints. Extra-time runs diagnose this; they do not establish normal-budget success.",
-    "Short requests spent the partial-feature winner's refinement reserve on speculative feature initialization and an alternate clearance comparison. Commit 3c8480b2 gives its selected grid the first refinement window."
+    "Short requests spent the partial-feature winner's refinement reserve on speculative feature initialization and an alternate clearance comparison. Commit 3c8480b2 gives its selected grid the first refinement window.",
+    "A fast-found grid in a long request could lose its full-resolution polish to the initial ten-second search deadline, despite ample unused caller time.",
+    "A late feature start reserved 450 ms for a polish that could no longer start after assessment. Lending that time to its unfinished refinement improved the source fit without extending the ten-second request.",
+    "The Viking continuation repeatedly gave the whole 400 ms repair allowance to hidden-only controls, starving the existing general-control fallback. A local split-budget experiment reduced independent error from 0.01941875 to 0.0186625 without extending the continuation."
   ],
-  "remaining": "The full normal-budget Linux suite is not green. Continue root-cause work on the recorded failures before merging CI recovery fixes or claiming deployment readiness.",
+  "remaining": "Main remains red. Three cold-process Linux shards and the focused cleanup follow-up are still running. The completed cold shard passes the bicycle but fails a late clearance fit; its failure capture is being added. No full-suite or release pass is claimed.",
   "branchSafety": "codex/ci-inverse-diagnostics replaces the Pages workflow with manual diagnostics. Never merge that entire branch to main. Transfer only verified fixes from codex/solver-initialization.",
   "limitations": [
     "No fresh 22-design Hunodan speed benchmark in this CI recovery pass.",
@@ -128,5 +131,109 @@
     "The maple simpler-layout comparison currently depends on whether the winning candidate required finer paper verification. Linux retained a valid ordinary-lattice four-cut candidate and never compared the competitive three-cut start.",
     "Some tests insist on a particular internal search route even when an alternative can pass physical and image checks. Change such assertions only after checking the exported outcome.",
     "Late-cleanup continuation may now use an existing cleanup remainder. A faster run can legitimately continue without extending its deadline; tests must check the actual budget instead of requiring an absent continuation."
-  ]
+  ],
+  "subsequentFixes": [
+    {
+      "commits": [
+        "b9ad33cc",
+        "da492c9b"
+      ],
+      "change": "Compare competitive simpler layouts independently of the paper lattice that certified the first candidate, including candidates already in the fine shortlist. Reuse their preparation and bound the additional comparison window.",
+      "verification": {
+        "url": "https://github.com/thomasahle/julehjerte/actions/runs/39163029359",
+        "clockRate": 1,
+        "passed": 3,
+        "failed": 0
+      }
+    },
+    {
+      "commit": "9f2ba811",
+      "change": "Record actual continuation deadline extensions and enforce the full caller export reserve. Report an empty simpler-layout lookup when no candidate is eligible.",
+      "verification": {
+        "localFresh25SecondFixture": "passed with unchanged image limit",
+        "linuxComparisonRun": "https://github.com/thomasahle/julehjerte/actions/runs/39163891541",
+        "linuxStatus": "success",
+        "linuxPassed": 8,
+        "linuxFailed": 0,
+        "clockRate": 1
+      }
+    },
+    {
+      "commit": "eb167d80",
+      "change": "Give a fast-found grid in a long request the same bounded full-resolution polishing window as a late grid. Short requests retain their deadline.",
+      "verification": {
+        "localPassed": 13,
+        "localFailed": 0,
+        "linuxRun": "https://github.com/thomasahle/julehjerte/actions/runs/39165024345",
+        "linuxPassed": 12,
+        "linuxFailed": 1,
+        "remainingFailure": "JPEG star continuation stopped at 405 of 480 steps while still improving; independent disagreement missed its existing limit by one pixel."
+      }
+    },
+    {
+      "commit": "6871a3bb",
+      "change": "Lend an unusably short polishing reserve to a late feature candidate that has no accepted fit yet. Keep the enclosing export reserve.",
+      "verification": {
+        "localPassed": 20,
+        "localFailed": 0,
+        "scope": "Late feature initialization and four crop translations at normal and 1.5x stress clocks. Existing image, feature, geometry and runtime limits retained.",
+        "lateOriginal3200ms": {
+          "beforeIndependentError": 0.029275,
+          "afterIndependentError": 0.0270375
+        }
+      }
+    },
+    {
+      "commit": "57b53b68",
+      "change": "Use the actual caller allowance for an improving bounded continuation whether the first valid grid arrived early or late. Record rejected continuation checkpoints.",
+      "verification": {
+        "localStarCasesPassed": 3,
+        "localStarCasesFailed": 0,
+        "completedContinuationSteps": 480,
+        "remainingFailure": "A separate Viking continuation repeatedly exhausted hidden-only return repair before the general repair could complete."
+      }
+    },
+    {
+      "commit": "8f918e3c",
+      "change": "Reserve half of each timed 400 ms short-return repair window for the existing general-control fallback. Untimed fixed-work projection and all acceptance checks retain their original rules.",
+      "verification": {
+        "localPassed": 17,
+        "localFailed": 0,
+        "scope": "Final geometry, hidden-return projection, preserved matching/symmetry, expired deadlines and both Viking request lengths.",
+        "viking180IndependentError": 0.0186625,
+        "viking25IndependentError": 0.0186,
+        "linuxRun": "https://github.com/thomasahle/julehjerte/actions/runs/39166109936",
+        "linuxStatus": "running at record time"
+      }
+    }
+  ],
+  "runtimeDiagnostics": {
+    "profileRun": "https://github.com/thomasahle/julehjerte/actions/runs/39163211489",
+    "profileScope": "One cold normal-budget star fit. Profiling can affect timings; use this to identify CPU work, not to certify speed.",
+    "profileTopSelfTime": {
+      "javascriptBoundaryGradientFraction": 0.104,
+      "gridGradientLoopsFraction": 0.106,
+      "garbageCollectionFraction": 0.058
+    },
+    "rejectedPrototype": "Reusing internal grid-loss scratch arrays matched 128 reference evaluations exactly but saved only about 2% of that calculation locally. The prototype is not included.",
+    "sharedRuntimeRun": "https://github.com/thomasahle/julehjerte/actions/runs/39163889462",
+    "sharedRuntimeScope": "Diagnostic only: all inverse tests, unchanged assertions and real-time budgets, Node test isolation disabled to reuse the runtime as successive application solves do. No release-test configuration has been changed.",
+    "sharedRuntimeStatus": "Still running when checked at 2026-10-18 21:01 UTC; no pass claimed."
+  },
+  "coldProcessFollowup": {
+    "url": "https://github.com/thomasahle/julehjerte/actions/runs/39165720603",
+    "commit": "0a604989",
+    "status": "running at record time",
+    "scope": "All inverse tests in four isolated-process shards, without diagnostic clock instrumentation; no assertion or requested time-budget changes.",
+    "completedShards": [
+      {
+        "shard": 3,
+        "passed": 288,
+        "failed": 1,
+        "failures": [
+          "late clearance comparison can repair its first usable layout before polishing"
+        ]
+      }
+    ]
+  }
 }
