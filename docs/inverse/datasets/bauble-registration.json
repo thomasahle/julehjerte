@@ -1,5 +1,5 @@
 {
-  "status": "diagnostic only; full shape and end-to-end reconstruction not yet run",
+  "status": "Full-shape diagnosis complete; independent reconstruction running; no production crop change",
   "photo": "scripts/inverse/fixtures/hard-photos/collage.png",
   "photoSha256": "1aa258b2d15f1f4a6402fb6b9cb2d61e87cefe7ec5a8c5a08d80e0b99edcce36",
   "case": "bauble (R5C4)",
@@ -168,5 +168,148 @@
     "Approximate historical corner annotations were not used for fitting or candidate scores.",
     "Frozen malformed-mask solver fixture is unchanged.",
     "The shape probe refuses to start while the current full inverse suite is live or failed."
-  ]
+  ],
+  "fullShapeProbe": {
+    "path": "tmp/heart-learning/bauble-segmentation-2026-10-18/crop-study/results.json",
+    "sha256": "4db7ea3dc53789c04fde4ccd043cad75951d521e04ff6a1dceda8e81492d55b7",
+    "sourcesUnchanged": true,
+    "rows": [
+      {
+        "id": "ordinary",
+        "supportedByCurrentChecks": false,
+        "status": "needs_review",
+        "quad": [
+          [
+            585.124945734859,
+            905.2805093237887
+          ],
+          [
+            680.4272015903496,
+            1020.2331968915895
+          ],
+          [
+            619.5033182277817,
+            1139.311696191154
+          ],
+          [
+            466.440010833398,
+            1022.8877039896092
+          ]
+        ],
+        "withinPhoto": false,
+        "score": 6.636209868763553,
+        "lowerEdgeSupport": [
+          1,
+          0.625
+        ],
+        "lobeOutlineSupport": [
+          0.4722222222222222,
+          0.19444444444444445
+        ],
+        "diameterContrast": [
+          0.001101097412320408,
+          0.3446428556635832
+        ]
+      },
+      {
+        "id": "rgb-mixture",
+        "supportedByCurrentChecks": true,
+        "status": "needs_review",
+        "quad": [
+          [
+            574.77365089074,
+            918.9310871466192
+          ],
+          [
+            675.5529402886888,
+            1014.7458803261463
+          ],
+          [
+            573.1573879789166,
+            1118.0140589098196
+          ],
+          [
+            479.21520650548524,
+            1015.7258013286349
+          ]
+        ],
+        "withinPhoto": false,
+        "score": 1.892701652372053,
+        "lowerEdgeSupport": [
+          0.975609756097561,
+          0.7317073170731707
+        ],
+        "lobeOutlineSupport": [
+          0.8055555555555556,
+          0.7777777777777778
+        ],
+        "diameterContrast": [
+          0.02217622542776153,
+          0.2437459849954993
+        ]
+      },
+      {
+        "id": "rgb-mixture-extended",
+        "supportedByCurrentChecks": true,
+        "status": "needs_review",
+        "quad": [
+          [
+            576.2279518380459,
+            916.4004768153825
+          ],
+          [
+            679.498692949357,
+            1010.0551017911937
+          ],
+          [
+            583.4353004962968,
+            1109.0941720723395
+          ],
+          [
+            471.6370800040514,
+            1013.4546059502242
+          ]
+        ],
+        "withinPhoto": true,
+        "score": 1.8709720891139827,
+        "lowerEdgeSupport": [
+          0.6612903225806451,
+          0.7580645161290323
+        ],
+        "lobeOutlineSupport": [
+          0.7777777777777778,
+          0.6666666666666666
+        ],
+        "diameterContrast": [
+          0.0054875812297530925,
+          0.21454522090499697
+        ]
+      }
+    ],
+    "interpretation": "Both RGB variants satisfy current outline-support checks. Ordinary-band tip remains outside the photo; both have weak upper-diameter colour contrast. Do not treat these support passes as validated overlap geometry or choose a crop using downstream solver error."
+  },
+  "reconstruction": {
+    "status": "running",
+    "state": "tmp/heart-learning/bauble-segmentation-2026-10-18/reconstruction/state.json",
+    "catalog": "tmp/heart-learning/bauble-segmentation-2026-10-18/reconstruction-catalog.json",
+    "scope": "All three frozen automatic diagnostic proposals, unchanged source, independent fresh processes and exported-curve replay. No inset, historical corner annotations or saved cutting curves.",
+    "ordinaryCompleted": {
+      "requestedSeconds": 180,
+      "solveAndValidationSeconds": 42.794398292,
+      "independentImageError": 0.025493362846093957,
+      "templateChecksPassed": true,
+      "featuresPassed": true,
+      "geometryPassed": true,
+      "paperStatus": "pass",
+      "fittingMaskSha256": "00b9ea58bb82c87c687e9ea7595f89ec9baadf597ca2663f9845f58093876ce2",
+      "observation": {
+        "method": "complete-bilinear-support",
+        "sha256": "20a1ac9fc487002dfba870e2613857cbc550363e6f46f5cde3a9645607d36dca",
+        "observedPixels": 155413,
+        "totalPixels": 160000,
+        "file": "observed.bin"
+      },
+      "qualification": "The crop remains outside the photo despite numerical reconstruction acceptance. Earlier4.375% error used a10-second request; this180-second run is not evidence of a same-budget solver improvement."
+    }
+  }
 }

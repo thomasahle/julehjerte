@@ -36,8 +36,21 @@ regressions and independent template reconstruction remain necessary. Neither
 approximate historical corner annotations nor solver error entered these probes.
 The existing malformed-mask solver stress fixture is unchanged.
 
-Production code has not changed. A guarded full-shape probe is prepared at
-`tmp/heart-learning/bauble-segmentation-2026-10-18/crop-study.mjs`; it refuses to
-run until the current inverse suite passes and its processes exit. Measurements,
-source hashes and experiment identifiers are in
-[bauble-registration.json](bauble-registration.json).
+The subsequent full-shape probe completed with all source hashes unchanged.
+Both RGB variants satisfy the current lower-edge, lobe-outline and cap-colour
+support checks. The ordinary-band tip still lies outside the photograph.
+Both variants have weak colour contrast across the upper overlap boundary
+(0.022 and 0.005 on one diameter), despite their improved outer-lobe fits.
+Visual overlays were inspected; these numerical support passes do not establish
+the true overlap geometry.
+
+All three frozen proposals are now being replayed through classification,
+fresh template fitting and independent exported-curve rendering. Corners stay
+fixed, no inset is added, and each proposal is tested in a fresh process.
+Different crops produce different targets, so their errors cannot be treated
+as an equal-domain comparison or used to select the correct physical crop.
+
+Production crop code has not changed. Measurements, source hashes and experiment
+identifiers are in [bauble-registration.json](bauble-registration.json).
+Local probe artifacts are under
+`tmp/heart-learning/bauble-segmentation-2026-10-18/`.
