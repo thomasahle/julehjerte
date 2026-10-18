@@ -18,11 +18,12 @@ import {projectShortReturns} from './short-return-project.js';
 import {fittingMargin,refineCurves} from './refine.js';
 import {maskDisagreement} from './prefer-matching.js';
 
-export async function recoverCornerTopology(input,cfg,{seconds=15,onProgress=()=>{},features=imageFeatures(input.sourceImage,cfg.width)}={}){
+export async function recoverCornerTopology(input,cfg,{seconds=15,routingSeconds=seconds-1,onProgress=()=>{},features=imageFeatures(input.sourceImage,cfg.width)}={}){
   const start=performance.now(),deadline=start+seconds*1000,source=input.sourceImage;
-  const report={method:'corner-topology-recovery',budgetSeconds:seconds,accepted:false,attempts:[]};
+  const report={method:'corner-topology-recovery',budgetSeconds:seconds,routingBudgetSeconds:routingSeconds,accepted:false,attempts:[]};
   const finish=reason=>({solution:null,report:{...report,reason,seconds:(performance.now()-start)/1000}});
   if(!Number.isFinite(seconds)||seconds<=0)return finish('insufficient_time');
+  if(!Number.isFinite(routingSeconds)||routingSeconds<=0)return finish('insufficient_routing_time');
   if(!source||sourceWeights(source)||requestedSymmetry(cfg.symmetry).length)return finish('unsupported_constraints');
   if(seconds<2)return finish('insufficient_routing_time');
   const stable=stableInteriorFeatures(source,features,cfg);
@@ -73,7 +74,9 @@ export async function recoverCornerTopology(input,cfg,{seconds=15,onProgress=()=
     if(remaining<1)return finish('insufficient_routing_time');
     // Keep a tail for an image-faithful rejected integer candidate. The
     // observer can repair it, but cannot certify it as a MILP incumbent.
-    const routed=await solveBoundary(target,{...graphCfg,timeLimit:Math.max(.1,remaining-1)},
+    const routingLeft=Math.min(remaining-1,routingSeconds-(performance.now()-start)/1000);
+    if(routingLeft<.1)return finish('insufficient_routing_time');
+    const routed=await solveBoundary(target,{...graphCfg,timeLimit:routingLeft},
       {initialGraph,expandNeighbors:false,coefficientQuantum:1e-7,stopAfterValidated:true,onProgress,
         coreGate:s=>materialAudit(s,cfg),onRejectedCandidate:(proposal,timing)=>{
           const attempt={timing};report.attempts.push(attempt);

@@ -11,6 +11,12 @@ import {settings} from '../../static/inverse/core/settings.js';
 import {referenceError} from '../../static/inverse/core/image-reference.js';
 import {featureComponentMetrics} from '../../static/inverse/core/feature-shapes.js';
 import {initializeCoarseTopology} from '../../static/inverse/core/direct/topology.js';
+import {fitDirect} from '../../static/inverse/core/direct/fit.js';
+import {solutionJSON} from '../../static/inverse/core/graph.js';
+import {validate} from '../../static/inverse/core/validate.js';
+import {finalMaterialAudit} from '../../static/inverse/core/geometric-material.js';
+import {verifiedPaperSettings} from '../../static/inverse/core/material.js';
+import {captureFitFailure} from './diagnostics/fit-failure.mjs';
 
 const folder='scripts/inverse/fixtures/user-photos-2026-10-17/';
 const catalog=JSON.parse(await fs.readFile(folder+'curved-triangles.json'));
@@ -52,7 +58,7 @@ test('fresh automatic fitting repairs a rejected circular routing before common 
   const rendered=await renderExportedWeave(answer.files['cut_geometry.json'],source.resolution);
   assert.ok(referenceError(source,rendered.mask).mismatchFraction<.015,'The unchanged pipeline was at 2.83%.');
   assert.deepEqual(source.mask,mask);assert.deepEqual(source.validMask,valid);assert.deepEqual(source.weights,weights);
- }catch(error){t.diagnostic(JSON.stringify({report,cutGeometry:answer.files['cut_geometry.json']}));throw error;}
+ }catch(error){t.diagnostic(await captureFitFailure({answer,source,context:{assertion:error.message}}));throw error;}
 });
 
 test('a fully observed mask refines or replaces corner routing without opening its enclosed regions',async t=>{
@@ -67,7 +73,8 @@ test('a fully observed mask refines or replaces corner routing without opening i
   // meet the comparison threshold. Test its quality, not wall-clock routing.
   if(comparison){
    assert.equal(comparison.selected,true);assert.equal(comparison.featuresPreserved,true);
-   assert.ok(comparison.imageError<comparison.beforeImageError);
+   if(comparison.beforeImageError!==null)assert.ok(comparison.imageError<comparison.beforeImageError);
+   else assert.equal(comparison.trigger,'no_checked_corner_routing');
   }else{
    assert.ok(answer.report.solver.cornerTopologyInitialization.imageError<=.015);
   }
@@ -80,5 +87,40 @@ test('a fully observed mask refines or replaces corner routing without opening i
    assert.equal(component.touchesBorder,false,'An enclosed motif became a channel.');
   }
   assert.deepEqual(target.sourceImage.mask,mask);
- }catch(error){t.diagnostic(JSON.stringify({report:answer.report,cutGeometry:answer.files['cut_geometry.json']}));throw error;}
+ }catch(error){t.diagnostic(await captureFitFailure({answer,source:target.sourceImage,context:{assertion:error.message}}));throw error;}
+});
+
+test('an exhausted corner MILP leaves the remaining caller allowance for fresh coarse routing',async t=>{
+ const extracted=input().sourceImage,mask=extracted.mask.slice();
+ const target=prepare({type:'mask',mask,resolution:extracted.resolution},raw).target;
+ const now=performance.now.bind(performance);let delay=0,calls=0;
+ t.mock.method(performance,'now',()=>now()+delay);
+ // Reproduce the failed stage's elapsed time and absence of an integer
+ // solution. All following tracing, MILP, curve fitting and checks are real;
+ // no reference templates or hand-picked slit counts enter the recovery.
+ const cornerRecovery=async(_input,_cfg,{seconds,routingSeconds})=>{
+  assert.ok(routingSeconds<=.35*cfg.timeLimit,'Reserve the rest for coarse routing, curve refinement and export.');
+  assert.ok(seconds-routingSeconds>=5,'An integer proposal arriving late still needs time for repair.');
+  calls++;delay+=routingSeconds*1000;
+  return{solution:null,report:{accepted:false,seconds:routingSeconds,reason:'no_checked_routing',routing:{status:'no_validated_solution',termination:'time_limit'}}};
+ };
+ const solution=await fitDirect(target,cfg,()=>{},{cornerRecovery}),report=solution.report;
+ const serialized=JSON.stringify(solutionJSON(solution)),checked=verifiedPaperSettings(solution,cfg);
+ const rendered=await renderExportedWeave(serialized,extracted.resolution);
+ const error=referenceError(target.sourceImage,rendered.mask).mismatchFraction;
+ try{
+  assert.equal(calls,1);assert.equal(report.cornerTopologyInitialization.accepted,false);
+  assert.ok(report.cornerTopologyComparison,'A timed-out corner search must not suppress the coarse alternative.');
+  assert.equal(report.cornerTopologyComparison.trigger,'no_checked_corner_routing');
+  assert.equal(report.cornerTopologyComparison.beforeImageError,null);
+  assert.equal(report.cornerTopologyComparison.selected,true);
+  assert.equal(validate(solution,checked,{finalGeometry:true}).passed,true);
+  assert.equal(finalMaterialAudit(solution,checked).status,'pass');
+  assert.ok(error<.015,`The exact failed fit had 2.85% error; recovered error ${error}`);
+  const components=featureComponentMetrics(target.sourceImage,rendered.mask,cfg.width);
+  assert.equal(components.length,12);
+  assert.ok(components.every(c=>c.intersectionPixels>0&&!c.touchesBorder));
+  assert.deepEqual(target.sourceImage.mask,mask);
+  t.diagnostic(JSON.stringify({case:'exhausted-corner',error,seconds:report.seconds,coarseSeconds:report.cornerTopologyComparison.seconds}));
+ }catch(failure){t.diagnostic(await captureFitFailure({answer:{report:{solver:report},files:{'cut_geometry.json':serialized}},source:target.sourceImage,error,maximum:.015,context:{assertion:failure.message}}));throw failure;}
 });

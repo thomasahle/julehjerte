@@ -12,7 +12,7 @@ import {motifFixture,topHatFixture,chordFrameFixture} from './motif-fixture.mjs'
 import {treeMask} from './tree-fixture.mjs';
 import {heartPhoto} from './crop-fixture.mjs';
 import {catalogue,readPhoto} from './web-photo-data.mjs';
-import {readHardPhoto} from './hard-photo-data.mjs';
+import {readHardPhoto,hardPhotoCatalogCases} from './hard-photo-data.mjs';
 import {reviewMaterialSamples} from './photo-material-samples.mjs';
 import {prepare} from '../../static/inverse/core/engine.js';
 import {AUTOMATIC_PRESET} from '../../static/inverse/core/presets.js';
@@ -126,6 +126,7 @@ report.workspaceSourceHashes['static/inverse/core/direct/rejected-routing.js']=c
 report.harnessSourceHashes['scripts/inverse/fixtures/blue-star-polishing.json']=createHash('sha256').update(await fs.readFile('scripts/inverse/fixtures/blue-star-polishing.json')).digest('hex');
 report.harnessSourceHashes['scripts/inverse/fixtures/photographic-gold-routing.json']=createHash('sha256').update(await fs.readFile('scripts/inverse/fixtures/photographic-gold-routing.json')).digest('hex');
 report.harnessSourceHashes['scripts/inverse/fixtures/stacked-hearts-corner-mask.json']=createHash('sha256').update(await fs.readFile('scripts/inverse/fixtures/stacked-hearts-corner-mask.json')).digest('hex');
+for(const file of ['scripts/inverse/fixtures/photographic-viking-cleanup.json','scripts/inverse/fixtures/user-photos-2026-10-17/curved-triangles.json','scripts/inverse/fixtures/user-photos-2026-10-17/curved-triangles-corners.json'])report.harnessSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 for(const file of ['static/inverse/core/direct/corner-topology.js','static/inverse/core/feature-enclosures.js'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 for(const file of ['static/inverse/core/direct/refine.js','static/inverse/core/direct/clamped-features.js','static/inverse/core/direct/primitive-selection.js','static/inverse/core/direct/primitives.js','static/inverse/core/direct/shared-simplification.js','static/inverse/core/direct/curves.js','static/inverse/core/direct/curve-topology.js','static/inverse/core/direct/short-returns.js'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
 for(const file of ['src/lib/components/editor/SymmetryRows.svelte','src/lib/components/ui/toggle-group/toggle-group.svelte','src/lib/components/paint/FramePanel.svelte','src/lib/components/paint/MaskToolPanel.svelte','src/lib/i18n/translations.ts','src/lib/components/paint/FindCutsPanel.svelte'])report.workspaceSourceHashes[file]=createHash('sha256').update(await fs.readFile(file)).digest('hex');
@@ -140,7 +141,7 @@ try{
    const slothShift={'sloth-x-shift-mask':'x-plus-1','sloth-y-shift-mask':'y-minus-1'}[name];
    const slothSearch={'sloth-frozen-mask':'frozen','sloth-synthetic-mask':'synthetic-control','sloth-y-plus-mask':'y-plus-1'}[name],slothVariant=slothShift||slothSearch;
    const flowerMask=['flower-native-mask','flower-downsample-mask'].includes(name),anchorMask=name==='anchor-spatial-mask',fadedFrameMask=name==='faded-frame-mask',slothMask=name==='sloth-routing-mask'||Boolean(slothVariant);
-   const unequalLobes=name==='unequal-lobes',webPhoto=name.startsWith('web-'),hardPhoto=name.startsWith('hard-'),photoMask=flowerMask||anchorMask||fadedFrameMask||slothMask||['stacked-hearts-mask','outline-star-shift-mask','gold-routing-mask','blue-star-polishing-mask','crown-mask','near-miss-mask','near-miss-shift-mask','near-miss-y-shift-mask','near-miss-diagonal-mask','leaf-mask','maple-leaf-mask','bird-mask','bird-shift-mask','bird-y-shift-mask','gift-mask','puppy-shift-mask','floral-checker-mask','warped-checker-mask','fine-checker-mask'].includes(name),photograph=unequalLobes||webPhoto||hardPhoto||name==='hunodan'||name.startsWith('hunodan-');
+   const unequalLobes=name==='unequal-lobes',webPhoto=name.startsWith('web-'),hardPhoto=name.startsWith('hard-'),photoMask=flowerMask||anchorMask||fadedFrameMask||slothMask||['curved-triangles-mask','viking-cleanup-mask','stacked-hearts-mask','outline-star-shift-mask','gold-routing-mask','blue-star-polishing-mask','crown-mask','near-miss-mask','near-miss-shift-mask','near-miss-y-shift-mask','near-miss-diagonal-mask','leaf-mask','maple-leaf-mask','bird-mask','bird-shift-mask','bird-y-shift-mask','gift-mask','puppy-shift-mask','floral-checker-mask','warped-checker-mask','fine-checker-mask'].includes(name),photograph=unequalLobes||webPhoto||hardPhoto||name==='hunodan'||name.startsWith('hunodan-');
    const topHat=['top-hat','top-hat-preferred','top-hat-independent','top-hat-anti','top-hat-free-small'].includes(name),small=name.endsWith('-free-small'),free=topHat||name.endsWith('-free')||small,frameSize=small?.64:.84;
    const dir=path.join(output,`${browserName}-${name}${repeats>1?`-repeat-${repeat+1}`:''}`);await fs.mkdir(dir,{recursive:true});
    const row={browser:browserName,browserVersion:browser.version(),name,...(repeats>1?{repeat:repeat+1}:{}),pageErrors:[]};results.push(row);
@@ -216,6 +217,17 @@ try{
        fixture={...data,quad:data.quad.map(([x,y])=>[x+1,y]),maskSha256:'3338849d32ecafd54d2365fc664ec97ee5fbca5b54534290d873f6919437f5f4'};
        const catalogue=JSON.parse(await fs.readFile(fixture.sourceCatalogue));photo=await readHardPhoto(catalogue.source);
        assert.equal(photo.fileSha256,fixture.sourceFileSha256);assert.equal(photo.rgbaSha256,fixture.decodedPixelsSha256);
+      }else if(name==='curved-triangles-mask'){
+       const folder='scripts/inverse/fixtures/user-photos-2026-10-17/';
+       const catalog=JSON.parse(await fs.readFile(folder+'curved-triangles.json'));
+       photo=await readHardPhoto(hardPhotoCatalogCases(catalog)[0]);
+       const quad=JSON.parse(await fs.readFile(folder+'curved-triangles-corners.json'))[0].quad;
+       fixture={sourceCase:'curved-triangles',quad,maskSha256:'77de47c5de58acf92d0733486f4458530905d7c847f34d6af49557cca0ca7e42'};
+      }else if(name==='viking-cleanup-mask'){
+       const file='scripts/inverse/fixtures/photographic-viking-cleanup.json',bytes=await fs.readFile(file),data=JSON.parse(bytes);
+       fixture={sourceCase:data.sourcePhoto.id,quad:null,maskSha256:data.maskSha256};
+       fixedMask=new Uint8Array(data.resolution**2);for(const[start,length]of data.maskRuns)fixedMask.fill(1,start,start+length);
+       row.sourceMaskFixture={file,sha256:createHash('sha256').update(bytes).digest('hex'),scope:'Frozen classified pixels; only pixels enter the worker, never fitted cutting paths.'};
       }else if(name==='stacked-hearts-mask'){
        const file='scripts/inverse/fixtures/stacked-hearts-corner-mask.json',bytes=await fs.readFile(file),data=JSON.parse(bytes);
        fixture={sourceCase:data.sourceInstance,quad:null,maskSha256:data.maskSha256};
@@ -594,6 +606,12 @@ try{
     if(hardPhoto||photoMask){
      row.editableFeatures=auditFeatureFidelity(sourceReference,sourceRendered,observed.result.report.settings);
      row.featureComponents=featureComponentMetrics(sourceReference,sourceRendered);
+     if(name==='curved-triangles-mask'&&!engineReference&&!stopMode){
+      assert.ok(maskMismatch(sourceRendered,sourceMask)<.015);
+      assert.equal(row.featureComponents.length,12);
+      assert.ok(row.featureComponents.every(c=>c.intersectionPixels>0&&!c.touchesBorder),'All twelve exported regions must remain enclosed.');
+     }
+     if(name==='viking-cleanup-mask'&&!engineReference&&!stopMode)assert.ok(maskMismatch(sourceRendered,sourceMask)<.0193,'The downloaded editable Viking must retain the polishing improvement.');
      if(name==='stacked-hearts-mask'&&!engineReference&&!stopMode){
       assert.equal(observed.result.report.solver.cornerTopologyInitialization?.accepted,true);
       assert.deepEqual(row.selectedCounts,[3,3]);

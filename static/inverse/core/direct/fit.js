@@ -49,7 +49,7 @@ function refloor(result,floor){
     const sum=gaps.reduce((s,v)=>s+v,0);for(let i=0;i<=count;i++)z[model.offsets[f]+j*(count+1)+i]=Math.log(gaps[i]/sum);
   }});return z;
 }
-export async function fitDirect(input,cfg,onProgress=()=>{},{countSearch=initializeCounts}={}){
+export async function fitDirect(input,cfg,onProgress=()=>{},{countSearch=initializeCounts,cornerRecovery=recoverCornerTopology}={}){
   const start=performance.now();
   onProgress=progressReporter(onProgress,cfg.progressGeometry);
   // Reuse the image-derived count/phase seeds for the optional matching
@@ -58,7 +58,7 @@ export async function fitDirect(input,cfg,onProgress=()=>{},{countSearch=initial
   let matchingSeeds=[];
   const solution=await fitIndependent(input,{...cfg,preferMatchingSheets:false},onProgress,args=>{
     const search=countSearch(args);matchingSeeds=search.seeds;return search;
-  });
+  },cornerRecovery);
   const selected=finalizeFittedSolution(solution,cfg,{startedAt:start,onProgress,matchingSeeds});
   // numericalBackend describes module loading; these record actual choices
   // for the individual operations, including a faster JavaScript fallback.
@@ -66,7 +66,7 @@ export async function fitDirect(input,cfg,onProgress=()=>{},{countSearch=initial
   selected.report.boundaryKernels=boundaryKernelChoices();
   return selected;
 }
-async function fitIndependent(input,cfg,onProgress,countSearch){
+async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery){
   // Every per-pixel target the search optimizes is the mean over the requested
   // symmetry group, so each mirroring of the drawing enters the loss directly.
   // The original classified mask stays the reference for symmetry evidence,
@@ -125,34 +125,42 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   // established budget; this optional route needs time for geometry and paper
   // checks as well as the MILP. No source pixels or count hypotheses change.
   if(cfg.timeLimit>=20&&!weights&&!symmetryRequested){
-    const seconds=Math.min(16,(start+cfg.timeLimit*1000-performance.now()-2500)/1000);
-    cornerTopology=await recoverCornerTopology(input,cfg,{seconds,onProgress,features:sourceFeatures});
-    if(cornerTopology.solution){
+    // Limit integer search separately from continuous repair. A late integer
+    // proposal needs the full repair tail; no integer proposal should release
+    // that unused tail to the coarser routing instead of spending it in MILP.
+    const seconds=Math.min(16,(start+cfg.timeLimit*1000-performance.now()-2500)/1000),routingSeconds=Math.min(seconds-1,cfg.timeLimit*.35);
+    cornerTopology=await cornerRecovery(input,cfg,{seconds,routingSeconds,onProgress,features:sourceFeatures});
+    if(cornerTopology.solution||cornerTopology.report.routing){
       let solution=cornerTopology.solution,error=cornerTopology.report.imageError,comparison=null;
       // A valid corner routing can repeatedly roll back image updates around
-      // narrow returns. Compare one coarser routing while time remains; retain
-      // the checked incumbent if it fails or opens an already enclosed motif.
+      // narrow returns. An unsuccessful MILP can consume that same allowance
+      // without finding an integer routing at all. In either case compare one
+      // coarser routing using the remaining caller budget, before grid work
+      // consumes the time needed to preserve the source's enclosed regions.
+      // Retain a checked incumbent if the alternative fails.
       const comparisonSeconds=Math.min(12,(start+cfg.timeLimit*1000-performance.now()-1800)/1000);
-      if(error>Math.min(.015,cfg.maxImageError*.5)&&comparisonSeconds>=10){
+      if((!solution||error>Math.min(.015,cfg.maxImageError*.5))&&comparisonSeconds>=10){
         const alternative=await initializeCoarseTopology(input,cfg,{seconds:comparisonSeconds,onProgress,repairRejected:true,repairDeadline:start+cfg.timeLimit*1000-1800});
-        comparison={...alternative.report,beforeImageError:error,selected:false};
+        comparison={...alternative.report,trigger:solution?'improve_checked_routing':'no_checked_corner_routing',beforeImageError:error??null,selected:false};
         if(alternative.graph){
           const proposed=alternative.graph.solution(alternative.graph.points,alternative.phase,input),checkedCfg=verifiedPaperSettings(alternative,cfg);
           const woven=sampleWeave(proposed,source.resolution),afterError=maskDisagreement(source,woven);
-          const featuresPreserved=auditFeatureFidelityChange(source,sampleWeave(solution,source.resolution),woven,cfg,sourceFeatures).passed;
+          const featuresPreserved=(solution?auditFeatureFidelityChange(source,sampleWeave(solution,source.resolution),woven,cfg,sourceFeatures):auditFeatureFidelity(source,woven,cfg,sourceFeatures)).passed;
           const geometry=validate(proposed,checkedCfg),paper=materialAudit(proposed,checkedCfg);
           Object.assign(comparison,{imageError:afterError,featuresPreserved,geometryPassed:geometry.passed,paperPassed:paper.passed});
-          if(afterError<error&&featuresPreserved&&geometry.passed&&paper.passed){
+          if(afterError<=cfg.maxImageError&&(!solution||afterError<error)&&featuresPreserved&&geometry.passed&&paper.passed){
             proposed.report={...(alternative.report.paperVerification?{paperVerification:alternative.report.paperVerification}:{})};
             solution=proposed;error=afterError;comparison.selected=true;
           }
         }
       }
-      solution.report={...solution.report,countSearch:countSearchReport,algorithm:'direct-bezier',numericalBackend,imported:false,
-        termination:comparison?.selected?'validated_corner_topology_comparison':'validated_corner_topology',seconds:(performance.now()-start)/1000,traceUsed:true,
-        selectedCounts:solution.paths.map(p=>p.length),attempts,stages:timings,cornerTopologyInitialization:cornerTopology.report,
-        ...(comparison?{cornerTopologyComparison:comparison}:{}),estimatedMaskMismatch:error,borderCountsAreHardConstraints:false};
-      return solution;
+      if(solution){
+        solution.report={...solution.report,countSearch:countSearchReport,algorithm:'direct-bezier',numericalBackend,imported:false,
+          termination:comparison?.selected?'validated_corner_topology_comparison':'validated_corner_topology',seconds:(performance.now()-start)/1000,traceUsed:true,
+          selectedCounts:solution.paths.map(p=>p.length),attempts,stages:timings,cornerTopologyInitialization:cornerTopology.report,
+          ...(comparison?{cornerTopologyComparison:comparison}:{}),estimatedMaskMismatch:error,borderCountsAreHardConstraints:false};
+        return solution;
+      }
     }
   }
   // Short searches share one allowance between precise and coarse boundary
@@ -915,7 +923,13 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     const shared=stage('directSharing',()=>recoverShared(candidate,prob,n,sharingCfg,{deadline:deadline-1300,input,weights:fitWeights}));
     if(assess(shared)&&shared.originalImageError<=candidate.originalImageError)candidate={...shared,seed:candidate.seed};
   }
-  let outlineDetail=null;
+  let outlineDetail=null,cleanupContinuation=null;
+  // Shared-cut recovery has variable cost and can consume nearly the entire
+  // cleanup window. A long caller with unused time must still fund a bounded
+  // full-resolution polish, rather than receiving only its first few steps.
+  const polishingStart=performance.now(),beforePolishing=deadline;
+  if(!featureDetail?.applied&&candidate.paperPassed&&cleanupBudget.addedSeconds>0)deadline=Math.min(start+cfg.timeLimit*1000-1300,Math.max(deadline,polishingStart+4000));
+  cleanupBudget.polishingExtensionSeconds=(deadline-beforePolishing)/1000;
   if(!featureDetail?.applied&&candidate.paperPassed&&performance.now()<deadline-450){
     const polishing=orbitObjective(Float64Array.from(source.mask),source.resolution,orbit,weights);
     let polished=stage('directPolishing',()=>polishCandidate(candidate,polishing.probability,source.resolution,{...cfg,preferMatchingSheets:false},{input,weights:polishing.weights,steps:160,rate:.008,deadline:deadline-250,selection:'mask',identicalSheets:candidate.matching?.identical||false,onProgress:hasCandidateObserver(onProgress)?(r,solution)=>onProgress({stage:'directPolishing',counts:candidate.counts,...r},solution):undefined}));
@@ -944,6 +958,23 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
     const polishAccepted=polishValid&&(polished.outlineDetail?polished.originalImageError<candidate.originalImageError:polished.originalImageError<=candidate.originalImageError);
     if(polished.outlineDetail)outlineDetail={...polished.outlineDetail,applied:polishAccepted,errorBefore:candidate.originalImageError,errorAfter:polished.originalImageError,steps:polished.steps,geometryPassed:polished.geometryPassed,paperStatus:polished.paper?.status};
     if(polishAccepted)candidate=polished;
+    // A fixed 160-step polish may still be improving when a long request has
+    // ample unused time. Continue once at a smaller step instead of making
+    // the returned quality depend on which earlier timed checkpoint seeded
+    // that pass. Fast fits, exhausted callers and newly subdivided outlines
+    // keep their existing work. Every replacement still faces the same gates.
+    const middle=polished.history.find(h=>h.step>=80&&h.geometry&&h.paper==='pass');
+    const continuationStart=performance.now(),hardCleanupDeadline=start+cfg.timeLimit*1000-1300;
+    if(polishAccepted&&polished.imagePassed&&!polished.outlineDetail&&polished.steps===160&&middle&&polished.error<middle.error
+      &&cleanupBudget.addedSeconds>0&&hardCleanupDeadline-continuationStart>=4000){
+      deadline=Math.min(hardCleanupDeadline,continuationStart+4000);
+      const next=stage('directPolishing',()=>polishCandidate(candidate,polishing.probability,source.resolution,{...cfg,preferMatchingSheets:false},{input,weights:polishing.weights,steps:160,rate:.004,deadline:deadline-250,selection:'mask',identicalSheets:candidate.matching?.identical||false,onProgress:hasCandidateObserver(onProgress)?(r,solution)=>onProgress({stage:'directPolishing',counts:candidate.counts,...r},solution):undefined}));
+      next.imagePassed=assess(next);
+      const applied=next.imagePassed&&next.originalImageError<candidate.originalImageError;
+      cleanupContinuation={reason:'polish_still_improving',budgetSeconds:(deadline-continuationStart)/1000,seconds:(performance.now()-continuationStart)/1000,
+        errorBefore:candidate.originalImageError,errorAfter:next.originalImageError,initialSteps:polished.steps,steps:next.steps,geometryPassed:next.geometryPassed,paperPassed:next.paperPassed,applied};
+      if(applied)candidate=next;
+    }
   }
   // A feature-complete layout just above the image limit can still improve
   // during full-resolution polishing. A lower-error layout missing a motif
@@ -968,7 +999,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch){
   const solution=candidate.graph.solution(candidate.points,candidate.phase,input);
   const paper={passed:candidate.paperPassed};
   solution.report={countSearch:countSearchReport,finalistPreference,deferredRouting,deferredFeatureRecovery,...(recoveryHistory.length>1?{featureRecoveryAttempts:recoveryHistory}:{}),algorithm:'direct-bezier',numericalBackend,imported:false,termination:!candidate.geometryPassed?'geometry_failure':!paper.passed?'paper_failure':candidate.originalImageError>cfg.maxImageError?'image_mismatch':'candidate_found',seconds:(performance.now()-start)/1000,
-    earlyPolishComparison,stoppedEarly,cleanupBudget,cleanupComparison,countSearchBound,clearanceComparison,initialGeometryComparison,extraGridComparisons,earlyClampedFeatureRecovery,clampedFeatureRecovery:candidate.clampedFeatureRecovery,refinementFeaturesPassed:candidate.originalFeatures?.passed,refinementBudget:{requestedSeconds:cfg.timeLimit,maximumSearchSeconds:searchSeconds(),verifiedAlternative},earlyFeatureInitialization,featureInitialization,samplingRecovery,featureDetail,featureDetailAttempts,outlineDetail,paperVerification:candidate.paperVerification,matchingPreference:{enabled:cfg.preferMatchingSheets,...matchingEvidence,...matchingSummary(solution),identicalCandidateBonus:0},optimizationResolution:n,sourceResolution:source.resolution,scaleSampling:'Each fitting scale is area-resampled directly from the original classified source; no chained downsampling',initialization:'Fresh ordered grids, soft border endpoint proposals and alternating row dynamic programming; independent shapes for both sheets',countsSearched:attempts.filter(a=>a.stage==='coarse').map(a=>({counts:a.counts,phase:a.phase})),attempts,selectedCounts:candidate.counts,candidates:candidates.map(c=>({counts:c.counts,phase:c.phase,seed:c.seed||'grid',error:c.error,sourceImageError:c.originalImageError,imagePassed:c.imagePassed,featuresPassed:c.originalFeatures?.passed,enclosuresOpened:c.originalFeatures?.enclosures?.opened,score:c.score,geometry:c.geometryPassed,paper:c.paperPassed,paperVerification:c.paperVerification})),
+    earlyPolishComparison,stoppedEarly,cleanupBudget,cleanupContinuation,cleanupComparison,countSearchBound,clearanceComparison,initialGeometryComparison,extraGridComparisons,earlyClampedFeatureRecovery,clampedFeatureRecovery:candidate.clampedFeatureRecovery,refinementFeaturesPassed:candidate.originalFeatures?.passed,refinementBudget:{requestedSeconds:cfg.timeLimit,maximumSearchSeconds:searchSeconds(),verifiedAlternative},earlyFeatureInitialization,featureInitialization,samplingRecovery,featureDetail,featureDetailAttempts,outlineDetail,paperVerification:candidate.paperVerification,matchingPreference:{enabled:cfg.preferMatchingSheets,...matchingEvidence,...matchingSummary(solution),identicalCandidateBonus:0},optimizationResolution:n,sourceResolution:source.resolution,scaleSampling:'Each fitting scale is area-resampled directly from the original classified source; no chained downsampling',initialization:'Fresh ordered grids, soft border endpoint proposals and alternating row dynamic programming; independent shapes for both sheets',countsSearched:attempts.filter(a=>a.stage==='coarse').map(a=>({counts:a.counts,phase:a.phase})),attempts,selectedCounts:candidate.counts,candidates:candidates.map(c=>({counts:c.counts,phase:c.phase,seed:c.seed||'grid',error:c.error,sourceImageError:c.originalImageError,imagePassed:c.imagePassed,featuresPassed:c.originalFeatures?.passed,enclosuresOpened:c.originalFeatures?.enclosures?.opened,score:c.score,geometry:c.geometryPassed,paper:c.paperPassed,paperVerification:c.paperVerification})),
     ...(geometryRecovery.length?{geometryRecovery}:{}),borderEvidence:evidence,supportedBorderCounts:supportedBorderCounts(evidence),borderCountsAreHardConstraints:false,traceUsed:['coarse-boundary-topology','feature-recovery'].includes(candidate.seed),cornerTopologyInitialization:cornerTopology?.report,topologyInitialization:topology?.report,coarseTopologyInitialization:coarseTopology?.report,selectedInitialization:candidate.seed||'grid',featureRecovery:recovery?.report||null,freeCoordinates:'Both coordinates of anchors and handles; endpoints remain on assigned sides',stages:timings,checkpoints:candidate.history,localFeaturePolish:candidate.localFeaturePolish,sharing:candidate.sharing||{accepted:[],rejected:[]},estimatedMaskMismatch:candidate.error,minimumNominalWidth:cfg.nominalWidth,physicalAssemblyTested:false};
   return solution;
 }

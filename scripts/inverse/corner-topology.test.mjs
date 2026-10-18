@@ -8,6 +8,7 @@ import {AUTOMATIC_PRESET} from '../../static/inverse/core/presets.js';
 import {recoverCornerTopology} from '../../static/inverse/core/direct/corner-topology.js';
 import {featureComponentMetrics} from '../../static/inverse/core/feature-shapes.js';
 import {renderExportedWeave} from './export-renderer.mjs';
+import {captureFitFailure} from './diagnostics/fit-failure.mjs';
 
 test('optional corner recovery skips unavailable time, unknown paper, requested symmetries and unsupported borders',async()=>{
   const n=100,mask=new Uint8Array(n*n),cfg=settings(AUTOMATIC_PRESET);
@@ -26,7 +27,7 @@ test('optional corner recovery skips unavailable time, unknown paper, requested 
   assert.deepEqual(mask,before);
 });
 
-test('automatic fitting recovers four enclosed hearts from fresh corner routing and preserves them through final cleanup',async()=>{
+test('automatic fitting recovers four enclosed hearts from fresh corner routing and preserves them through final cleanup',async t=>{
   const fixture=JSON.parse(await fs.readFile('scripts/inverse/fixtures/stacked-hearts-corner-mask.json'));
   const n=fixture.resolution,mask=new Uint8Array(n*n);let offset=0,value=fixture.first;
   for(const run of fixture.runs){mask.fill(value,offset,offset+run);offset+=run;value^=1;}
@@ -38,13 +39,11 @@ test('automatic fitting recovers four enclosed hearts from fresh corner routing 
   assert.equal(restricted.solution,null);assert.equal(restricted.report.reason,'border_change_exceeds_allowance');
   assert.equal(restricted.report.attempts.length,0,'Do not start a MILP for a border proposal outside the source-change allowance.');
   const result=await design(input,cfg),solver=result.report.solver;
+  try{
   assert.equal(result.report.templateChecksPassed,true);
   assert.equal(result.report.validation.passed,true);assert.equal(result.report.manufacturing.status,'pass');
-  assert.equal(solver.termination,'validated_corner_topology');
-  assert.equal(solver.cornerTopologyInitialization.accepted,true);
   assert.equal(solver.cornerTopologyInitialization.maximumBorderChangeFraction,.005);
   assert.equal(solver.cornerTopologyInitialization.protectedRegions.length,4);
-  assert.deepEqual(result.report.slits,{left:3,right:3});
   for(const size of [n,2*n]){
     const reference=Uint8Array.from({length:size*size},(_,i)=>mask[Math.floor(Math.floor(i/size)*n/size)*n+Math.floor(i%size*n/size)]);
     const rendered=await renderExportedWeave(result.files['cut_geometry.json'],size);
@@ -58,4 +57,8 @@ test('automatic fitting recovers four enclosed hearts from fresh corner routing 
     }
   }
   assert.deepEqual(mask,before);assert.deepEqual(input.sourceImage.mask,before);assert.deepEqual(input.sourceImage.probability,probability);
+  assert.deepEqual(result.report.slits,{left:3,right:3});
+  assert.equal(solver.termination,'validated_corner_topology');
+  assert.equal(solver.cornerTopologyInitialization.accepted,true);
+  }catch(failure){t.diagnostic(await captureFitFailure({answer:result,source:input.sourceImage,context:{assertion:failure.message}}));throw failure;}
 });
