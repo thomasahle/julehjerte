@@ -3,6 +3,7 @@ import type { HeartDesign } from '$lib/types/heart';
 import { normalizeHeartDesign, serializeHeartDesign, parseHeartFromSVG } from '$lib/utils/heartDesign';
 import { writeStorage } from '$lib/utils/safeStorage';
 import { trackHeartLoadError, trackSvgParseError } from '$lib/analytics';
+import { ALL_HEART_IDS } from '$lib/data/categories';
 
 /** Where the visitor's own hearts are kept; the front page's inline strand script reads it too. */
 export const USER_COLLECTION_KEY = 'julehjerte-collection';
@@ -64,7 +65,14 @@ export function deleteUserDesign(id: string): void {
 }
 
 
+/**
+ * A gallery heart's design, read from its SVG under /hearts/. Every SVG there
+ * is in the gallery index (hearts.json), so an id that is not names no file:
+ * it gets null without a request, rather than a 404 in the network log on
+ * every mistyped or stale heart link.
+ */
 export async function loadStaticHeartById(id: string): Promise<HeartDesign | null> {
+  if (!ALL_HEART_IDS.includes(id)) return null;
   try {
     const heartResponse = await fetch(`/hearts/${id}.svg`);
     if (!heartResponse.ok) {

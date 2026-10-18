@@ -47,6 +47,14 @@ describe('isPageViewNavigation', () => {
 	it('does nothing without a destination', () => {
 		expect(isPageViewNavigation({ from: { url: new URL('https://juleflet.dk/') }, to: null })).toBe(false);
 	});
+
+	// The 404.html fallback hydrates as an error, and SvelteKit hands the
+	// layout a `from` whose url is null: that threw on every not-found page.
+	it('does nothing when an end has no URL (the not-found fallback)', () => {
+		const to = { url: new URL('https://juleflet.dk/does-not-exist/') };
+		expect(isPageViewNavigation({ from: { url: null }, to })).toBe(false);
+		expect(isPageViewNavigation({ from: to, to: { url: null } })).toBe(false);
+	});
 });
 
 describe('trackPageView', () => {

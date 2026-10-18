@@ -30,7 +30,7 @@
   import PageHeader from "$lib/components/PageHeader.svelte";
   import StatusPage from "$lib/components/StatusPage.svelte";
   import { FIR_FILLS } from "$lib/landscape";
-  import { getUserCollection, loadStaticHeartById, saveUserDesign } from "$lib/stores/collection";
+  import { getUserCollection, saveUserDesign } from "$lib/stores/collection";
   import {
     SITE_DESCRIPTION,
     SITE_DESCRIPTION_EN,
@@ -58,8 +58,8 @@
   // at prerender time, so gallery pages render without a loading state.
   let meta = $derived(data.meta);
 
-  // Hearts that only exist in the browser: the user's own (localStorage) and, so old
-  // links keep working, SVGs under /hearts/ that are not in the gallery index.
+  // Hearts that only exist in the browser: the user's own (localStorage). Every
+  // SVG under /hearts/ is a gallery heart, whose design comes with the page.
   // Design geometry is large (segments); keep it out of deeply reactive proxies.
   let clientDesign = $state.raw<HeartDesign | null>(null);
   let design = $derived(data.design ?? clientDesign);
@@ -67,8 +67,8 @@
   let clientLoading = $state(true);
   let loading = $derived(!data.design && clientLoading);
   let error = $state<string | null>(null);
-  // The id names no gallery heart, none of this browser's and no SVG under
-  // /hearts/. GitHub Pages already answered 404 (the page is its fallback); the
+  // The id names no gallery heart and none of this browser's (nothing is
+  // fetched for it). GitHub Pages already answered 404 (the page is its fallback); the
   // visitor gets a page that says so and leads on, not a box on the scene.
   let notFound = $state(false);
   let shareStatus = $state<"idle" | "copied" | "error">("idle");
@@ -131,9 +131,8 @@
       return;
     }
 
-    // Not in the gallery index or the user's collection: an old link to an unlisted SVG.
-    clientDesign = await loadStaticHeartById(id);
-    if (!clientDesign) notFound = true;
+    // Not in the gallery index or the user's collection: a mistyped or stale link.
+    notFound = true;
     clientLoading = false;
   });
 
@@ -174,8 +173,8 @@
   let photo = $derived(isUserCreated ? null : (meta?.photo ?? null));
 
   // A gallery heart's paragraph is written in both languages and resolved in +page.ts.
-  // Anything else — a heart the visitor drew, one shared by link, an unlisted SVG under
-  // /hearts/ — shows whatever description its maker typed, in whatever language that is.
+  // Anything else — a heart the visitor drew or one shared by link — shows whatever
+  // description its maker typed, in whatever language that is.
   let description = $derived(data.description ?? (meta ? null : (design?.description ?? null)));
 
   // SEO

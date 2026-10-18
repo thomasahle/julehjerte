@@ -15,8 +15,12 @@ function trackEvent(
 
 /** The two ends of a SvelteKit navigation, as far as page views care. */
 interface NavigationEnds {
-  from: { url: URL } | null;
-  to: { url: URL } | null;
+  /**
+   * `url` is null on the not-found page GitHub Pages serves as 404.html: the
+   * router hydrates it as an error with no "from" URL, whatever the types say.
+   */
+  from: { url: URL | null } | null;
+  to: { url: URL | null } | null;
 }
 
 /**
@@ -29,7 +33,7 @@ interface NavigationEnds {
  * stays on the page; a step through history to another path is a new page.
  */
 export function isPageViewNavigation({ from, to }: NavigationEnds): boolean {
-  if (!from || !to) return false;
+  if (!from?.url || !to?.url) return false;
   return from.url.pathname !== to.url.pathname;
 }
 
