@@ -92,6 +92,7 @@ test('the main fitter reconstructs the dense binary photo target with legal edit
   const deferred=answer.report.solver.deferredFeatureRecovery;
   assert.equal(deferred?.reason,'well-retained-grid');
   assert.ok(deferred.minimumRegionRetention>=.9);
+  assert.ok(answer.report.solver.attempts.some(a=>a.stage==='clearance'&&a.counts[0]===10&&a.counts[1]===11&&a.refinementResolution===resolution));
   assert.ok(Object.values(answer.report.slits).every(n=>n<=11));
   assert.equal(answer.report.validation.passed,true);assert.equal(answer.report.manufacturing.status,'pass');
   assert.equal(answer.report.templateChecksPassed,true);
