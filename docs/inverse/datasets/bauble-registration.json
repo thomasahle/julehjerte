@@ -1138,5 +1138,293 @@
         ]
       }
     }
+  },
+  "earlyPolishExperiment": {
+    "status": "Four fresh runs complete; promising isolated speed result, not adopted",
+    "scope": "Same photo and settings; two automatic crops differ by 15 classified pixels. One fresh process per policy/crop. Five-cut progress coordinates captured in both policies and feature-audited after the timed solve. No saved templates or ground-truth cuts enter fitting.",
+    "sourceFilesUnchanged": 1111,
+    "rows": [
+      {
+        "variant": "baseline",
+        "id": "browser-mask--application",
+        "seconds": 106.991123708,
+        "counts": {
+          "left": 6,
+          "right": 6
+        },
+        "nativeError": 0.02825625,
+        "independentError": 0.0280875,
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "earlyPolishComparison": null,
+        "extraGridComparisons": 21,
+        "featuresPassed": true,
+        "smallRegions": [
+          {
+            "value": 1,
+            "areaMm2": 5,
+            "centerMm": [
+              96.059375,
+              68.88125
+            ],
+            "retainedFraction": 0.9
+          }
+        ],
+        "summary": "tmp/heart-learning/bauble-segmentation-2026-10-18/early-polish-study/results/baseline--browser-mask--application/summary.json",
+        "sha256": "fb5de73b2148ecff7f0dbb4f09dd880dfe7e455e768760693ad5606872a34a44"
+      },
+      {
+        "variant": "early-polish",
+        "id": "browser-mask--application",
+        "seconds": 36.220301332999995,
+        "counts": {
+          "left": 4,
+          "right": 7
+        },
+        "nativeError": 0.02746875,
+        "independentError": 0.0273125,
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "earlyPolishComparison": {
+          "counts": [
+            7,
+            4
+          ],
+          "phase": 1,
+          "startedAtSeconds": 28.08150675,
+          "beforeError": 0.03309375,
+          "afterError": 0.0279,
+          "featuresPassed": true,
+          "geometryPassed": true,
+          "paperPassed": true,
+          "accepted": true,
+          "seconds": 1.624254291000001
+        },
+        "extraGridComparisons": 4,
+        "featuresPassed": true,
+        "smallRegions": [
+          {
+            "value": 1,
+            "areaMm2": 5,
+            "centerMm": [
+              96.059375,
+              68.88125
+            ],
+            "retainedFraction": 0.85
+          }
+        ],
+        "summary": "tmp/heart-learning/bauble-segmentation-2026-10-18/early-polish-study/results/early-polish--browser-mask--application/summary.json",
+        "sha256": "c51bd351bf96f619a67e04e9efd20cc93a444fb9088256e372be15d344f705cc"
+      },
+      {
+        "variant": "baseline",
+        "id": "offline-mask--application",
+        "seconds": 33.727696249999994,
+        "counts": {
+          "left": 5,
+          "right": 5
+        },
+        "nativeError": 0.01684375,
+        "independentError": 0.01713125,
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "earlyPolishComparison": null,
+        "extraGridComparisons": 3,
+        "featuresPassed": true,
+        "smallRegions": [
+          {
+            "value": 1,
+            "areaMm2": 5,
+            "centerMm": [
+              96.059375,
+              68.88125
+            ],
+            "retainedFraction": 0.8375
+          }
+        ],
+        "summary": "tmp/heart-learning/bauble-segmentation-2026-10-18/early-polish-study/results/baseline--offline-mask--application/summary.json",
+        "sha256": "7bfc9dd2e4b8920eced5faba4f2bb8dc0edf9f290605966f17a48b585293178a"
+      },
+      {
+        "variant": "early-polish",
+        "id": "offline-mask--application",
+        "seconds": 34.164437791,
+        "counts": {
+          "left": 5,
+          "right": 5
+        },
+        "nativeError": 0.01684375,
+        "independentError": 0.01713125,
+        "templateChecksPassed": true,
+        "geometryPassed": true,
+        "paperStatus": "pass",
+        "earlyPolishComparison": null,
+        "extraGridComparisons": 3,
+        "featuresPassed": true,
+        "smallRegions": [
+          {
+            "value": 1,
+            "areaMm2": 5,
+            "centerMm": [
+              96.059375,
+              68.88125
+            ],
+            "retainedFraction": 0.8375
+          }
+        ],
+        "summary": "tmp/heart-learning/bauble-segmentation-2026-10-18/early-polish-study/results/early-polish--offline-mask--application/summary.json",
+        "sha256": "48d1789dee99e823e89952329e493d27104371e1a1a7d06c214936ea15cd7707"
+      }
+    ],
+    "checkpointDiagnosis": [
+      {
+        "crop": "browser",
+        "phase": -1,
+        "checkpoints": 20,
+        "featurePassingSteps": [],
+        "finalError": 0.01740625,
+        "finalMissing": [
+          {
+            "value": 1,
+            "areaMm2": 5,
+            "centerMm": [
+              96.059375,
+              68.88125
+            ],
+            "retainedFraction": 0
+          }
+        ],
+        "record": "tmp/heart-learning/bauble-segmentation-2026-10-18/early-polish-study/results/baseline--browser-mask--application/five-cut-checkpoints.json",
+        "sha256": "ecb0022b63f797e22c2771c668f469333fccc29f7daedf9577636853312acabd"
+      },
+      {
+        "crop": "browser",
+        "phase": 1,
+        "checkpoints": 21,
+        "featurePassingSteps": [],
+        "finalError": 0.02699375,
+        "finalMissing": [
+          {
+            "value": 1,
+            "areaMm2": 5,
+            "centerMm": [
+              96.059375,
+              68.88125
+            ],
+            "retainedFraction": 0.8375,
+            "enclosureLost": true
+          }
+        ],
+        "record": "tmp/heart-learning/bauble-segmentation-2026-10-18/early-polish-study/results/baseline--browser-mask--application/five-cut-checkpoints.json",
+        "sha256": "ecb0022b63f797e22c2771c668f469333fccc29f7daedf9577636853312acabd"
+      },
+      {
+        "crop": "offline",
+        "phase": -1,
+        "checkpoints": 21,
+        "featurePassingSteps": [],
+        "finalError": 0.017275,
+        "finalMissing": [
+          {
+            "value": 1,
+            "areaMm2": 5,
+            "centerMm": [
+              96.059375,
+              68.88125
+            ],
+            "retainedFraction": 0
+          }
+        ],
+        "record": "tmp/heart-learning/bauble-segmentation-2026-10-18/early-polish-study/results/baseline--offline-mask--application/five-cut-checkpoints.json",
+        "sha256": "49ffc8ad06160d6aebf2a8ded6169685e99fb337dc41fcfd08dae40005dab7fa"
+      },
+      {
+        "crop": "offline",
+        "phase": 1,
+        "checkpoints": 21,
+        "featurePassingSteps": [
+          40,
+          120,
+          160,
+          200,
+          240,
+          280,
+          320,
+          360,
+          400,
+          440,
+          480,
+          520,
+          560,
+          600,
+          640,
+          680,
+          720,
+          749
+        ],
+        "finalError": 0.02115,
+        "finalMissing": [],
+        "record": "tmp/heart-learning/bauble-segmentation-2026-10-18/early-polish-study/results/baseline--offline-mask--application/five-cut-checkpoints.json",
+        "sha256": "49ffc8ad06160d6aebf2a8ded6169685e99fb337dc41fcfd08dae40005dab7fa"
+      }
+    ],
+    "controlPointDeltas": [
+      {
+        "phase": -1,
+        "step": -1,
+        "maxControlPointDeltaMm": 0.3307558013903673,
+        "rmsControlPointDeltaMm": 0.01909862625044374
+      },
+      {
+        "phase": -1,
+        "step": 40,
+        "maxControlPointDeltaMm": 0.7618366528504732,
+        "rmsControlPointDeltaMm": 0.05589450797537597
+      },
+      {
+        "phase": -1,
+        "step": 120,
+        "maxControlPointDeltaMm": 1.0911236193075928,
+        "rmsControlPointDeltaMm": 0.0984710038021948
+      },
+      {
+        "phase": -1,
+        "step": 749,
+        "maxControlPointDeltaMm": 6.153843993629607,
+        "rmsControlPointDeltaMm": 0.5029563152919886
+      },
+      {
+        "phase": 1,
+        "step": -1,
+        "maxControlPointDeltaMm": 1.803119897241011,
+        "rmsControlPointDeltaMm": 0.2532542708410561
+      },
+      {
+        "phase": 1,
+        "step": 40,
+        "maxControlPointDeltaMm": 4.694343956273981,
+        "rmsControlPointDeltaMm": 0.4223855290451999
+      },
+      {
+        "phase": 1,
+        "step": 120,
+        "maxControlPointDeltaMm": 10.336772008580732,
+        "rmsControlPointDeltaMm": 0.869746917535084
+      },
+      {
+        "phase": 1,
+        "step": 749,
+        "maxControlPointDeltaMm": 32.0918129065178,
+        "rmsControlPointDeltaMm": 2.48570884614613
+      }
+    ],
+    "interpretation": "No published five-cut checkpoint on the perturbed mask passes feature fidelity. Negative phase erases the 5 mm\u00b2 region; positive phase retains 83.75% but loses enclosure. The nearby mask preserves enclosure in positive phase. Control parameters already differ by up to 1.803 mm after grid/clearance preparation, before free refinement, and diverge later. These are parameter differences, not visible-boundary displacement. This is search sensitivity rather than final ranking discarding a passing five-cut checkpoint; coarse initialization, fine-grid fitting and clearance have not yet been separated.",
+    "policy": "One bounded full-resolution polish of the first geometry/paper/feature-valid near-threshold candidate, before additional grids. Preserve candidates, acceptance gates and request deadline.",
+    "next": "Actual editable-SVG workflows and strict 33-case browser comparison before adoption.",
+    "record": "tmp/heart-learning/bauble-segmentation-2026-10-18/early-polish-study/results/checkpoint-diagnosis.json",
+    "sha256": "2be1a93ae503214a87fad857de9084b66b5f828b672ce91ed018d44371207e4c"
   }
 }

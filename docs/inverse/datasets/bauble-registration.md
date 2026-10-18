@@ -255,3 +255,36 @@ The served fitter matches the validated source SHA-256. The repeated build chang
 Svelte bundle hashes through its default timestamp version; all 122 inverse source
 files still match byte-for-byte. The in-memory preview is isolated from subsequent
 experimental builds. No push or deployment was made.
+
+
+An isolated early-polishing comparison ran four fresh processes without changing
+production files. It offers one bounded full-resolution polish as soon as a
+feature-complete candidate lies within the existing polish eligibility band,
+before continuing through additional grids. All acceptance checks remain intact.
+
+| Crop | Policy | Independent error | Cuts | Solve and final checks |
+|---|---|---:|---|---:|
+| Perturbed browser crop | Current | 2.809% | 6 + 6 | 106.99 s |
+| Perturbed browser crop | Earlier polish | 2.731% | 4 + 7 | 36.22 s |
+| Nearby earlier crop | Current | 1.713% | 5 + 5 | 33.73 s |
+| Nearby earlier crop | Earlier polish | 1.713% | 5 + 5 | 34.16 s |
+
+All four pass geometry, paper and independently rendered feature checks. The
+trial polishes a 7+4 candidate at 28.08 seconds, reducing error from 3.309% to
+2.790% in 1.62 seconds; finalization returns the transposed 4+7 pair. The nearby
+crop does not activate the new pass. These individual paired runs are not a
+repeated timing distribution. The policy is **not adopted**; actual editable-SVG
+workflows and the broader 33-case comparison are next.
+
+None of the **41 published five-cut checkpoints** for the perturbed mask passes
+feature fidelity. Negative phase erases the small region; positive phase eventually
+retains 83.75% of its colour but loses enclosure. The nearby mask's positive-phase
+run first passes at step 40 and passes at most later checks. Final ranking did not
+discard a passing five-cut checkpoint in this run. Feature audits were performed
+after timing, using coordinates captured by the same instrumentation in both policies.
+
+The positive-phase control coordinates already differ by up to **1.803 mm** after
+grid/clearance preparation, before free refinement, and diverge further later.
+These are corresponding control parameters, not visible-boundary displacements.
+This narrows the search-sensitivity diagnosis but does not yet separate coarse
+initialization, fine-grid fitting and clearance preparation.
