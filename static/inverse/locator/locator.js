@@ -204,7 +204,7 @@ export function createMotifDetector(image,options={}){checkImage(image);const pr
  if(options.refineGrid!==false&&!f.anchored&&f.palette?.colourEvidenceUsed!==false&&quad.every(([x,y])=>x>=0&&y>=0&&x<=image.width-1&&y<=image.height-1)){
   gridRefinement=refinePeriodicGrid(image,quad);
   if(gridRefinement.accepted){
-   if(f.palette||gridRefinement.n===4){
+   if(f.palette||gridRefinement.n===4||gridRefinement.requiresPhysicalOutline){
     const origin=back([0,0]),bx=back([1,0]).map((v,i)=>v-origin[i]),by=back([0,1]).map((v,i)=>v-origin[i]),det=bx[0]*by[1]-bx[1]*by[0];
     const workingQuad=gridRefinement.quad.map(p=>{const x=p[0]-origin[0],y=p[1]-origin[1];return[(x*by[1]-y*by[0])/det,(y*bx[0]-x*bx[1])/det];});
     const audit=auditGridOutline(f,workingQuad,{mode:fit.mode,initialDepths:fit.lobeDepths,scale:work.scale});

@@ -572,3 +572,54 @@ paper and feature validation and stays below **1% error against the known design
 
 Full production, browser and suite validation are next. The local 5232 preview
 continues serving its previously validated snapshot until those checks finish.
+
+
+Actual browser QA found a near-alignment case that the integer-ROI replay missed.
+Pointer mapping supplied `[84.9999888, 40, 299.9999712, 250]` instead of the intended
+integer rectangle. The independently fitted crop stayed within **0.872 px** of
+the known corners, but the lattice correction reduced disagreement from **1.843%
+to 0.349%** and was rejected: its **1.494-point** gain narrowly missed the fixed
+1.5-point cutoff. The resulting editable SVG remained geometrically valid but
+had **1.746%** disagreement with the original import and **0.805%** with the known
+checker. Neither result was a search timeout.
+
+The new criterion retains that absolute-gain route and adds a stricter-quality
+route for already-close crops: initial disagreement must be at least **1%**,
+final disagreement must be below **1%**, and the error must more than halve.
+Every proposal admitted only by this route requires the observed paper-outline
+check, including grids denser than four cells. The border-transition, cell-interior,
+perspective and cap-colour checks still apply. All **six registration tests pass**,
+including three nearly identical fractional selections and a fresh reconstruction.
+The complete replay, browser export checks and inverse suite are being rerun.
+
+The initial browser test also contained a separate QA error: it compared the
+320² raw import directly with the 400² mask after Paint's automatic symmetry edit.
+The corrected check reproduces that documented transfer and verifies exact mask
+and symmetry-setting equality, while continuing to score the editable export
+against the untouched original import and the separately held-out ideal design.
+The first checker passed that complete workflow in **4.24 s**, with **0.205%**
+error against the raw import and **0.016%** against the ideal checker. Timings are
+single runs, and this is not evidence about physical assembly.
+
+
+The revised rule completed all **89 replay inputs**: all 40 real collage crops
+are exactly unchanged, no supported in-photo detection is lost, and no previously
+unsupported input is promoted. Four known crops improve; a fifth changes by
+**0.0041 px** in the worse direction. There is no known regression above 0.5 px.
+The rotated 27° control improves from **1.155 to 0.326 px**, and the neutral-paper
+checker from **1.712 to 0.280 px**. Framed-motif failures remain unresolved.
+
+Both actual browser workflows now pass import, pointer selection, mask transfer,
+solving, editable SVG download and independent geometry/paper checks:
+
+| Fixture | Click to usable result | Export vs raw import | Export vs ideal design |
+|---|---:|---:|---:|
+| Tinted checker | 4.18 s | 0.207% | 0.027% |
+| Lighter checker | 3.83 s | 0.204% | 0.027% |
+
+Both use three cuts per sheet. The lighter checker's previous export errors were
+**1.746% / 0.805%** respectively. Visual review confirms that its slightly distorted
+cells are now regular; the error measurements come from the exported geometry,
+not the screenshot. Typecheck, lint, **874 application tests** (one existing skip),
+build, crop replay and browser QA pass. The full inverse suite is still running;
+the public preview is deliberately unchanged until that result is known.

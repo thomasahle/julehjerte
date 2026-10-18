@@ -55,6 +55,21 @@ test('a photographic checker lattice cannot replace missing paper lobes',()=>{
   assert.deepEqual(fields.paper,before);
 });
 
+test('fractional selection coordinates retain a useful near-aligned checker correction',async()=>{
+  const source=await shadedChecker([190,180,175]);
+  let relativeCorrection=false;
+  for(const delta of [-.00001,0,.00001]){
+    const selection=[roi[0]+delta,roi[1],roi[2]+3*delta,roi[3]];
+    const crop=detectHeartCrops(source,{roi:selection}).candidates[0];
+    assert.ok(crop&&supportedCropOutline(crop.locator));
+    assert.ok(maximumError(crop.quad)<.8,'Tiny pointer rounding must not leave a shifted grid.');
+    const grid=crop.locator.gridRefinement;
+    assert.equal(grid.accepted,true);assert.equal(grid.physicalOutline.passed,true);
+    relativeCorrection ||= grid.requiresPhysicalOutline;
+  }
+  assert.equal(relativeCorrection,true,'Exercise the correction below the old absolute-gain cutoff.');
+});
+
 test('non-checker artwork keeps the independently fitted physical corners',()=>{
   const source=heartPhoto(),ctx=source.canvas.getContext('2d');ctx.save();ctx.transform(85,75,-85,75,190,80);
   ctx.fillStyle='#f3f1e8';ctx.fillRect(0,0,1,1);ctx.fillStyle='#b71327';ctx.beginPath();ctx.arc(.5,.5,.3,0,2*Math.PI);ctx.fill();ctx.restore();

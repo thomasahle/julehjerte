@@ -2948,7 +2948,7 @@
       "next": "Evaluate the existing checker-lattice registration with four-cell hypotheses; its current minimum of five excludes these controls. Photometric acceptance alone must not bypass a physical-outline check."
     },
     "fourCellGridRegistration": {
-      "status": "Implemented in the worktree after focused tests; full production/browser validation pending",
+      "status": "Production source and browser workflows validated; full inverse suite running. Public preview remains the previous snapshot.",
       "initialPhotometricExperiment": {
         "path": "tmp/heart-learning/bauble-segmentation-2026-10-18/frame-edge-study/four-cell-lattice-results/results.json",
         "sha256": "c54a1f971892bbc0774f4c744d64a2880221609c047aaa093dd1e6698917eac7"
@@ -3036,7 +3036,165 @@
         "log": "tmp/heart-learning/bauble-segmentation-2026-10-18/frame-edge-study/production-draft/focused.log",
         "scope": "Five new regressions cover deep four-cell photos, a false checker lacking lobes, non-checker stability and fresh independent template reconstruction below 1% known-design error. Existing RGB/bauble/clipped-tip and body-only adapter tests also pass."
       },
-      "next": "Recheck the production copy against all 89 recorded proposals, run actual uploads and editable-SVG checks in a private browser, and complete check/lint/application/full-inverse/build validation. Keep public 5232 on its validated previous snapshot until those checks pass."
+      "next": "Recheck the production copy against all 89 recorded proposals, run actual uploads and editable-SVG checks in a private browser, and complete check/lint/application/full-inverse/build validation. Keep public 5232 on its validated previous snapshot until those checks pass.",
+      "relativeNearAlignment": {
+        "policy": "Retain absolute gain >1.5 percentage points. Also allow initial error >=1%, final error <1%, and more than halving error, requiring physical outline validation for this additional route regardless of cell count.",
+        "motivation": "Browser pointer rounding changed the selected seed enough to miss the absolute-gain cutoff. The held-out checker design remained useful for identifying downstream crop errors.",
+        "focusedTests": {
+          "passed": 6,
+          "milliseconds": 11501.144875
+        },
+        "replay": {
+          "path": "tmp/heart-learning/bauble-segmentation-2026-10-18/frame-edge-study/relative-grid-replay/results.json",
+          "sha256": "ce3c7bc0ec420fd0636b4549d6d5e7629aca0746e5a595727489f234f97f6724",
+          "inputs": 89,
+          "realCollageUnchanged": 40,
+          "changedCases": [
+            {
+              "id": "broad-study/rotated-27",
+              "previousCornerErrorPx": 1.1550767986508186,
+              "cornerErrorPx": 0.32553008589219595
+            },
+            {
+              "id": "targeted-study/01-tinted-checker",
+              "previousCornerErrorPx": 1.2579896647451387,
+              "cornerErrorPx": 0.3782335118152322
+            },
+            {
+              "id": "targeted-study/03-tinted-dim-checker",
+              "previousCornerErrorPx": 0.6293323077298797,
+              "cornerErrorPx": 0.3740399993226072
+            },
+            {
+              "id": "targeted-study/05-neutral-checker",
+              "previousCornerErrorPx": 1.7119643963102602,
+              "cornerErrorPx": 0.2804371639779995
+            },
+            {
+              "id": "targeted-study/09-tinted-checker",
+              "previousCornerErrorPx": 0.369260032715311,
+              "cornerErrorPx": 0.3733407746970702
+            }
+          ],
+          "lostSupportedInPhoto": 0,
+          "unsupportedPromotions": 0,
+          "knownCornerRegressionsOverHalfPixel": 0
+        },
+        "browser": {
+          "path": "tmp/heart-learning/bauble-segmentation-2026-10-18/frame-edge-study/relative-grid-production/browser/results.json",
+          "sha256": "afecd8915f99c243b630581de54e4094aa0de000f436230fc0d946f8fe1c88af",
+          "rows": [
+            {
+              "id": "09-tinted-checker",
+              "status": "workflow-passed",
+              "sourceSha256": "fc5d46fd0ea76a311697b1a07b058faac7148589f4ea8dec07d0547b936ef5e3",
+              "cornerError": 0.3728941416987618,
+              "maskTransfer": {
+                "importResolution": 320,
+                "solverResolution": 400,
+                "detectedSymmetry": {
+                  "curve": "off",
+                  "lobe": "anti",
+                  "lobes": "sym"
+                },
+                "transforms": [
+                  "rotate180",
+                  "transpose"
+                ],
+                "symmetryEditFraction": 0.0015
+              },
+              "editableError": 0.0020703125,
+              "editableIdealError": 0.0002734375,
+              "seconds": 4.184099999904633,
+              "slits": {
+                "left": 3,
+                "right": 3
+              },
+              "geometryPassed": true,
+              "paperStatus": "pass"
+            },
+            {
+              "id": "11-lighter-background-checker",
+              "status": "workflow-passed",
+              "sourceSha256": "642db793e85eed198c89dff07305fd76ce24577222aa4086cbcdba1892c3b0f2",
+              "cornerError": 0.3558918042850931,
+              "maskTransfer": {
+                "importResolution": 320,
+                "solverResolution": 400,
+                "detectedSymmetry": {
+                  "curve": "off",
+                  "lobe": "anti",
+                  "lobes": "sym"
+                },
+                "transforms": [
+                  "rotate180",
+                  "transpose"
+                ],
+                "symmetryEditFraction": 0.00145
+              },
+              "editableError": 0.002041015625,
+              "editableIdealError": 0.0002734375,
+              "seconds": 3.8327000000476836,
+              "slits": {
+                "left": 3,
+                "right": 3
+              },
+              "geometryPassed": true,
+              "paperStatus": "pass"
+            }
+          ],
+          "qaTransfer": "Check the exact imported-mask enlargement and detected-symmetry edit before solving; score exported SVG against the raw import and the held-out ideal design.",
+          "scope": "Two fixed photographic fixtures; pointer-selected rough rectangles; default solve settings; freshly exported editable SVG; independent geometry and paper audit. Not physically assembled."
+        },
+        "validation": {
+          "completedStages": [
+            {
+              "name": "check",
+              "status": "passed",
+              "seconds": 8.768949625
+            },
+            {
+              "name": "lint",
+              "status": "passed",
+              "seconds": 7.372368708999998
+            },
+            {
+              "name": "application",
+              "status": "passed",
+              "seconds": 45.677882209
+            },
+            {
+              "name": "build",
+              "status": "passed",
+              "seconds": 15.808978957999992
+            },
+            {
+              "name": "crop-replay",
+              "status": "passed",
+              "seconds": 185.76214120799997
+            },
+            {
+              "name": "browser",
+              "status": "passed",
+              "seconds": 18.39010812499997
+            }
+          ],
+          "applicationTests": {
+            "passed": 874,
+            "skipped": 1
+          },
+          "inverse": "Running; no result claimed.",
+          "stateFile": "tmp/heart-learning/bauble-segmentation-2026-10-18/frame-edge-study/relative-grid-production/state.json",
+          "sourcePins": {
+            "path": "tmp/heart-learning/bauble-segmentation-2026-10-18/frame-edge-study/relative-grid-production/source-pins.json",
+            "sha256": "b5449624c3137f2fe0aa8f94b15876e9bc14ced53833068b10c20bcf6009a822"
+          }
+        },
+        "preservedFailures": {
+          "initialMaskResolutionAssertion": "tmp/heart-learning/bauble-segmentation-2026-10-18/frame-edge-study/grid-production/browser/results.json",
+          "fractionalRoiExportMismatch": "tmp/heart-learning/bauble-segmentation-2026-10-18/frame-edge-study/grid-production-followup-3/browser/results.json"
+        }
+      }
     }
   },
   "fitterSensitivity": {
