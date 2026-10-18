@@ -64,7 +64,7 @@ export function entries() {
 export const load: PageLoad = async ({ params }) => {
 	// Imported lazily so the ~330 KB of design data gets its own cacheable chunk.
 	const { getGalleryDesign } = await import('$lib/data/heartDesigns');
-	// Same reason: 55 hearts × two languages of prose (hearts.json's descriptions)
+	// Same reason: 55 hearts × two languages of prose (heart-descriptions.json)
 	// belong in that chunk, not in the bundle every page of the site loads.
 	const { heartDescription } = await import('$lib/data/heartDescriptions');
 

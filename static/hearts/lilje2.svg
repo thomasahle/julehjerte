@@ -19,6 +19,8 @@
    xmlns:dc="http://purl.org/dc/elements/1.1/">
   <title
      id="title1">Lilje 2</title>
+  <desc xml:lang="da">En større udgave af spejderliljen med flere detaljer i bladene og et felt af tern omkring. Syv striber i hver halvdel, og to femtedele af klippene er buer. Halvdelene er spejlvendte, så der er kun én skabelon. Sværhedsgraden er ekspert: mange af felterne er smallere end en stribe, og de tåler ikke, at papiret trækkes skævt under klipningen.</desc>
+  <desc xml:lang="en">A larger version of the scout lily with more detail in the leaves and a field of checks around it. Seven strips in each half, and two fifths of the cuts are curves. The halves mirror each other, so there is only one template. It is rated expert: many of the fields are narrower than a strip, and they will not survive the paper being pulled out of shape while you cut.</desc>
   <sodipodi:namedview
      id="namedview1"
      pagecolor="#ffffff"

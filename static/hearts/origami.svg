@@ -1,5 +1,7 @@
 <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" data-weave-parity="1" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
   <title>Origami</title>
+  <desc xml:lang="da">Et origami-mønster af kvadrattwist: folder løber begge veje, og hvor to folder krydser, er et lille kvadrat drejet rundt. Syv striber i hver halvdel, alle klip lige med små knæk ved hvert twist. Den ene halvdel er den anden drejet en kvart omgang, så én skabelon dækker begge. Sværhedsgraden er svær; klip knækkene præcist, ellers lukker de små kvadrater ikke.</desc>
+  <desc xml:lang="en">An origami square-twist tessellation: pleats run both ways, and where two pleats cross, a small square is twisted round. Seven strips in each half, every cut straight with small bends at each twist. One half is the other turned a quarter, so one template covers both. It is rated hard; cut the bends precisely, or the small squares will not close.</desc>
   <desc></desc>
   <metadata>
     <rdf:RDF>

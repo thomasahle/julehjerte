@@ -10,6 +10,14 @@ describe('heart descriptions', () => {
 		expect(Object.keys(HEART_DESCRIPTIONS).sort()).toEqual([...ALL_HEART_IDS].sort());
 	});
 
+	// heart-descriptions.json is generated from the SVGs' <desc xml:lang> elements
+	// (heartSvgDescriptions.test.ts checks it against them); here only its shape.
+	it('holds exactly a da and an en paragraph per heart', () => {
+		for (const [id, entry] of Object.entries(HEART_DESCRIPTIONS)) {
+			expect(Object.keys(entry).sort(), id).toEqual(LANGUAGES.slice().sort());
+		}
+	});
+
 	it.each(ALL_HEART_IDS)('has a written paragraph for %s in both languages', (id) => {
 		for (const lang of LANGUAGES) {
 			const text = heartDescription(id, lang);

@@ -5,7 +5,8 @@
 
 ## Adding a heart
 
-One SVG in `static/hearts/` and one entry in `hearts.json` in the project root, then
+One SVG in `static/hearts/` (with its Danish and English description written into it)
+and one id in `hearts.json` in the project root, then
 `npm run generate:heart-data` — the steps are in [docs/ADDING-A-HEART.md](docs/ADDING-A-HEART.md).
 
 

@@ -1,4 +1,4 @@
-import type { Finger, GridSize, HeartDesign, HeartDesignJson, LobeId, NodeType, Vec } from '$lib/types/heart';
+import type { Finger, GridSize, HeartDescriptions, HeartDesign, HeartDesignJson, LobeId, NodeType, Vec } from '$lib/types/heart';
 import { STRIP_WIDTH, BASE_CENTER, MIN_GRID_SIZE, MAX_GRID_SIZE } from '$lib/constants';
 import { clamp, clampInt } from '$lib/utils/math';
 import {
@@ -285,6 +285,22 @@ function normalizeFinger(raw: unknown, gridSize: GridSize): Finger | null {
   return null;
 }
 
+/**
+ * The written paragraphs in each site language, or `undefined` when there are
+ * none. Anything that is not a non-empty string for `da` or `en` is dropped, so
+ * hearts saved before the field existed (or a hand-edited file) load as before.
+ */
+function normalizeDescriptions(raw: unknown): HeartDescriptions | undefined {
+  if (!raw || typeof raw !== 'object') return undefined;
+  const r = raw as Record<string, unknown>;
+  const out: HeartDescriptions = {};
+  for (const lang of ['da', 'en'] as const) {
+    const text = typeof r[lang] === 'string' ? (r[lang] as string).trim() : '';
+    if (text) out[lang] = text;
+  }
+  return out.da || out.en ? out : undefined;
+}
+
 export function normalizeHeartDesign(raw: unknown): HeartDesign | null {
   if (!raw || typeof raw !== 'object') return null;
   const r = raw as RawDesign;
@@ -301,6 +317,7 @@ export function normalizeHeartDesign(raw: unknown): HeartDesign | null {
   const source = typeof r.source === 'string' && r.source.trim() ? r.source.trim() : undefined;
   const date = typeof r.date === 'string' && r.date.trim() ? r.date.trim() : undefined;
   const description = typeof r.description === 'string' ? r.description : undefined;
+  const descriptions = normalizeDescriptions(r.descriptions);
   const weaveParity = normalizeWeaveParity(r.weaveParity);
   // Absent or malformed colours leave the heart on the site-wide pair.
   const colors = parseHeartColors(r.colors);
@@ -336,6 +353,7 @@ export function normalizeHeartDesign(raw: unknown): HeartDesign | null {
     source,
     date,
     description,
+    descriptions,
     weaveParity,
     colors,
     gridSize: inferredGrid,
@@ -380,6 +398,7 @@ export function serializeHeartDesign(design: HeartDesign): HeartDesignJson {
     source: design.source,
     date: design.date,
     description: design.description,
+    descriptions: design.descriptions,
     weaveParity: design.weaveParity ?? 0,
     colors: design.colors,
     gridSize: design.gridSize,
@@ -449,6 +468,12 @@ export function serializeHeartToSVG(design: HeartDesign): string {
     `<svg ${attrs.join(' ')}>`,
     `  <title>${escapeXml(design.name)}</title>`
   ];
+  // The paragraphs per site language, right after the title. Written even when
+  // empty, so an exported file shows where a gallery heart's texts go
+  // (docs/ADDING-A-HEART.md).
+  for (const lang of ['da', 'en'] as const) {
+    lines.push(`  <desc xml:lang="${lang}">${escapeXml(design.descriptions?.[lang] ?? '')}</desc>`);
+  }
   if (design.description) {
     lines.push(`  <desc>${escapeXml(design.description)}</desc>`);
   }
@@ -1030,7 +1055,17 @@ export function parseHeartFromSVG(svgText: string, filename?: string): HeartDesi
 
   // Extract metadata - check both standard SVG elements and Dublin Core (Inkscape) format
   const titleEl = svg.querySelector('title');
-  const descEl = svg.querySelector('desc');
+  // A plain `<desc>` is the legacy one-line summary (`description`); the ones
+  // with an `xml:lang` are the written paragraphs per site language
+  // (`descriptions`), which a gallery SVG carries right after its `<title>`.
+  const XML_NS = 'http://www.w3.org/XML/1998/namespace';
+  const descEls = Array.from(svg.getElementsByTagName('desc'));
+  const descLang = (el: Element): string =>
+    el.getAttributeNS(XML_NS, 'lang') || el.getAttribute('xml:lang') || '';
+  const descEl = descEls.find((el) => !descLang(el));
+  const descriptions = normalizeDescriptions(
+    Object.fromEntries(descEls.filter((el) => descLang(el)).map((el) => [descLang(el), el.textContent]))
+  );
 
   // Dublin Core metadata (used by Inkscape) - need to use namespace-aware methods
   const DC_NS = 'http://purl.org/dc/elements/1.1/';
@@ -1406,6 +1441,7 @@ export function parseHeartFromSVG(svgText: string, filename?: string): HeartDesi
     source,
     date,
     description,
+    descriptions,
     weaveParity,
     colors,
     gridSize: inferredGrid,

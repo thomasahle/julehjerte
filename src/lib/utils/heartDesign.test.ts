@@ -95,6 +95,54 @@ describe('heartDesign round trips', () => {
     expect(parseHeartFromSVG(svg, 'grid-test.svg')!.colors).toEqual(design.colors);
   });
 
+  it('keeps the written paragraphs through SVG export/import and through JSON', () => {
+    const descriptions = {
+      da: 'Et hjerte med <tre> striber & "citater". Klip lige.',
+      en: 'A heart with <three> strips & "quotes". Cut straight.'
+    };
+    const design: HeartDesign = { ...makeGridDesign(3), description: 'One-liner', descriptions };
+
+    const svg = serializeHeartToSVG(design);
+    expect(svg).toContain('<desc xml:lang="da">Et hjerte med &lt;tre&gt; striber &amp; &quot;citater&quot;. Klip lige.</desc>');
+    // Right after the title, before the legacy plain <desc>.
+    expect(svg.indexOf('<title>')).toBeLessThan(svg.indexOf('<desc xml:lang="da">'));
+    expect(svg.indexOf('<desc xml:lang="en">')).toBeLessThan(svg.indexOf('<desc>One-liner</desc>'));
+    const parsed = parseHeartFromSVG(svg, 'grid-test.svg')!;
+    expect(parsed.descriptions).toEqual(descriptions);
+    // The legacy summary is still the plain <desc>, not the first paragraph.
+    expect(parsed.description).toBe('One-liner');
+    // Import → export → import is stable.
+    expect(serializeHeartToSVG(parsed)).toContain('<desc xml:lang="en">A heart with &lt;three&gt;');
+    expect(parseHeartFromSVG(serializeHeartToSVG(parsed), 'again.svg')!.descriptions).toEqual(descriptions);
+
+    const json = serializeHeartDesign(design);
+    expect(normalizeHeartDesign(JSON.parse(JSON.stringify(json)) as unknown)!.descriptions).toEqual(
+      descriptions
+    );
+  });
+
+  it('writes empty desc placeholders for a heart without paragraphs, and reads them as none', () => {
+    const design = makeGridDesign(3);
+    const svg = serializeHeartToSVG(design);
+    expect(svg).toContain('<desc xml:lang="da"></desc>');
+    expect(svg).toContain('<desc xml:lang="en"></desc>');
+    const parsed = parseHeartFromSVG(svg, 'grid-test.svg')!;
+    expect(parsed.descriptions).toBeUndefined();
+    expect(parsed.description).toBeUndefined();
+  });
+
+  it('loads a saved heart without descriptions, and drops malformed ones', () => {
+    const json = serializeHeartDesign(makeGridDesign(3));
+    const { descriptions: _omitted, ...legacy } = json;
+    expect(normalizeHeartDesign(legacy)!.descriptions).toBeUndefined();
+    for (const bad of ['text', 42, { da: 3 }, { da: '  ', en: '' }]) {
+      expect(normalizeHeartDesign({ ...json, descriptions: bad })!.descriptions, JSON.stringify(bad)).toBeUndefined();
+    }
+    expect(normalizeHeartDesign({ ...json, descriptions: { da: ' Kun dansk ', fr: 'x' } })!.descriptions).toEqual({
+      da: 'Kun dansk'
+    });
+  });
+
   it('leaves a heart without colours on the site-wide pair', () => {
     const design = makeGridDesign(3);
     expect(serializeHeartDesign(design).colors).toBeUndefined();

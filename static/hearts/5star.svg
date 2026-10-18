@@ -17,6 +17,8 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <desc xml:lang="da">Omridset af en femtakket stjerne, tegnet som en tynd rød streg på hvid bund. Fem striber i hver halvdel, og alle klip er lige, men stjernens spidser giver omkring halvtreds knæk at følge. Halvdelene er spejlvendte, så én skabelon dækker begge. Sværhedsgraden ligger i klipningen: de tynde stregstykker knækker let i tyndt papir.</desc>
+  <desc xml:lang="en">The outline of a five-pointed star drawn as a thin red line on white. Five strips in each half, and every cut is straight, but the points of the star add some fifty turns to follow. The halves mirror each other, so one template covers both. The difficulty is all in the cutting: the thin parts of the outline tear easily in thin paper.</desc>
   <metadata>
     <rdf:RDF>
       <cc:Work rdf:about="">

@@ -38,6 +38,12 @@ export type FingerPathData = {
   nodeTypes?: Record<string, NodeType>;
 };
 
+/** A heart's paragraph per site language; either may be missing. */
+export interface HeartDescriptions {
+  da?: string;
+  en?: string;
+}
+
 export interface HeartDesign {
   id: string;
   name: string;
@@ -48,6 +54,10 @@ export interface HeartDesign {
   source?: string;
   date?: string;
   description?: string;
+  // The written paragraphs in each site language. A gallery SVG carries them as
+  // `<desc xml:lang="da">` / `<desc xml:lang="en">`; hearts drawn in the editor
+  // and everything saved before the field existed have none.
+  descriptions?: HeartDescriptions;
   // Parity base for the overlap weave. `0` means top-left cell has left lobe on top.
   // This may flip when adding/removing strips on the top/left to keep existing cells stable.
   weaveParity?: 0 | 1;

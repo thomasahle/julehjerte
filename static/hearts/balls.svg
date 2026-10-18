@@ -14,6 +14,8 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg" data-weave-parity="0" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
   <title>Polka</title>
+  <desc xml:lang="da">Hvide cirkler i skiftende størrelser fordelt over den røde flade. Syv striber i hver halvdel, og næsten halvdelen af klippene er buer, fordi hver prik skæres ud af to nabostriber. Halvdelene er spejlvendte, så der er kun én skabelon. Det er en ekspertskabelon: prikkerne gør striberne smalle mellem hullerne, så papiret skal være fast.</desc>
+  <desc xml:lang="en">White circles in varying sizes spread across the red ground. Seven strips in each half, and nearly half the cuts are curves, because each dot is carved out of two neighbouring strips. The halves mirror each other, so there is only one template. This is an expert template: the dots leave the strips narrow between the holes, so the paper needs to be firm.</desc>
   <desc>Polka prikker</desc>
   <metadata>
     <rdf:RDF>

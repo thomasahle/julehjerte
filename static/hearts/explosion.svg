@@ -1,5 +1,7 @@
 <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" data-weave-parity="0" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
   <title>Eksplosion</title>
+  <desc xml:lang="da">Røde kiler, der stråler ud fra et lille ternet felt i midten. Fem striber i hver halvdel, alle klippet som lige linjer, der bare ikke er parallelle; det er hældningen, der giver strålerne. Halvdelene er spejlvendte, og én skabelon dækker begge. Trods de fem striber er hjertet let, for der er ikke et eneste knæk at ramme.</desc>
+  <desc xml:lang="en">Red wedges radiating from a small checked field at the centre. Five strips in each half, all cut as straight lines that simply are not parallel; the taper is what makes the rays. The halves mirror each other, and one template covers both. Despite the five strips the heart is easy, because there is not a single corner to hit.</desc>
   <desc>Strålende farver fra midten der skyder ud i alle retninger.</desc>
   <metadata>
     <rdf:RDF>

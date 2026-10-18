@@ -491,6 +491,9 @@
       source: initialDesign?.source,
       date: initialDesign?.date,
       description: sanitizeHtml(description) || undefined,
+      // The written paragraphs of a gallery heart (or an imported file) are not
+      // edited here; they ride along so "Eksportér SVG" writes them back.
+      descriptions: initialDesign?.descriptions,
       weaveParity: currentWeaveParity,
       // A heart keeps only the colours the visitor picked; one that was never
       // touched follows the site-wide pair, as the gallery hearts do.

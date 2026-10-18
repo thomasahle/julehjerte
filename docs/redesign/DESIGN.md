@@ -345,7 +345,8 @@ strips of the two pieces match, in print as on the laser.
 
 The panel used to repeat the five weaving steps as numbered green circles. It does not any more (the owner's
 decision): the steps live only on `/saadan-goer-du/`, and every gallery heart carries a written paragraph of
-its own instead, in both languages, beside its id in the project root's `hearts.json` (served by
+its own instead, in both languages, written into its SVG as `<desc xml:lang="da">` and
+`<desc xml:lang="en">` (collected into the generated `heart-descriptions.json` and served by
 `$lib/data/heartDescriptions`; see docs/ADDING-A-HEART.md) — what the woven pattern shows, the
 strip count and whether the cuts are straight or curved, the symmetry, the difficulty and one practical tip,
 in two to four plain sentences. The detail route resolves the paragraph for the URL's language in its `load`,

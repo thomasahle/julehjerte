@@ -12,6 +12,12 @@
  *                                    parsing SVG in the browser
  *   src/lib/data/heart-meta.json     name/author/description/date/grid size/difficulty/
  *                                    symmetry/photo per heart for head tags and headers
+ *   src/lib/data/heart-descriptions.json
+ *                                    the two written paragraphs per heart, {id: {da, en}},
+ *                                    from the SVG's <desc xml:lang="da"> / <desc
+ *                                    xml:lang="en">. Loaded lazily by the detail page
+ *                                    only ($lib/data/heartDescriptions); the generator
+ *                                    fails if a gallery SVG lacks either language
  *   src/lib/data/heart-cards.json    the two fields a gallery card needs in the browser,
  *                                    name and difficulty. A subset of heart-meta.json, so
  *                                    it cannot drift from it, but a twentieth of the size:
@@ -43,6 +49,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const heartsJsonPath = path.join(root, 'hearts.json');
 const metaPath = path.join(root, 'src/lib/data/heart-meta.json');
 const cardsPath = path.join(root, 'src/lib/data/heart-cards.json');
+const descriptionsPath = path.join(root, 'src/lib/data/heart-descriptions.json');
 const designsPath = path.join(root, 'src/lib/data/heart-designs.json');
 const svgDir = path.join(root, 'static/hearts');
 const photoDir = path.join(root, 'static/hearts/photos');
@@ -202,7 +209,7 @@ try {
   const { renderHeartSvgInline } = await server.ssrLoadModule('/src/lib/rendering/heartSvg.ts');
 
   const heartsData = JSON.parse(fs.readFileSync(heartsJsonPath, 'utf8'));
-  const ids = heartsData.categories.flatMap((category) => category.hearts.map((heart) => heart.id));
+  const ids = heartsData.categories.flatMap((category) => category.hearts);
 
   // The parser logs a warning per skipped path; keep the build output readable.
   const originalWarn = console.warn;
@@ -210,6 +217,7 @@ try {
 
   const meta = {};
   const designs = {};
+  const descriptions = {};
   try {
     for (const id of ids) {
       const svgPath = path.join(svgDir, `${id}.svg`);
@@ -220,8 +228,19 @@ try {
       if (!parsed) {
         throw new Error(`Failed to parse ${path.relative(root, svgPath)}`);
       }
+      // The written paragraphs go to heart-descriptions.json only, so the
+      // designs and the metadata every page loads stay without the prose.
+      const { descriptions: written, ...withoutDescriptions } = parsed;
+      const missing = ['da', 'en'].filter((lang) => !written?.[lang]);
+      if (missing.length) {
+        throw new Error(
+          `${path.relative(root, svgPath)} has no <desc xml:lang="${missing.join('"> or <desc xml:lang="')}"> ` +
+            'text (see docs/ADDING-A-HEART.md)'
+        );
+      }
+      descriptions[id] = { da: written.da, en: written.en };
       // Derive the metadata from the rounded design so both files agree.
-      const design = roundDesign(parsed);
+      const design = roundDesign(withoutDescriptions);
       designs[id] = design;
       const symmetry = detectSymmetry(design.fingers);
       meta[id] = {
@@ -256,12 +275,14 @@ try {
   const metaChanged = writeIfChanged(metaPath, `${JSON.stringify(meta, null, 2)}\n`);
   const cardsChanged = writeIfChanged(cardsPath, `${JSON.stringify(cards, null, 2)}\n`);
   const designsChanged = writeIfChanged(designsPath, formatDesigns(designs));
+  const descriptionsChanged = writeIfChanged(descriptionsPath, `${JSON.stringify(descriptions, null, 2)}\n`);
   const withPhoto = Object.values(meta).filter((m) => m.photo).length;
   console.log(
     `heart-data: ${ids.length} hearts (${withPhoto} with photo) -> ` +
       `${path.relative(root, metaPath)}${metaChanged ? '' : ' (unchanged)'}, ` +
       `${path.relative(root, cardsPath)}${cardsChanged ? '' : ' (unchanged)'}, ` +
-      `${path.relative(root, designsPath)}${designsChanged ? '' : ' (unchanged)'}`
+      `${path.relative(root, designsPath)}${designsChanged ? '' : ' (unchanged)'}, ` +
+      `${path.relative(root, descriptionsPath)}${descriptionsChanged ? '' : ' (unchanged)'}`
   );
 
   // Open Graph images. Not committed (static/og is gitignored); stale files from
