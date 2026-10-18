@@ -66,7 +66,7 @@ jobs:
         run: node --test --test-concurrency=1 scripts/inverse/short-return-audits.test.mjs scripts/inverse/self-return-projection.test.mjs scripts/inverse/final-return-repair.test.mjs scripts/inverse/curved-contact-recovery.test.mjs scripts/inverse/clearance-routing.test.mjs
       - name: Replay explicit fitting and paper verification allowances
         if: inputs.mode == 'budgets'
-        run: node --test --test-concurrency=1 scripts/inverse/clearance-feature-budget.test.mjs scripts/inverse/clearance-feature-late.test.mjs scripts/inverse/clearance-feature.test.mjs scripts/inverse/feature-finalists.test.mjs scripts/inverse/feature-near-miss.test.mjs scripts/inverse/weak-feature-routing.test.mjs scripts/inverse/paper-rollback.test.mjs scripts/inverse/late-cleanup.test.mjs
+        run: node --test --test-concurrency=1 scripts/inverse/recovered-paper-candidate.test.mjs scripts/inverse/incomplete-paper-alternative.test.mjs scripts/inverse/clearance-feature-budget.test.mjs scripts/inverse/clearance-feature-late.test.mjs scripts/inverse/clearance-feature.test.mjs scripts/inverse/feature-finalists.test.mjs scripts/inverse/feature-near-miss.test.mjs scripts/inverse/weak-feature-routing.test.mjs scripts/inverse/paper-rollback.test.mjs scripts/inverse/late-cleanup.test.mjs
       - name: Verify retained paper alternatives at their actual lattice
         if: inputs.mode == 'paper-finalists'
         run: node --test --test-concurrency=1 scripts/inverse/paper-resolution-finalist.test.mjs scripts/inverse/recovered-paper-candidate.test.mjs scripts/inverse/incomplete-paper-alternative.test.mjs scripts/inverse/junction-routing.test.mjs scripts/inverse/clearance-routing.test.mjs
