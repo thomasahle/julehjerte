@@ -3,15 +3,15 @@
  * fits in a search result, and is built from whole sentences where it can be.
  */
 import { describe, expect, it } from 'vitest';
-import heartsData from '$lib/data/hearts.json';
 import heartMeta from '$lib/data/heart-meta.json';
+import { ALL_HEART_IDS } from '$lib/data/categories';
 import { heartDescription } from '$lib/data/heartDescriptions';
 import { META_DESCRIPTION_MAX, heartMetaDescription } from './seo';
 import { t, type Language } from '$lib/i18n';
 
 type Meta = { name: string; gridSize: { x: number; y: number } };
 const META = heartMeta as unknown as Record<string, Meta>;
-const IDS = heartsData.categories.flatMap((c) => c.hearts);
+const IDS = ALL_HEART_IDS;
 const LANGS: Language[] = ['da', 'en'];
 
 /** What the heart page passes for a gallery heart. */

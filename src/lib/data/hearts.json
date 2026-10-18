@@ -2,23 +2,413 @@
   "categories": [
     {
       "id": "klassiske",
-      "hearts": ["classic-3x3", "ramme", "gaver", "jul"]
+      "hearts": [
+        {
+          "id": "classic-3x3",
+          "description": {
+            "da": "Det traditionelle danske julehjerte. Tre lige striber i hver halvdel giver et 3 × 3-felt med skiftevis røde og hvide firkanter, og halvdelene er spejlvendte, så én skabelon dækker begge. Klippene er helt lige, og hjertet er det letteste i galleriet. Flet den nederste stribe helt igennem, før du begynder på den næste.",
+            "en": "The traditional Danish woven heart. Three straight strips in each half weave into a 3 × 3 field of alternating red and white squares, and the halves mirror each other, so one template covers both. The cuts are perfectly straight, and this is the easiest heart in the gallery. Weave the bottom strip all the way through before starting the next one."
+          }
+        },
+        {
+          "id": "ramme",
+          "description": {
+            "da": "En ramme af røde buer omkring et åbent midterfelt. De fem striber i hver halvdel er klippet i bløde buer i stedet for lige linjer, og det er dem, der gør rammen let skæv. Halvdelene er spejlvendte, så én skabelon er nok. Sværhedsgraden er mellem; klip hver bue i ét træk, så kanten bliver jævn.",
+            "en": "A frame of red arcs around an open middle. The five strips in each half are cut as soft curves rather than straight lines, and that is what leaves the frame slightly lopsided. The halves mirror each other, so one template is enough. Medium difficulty: cut each curve in a single stroke to keep the edge even."
+          }
+        },
+        {
+          "id": "gaver",
+          "description": {
+            "da": "Fire større røde felter mellem smalle bånd, så mønsteret læses som fire små gaver med snor omkring. Alle seks striber i hver halvdel er lige, så klipningen er enkel, men antallet af striber gør flettingen langsommere. Halvdelene er spejlvendte, og én skabelon dækker begge. Hold øje med over-under-rytmen stribe for stribe; en enkelt fejl forskyder hele mønsteret.",
+            "en": "Four larger red fields between narrow bands, so the pattern reads as four small parcels tied with string. All six strips in each half are straight, which keeps the cutting simple, but the number of strips makes the weaving slower. The halves mirror each other, and one template covers both. Watch the over-under rhythm strip by strip; a single mistake shifts the whole pattern."
+          }
+        },
+        {
+          "id": "jul",
+          "description": {
+            "da": "Det danske ord JUL skrevet med hvide bogstaver hen over et rødt 5 × 5-felt. Bogstaverne kræver, at de to halvdele klippes forskelligt, så hjertet har to skabeloner, en til hver side. Fem striber i hver halvdel, men med mange små knæk undervejs, og det er dem, der gør hjertet svært. Gerth Stølting Brodal har flere hjerter med tekst på brodal.dk.",
+            "en": "The Danish word JUL, meaning Christmas, spelled in white across a red 5 × 5 field. The lettering means the two halves are cut differently, so the heart comes with two templates, one per side. Five strips in each half, but with a great many short turns along the way, and those are what make it hard. Gerth Stølting Brodal has more lettered hearts at brodal.dk."
+          }
+        }
+      ]
     },
     {
       "id": "stjerner",
-      "hearts": ["stjerne", "stjerne-ramme", "5star", "simple-5star", "sun", "explosion", "nihon", "davidsstjerne-circ", "david4", "khatam", "stjernegitter", "stjernerogkors"]
+      "hearts": [
+        {
+          "id": "stjerne",
+          "description": {
+            "da": "En ottetakket hvid stjerne midt i et rødt felt. Der er kun tre striber i hver halvdel, men hver stribe knækker frem og tilbage for at danne takkerne, så klippene er lige og alligevel spidse. Halvdelene er spejlvendte, og én skabelon dækker begge. Klip de spidse hjørner med en lille saks, så takkerne ikke bliver runde.",
+            "en": "An eight-pointed white star in the middle of a red field. There are only three strips in each half, but every strip zigzags to form the points, so the cuts stay straight and still come out sharp. The halves mirror each other, and one template covers both. Cut the sharp corners with small scissors so the points do not end up rounded."
+          }
+        },
+        {
+          "id": "stjerne-ramme",
+          "description": {
+            "da": "En firtakket stjerne i midten, omgivet af en bred ramme af smalle tern. Ni striber i hver halvdel er det højeste antal i galleriet, og halvdelen af klippene er lette buer. Halvdelene er spejlvendte, så der er kun én skabelon. Striberne bliver smalle ved rammen, så brug fast papir og en skarp saks.",
+            "en": "A four-pointed star in the middle, surrounded by a wide border of narrow checks. Nine strips in each half is the highest count in the gallery, and half of the cuts are gentle curves. The halves mirror each other, so there is only one template. The strips get narrow towards the border, so use firm paper and sharp scissors."
+          }
+        },
+        {
+          "id": "5star",
+          "description": {
+            "da": "Omridset af en femtakket stjerne, tegnet som en tynd rød streg på hvid bund. Fem striber i hver halvdel, og alle klip er lige, men stjernens spidser giver omkring halvtreds knæk at følge. Halvdelene er spejlvendte, så én skabelon dækker begge. Sværhedsgraden ligger i klipningen: de tynde stregstykker knækker let i tyndt papir.",
+            "en": "The outline of a five-pointed star drawn as a thin red line on white. Five strips in each half, and every cut is straight, but the points of the star add some fifty turns to follow. The halves mirror each other, so one template covers both. The difficulty is all in the cutting: the thin parts of the outline tear easily in thin paper."
+          }
+        },
+        {
+          "id": "simple-5star",
+          "description": {
+            "da": "En massiv hvid femtakket stjerne på rød bund. Tre striber i hver halvdel og lige klip hele vejen gør det til en af de letteste skabeloner i galleriet. Halvdelene er spejlvendte, og én skabelon dækker begge. De brede felter tilgiver små unøjagtigheder i klippet.",
+            "en": "A solid white five-pointed star on a red ground. Three strips in each half and straight cuts throughout make this one of the easiest templates in the gallery. The halves mirror each other, and one template covers both. The wide fields forgive small inaccuracies in the cutting."
+          }
+        },
+        {
+          "id": "sun",
+          "description": {
+            "da": "To yin-yang-figurer, der sammen danner en sol i rotation. Fire striber i hver halvdel, og halvdelen af klippene er buer, som giver figurernes runde kanter. Begge halvdele klippes efter samme skabelon. Mønsteret drejer om midten i stedet for at være spejlvendt, så kontroller hver stribe mod skabelonen, mens du fletter.",
+            "en": "Two yin-yang figures that together make a turning sun. Four strips in each half, and half of the cuts are curves, which is where the rounded edges come from. Both halves are cut from the same template. The pattern turns about the centre rather than mirroring, so check each strip against the template as you weave."
+          }
+        },
+        {
+          "id": "explosion",
+          "description": {
+            "da": "Røde kiler, der stråler ud fra et lille ternet felt i midten. Fem striber i hver halvdel, alle klippet som lige linjer, der bare ikke er parallelle; det er hældningen, der giver strålerne. Halvdelene er spejlvendte, og én skabelon dækker begge. Trods de fem striber er hjertet let, for der er ikke et eneste knæk at ramme.",
+            "en": "Red wedges radiating from a small checked field at the centre. Five strips in each half, all cut as straight lines that simply are not parallel; the taper is what makes the rays. The halves mirror each other, and one template covers both. Despite the five strips the heart is easy, because there is not a single corner to hit."
+          }
+        },
+        {
+          "id": "nihon",
+          "description": {
+            "da": "En stor rød skive midt i det hvide felt, med tre kiler ud mod kanten; navnet er det japanske ord for Japan. Kun tre striber i hver halvdel, og skiven kommer af en enkelt bue på hver af de midterste striber. Halvdelene er spejlvendte, og én skabelon dækker begge. Hjertet er let, men buen skal klippes i ét træk, hvis cirklen skal blive rund.",
+            "en": "A large red disc in the middle of the white field, with three wedges reaching towards the edge; the name is the Japanese word for Japan. Only three strips in each half, and the disc comes from a single curve on each of the middle strips. The halves mirror each other, and one template covers both. The heart is easy, but cut the curve in one stroke if the circle is to stay round."
+          }
+        },
+        {
+          "id": "davidsstjerne-circ",
+          "description": {
+            "da": "En davidsstjerne tegnet med tynde streger inde i en cirkel og omgivet af et felt af små tern. Otte striber i hver halvdel og godt halvandet hundrede knæk i klippet gør den til en af de sværeste i galleriet. Halvdelene er spejlvendte, så der er kun én skabelon. Brug fast papir og tag den tid, det tager; de tynde streger tåler ikke en saks, der glider.",
+            "en": "A Star of David drawn in thin lines inside a circle and surrounded by a field of small checks. Eight strips in each half and more than a hundred and fifty turns in the cutting make this one of the hardest in the gallery. The halves mirror each other, so there is only one template. Use firm paper and take the time it needs; the thin lines do not survive a slipping pair of scissors."
+          }
+        },
+        {
+          "id": "david4",
+          "description": {
+            "da": "Den samme davidsstjerne i en mindre udgave, med fire striber i hver halvdel i stedet for otte. Alle klip er lige, men stjernens trekanter giver mange skarpe hjørner at følge. Halvdelene er spejlvendte, og én skabelon dækker begge. Sværhedsgraden er mellem, og hjertet er en rimelig opvarmning til den store davidsstjerne.",
+            "en": "The same Star of David in a smaller version, with four strips in each half instead of eight. All the cuts are straight, but the triangles of the star add plenty of sharp corners to follow. The halves mirror each other, and one template covers both. It is rated medium and makes a reasonable warm-up for the larger Star of David."
+          }
+        },
+        {
+          "id": "khatam",
+          "description": {
+            "da": "Et khatam-motiv gentaget som små møller ud over hele fladen; khatam er den ottetakkede stjerne, der er udbredt i islamisk kunst og arkitektur. Seks striber i hver halvdel, alle klip lige, men med næsten to hundrede knæk fordelt på striberne. Halvdelene er ikke ens, så hjertet har to skabeloner. Det er en ekspertopgave; hold skabelonen fast, og klip de mange små hjørner ét ad gangen.",
+            "en": "A khatam motif repeated as small pinwheels across the whole field; khatam is the eight-pointed star prominent in Islamic art and architecture. Six strips in each half, every cut straight, but with close to two hundred turns spread over the strips. The halves are not alike, so the heart comes with two templates. This is an expert job; hold the template down firmly and cut the many small corners one at a time."
+          }
+        },
+        {
+          "id": "stjernegitter",
+          "description": {
+            "da": "Røde firtakkede stjerner på hvidt, bygget af kvadratet og den 45-graders rombe fra den ottekantede Ammann–Beenker-fliselægning. Syv striber i hver halvdel, alle klip lige, men i zigzag. Halvdelene er spejlvendte, og én skabelon dækker begge. Det er en ekspertopgave med mange knæk; klip zigzaggen med lineal, så stjernernes spidser mødes præcist.",
+            "en": "Red four-pointed stars on white, built from the square and the 45-degree rhomb of the octagonal Ammann–Beenker tiling. Seven strips in each half, every cut straight but zigzagging. The halves mirror each other, and one template covers both. It is an expert job with many turns; cut the zigzags with a ruler so the points of the stars meet exactly."
+          }
+        },
+        {
+          "id": "stjernerogkors",
+          "description": {
+            "da": "Stjerner og kors: hvide ottetakkede stjerner med spidser på 60 grader og røde kors imellem, som på de persiske fliser fra Kashan, med en hel stjerne midt i hjertet. Fem striber i hver halvdel, alle klip lige, og hvert stykke klip mellem to krydsninger har en tand, en stjernespids, der stikker ind i korset ved siden af. Halvdelene er spejlvendte, og én skabelon dækker begge. Sværhedsgraden er svær; klip hver tand helt ud til spidsen.",
+            "en": "Star and cross: white eight-pointed stars with 60-degree points and red crosses between them, as on the Persian tiles of Kashan, with a whole star in the middle of the heart. Five strips in each half, every cut straight, and every stretch of cut between two crossings carries one tooth, a star's point poking into the cross beside it. The halves mirror each other, and one template covers both. It is rated hard; cut each tooth right out to its point."
+          }
+        }
+      ]
     },
     {
       "id": "moenstre",
-      "hearts": ["circle", "balls", "kogle", "plus", "plus3", "amy-weave-1", "amy-weave-2", "amy-rosette", "amy-pattern", "amy-flowering", "amy-pinecone", "alhambra", "squares", "sildeben", "puslespil", "koelbuer", "roserude", "hanefod", "flyvendegaes", "origami", "drageskael", "hermanngitter", "tragt", "boelgebrud", "glaskuppel", "hvirvel"]
+      "hearts": [
+        {
+          "id": "circle",
+          "description": {
+            "da": "En bred rød ring om et tomt midterfelt, brudt af fire åbninger, med buer der løber videre ud mod kanten. Fem striber i hver halvdel, og godt halvdelen af klippene er buer, som tilsammen former ringen. Halvdelene er spejlvendte, og én skabelon dækker begge. En ring afslører enhver skæv bue, så klip langsomt og drej papiret i stedet for saksen.",
+            "en": "A wide red ring around an empty middle, broken by four openings, with arcs running on towards the edge. Five strips in each half, and a good half of the cuts are curves that together form the ring. The halves mirror each other, and one template covers both. A ring shows up every uneven curve, so cut slowly and turn the paper rather than the scissors."
+          }
+        },
+        {
+          "id": "balls",
+          "description": {
+            "da": "Hvide cirkler i skiftende størrelser fordelt over den røde flade. Syv striber i hver halvdel, og næsten halvdelen af klippene er buer, fordi hver prik skæres ud af to nabostriber. Halvdelene er spejlvendte, så der er kun én skabelon. Det er en ekspertskabelon: prikkerne gør striberne smalle mellem hullerne, så papiret skal være fast.",
+            "en": "White circles in varying sizes spread across the red ground. Seven strips in each half, and nearly half the cuts are curves, because each dot is carved out of two neighbouring strips. The halves mirror each other, so there is only one template. This is an expert template: the dots leave the strips narrow between the holes, so the paper needs to be firm."
+          }
+        },
+        {
+          "id": "kogle",
+          "description": {
+            "da": "Rækker af bølgede skæl, som på en grankogle. Næsten alle klip er buer, hvilket er usædvanligt; seks striber i hver halvdel, og kun de yderste kanter er lige. Halvdelene er spejlvendte, og én skabelon dækker begge. Bølgerne skal ramme hinanden, for at skællene lukker, så klip alle striber i samme retning, mens hånden holder den samme kurve.",
+            "en": "Rows of wavy scales, as on a pine cone. Almost every cut here is a curve, which is unusual; six strips in each half, and only the outer edges are straight. The halves mirror each other, and one template covers both. The waves have to meet for the scales to close, so cut every strip in the same direction while your hand keeps the same curve."
+          }
+        },
+        {
+          "id": "plus",
+          "description": {
+            "da": "Fire røde plusser omkring et enkelt hvidt plus i midten. Kun tre striber i hver halvdel, men hver stribe knækker ind og ud for at tegne korsarmene, så der er godt tredive hjørner at klippe. Begge halvdele klippes efter samme skabelon. De rette vinkler skal se rette ud; brug en skarp saks, og klip helt ind i hvert hjørne.",
+            "en": "Four red crosses around a single white one in the middle. Only three strips in each half, but every strip steps in and out to draw the arms, which adds some thirty corners to cut. Both halves are cut from the same template. The right angles have to look right, so use sharp scissors and cut all the way into each corner."
+          }
+        },
+        {
+          "id": "plus3",
+          "description": {
+            "da": "Det samme korsmotiv gentaget over hele fladen, så røde og hvide plusser griber ind i hinanden. Fem striber i hver halvdel og lige klip hele vejen, men knap halvtreds hjørner at følge. Begge halvdele klippes efter samme skabelon. Mønsteret går kun op, hvis over-under-rytmen holder hele vejen, så tæl efter for hver stribe, du fletter.",
+            "en": "The same cross motif repeated across the whole field, so red and white crosses interlock. Five strips in each half and straight cuts throughout, but close to fifty corners to follow. Both halves are cut from the same template. The pattern only comes out right if the over-under rhythm holds all the way, so count again after every strip you weave."
+          }
+        },
+        {
+          "id": "amy-weave-1",
+          "description": {
+            "da": "Et åbent felt i midten, rammet ind af brede bånd og rækker af små tern. Halvdelene har hvert sit antal striber, otte og syv, og bredden veksler fra stribe til stribe; klippene er lige på nær et par bløde buer. Fordi de to sider ikke er ens, hører der en skabelon til hver. Der er ingen knæk at ramme, så klipningen er ligetil, og det er flettingen, der tager tid.",
+            "en": "An open field in the middle, framed by wide bands and rows of small checks. The two halves carry different strip counts, eight and seven, and the widths change from strip to strip; the cuts are straight apart from a couple of soft curves. Because the sides are not alike, each gets its own template. There are no corners to hit, so the cutting is straightforward and it is the weaving that takes the time."
+          }
+        },
+        {
+          "id": "amy-weave-2",
+          "description": {
+            "da": "En ramme af blokke i aftagende størrelse omkring et tomt midterfelt. Otte striber i hver halvdel, alle klippet som lige linjer i skiftende bredde, og halvdelene er spejlvendte, så én skabelon dækker begge. Klipningen er nem, men otte striber giver en lang fletning, så sæt god tid af.",
+            "en": "A frame of blocks in decreasing size around an empty middle. Eight strips in each half, all cut as straight lines of changing width, and the halves mirror each other, so one template covers both. The cutting is easy, but eight strips make for a long weave, so set aside the time."
+          }
+        },
+        {
+          "id": "amy-rosette",
+          "description": {
+            "da": "En rosette: fire hvide kronblade i midten, omgivet af røde felter med runde kanter. Fem striber i hver halvdel, og de fleste klip er buer, som giver bladene deres form. Halvdelene er spejlvendte, og én skabelon dækker begge. Buerne er dybe, så klip dem med en spids saks, og undgå at trække i papiret undervejs.",
+            "en": "A rosette: four white petals at the centre, surrounded by red fields with rounded edges. Five strips in each half, and most of the cuts are curves, which is what gives the petals their shape. The halves mirror each other, and one template covers both. The curves run deep, so cut them with pointed scissors and avoid pulling on the paper."
+          }
+        },
+        {
+          "id": "amy-pattern",
+          "description": {
+            "da": "Klokkeformer i hvidt og rødt, sat sammen om en firdelt midte og rammet ind af små tern. Syv striber i hver halvdel, og næsten alle klip er buer. Halvdelene er spejlvendte, så der er kun én skabelon. Sværhedsgraden er svær; de smalle buede felter er lettere at klippe, hvis papiret er glat og ikke for tykt.",
+            "en": "Bell shapes in white and red, gathered around a four-part centre and framed by small checks. Seven strips in each half, and nearly every cut is a curve. The halves mirror each other, so there is only one template. It is rated hard; the narrow curved fields are easier to cut if the paper is smooth and not too thick."
+          }
+        },
+        {
+          "id": "amy-flowering",
+          "description": {
+            "da": "En blomst med spidse kronblade, der folder sig ud fra midten i fire retninger. Syv striber i hver halvdel, og de fleste klip er lange buer uden et eneste knæk. Halvdelene er spejlvendte, og én skabelon dækker begge. Buerne løber næsten fra kant til kant, så klip dem i ét træk; en afbrudt bue kan ses tydeligt i det færdige hjerte.",
+            "en": "A flower with pointed petals opening from the centre in four directions. Seven strips in each half, and most of the cuts are long curves without a single corner. The halves mirror each other, and one template covers both. The curves run almost from edge to edge, so cut each in one stroke; a broken curve is easy to spot in the finished heart."
+          }
+        },
+        {
+          "id": "amy-pinecone",
+          "description": {
+            "da": "Et gitter af små ruder, der drejer rundt om et åbent, rundt midterfelt. Syv striber i hver halvdel, klippet som lange, jævne buer uden et eneste knæk. Halvdelene er spejlvendte, så der er kun én skabelon. Buerne er enkle at klippe, men gitteret gør striberne smalle på tværs af midten, så brug fast papir.",
+            "en": "A lattice of small diamonds turning around an open, round field at the centre. Seven strips in each half, cut as long even curves without a single corner. The halves mirror each other, so there is only one template. The curves are simple to cut, but the lattice leaves the strips narrow across the middle, so use firm paper."
+          }
+        },
+        {
+          "id": "alhambra",
+          "description": {
+            "da": "Et mønster inspireret af flisemønstrene i Alhambra: røde og hvide møllefigurer, der griber ind i hinanden over hele fladen. Seks striber i hver halvdel, alle klip lige, men med mange skarpe hjørner. Halvdelene er spejlvendte, og én skabelon dækker begge. Hjørnerne har det med at hænge fast under flettingen, så hjertet er ikke det første, man skal give sig i kast med.",
+            "en": "A pattern inspired by the tilings of the Alhambra: red and white pinwheel figures interlocking across the whole field. Six strips in each half, every cut straight, but with a lot of sharp corners. The halves mirror each other, and one template covers both. The corners tend to snag while weaving, so this should not be your first braiding project."
+          }
+        },
+        {
+          "id": "squares",
+          "description": {
+            "da": "To store røde firkanter med et hvidt hul i midten, sat over for to små røde ruder. Kun to striber i hver halvdel, det laveste antal i galleriet, men hver stribe knækker mange gange for at tegne kvadraterne. Halvdelene er ikke ens, så der hører en skabelon til hver side. Klipningen går hurtigt; det er flettingen, der kræver koncentration, fordi de brede striber skal krydses i den rigtige rækkefølge.",
+            "en": "Two large red squares with a white hole in the middle, set against two small red diamonds. Only two strips in each half, the lowest count in the gallery, but each strip turns many times to draw the squares. The halves are not alike, so each side has its own template. The cutting goes quickly; it is the weaving that takes concentration, because the wide strips have to cross in the right order."
+          }
+        },
+        {
+          "id": "sildeben",
+          "description": {
+            "da": "Sildeben: skrå felter, der skifter retning fra række til række som i et parketgulv. Seks striber i hver halvdel; den hvide halvdels klip går i zigzag, den rødes er lige, og zigzaggen knækker netop dér, hvor de lige klip krydser. Halvdelene er forskellige, så hjertet har to skabeloner. Sværhedsgraden er mellem; klip zigzaggen med lineal, ét knæk ad gangen.",
+            "en": "Herringbone: slanted fields that change direction from row to row, as in a parquet floor. Six strips in each half; the white half's cuts zigzag and the red half's are straight, and the zigzag turns exactly where the straight cuts cross it. The halves differ, so the heart comes with two templates. Medium difficulty; cut the zigzag with a ruler, one turn at a time."
+          }
+        },
+        {
+          "id": "puslespil",
+          "description": {
+            "da": "Et puslespil med fire gange fire brikker: hvert stykke klip mellem to krydsninger har en knop med smal hals og rundt hoved, skubbet ind i brikken på den ene eller den anden side, og brikkerne langs kanten har den lige kant fra et rigtigt puslespil. Fire striber i hver halvdel. Knopperne sidder forskelligt i de to halvdele, så hjertet har to skabeloner. Det er et let hjerte; klip langsomt rundt om hver knop.",
+            "en": "A jigsaw puzzle of four by four pieces: every stretch of cut between two crossings has a knob with a narrow neck and a round head, pushed into the piece on one side or the other, and the pieces along the edge keep the straight side of a real puzzle. Four strips in each half. The knobs sit differently in the two halves, so the heart comes with two templates. It is an easy heart; cut slowly round each knob."
+          }
+        },
+        {
+          "id": "koelbuer",
+          "description": {
+            "da": "Kølbuer som i osmanniske silkestoffer og marokkanske lanternefliser: løgformede felter med spids top og bund, skiftevis røde og hvide. Fem striber i hver halvdel, og hvert klip er den samme bølge gentaget fra krydsning til krydsning. Halvdelene er spejlvendte, så én skabelon dækker begge. Det er et let hjerte; klip bølgerne i jævne træk, så spidserne mødes i krydsningerne.",
+            "en": "An ogee lattice, as in Ottoman silks and Moroccan lantern tiles: onion-shaped fields with pointed tops and bottoms, alternately red and white. Five strips in each half, and every cut is the same wave repeated from crossing to crossing. The halves mirror each other, so one template covers both. It is an easy heart; cut the waves in even strokes so the points meet at the crossings."
+          }
+        },
+        {
+          "id": "roserude",
+          "description": {
+            "da": "Et rosevindue: et rødt firpas midt i en hvid blomst med fire runde blade, røde kronblade, der peger ud mellem bladene, og et ternet felt omkring. Fem striber i hver halvdel, alle klip let buede, og de midterste tegner firpassets buer. Halvdelene er spejlvendte, og én skabelon dækker begge. Sværhedsgraden er mellem; klip hver bue helt ind til de skarpe spidser mellem bladene.",
+            "en": "A rose window: a red quatrefoil in the middle of a white flower with four round lobes, red petals pointing out between the lobes, and a chequered border around it. Five strips in each half, every cut gently curved, and the middle ones draw the lobes of the quatrefoil. The halves mirror each other, and one template covers both. Medium difficulty; cut each lobe right into the sharp points between them."
+          }
+        },
+        {
+          "id": "hanefod",
+          "description": {
+            "da": "Hanefod (pied-de-poule) i den rene form, hvor to røde og to hvide brikker mødes i hvert hjørne. Fem striber i hver halvdel: den hvide halvdels klip er lige, den rødes er trapper med skarpe tænder. Halvdelene er forskellige, så hjertet har to skabeloner. Sværhedsgraden er svær; klip hver tand helt ud til spidsen, så den bliver skarp som i stoffet.",
+            "en": "Houndstooth (pied-de-poule) in its pure form, where two red and two white pieces meet at every corner. Five strips in each half: the white half's cuts are straight, the red half's are staircases with sharp teeth. The halves differ, so the heart comes with two templates. It is rated hard; cut each tooth right out to its point so it stays sharp, as in the cloth."
+          }
+        },
+        {
+          "id": "flyvendegaes",
+          "description": {
+            "da": "Quiltblokken Flyvende gæs: rækker af røde og hvide trekanter, der alle peger opad, hver med spidsen mod midten af grundlinjen over sig. Seks striber i hver halvdel, alle klip lige, men i trapper. Halvdelene er spejlvendte, og én skabelon dækker begge. Det er en ekspertopgave på grund af de mange hjørner; klip hver trappe med lineal, ét trin ad gangen.",
+            "en": "The Flying Geese quilt block: rows of red and white triangles all pointing up, each tip touching the middle of the base above it. Six strips in each half, every cut straight but stepped. The halves mirror each other, and one template covers both. It is an expert job because of the many corners; cut each staircase with a ruler, one step at a time."
+          }
+        },
+        {
+          "id": "origami",
+          "description": {
+            "da": "Et origami-mønster af kvadrattwist: folder løber begge veje, og hvor to folder krydser, er et lille kvadrat drejet rundt. Syv striber i hver halvdel, alle klip lige med små knæk ved hvert twist. Den ene halvdel er den anden drejet en kvart omgang, så én skabelon dækker begge. Sværhedsgraden er svær; klip knækkene præcist, ellers lukker de små kvadrater ikke.",
+            "en": "An origami square-twist tessellation: pleats run both ways, and where two pleats cross, a small square is twisted round. Seven strips in each half, every cut straight with small bends at each twist. One half is the other turned a quarter, so one template covers both. It is rated hard; cut the bends precisely, or the small squares will not close."
+          }
+        },
+        {
+          "id": "drageskael",
+          "description": {
+            "da": "Drageskæl: hvert felt har to svulmende og to hule sider, alle drejet samme vej, så røde og hvide skæl griber ind i hinanden. Fem striber i hver halvdel, og hvert klip er en række halve bølger. Halvdelene bøjer modsat, så hjertet har to skabeloner. Sværhedsgraden er mellem; følg buerne i jævne træk, så alle skæl får samme form.",
+            "en": "Dragon scales: every field has two swelling sides and two hollow ones, all turned the same way, so red and white scales interlock. Five strips in each half, and every cut is a row of half waves. The halves bend opposite ways, so the heart comes with two templates. Medium difficulty; follow the curves in even strokes so all the scales get the same shape."
+          }
+        },
+        {
+          "id": "hermanngitter",
+          "description": {
+            "da": "Hermanns gitter fra 1870: røde firkanter i et net af hvide gader, hvor der ser ud til at flimre grå pletter i gadekrydsene. Seks striber i hver halvdel, og de yderste er halvt så brede, så gitteret går helt ud til kanten. Alle klip er lige med små knæk, og halvdelene er spejlvendte, så én skabelon dækker begge. Det er en ekspertopgave; klip knækkene præcist, så gaderne bliver lige brede.",
+            "en": "The Hermann grid of 1870: red squares in a net of white streets, where grey spots seem to flicker at the crossings. Six strips in each half, and the outermost are half as wide, so the grid runs right out to the edges. Every cut is straight with small bends, and the halves mirror each other, so one template covers both. It is an expert job; cut the bends precisely so the streets stay the same width."
+          }
+        },
+        {
+          "id": "tragt",
+          "description": {
+            "da": "Efter Bridget Rileys Movement in Squares: skakbrættets striber bliver smallere ind mod midten begge veje, så midten synker som bunden af en tragt eller rejser sig som toppen af en pyramide. Ti striber i hver halvdel, alle klip helt lige. Halvdelene er spejlvendte, og én skabelon dækker begge. Sværhedsgraden er mellem; flet de smalle striber i midten forsigtigt, så de ikke rives over.",
+            "en": "After Bridget Riley's Movement in Squares: the chequerboard's strips grow narrower towards the middle both ways, so the centre sinks like the bottom of a funnel or rises like the top of a pyramid. Ten strips in each half, every cut perfectly straight. The halves mirror each other, and one template covers both. Medium difficulty; weave the narrow middle strips gently so they do not tear."
+          }
+        },
+        {
+          "id": "boelgebrud",
+          "description": {
+            "da": "Et hav set fra stranden: skakbrættet står i perspektiv, småt langt ude under kløften og stort helt tæt på ved spidsen, og hver anden række krydsninger er en bølge, der vokser til brændinger. Seks striber i hver halvdel, alle klip buede. Halvdelene er forskellige, så hjertet har to skabeloner. Sværhedsgraden er mellem; klip brændingernes krøller i ét træk hver.",
+            "en": "A sea seen from the shore: the chequerboard is in perspective, small far out under the notch and large close up at the tip, and every other row of crossings is a wave that builds up to breakers. Six strips in each half, every cut curved. The halves differ, so the heart comes with two templates. Medium difficulty; cut the curls of the breakers in one stroke each."
+          }
+        },
+        {
+          "id": "glaskuppel",
+          "description": {
+            "da": "Skakbrættet set gennem en glaskuppel, der ligger på hjertet: midten er forstørret, og felterne trænges sammen mod glassets kant, regnet ud efter, hvordan lyset brydes. Syv striber i hver halvdel; alle klip er lige ude ved kanten og bøjer rundt om kuplen. Halvdelene er spejlvendte, og én skabelon dækker begge. Sværhedsgraden er mellem; felterne langs glassets kant er smalle, så flet dem forsigtigt.",
+            "en": "The chequerboard seen through a glass dome lying on the heart: the middle is magnified, and the fields crowd together towards the rim of the glass, worked out from how the light bends. Seven strips in each half; every cut runs straight at the edges and bends round the dome. The halves mirror each other, and one template covers both. Medium difficulty; the fields along the rim are narrow, so weave them gently."
+          }
+        },
+        {
+          "id": "hvirvel",
+          "description": {
+            "da": "En hvirvel: skakbrættet er drejet næsten en halv omgang i midten og mindre og mindre ud mod kanten, så felterne fejer rundt om midten i buede arme. Fem striber i hver halvdel, og hvert klip er en blød S-bue. Den ene halvdel er den anden drejet en kvart omgang, så én skabelon dækker begge. Det er et let hjerte; klip buerne i lange, jævne træk.",
+            "en": "A whirlpool: the chequerboard is turned almost half a turn at the centre and less and less towards the edge, so the fields sweep round the middle in curved arms. Five strips in each half, and every cut is a gentle S-curve. One half is the other turned a quarter, so one template covers both. It is an easy heart; cut the curves in long, even strokes."
+          }
+        }
+      ]
     },
     {
       "id": "figurer",
-      "hearts": ["juletrae", "flower", "venus", "angel", "snowflake", "santa", "dagognat"]
+      "hearts": [
+        {
+          "id": "juletrae",
+          "description": {
+            "da": "Et rødt grantræ med stamme i et hvidt felt, rammet ind af diagonale bånd og små ruder. Fire striber i hver halvdel, og næsten alle klip er lige; grenspidserne er de eneste steder, hvor saksen skal vende. Halvdelene er spejlvendte, og én skabelon dækker begge. Grenspidserne er de smalleste steder i hjertet, og en saks med skarp spids gør dem lettere at ramme.",
+            "en": "A red fir tree with a trunk in a white field, framed by diagonal bands and small diamonds. Four strips in each half, and nearly every cut is straight; the branch tips are the only places where the scissors have to turn. The halves mirror each other, and one template covers both. Those tips are the narrowest parts of the heart, and sharp-pointed scissors make them much easier to hit."
+          }
+        },
+        {
+          "id": "flower",
+          "description": {
+            "da": "En blomst med seks spidse kronblade omkring en lille stjerneformet kerne. Fire striber i hver halvdel, og omkring halvdelen af klippene er buer, der former bladenes sider. Halvdelene er spejlvendte, og én skabelon dækker begge. Kronbladene mødes i en spids; klip de to buer, der danner hver spids, i samme arbejdsgang, så de mødes præcist.",
+            "en": "A flower with six pointed petals around a small star-shaped core. Four strips in each half, and about half the cuts are curves that shape the sides of the petals. The halves mirror each other, and one template covers both. The petals meet at a point, so cut the two curves that form each point in one go and they will meet cleanly."
+          }
+        },
+        {
+          "id": "venus",
+          "description": {
+            "da": "Venus-tegnet, cirklen med korset under, tegnet med tynde streger inde i en rund ramme og omgivet af små tern. Syv striber i hver halvdel, og en tredjedel af klippene er buer. Halvdelene er spejlvendte, så der er kun én skabelon. Symbolets streger er smalle i forhold til stribebredden, og det er dem, der gør hjertet til en ekspertopgave; brug fast papir, så de ikke rives over under flettingen.",
+            "en": "The sign of Venus, a circle with a cross beneath it, drawn in thin lines inside a round frame and surrounded by small checks. Seven strips in each half, and a third of the cuts are curves. The halves mirror each other, so there is only one template. The lines of the symbol are narrow next to the strip width, and they are what makes this an expert heart; use firm paper so they do not tear while weaving."
+          }
+        },
+        {
+          "id": "angel",
+          "description": {
+            "da": "Et klassisk englemotiv: en hvid engel med udbredte vinger på rød bund. Kun tre striber i hver halvdel, men tre fjerdedele af klippene er buer, der former vinger, kjole og hoved. Halvdelene er spejlvendte, og én skabelon dækker begge. De få brede striber gør flettingen hurtig; det er buerne omkring hovedet, der kræver den roligste hånd.",
+            "en": "A classic angel motif: a white angel with spread wings on a red ground. Only three strips in each half, but three quarters of the cuts are curves that shape the wings, the gown and the head. The halves mirror each other, and one template covers both. Few, wide strips make the weaving quick; it is the curves around the head that need the steadiest hand."
+          }
+        },
+        {
+          "id": "snowflake",
+          "description": {
+            "da": "Et hvidt snefnug med afrundede arme omkring en lille rød kerne. Fire striber i hver halvdel, og to tredjedele af klippene er buer, som giver armene deres runde ender. Halvdelene er spejlvendte, og én skabelon dækker begge. Armene ender i smalle tappe, der let bøjer, så et lidt kraftigere papir holder formen bedre.",
+            "en": "A white snowflake with rounded arms around a small red core. Four strips in each half, and two thirds of the cuts are curves, which is what rounds off the ends of the arms. The halves mirror each other, and one template covers both. The arms end in narrow tabs that bend easily, so slightly heavier paper holds the shape better."
+          }
+        },
+        {
+          "id": "santa",
+          "description": {
+            "da": "En julemand i fuld figur med hue og skæg, tegnet i rødt inde i en rund ramme og omgivet af tern. Figuren er den mest detaljerede i galleriet: fem striber i hver halvdel, men over to hundrede kurvestykker at klippe efter, og to tredjedele af dem er buer. Halvdelene er forskellige, så hjertet har to skabeloner. Det kræver god præcision ved klip, og en saks med kort blad giver bedst kontrol over detaljerne.",
+            "en": "A full-length Father Christmas with hat and beard, drawn in red inside a round frame and surrounded by checks. The figure is the most detailed in the gallery: five strips in each half, but over two hundred curve sections to cut along, two thirds of them true curves. The halves differ, so the heart comes with two templates. It needs real precision in the cutting, and short-bladed scissors give the best control over the detail."
+          }
+        },
+        {
+          "id": "dagognat",
+          "description": {
+            "da": "Hvide og røde fugle, der flyver hver sin vej, efter M.C. Eschers tegning af fugle fra 1938, som han brugte i træsnittet Dag og nat. Fire striber i hver halvdel, alle klip buede efter fuglenes omrids. Halvdelene er forskellige, så hjertet har to skabeloner. Sværhedsgraden er svær; næb og vingespidser er skarpe spidser, så klip hver af dem ud i ét træk.",
+            "en": "White and red birds flying opposite ways, after M.C. Escher's drawing of birds from 1938, which he used in the woodcut Day and Night. Four strips in each half, every cut curved along the birds' outlines. The halves differ, so the heart comes with two templates. It is rated hard; beaks and wingtips are sharp points, so cut each one out in a single stroke."
+          }
+        }
+      ]
     },
     {
       "id": "hjerter",
-      "hearts": ["triple-heart", "h4h2", "nemt-hjerte", "lilje1", "lilje2", "hjertekloever"]
+      "hearts": [
+        {
+          "id": "triple-heart",
+          "description": {
+            "da": "Et stort stribet hjerte tegnet inde i selve julehjertet, med et lille hvidt hjerte i bunden af det. Seks striber i hver halvdel; godt en tredjedel af klippene er buer, som danner hjerternes rundinger, og resten er lige. Halvdelene er spejlvendte, og én skabelon dækker begge. Det er buerne øverst, der afgør, om de to indre hjerter bliver symmetriske.",
+            "en": "A large striped heart drawn inside the woven heart itself, with a small white heart at the foot of it. Six strips in each half; a good third of the cuts are curves that form the rounded tops, and the rest are straight. The halves mirror each other, and one template covers both. It is the curves at the top that decide whether the two inner hearts come out symmetrical."
+          }
+        },
+        {
+          "id": "h4h2",
+          "description": {
+            "da": "En variation af det klassiske mor-og-barn-hjerte, hvor et lille hjerte ligger inde i et større, tegnet i grove, trinvise felter. Fire striber i hver halvdel; de fleste klip er lige, og kun hjerternes rundinger kræver buer. De to halvdele er ikke ens, så der hører en skabelon til hver side. Sværhedsgraden er mellem, og de brede striber gør det let at se, om over-under-rytmen holder.",
+            "en": "A variation on the classic mother-and-child heart, with a small heart sitting inside a larger one, drawn in coarse stepped fields. Four strips in each half; most of the cuts are straight, and only the rounded tops call for curves. The two halves are not alike, so each side has its own template. It is rated medium, and the wide strips make it easy to see whether the over-under rhythm is holding."
+          }
+        },
+        {
+          "id": "nemt-hjerte",
+          "description": {
+            "da": "Et lille rødt hjerte midt i et 3 × 3-felt af skiftevis røde og hvide firkanter. Tre striber i hver halvdel, og kun to af klippene er buer; resten er lige linjer. Halvdelene er spejlvendte, og én skabelon dækker begge. Det er en af de letteste skabeloner i galleriet og velegnet, hvis det er første gang, du fletter.",
+            "en": "A small red heart in the middle of a 3 × 3 field of alternating red and white squares. Three strips in each half, and only two of the cuts are curves; the rest are straight lines. The halves mirror each other, and one template covers both. It is one of the easiest templates in the gallery and a good place to start if you have not woven one before."
+          }
+        },
+        {
+          "id": "lilje1",
+          "description": {
+            "da": "Spejderliljen tegnet i rødt på hvid bund, med brede røde bånd på kryds bag den. Fem striber i hver halvdel, og knap halvdelen af klippene er buer, som former de tre blade. Halvdelene er spejlvendte, og én skabelon dækker begge. Bladene er smalle, hvor de mødes; klip buerne i lange, ubrudte træk, så kanten ikke bliver takket.",
+            "en": "The scout lily drawn in red on white, with wide red bands crossing behind it. Five strips in each half, and just under half the cuts are curves that shape the three leaves. The halves mirror each other, and one template covers both. The leaves are narrow where they meet, so cut the curves in long unbroken strokes and the edge will not come out jagged."
+          }
+        },
+        {
+          "id": "lilje2",
+          "description": {
+            "da": "En større udgave af spejderliljen med flere detaljer i bladene og et felt af tern omkring. Syv striber i hver halvdel, og to femtedele af klippene er buer. Halvdelene er spejlvendte, så der er kun én skabelon. Sværhedsgraden er ekspert: mange af felterne er smallere end en stribe, og de tåler ikke, at papiret trækkes skævt under klipningen.",
+            "en": "A larger version of the scout lily with more detail in the leaves and a field of checks around it. Seven strips in each half, and two fifths of the cuts are curves. The halves mirror each other, so there is only one template. It is rated expert: many of the fields are narrower than a strip, and they will not survive the paper being pulled out of shape while you cut."
+          }
+        },
+        {
+          "id": "hjertekloever",
+          "description": {
+            "da": "Fire hjerter, to hvide og to røde, med spidserne samlet midt i et 4 × 4-felt. Fire striber i hver halvdel; de to yderste klip er buede med to halvcirkler hver, og det midterste er lige. Halvdelene er spejlvendte, og én skabelon dækker begge. Sværhedsgraden er mellem; klip hver halvcirkel helt ind til midterklippet, så hjerternes kløfter bliver skarpe.",
+            "en": "Four hearts, two white and two red, with their tips meeting in the middle of a 4 × 4 field. Four strips in each half; the two outer cuts are curved, with two half circles each, and the middle one is straight. The halves mirror each other, and one template covers both. Medium difficulty; cut each half circle right in to the middle cut, so the clefts of the hearts come out sharp."
+          }
+        }
+      ]
     }
   ]
 }

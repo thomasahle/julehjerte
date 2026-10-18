@@ -1,6 +1,5 @@
 import type { PageLoad } from './$types';
 import { browser } from '$app/environment';
-import index from '$lib/data/hearts.json';
 import heartCards from '$lib/data/heart-cards.json';
 import { appHasStarted } from '$lib/hydration';
 import { CLAIM_PRERENDERED, type GalleryHeart } from '$lib/front/galleryHearts';
@@ -8,7 +7,7 @@ import { HERO_HEART_IDS, HERO_HEART_IDS_MOBILE } from '$lib/utils/randomHearts';
 import { HERO_PICKS_ATTRIBUTE, heroBootstrapScript } from '$lib/front/heroBootstrap';
 import { HERO_SLOTS_MOBILE } from '$lib/components/front/heroSlots';
 import { strandBootstrapScript } from '$lib/front/strandBootstrap';
-import { categoryTitle } from '$lib/data/categories';
+import { CATEGORIES, categoryTitle } from '$lib/data/categories';
 import { USER_COLLECTION_KEY } from '$lib/stores/collection';
 import { t, type Language } from '$lib/i18n';
 import type { HeartDesign } from '$lib/types/heart';
@@ -45,7 +44,7 @@ const CARDS = heartCards as Record<string, { name: string; difficulty: Difficult
  *                 designs are fetched like before.
  */
 export const load: PageLoad = async ({ params }) => {
-	const indexCategories = Array.isArray(index.categories) ? index.categories : [];
+	const indexCategories = CATEGORIES.map(({ id, hearts }) => ({ id, hearts }));
 	const ids = indexCategories.flatMap((category) => category.hearts);
 	const lang = (params.lang === 'en' ? 'en' : 'da') as Language;
 

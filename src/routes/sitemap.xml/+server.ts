@@ -1,5 +1,5 @@
 import { SITE_URL } from '$lib/config';
-import hearts from '$lib/data/hearts.json';
+import { ALL_HEART_IDS } from '$lib/data/categories';
 import { ROUTES, heartPath, type RouteKey } from '$lib/i18n/routes';
 import type { RequestHandler } from './$types';
 
@@ -19,8 +19,6 @@ const staticPages: { key: RouteKey; priority: string }[] = [
 ];
 
 export const GET: RequestHandler = async () => {
-	const allHeartIds = hearts.categories.flatMap((cat) => cat.hearts);
-
 	// One entry per page, carrying both language variants of that page.
 	const pages = [
 		...staticPages.map(({ key, priority }) => ({
@@ -28,7 +26,7 @@ export const GET: RequestHandler = async () => {
 			en: ROUTES[key].en,
 			priority
 		})),
-		...allHeartIds.map((heartId) => ({
+		...ALL_HEART_IDS.map((heartId) => ({
 			da: heartPath(heartId, 'da'),
 			en: heartPath(heartId, 'en'),
 			priority: '0.6'

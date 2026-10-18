@@ -2,8 +2,9 @@
  * The gallery's categories: their ids, their order, the hearts in them and
  * their names in both languages.
  *
- * The ids and the heart lists are the ones in `hearts.json` — that file stays
- * the single source of truth for *which* hearts exist. What lives here is the
+ * The ids and the heart lists are the ones in `hearts.json` — that file is the
+ * single source of truth for *which* hearts exist (and, per heart, for the
+ * written description `$lib/data/heartDescriptions` serves). What lives here is the
  * mapping from a category id to its translation keys, plus the lookups several
  * pages need (the front page renders every category; the detail page needs the
  * category a heart belongs to and its siblings for the "Flere {kategori}" grid).
@@ -12,7 +13,11 @@
  * (`/#stjerner`), so they must not be renamed — see `categoryHref()` in
  * `$lib/i18n/routes`.
  */
-import hearts from './hearts.json';
+// `?index` is hearts.json without the descriptions (see
+// `$lib/data/heartIndexJson`): every page imports this module, and the prose
+// belongs in the detail page's lazily loaded chunk, not in the bundle the whole
+// site loads.
+import hearts from '$lib/data/hearts.json?index';
 import { t, type Language } from '$lib/i18n';
 import type { TranslationKey } from '$lib/i18n/translations';
 
@@ -61,7 +66,7 @@ export const CATEGORIES: Category[] = hearts.categories.map((category) => {
 	const id = category.id as CategoryId;
 	return {
 		id,
-		hearts: [...category.hearts],
+		hearts: category.hearts.map((heart) => heart.id),
 		titleKey: TITLE_KEYS[id],
 		lowerTitleKey: LOWER_TITLE_KEYS[id]
 	};

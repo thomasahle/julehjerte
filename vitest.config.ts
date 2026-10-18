@@ -1,8 +1,9 @@
 import { defineConfig } from 'vitest/config';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
+import { heartIndexJson } from './src/lib/data/heartIndexJson.ts';
 
 export default defineConfig({
-  plugins: [svelte()],
+  plugins: [heartIndexJson(), svelte()],
   test: {
     include: ['src/**/*.{test,spec}.{js,ts}'],
     environment: 'jsdom',

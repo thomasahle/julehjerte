@@ -15,7 +15,7 @@ import { translations } from '$lib/i18n/translations';
 describe('categories', () => {
 	it('keeps the ids and the order of hearts.json', () => {
 		expect(CATEGORY_IDS).toEqual(hearts.categories.map((c) => c.id));
-		expect(ALL_HEART_IDS).toEqual(hearts.categories.flatMap((c) => c.hearts));
+		expect(ALL_HEART_IDS).toEqual(hearts.categories.flatMap((c) => c.hearts.map((h) => h.id)));
 	});
 
 	it('gives every category a title key that exists in both languages', () => {

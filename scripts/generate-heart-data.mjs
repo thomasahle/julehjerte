@@ -202,7 +202,7 @@ try {
   const { renderHeartSvgInline } = await server.ssrLoadModule('/src/lib/rendering/heartSvg.ts');
 
   const heartsData = JSON.parse(fs.readFileSync(heartsJsonPath, 'utf8'));
-  const ids = heartsData.categories.flatMap((category) => category.hearts);
+  const ids = heartsData.categories.flatMap((category) => category.hearts.map((heart) => heart.id));
 
   // The parser logs a warning per skipped path; keep the build output readable.
   const originalWarn = console.warn;

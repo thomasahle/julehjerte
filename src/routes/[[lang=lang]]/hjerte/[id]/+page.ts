@@ -1,7 +1,6 @@
 import type { PageLoad } from './$types';
-import heartsData from '$lib/data/hearts.json';
 import heartMeta from '$lib/data/heart-meta.json';
-import { categoryOfHeart, siblingHeartIds, type CategoryId } from '$lib/data/categories';
+import { ALL_HEART_IDS, categoryOfHeart, siblingHeartIds, type CategoryId } from '$lib/data/categories';
 import type { DifficultyLevel } from '$lib/utils/difficulty';
 import type { HeartDesign } from '$lib/types/heart';
 import { SHARED_HEART_ID } from '$lib/utils/shareDesign';
@@ -46,11 +45,9 @@ const HEART_META = heartMeta as Record<string, HeartMeta>;
 
 // Generate all possible heart page URLs for prerendering
 export function entries() {
-	const allHeartIds = heartsData.categories.flatMap((cat) => cat.hearts);
-
 	// Generate entries for both languages (da = default/no lang, en). /hjerte/delt/
 	// renders a user heart shared in the URL fragment (see $lib/utils/shareDesign).
-	const ids = [...allHeartIds, SHARED_HEART_ID];
+	const ids = [...ALL_HEART_IDS, SHARED_HEART_ID];
 	return [
 		...ids.map((id) => ({ lang: undefined, id })), // Danish (default)
 		...ids.map((id) => ({ lang: 'en', id })) // English
@@ -67,8 +64,8 @@ export function entries() {
 export const load: PageLoad = async ({ params }) => {
 	// Imported lazily so the ~330 KB of design data gets its own cacheable chunk.
 	const { getGalleryDesign } = await import('$lib/data/heartDesigns');
-	// Same reason: 38 hearts × two languages of prose belong in that chunk, not in
-	// the bundle every page of the site loads.
+	// Same reason: 55 hearts × two languages of prose (hearts.json's descriptions)
+	// belong in that chunk, not in the bundle every page of the site loads.
 	const { heartDescription } = await import('$lib/data/heartDescriptions');
 
 	const category = categoryOfHeart(params.id);
