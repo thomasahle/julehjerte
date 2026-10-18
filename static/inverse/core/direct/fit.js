@@ -1076,6 +1076,13 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery,ma
       if(alternative.imagePassed&&alternative.originalImageError<candidate.originalImageError&&(!polished.imagePassed||alternative.originalImageError<polished.originalImageError)){
         alternative.paperVerification={...alternative.paperVerification,source:'polishing-alternative',incumbentImageError:polished.originalImageError};
         polished=alternative;
+        // The refiner emitted these coordinates while their paper check was
+        // uncertain. Publish the newly verified checkpoint for graceful Stop.
+        if(hasCandidateObserver(onProgress)){
+          const solution=alternative.graph.solution(alternative.points,alternative.phase,input);
+          solution.report={paperVerification:alternative.paperVerification};
+          emitCandidate(onProgress,{stage:'directPolishing',error:alternative.originalImageError,geometry:true,paper:'pass'},solution);
+        }
       }
     }
     // A better polish may still stop at the extra clearance cushion. Try the
