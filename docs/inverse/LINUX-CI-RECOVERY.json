@@ -1,0 +1,132 @@
+{
+  "schema": "inverse-ci-recovery-1",
+  "date": "2026-10-18",
+  "releaseReady": false,
+  "mainCommit": "ced69d7e3cd9493bf6e0b5c2dc445f1ad92ed441",
+  "mainRun": {
+    "url": "https://github.com/thomasahle/julehjerte/actions/runs/39152992525",
+    "conclusion": "failure",
+    "inversePassed": 1064,
+    "inverseFailed": 45,
+    "deployment": "skipped"
+  },
+  "normalBudgetDiagnostic": {
+    "url": "https://github.com/thomasahle/julehjerte/actions/runs/39160697494",
+    "commit": "5c7a8d4f",
+    "passed": 1091,
+    "failed": 22,
+    "shards": [
+      {
+        "shard": 1,
+        "passed": 247,
+        "failed": 6,
+        "failures": [
+          "fresh maple fitting retains the simpler routing and earns any extra cuts with better image agreement",
+          "one unobserved corner preserves the significant features of photo-bird",
+          "the main fitter reconstructs the dense binary photo target with legal editable-sized counts",
+          "a late original same-count proposal retains the motif with 3200ms left",
+          "the matching preference can change cut count and colour phase without forcing or editing the mask",
+          "fresh round-checker fitting verifies its accurate finalist before choosing a worse routing"
+        ]
+      },
+      {
+        "shard": 2,
+        "passed": 241,
+        "failed": 5,
+        "failures": [
+          "an exhausted corner MILP leaves the remaining caller allowance for fresh coarse routing",
+          "hard-bibel-star-outline: refine the retained grid before routing, preserving photographic quality",
+          "hard-bibel-star-outline-jpeg75: refine the retained grid before routing, preserving photographic quality",
+          "a finer spline recovers a half-resolution opening after all coarse feature starts fail",
+          "a fresh shifted bird fit preserves its eye with a 10-second allowance"
+        ]
+      },
+      {
+        "shard": 3,
+        "passed": 288,
+        "failed": 1,
+        "failures": [
+          "a lower-error finalist that erodes a partially retained region cannot claim the refinement reserve"
+        ]
+      },
+      {
+        "shard": 4,
+        "passed": 315,
+        "failed": 10,
+        "failures": [
+          "fresh fitting retains the stacked motif on the resampled mask",
+          "fresh fitting retains the stacked motif on the original mask",
+          "the original near-miss layout produces checked exports within the original short search (1.5x clock)",
+          "the vertical near-miss layout produces checked exports within the original short search (1.5x clock)",
+          "the negative-diagonal near-miss layout produces checked exports within the original short search (1.5x clock)",
+          "late photo cleanup preserves source fidelity inside a 180-second request (750 ms interruption)",
+          "fresh photographic fitting selects and exports finer-verified refinement",
+          "fresh frozen routing retains time for a valid template without changing the mask",
+          "fresh synthetic-control routing retains time for a valid template without changing the mask",
+          "flettede-stonehenge retains its interior detail in a fresh fit (10s allowance)"
+        ]
+      }
+    ],
+    "note": "These counts include only clock=1 jobs. The clock=0.5 jobs allow twice the real time and are diagnostic evidence, not speed or release validation."
+  },
+  "focusedFollowup": {
+    "url": "https://github.com/thomasahle/julehjerte/actions/runs/39161835582",
+    "fixCommit": "3c8480b2",
+    "clockRate": 1,
+    "passed": 3,
+    "failed": 0,
+    "scope": "Partial-feature preference unit case and fresh checkerboard/bicycle regressions. Existing independent image-error limits and physical checks retained."
+  },
+  "local": {
+    "node": "22.21.1",
+    "appTests": {
+      "passed": 1570,
+      "skipped": 1
+    },
+    "partialFeatureTests": {
+      "passed": 3,
+      "failed": 0
+    },
+    "neighborTests": {
+      "passed": 16,
+      "failed": 0
+    },
+    "fullInverse": "Stopped the duplicate local full run under shared-machine load; use complete Linux results above. Not a local full-suite pass.",
+    "typecheck": {
+      "errors": 0,
+      "existingWarnings": 6
+    },
+    "lint": {
+      "errors": 0,
+      "existingWarnings": 4
+    },
+    "productionBuild": "passed",
+    "existingCleanupWindow": {
+      "passed": 1,
+      "failed": 0,
+      "clockRate": 0.5,
+      "independentMaskError": 0.0181,
+      "addedBudgetSeconds": 0,
+      "scope": "Exercise continuation inside the existing logical cleanup deadline; not a wall-time speed benchmark."
+    }
+  },
+  "confirmedCauses": [
+    "Exact hashes of PNG compression bytes and floating-point geometry were platform-sensitive; compare decoded pixels and rounded numeric geometry while retaining exact topology.",
+    "A test froze performance.now(), which is also the HiGHS Emscripten clock. Native time limits never expired and mock call recording exhausted memory. The test now advances real time during native solving.",
+    "Many photographic quality regressions combine a tight wall-clock budget with a particular fitted result. Slower or differently warmed runtimes reach different checkpoints. Extra-time runs diagnose this; they do not establish normal-budget success.",
+    "Short requests spent the partial-feature winner's refinement reserve on speculative feature initialization and an alternate clearance comparison. Commit 3c8480b2 gives its selected grid the first refinement window."
+  ],
+  "remaining": "The full normal-budget Linux suite is not green. Continue root-cause work on the recorded failures before merging CI recovery fixes or claiming deployment readiness.",
+  "branchSafety": "codex/ci-inverse-diagnostics replaces the Pages workflow with manual diagnostics. Never merge that entire branch to main. Transfer only verified fixes from codex/solver-initialization.",
+  "limitations": [
+    "No fresh 22-design Hunodan speed benchmark in this CI recovery pass.",
+    "No neural-network training or deployment during CI recovery.",
+    "The experimental fresh-fit large-enclosure gate was reverted; it introduced additional regressions."
+  ],
+  "remainingPatterns": [
+    "Fresh fits with short deadlines fail their independent image-quality or feature-retention gates on the Linux runner. Do not remove those gates or report the extra-time runs as normal-budget passes.",
+    "The maple simpler-layout comparison currently depends on whether the winning candidate required finer paper verification. Linux retained a valid ordinary-lattice four-cut candidate and never compared the competitive three-cut start.",
+    "Some tests insist on a particular internal search route even when an alternative can pass physical and image checks. Change such assertions only after checking the exported outcome.",
+    "Late-cleanup continuation may now use an existing cleanup remainder. A faster run can legitimately continue without extending its deadline; tests must check the actual budget instead of requiring an absent continuation."
+  ]
+}
