@@ -793,17 +793,22 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery,ma
       }
     }
     // An illegal feature seed can consume the whole budget before any
-    // ordinary finalist is refined. Give an existing geometry-valid layout
-    // the first refinement window; retain the feature proposal immediately
-    // behind it. Image fidelity and strict paper checks still decide success.
+    // ordinary finalist is refined. A geometry-valid alternative must also
+    // retain the source colours to earn the first refinement window. A layout
+    // missing the opening cannot replace its only useful starting routing
+    // merely because its simpler cuts are already wide enough.
     if(initialFeatureGeometry?.passed===false&&!initialGeometryComparison&&!candidates.some(c=>c.geometryPassed&&c.paperPassed)){
       const ordinary=fine.slice(i+1).find(r=>!featureSeed(r));
-      if(ordinary){
+      if(ordinary&&!retainsGridColours(ordinary)){
+        initialGeometryComparison={initialCounts:clear.model.counts,initialGeometry:initialFeatureGeometry,alternativeCounts:ordinary.model.counts,
+          alternativeColoursBeforeClearance:false,deferred:'missing-source-colours',preferred:false};
+      }else if(ordinary){
         const at=performance.now(),alternative=prepareRefinement(ordinary,Math.max(0,deadline-at));
         const solution=alternative.graph.solution(alternative.graph.points,alternative.clear.phase,input);
         const geometry=validate(solution,alternative.refinementCfg,{checkImage:false}),paper=geometry.passed?materialAudit(solution,alternative.refinementCfg):null;
-        const preferred=geometry.passed&&(!cfg.requireMaterialCore||paper?.status!=='fail');
-        initialGeometryComparison={initialCounts:clear.model.counts,initialGeometry:initialFeatureGeometry,alternativeCounts:alternative.clear.model.counts,alternativeGeometry:geometry,alternativePaper:paper?.status,preferred,seconds:(performance.now()-at)/1000};
+        const alternativeColours=retainsGridColours(alternative.clear);
+        const preferred=alternativeColours&&geometry.passed&&(!cfg.requireMaterialCore||paper?.status!=='fail');
+        initialGeometryComparison={initialCounts:clear.model.counts,initialGeometry:initialFeatureGeometry,alternativeCounts:alternative.clear.model.counts,alternativeGeometry:geometry,alternativePaper:paper?.status,alternativeColoursBeforeClearance:true,alternativeColours,preferred,seconds:(performance.now()-at)/1000};
         if(preferred){fine.splice(fine.indexOf(ordinary),1);fine.splice(i,0,ordinary);i--;continue;}
       }
     }

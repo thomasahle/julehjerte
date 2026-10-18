@@ -251,6 +251,8 @@ test('early feature routing recovers the frozen puppy opening within a ten-secon
     assert.ok(opening.componentIoU>.5,'The preserved opening must not inflate into surrounding paper.');
   }
   assert.deepEqual(source.mask,imported.preview.mask);
+  t.diagnostic(JSON.stringify({fixture:'puppy',solverSeconds:solver.seconds,selected:solver.selectedInitialization,
+    geometryComparison:solver.initialGeometryComparison?.deferred,openingPreserved:true}));
   }catch(error){
     t.diagnostic(await captureFitFailure({answer,source,candidatePackets:checkpoints,context:{fixture:'photographic-puppy-fit',translation:[0,0],assertion:error.message}}));throw error;
   }
@@ -280,6 +282,8 @@ test('a one-pixel crop shift cannot discard a feature-preserving fine-grid check
   assert.equal(opening.touchesBorder,false,'The opening must not become a channel to the background');
   assert.ok(opening.componentIoU>.5,'Preserving the pixels must not create a much larger white blob');
   assert.deepEqual(source.mask,imported.preview.mask);
+  t.diagnostic(JSON.stringify({fixture:'shifted-puppy',solverSeconds:answer.report.solver.seconds,
+    geometryComparison:answer.report.solver.initialGeometryComparison?.deferred,openingIoU:opening.componentIoU,independentError:mismatch(rendered.mask,source.mask)}));
   }catch(error){
     t.diagnostic(await captureFitFailure({answer,source,error:mismatch(rendered.mask,source.mask),maximum:.018,context:{fixture:'photographic-puppy-fit',translation:[0,1],assertion:error.message,components:featureComponentMetrics(source,rendered.mask)}}));throw error;
   }
