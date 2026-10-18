@@ -122,7 +122,7 @@ test('additional layouts can retain a remote opening without editing the image o
   assert.deepEqual(source.mask,mask);assert.deepEqual(source.probability,probability);
 });
 
-test('a finer spline recovers a half-resolution opening after all coarse feature starts fail',async()=>{
+test('a finer spline recovers a half-resolution opening after all coarse feature starts fail',async t=>{
   const fixture=JSON.parse(await fs.readFile('scripts/inverse/fixtures/photographic-puppy-fit.json'));
   const catalogue=JSON.parse(await fs.readFile(fixture.sourceCatalogue));
   const photo=await readHardPhoto(catalogue.cases.find(c=>c.id===fixture.sourceCase));
@@ -145,6 +145,7 @@ test('a finer spline recovers a half-resolution opening after all coarse feature
   const initial=featureComponentMetrics(source,gridMask(search.seeds[0].model,source.resolution,search.seeds[0].phase,search.seeds[0].floor),100,[features[opening]])[0];
   assert.equal(initial.touchesBorder,false);
   const answer=await design(prepared.target,cfg),solver=answer.report.solver;
+  try{
   assert.equal(solver.earlyFeatureInitialization.finerHypotheses,10);
   assert.equal(solver.earlyFeatureInitialization.scheduled,1);assert.equal(solver.featureRecovery,null);
   for(const stage of ['fine','clearance'])assert.ok(solver.attempts.some(a=>a.stage===stage&&a.controlPoints===32));
@@ -155,6 +156,9 @@ test('a finer spline recovers a half-resolution opening after all coarse feature
   const fitted=featureComponentMetrics(source,rendered.mask,100,[features[opening]])[0];
   assert.equal(fitted.touchesBorder,false);assert.ok(fitted.componentIoU>.5,'The opening must keep its shape, not just retain some source pixels');
   assert.deepEqual(source.mask,mask);assert.deepEqual(source.probability,probability);
+  }catch(error){
+    t.diagnostic(await captureFitFailure({answer,source,context:{fixture:'photographic-puppy-fit',scale:.5,timeLimit:10,assertion:error.message}}));throw error;
+  }
 });
 
 test('a horizontal crop shift keeps its enclosed opening through finer refinement',async()=>{
