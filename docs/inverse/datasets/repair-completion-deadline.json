@@ -27,7 +27,7 @@
   "nextExperiment": "Fresh related-photo replays and captured failures, followed by standard checks; do not infer their outcome from the controlled-clock test.",
   "browser": "Prepared browser comparison must not start while full suite fails.",
   "evidenceSummarySha256": "305073764d40240dbcbced3e232274d59cd979d1a472994978e78447634345d4",
-  "verificationScope": "Logged repair geometry, image, feature and paper results; discarded cut coordinates were not captured. Full suite remains live; no independent rendering or runtime fix yet.",
+  "verificationScope": "The original discarded candidate has logged geometry, image, feature and paper results but no saved cut coordinates. A separate controlled-clock regression now independently renders and validates the retained repair; fresh photograph replays remain pending.",
   "previousFullSuite": {
     "path": "tmp/heart-learning/clearance-continuation-2026-10-18/loss-row-index/scoped-qa/summary.json",
     "sha256": "3838a17926e6f245f1866702f35d2fcdacaba48f3e3f47e68a3d64e59c49eef5",
