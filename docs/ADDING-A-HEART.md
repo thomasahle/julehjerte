@@ -79,6 +79,9 @@ says which category it is in and where. Everything else is generated from those 
    only: what the design shows and what its SVG records (name, author, grid,
    symmetry), no invented history or authorship. No exclamation marks; 150–600
    characters each. The English one is a translation of the Danish, not a copy of it.
+   A credit can be a link: write `[Johans julekugle](https://johansjulehjerter.dk/…)` and the
+   page shows it as one; everywhere else (the meta description, the social cards) only the
+   words remain. Only `https://` links are honoured.
 
 4. **The id.** Add `"<id>"` to the right category's `hearts` list in `hearts.json`
    (project root), at the place it should appear in the gallery. The file holds only

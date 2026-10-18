@@ -1,6 +1,7 @@
 import { SITE_NAME, SITE_TITLE, SITE_TITLE_EN, SITE_URL } from '$lib/config';
 import { t, type Language } from '$lib/i18n';
 import type { RouteKey } from '$lib/i18n/routes';
+import { plainDescription } from '$lib/utils/descriptionLinks';
 import { truncateAtSentence, truncateAtWord } from '$lib/utils/text';
 
 /** Keep the browser title and social title in agreement on every public route. */
@@ -51,7 +52,8 @@ export function heartMetaDescription(
 	const download = t('heartMetaDownload', lang);
 	const max = META_DESCRIPTION_MAX;
 	const join = (...parts: string[]) => parts.filter(Boolean).join(' ');
-	const prose = description?.trim().replace(/([^.!?])$/, '$1.') ?? '';
+	// Links in the paragraph are plain words here (descriptionLinks).
+	const prose = plainDescription(description?.trim() ?? '').replace(/([^.!?])$/, '$1.');
 
 	if (prose) {
 		// Room left for prose with and without the download line (each part is

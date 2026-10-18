@@ -14,6 +14,7 @@
 	import { t, type Language } from '$lib/i18n';
 	import { href } from '$lib/i18n/routes';
 	import type { HeartInfo } from '$lib/types/heart';
+	import { parseDescription } from '$lib/utils/descriptionLinks';
 
 	/** One "Udgiver: …" row under the credit line, optionally a link. */
 	interface MetaRow {
@@ -85,7 +86,12 @@
 
 	{#if description}
 		<div class="about">
-			<p class="description">{description}</p>
+			<!-- A credit in the paragraph is a link ("[words](https://…)", $lib/utils/descriptionLinks). -->
+			<p class="description">
+				{#each parseDescription(description) as segment, i (i)}
+					{#if segment.href}<a href={segment.href} rel="noopener noreferrer" target="_blank">{segment.text}</a>{:else}{segment.text}{/if}
+				{/each}
+			</p>
 		</div>
 	{/if}
 
@@ -170,6 +176,16 @@
 		flex-direction: column;
 		align-items: flex-start;
 		gap: 12px;
+	}
+
+	.description a {
+		color: var(--green);
+		text-decoration: underline;
+		text-underline-offset: 3px;
+	}
+
+	.description a:hover {
+		color: var(--red);
 	}
 
 	.description {

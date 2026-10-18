@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { ALL_HEART_IDS } from './categories';
 import { HEART_DESCRIPTIONS, heartDescription } from './heartDescriptions';
 import type { Language } from '$lib/i18n';
+import { plainDescription } from '$lib/utils/descriptionLinks';
 
 const LANGUAGES: Language[] = ['da', 'en'];
 
@@ -43,7 +44,8 @@ describe('heart descriptions', () => {
 	// or a paragraph growing into an essay; the written ones run 260-430 characters.
 	it.each(ALL_HEART_IDS)('keeps %s to a paragraph', (id) => {
 		for (const lang of LANGUAGES) {
-			const text = heartDescription(id, lang) ?? '';
+			// Measured without link markup: a credit's url is not prose.
+			const text = plainDescription(heartDescription(id, lang) ?? '');
 			expect(text.length, `${id}.${lang} is ${text.length} characters`).toBeGreaterThan(150);
 			expect(text.length, `${id}.${lang} is ${text.length} characters`).toBeLessThan(600);
 		}
