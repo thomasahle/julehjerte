@@ -556,7 +556,7 @@
     "localFailed": 0,
     "scope": "All late-feature initializations, crop translations at normal and 1.5x stress clocks, and traced-feature recovery regressions.",
     "delayedRoutingTest": "Preserves its independent 400/800-pixel image, feature and physical requirements. It now also accepts a checked candidate recorded at the fallback decision instead of demanding a redundant MILP retry.",
-    "linuxStatus": "running",
+    "linuxStatus": "failure",
     "linuxReplay": "https://github.com/thomasahle/julehjerte/actions/runs/39173141581",
     "diagnosticCommit": "a4f1fdd8",
     "appChecks": {
@@ -568,7 +568,14 @@
       "vitestSkipped": 1,
       "vitestFiles": 112,
       "build": "pass"
-    }
+    },
+    "linuxPassed": 15,
+    "linuxFailed": 1,
+    "lateOriginal3200IndependentError": 0.022675,
+    "allNineLateInitializationsPassed": true,
+    "matchingIndependentError": 0.006058673469387755,
+    "remainingFailure": "dense-interior-counts",
+    "qualification": "The dense checker passed the preceding focused replay but failed again here. Retained-grid scheduling is not yet a reliable resolution of that case."
   },
   "fullReplayBeforeHandoffs": {
     "url": "https://github.com/thomasahle/julehjerte/actions/runs/39170676301",
