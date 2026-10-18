@@ -5,12 +5,23 @@ import path from 'node:path';
 import {createHash} from 'node:crypto';
 
 /** Called after an assertion fails; never add capture work to fitting budgets. */
-export async function captureFitFailure({error=null,maximum=null,answer,source,resolution=source.resolution,context={},output='tmp/inverse-test-failures'}){
+export async function captureFitFailure({error=null,maximum=null,answer,source,resolution=source.resolution,context={},candidatePackets=null,output='tmp/inverse-test-failures'}){
   let diagnostic;
   try{
     await fs.mkdir(output,{recursive:true});
     const directory=await fs.mkdtemp(path.join(output,'fit-'));
     const array=value=>value?{type:value.constructor.name,values:Array.from(value)}:null;
+    // A Stop failure needs the actual candidate geometry, not just its final
+    // report. Keep only the best packet at each lattice to bound artifact size.
+    // This work happens after failure and never consumes the fitting budget.
+    if(candidatePackets){
+      const best=new Map();
+      for(const packet of candidatePackets){
+        const resolution=packet.materialResolution??answer.report.settings.materialResolution,previous=best.get(resolution);
+        if(!previous||(packet.error??Infinity)<(previous.error??Infinity))best.set(resolution,packet);
+      }
+      context={...context,candidatePackets:candidatePackets.map(({geometry,...summary})=>({...summary,geometrySha256:createHash('sha256').update(geometry).digest('hex')})),retainedCheckpoints:[...best.values()]};
+    }
     const files={
       'source.json':JSON.stringify({resolution:source.resolution,mask:array(source.mask),probability:array(source.probability),weights:array(source.weights),validMask:array(source.validMask),seedCells:source.seedCells}),
       'report.json':JSON.stringify(answer.report,null,2),

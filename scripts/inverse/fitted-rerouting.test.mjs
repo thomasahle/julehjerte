@@ -14,6 +14,7 @@ import {materialAudit} from '../../static/inverse/core/material.js';
 import {featureComponentMetrics} from './feature-component-metrics.mjs';
 import {readHardPhoto} from './hard-photo-data.mjs';
 import {renderExportedWeave} from './export-renderer.mjs';
+import {captureFitFailure} from './diagnostics/fit-failure.mjs';
 
 function loopProposal(){
   const chain=p=>p.slice(1).map((v,i)=>Cubic.line(p[i],v).p);
@@ -50,7 +51,7 @@ test('a close-looking proposal cannot override the original image or a requested
   assert.equal(exhausted.graph,undefined);assert.equal(exhausted.report.solver,undefined);
 });
 
-for(const timeLimit of [10,180])test(`a fresh shifted bird fit preserves its eye with a ${timeLimit}-second allowance`,async()=>{
+for(const timeLimit of [10,180])test(`a fresh shifted bird fit preserves its eye with a ${timeLimit}-second allowance`,async t=>{
   const fixture=JSON.parse(await fs.readFile('scripts/inverse/fixtures/photographic-bird-fit.json'));
   const catalogue=JSON.parse(await fs.readFile(fixture.sourceCatalogue)),photo=await readHardPhoto(catalogue.source);
   const cfg={...AUTOMATIC_PRESET,timeLimit,trials:0,earlyStop:false};
@@ -59,6 +60,7 @@ for(const timeLimit of [10,180])test(`a fresh shifted bird fit preserves its eye
   const prepared=prepare({type:'mask',mask:crop.preview.mask,resolution:400},cfg),source=prepared.target.sourceImage;
   const mask=source.mask.slice(),probability=source.probability.slice(),checkpoints=[];
   const answer=await design(prepared.target,cfg,()=>{},{onCandidate:c=>checkpoints.push(c)}),solver=answer.report.solver;
+  try{
   // The deterministic crossing fixture above exercises rerouting directly.
   // A timed fresh fit can also find a valid feature-preserving grid without
   // first crossing the eye. Judge both by the same exported shape below.
@@ -80,4 +82,7 @@ for(const timeLimit of [10,180])test(`a fresh shifted bird fit preserves its eye
     assert.ok(eye.componentIoU>.85,'Retaining the eye must also preserve its shape, without inflating it into surrounding paper.');
   }
   assert.deepEqual(source.mask,mask);assert.deepEqual(source.probability,probability);
+  }catch(error){
+    t.diagnostic(await captureFitFailure({answer,source,candidatePackets:checkpoints,context:{fixture:'photographic-bird-fit',translation:[1,0],timeLimit,assertion:error.message}}));throw error;
+  }
 });
