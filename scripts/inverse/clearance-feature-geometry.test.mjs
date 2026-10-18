@@ -25,9 +25,10 @@ test('a valid coarse initializer can recover a missing feature through independe
   const now=t.mock.method(performance,'now',()=>clock);
   try{
     repaired=repairClearanceInitializer(prepared,source,cfg,{recoverFeatures:true,onProgress:r=>{
-      // Verify the step-40 checkpoint in-loop. Leave insufficient reserve at
-      // step 80, so the final helper must verify the retained uncertain shape.
-      if(r.step>=80)clock=800;else if(r.step>=40)clock=600;
+      // Verify steps 40 and 80 in-loop using the explicit checking tail.
+      // Then leave less than its 250 ms reserve before the last partial
+      // block, so the final helper must verify the retained uncertain shape.
+      if(r.step>=80)clock=1000;else if(r.step>=40)clock=600;
     }});
   }finally{now.mock.restore();}
   if(!repaired.candidate)t.diagnostic(JSON.stringify(repaired.report));
@@ -35,7 +36,8 @@ test('a valid coarse initializer can recover a missing feature through independe
   assert.equal(repaired.report.accepted,true);
   assert.equal(repaired.report.usedPaperAlternative,true);
   assert.ok(repaired.report.history.some(h=>h.step===40&&h.paperVerification?.resolution===700));
-  assert.ok(repaired.report.history.some(h=>h.step===80&&h.paper==='uncertain'));
+  assert.ok(repaired.report.history.some(h=>h.step===80&&h.paperVerification?.resolution===700));
+  assert.ok(repaired.report.history.some(h=>h.step===84&&h.paper==='uncertain'));
   const candidate=repaired.candidate,solution=candidate.graph.solution(candidate.points,candidate.phase,source);
   solution.report={paperVerification:candidate.paperVerification};
   const verified=verifiedPaperSettings(solution,cfg);
