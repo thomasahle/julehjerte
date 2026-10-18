@@ -403,7 +403,15 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery,ma
   // first refinement of a newly recovered feature. Give a feature-complete
   // start its reserved refinement first, retaining routing as a fallback.
   const refineNewFeatureFirst=shortBudget&&earlyFeatureInitialization?.scheduled===1&&features.passed;
-  const deferredFeatureRecovery=((!shortBudget&&(probeRouting||deferredRouting))||refineNewFeatureFirst)&&needsRecovery?{maximumSeconds:fullRecoverySeconds,attempted:false}:null;
+  // A close ordinary grid which keeps almost all of every substantial region
+  // also deserves a continuous fit before speculative tracing. Aggregate error
+  // alone misses this evidence on dense patterns with many blurred boundaries.
+  // The stronger retention floor only schedules work; all acceptance gates
+  // and the unsuccessful-grid routing/weak-region fallbacks remain unchanged.
+  const refineRetainedGridFirst=shortBudget&&features.passed&&features.regions.length>0&&fine[0].error<=2*cfg.maxImageError
+    &&features.regions.every(r=>r.retainedFraction>=.9);
+  const deferredFeatureRecovery=((!shortBudget&&(probeRouting||deferredRouting))||refineNewFeatureFirst||refineRetainedGridFirst)&&needsRecovery
+    ?{maximumSeconds:fullRecoverySeconds,attempted:false,...(refineRetainedGridFirst?{reason:'well-retained-grid',minimumRegionRetention:Math.min(...features.regions.map(r=>r.retainedFraction))}:{})}:null;
   const attemptRecovery=async(seconds,budgetPolicy,until=deadline)=>{
     // A missing region, or a worse grid selected to preserve one, cannot
     // replace a nearly verified route. Lend its remaining tail to bounded
@@ -461,7 +469,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery,ma
     }
     return null;
   };
-  if(!deferredRouting&&!refineNewFeatureFirst&&needsRecovery&&deadline-performance.now()>2000&&recoverySeconds>=.25){
+  if(!deferredRouting&&!refineNewFeatureFirst&&!refineRetainedGridFirst&&needsRecovery&&deadline-performance.now()>2000&&recoverySeconds>=.25){
     const recovered=await attemptRecovery(recoverySeconds,probeRouting?'probe_before_grid_refinement':reserveRefinement?'reserve_grid_refinement':'prioritize_routing');
     if(recovered)return recovered;
   }
@@ -473,7 +481,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery,ma
   // with hidden border endpoints needs that search to recover its simpler
   // three-cut pair. Try the speculative grid only after routing has failed,
   // while fast border-model rejections still leave time for a fresh layout.
-  if(!deferredRouting&&!interiorRetry&&weakRegion!==null&&featureTimeAvailable())initializeEarlyFeature([weakRegion],weakRegion,'after-recovery');
+  if(!deferredRouting&&!refineRetainedGridFirst&&!interiorRetry&&weakRegion!==null&&featureTimeAvailable())initializeEarlyFeature([weakRegion],weakRegion,'after-recovery');
   const floor=fittingMargin(cfg,cfg.width)/cfg.width,candidates=[];
   let verifiedAlternative=false;
   let earlyPolishComparison=null;
@@ -858,7 +866,7 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery,ma
         for(const proposal of recoveredCandidates.slice(before))addCandidate(proposal);
       }
     }
-    if(i===0&&deferredRouting&&!candidates.some(c=>c.imagePassed)&&weakRegion!==null){
+    if(i===0&&(deferredRouting||refineRetainedGridFirst)&&!candidates.some(c=>c.imagePassed)&&weakRegion!==null){
       deadline=Math.min(searchDeadline()-1300,performance.now()+8700);
       // Queue the proposal after the grid already tried, retaining every
       // ordinary finalist without repeating its clearance/refinement work.

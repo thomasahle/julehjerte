@@ -89,12 +89,16 @@ test('the main fitter reconstructs the dense binary photo target with legal edit
   const answer=await design(target,raw),proposal=answer.report.solver.countSearch.interiorProposal;
   try{
   assert.equal(proposal.previousMaximum,8);assert.equal(proposal.maximumCount,11);assert.ok(proposal.added>0);
+  const deferred=answer.report.solver.deferredFeatureRecovery;
+  assert.equal(deferred?.reason,'well-retained-grid');
+  assert.ok(deferred.minimumRegionRetention>=.9);
   assert.ok(Object.values(answer.report.slits).every(n=>n<=11));
   assert.equal(answer.report.validation.passed,true);assert.equal(answer.report.manufacturing.status,'pass');
   assert.equal(answer.report.templateChecksPassed,true);
   const woven=await renderExportedWeave(answer.files['cut_geometry.json'],resolution);
   const error=woven.mask.reduce((sum,v,i)=>sum+Number(v!==mask[i]),0)/mask.length;
   assert.ok(error<.03,`Independent disagreement ${error}; the eight-cut result exceeded 5%.`);
+  t.diagnostic(JSON.stringify({independentError:error,solverSeconds:answer.report.solver.seconds,deferredRoutingAttempted:deferred.attempted}));
   assert.equal(auditFeatureFidelity(target.sourceImage,woven.mask,answer.report.settings).passed,true);
   assert.deepEqual(target.sourceImage.mask,mask);assert.deepEqual(target.sourceImage.probability,before);
   }catch(error){t.diagnostic(await captureFitFailure({answer,source:target.sourceImage,context:{case:'dense-interior-counts',assertion:error.message}}));throw error;}
