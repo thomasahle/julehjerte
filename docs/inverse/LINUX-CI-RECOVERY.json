@@ -124,7 +124,7 @@
     "A late feature start reserved 450 ms for a polish that could no longer start after assessment. Lending that time to its unfinished refinement improved the source fit without extending the ten-second request.",
     "The Viking continuation repeatedly gave the whole 400 ms repair allowance to hidden-only controls, starving the existing general-control fallback. A local split-budget experiment reduced independent error from 0.01941875 to 0.0186625 without extending the continuation."
   ],
-  "remaining": "Main remains red. Best completed full cold-process replay passed 1105/1114 tests. Paper-audit reuse was rejected and reverted after wider Linux regressions. Explicit short-fit budget fixes are being replayed at 39169949289. No full-suite or release pass is claimed.",
+  "remaining": "Main remains red and no recovery commit has been merged into main. Best completed full cold-process replay passed 1105/1114 tests. More recent focused runs still fail. Rejected paper-audit reuse has been reverted. The narrowed verification reserve and matching priority fixes are now undergoing full Linux replay at 39170676301. No full-suite or release pass is claimed; NN work has not resumed.",
   "branchSafety": "codex/ci-inverse-diagnostics replaces the Pages workflow with manual diagnostics. Never merge that entire branch to main. Transfer only verified fixes from codex/solver-initialization.",
   "limitations": [
     "No fresh 22-design Hunodan speed benchmark in this CI recovery pass.",
@@ -391,6 +391,38 @@
     "localPassed": 9,
     "localFailed": 0,
     "linuxReplay": "https://github.com/thomasahle/julehjerte/actions/runs/39169949289",
-    "linuxStatus": "running"
+    "linuxStatus": "failure",
+    "passed": 24,
+    "failed": 2,
+    "failures": [
+      "original near-miss under 1.5x clock: independent 800-pixel error .0304625 > .03",
+      "vertical near-miss under 1.5x clock: final fit above original image limit"
+    ]
+  },
+  "matchingBeforePolish": {
+    "commit": "e1ee456b",
+    "change": "For short requests with a checked independent fit below the established 0.5% fast-initializer floor, give optional polish/sharing time to matching when the image bound permits it. Keep the independent incumbent and final sharing.",
+    "localPassed": 14,
+    "localFailed": 0,
+    "localIndependentExportError": 0.004003684807256236,
+    "linuxReplay": "https://github.com/thomasahle/julehjerte/actions/runs/39170132162",
+    "linuxStatus": "failure",
+    "passed": 23,
+    "failed": 13,
+    "note": "This broader replay included the still-too-broad paper-checking tail. The matching fit was identical but missed its stricter regression limit: independent error .00830853 > .007. No Linux matching success claimed."
+  },
+  "featurePolishReserve": {
+    "commit": "31ad0811",
+    "change": "Restrict borrowing the polishing reserve for finer verification to ordinary grids. Feature-derived seeds retain their established outline-polishing window.",
+    "localPassed": 20,
+    "localFailed": 0,
+    "scope": "Near-miss crop translations at real and 1.5x stress clocks, plus late feature initializations."
+  },
+  "latestFullReplay": {
+    "url": "https://github.com/thomasahle/julehjerte/actions/runs/39170676301",
+    "diagnosticCommit": "869d9b60",
+    "sourceCommit": "31ad0811",
+    "status": "running",
+    "scope": "Full inverse suite, isolated processes, original real clocks and quality thresholds; no diagnostic clock imported."
   }
 }
