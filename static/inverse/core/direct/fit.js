@@ -355,8 +355,10 @@ async function fitIndependent(input,cfg,onProgress,countSearch,cornerRecovery){
   // cannot be created by spending all remaining time on an ordinary grid.
   // Feature objectives retain source coverage and importance. Missing pixels
   // do not disable observed-feature proposals; traced recovery keeps its guard.
-  const featureTimeAvailable=()=>!symmetryRequested&&deadline-performance.now()>2500;
-  if(missingFeature&&featureTimeAvailable())initializeEarlyFeature(features.regions.flatMap((r,j)=>(r.retainedFraction<features.minimumRetention||r.enclosureLost)?[j]:[]));
+  // Keep the longer reserve for speculative improvements to retained regions.
+  // Only an absent feature justifies starting inside the shorter tail.
+  const featureTimeAvailable=(minimum=3500)=>!symmetryRequested&&deadline-performance.now()>minimum;
+  if(missingFeature&&featureTimeAvailable(2500))initializeEarlyFeature(features.regions.flatMap((r,j)=>(r.retainedFraction<features.minimumRetention||r.enclosureLost)?[j]:[]));
   if(interiorRetry&&weakRegion!==null&&featureTimeAvailable())initializeEarlyFeature([weakRegion],weakRegion,'before-recovery');
   // Retaining a large region does not mean a coarse grid keeps its branches.
   // Only shorten routing when colour protection selected a better-fitting
