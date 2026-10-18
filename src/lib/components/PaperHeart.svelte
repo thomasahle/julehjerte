@@ -56,7 +56,7 @@
 		weaveParityOf,
 		type PlacedPoint
 	} from '$lib/pattern/editorBridge';
-	import { ALL_RULES, canLean, sameRule } from '$lib/pattern/tiling';
+	import { ALL_RULES, canLean, cutCounts, fitLines, sameRule } from '$lib/pattern/tiling';
 	import { isStraightTile, ruleStart, switchRule } from '$lib/pattern/presets';
 	import RuleTemplates from '$lib/components/pattern/RuleTemplates.svelte';
 	import { ToggleGroup, ToggleGroupItem, keepChosen } from '$lib/components/ui/toggle-group';
@@ -1151,7 +1151,7 @@
 	function derivePatternOverrides(primary: Finger): Map<string, Finger> {
 		const overrides = new Map<string, Finger>();
 		overrides.set(primary.id, primary);
-		if (!patternTile || !cutOfFinger(primary.id, patternTile.cuts)) return overrides;
+		if (!patternTile || !cutOfFinger(primary.id, cutCounts(patternTile))) return overrides;
 		const rect = getOverlapRect();
 		const next = tileAfterFingerEdit(patternTile, primary, rect);
 		for (const f of generateEditorFingers(next, rect)) overrides.set(f.id, f);
@@ -1159,18 +1159,38 @@
 		return overrides;
 	}
 
-	/** Every inner cut generated from `tile` in the canonical frame of an n × n heart, edges and all. */
-	function patternFingers(tile: PatternTile): Finger[] {
-		const rect = getCenteredRectParams({ x: tile.cuts + 1, y: tile.cuts + 1 });
-		const inner = new Map(generateEditorFingers(tile, rect).map((f) => [f.id, f]));
-		return createDefaultFingers({ x: tile.cuts + 1, y: tile.cuts + 1 }).map((f) => inner.get(f.id) ?? f);
+	/**
+	 * Every cut generated from `tile`, edges and all, in the frame of its n × n square (or `rect`).
+	 * A moved pattern can have a cut more one way than n − 1 (`cutCounts`): the square stays the
+	 * same, and its far edges are numbered after the last cut.
+	 */
+	function patternFingers(tile: PatternTile, rect = getCenteredRectParams({ x: tile.cuts + 1, y: tile.cuts + 1 })): Finger[] {
+		const n = tile.cuts + 1;
+		const counts = cutCounts(tile);
+		const square = createDefaultFingers({ x: n, y: n });
+		const inner = generateEditorFingers(tile, rect);
+		const edge = (lobe: 'L' | 'R', at: number, id: number): Finger => ({ ...square.find((f) => f.id === `${lobe}-${at}`)!, id: `${lobe}-${id}` });
+		return [
+			edge('L', 0, 0),
+			...inner.filter((f) => f.lobe === 'left'),
+			edge('L', n, counts.H + 1),
+			edge('R', 0, 0),
+			...inner.filter((f) => f.lobe === 'right'),
+			edge('R', n, counts.V + 1)
+		];
 	}
 
-	/** Whether the heart a tile makes weaves, by the check the heart's own cuts get (`issueFingerIds`). */
+	/** The grid a tile's heart has: a strip more than its cuts, each way. */
+	const tileGrid = (tile: PatternTile): GridSize => {
+		const counts = cutCounts(tile);
+		return { x: counts.V + 1, y: counts.H + 1 };
+	};
+
+	/** Whether the heart a tile makes, its lines fitted (`fitLines`), weaves, by the check the heart's own cuts get (`issueFingerIds`). */
 	function tileWeaves(tile: PatternTile): boolean {
-		const made = patternFingers(tile);
-		const size = { x: tile.cuts + 1, y: tile.cuts + 1 };
-		return findFingersWithIssues(made, intersectionMarginPx(inferOverlapRect(made, size))).size === 0;
+		const fitted = fitLines(tile);
+		const made = patternFingers(fitted);
+		return findFingersWithIssues(made, intersectionMarginPx(inferOverlapRect(made, tileGrid(fitted)))).size === 0;
 	}
 
 	/** The three rows off: they map whole cuts onto each other and would fight the tile. */
@@ -1187,10 +1207,12 @@
 	 * unless the colours were swapped, as the rules' own words have it ("den hvide flise er den
 	 * røde, …"), wherever the pattern has been moved to (`weaveParityOf`).
 	 */
-	function showTile(tile: PatternTile) {
+	function showTile(shown: PatternTile) {
+		// Where the pattern has been moved, the lines it cuts follow it (`fitLines`).
+		const tile = fitLines(shown);
 		takeUpTile(tile);
 		fingers = patternFingers(tile);
-		gridSize = { x: tile.cuts + 1, y: tile.cuts + 1 };
+		gridSize = tileGrid(tile);
 		weaveParity = weaveParityOf(tile);
 		selectedFingerId = null;
 		selectedAnchors = [];
@@ -1199,17 +1221,17 @@
 	}
 
 	/**
-	 * A rule chosen in the Escher tab. The curves the new rule reads the same way carry over (and the lean, when the new rule lets tiles lean), so tying one pair of
-	 * sides differently keeps the other pair as drawn, as long as the heart still weaves (else the
-	 * rule starts afresh, `switchRule`); cuts that already are a tile of the new rule
-	 * stay as they are; anything else starts as the rule starts, with a low peak of straight lines
-	 * on every curve, at the heart's size. A plain chequerboard has nothing to keep, so it starts
-	 * there too.
+	 * A rule chosen in the Escher tab. The curves the new rule reads the same way carry over (and
+	 * the lean, when the new rule lets tiles lean), so tying one pair of sides differently keeps the
+	 * other pair as drawn, as long as the heart still weaves (else the rule starts afresh,
+	 * `switchRule`); cuts that already are a tile of the new rule stay as they are; anything else
+	 * starts as the rule starts, with a low peak of straight lines on every curve, at the pattern's
+	 * size. A plain chequerboard has nothing to keep, so it starts there too.
 	 */
 	function chooseEscherRule(rule: TileRule) {
 		if (patternTile && sameRule(rule, patternTile.rule)) return;
 		const before = snapshotState();
-		const n = Math.min(7, Math.max(3, gridSize.x, gridSize.y));
+		const n = patternTile ? patternTile.cuts + 1 : Math.min(7, Math.max(3, gridSize.x, gridSize.y));
 		const rect = getOverlapRect();
 		const current = patternTile && patternTile.cuts === n - 1 ? patternTile : null;
 		const found = !patternTile && gridSize.x === n && gridSize.y === n ? extractTile(fingers, rule, n - 1, rect) : null;
@@ -1245,13 +1267,16 @@
 			return;
 		}
 		escherTab = true;
-		if (patternTile || gridSize.x !== gridSize.y) return;
+		if (patternTile) return;
 		const rect = getOverlapRect();
-		// The tile this tab was left with, if the cuts are still the ones it makes.
-		if (lastEscherTile && lastEscherTile.cuts === gridSize.x - 1 && cutsAre(generateEditorFingers(lastEscherTile, rect))) {
+		// The tile this tab was left with, if the cuts are still the ones it makes (a moved pattern's
+		// heart can have a strip more one way).
+		const left = lastEscherTile ? tileGrid(lastEscherTile) : null;
+		if (lastEscherTile && left && left.x === gridSize.x && left.y === gridSize.y && cutsAre(generateEditorFingers(lastEscherTile, rect))) {
 			takeUpTile(lastEscherTile);
 			return;
 		}
+		if (gridSize.x !== gridSize.y) return;
 		// Cuts that already are a tile on the plain grid (a heart drawn in this tab and saved, say)
 		// take their rule up again, unchanged. A plain chequerboard fits every rule, so it waits for one to be chosen.
 		for (const rule of ALL_RULES) {
@@ -1263,16 +1288,18 @@
 		}
 	}
 
-	/** The pattern's size: the tile drawn again on an n × n heart. */
 	/**
 	 * A size the pattern was too tight for, said above the heart a moment: the tiles keep their shape
 	 * in cells, but the paper between two cuts has to stay as wide in the heart.
 	 */
 	let sizeStop = $state<number | null>(null);
 	let sizeStopTimer: ReturnType<typeof setTimeout> | null = null;
+	/** The pattern's size, n for tiles drawn n × n on the heart's square (which may have a strip more each way where the pattern has moved). */
+	let patternSize = $derived(patternTile ? patternTile.cuts + 1 : gridSize.x);
 
+	/** The pattern's size: the tile drawn again n × n on the heart's square. */
 	function setPatternSize(n: number) {
-		if (!patternTile || n === gridSize.x) return;
+		if (!patternTile || n === patternSize) return;
 		const next = { ...patternTile, cuts: n - 1 };
 		if (sizeStopTimer) clearTimeout(sizeStopTimer);
 		sizeStop = null;
@@ -1372,19 +1399,30 @@
 	 */
 	type CutProblem = 'cross' | 'self' | 'outside';
 
-		function candidateProblem(fingerId: string, candidate: Finger, overrides?: Map<string, Finger>): CutProblem | null {
+		/**
+		 * `whole`: judge the candidate among this set of cuts, edges and all, on this grid, instead of
+		 * the heart's own (a moved pattern that gains or loses a cut, see `fitLines`).
+		 */
+		function candidateProblem(
+			fingerId: string,
+			candidate: Finger,
+			overrides?: Map<string, Finger>,
+			whole?: { fingers: Finger[]; gridSize: GridSize }
+		): CutProblem | null {
 			const { left: minX, right: maxX, top: minY, bottom: maxY } = getOverlapRect();
 			const orderEps = 1;
 			const tol = 0.5;
+			const pool = whole?.fingers ?? fingers;
+			const byId = (id: string) => (whole ? pool.find((f) => f.id === id) : getFingerById(id));
 
 			const idx = boundaryIndexFromId(candidate.id);
-			const boundaryCount = boundaryCurveCount(gridSize, candidate.lobe);
+			const boundaryCount = boundaryCurveCount(whole?.gridSize ?? gridSize, candidate.lobe);
 			const isFirstBoundary = idx <= 0;
 			const isLastBoundary = idx >= boundaryCount - 1;
-			const prev = idx > 0 ? (overrides?.get(idForBoundary(candidate.lobe, idx - 1)) ?? getFingerById(idForBoundary(candidate.lobe, idx - 1))) : undefined;
+			const prev = idx > 0 ? (overrides?.get(idForBoundary(candidate.lobe, idx - 1)) ?? byId(idForBoundary(candidate.lobe, idx - 1))) : undefined;
 			const next =
 				idx < boundaryCount - 1
-					? (overrides?.get(idForBoundary(candidate.lobe, idx + 1)) ?? getFingerById(idForBoundary(candidate.lobe, idx + 1)))
+					? (overrides?.get(idForBoundary(candidate.lobe, idx + 1)) ?? byId(idForBoundary(candidate.lobe, idx + 1)))
 					: undefined;
 
 		const candidateSegments = fingerToSegments(candidate);
@@ -1427,7 +1465,7 @@
 		if (!insideSquare) return 'outside';
 		if (segmentsIntersect(candidateSegments, candidateSegments, { skipAdjacent: true })) return 'self';
 
-		for (const otherBase of fingers) {
+		for (const otherBase of pool) {
 			if (otherBase.id === fingerId) continue;
 			const other = overrides?.get(otherBase.id) ?? otherBase;
 			if (other.lobe !== candidate.lobe) continue;
@@ -1442,6 +1480,16 @@
 	function overridesProblem(overrides: Map<string, Finger>): CutProblem | null {
 		for (const [id, candidate] of overrides) {
 			const problem = candidateProblem(id, candidate, overrides);
+			if (problem) return problem;
+		}
+		return null;
+	}
+
+	/** The first problem among a whole new set of cuts on a grid of its own (see `candidateProblem`). */
+	function fingersProblem(all: Finger[], grid: GridSize): CutProblem | null {
+		for (const f of all) {
+			if (!cutOfFinger(f.id, { V: grid.x - 1, H: grid.y - 1 })) continue;
+			const problem = candidateProblem(f.id, f, undefined, { fingers: all, gridSize: grid });
 			if (problem) return problem;
 		}
 		return null;
@@ -2783,21 +2831,35 @@
 					: slideCutEnd(leanDrag.base, leanDrag.fingerId, leanDrag.end, delta, rect);
 			// A press that has not moved anything yet changes nothing (not even the node a slide adds).
 			if (!next || (!dragDirty && (next === leanDrag.base || Math.hypot(delta.x, delta.y) < 0.5))) return;
-			const overrides = new Map(generateEditorFingers(next, rect).map((f) => [f.id, f]));
-			const problem = overridesProblem(overrides);
-			noteDragStop(problem);
-			if (problem) return;
-			tileOfOverrides.set(overrides, next);
-			applyOverrides(overrides);
+			const grid = tileGrid(next);
+			if (grid.x !== gridSize.x || grid.y !== gridSize.y) {
+				// A line of the tiling came in where an edge strip grew wider than a cell, or left again
+				// (`fitLines`): the heart gets a strip more or fewer, its cuts made again, edges and all.
+				const all = patternFingers(next, rect);
+				const problem = fingersProblem(all, grid);
+				noteDragStop(problem);
+				if (problem) return;
+				fingers = all;
+				gridSize = grid;
+				patternTile = next;
+				weaveParity = weaveParityOf(next);
+			} else {
+				const overrides = new Map(generateEditorFingers(next, rect).map((f) => [f.id, f]));
+				const problem = overridesProblem(overrides);
+				noteDragStop(problem);
+				if (problem) return;
+				tileOfOverrides.set(overrides, next);
+				applyOverrides(overrides);
+			}
 			if (leanDrag.mode === 'corner') {
 				// The point stays selected under the pointer, though the pattern may have moved it onto
 				// another cut, or a repeat on.
-				const kind = cutOfFinger(leanDrag.fingerId, next.cuts)?.kind;
+				const kind = cutOfFinger(leanDrag.fingerId, cutCounts(leanDrag.base))?.kind;
 				const at = kind && leanDrag.point ? locatePlacedPoint(next, leanDrag.point, kind, p, rect) : null;
 				if (at) selectedFingerId = at.fingerId;
 				selectedAnchors = at ? [at.anchor] : [];
 			} else {
-				const moved = overrides.get(leanDrag.fingerId);
+				const moved = getFingerById(leanDrag.fingerId);
 				selectedAnchors = leanDrag.end === 'first' ? [0] : moved ? [fingerToSegments(moved).length] : [];
 			}
 			dragDirty = true;
@@ -3118,10 +3180,13 @@
 	});
 
 	// A strip added or removed by hand leaves the tile behind: the rule goes off and the cuts stay.
+	// (A moved pattern's own grid can have a strip more one way, `tileGrid`.)
 	$effect(() => {
 		const size = gridSize;
 		untrack(() => {
-			if (patternTile && size.x !== size.y) patternTile = null;
+			if (!patternTile) return;
+			const own = tileGrid(patternTile);
+			if (own.x !== size.x || own.y !== size.y) patternTile = null;
 		});
 	});
 
@@ -3909,7 +3974,7 @@
 								{#if patternRule !== 'off'}
 									<div class="pattern-sizes" role="group" aria-label={tr('patternRowSize')}>
 										{#each [3, 4, 5, 6, 7] as n (n)}
-											<button type="button" class="pattern-size" class:active={gridSize.x === n} aria-pressed={gridSize.x === n} onclick={() => setPatternSize(n)}>{n} × {n}</button>
+											<button type="button" class="pattern-size" class:active={patternSize === n} aria-pressed={patternSize === n} onclick={() => setPatternSize(n)}>{n} × {n}</button>
 										{/each}
 									</div>
 									{#if !isMobileLayout}

@@ -5,7 +5,9 @@ import { getCenteredRectParams, inferOverlapRect } from '$lib/utils/overlapRect'
 import { splitBezierAt } from '$lib/geometry/bezierSegments';
 import {
 	ALL_RULES,
+	cutCounts,
 	firstLine,
+	fitLines,
 	freeSides,
 	halfOf,
 	opposite,
@@ -481,7 +483,52 @@ describe('a pattern moved within the heart', () => {
 		}
 	);
 
+	it.each(ALL_RULES.map((rule) => [ruleKey(rule), rule] as const))(
+		'fills an edge strip of the moved %s pattern wider than a cell with the next line, where its cut fits, and drops none',
+		(_key, rule) => {
+			const base = ruleStart(rule, 4);
+			const n = base.cuts + 1;
+			const cell = 100 / n;
+			let grew = false;
+			for (let x = -1; x < 1; x += 0.25) {
+				const moved: PatternTile = { ...base, pan: { x, y: -x / 2 } };
+				const tile = fitLines(moved);
+				const where = `pan ${x}`;
+				for (const kind of ['V', 'H'] as const) {
+					// every line the n − 1 nearest the middle are is still cut
+					const [near, fitted] = [firstLine(moved, kind), firstLine(tile, kind)];
+					expect(fitted, where).toBeLessThanOrEqual(near);
+					expect(fitted + cutCounts(tile)[kind], where).toBeGreaterThanOrEqual(near + base.cuts);
+				}
+				grew ||= cutCounts(tile).V > base.cuts || cutCounts(tile).H > base.cuts;
+				// Every cut keeps a strip of paper from the edge, and no edge strip is much wider than a cell:
+				// the peaks the rule starts from stand at most an eighth of a cell off their line.
+				const { left, right } = patternCuts(tile);
+				const extent = (cuts: BezierSegment[][], axis: 'x' | 'y') => cuts.map((cut) => cut.flatMap((s) => [s.p0[axis], s.p3[axis]]));
+				for (const [cuts, axis] of [[right, 'x'], [left, 'y']] as const) {
+					const ends = extent(cuts, axis);
+					expect(Math.min(...ends.flat()), where).toBeGreaterThan(0.15 * cell - 1e-6);
+					expect(Math.max(...ends.flat()), where).toBeLessThan(100 - 0.15 * cell + 1e-6);
+					const middles = ends.map((e) => e.reduce((a, b) => a + b, 0) / e.length / cell);
+					expect(Math.min(...middles), where).toBeLessThan(1.3);
+					expect(Math.max(...middles), where).toBeGreaterThan(n - 1.3);
+				}
+				expect(problems(tile), where).toEqual([]);
+				// A pan of one repeat more is the same heart.
+				const repeat = ruleRepeat(rule);
+				expect(sameCuts(tile, fitLines({ ...moved, pan: { x: x + repeat.x, y: -x / 2 - repeat.y } })), where).toBe(true);
+			}
+			expect(grew, 'a strip more somewhere').toBe(true);
+		}
+	);
+
+	it('keeps an unmoved pattern as it was: n − 1 cuts each way, nearest the middle', () => {
+		for (const rule of ALL_RULES) expect(fitLines(ruleStart(rule, 4)), ruleKey(rule)).toEqual(ruleStart(rule, 4));
+	});
+
 	it('moves without end when a point the rule fixes is dragged, the point staying under the pointer', () => {
+		// on the way, the heart gains a strip where an edge strip grows wide, and loses it again
+		let reshaped = false;
 		for (const id of ['hearts', 'leaf', 'windmill']) {
 			const tile = { ...exampleTile(EXAMPLES.find((p) => p.id === id)!), cuts: 5 };
 			const rect = getCenteredRectParams({ x: tile.cuts + 1, y: tile.cuts + 1 });
@@ -495,6 +542,7 @@ describe('a pattern moved within the heart', () => {
 				const delta = { x: step * 0.2 * cell, y: -step * 0.1 * cell };
 				const next = dragPlacedPoint(tile, 'R-3', anchor, delta, rect)!;
 				const where = `${id} moved ${step * 0.2} cells`;
+				reshaped ||= cutCounts(next).V !== tile.cuts || cutCounts(next).H !== tile.cuts;
 				expect(Math.abs(next.pan!.x), where).toBeLessThanOrEqual(1);
 				expect(problems(next), where).toEqual([]);
 				const pointer = { x: was.x + delta.x, y: was.y + delta.y };
@@ -504,6 +552,7 @@ describe('a pattern moved within the heart', () => {
 				expect(near(segs[at.anchor]!.p0, pointer, 1e-6), where).toBe(true);
 			}
 		}
+		expect(reshaped).toBe(true);
 	});
 
 	it('keeps the drawn tiles red: the weave parity follows the lines the heart starts at', () => {

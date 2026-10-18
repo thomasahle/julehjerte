@@ -23,7 +23,10 @@ import type { OverlapRect } from '$lib/utils/overlapRect';
 import {
 	canLean,
 	crossing,
+	cutCounts,
 	firstLine,
+	fitLines,
+	heartLines,
 	ruleRepeat,
 	fromFrame,
 	halfOf,
@@ -53,14 +56,18 @@ const mapSegs = (segs: BezierSegment[], f: (p: Vec) => Vec): BezierSegment[] =>
 const toPx = (rect: OverlapRect) => (p: Vec): Vec => ({ x: rect.left + (p.x / 100) * rect.width, y: rect.top + (p.y / 100) * rect.height });
 const fromPx = (rect: OverlapRect) => (p: Vec): Vec => ({ x: ((p.x - rect.left) / rect.width) * 100, y: ((p.y - rect.top) / rect.height) * 100 });
 
-/** Which cut a finger id names, and in which family, or null for the square's edges and anything else. */
-export function cutOfFinger(id: string, cuts: number): { kind: StretchKind; index: number } | null {
+/**
+ * Which cut a finger id names, and in which family, or null for the square's edges and anything
+ * else: `cuts` is how many cuts there are each way, or in each family (`cutCounts`).
+ */
+export function cutOfFinger(id: string, cuts: number | Record<StretchKind, number>): { kind: StretchKind; index: number } | null {
 	const m = /^([LR])-(\d+)$/.exec(id);
 	if (!m) return null;
 	const index = Number(m[2]);
-	if (index < 1 || index > cuts) return null;
 	// Right-lobe cuts are the vertical ones, left-lobe cuts the horizontal ones.
-	return { kind: m[1] === 'R' ? 'V' : 'H', index };
+	const kind: StretchKind = m[1] === 'R' ? 'V' : 'H';
+	if (index < 1 || index > (typeof cuts === 'number' ? cuts : cuts[kind])) return null;
+	return { kind, index };
 }
 
 const SMOOTH_COS = Math.cos((10 * Math.PI) / 180);
@@ -299,7 +306,7 @@ function crossingAfter(piece: CutPiece): { i: number; j: number; odd: boolean } 
 
 /** The cut the tile makes for a finger, with where each segment comes from, or null for the square's edges. */
 function tracedFinger(tile: PatternTile, fingerId: string) {
-	const cut = cutOfFinger(fingerId, tile.cuts);
+	const cut = cutOfFinger(fingerId, cutCounts(tile));
 	return cut ? { cut, ...tracedCut(tile, cut.kind, cut.index) } : null;
 }
 
@@ -389,8 +396,9 @@ const withinRepeat = (v: number, repeat: number) => v - repeat * Math.floor((v +
 /**
  * The whole pattern moved within the heart so that the point at Tegn's anchor
  * `anchor` of cut `fingerId` moves by `delta` pixels — along the edge, for an end
- * of the cut. It moves without end: the heart cuts the lines nearest its middle
- * (`firstLine`), and the pan is kept within one repeat of the pattern.
+ * of the cut. It moves without end: the heart cuts the lines nearest its middle,
+ * and the next one where an edge strip has grown wider than a cell (`fitLines`);
+ * the pan is kept within one repeat of the pattern.
  */
 export function panTo(base: PatternTile, fingerId: string, anchor: number, delta: Vec, rect: OverlapRect): PatternTile | null {
 	const traced = tracedFinger(base, fingerId);
@@ -401,10 +409,10 @@ export function panTo(base: PatternTile, fingerId: string, anchor: number, delta
 	const n = base.cuts + 1;
 	const pan = base.pan ?? { x: 0, y: 0 };
 	const repeat = ruleRepeat(base.rule);
-	return {
+	return fitLines({
 		...base,
 		pan: { x: withinRepeat(pan.x + (d.x * n) / rect.width, repeat.x), y: withinRepeat(pan.y + (d.y * n) / rect.height, repeat.y) }
-	};
+	});
 }
 
 /**
@@ -436,7 +444,7 @@ export function locatePlacedPoint(tile: PatternTile, point: PlacedPoint, kind: S
 	const line = 'crossing' in moved ? (kind === 'V' ? moved.crossing.i : moved.crossing.j) : moved.middle.kind === kind ? (kind === 'V' ? moved.middle.i : moved.middle.j) : null;
 	if (line === null) return null;
 	const k = line - firstLine(tile, kind) + 1;
-	if (k < 1 || k > tile.cuts) return null;
+	if (k < 1 || k > heartLines(tile, kind).count) return null;
 	const fingerId = `${kind === 'V' ? 'R' : 'L'}-${k}`;
 	const anchor = anchorOfPlacedPoint(tile, fingerId, moved);
 	return anchor < 0 ? null : { fingerId, anchor };
@@ -478,9 +486,10 @@ export function anchorOfCrossing(tile: PatternTile, fingerId: string, crossing: 
  * The tile leaned so that the crossing at Tegn's anchor `anchor` of cut `fingerId`
  * moves by `delta` pixels: every crossing of its kind moves with it and the
  * others the opposite way. The heart is a window onto the tiling that moves by
- * half the lean, so the lean changes by twice the move. A corner at an end of the cut, on the square's edge, only
- * slides along it. Null when the anchor is not a crossing or the rule keeps its
- * tiles square.
+ * half the lean, so the lean changes by twice the move, and the lines it cuts are
+ * fitted again (`fitLines`). A corner at an end of the cut, on the square's edge,
+ * only slides along it. Null when the anchor is not a crossing or the rule keeps
+ * its tiles square.
  */
 export function leanTo(base: PatternTile, fingerId: string, anchor: number, delta: Vec, rect: OverlapRect): PatternTile | null {
 	if (!canLean(base.rule)) return null;
@@ -495,10 +504,10 @@ export function leanTo(base: PatternTile, fingerId: string, anchor: number, delt
 	const sign = corner.odd ? 2 : -2;
 	const o = tileOffset(base);
 	const clamp = (v: number) => Math.max(-MAX_LEAN, Math.min(MAX_LEAN, v));
-	return {
+	return fitLines({
 		...base,
 		offset: { x: clamp(o.x + (sign * d.x * n) / rect.width), y: clamp(o.y + (sign * d.y * n) / rect.height) }
-	};
+	});
 }
 
 /**

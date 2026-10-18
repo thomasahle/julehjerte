@@ -40,6 +40,7 @@
 import type { BezierSegment, HeartDesign, Vec } from '$lib/types/heart';
 import { reverseSegments, segmentsToPathData } from '$lib/geometry/bezierSegments';
 import { normalizeHeartDesign } from '$lib/utils/heartDesign';
+import { HEART_CLEARANCE_UNITS } from '$lib/geometry/returnSearch';
 
 /** How a pair of the red tile's sides is tied together (see `TileRule`). */
 export type SideLink = 'move' | 'mirror' | 'turn';
@@ -100,9 +101,18 @@ export type StretchKind = 'V' | 'H';
 /** A side curve in its stretch's own frame (see the module comment). */
 export type SideCurve = BezierSegment[];
 
+/** The lines of the infinite tiling one family of the heart's cuts follows: the first, and how many. */
+export interface HeartLines {
+	first: number;
+	count: number;
+}
+
 export interface PatternTile {
 	rule: TileRule;
-	/** Cuts in each lobe; the heart is (cuts + 1) × (cuts + 1). */
+	/**
+	 * The size of the tiles: the heart's square is cuts + 1 cells across, and
+	 * unless the pattern has been moved (`lines`), it has that many cuts in each lobe.
+	 */
 	cuts: number;
 	/** The rule's curves, by key. A key the rule needs and the tile lacks reads as a straight side. */
 	curves: Partial<Record<CurveKey, SideCurve>>;
@@ -123,6 +133,13 @@ export interface PatternTile {
 	 * to half a repeat on.
 	 */
 	pan?: Vec;
+	/**
+	 * The lines the heart cuts, each way, when the pattern has been moved: the
+	 * cuts + 1 nearest the middle and, where an edge strip has grown wider than a
+	 * cell, the next line in it too, so the pattern fills the heart like a window
+	 * onto the infinite tiling (`fitLines`). Absent, the cuts + 1 nearest the middle.
+	 */
+	lines?: Record<StretchKind, HeartLines>;
 }
 
 /**
@@ -693,18 +710,27 @@ export function rawToCells(tile: PatternTile, q: Vec): Vec {
 	return { x: q.x / h + w.x, y: q.y / h + w.y };
 }
 
+const panOf = (tile: PatternTile, kind: StretchKind) => (kind === 'V' ? (tile.pan?.x ?? 0) : (tile.pan?.y ?? 0));
+
 /**
- * The line of the infinite tiling the heart's first cut of family `kind` is.
- * The heart cuts the n − 1 lines nearest the middle of its square: line k lies
- * k + pan cells in (the lean moves the window with it), so the first is the one
- * between half a cell and one and a half in, and neither edge strip is ever
- * narrower than half a cell or wider than one and a half. As the pattern moves,
- * a line that leaves at one edge comes in again at the other.
+ * The n − 1 lines of family `kind` nearest the middle of the heart's square:
+ * line k lies k + pan cells in (the lean moves the window with it), so the first
+ * is the one between half a cell and one and a half in, and neither edge strip
+ * is narrower than half a cell or wider than one and a half. As the pattern
+ * moves, a line that leaves at one edge comes in again at the other.
  */
-export function firstLine(tile: PatternTile, kind: StretchKind): number {
-	const pan = tile.pan ?? { x: 0, y: 0 };
-	return Math.ceil(0.5 - (kind === 'V' ? pan.x : pan.y) - 1e-9);
+function nearestLines(tile: PatternTile, kind: StretchKind): HeartLines {
+	return { first: Math.ceil(0.5 - panOf(tile, kind) - 1e-9), count: tile.cuts };
 }
+
+/** The lines of the infinite tiling the heart cuts in family `kind` (see `PatternTile.lines`). */
+export const heartLines = (tile: PatternTile, kind: StretchKind): HeartLines => tile.lines?.[kind] ?? nearestLines(tile, kind);
+
+/** The line of the infinite tiling the heart's first cut of family `kind` is. */
+export const firstLine = (tile: PatternTile, kind: StretchKind): number => heartLines(tile, kind).first;
+
+/** How many cuts the heart has in each family: `V` the right lobe's, `H` the left lobe's. */
+export const cutCounts = (tile: PatternTile): Record<StretchKind, number> => ({ V: heartLines(tile, 'V').count, H: heartLines(tile, 'H').count });
 
 /**
  * The heart's cut `k` of family `kind` (`V` the right lobe's, `H` the left lobe's)
@@ -712,10 +738,14 @@ export function firstLine(tile: PatternTile, kind: StretchKind): number {
  * `firstLine` + k − 1.
  */
 export function tracedCut(tile: PatternTile, kind: StretchKind, k: number): TracedCut {
+	return traceLine(tile, kind, firstLine(tile, kind) + k - 1);
+}
+
+/** Line `line` of family `kind` of the infinite tiling, where it crosses the heart's square (see `tracedCut`). */
+function traceLine(tile: PatternTile, kind: StretchKind, line: number): TracedCut {
 	const n = tile.cuts + 1;
 	const h = 100 / n;
 	const w = patternWindow(tile);
-	const line = firstLine(tile, kind) + k - 1;
 	const toRaw = (p: Vec): Vec => ({ x: (p.x - w.x) * h, y: (p.y - w.y) * h });
 	const chain: BezierSegment[] = [];
 	const pieces: CutPiece[] = [];
@@ -737,13 +767,60 @@ export function tracedCut(tile: PatternTile, kind: StretchKind, k: number): Trac
 
 /** The tile's cuts in the raw 0–100 square: left lobe horizontal, right lobe vertical. */
 export function patternCuts(tile: PatternTile): { left: BezierSegment[][]; right: BezierSegment[][] } {
-	const right: BezierSegment[][] = [];
-	const left: BezierSegment[][] = [];
-	for (let k = 1; k <= tile.cuts; k++) {
-		right.push(tracedCut(tile, 'V', k).segments);
-		left.push(tracedCut(tile, 'H', k).segments);
+	const counts = cutCounts(tile);
+	const cuts = (kind: StretchKind) => Array.from({ length: counts[kind] }, (_, k) => tracedCut(tile, kind, k + 1).segments);
+	return { left: cuts('H'), right: cuts('V') };
+}
+
+/**
+ * How close to the square's edge a moved pattern's extra line may come, in the
+ * square's 100 units: twice the paper Tegn keeps between two cuts, and at least
+ * 0.15 of a cell, so the edge strip it leaves can be cut and woven.
+ */
+const edgeMargin = (tile: PatternTile) => Math.max(0.15 * (100 / (tile.cuts + 1)), 2 * HEART_CLEARANCE_UNITS);
+
+/** Whether the cut along line `line` of family `kind` lies inside the square, `edgeMargin` from its edges. */
+function lineFits(tile: PatternTile, kind: StretchKind, line: number): boolean {
+	const margin = edgeMargin(tile);
+	const axis = kind === 'V' ? 'x' : 'y';
+	for (const s of traceLine(tile, kind, line).segments) {
+		for (let k = 0; k <= 12; k++) {
+			const v = bezierAt(s, k / 12)[axis];
+			if (v < margin || v > 100 - margin) return false;
+		}
 	}
-	return { left, right };
+	return true;
+}
+
+/**
+ * The tile with the lines the heart cuts fitted to where the pattern now is:
+ * the n − 1 nearest the middle, and where an edge strip is wider than a cell,
+ * the next line in it as well, if its whole cut keeps `edgeMargin` from the
+ * edge. So the pattern fills the heart like a window onto the infinite tiling,
+ * with a strip more where the pattern has moved off a whole line; no line the
+ * heart cuts is ever dropped, and a pattern that has not moved is as before.
+ * For anything that moves the pattern, leans its tiles, or sizes or rules it
+ * afresh; edits to the curves keep the lines they started from.
+ */
+export function fitLines(tile: PatternTile): PatternTile {
+	const { lines: _old, ...plain } = tile;
+	const n = plain.cuts + 1;
+	const fit = (kind: StretchKind): HeartLines => {
+		const near = nearestLines(plain, kind);
+		const pan = panOf(plain, kind);
+		let { first, count } = near;
+		const below = near.first - 1;
+		if (below + pan > 0 && lineFits(plain, kind, below)) {
+			first = below;
+			count++;
+		}
+		const above = near.first + near.count;
+		if (above + pan < n && lineFits(plain, kind, above)) count++;
+		return { first, count };
+	};
+	const lines = { V: fit('V'), H: fit('H') };
+	const moved = (['V', 'H'] as const).some((kind) => lines[kind].count !== nearestLines(plain, kind).count);
+	return moved ? { ...plain, lines } : plain;
 }
 
 /** The outline of cell (c, d), counter-clockwise in the square's frame, in units of a cell. */
@@ -783,13 +860,14 @@ function rawFinger(segments: BezierSegment[], lobe: 'left' | 'right', index: num
  */
 export function patternToDesign(tile: PatternTile, opts: { name: string; author?: string }): HeartDesign {
 	const { left, right } = patternCuts(tile);
-	const n = tile.cuts + 1;
 	const design = normalizeHeartDesign({
 		id: '',
 		name: opts.name,
 		author: opts.author ?? '',
 		weaveParity: 1,
-		gridSize: { x: n, y: n },
+		gridSize: { x: right.length + 1, y: left.length + 1 },
+		// A moved pattern can have a strip more one way than the other: the square stays square.
+		...(right.length === left.length ? {} : { overlapAspectRatio: 1 }),
 		fingers: [...left.map((s, i) => rawFinger(s, 'left', i)), ...right.map((s, i) => rawFinger(s, 'right', i))]
 	});
 	if (!design) throw new Error('The pattern did not make a heart.');

@@ -12,6 +12,8 @@ import {
 	neighbours,
 	opposite,
 	patternCuts,
+	cutCounts,
+	fitLines,
 	patternToDesign,
 	ruleInfo,
 	ruleKey,
@@ -21,6 +23,7 @@ import {
 	type CurveKey,
 	type PatternTile
 } from './tiling';
+import { ruleStart } from './presets';
 import { EXAMPLES, exampleTile } from './examples';
 
 const close = (a: Vec, b: Vec, eps = 1e-6) => Math.abs(a.x - b.x) < eps && Math.abs(a.y - b.y) < eps;
@@ -141,6 +144,18 @@ describe('pattern tiling', () => {
 			const first = cellOutline(tile, 0, 0);
 			expect(sameChain(shift(first, 1, 1), cellOutline(tile, 1, 1))).toBe(true);
 		}
+	});
+
+	it('a moved pattern with a strip more one way is still a square heart that weaves', () => {
+		// three cells across, moved four tenths of a cell: the right lobe's edge strip of 1.4 cells takes
+		// the next line, the left lobe's does not move
+		const tile = fitLines({ ...ruleStart(opposite('move', 'move'), 2), pan: { x: 0.4, y: 0 } });
+		expect(cutCounts(tile)).toEqual({ V: 3, H: 2 });
+		const design = patternToDesign(tile, { name: 'moved' });
+		expect(design.gridSize).toEqual({ x: 4, y: 3 });
+		const rect = inferOverlapRect(design.fingers, design.gridSize);
+		expect(Math.abs(rect.width - rect.height)).toBeLessThan(1e-6);
+		expect([...findFingersWithIssues(design.fingers, intersectionMarginPx(rect))]).toEqual([]);
 	});
 
 	it('a rule that keeps the plain grid ignores an offset', () => {

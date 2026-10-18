@@ -491,8 +491,12 @@ starts afresh if not; a size the pattern is too tight for is refused, with a lin
 starts from one low peak of straight lines on each curve it reads and nothing more, because the visitor does
 the designing; nothing else is drawn on the heart, and nothing moves on its own. Points the tile places itself
 are drawn dark: dragging a crossing leans every tile (where the type lets tiles lean), and dragging a point the
-type fixes moves the whole pattern, which comes back in at the other edge without end. An end of a cut slides
-along the edge. Below 900px the picker shows its glyphs alone, five to a row, as Symmetri's rows do. In both
+type fixes moves the whole pattern, which comes back in at the other edge without end. Moved off a whole line,
+the pattern would leave an edge strip wider than a cell; there the heart cuts the pattern's next line as well,
+if all of that cut keeps 0.15 of a cell (and twice the paper's clearance) from the edge, so the pattern fills
+the heart like a window onto an endless tiling. The heart then has a strip more that way (a 3 × 3 pattern makes
+a 4 × 3 or 4 × 4 heart, and the strip count says so); no line it cut before is dropped, and the size buttons
+still set the size of the tiles. An end of a cut slides along the edge. Below 900px the picker shows its glyphs alone, five to a row, as Symmetri's rows do. In both
 tabs, a drag that cannot go where the pointer is stops at the last place that weaves, and a line above the heart
 says why: two cuts would cross, a curve would cross itself, or it would leave the woven square.
 
