@@ -36,7 +36,7 @@ jobs:
         run: node --import ./scripts/inverse/ci-clock.mjs --test --test-concurrency=1 --test-shard=${{ matrix.shard }}/4 scripts/inverse/*.test.mjs scripts/inverse/datasets/*.test.mjs
       - name: Capture frozen and shifted photographic feature fits
         if: inputs.mode == 'feature-detail'
-        run: node --test --test-concurrency=1 scripts/inverse/feature-seeds.test.mjs scripts/inverse/fitted-rerouting.test.mjs
+        run: node --test --test-concurrency=1 scripts/inverse/feature-seeds.test.mjs scripts/inverse/fitted-rerouting.test.mjs scripts/inverse/feature-near-miss.test.mjs scripts/inverse/clearance-feature-geometry.test.mjs
       - name: Replay normal-budget partial-feature regressions
         if: inputs.mode == 'bicycle'
         run: node --test scripts/inverse/feature-finalists.test.mjs
