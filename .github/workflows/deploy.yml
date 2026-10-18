@@ -6,7 +6,7 @@ on:
       mode:
         type: choice
         default: full
-        options: [full, bicycle, comparison, maple, polish, profile, shared-runtime]
+        options: [full, cold, bicycle, comparison, maple, polish, profile, shared-runtime]
         description: Full diagnostics or focused normal-budget regressions
 permissions:
   contents: read
@@ -17,7 +17,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        shard: ${{ fromJSON(inputs.mode == 'full' && '[1,2,3,4]' || '[1]') }}
+        shard: ${{ fromJSON((inputs.mode == 'full' || inputs.mode == 'cold') && '[1,2,3,4]' || '[1]') }}
         clock: ${{ fromJSON(inputs.mode == 'full' && '[1,0.5]' || '[1]') }}
     steps:
       - uses: actions/checkout@v4
@@ -37,6 +37,9 @@ jobs:
       - name: Replay normal-budget partial-feature regressions
         if: inputs.mode == 'bicycle'
         run: node --test scripts/inverse/feature-finalists.test.mjs
+      - name: Replay cold-process regressions without a diagnostic clock
+        if: inputs.mode == 'cold'
+        run: node --test --test-concurrency=1 --test-shard=${{ matrix.shard }}/4 scripts/inverse/*.test.mjs scripts/inverse/datasets/*.test.mjs
       - name: Replay simpler-layout and supported-count regressions
         if: inputs.mode == 'comparison'
         run: node --test --test-concurrency=1 scripts/inverse/comparison-search.test.mjs scripts/inverse/refinement-checkpoints.test.mjs scripts/inverse/supported-count-bound.test.mjs
