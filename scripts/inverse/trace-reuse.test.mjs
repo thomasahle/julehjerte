@@ -9,6 +9,10 @@ import {readHardPhoto} from './hard-photo-data.mjs';
 const fixture=JSON.parse(await fs.readFile('scripts/inverse/fixtures/trace-reuse.json'));
 const hash=b=>createHash('sha256').update(b).digest('hex');
 const shape=t=>JSON.stringify({width:t.width,phase:t.phase,curves:t.curves.map(c=>c.p),metadata:t.metadata});
+// V8/libm versions can differ in the last few bits of a fitted coordinate.
+// Freeze geometry well below the 0.01 mm validator tolerance, while keeping
+// exact masks and byte-for-byte equality between cached and uncached calls.
+const numericSnapshot=s=>JSON.stringify(JSON.parse(s),(_,v)=>typeof v==='number'?Number(v.toFixed(fixture.numericSnapshotDecimalPlaces)):v);
 
 for(const item of fixture.cases)test(`reusing ${item.id} pixel chains preserves frozen curves, sampling and cleanup`,async()=>{
   const photo=await readHardPhoto(item);
@@ -19,11 +23,12 @@ for(const item of fixture.cases)test(`reusing ${item.id} pixel chains preserves 
     const trace=prepareMaskTrace(mask,n,settings);
     for(const expected of outputs){
       const {target,sampled}=trace(expected.fitTolerance);
-      assert.equal(hash(shape(target)),expected.shapeSha256);
+      const exactShape=shape(target);
+      assert.equal(hash(numericSnapshot(exactShape)),expected.numericShapeSha256);
       assert.equal(hash(sampled),expected.sampleSha256);
       assert.deepEqual(sampleTarget(target,n),sampled);
       const single=preprocessMask(mask,n,{...settings,fitTolerance:expected.fitTolerance});
-      assert.equal(hash(shape(single)),expected.shapeSha256);
+      assert.equal(shape(single),exactShape);
       // Routing subdivides and rewrites candidate geometry. It must not change
       // the chains or diagnostic metadata reused by the next tolerance trial.
       if(target.curves.length)target.curves[0].p[0][0]+=1;
@@ -31,7 +36,7 @@ for(const item of fixture.cases)test(`reusing ${item.id} pixel chains preserves 
       target.metadata.preprocessing.border.changedPixels=-1;
       sampled.fill(2);
       const again=trace(expected.fitTolerance);
-      assert.equal(hash(shape(again.target)),expected.shapeSha256);
+      assert.equal(shape(again.target),exactShape);
       assert.equal(hash(again.sampled),expected.sampleSha256);
     }
   }
